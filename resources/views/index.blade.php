@@ -114,15 +114,21 @@
         <div class="profile-menu">
             <ul>
                  <li>
-                    <div class="dropdown">
-                        <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end p-3">
-                            <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
-                        </div>
-                    </div>   
-                </li>
+    <div class="dropdown">
+        <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
+            <img src="{{ URL::asset('/build/img/profiles/avatar-16.jpg') }}" alt="img" class="rounded-circle">
+        </a>
+        <div class="dropdown-menu dropdown-menu-end p-3">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item">
+                    <i class="ti ti-logout-2 me-2"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>   
+</li>
+
                 <li>
                     <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                         <i class="ti ti-moon"></i>

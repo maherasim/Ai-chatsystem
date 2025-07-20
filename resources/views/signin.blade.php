@@ -28,18 +28,18 @@
                                             <p class="mb-0 fs-16">Sign in to see what you’ve missed.</p>
                                         </div>
                                         <div class="mb-3 ">
-                                            <label class="form-label">User Name</label>
+                                            <label class="form-label">Email</label>
                                             <div class="input-icon mb-3 position-relative">
-                                                <input type="text" name="name" id="name" value="username" class="form-control">
+                                                <input type="email" name="email" id="email" placeholder="Enter Your Email" class="form-control">
                                                 <span class="input-icon-addon">
-                                                    <i class="ti ti-user"></i>
+                                                    <i class="ti ti-mail"></i>
                                                 </span>
                                             </div>
                                             <div class="text-danger pt-2">
                                                 @error('0')
                                                     {{ $message }}
                                                 @enderror
-                                                @error('user_name')
+                                                @error('email')
                                                     {{ $message }}
                                                 @enderror
                                             </div>

@@ -4,15 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 
  Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']); 
- Route::get('index', [CustomAuthController::class, 'index'])->name('index');
+//  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
  Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
  Route::get('register', [CustomAuthController::class, 'register'])->name('register-user');
  Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom'); 
  Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout');
 
 Route::get('/', function () {
-     return view('index');
-})->name('index');
+    return view('index');
+})->middleware('auth')->name('index');
 
 Route::get('/all-calls', function () {
     return view('all-calls');

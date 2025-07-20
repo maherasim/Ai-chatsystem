@@ -16,31 +16,34 @@ class CustomAuthController extends Controller
     }  
       
 
-    public function customLogin(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'password' => 'required',
-        ],
-         [
-            'name.required' => 'Username is required',
-            'password.required' => 'Password is required',
 
-        ]
+public function customLogin(Request $request)
+{
+    // ✅ Validate input
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ], [
+        'email.required' => 'Email is required',
+        'email.email' => 'Please enter a valid email address',
+        'password.required' => 'Password is required',
+    ]);
 
+    // ✅ Attempt to log in with credentials
+    $credentials = $request->only('email', 'password');
 
-    );
-        $credentials = $request->only('name', 'password');
-         if ($credentials['name']=='username' && $credentials['password']=='123456'){
-        return redirect()->intended('index')
-                        ->withSuccess('Signed in');
-        }
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('index')
-                        ->withSuccess('Signed in');
-        }
-        return redirect("signin")->withErrors('These credentials do not match our records.');
+    if (Auth::attempt($credentials)) {
+        // ✅ Authentication passed
+        $request->session()->regenerate(); // Prevent session fixation
+        return redirect()->intended('index')->with('success', 'Signed in');
     }
+
+    // ❌ Authentication failed
+    return redirect()->back()
+        ->withInput($request->only('email'))
+        ->withErrors(['email' => 'These credentials do not match our records.']);
+}
+
     public function registration()
     {
         return view('signup');
@@ -98,10 +101,13 @@ class CustomAuthController extends Controller
     }
     
 
-    public function signOut() {
-        Session::flush();
-        Auth::logout();
-  
-        return Redirect('signin');
-    }
+    public function signOut(Request $request)
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/signin');
+}
+
+
 }
