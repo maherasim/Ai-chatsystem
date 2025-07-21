@@ -76,11 +76,7 @@
     <div class="menu-wrap">
             <div class="main-menu">
                 <ul class="nav">
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
-                        <a href="{{url('index')}}" class="active" data-bs-toggle="tab" data-bs-target="#chat-menu">
-                            <i class="ti ti-message-2-heart"></i>
-                        </a>
-                    </li>
+                   
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
                         <a href="#" class="task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
                             <img src="{{ URL::asset('/build/img/AI_White.svg') }}" alt="AI Icon" class="icon-white">
