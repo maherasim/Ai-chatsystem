@@ -6,18 +6,19 @@
 .task-icon-link {
     position: relative;
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
 }
 .task-icon-link img {
-    width: 24px;
-    height: 24px;
+    width: 25px!important;
+    height: 25px!important;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: opacity 0.2s ease-in-out;
 }
+
 
 /* Stack both icons centered */
 .task-icon-link img {

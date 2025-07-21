@@ -28,7 +28,7 @@
 	<title>DreamsChat</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{URL::asset('/build/img/favicon.png')}}">
+    <link rel="icon" href="{{URL::asset('/build/img/AI-Logo.svg')}}">
 
   
     @include('layout.partials.head')
