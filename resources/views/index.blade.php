@@ -118,6 +118,14 @@
        </div>
             <div class="profile-menu">
                 <ul>
+                      <div class="dropdown">
+                            <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end p-3">
+                                <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
+                            </div>
+                        </div>  
                     <li>
                         <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                             <i class="ti ti-moon"></i>
@@ -128,18 +136,11 @@
                     </li>
                       <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
                            <a href="#" id="open-settings-tab" data-bs-toggle="tab" data-bs-target="#setting-menu">
-                                <i class="ti ti-settings" style="font-size: 24px; width: 24px; height: 24px;"></i>
+                                <i class="ti ti-settings" style="font-size: 24px; width: 25px; height: 25px;"></i>
                             </a>
                      </li>
                     <li>
-                        <div class="dropdown">
-                            <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end p-3">
-                                <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
-                            </div>
-                        </div>   
+                       
                     </li>
                 </ul>
             </div>
