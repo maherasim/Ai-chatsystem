@@ -73,80 +73,80 @@
 </div>
 
     <div class="menu-wrap">
-        <div class="main-menu">
-            <ul class="nav">
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
-                    <a href="{{ url('ai') }}" class="task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
-                        <img src="{{ URL::asset('/build/img/AI_White.svg') }}" alt="AI Icon" class="icon-white">
-                        <img src="{{ URL::asset('/build/img/AI_Black.svg') }}" alt="AI Icon" class="icon-black">
-                    </a>
-                </li>
-              <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
-                    <a href="{{ url('index') }}" class="task-icon-link {{ request()->is('index') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#chat-menu">
+            <div class="main-menu">
+                <ul class="nav">
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
+                        <a href="{{url('index')}}" class="active" data-bs-toggle="tab" data-bs-target="#chat-menu">
+                            <i class="ti ti-message-2-heart"></i>
+                        </a>
+                    </li>
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
+                        <a href="#" class="task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
+                            <img src="{{ URL::asset('/build/img/AI_White.svg') }}" alt="AI Icon" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/AI_Black.svg') }}" alt="AI Icon" class="icon-black">
+                        </a>
+                    </li>
+
+                  <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
+                    <a href="#" class="task-icon-link {{ request()->is('index') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#chat-menu">
                         <img src="{{ URL::asset('/build/img/Chat_White.svg') }}" alt="White Icon" class="icon-white">
                         <img src="{{ URL::asset('/build/img/Chat_Black.svg') }}" alt="Black Icon" class="icon-black">
                     </a>
                 </li>
-
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
-                    <a href="{{ url('tasks') }}" class="task-icon-link {{ request()->is('tasks*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
+                  <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
+                    <a href="" class="task-icon-link {{ request()->is('tasks*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
                         <img src="{{ URL::asset('/build/img/Task_White.svg') }}" alt="Task White" class="icon-white">
                         <img src="{{ URL::asset('/build/img/Task_Black.svg') }}" alt="Task Black" class="icon-black">
                     </a>
                 </li>
-
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
-                    <a href="{{ url('users') }}" class="task-icon-link {{ request()->is('users*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#contact-menu">
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
+                    <a href="#" class="task-icon-link {{ request()->is('users*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#contact-menu">
                         <img src="{{ URL::asset('/build/img/User_White.svg') }}" alt="User White" class="icon-white">
                         <img src="{{ URL::asset('/build/img/User_Black.svg') }}" alt="User Black" class="icon-black">
                     </a>
                 </li>
-
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Groups" data-bs-custom-class="tooltip-primary">
-                    <a href="{{ url('groups') }}" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
+                    
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Groups" data-bs-custom-class="tooltip-primary">
+                    <a href="" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
                         <img src="{{ URL::asset('/build/img/Group_White.svg') }}" alt="Group White" class="icon-white">
                         <img src="{{ URL::asset('/build/img/Group_Black.svg') }}" alt="Group Black" class="icon-black">
                     </a>
              </li>
- 
-            </ul>
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary" style="display: none" >
+                        <a href="#" data-bs-toggle="tab" data-bs-target="#setting-menu">
+                            <i class="ti ti-settings"></i>
+                        </a>
+                    </li>
+                </ul>
+       </div>
+            <div class="profile-menu">
+                <ul>
+                    <li>
+                        <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
+                            <i class="ti ti-moon"></i>
+                        </a>
+                        <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
+                            <i class="ti ti-sun"></i>
+                        </a>
+                    </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
+                           <a href="#" id="open-settings-tab" data-bs-toggle="tab" data-bs-target="#setting-menu">
+                                <i class="ti ti-settings" style="font-size: 24px; width: 24px; height: 24px;"></i>
+                            </a>
+                     </li>
+                    <li>
+                        <div class="dropdown">
+                            <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end p-3">
+                                <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
+                            </div>
+                        </div>   
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="profile-menu">
-            <ul>
-                 <li>
-    <div class="dropdown">
-        <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-            <img src="{{ URL::asset('/build/img/profiles/avatar-16.jpg') }}" alt="img" class="rounded-circle">
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-3">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="dropdown-item">
-                    <i class="ti ti-logout-2 me-2"></i> Logout
-                </button>
-            </form>
-        </div>
-    </div>   
-</li>
-
-                <li>
-                    <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
-                        <i class="ti ti-moon"></i>
-                    </a>
-                    <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
-                        <i class="ti ti-sun"></i>
-                    </a>
-                </li>
-                  <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
-                    <a href="#" data-bs-toggle="tab" data-bs-target="#setting-menu">
-                        <i class="ti ti-settings" style="font-size: 24px; width: 24px; height: 24px;"></i>
-
-                    </a>
-                </li>
-               
-            </ul>
-        </div>
-    </div>
 </div>
 <!-- /Left Sidebar Menu -->
 
@@ -4655,7 +4655,14 @@
 
 
 </div> 
-<!-- /Content -->
+<script>
+document.getElementById('open-settings-tab').addEventListener('click', function (e) {
+    e.preventDefault();
+    const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#setting-menu"]'));
+    tab.show();
+});
+</script>
+
 
 @component('components.model-popup')
 @endcomponent
