@@ -25,7 +25,7 @@
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="600">
 
-	<title>DreamsChat</title>
+	<title>LogiConn</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{URL::asset('/build/img/AI-Logo.svg')}}">
