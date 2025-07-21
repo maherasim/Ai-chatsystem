@@ -13,7 +13,7 @@ use App\Http\Controllers\CustomAuthController;
 
 Route::get('/', function () {
     return view('index');
-})->middleware('auth')->name('index');
+});
 
 Route::get('/all-calls', function () {
     return view('all-calls');
