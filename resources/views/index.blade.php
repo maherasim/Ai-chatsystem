@@ -80,56 +80,56 @@
             <div class="main-menu">
                 <ul class="nav">
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#Ai-menu">
+                        <a href="#Ai-menu" class="nav-link task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#Ai-menu">
                             <img src="{{ URL::asset('/build/img/AI-White.svg') }}" alt="AI Icon" class="icon-white">
                             <img src="{{ URL::asset('/build/img/AI-Black.svg') }}" alt="AI Icon" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('index') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#chat-menu">
+                        <a href="#chat-menu" class="nav-link task-icon-link {{ request()->is('index*')  ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#chat-menu">
                             <img src="{{ URL::asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white">
                             <img src="{{ URL::asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('tasks*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
+                        <a href="#task-menu" class="nav-link task-icon-link {{ request()->is('tasks*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
                             <img src="{{ URL::asset('/build/img/Tasks-White.svg') }}" alt="Task White" class="icon-white">
                             <img src="{{ URL::asset('/build/img/Tasks-Black.svg') }}" alt="Task Black" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('users*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#contact-menu">
+                        <a href="#contact-menu" class="nav-link task-icon-link {{ request()->is('users*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#contact-menu">
                             <img src="{{ URL::asset('/build/img/Users-White.svg') }}" alt="User White" class="icon-white">
                             <img src="{{ URL::asset('/build/img/Users-Black.svg') }}" alt="User Black" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Groups" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
+                        <a href="#group-menu" class="nav-link task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
                             <img src="{{ URL::asset('/build/img/Group-White.svg') }}" alt="Group White" class="icon-white">
                             <img src="{{ URL::asset('/build/img/Group-Black.svg') }}" alt="Group Black" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('api*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#API-menu">
+                        <a href="#API-menu" class="nav-link task-icon-link {{ request()->is('api*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#API-menu">
                             <img src="{{ URL::asset('/build/img/API-White.svg') }}" alt="API White" class="icon-white" height="300px">
                             <img src="{{ URL::asset('/build/img/API-Black.svg') }}" alt="API Black" class="icon-black" height="300px">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Project" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('project*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#project-menu">
+                        <a href="#project-menu" class="nav-link task-icon-link {{ request()->is('project*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#project-menu">
                             <img src="{{ URL::asset('/build/img/Project-White.svg') }}" alt="Project White" class="icon-white" height="300px">
                             <img src="{{ URL::asset('/build/img/Project-Black.svg') }}" alt="Project Black" class="icon-black" height="300px">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Library" data-bs-custom-class="tooltip-primary">
-                        <a href="#" class="task-icon-link {{ request()->is('library*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#library-menu">
+                        <a href="#library-menu" class="nav-link task-icon-link {{ request()->is('library*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#library-menu">
                             <img src="{{ URL::asset('/build/img/Library-White.svg') }}" alt="Library White" class="icon-white" height="300px">
                             <img src="{{ URL::asset('/build/img/Library-Black.svg') }}" alt="Library Black" class="icon-black" height="300px">
                         </a>
@@ -144,14 +144,14 @@
             </div>
             <div class="profile-menu">
                 <ul>
-                     <div class="dropdown">
-                            <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end p-3">
-                                <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
-                            </div>
-                        </div>   
+                    <div class="dropdown">
+                        <a href="#" class="nav-link avatar avatar-md" data-bs-toggle="dropdown">
+                            <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end p-3">
+                            <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
+                        </div>
+                    </div>
                     <li>
                         <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                             <img src="{{ URL::asset('/build/img/Moon-Balck.svg') }}" alt="Group White" class="icon-white" height="300px">
@@ -179,9 +179,8 @@
 
         <div class="tab-content">
             <!-- Ai -->
-            <div class="tab-pane fade active show" id="Ai-menu">
+            <div class="tab-pane fade " id="Ai-menu">
 
-                <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
 
                     <div class="slimscroll">
@@ -2590,7 +2589,7 @@
 
             </div>
             <!-- Ai -->
-            <div class="tab-pane fade active show" id="chat-menu">
+            <div class="tab-pane fade active show " id="chat-menu">
 
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
@@ -5001,7 +5000,7 @@
 
             </div>
             <!-- task menu -->
-            <div class="tab-pane fade active show" id="task-menu">
+            <div class="tab-pane fade " id="task-menu">
 
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
@@ -7414,7 +7413,7 @@
             <!-- task menu -->
 
             <!-- Contact -->
-            <div class="tab-pane fade" id="contact-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+            <div class="tab-pane fade" id="contact-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
                 <!-- Chats sidebar -->
                 <div class="sidebar-content active slimscroll">
 
@@ -7552,7 +7551,7 @@
             </div>
             <!-- /Contact -->
             <!-- Group Menu -->
-            <div class="tab-pane fade" id="group-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+            <div class="tab-pane fade" id="group-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
 
 
                 <!-- Chats sidebar -->
@@ -8056,7 +8055,7 @@
             </div>
             <!-- group nemu -->
             <!-- project -->
-            <div class="tab-pane fade" id="project-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+            <div class="tab-pane fade" id="project-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
 
                 <!-- Chats sidebar -->
                 <div class="sidebar-content active slimscroll">
@@ -8558,8 +8557,8 @@
 
             </div>
             <!-- /project -->
-            <!-- Api -->
-            <div class="tab-pane fade" id="API-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+
+            <div class="tab-pane fade" id="API-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
 
                 <!-- Chats sidebar -->
                 <div class="sidebar-content active slimscroll">
@@ -9062,7 +9061,7 @@
             </div>
             <!-- /Api -->
             <!-- library -->
-            <div class="tab-pane fade" id="library-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+            <div class="tab-pane fade" id="library-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
 
 
                 <!-- Chats sidebar -->
@@ -10304,7 +10303,7 @@
 
             <!-- Settings -->
 
-            <div class="tab-pane fade" id="setting-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 bcx)">
+            <div class="tab-pane fade" id="setting-menu" style="width: 400px;border-right: 1px solid rgba(0, 0, 0, 0.01 )">
                 <!-- Profile sidebar -->
                 <div class="sidebar-content active slimscroll">
                     <div class="slimscroll">
@@ -10831,6 +10830,60 @@
 
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tooltip logic (same as before)
+        const tooltipElements = document.querySelectorAll('.main-menu [data-bs-toggle="tooltip"]');
+        tooltipElements.forEach(el => {
+            const tooltip = new bootstrap.Tooltip(el);
+
+            el.addEventListener('mouseenter', function() {
+                const link = el.querySelector('a');
+                if (link && link.classList.contains('active')) {
+                    tooltip.disable();
+                    tooltip.hide();
+                } else {
+                    tooltip.enable();
+                }
+            });
+
+            const link = el.querySelector('a');
+            if (link) {
+                link.addEventListener('click', () => {
+                    tooltip.hide();
+                    tooltip.disable();
+                });
+            }
+        });
+
+        // 👉 Tab activation logic on page load
+        const activeLink = document.querySelector('.main-menu .task-icon-link.active');
+        if (activeLink) {
+            const targetSelector = activeLink.getAttribute('data-bs-target');
+            const tabTrigger = new bootstrap.Tab(activeLink);
+            tabTrigger.show(); // manually activate tab
+
+            // Optional: Also make sure the tab-pane is visible
+            const targetPane = document.querySelector(targetSelector);
+            if (targetPane) {
+                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active', 'show'));
+                targetPane.classList.add('active', 'show');
+            }
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var activeTab = document.querySelector('.task-icon-link.active');
+        if (activeTab) {
+            var tabTrigger = new bootstrap.Tab(activeTab);
+            tabTrigger.show();
+        }
+    });
+</script>
+
+
 <script>
     document.getElementById('open-settings-tab').addEventListener('click', function(e) {
         e.preventDefault();
@@ -10839,6 +10892,11 @@
     });
 </script>
 
+</script>
+
+
+<!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 @component('components.model-popup')
 @endcomponent
