@@ -13,8 +13,35 @@ use App\Http\Controllers\CustomAuthController;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
+Route::get('/Ai', function () {
+    return view('Chats.Ai');
+})->name('chat-ai');
+Route::get('/tasks', function () {
+    return view('Chats.task');
+})->name('chat-task');
+Route::get('/users', function () {
+    return view('Chats.users');
+})->name('chat-users');
+
+Route::get('/groups', function () {
+    return view('Chats.groups');
+})->name('chat-groups');
+Route::get('/project', function () {
+    return view('Chats.project');
+})->name('chat-project');
+
+Route::get('/Apis', function () {
+    return view('Chats.api');
+})->name('chat-api');
+Route::get('/library', function () {
+    return view('Chats.library');
+})->name('chat-library');
+
+Route::get('/settings', function () {
+    return view('Chats.settings');
+})->name('settings');
 Route::get('/all-calls', function () {
     return view('all-calls');
 })->name('all-calls');
