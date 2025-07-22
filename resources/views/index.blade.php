@@ -115,9 +115,22 @@
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
                         <a href="" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
                             <img src="{{ URL::asset('/build/img/API-White.svg') }}" alt="Group White" class="icon-white" height="300px">
-                            <img src="{{ URL::asset('/build/img/API-Black.svg') }}"  alt="Group Black" class="icon-black"height="300px" >
+                            <img src="{{ URL::asset('/build/img/API-Black.svg') }}" alt="Group Black" class="icon-black" height="300px">
                         </a>
                     </li>
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="project" data-bs-custom-class="tooltip-primary">
+                        <a href="" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
+                            <img src="{{ URL::asset('/build/img/Project-White.svg') }}" alt="Group White" class="icon-white" height="300px">
+                            <img src="{{ URL::asset('/build/img/Project-Black.svg') }}" alt="Group Black" class="icon-black" height="300px">
+                        </a>
+                    </li>
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Library" data-bs-custom-class="tooltip-primary">
+                        <a href="" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
+                            <img src="{{ URL::asset('/build/img/Library-White.svg') }}" alt="Group White" class="icon-white" height="300px">
+                            <img src="{{ URL::asset('/build/img/Library-Black.svg') }}" alt="Group Black" class="icon-black" height="300px">
+                        </a>
+                    </li>
+
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary" style="display: none">
                         <a href="#" data-bs-toggle="tab" data-bs-target="#setting-menu">
                             <i class="ti ti-settings"></i>
