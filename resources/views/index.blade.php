@@ -144,14 +144,14 @@
             </div>
             <div class="profile-menu">
                 <ul>
-                    <div class="dropdown">
-                        <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-                            <img src="{{ URL::asset('/build/img/Sun-Balck.svg') }}" alt="img" class="rounded-circle">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end p-3">
-                            <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
-                        </div>
-                    </div>
+                     <div class="dropdown">
+                            <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end p-3">
+                                <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
+                            </div>
+                        </div>   
                     <li>
                         <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                             <img src="{{ URL::asset('/build/img/Moon-Balck.svg') }}" alt="Group White" class="icon-white" height="300px">
