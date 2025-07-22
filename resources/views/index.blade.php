@@ -113,6 +113,12 @@
                             <img src="{{ URL::asset('/build/img/Group-Black.svg') }}" alt="Group Black" class="icon-black">
                         </a>
                     </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Meeting" data-bs-custom-class="tooltip-primary">
+                        <a href="#group-menu" class="nav-link task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
+                            <img src="{{ URL::asset('/build/img/Meeting - White.svg') }}" alt="Group White" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/Meeting - Black.svg') }}" alt="Group Black" class="icon-black">
+                        </a>
+                    </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
                         <a href="#API-menu" class="nav-link task-icon-link {{ request()->is('api*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#API-menu">
