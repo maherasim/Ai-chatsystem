@@ -82,34 +82,34 @@
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
                         <a href="#" class="task-icon-link {{ request()->is('ai*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
-                            <img src="{{ URL::asset('/build/img/AI_White.svg') }}" alt="AI Icon" class="icon-white">
-                            <img src="{{ URL::asset('/build/img/AI_Black.svg') }}" alt="AI Icon" class="icon-black">
+                            <img src="{{ URL::asset('/build/img/AI-White.svg') }}" alt="AI Icon" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/AI-Black.svg') }}" alt="AI Icon" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
                         <a href="#" class="task-icon-link {{ request()->is('index') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#chat-menu">
-                            <img src="{{ URL::asset('/build/img/Chat_White.svg') }}" alt="White Icon" class="icon-white">
-                            <img src="{{ URL::asset('/build/img/Chat_Black.svg') }}" alt="Black Icon" class="icon-black">
+                            <img src="{{ URL::asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
                         </a>
                     </li>
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
                         <a href="" class="task-icon-link {{ request()->is('tasks*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#task-menu">
-                            <img src="{{ URL::asset('/build/img/Task_White.svg') }}" alt="Task White" class="icon-white">
-                            <img src="{{ URL::asset('/build/img/Task_Black.svg') }}" alt="Task Black" class="icon-black">
+                            <img src="{{ URL::asset('/build/img/Tasks-White.svg') }}" alt="Task White" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/Tasks-Black.svg') }}" alt="Task Black" class="icon-black">
                         </a>
                     </li>
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
                         <a href="#" class="task-icon-link {{ request()->is('users*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#contact-menu">
-                            <img src="{{ URL::asset('/build/img/User_White.svg') }}" alt="User White" class="icon-white">
-                            <img src="{{ URL::asset('/build/img/User_Black.svg') }}" alt="User Black" class="icon-black">
+                            <img src="{{ URL::asset('/build/img/Users-White.svg') }}" alt="User White" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/Users-Black.svg') }}" alt="User Black" class="icon-black">
                         </a>
                     </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Groups" data-bs-custom-class="tooltip-primary">
                         <a href="" class="task-icon-link {{ request()->is('groups*') ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#group-menu">
-                            <img src="{{ URL::asset('/build/img/Group_White.svg') }}" alt="Group White" class="icon-white">
-                            <img src="{{ URL::asset('/build/img/Group_Black.svg') }}" alt="Group Black" class="icon-black">
+                            <img src="{{ URL::asset('/build/img/Group-White.svg') }}" alt="Group White" class="icon-white">
+                            <img src="{{ URL::asset('/build/img/Group-Black.svg') }}" alt="Group Black" class="icon-black">
                         </a>
                     </li>
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
@@ -142,7 +142,7 @@
                 <ul>
                     <div class="dropdown">
                         <a href="#" class="avatar avatar-md" data-bs-toggle="dropdown">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" alt="img" class="rounded-circle">
+                            <img src="{{ URL::asset('/build/img/Sun-Balck.svg') }}" alt="img" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end p-3">
                             <a href="{{url('signin')}}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout </a>
@@ -150,15 +150,15 @@
                     </div>
                     <li>
                         <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
-                            <i class="ti ti-moon"></i>
+                            <img src="{{ URL::asset('/build/img/Moon-Balck.svg') }}" alt="Group White" class="icon-white" height="300px">
                         </a>
                         <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
-                            <i class="ti ti-sun"></i>
+                           <img src="{{ URL::asset('/build/img/Moon-White.svg') }}" alt="Group White" class="icon-white" height="300px">
                         </a>
                     </li>
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
                         <a href="#" id="open-settings-tab" data-bs-toggle="tab" data-bs-target="#setting-menu">
-                            <i class="ti ti-settings" style="font-size: 24px; width: 25px; height: 25px;"></i>
+                          <img src="{{ URL::asset('/build/img/Settings-Balck.svg') }}" alt="Group White" class="icon-white" height="300px">
                         </a>
                     </li>
                     <li>
