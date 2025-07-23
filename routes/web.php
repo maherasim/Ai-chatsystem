@@ -33,7 +33,7 @@ Route::get('/project', function () {
 })->name('chat-project');
 
 Route::get('/Apis', function () {
-    return view('Chats.api');
+    return view('Chats.Api');
 })->name('chat-api');
 Route::get('/library', function () {
     return view('Chats.library');
