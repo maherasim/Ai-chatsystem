@@ -75,13 +75,14 @@
                 <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
             </a>
         </div>
+
         @include('Chats.chatsidebar')
     </div>
     <!-- /Left Sidebar Menu -->
 
-    <!-- Settings -->
-    <div class="sidebar-group" style="width: 96%;">
-        <div class="tab-content">
+    <!-- sidebar group -->
+    <div class="sidebar-group">
+        <div class="tab-content"  style="width: 400px; border-right:1px solid rgba(0, 0, 0, 0.002)">
 
             <!-- Profile sidebar -->
             <div class="sidebar-content active slimscroll">
@@ -583,26 +584,37 @@
             </div>
             <!-- / Chats sidebar -->
         </div>
-        <!-- /Settings -->
-
-        <!-- Chat -->
-
-
-
-
-
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- /Sidebar group -->
+
+    <!-- Chat -->
+
+
+    <div class="chat-screen d-flex justify-content-center align-items-center vh-100 w-100 bg-body">
+        <div class="chatbox-input-container w-100 px-4" style="max-width: 1000px;">
+            <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
+                <input type="text" class="form-control border-0 bg-transparent fs-4 me-3" placeholder="Ask anything..." aria-label="Ask anything" style="min-height: 60px;">
+                <button class="btn btn-light btn-icon rounded-circle me-2" type="button" title="Voice" style="width: 50px; height: 50px;">
+                    <i class="ti ti-microphone text-muted fs-3"></i>
+                </button>
+                <button class="btn btn-primary btn-icon rounded-circle" type="button" title="Send" style="width: 50px; height: 50px;">
+                    <i class="ti ti-send text-white fs-3"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
 
 
+<!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
-    <!-- Bootstrap JS Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    @component('components.model-popup')
-    @endcomponent
-    @endsection
+@component('components.model-popup')
+@endcomponent
+@endsection

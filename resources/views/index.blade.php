@@ -85,7 +85,7 @@
 
         <div class="tab-content">
             <!-- Ai -->
-            
+
             <!-- Ai -->
             <div class="tab-pane fade active show " id="chat-menu">
 
@@ -2497,10 +2497,10 @@
                 <!-- / Chats sidebar -->
 
             </div>
-          
 
-        
-          
+
+
+
 
             <!-- Profile -->
             <div class="tab-pane fade" id="profile-menu">
@@ -3238,7 +3238,7 @@
             </div>
             <!-- /Calls -->
 
-            
+
 
         </div>
     </div>
