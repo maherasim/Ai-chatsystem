@@ -96,7 +96,7 @@
 
                         <div class="chat-search-header">
                             <div class="header-title d-flex align-items-center justify-content-between">
-                                <h4 class="mb-3">Tasks</h4>
+                                <h4 class="mb-3">Users</h4>
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                                     <div class="dropdown">
@@ -125,7 +125,7 @@
                         <!-- Online Contacts -->
                         <div class="top-online-contacts">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="mb-3">Recent Tasks</h5>
+                                <h5 class="mb-3">Recent Users</h5>
                                 <div class="dropdown mb-3">
                                     <a href="#" class="text-default" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end p-3">
@@ -201,7 +201,7 @@
 
                             <!-- Left Chat Title -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="chat-title">All Tasks</h5>
+                                <h5 class="chat-title">All Users</h5>
                                 <div class="dropdown">
                                     <a href="#" class="text-default fs-16" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-filter"></i></a>
                                     <ul class=" dropdown-menu dropdown-menu-end p-3" id="innerTab" role="tablist">
