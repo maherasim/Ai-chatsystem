@@ -3245,8 +3245,8 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-
-
+                                                                                                  
+  
     <div class="chat-screen d-flex justify-content-center align-items-center vh-100 w-100 bg-body">
         <div class="chatbox-input-container w-100 px-4" style="max-width: 1000px;">
             <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
