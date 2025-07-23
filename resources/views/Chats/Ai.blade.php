@@ -100,9 +100,7 @@
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                                     <div class="dropdown">
-                                        <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default">
-                                            <i class="ti ti-dots-vertical"></i>
-                                        </a>
+                                        
                                         <ul class="dropdown-menu p-3">
                                             <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#invite"><i class="ti ti-send me-2"></i>Invite Others</a></li>
                                         </ul>
@@ -125,7 +123,7 @@
                         <!-- Online Contacts -->
                         <div class="top-online-contacts">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="mb-3">Recent Ais</h5>
+                                <h5 class="mb-3">Ai Subjects</h5>
                                 <div class="dropdown mb-3">
                                     <a href="#" class="text-default" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end p-3">
@@ -201,7 +199,7 @@
 
                             <!-- Left Chat Title -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="chat-title">All AI's</h5>
+                                <h5 class="chat-title">All Chats</h5>
                                 <div class="dropdown">
                                     <a href="#" class="text-default fs-16" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-filter"></i></a>
                                     <ul class=" dropdown-menu dropdown-menu-end p-3" id="innerTab" role="tablist">
