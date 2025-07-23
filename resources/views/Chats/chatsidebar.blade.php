@@ -61,7 +61,7 @@
 
     <div class="profile-menu">
         <ul>
-            <div class="dropdown">
+            <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="logout" data-bs-custom-class="tooltip-primary">
                 <a href="#" class="nav-link avatar avatar-md" data-bs-toggle="dropdown">
                     <img src="{{ asset('/build/img/profiles/avatar-16.jpg') }}" alt="img" class="rounded-circle">
                 </a>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <li>
+            <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
                 <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                     <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Dark Mode" class="icon-white">
                 </a>
@@ -81,7 +81,8 @@
 
             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
                 <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                    <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings" class="icon-white">
+                    <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings" class="icon-black">
+                      <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings" class="icon-white">
                 </a>
             </li>
 
