@@ -98,7 +98,7 @@
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">AI's</h4>
                                 <div class="d-flex align-items-center mb-3">
-                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                                     <div class="dropdown">
                                         
                                         <ul class="dropdown-menu p-3">
@@ -3259,6 +3259,73 @@
         </div>
     </div>
 
+    <!-- New Group -->
+    <div class="modal fade" id="new-Ai">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Group</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ti ti-x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url('index')}}">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <label for="avatar-upload" class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
+                                <span class="avatar avatar-xl bg-transparent-dark rounded-circle"></span>
+                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center">
+                                    <i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i>
+                                </span>
+                            </label>
+                            <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="form-label">Group Name</label>
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="text" value="" class="form-control" placeholder="First Name">
+                                    <span class="icon-addon">
+                                        <i class="ti ti-users-group"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="form-label">About</label>
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="text" value="" class="form-control" placeholder="Last Name">
+                                    <span class="icon-addon">
+                                        <i class="ti ti-info-octagon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <label class="form-label">Group Type</label>
+                            <div class="d-flex">
+
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="radio" name="mute" id="group1">
+                                    <label class="form-check-label" for="group1">Public</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="mute" id="group2">
+                                    <label class="form-check-label" for="group2">Private</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /New Group -->
 
 
 </div>
