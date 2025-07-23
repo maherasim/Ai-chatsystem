@@ -30,7 +30,8 @@
     <!-- Favicon -->
     <link rel="icon" href="{{URL::asset('/build/img/AI-Logo.svg')}}">
 
-  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     @include('layout.partials.head')
 </head>
 

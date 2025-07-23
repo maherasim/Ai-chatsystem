@@ -10,6 +10,13 @@
         height: 30px;
     }
 
+    .chat-dropdown {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+
     .task-icon-link img {
         width: 25px !important;
         height: 25px !important;
@@ -83,7 +90,7 @@
     <!-- sidebar group -->
     <div class="sidebar-group">
 
-        <div class="tab-content">
+        <div class="tab-content" style="width: 400px;">
             <!-- Ai -->
 
             <!-- Ai -->
@@ -99,10 +106,10 @@
                                 <h4 class="mb-3">AI's</h4>
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
-                                    <div class="dropdown">
-                                        
+                                    <div class="dropdown"
+
                                         <ul class="dropdown-menu p-3">
-                                            <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#invite"><i class="ti ti-send me-2"></i>Invite Others</a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#invite"><i class="ti ti-send me-2"></i>Invite Others</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -132,65 +139,68 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="swiper-container">
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" alt="Image" class="rounded-circle">
+                            <div class="chat-users-wrap">
+                                <div class="chat-list">
+                                    <a href="{{url('chat')}}" class="chat-user-list">
+                                        <div class="avatar avatar-lg  me-2">
+                                            <img src="{{URL::asset('/build/img/Topics.svg')}}" class="rounded-circle border border-warning border-2" alt="image">
+                                        </div>
+                                        <div class="chat-user-info">
+                                            <div class="chat-user-msg">
+                                                <h6> Subject Title</h6>
+                                                <p>
+                                                    23/07/2025
+
+                                                </p>
                                             </div>
-                                            <p>Nichol</p>
+
+                                        </div>
+                                    </a>
+                                    <div class="chat-dropdown">
+                                        <a class="#" href="#" data-bs-toggle="dropdown">
+                                            <i class="ti ti-dots-vertical"></i>
                                         </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-12.jpg')}}" alt="Image" class="rounded-circle">
-                                            </div>
-                                            <p>Titus</p>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-14.jpg')}}" alt="Image" class="rounded-circle">
-                                            </div>
-                                            <p>Geoffrey</p>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-15.jpg')}}" alt="Image" class="rounded-circle">
-                                            </div>
-                                            <p>Laverty</p>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online bg-primary avatar-rounded">
-                                                <span class="avatar-title fs-14 fw-medium">KG</span>
-                                            </div>
-                                            <p>Kitamura</p>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" alt="Image" class="rounded-circle">
-                                            </div>
-                                            <p>Mark</p>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
-                                            <div class="avatar avatar-lg online d-block">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" alt="Image" class="rounded-circle">
-                                            </div>
-                                            <p>Smith</p>
-                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end p-3">
+
+                                            <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
+
+
+                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
+                                        </ul>
                                     </div>
                                 </div>
+                                <div class="chat-list">
+                                    <a href="{{url('chat')}}" class="chat-user-list">
+                                        <div class="avatar avatar-lg  me-2">
+                                            <img src="{{URL::asset('/build/img/Topics.svg')}}" class="rounded-circle border border-warning border-2" alt="image">
+                                        </div>
+                                        <div class="chat-user-info">
+                                            <div class="chat-user-msg">
+                                                <h6> Subject Title</h6>
+                                                <p>
+                                                    23/07/2025
+
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                    <div class="chat-dropdown">
+                                        <a class="#" href="#" data-bs-toggle="dropdown">
+                                            <i class="ti ti-dots-vertical"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end p-3">
+
+                                            <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
+
+
+                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                         <!-- /Online Contacts -->
@@ -225,33 +235,18 @@
                             <div class="tab-content" id="innerTabContent">
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
-                                                </div>
+
                                                 <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Mark Villiams</h6>
-                                                        <p><span class="animate-typing">is typing
-                                                                <span class="dot"></span>
-                                                                <span class="dot"></span>
-                                                                <span class="dot"></span>
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <span class="count-message fs-12 fw-semibold">12</span>
-                                                        </div>
-                                                    </div>
+                                                    <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
                                             </a>
                                             <div class="chat-dropdown">
                                                 <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
+                                                    <!-- <i class="ti ti-dots-vertical"></i> -->
+                                                    <i class="bi bi-three-dots"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end p-3">
                                                     <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
@@ -262,155 +257,17 @@
                                                 </ul>
                                             </div>
                                         </div>
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
                                                 <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Sarika Jain</h6>
-                                                        <p>Do you know which...</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">06:12 AM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <i class="ti ti-checks text-success"></i>
-                                                        </div>
-                                                    </div>
+                                                    <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
                                             </a>
                                             <div class="chat-dropdown">
                                                 <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Clyde Smith</h6>
-                                                        <p>Haha oh man 🔥</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">03:15 AM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <span class="count-message fs-12 fw-semibold">55</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg bg-pink avatar-rounded me-2">
-                                                    <span class="avatar-title fs-14 fw-medium">AG</span>
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Amfr_boys_Group</h6>
-                                                        <p><i class="ti ti-photo me-2"></i>Photo</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">Yesterday</span>
-                                                        <div class="chat-pin">
-                                                            <span class="count-message fs-12 fw-semibold">5</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-04.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Carla Jenkins</h6>
-                                                        <p class="text-success"><i class="ti ti-video-plus me-2"></i>Incoming Video Call</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">Sunday</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-checks text-success"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Federico Wells</h6>
-                                                        <p><i class="ti ti-photo me-2"></i>Photo</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">Wednesday</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <span class="count-message fs-12 fw-semibold">12</span>
-                                                            <i class="bx bx-check-double"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
+                                                    <!-- <i class="ti ti-dots-vertical"></i> -->
+                                                    <i class="bi bi-three-dots"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end p-3">
                                                     <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
@@ -3243,8 +3100,8 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-                                                                                                  
-  
+
+
     <div class="chat-screen d-flex justify-content-center align-items-center vh-100 w-100 bg-body">
         <div class="chatbox-input-container w-100 px-4" style="max-width: 1000px;">
             <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
@@ -3264,43 +3121,16 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Group</h4>
+                    <h4 class="modal-title">Add New Subject</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ti ti-x"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form action="{{url('index')}}">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <label for="avatar-upload" class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
-                                <span class="avatar avatar-xl bg-transparent-dark rounded-circle"></span>
-                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center">
-                                    <i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i>
-                                </span>
-                            </label>
-                            <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
-                        </div>
                         <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label">Group Name</label>
-                                <div class="input-icon mb-3 position-relative">
-                                    <input type="text" value="" class="form-control" placeholder="First Name">
-                                    <span class="icon-addon">
-                                        <i class="ti ti-users-group"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="form-label">About</label>
-                                <div class="input-icon mb-3 position-relative">
-                                    <input type="text" value="" class="form-control" placeholder="Last Name">
-                                    <span class="icon-addon">
-                                        <i class="ti ti-info-octagon"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <label class="form-label">Group Type</label>
-                            <div class="d-flex">
+                            <label class="form-label">Subject Type</label>
+                            <div class="d-flex" style="float: right;">
 
                                 <div class="form-check me-3">
                                     <input class="form-check-input" type="radio" name="mute" id="group1">
@@ -3312,12 +3142,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+                        <div class="row">
+                            
+                            <div class="col-lg-12">
+                                <label class="form-label">Subject Title</label>
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="text" value="" class="form-control" placeholder="Last Name">
+                                    
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Next</button>
+                            
+                        </div>
+                        <div class="row g-3">
+                           
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
                             </div>
                         </div>
                     </form>
