@@ -3288,8 +3288,9 @@
                                   <img src="{{ asset('/build/img/Call-White.svg') }}" alt="White Icon" class="icon-black" width="18px">
                             </a>
                         </li>
+                       
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Contact Info">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#contact-profile">
                                   <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
                                   <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="white Icon" class="icon-black" width="18px">
                             </a>

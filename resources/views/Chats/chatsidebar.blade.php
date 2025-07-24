@@ -14,7 +14,8 @@
                     <img src="{{ asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
                 </a>
             </li>
-             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
+
+            <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
                 <a href="#" class="nav-link task-icon-link {{ request()->is('') ? 'active' : '' }}">
                     <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
                     <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
@@ -67,14 +68,14 @@
 
     <div class="profile-menu">
         <ul>
-            <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="logout" data-bs-custom-class="tooltip-primary">
+            <li class="dropdown" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="logout" data-bs-custom-class="tooltip-primary">
                 <a href="#" class="nav-link avatar avatar-md" data-bs-toggle="dropdown">
                     <img src="{{ asset('/build/img/profiles/avatar-16.jpg') }}" alt="img" class="rounded-circle">
                 </a>
                 <div class="dropdown-menu dropdown-menu-end p-3">
                     <a href="{{ url('signin') }}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout</a>
                 </div>
-            </div>
+            </li>
 
             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
                 <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
@@ -88,10 +89,9 @@
             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
                 <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
                     <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings" class="icon-black">
-                      <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings" class="icon-white">
+                    <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings" class="icon-white">
                 </a>
             </li>
-
         </ul>
     </div>
 </div>
