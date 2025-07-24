@@ -6,6 +6,10 @@
         overflow-x: hidden;
     }
 
+    .accordion-button::after {
+        display: none !important;
+    }
+
     .dropdown-menu {
         max-height: 300px;
         /* or adjust */
@@ -121,7 +125,7 @@
                         <div class="chat-search-header">
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">Chats</h4>
-                              
+
                             </div>
 
                             <!-- Chat Search -->
@@ -409,11 +413,11 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                       
-                                       
-                                        
-                                       
-                                       
+
+
+
+
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
@@ -482,7 +486,7 @@
                                 <div class="tab-pane fade" id="favourites-chat" role="tabpanel" aria-labelledby="favourites-chat-tab">
                                     <div class="chat-users-wrap">
 
-                                    
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
@@ -2197,8 +2201,8 @@
                                 </div>
                             </div>
 
-                             <!-- pinned Groups -->
-                               
+                            <!-- pinned Groups -->
+
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="chat-title">Pinned Groups</h5>
                                 <div class="dropdown">
@@ -2222,7 +2226,7 @@
                                     </ul>
                                 </div>
                             </div>
-                           
+
                             <div class="tab-content" id="innerTabContent">
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
@@ -2327,10 +2331,10 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                       
-                                        
-                                       
-                                       
+
+
+
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
@@ -2462,7 +2466,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                       
+
                                         <div class="chat-list">
                                             <a href="{{url('chat')}}" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-skyblue online avatar-rounded me-2">
@@ -4824,29 +4828,29 @@
                         <li>
                             <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
                                 <!-- <i class="ti ti-search"></i> -->
-                                  <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                  <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
                             </a>
-                           
+
                         </li>
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-                             
-                                  <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                  <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+
+                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
                             </a>
                         </li>
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                   <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                  <img src="{{ asset('/build/img/Call-White.svg') }}" alt="White Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="White Icon" class="icon-black" width="18px">
                             </a>
                         </li>
-                       
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Contact Info">
+
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contact Info">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#contact-profile">
-                                  <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                  <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="white Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="white Icon" class="icon-black" width="18px">
                             </a>
                         </li>
                         <li>
