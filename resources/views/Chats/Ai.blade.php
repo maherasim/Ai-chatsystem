@@ -125,47 +125,57 @@
 
                             <!-- Chat Search -->
                             <div style="background-color: white;">
-                                <div class="modal-dialog modal-dialog-centered pb-2">
-                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
-                                        <div class="modal-header pb-1 pt-2">
-                                            <h6>Add New Subject</h6>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ url('index') }}">
-                                                <!-- Subject Type Aligned to Right -->
-                                                <div class="row mb-3">
-                                                    <div class="col-12 text-end">
-                                                <label class="form-label d-block" style="padding-right: 50px;">Subject Type</label>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="mute" id="group1">
-                                                            <label class="form-check-label" for="group1">Public</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="mute" id="group2">
-                                                            <label class="form-check-label" for="group2">Private</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+    <div class="modal-dialog modal-dialog-centered pb-2">
+        <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
 
-                                                <!-- Subject Title -->
-                                                <div class="row mb-3">
-                                                    <div class="col-12">
-                                                        <label class="form-label">Subject Title</label>
-                                                        <input type="text" class="form-control" placeholder="Enter Subject Title">
-                                                    </div>
-                                                </div>
+            <!-- Top-Right Large Toggle Icon -->
+            <div class="d-flex justify-content-end px-3 pt-3">
+                <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
+                    <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
+                </a>
+            </div>
 
-                                                <!-- Submit Button -->
-                                                <div class="row">
-                                                    <div class="col-12 pb-1">
-                                                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+            <!-- Collapsible Form -->
+            <div class="collapse show" id="collapseSubjectForm">
+                <div class="modal-body">
+                    <form action="{{ url('index') }}">
+                        <!-- Subject Type -->
+                        <div class="row mb-3">
+                            <div class="col-12 text-end">
+                                <label class="form-label d-block pe-4">Subject Type</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="mute" id="group1">
+                                    <label class="form-check-label" for="group1">Public</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="mute" id="group2">
+                                    <label class="form-check-label" for="group2">Private</label>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Subject Title -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label">Subject Title</label>
+                                <input type="text" class="form-control" placeholder="Enter Subject Title">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-12 pb-1">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- /collapse -->
+
+        </div>
+    </div>
+</div>
+
 
                             <!-- /Chat Search -->
                         </div>
@@ -2750,5 +2760,16 @@
     @endcomponent
 </div>
 <!-- /Content -->
+<script>
+    const toggleIcon = document.getElementById("toggleIcon");
+    const chevron = document.getElementById("chevronIcon");
+
+    toggleIcon.addEventListener("click", () => {
+        setTimeout(() => {
+            chevron.classList.toggle("ti-chevron-down");
+            chevron.classList.toggle("ti-chevron-up");
+        }, 150);
+    });
+</script>
 
 @endsection

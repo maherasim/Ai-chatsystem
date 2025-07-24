@@ -129,7 +129,7 @@
                             </div>
 
                             <!-- Chat Search -->
-                            <div class="chat-file">
+                            <!-- <div class="chat-file">
                                 <div class="file-item">
                                     <div class="accordion accordion-flush chat-accordion" id="account-setting">
                                         <div class="accordion-item others">
@@ -267,7 +267,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- /Chat Search -->
                         </div>
 
@@ -4833,13 +4833,13 @@
                             </a>
 
                         </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+                     <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
+    <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+        <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+        <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="White Icon" class="icon-white" width="18px">
+    </a>
+</li>
 
-                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                            </a>
-                        </li>
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
                                 <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
@@ -5941,69 +5941,79 @@
         </div>
     </div>
     <!-- /New Chat -->
+<!-- Video Call Modal -->
+<div class="modal fade" id="video-call" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center border-0">
+                <span class="model-icon bg-primary d-flex justify-content-center align-items-center rounded-circle me-2">
+                    <i class="ti ti-video"></i>
+                </span>
+                <h4 class="modal-title">Video Calling...</h4>
+            </div>
+            <div class="modal-body pb-0">
+                <div class="card bg-light mb-0">
+                    <div class="card-body d-flex justify-content-center">
+                        <div>
+                            <span class="avatar avatar-xxl">
+                                <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="user">
+                            </span>
+                            <h6 class="fs-14 mt-2">Edward Lietz</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <!-- Replaces direct modal trigger with JS -->
+                <a href="javascript:void(0);" onclick="openStartVideoCall()" class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2">
+                    <i class="ti ti-phone fs-20"></i>
+                </a>
+                <a href="javascript:void(0);" class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ti ti-phone-off fs-20"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
+<!-- Voice Call -->
+<div class="modal fade" id="voice_call">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center border-0">
+                <span class="model-icon bg-primary d-flex justify-content-center align-items-center rounded-circle me-2">
+                    <i class="ti ti-phone-call"></i>
+                </span>
+                <h4 class="modal-title">Audio Calling...</h4>
+            </div>
+            <div class="modal-body pb-0">
+                <div class="card bg-light mb-0">
+                    <div class="card-body d-flex justify-content-center">
+                        <div>
+                            <span class="avatar avatar-xxl">
+                                <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="user">
+                            </span>
+                            <h6 class="fs-14">Edward Lietz</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <a href="" class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2" data-bs-toggle="modal" data-bs-target="#voice_attend">
+                    <i class="ti ti-phone fs-20"></i>
+                </a>
+                <a href="javascript:void(0);" data-bs-dismiss="modal" aria-label="close" class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center">
+                    <i class="ti ti-phone-off fs-20"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Voice Call -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Tooltip logic (same as before)
-        const tooltipElements = document.querySelectorAll('.main-menu [data-bs-toggle="tooltip"]');
-        tooltipElements.forEach(el => {
-            const tooltip = new bootstrap.Tooltip(el);
 
-            el.addEventListener('mouseenter', function() {
-                const link = el.querySelector('a');
-                if (link && link.classList.contains('active')) {
-                    tooltip.disable();
-                    tooltip.hide();
-                } else {
-                    tooltip.enable();
-                }
-            });
-
-            const link = el.querySelector('a');
-            if (link) {
-                link.addEventListener('click', () => {
-                    tooltip.hide();
-                    tooltip.disable();
-                });
-            }
-        });
-
-        // 👉 Tab activation logic on page load
-        const activeLink = document.querySelector('.main-menu .task-icon-link.active');
-        if (activeLink) {
-            const targetSelector = activeLink.getAttribute('data-bs-target');
-            const tabTrigger = new bootstrap.Tab(activeLink);
-            tabTrigger.show(); // manually activate tab
-
-            // Optional: Also make sure the tab-pane is visible
-            const targetPane = document.querySelector(targetSelector);
-            if (targetPane) {
-                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active', 'show'));
-                targetPane.classList.add('active', 'show');
-            }
-        }
-    });
-</script> -->
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var activeTab = document.querySelector('.task-icon-link.active');
-        if (activeTab) {
-            var tabTrigger = new bootstrap.Tab(activeTab);
-            tabTrigger.show();
-        }
-    });
-</script> -->
-
-
-<!-- <script>
-    document.getElementById('open-settings-tab').addEventListener('click', function(e) {
-        e.preventDefault();
-        const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#setting-menu"]'));
-        tab.show();
-    });
-</script> -->
 
 
 
