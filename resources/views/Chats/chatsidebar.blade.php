@@ -74,28 +74,28 @@
 
            <div class="profile-menu">
                <ul>
-                   <li class="dropdown" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="logout" data-bs-custom-class="tooltip-primary">
-                       <a href="#" class="nav-link avatar avatar-md" data-bs-toggle="dropdown">
-                           <img src="{{ asset('/build/img/profiles/avatar-16.jpg') }}" alt="img" class="rounded-circle">
-                       </a>
-                       <div class="dropdown-menu dropdown-menu-end p-3">
-                           <a href="{{ url('signin') }}" class="dropdown-item"><i class="ti ti-logout-2 me-2"></i>Logout</a>
-                       </div>
-                   </li>
+                   
 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
+                   <!-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
                        <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
                            <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Dark Mode" class="icon-white">
                        </a>
                        <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
                            <img src="{{ asset('/build/img/Moon-White.svg') }}" alt="Light Mode" class="icon-white">
                        </a>
-                   </li>
+                   </li> -->
+                    <li>
+                        <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
+                           <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Dark Mode" class="icon-white">
+                        </a>
+                        <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
+                             <i class="ti ti-sun"></i>
+                        </a>
+                    </li>
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings" class="icon-black">
-                           <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings" class="icon-white">
+                            <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" alt="Image" class="rounded-circle">
                        </a>
                    </li>
                </ul>

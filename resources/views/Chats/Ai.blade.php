@@ -310,7 +310,7 @@
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
 
-                                        <div class="chat-list">
+                                        <div class="chat-list" >
                                             <a href="#" class="chat-user-list">
                                                 <div class="chat-user-info">
                                                     <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
