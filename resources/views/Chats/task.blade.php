@@ -101,13 +101,8 @@
 
     <!-- sidebar group -->
     <div class="sidebar-group">
-
         <div class="tab-content">
-            <!-- Ai -->
-
-            <!-- Ai -->
             <div class="tab-pane fade active show " id="chat-menu">
-
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
                   <div class="slimscroll">
