@@ -4833,12 +4833,12 @@
                             </a>
 
                         </li>
-                     <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
-    <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-        <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-        <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="White Icon" class="icon-white" width="18px">
-    </a>
-</li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="White Icon" class="icon-white" width="18px">
+                            </a>
+                        </li>
 
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
@@ -4846,13 +4846,17 @@
                                 <img src="{{ asset('/build/img/Call-White.svg') }}" alt="White Icon" class="icon-black" width="18px">
                             </a>
                         </li>
+                        <!-- voice -->
 
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contact Info">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#contact-profile">
+                        <!-- /voic -->
+                        <!-- contact-profile -->
+                        <li title="Contact Info" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
                                 <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
                                 <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="white Icon" class="icon-black" width="18px">
                             </a>
                         </li>
+                        <!--  -->
                         <li>
                             <a class="btn no-bg" href="#" data-bs-toggle="dropdown">
                                 <i class="ti ti-dots-vertical"></i>
@@ -5849,7 +5853,359 @@
     </div>
     <!-- /Chat -->
 
+    <!-- Contact Info -->
+    <div class="chat-offcanvas offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="contact-profile" aria-labelledby="chatUserMoreLabel">
+        <div class="offcanvas-header">
+            <h4 class="offcanvas-title" id="chatUserMoreLabel">Contact Info</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="chat-contact-info">
+                <div class="profile-content">
+                    <div class="contact-profile-info">
+                        <div class="avatar avatar-xxl online mb-2">
+                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="img">
+                        </div>
+                        <h6>Edward Lietz</h6>
+                        <p>Last seen at 07:15 PM</p>
+                    </div>
+                    <div class="row gx-3">
+                        <div class="col">
+                            <a class="action-wrap">
+                                <i class="ti ti-phone"></i>
+                                <p>Audio</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a class="action-wrap">
+                                <i class="ti ti-video"></i>
+                                <p>Video</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a class="action-wrap">
+                                <i class="ti ti-brand-hipchat"></i>
+                                <p>Chat</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a class="action-wrap">
+                                <i class="ti ti-search"></i>
+                                <p>Search</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Profile Info</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-group profile-item">
+                                    <li class="list-group-item">
+                                        <div class="profile-info">
+                                            <h6>Name</h6>
+                                            <p>Edward Lietz</p>
+                                        </div>
+                                        <div class="profile-icon">
+                                            <i class="ti ti-user-circle"></i>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="info">
+                                            <h6>Email Address</h6>
+                                            <p>info@example.com</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ti ti-mail-heart"></i>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="info">
+                                            <h6>Phone</h6>
+                                            <p>555-555-21541</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ti ti-phone-check"></i>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="info">
+                                            <h6>Bio</h6>
+                                            <p>Hello, I am using DreamsChat</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ti ti-user-check"></i>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Social Profiles</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="social-icon">
+                                    <a href="javascript:void(0);"><i class="ti ti-brand-facebook"></i></a>
+                                    <a href="javascript:void(0);"><i class="ti ti-brand-twitter"></i></a>
+                                    <a href="javascript:void(0);"><i class="ti ti-brand-instagram"></i></a>
+                                    <a href="javascript:void(0);"><i class="ti ti-brand-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Media Details</h5>
+                        <div class="chat-file">
+                            <div class="file-item action-wrap">
+                                <div class="accordion accordion-flush chat-accordion" id="mediafile">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse1" aria-expanded="false" aria-controls="chatuser-collapse1">
+                                                <i class="ti ti-photo-shield me-2"></i>Photos
+                                            </a>
+                                        </h2>
+                                        <div id="chatuser-collapse1" class="accordion-collapse collapse" data-bs-parent="#mediafile">
+                                            <div class="accordion-body">
+                                                <div class="chat-user-photo">
+                                                    <div class="chat-img contact-gallery">
+                                                        <div class="img-wrap">
+                                                            <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
+                                                            <div class="img-overlay">
+                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"><i class="ti ti-eye"></i></a>
+                                                                <a href="#"><i class="ti ti-download"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="img-wrap">
+                                                            <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
+                                                            <div class="img-overlay">
+                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"><i class="ti ti-eye"></i></a>
+                                                                <a href="#"><i class="ti ti-download"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="img-wrap">
+                                                            <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
+                                                            <div class="img-overlay">
+                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"><i class="ti ti-eye"></i></a>
+                                                                <a href="#"><i class="ti ti-download"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="img-wrap">
+                                                            <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
+                                                            <div class="img-overlay">
+                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"><i class="ti ti-eye"></i></a>
+                                                                <a href="#"><i class="ti ti-download"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="img-wrap">
+                                                            <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
+                                                            <div class="img-overlay">
+                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo     04"><i class="ti ti-eye"></i></a>
+                                                                <a href="#"><i class="ti ti-download"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <a class="gallery-img view-all link-primary d-inline-flex align-items-center justify-content-center mt-3" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" data-fancybox="gallery-img">
+                                                            All Images<i class="ti ti-arrow-right ms-2"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-video" aria-expanded="false" aria-controls="media-video">
+                                                <i class="ti ti-video me-2"></i>Videos
+                                            </a>
+                                        </h2>
+                                        <div id="media-video" class="accordion-collapse collapse" data-bs-parent="#mediafile">
+                                            <div class="accordion-body">
+                                                <div class="chat-video">
+                                                    <a href="https://www.youtube.com/embed/Mj9WJJNp5wA" data-fancybox="" class="fancybox video-img">
+                                                        <img src="{{URL::asset('/build/img/video/video.jpg')}}" alt="img">
+                                                        <span><i class="ti ti-player-play-filled"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-links" aria-expanded="false" aria-controls="media-links">
+                                                <i class="ti ti-unlink me-2"></i>Links
+                                            </a>
+                                        </h2>
+                                        <div id="media-links" class="accordion-collapse collapse" data-bs-parent="#mediafile">
+                                            <div class="accordion-body">
+                                                <div class="link-item">
+                                                    <span class="link-icon">
+                                                        <img src="{{URL::asset('/build/img/icons/github-icon.svg')}}" alt="icon">
+                                                    </span>
+                                                    <div class="ms-2">
+                                                        <p>https://segmentfault.com/u/ans</p>
+                                                    </div>
+                                                </div>
+                                                <div class="link-item">
+                                                    <span class="link-icon">
+                                                        <img src="{{URL::asset('/build/img/icons/info-icon.svg')}}" alt="icon">
+                                                    </span>
+                                                    <div class="ms-2">
+                                                        <p>https://segmentfault.com/u/ans</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-document" aria-expanded="false" aria-controls="media-document">
+                                                <i class="ti ti-unlink me-2"></i>Documents
+                                            </a>
+                                        </h2>
+                                        <div id="media-document" class="accordion-collapse collapse" data-bs-parent="#mediafile">
+                                            <div class="accordion-body">
+                                                <div class="document-item">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="document-icon">
+                                                            <i class="ti ti-file-zip"></i>
+                                                        </span>
+                                                        <div class="ms-2">
+                                                            <h6>Ecommerce.zip</h6>
+                                                            <p>10.25 MB zip file</p>
+                                                        </div>
+                                                    </div>
+                                                    <a href="javascript:void(0);" class="download-icon">
+                                                        <i class="ti ti-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="document-item">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="document-icon">
+                                                            <i class="ti ti-video"></i>
+                                                        </span>
+                                                        <div class="ms-2">
+                                                            <h6>video-1.mp4</h6>
+                                                            <p>20.50 MB video file</p>
+                                                        </div>
+                                                    </div>
+                                                    <a href="javascript:void(0);" class="download-icon">
+                                                        <i class="ti ti-download"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="document-item">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="document-icon">
+                                                            <i class="ti ti-music"></i>
+                                                        </span>
+                                                        <div class="ms-2">
+                                                            <h6>Ecommerce.zip</h6>
+                                                            <p>6.25 MB audio file</p>
+                                                        </div>
+                                                    </div>
+                                                    <a href="javascript:void(0);" class="download-icon">
+                                                        <i class="ti ti-download"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-wrapper other-info">
+                        <h5 class="sub-title">Common in 4 Groups</h5>
+                        <div class="card">
+                            <div class="card-body list-group profile-item">
+                                <a href="javascript:void(0);" class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-lg bg-skyblue rounded-circle me-2">
+                                            GU
+                                        </div>
+                                        <div class="chat-user-info">
+                                            <h6>Gustov _family</h6>
+                                            <p>Mark, Elizabeth, Aaron, <span class="text-primary">More...</span></p>
+                                        </div>
+                                    </div>
+                                    <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                </a>
+                                <a href="javascript:void(0);" class="list-group-item border-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-lg bg-info rounded-circle me-2">
+                                            AM
+                                        </div>
+                                        <div class="chat-user-info">
+                                            <h6>AM Technology</h6>
+                                            <p>Roper, Deborah, David, <span class="text-primary">More..
 
+
+                                                    .</span></p>
+                                        </div>
+                                    </div>
+                                    <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                </a>
+                                <div class="text-center">
+                                    <a href="javascript:void(0);" class="view-all link-primary d-inline-flex align-items-center justify-content-center">
+                                        More Groups<i class="ti ti-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-wrapper other-info mb-0">
+                        <h5 class="sub-title">Others</h5>
+                        <div class="card mb-0">
+                            <div class="card-body list-group profile-item">
+                                <a href="javascript:void(0);" class="list-group-item" data-bs-toggle="offcanvas" data-bs-target="#contact-favourite">
+                                    <div class="profile-info">
+                                        <h6><i class="ti ti-graph me-2 text-default"></i>Favorites</h6>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge badge-danger count-message me-1">12</span>
+                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" class="list-group-item">
+                                    <div class="profile-info">
+                                        <h6><i class="ti ti-volume-off me-2 text-warning"></i>Mute Notifications</h6>
+                                    </div>
+                                    <div>
+                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" class="list-group-item">
+                                    <div class="profile-info">
+                                        <h6><i class="ti ti-user-off me-2 text-info"></i>Block Users</h6>
+                                    </div>
+                                    <div>
+                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" class="list-group-item">
+                                    <div class="profile-info">
+                                        <h6><i class="ti ti-user-x me-2 text-purple"></i>Report Users</h6>
+                                    </div>
+                                    <div>
+                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-chat" class="list-group-item">
+                                    <div class="profile-info">
+                                        <h6><i class="ti ti-trash me-2 text-danger"></i>Delete Chat</h6>
+                                    </div>
+                                    <div>
+                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Contact Info -->
     <!-- New Chat -->
     <div class="modal fade" id="new-chat">
         <div class="modal-dialog modal-dialog-centered">
@@ -5941,45 +6297,45 @@
         </div>
     </div>
     <!-- /New Chat -->
-<!-- Video Call Modal -->
-<div class="modal fade" id="video-call" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header justify-content-center border-0">
-                <span class="model-icon bg-primary d-flex justify-content-center align-items-center rounded-circle me-2">
-                    <i class="ti ti-video"></i>
-                </span>
-                <h4 class="modal-title">Video Calling...</h4>
-            </div>
-            <div class="modal-body pb-0">
-                <div class="card bg-light mb-0">
-                    <div class="card-body d-flex justify-content-center">
-                        <div>
-                            <span class="avatar avatar-xxl">
-                                <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="user">
-                            </span>
-                            <h6 class="fs-14 mt-2">Edward Lietz</h6>
+    <!-- Video Call Modal -->
+    <div class="modal fade" id="video-call" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center border-0">
+                    <span class="model-icon bg-primary d-flex justify-content-center align-items-center rounded-circle me-2">
+                        <i class="ti ti-video"></i>
+                    </span>
+                    <h4 class="modal-title">Video Calling...</h4>
+                </div>
+                <div class="modal-body pb-0">
+                    <div class="card bg-light mb-0">
+                        <div class="card-body d-flex justify-content-center">
+                            <div>
+                                <span class="avatar avatar-xxl">
+                                    <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="user">
+                                </span>
+                                <h6 class="fs-14 mt-2">Edward Lietz</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-center border-0">
-                <!-- Replaces direct modal trigger with JS -->
-                <a href="javascript:void(0);" onclick="openStartVideoCall()" class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2">
-                    <i class="ti ti-phone fs-20"></i>
-                </a>
-                <a href="javascript:void(0);" class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="ti ti-phone-off fs-20"></i>
-                </a>
+                <div class="modal-footer justify-content-center border-0">
+                    <!-- Replaces direct modal trigger with JS -->
+                    <a href="javascript:void(0);" onclick="openStartVideoCall()" class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2">
+                        <i class="ti ti-phone fs-20"></i>
+                    </a>
+                    <a href="javascript:void(0);" class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ti ti-phone-off fs-20"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 </div>
-<!-- Voice Call -->
-<div class="modal fade" id="voice_call">
-    <div class="modal-dialog  modal-dialog-centered">
+<!-- Voice Call Modal -->
+<div class="modal fade" id="voice_call" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header justify-content-center border-0">
                 <span class="model-icon bg-primary d-flex justify-content-center align-items-center rounded-circle me-2">
@@ -6000,17 +6356,110 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center border-0">
-                <a href="" class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2" data-bs-toggle="modal" data-bs-target="#voice_attend">
+                <!-- Attend button -->
+                <a href="javascript:void(0);" 
+                   class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2"
+                   data-bs-dismiss="modal"
+                   onclick="setTimeout(() => { new bootstrap.Modal(document.getElementById('voice_attend')).show(); }, 300);">
                     <i class="ti ti-phone fs-20"></i>
                 </a>
-                <a href="javascript:void(0);" data-bs-dismiss="modal" aria-label="close" class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center">
+
+                <!-- Cancel button -->
+                <a href="javascript:void(0);" 
+                   class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center" 
+                   data-bs-dismiss="modal">
                     <i class="ti ti-phone-off fs-20"></i>
                 </a>
             </div>
         </div>
     </div>
 </div>
-<!-- /Voice Call -->
+
+<!-- Voice Call Attend Modal -->
+<div class="modal fade" id="voice_attend" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex border-0 pb-0">
+                <div class="card bg-transparent-dark flex-fill border mb-3">
+                    <div class="card-body d-flex justify-content-between p-3 flex-wrap row-gap-3">
+                        <div class="d-flex align-items-center">
+                            <span class="avatar avatar-lg online me-2">
+                                <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="user">
+                            </span>
+                            <div>
+                                <h6>Edward Lietz</h6>
+                                <span>+22-555-345-11</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="badge border border-primary text-primary badge-sm me-2">
+                                <i class="ti ti-point-filled"></i> 01:15:25
+                            </span>
+                            <a href="javascript:void(0);" class="user-add bg-primary rounded d-flex justify-content-center align-items-center text-white">
+                                <i class="ti ti-user-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body border-0 pt-0">
+                <div class="card audio-crd bg-transparent-dark border">
+                    <div class="modal-bgimg">
+                        <span class="modal-bg1">
+                            <img src="{{ URL::asset('/build/img/bg/bg-02.png')}}" class="img-fluid" alt="bg">
+                        </span>
+                        <span class="modal-bg2">
+                            <img src="{{ URL::asset('/build/img/bg/bg-03.png')}}" class="img-fluid" alt="bg">
+                        </span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-center align-items-center pt-5">
+                            <span class="avatar avatar-xxxl bg-soft-primary rounded-circle p-2">
+                                <img src="{{ URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="user">
+                            </span>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-end">
+                            <span class="call-span border border-2 border-primary d-flex justify-content-center align-items-center rounded">
+                                <span class="avatar avatar-xl bg-soft-primary rounded-circle p-2">
+                                    <img src="{{ URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle" alt="user">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-center border-0 pt-0">
+                <div class="call-controll-block d-flex align-items-center justify-content-center rounded-pill">
+                    <a href="javascript:void(0);" class="call-controll mute-bt d-flex align-items-center justify-content-center">
+                        <i class="ti ti-microphone"></i>
+                    </a>
+                    <a href="javascript:void(0);" class="call-controll d-flex align-items-center justify-content-center">
+                        <i class="ti ti-volume"></i>
+                    </a>
+
+                    <!-- End Call -->
+                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="call-controll call-decline d-flex align-items-center justify-content-center">
+                        <i class="ti ti-phone"></i>
+                    </a>
+
+                    <a href="javascript:void(0);" class="call-controll d-flex align-items-center justify-content-center">
+                        <i class="ti ti-maximize"></i>
+                    </a>
+                    <a href="javascript:void(0);" class="call-controll d-flex align-items-center justify-content-center">
+                        <i class="ti ti-dots"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @component('components.model-popup')
+    @endcomponent
+</div>
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

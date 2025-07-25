@@ -188,7 +188,7 @@
                             </div>
                             <div class="chat-users-wrap">
                                 <div class="chat-list">
-                                    <a href="{{url('chat')}}" class="chat-user-list">
+                                    <a href="#" class="chat-user-list">
                                         <div class="avatar avatar-lg  me-2">
                                             <img src="{{URL::asset('/build/img/Topics.svg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                         </div>
@@ -237,7 +237,7 @@
                                     </div>
                                 </div>
                                 <div class="chat-list">
-                                    <a href="{{url('chat')}}" class="chat-user-list">
+                                    <a href="" class="chat-user-list">
                                         <div class="avatar avatar-lg  me-2">
                                             <img src="{{URL::asset('/build/img/Topics.svg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                         </div>
@@ -323,7 +323,7 @@
                                     <div class="chat-users-wrap">
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="chat-user-info">
                                                     <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
@@ -359,44 +359,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="chat-user-info">
-                                                    <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <!-- <i class="ti ti-dots-vertical"></i> -->
-                                                    <i class="bi bi-three-dots"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <img src="{{ asset('/build/img/Subjects.svg') }}" alt="Favourite" width="12" height="12" class="me-2">
-                                                            Archive Chat
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <img src="{{ asset('/build/img/Edit.svg') }}" alt="Favourite" width="12" height="12" class="me-2">
-                                                            Edit the chat
-                                                        </a>
-                                                    </li>
-
-
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat">
-                                                            <img src="{{ asset('/build/img/Remove.svg') }}" alt="Delete" width="16" height="16" class="me-2">
-                                                            Delete
-                                                        </a>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="chat-user-info">
                                                     <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
@@ -433,7 +396,44 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
+                                                <div class="chat-user-info">
+                                                    <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
+                                                </div>
+                                            </a>
+                                            <div class="chat-dropdown">
+                                                <a class="#" href="#" data-bs-toggle="dropdown">
+                                                    <!-- <i class="ti ti-dots-vertical"></i> -->
+                                                    <i class="bi bi-three-dots"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end p-3">
+
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">
+                                                            <img src="{{ asset('/build/img/Subjects.svg') }}" alt="Favourite" width="12" height="12" class="me-2">
+                                                            Archive Chat
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">
+                                                            <img src="{{ asset('/build/img/Edit.svg') }}" alt="Favourite" width="12" height="12" class="me-2">
+                                                            Edit the chat
+                                                        </a>
+                                                    </li>
+
+
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat">
+                                                            <img src="{{ asset('/build/img/Remove.svg') }}" alt="Delete" width="16" height="16" class="me-2">
+                                                            Delete
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="chat-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="chat-user-info">
                                                     <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
@@ -469,7 +469,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="chat-user-info">
                                                     <p style="font-size: 16px; color:black">Clyde Smith PW Website</p>
                                                 </div>
