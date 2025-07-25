@@ -13,8 +13,15 @@ use App\Http\Controllers\CustomAuthController;
 
 Route::get('/', function () {
     return view('index');
-})->name('home');
+})->name('index');
 
+Route::get('/chat', function () {
+    return view('index');
+})->name('chat.index');
+
+// Route::get('/chat', function () {
+//     return view('index');
+// })->name('chat');
 Route::get('/Ai', function () {
     return view('Chats.Ai');
 })->name('chat-ai');
@@ -45,15 +52,11 @@ Route::get('/settings', function () {
 Route::get('/all-calls', function () {
     return view('all-calls');
 })->name('all-calls');
-Route::get('/chat', function () {
-    return view('index');
-})->name('chat');
+
 Route::get('/group-chat', function () {
     return view('group-chat');
 })->name('group-chat');
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+
 Route::get('/my-status', function () {
     return view('my-status');
 })->name('my-status');

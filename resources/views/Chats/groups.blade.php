@@ -68,16 +68,10 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
-    <div class="sidebar-menu">
 
-        <div class="logo">
-            <a href="{{ url('index') }}" class="logo-normal">
-                <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
-            </a>
-        </div>
 
         @include('Chats.chatsidebar')
-    </div>
+   
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
