@@ -192,9 +192,6 @@
                             </div>
                             <!-- /header subject -->
                         </div>
-
-
-
                         <!-- Online user -->
                         <div class="top-online-contacts">
                             <div class="d-flex align-items-center justify-content-between">
