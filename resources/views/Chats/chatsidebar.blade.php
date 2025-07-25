@@ -9,11 +9,12 @@
             </li>
 
             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
-                <a href="{{ route('home') }}" class="nav-link task-icon-link {{ request()->is('/') ? 'active' : '' }}">
+                <a href="{{ route('home') }}" class="nav-link task-icon-link {{ request()->is('/') || request()->is('chat') ? 'active' : '' }}">
                     <img src="{{ asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white">
                     <img src="{{ asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
                 </a>
             </li>
+
 
             <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
                 <a href="#" class="nav-link task-icon-link {{ request()->is('') ? 'active' : '' }}">

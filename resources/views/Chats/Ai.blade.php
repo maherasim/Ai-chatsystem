@@ -2756,8 +2756,7 @@
             </div>
         </div>
     </div>
-    @component('components.model-popup')
-    @endcomponent
+  
 </div>
 <!-- /Content -->
 <script>

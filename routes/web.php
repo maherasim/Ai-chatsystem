@@ -46,7 +46,7 @@ Route::get('/all-calls', function () {
     return view('all-calls');
 })->name('all-calls');
 Route::get('/chat', function () {
-    return view('chat');
+    return view('index');
 })->name('chat');
 Route::get('/group-chat', function () {
     return view('group-chat');

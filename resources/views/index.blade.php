@@ -88,6 +88,22 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
+    .chat-options .btn img {
+    box-shadow: none !important;
+}
+.chat-options .btn:focus,
+.chat-options .btn:active,
+.chat-options .btn:focus-visible,
+.chat-options .btn:focus-within {
+    box-shadow: none !important;
+    outline: none !important;
+}
+.chat-options .btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
 </style>
 
 
@@ -377,7 +393,7 @@
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -419,7 +435,7 @@
 
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -450,7 +466,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-13.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -488,7 +504,7 @@
 
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -521,7 +537,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -558,7 +574,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -590,7 +606,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -621,7 +637,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-skyblue online avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">GU</span>
                                                 </div>
@@ -653,7 +669,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-07.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -685,7 +701,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-08.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -716,7 +732,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-09.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -747,7 +763,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-10.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -779,7 +795,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -810,7 +826,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-13.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -973,7 +989,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -1010,7 +1026,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -1425,7 +1441,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -1462,7 +1478,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -1750,7 +1766,7 @@
                                 <div class="tab-pane fade" id="trash-chats" role="tabpanel" aria-labelledby="trash-chats-tab">
                                     <div class="chat-users-wrap">
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -1814,7 +1830,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -2231,7 +2247,7 @@
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -2268,7 +2284,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2300,7 +2316,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2336,7 +2352,7 @@
 
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2367,7 +2383,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-13.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2404,7 +2420,7 @@
                                     <div class="chat-users-wrap">
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2436,7 +2452,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-pink avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">AG</span>
                                                 </div>
@@ -2468,7 +2484,7 @@
                                         </div>
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-skyblue online avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">GU</span>
                                                 </div>
@@ -2531,163 +2547,8 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-08.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Sharon Ford</h6>
-                                                        <p>Hi How are you 🔥</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <span class="count-message fs-12 fw-semibold">25</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-09.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Thomas Rethman</h6>
-                                                        <p>Do you know which...</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-heart-filled text-warning"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-10.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Wilbur Martinez</h6>
-                                                        <p>Haha oh man 🔥</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <i class="ti ti-checks text-success"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Danielle Baker</h6>
-                                                        <p><i class="ti ti-map-pin-plus me-2"></i>Location</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-checks text-success"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-13.jpg')}}" class="rounded-circle" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Morkel Jerrin</h6>
-                                                        <p><i class="ti ti-video me-2"></i>Video</p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-heart-filled text-warning me-2"></i>
-                                                            <span class="count-message fs-12 fw-semibold">25</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <div class="chat-dropdown">
-                                                <a class="#" href="#" data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end p-3">
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                       
+                                     
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pinned-chats" role="tabpanel" aria-labelledby="pinned-chats-tab">
@@ -2820,7 +2681,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -3272,7 +3133,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -3661,7 +3522,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
