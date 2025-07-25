@@ -22,7 +22,7 @@
                    </li>
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
-                       <a href="#" class="nav-link task-icon-link {{ request()->is('') ? 'active' : '' }}">
+                       <a href="{{ route('chat-meetings') }}" class="nav-link task-icon-link {{ request()->is('meetings') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
                            <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
                        </a>

@@ -32,6 +32,10 @@ Route::get('/users', function () {
     return view('Chats.users');
 })->name('chat-users');
 
+Route::get('/meetings', function () {
+    return view('Chats.meetings');
+})->name('chat-meetings');
+
 Route::get('/groups', function () {
     return view('Chats.groups');
 })->name('chat-groups');

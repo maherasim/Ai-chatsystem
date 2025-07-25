@@ -68,24 +68,19 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
-   
 
-        @include('Chats.chatsidebar')
+
+    @include('Chats.chatsidebar')
 
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-    <div class="sidebar-group">
-
+      <div class="sidebar-group">
         <div class="tab-content">
-           
-          
-
+            <div class="tab-pane fade active show " id="chat-menu">
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
-
                     <div class="slimscroll">
-
                         <div class="chat-search-header">
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">APi's</h4>
@@ -103,15 +98,67 @@
                             </div>
 
                             <!-- Chat Search -->
-                            <div class="search-wrap">
+                            <!-- <div class="search-wrap">
                                 <form action="{{url('chat')}}">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search For Contacts or Messages">
                                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                             <!-- /Chat Search -->
+                               <div style="background-color: white;">
+                                <div class="modal-dialog modal-dialog-centered pb-2">
+                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
+
+                                        <!-- Top-Right Large Toggle Icon -->
+                                        <div class="d-flex justify-content-end px-3 pt-3">
+                                            <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
+                                                <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
+                                            </a>
+                                        </div>
+
+                                        <!-- Collapsible Form -->
+                                        <div class="collapse show" id="collapseSubjectForm">
+                                            <div class="modal-body">
+                                                <form action="{{ url('index') }}">
+                                                    <!-- Subject Type -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12 text-start">
+                                                            <label class="form-label d-block pe-4">Subject Type</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group1">
+                                                                <label class="form-check-label" for="group1">Public</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group2">
+                                                                <label class="form-check-label" for="group2">Private</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Subject Title -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Subject Title</label>
+                                                            <input type="text" class="form-control" placeholder="Enter Subject Title">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Submit Button -->
+                                                    <div class="row">
+                                                        <div class="col-12 pb-1">
+                                                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- /collapse -->
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Online Contacts -->
@@ -129,7 +176,7 @@
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -137,7 +184,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-12.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -145,7 +192,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-14.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -153,7 +200,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-15.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -161,7 +208,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online bg-primary avatar-rounded">
                                                 <span class="avatar-title fs-14 fw-medium">KG</span>
                                             </div>
@@ -169,7 +216,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -177,7 +224,7 @@
                                         </a>
                                     </div>
                                     <div class="swiper-slide">
-                                        <a href="{{url('chat')}}" class="chat-status text-center">
+                                        <a href="#" class="chat-status text-center">
                                             <div class="avatar avatar-lg online d-block">
                                                 <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" alt="Image" class="rounded-circle">
                                             </div>
@@ -220,7 +267,7 @@
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -257,7 +304,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -289,7 +336,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -321,7 +368,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-pink avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">AG</span>
                                                 </div>
@@ -352,7 +399,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-04.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -383,7 +430,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -416,7 +463,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -447,7 +494,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-skyblue online avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">GU</span>
                                                 </div>
@@ -479,7 +526,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-07.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -511,7 +558,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-08.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -542,7 +589,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-09.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -573,7 +620,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-10.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -605,7 +652,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -636,7 +683,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-13.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -673,7 +720,7 @@
                                     <div class="chat-users-wrap">
 
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -705,7 +752,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-pink avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">AG</span>
                                                 </div>
@@ -736,7 +783,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-04.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -767,7 +814,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -800,7 +847,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                                 </div>
@@ -837,7 +884,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -869,7 +916,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -900,7 +947,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg bg-skyblue online avatar-rounded me-2">
                                                     <span class="avatar-title fs-14 fw-medium">GU</span>
                                                 </div>
@@ -932,7 +979,7 @@
                                             </div>
                                         </div>
                                         <div class="chat-list">
-                                            <a href="{{url('chat')}}" class="chat-user-list">
+                                            <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg online me-2">
                                                     <img src="{{URL::asset('/build/img/profiles/avatar-07.jpg')}}" class="rounded-circle" alt="image">
                                                 </div>
@@ -2488,7 +2535,9 @@
                 </div>
                 <!-- / Chats sidebar -->
 
-  
+            </div>
+
+
 
 
 
@@ -3239,90 +3288,23 @@
     <!-- Chat -->
 
 
-    <div class="chat-screen d-flex justify-content-center align-items-center vh-100 w-100 bg-body">
-        <div class="chatbox-input-container w-100 px-4" style="max-width: 1000px;">
-            <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
-                <input type="text" class="form-control border-0 bg-transparent fs-4 me-3" placeholder="Ask anything..." aria-label="Ask anything" style="min-height: 60px;">
-                <button class="btn btn-light btn-icon rounded-circle me-2" type="button" title="Voice" style="width: 50px; height: 50px;">
-                    <i class="ti ti-microphone text-muted fs-3"></i>
-                </button>
-                <button class="btn btn-primary btn-icon rounded-circle" type="button" title="Send" style="width: 50px; height: 50px;">
-                    <i class="ti ti-send text-white fs-3"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+   
 
 
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Tooltip logic (same as before)
-        const tooltipElements = document.querySelectorAll('.main-menu [data-bs-toggle="tooltip"]');
-        tooltipElements.forEach(el => {
-            const tooltip = new bootstrap.Tooltip(el);
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+<script>
+    const toggleIcon = document.getElementById("toggleIcon");
+    const chevron = document.getElementById("chevronIcon");
 
-            el.addEventListener('mouseenter', function() {
-                const link = el.querySelector('a');
-                if (link && link.classList.contains('active')) {
-                    tooltip.disable();
-                    tooltip.hide();
-                } else {
-                    tooltip.enable();
-                }
-            });
-
-            const link = el.querySelector('a');
-            if (link) {
-                link.addEventListener('click', () => {
-                    tooltip.hide();
-                    tooltip.disable();
-                });
-            }
-        });
-
-        // 👉 Tab activation logic on page load
-        const activeLink = document.querySelector('.main-menu .task-icon-link.active');
-        if (activeLink) {
-            const targetSelector = activeLink.getAttribute('data-bs-target');
-            const tabTrigger = new bootstrap.Tab(activeLink);
-            tabTrigger.show(); // manually activate tab
-
-            // Optional: Also make sure the tab-pane is visible
-            const targetPane = document.querySelector(targetSelector);
-            if (targetPane) {
-                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active', 'show'));
-                targetPane.classList.add('active', 'show');
-            }
-        }
+    toggleIcon.addEventListener("click", () => {
+        setTimeout(() => {
+            chevron.classList.toggle("ti-chevron-down");
+            chevron.classList.toggle("ti-chevron-up");
+        }, 150);
     });
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var activeTab = document.querySelector('.task-icon-link.active');
-        if (activeTab) {
-            var tabTrigger = new bootstrap.Tab(activeTab);
-            tabTrigger.show();
-        }
-    });
-</script>
-
-
-<script>
-    document.getElementById('open-settings-tab').addEventListener('click', function(e) {
-        e.preventDefault();
-        const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#setting-menu"]'));
-        tab.show();
-    });
-</script> -->
-
-
-
-
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 @component('components.model-popup')
 @endcomponent

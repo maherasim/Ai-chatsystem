@@ -102,15 +102,67 @@
                             </div>
 
                             <!-- Chat Search -->
-                            <div class="search-wrap">
+                            <!-- <div class="search-wrap">
                                 <form action="{{url('chat')}}">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search For Contacts or Messages">
                                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                             <!-- /Chat Search -->
+                               <div style="background-color: white;">
+                                <div class="modal-dialog modal-dialog-centered pb-2">
+                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
+
+                                        <!-- Top-Right Large Toggle Icon -->
+                                        <div class="d-flex justify-content-end px-3 pt-3">
+                                            <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
+                                                <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
+                                            </a>
+                                        </div>
+
+                                        <!-- Collapsible Form -->
+                                        <div class="collapse show" id="collapseSubjectForm">
+                                            <div class="modal-body">
+                                                <form action="{{ url('index') }}">
+                                                    <!-- Subject Type -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12 text-start">
+                                                            <label class="form-label d-block pe-4">Subject Type</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group1">
+                                                                <label class="form-check-label" for="group1">Public</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group2">
+                                                                <label class="form-check-label" for="group2">Private</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Subject Title -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Subject Title</label>
+                                                            <input type="text" class="form-control" placeholder="Enter Subject Title">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Submit Button -->
+                                                    <div class="row">
+                                                        <div class="col-12 pb-1">
+                                                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- /collapse -->
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Online Contacts -->
@@ -3238,91 +3290,23 @@
     <!-- Chat -->
 
 
-    <div class="chat-screen d-flex justify-content-center align-items-center vh-100 w-100 bg-body">
-        <div class="chatbox-input-container w-100 px-4" style="max-width: 1000px;">
-            <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
-                <input type="text" class="form-control border-0 bg-transparent fs-4 me-3" placeholder="Ask anything..." aria-label="Ask anything" style="min-height: 60px;">
-                <button class="btn btn-light btn-icon rounded-circle me-2" type="button" title="Voice" style="width: 50px; height: 50px;">
-                    <i class="ti ti-microphone text-muted fs-3"></i>
-                </button>
-                <button class="btn btn-primary btn-icon rounded-circle" type="button" title="Send" style="width: 50px; height: 50px;">
-                    <i class="ti ti-send text-white fs-3"></i>
-                </button>
-            </div>
-        </div>
-    </div>
 
 
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Tooltip logic (same as before)
-        const tooltipElements = document.querySelectorAll('.main-menu [data-bs-toggle="tooltip"]');
-        tooltipElements.forEach(el => {
-            const tooltip = new bootstrap.Tooltip(el);
-
-            el.addEventListener('mouseenter', function() {
-                const link = el.querySelector('a');
-                if (link && link.classList.contains('active')) {
-                    tooltip.disable();
-                    tooltip.hide();
-                } else {
-                    tooltip.enable();
-                }
-            });
-
-            const link = el.querySelector('a');
-            if (link) {
-                link.addEventListener('click', () => {
-                    tooltip.hide();
-                    tooltip.disable();
-                });
-            }
-        });
-
-        // 👉 Tab activation logic on page load
-        const activeLink = document.querySelector('.main-menu .task-icon-link.active');
-        if (activeLink) {
-            const targetSelector = activeLink.getAttribute('data-bs-target');
-            const tabTrigger = new bootstrap.Tab(activeLink);
-            tabTrigger.show(); // manually activate tab
-
-            // Optional: Also make sure the tab-pane is visible
-            const targetPane = document.querySelector(targetSelector);
-            if (targetPane) {
-                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active', 'show'));
-                targetPane.classList.add('active', 'show');
-            }
-        }
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var activeTab = document.querySelector('.task-icon-link.active');
-        if (activeTab) {
-            var tabTrigger = new bootstrap.Tab(activeTab);
-            tabTrigger.show();
-        }
-    });
-</script>
-
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 <script>
-    document.getElementById('open-settings-tab').addEventListener('click', function(e) {
-        e.preventDefault();
-        const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#setting-menu"]'));
-        tab.show();
+    const toggleIcon = document.getElementById("toggleIcon");
+    const chevron = document.getElementById("chevronIcon");
+
+    toggleIcon.addEventListener("click", () => {
+        setTimeout(() => {
+            chevron.classList.toggle("ti-chevron-down");
+            chevron.classList.toggle("ti-chevron-up");
+        }, 150);
     });
-</script> -->
-
-
-
-
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+</script>
 @component('components.model-popup')
 @endcomponent
 @endsection

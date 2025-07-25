@@ -88,22 +88,24 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
-    .chat-options .btn img {
-    box-shadow: none !important;
-}
-.chat-options .btn:focus,
-.chat-options .btn:active,
-.chat-options .btn:focus-visible,
-.chat-options .btn:focus-within {
-    box-shadow: none !important;
-    outline: none !important;
-}
-.chat-options .btn {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-}
 
+    .chat-options .btn img {
+        box-shadow: none !important;
+    }
+
+    .chat-options .btn:focus,
+    .chat-options .btn:active,
+    .chat-options .btn:focus-visible,
+    .chat-options .btn:focus-within {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    .chat-options .btn {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
 </style>
 
 
@@ -112,174 +114,86 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
-  
 
-        @include('Chats.chatsidebar')
-    
+
+    @include('Chats.chatsidebar')
+
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
     <div class="sidebar-group">
 
         <div class="tab-content">
-            <!-- Ai -->
 
-            <!-- Ai -->
             <div class="tab-pane fade active show " id="chat-menu">
-
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
 
                     <div class="slimscroll">
-
                         <div class="chat-search-header">
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">Chats</h4>
-
+                                <div class="d-flex align-items-center mb-3">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
+                                </div>
                             </div>
+                            <!-- header Subject -->
+                            <div style="background-color: white;">
+                                <div class="modal-dialog modal-dialog-centered pb-2">
+                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
 
-                            <!-- Chat Search -->
-                            <!-- <div class="chat-file">
-                                <div class="file-item">
-                                    <div class="accordion accordion-flush chat-accordion" id="account-setting">
-                                        <div class="accordion-item others">
-                                            <h2 class="accordion-header">
-                                                <a href="#" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse" aria-expanded="true" aria-controls="chatuser-collapse">
-                                                    <i class="ti ti-user me-2"></i>Profile Info
-                                                </a>
-                                            </h2>
-                                            <div id="chatuser-collapse" class="accordion-collapse collapse show" data-bs-parent="#account-setting">
-                                                <div class="accordion-body">
-                                                    <div>
-                                                        <div class="d-flex justify-content-center align-items-center">
-                                                            <span class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
-                                                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" class="rounded-circle" alt="user">
-                                                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center"><i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i></span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="First Name">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user"></i>
-                                                                    </span>
-                                                                </div>
+                                        <!-- Top-Right Large Toggle Icon -->
+                                        <div class="d-flex justify-content-end px-3 pt-3">
+                                            <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
+                                                <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
+                                            </a>
+                                        </div>
+
+                                        <!-- Collapsible Form -->
+                                        <div class="collapse show" id="collapseSubjectForm">
+                                            <div class="modal-body">
+                                                <form action="{{ url('index') }}">
+                                                    <!-- Subject Type -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12 text-start">
+                                                            <label class="form-label d-block pe-4">Subject Type</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group1">
+                                                                <label class="form-check-label" for="group1">Public</label>
                                                             </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Last Name">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Gender">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control datetimepicker" placeholder="Date of birth">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-calendar-event"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Country">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-map-2"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="form-item d-flex justify-content-between mb-3">
-                                                                    <textarea class="form-control" placeholder="About" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="mute" id="group2">
+                                                                <label class="form-check-label" for="group2">Private</label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item others mb-3">
-                                            <h2 class="accordion-header">
-                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#social-id" aria-expanded="false" aria-controls="social-id">
-                                                    <i class="ti ti-social me-2"></i>Social Profiles
-                                                </a>
-                                            </h2>
-                                            <div id="social-id" class="accordion-collapse collapse" data-bs-parent="#account-setting">
-                                                <div class="accordion-body">
-                                                    <div class="chat-video">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Facebook">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-facebook"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Google">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-google"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Twitter">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-twitter"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Linkedin">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-linkedin"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="youtube">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-youtube"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                            </div>
+
+                                                    <!-- Subject Title -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Subject Title</label>
+                                                            <input type="text" class="form-control" placeholder="Enter Subject Title">
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    <!-- Submit Button -->
+                                                    <div class="row">
+                                                        <div class="col-12 pb-1">
+                                                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-lock-square text-gray me-2"></i>Screen Lock</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
+                                        <!-- /collapse -->
+
                                     </div>
                                 </div>
-                            </div> -->
-                            <!-- /Chat Search -->
+                            </div>
+                            <!-- /header subject -->
                         </div>
+
+
 
                         <!-- Online user -->
                         <div class="top-online-contacts">
@@ -2541,8 +2455,8 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                       
-                                     
+
+
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pinned-chats" role="tabpanel" aria-labelledby="pinned-chats-tab">
@@ -6212,17 +6126,17 @@
             </div>
             <div class="modal-footer justify-content-center border-0">
                 <!-- Attend button -->
-                <a href="javascript:void(0);" 
-                   class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2"
-                   data-bs-dismiss="modal"
-                   onclick="setTimeout(() => { new bootstrap.Modal(document.getElementById('voice_attend')).show(); }, 300);">
+                <a href="javascript:void(0);"
+                    class="voice-icon btn btn-success rounded-circle d-flex justify-content-center align-items-center me-2"
+                    data-bs-dismiss="modal"
+                    onclick="setTimeout(() => { new bootstrap.Modal(document.getElementById('voice_attend')).show(); }, 300);">
                     <i class="ti ti-phone fs-20"></i>
                 </a>
 
                 <!-- Cancel button -->
-                <a href="javascript:void(0);" 
-                   class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center" 
-                   data-bs-dismiss="modal">
+                <a href="javascript:void(0);"
+                    class="voice-icon btn btn-danger rounded-circle d-flex justify-content-center align-items-center"
+                    data-bs-dismiss="modal">
                     <i class="ti ti-phone-off fs-20"></i>
                 </a>
             </div>
@@ -6315,15 +6229,24 @@
 
 
 
+<script>
+    const toggleIcon = document.getElementById("toggleIcon");
+    const chevron = document.getElementById("chevronIcon");
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    toggleIcon.addEventListener("click", () => {
+        setTimeout(() => {
+            chevron.classList.toggle("ti-chevron-down");
+            chevron.classList.toggle("ti-chevron-up");
+        }, 150);
+    });
+</script>
 
 
 
 
 
 <!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 @component('components.model-popup')
 @endcomponent
