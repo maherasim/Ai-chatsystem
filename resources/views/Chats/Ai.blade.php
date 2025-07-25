@@ -237,7 +237,7 @@
                                     </div>
                                 </div>
                                 <div class="chat-list">
-                                    <a href="" class="chat-user-list">
+                                    <a href="#" class="chat-user-list">
                                         <div class="avatar avatar-lg  me-2">
                                             <img src="{{URL::asset('/build/img/Topics.svg')}}" class="rounded-circle border border-warning border-2" alt="image">
                                         </div>
