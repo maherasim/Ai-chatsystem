@@ -250,7 +250,7 @@
                                         <div class="border-top my-3"></div>
 
                                         <!-- Two-Factor Auth -->
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
                                             <h6 class="fs-14">
                                                 <a href="javascript:void(0);">
                                                     <i class="ti ti-shield text-gray me-2"></i>Two Factor Authentication
@@ -260,7 +260,45 @@
                                                 <input class="form-check-input" type="checkbox" role="switch">
                                             </div>
                                         </div>
-                                        <!-- /Security options -->
+
+                                        <!-- Divider after Two-Factor -->
+                                        <div class="border-top mt-3"></div>
+
+
+                                        <!-- Profile Info -->
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header others">
+                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3" aria-expanded="false" aria-controls="chatuser-collapse3">
+                                                    <i class="ti ti-mood-smile me-2"></i>Profile Info
+                                                </a>
+                                            </h2>
+                                            <div id="chatuser-collapse3" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
+                                                <div class="accordion-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <select class="form-select">
+                                                                <option>Everyone</option>
+                                                                <option>Except</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Profile Info -->
+
+                                        <!-- Read Receipts -->
+                                        <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+                                            <h6 class="fs-14">
+                                                <a href="javascript:void(0);">
+                                                    <i class="ti ti-checks text-gray me-2"></i>Read Receipts
+                                                </a>
+                                            </h6>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch">
+                                            </div>
+                                        </div>
+                                        <!-- /Read Receipts -->
 
                                     </div>
                                 </div>
@@ -270,34 +308,15 @@
 
 
 
+
                         <!-- Privacy setting -->
                         <div class="content-wrapper">
-                            <h5 class="sub-title">Privacy</h5>
+                            <h5 class="sub-title">App Setting</h5>
                             <div class="chat-file">
                                 <div class="file-item ">
                                     <div class="accordion accordion-flush chat-accordion" id="privacy-setting">
                                         <div class="mb-3">
-                                            <div class="accordion-item border-0 border-bottom">
-                                                <h2 class="accordion-header others">
-                                                    <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3" aria-expanded="true" aria-controls="chatuser-collapse3">
-                                                        <i class="ti ti-mood-smile me-2"></i>Profile Info
-                                                    </a>
-                                                </h2>
-                                                <div id="chatuser-collapse3" class="accordion-collapse collapse " data-bs-parent="#privacy-setting">
-                                                    <div class="accordion-body">
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <select class="form-select">
-                                                                        <option>Everyone</option>
-                                                                        <option>Except</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div class="accordion-item border-0 border-bottom">
                                                 <h2 class="accordion-header others">
                                                     <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3-1" aria-expanded="true" aria-controls="chatuser-collapse3-1">
@@ -366,12 +385,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-checks text-gray me-2"></i>Read Receipients</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
