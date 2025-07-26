@@ -86,8 +86,9 @@
                    </li> -->
                     <li>
                         <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
-                           <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Dark Mode" class="icon-white">
+                           <img src="{{ asset('/build/img/Moon-White.svg') }}" alt="Dark Mode" class="icon-white">
                         </a>
+                        
                         <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
                              <i class="ti ti-sun"></i>
                         </a>

@@ -68,15 +68,15 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
-   
 
-        @include('Chats.chatsidebar')
+
+    @include('Chats.chatsidebar')
 
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
     <div class="sidebar-group">
-        <div class="tab-content"  style="width: 400px; border-right:1px solid rgba(0, 0, 0, 0.002)">
+        <div class="tab-content" style="width: 400px; border-right:1px solid rgba(0, 0, 0, 0.002)">
 
             <!-- Profile sidebar -->
             <div class="sidebar-content active slimscroll">
@@ -130,22 +130,7 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Last Name">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Gender">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+
                                                             <div class="col-lg-12">
                                                                 <div class="input-icon mb-3 position-relative">
                                                                     <input type="text" value="" class="form-control datetimepicker" placeholder="Date of birth">
@@ -154,19 +139,7 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Country">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-map-2"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="form-item d-flex justify-content-between mb-3">
-                                                                    <textarea class="form-control" placeholder="About" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
+
                                                             <div class="col-lg-12 d-flex">
                                                                 <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
                                                             </div>
@@ -175,129 +148,127 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="accordion-item others mb-3">
-                                            <h2 class="accordion-header">
-                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#social-id" aria-expanded="false" aria-controls="social-id">
-                                                    <i class="ti ti-social me-2"></i>Social Profiles
-                                                </a>
-                                            </h2>
-                                            <div id="social-id" class="accordion-collapse collapse" data-bs-parent="#account-setting">
-                                                <div class="accordion-body">
-                                                    <div class="chat-video">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Facebook">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-facebook"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Google">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-google"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Twitter">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-twitter"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="Linkedin">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-linkedin"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="youtube">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-brand-youtube"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-lock-square text-gray me-2"></i>Screen Lock</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- /Account setting -->
-
                         <!-- Security setting -->
                         <div class="content-wrapper">
                             <h5 class="sub-title">Security</h5>
                             <div class="chat-file">
                                 <div class="file-item">
                                     <div class="accordion accordion-flush chat-accordion" id="pwd-setting">
-                                        <div class="accordion-item others mb-3">
+
+                                        <!-- Email -->
+                                        <div class="accordion-item others">
                                             <h2 class="accordion-header">
-                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#set-pwd" aria-expanded="false" aria-controls="set-pwd">
-                                                    <i class="ti ti-key me-2"></i>Password
+                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#set-email" aria-expanded="false" aria-controls="set-email">
+                                                    <i class="ti ti-mail me-2"></i>Email
                                                 </a>
                                             </h2>
-                                            <div id="set-pwd" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
+                                            <div id="set-email" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
                                                 <div class="accordion-body">
-                                                    <div class="">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3">
-                                                                    <input type="password" class="pass-input form-control" placeholder="Old Password">
-                                                                    <span class="ti toggle-password ti-eye-off"></span>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text"><i class="ti ti-mail"></i></span>
+                                                                <input type="email" class="form-control" placeholder="Old Email">
                                                             </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3">
-                                                                    <input type="password" class="pass-inputs form-control" placeholder="New Password">
-                                                                    <span class="ti toggle-passwords ti-eye-off"></span>
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text"><i class="ti ti-mail-check"></i></span>
+                                                                <input type="email" class="form-control" placeholder="New Email">
                                                             </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3">
-                                                                    <input type="password" class="conform-pass-input form-control" placeholder="Confirmed Password">
-                                                                    <span class="ti conform-toggle-password ti-eye-off"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 d-flex">
+                                                            <a href="javascript:void(0);" class="btn btn-primary flex-fill">
+                                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-shield text-gray me-2"></i>Two Factor Authentication</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
+                                        <!-- /Email -->
+
+                                        <!-- Password -->
+                                        <div class="accordion-item others mb-3">
+                                            <h2 class="accordion-header">
+                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#set-password" aria-expanded="false" aria-controls="set-password">
+                                                    <i class="ti ti-lock me-2"></i>Password
+                                                </a>
+                                            </h2>
+                                            <div id="set-password" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
+                                                <div class="accordion-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="input-icon mb-3 position-relative">
+                                                                <input type="password" class="form-control" placeholder="Old Password">
+                                                                <span class="ti toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="input-icon mb-3 position-relative">
+                                                                <input type="password" class="form-control" placeholder="New Password">
+                                                                <span class="ti toggle-passwords ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="input-icon mb-3 position-relative">
+                                                                <input type="password" class="form-control" placeholder="Confirm Password">
+                                                                <span class="ti conform-toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 d-flex">
+                                                            <a href="javascript:void(0);" class="btn btn-primary flex-fill">
+                                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Password -->
+
+                                        <!-- Screen Lock -->
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="fs-14">
+                                                <a href="javascript:void(0);">
+                                                    <i class="ti ti-lock-square text-gray me-2"></i>Screen Lock
+                                                </a>
+                                            </h6>
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch">
                                             </div>
                                         </div>
+
+                                        <!-- Divider after Screen Lock -->
+                                        <div class="border-top my-3"></div>
+
+                                        <!-- Two-Factor Auth -->
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="fs-14">
+                                                <a href="javascript:void(0);">
+                                                    <i class="ti ti-shield text-gray me-2"></i>Two Factor Authentication
+                                                </a>
+                                            </h6>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch">
+                                            </div>
+                                        </div>
+                                        <!-- /Security options -->
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- /Security setting -->
+
+
 
                         <!-- Privacy setting -->
                         <div class="content-wrapper">
@@ -601,13 +572,13 @@
 
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 
 
 
 <!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 @component('components.model-popup')
 @endcomponent
