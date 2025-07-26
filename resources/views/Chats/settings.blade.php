@@ -309,88 +309,207 @@
 
 
 
-                        <!-- Privacy setting -->
+                        <!-- App setting -->
                         <div class="content-wrapper">
                             <h5 class="sub-title">App Setting</h5>
                             <div class="chat-file">
                                 <div class="file-item ">
                                     <div class="accordion accordion-flush chat-accordion" id="privacy-setting">
                                         <div class="mb-3">
-
-                                            <div class="accordion-item border-0 border-bottom">
-                                                <h2 class="accordion-header others">
-                                                    <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3-1" aria-expanded="true" aria-controls="chatuser-collapse3-1">
-                                                        <i class="ti ti-eye me-2"></i>Last Seen
-                                                    </a>
-                                                </h2>
-                                                <div id="chatuser-collapse3-1" class="accordion-collapse collapse " data-bs-parent="#privacy-setting">
-                                                    <div class="accordion-body">
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <select class="form-select">
-                                                                        <option>Everyone</option>
-                                                                        <option>Except</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item border-0 border-bottom">
-                                                <h2 class="accordion-header others">
-                                                    <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3-2" aria-expanded="true" aria-controls="chatuser-collapse3-2">
-                                                        <i class="ti ti-users-group me-2"></i>Groups
-                                                    </a>
-                                                </h2>
-                                                <div id="chatuser-collapse3-2" class="accordion-collapse collapse " data-bs-parent="#privacy-setting">
-                                                    <div class="accordion-body">
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <select class="form-select">
-                                                                        <option>Everyone</option>
-                                                                        <option>Except</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="accordion-item border-0 border-bottom">
-                                                <h2 class="accordion-header others">
-                                                    <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3-3" aria-expanded="true" aria-controls="chatuser-collapse3-3">
-                                                        <i class="ti ti-circle-dot me-2"></i>Status
-                                                    </a>
-                                                </h2>
-                                                <div id="chatuser-collapse3-3" class="accordion-collapse collapse " data-bs-parent="#privacy-setting">
-                                                    <div class="accordion-body">
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <select class="form-select mb-3">
-                                                                        <option>Everyone</option>
-                                                                        <option>Except</option>
-                                                                    </select>
+                                            <!-- chat bg -->
+                                            <div class="border-0 profile-list">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
+                                                            <i class="ti ti-photo me-2"></i>Chats Background
+                                                        </a>
+                                                    </h2>
+                                                    <div id="chatuser-collapse4" class="accordion-collapse border-0 collapse " data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="chat-user-photo">
+                                                                <div class="chat-img contact-gallery mb-3">
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo 04"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" title="Demo 04"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" title="Demo 04"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" title="Demo 04"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="col-lg-12 d-flex">
-                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
+                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
+                                            <!-- /chat bg -->
+                                            <!-- App logo -->
+                                            <div class="border-0 profile-list">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#app-logo-collapse" aria-expanded="false" aria-controls="app-logo-collapse">
+                                                            <i class="ti ti-photo me-2"></i>App Logo
+                                                        </a>
+                                                    </h2>
+                                                    <div id="app-logo-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="chat-user-photo">
+                                                                <div class="chat-img contact-gallery mb-3">
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 d-flex">
+                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                        <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /app logo -->
+
+                                            <!-- URL Favicon -->
+                                            <div class="border-0 profile-list">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#url-favicon-collapse" aria-expanded="false" aria-controls="url-favicon-collapse">
+                                                            <i class="ti ti-photo me-2"></i>URL FavIcon
+                                                        </a>
+                                                    </h2>
+                                                    <div id="url-favicon-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="chat-user-photo">
+                                                                <div class="chat-img contact-gallery mb-3">
+                                                                    <div class="img-wrap">
+                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
+                                                                        <div class="img-overlay-1">
+                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
+                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
+                                                                                <i class="ti ti-check d-flex justify-content-center align-items-center"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 d-flex">
+                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                        <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /URL favicon -->
+                                            <!-- App Title -->
+                                            <div class="border-0 profile-list">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#url-app-collapse" aria-expanded="false" aria-controls="url-app-collapse">
+                                                            <i class="ti ti-photo me-2"></i>App Title
+                                                        </a>
+                                                    </h2>
+                                                    <div id="url-app-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="form-group mb-3">
+                                                                <label for="app_name" class="form-label">App Name</label>
+                                                                <input type="text" class="form-control" id="app_name" name="app_name" placeholder="Enter App Name">
+                                                            </div>
+
+                                                            <div class="col-lg-12 d-flex">
+                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /apps Title-->
+
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /Privacy setting -->
+                        <!-- /App setting -->
 
                         <!-- Chat setting -->
                         <div class="content-wrapper">
@@ -398,98 +517,7 @@
                             <div class="chat-file">
                                 <div class="file-item ">
                                     <div class="accordion accordion-flush chat-accordion" id="chat-setting">
-                                        <div class="border-0 profile-list mb-3">
-                                            <div class="accordion-item border-0 border-bottom">
-                                                <h2 class="accordion-header border-0">
-                                                    <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
-                                                        <i class="ti ti-photo me-2"></i>Background Images
-                                                    </a>
-                                                </h2>
-                                                <div id="chatuser-collapse4" class="accordion-collapse border-0 collapse " data-bs-parent="#chat-setting">
-                                                    <div class="accordion-body border-0 pb-0">
-                                                        <div class="chat-user-photo">
-                                                            <div class="chat-img contact-gallery mb-3">
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo 04"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" title="Demo 04"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" title="Demo 04"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="img-wrap">
-                                                                    <img src="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" alt="img">
-                                                                    <div class="img-overlay-1">
-                                                                        <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" title="Demo 04"></a>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                            <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="d-flex justify-content-between profile-list align-items-center border-bottom pb-3 mb-3">
                                             <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-clear-all text-gray me-2 "></i>Clear All Chat</a></h6>
                                             <div class="form-check form-switch d-flex justify-content-end align-items-center">
@@ -522,30 +550,154 @@
                                 <div class="file-item ">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
-                                                <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-message text-gray me-2 "></i>Message Notifications</a></h6>
-                                                <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                    <input class="form-check-input" type="checkbox" role="switch">
+                                            <!-- Message Notification Sounds -->
+                                            <div class="border-0 profile-list pb-2 mb-3">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <button class="accordion-button border-0 collapsed px-0" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#message-sound-collapse"
+                                                            aria-expanded="false" aria-controls="message-sound-collapse">
+                                                            <i class="ti ti-message me-2"></i>Message Notifications
+                                                        </button>
+                                                    </h2>
+                                                    <div id="message-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="row">
+                                                                <!-- Sound 1 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Ding</strong>
+                                                                        <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Sound 2 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Pop</strong>
+                                                                        <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Sound 3 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Bell</strong>
+                                                                        <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Sound 4 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Chime</strong>
+                                                                        <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 d-flex">
+                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
+
                                             <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
                                                 <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-trash text-gray me-2 "></i>Show Previews</a></h6>
                                                 <div class="form-check form-switch d-flex justify-content-end align-items-center">
                                                     <input class="form-check-input" type="checkbox" role="switch">
                                                 </div>
                                             </div>
+                                            <!-- show reaction -->
                                             <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
                                                 <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-mood-smile text-gray me-2 "></i>Show Reaction Notifications</a></h6>
                                                 <div class="form-check form-switch d-flex justify-content-end align-items-center">
                                                     <input class="form-check-input" type="checkbox" role="switch">
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-between align-items-center ">
-                                                <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-bell-ringing text-gray me-2 "></i>Notification Sound</a></h6>
-                                                <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                    <input class="form-check-input" type="checkbox" role="switch">
+                                            <!-- /show reaction -->
+                                            <!-- /notification sound -->
+                                            <div class="border-0 profile-list mb-1">
+                                                <div class="accordion-item border-0 border-bottom">
+                                                    <h2 class="accordion-header border-0">
+                                                        <button class="accordion-button border-0 collapsed px-0" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#notification-sound-collapse"
+                                                            aria-expanded="false" aria-controls="notification-sound-collapse">
+                                                            <i class="ti ti-bell-ringing text-gray me-2"></i> Notification Sound
+                                                        </button>
+                                                    </h2>
+                                                    <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                        <div class="accordion-body border-0 pb-0">
+                                                            <div class="row">
+                                                                <!-- Sound 1 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Ding</strong>
+                                                                        <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Sound 2 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Pop</strong>
+                                                                        <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Sound 3 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Bell</strong>
+                                                                        <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Sound 4 -->
+                                                                <div class="col-6 mb-3">
+                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                        <strong>Chime</strong>
+                                                                        <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
+                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                            <i class="ti ti-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12 d-flex">
+                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
