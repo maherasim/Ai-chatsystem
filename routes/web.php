@@ -15,11 +15,11 @@ Route::get('/', function () {
     return view('signin');
 });
 
- Route::middleware('auth')->group(function () {
+ 
 
 Route::get('/index', function () {
     return view('index');
-})->name('index');
+})->middleware('auth')->name('index');
 
    Route::get('/login', function () {
     return view('signin');
@@ -100,5 +100,5 @@ Route::get('/forgot-password', function () {
     return view('forgot-password');
 })->name('forgot-password');
  
-});
+
 
