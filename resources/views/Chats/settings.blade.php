@@ -288,7 +288,7 @@
                                         <!-- /Profile Info -->
 
                                         <!-- Read Receipts -->
-                                        <div class="d-flex justify-content-between align-items-center pb-3 mt-2 mb-3">
+                                        <div class="d-flex justify-content-between align-items-center pb-1 mt-2 mb-3">
                                             <h6 class="fs-14">
                                                 <a href="javascript:void(0);">
                                                     <i class="ti ti-checks text-gray me-2"></i>Read Receipts
@@ -328,78 +328,91 @@
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="chat-user-photo">
                                                                 <div class="chat-img contact-gallery mb-3">
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <!-- Container for all 6 boxes -->
+
+
+                                                                    <!-- Loop starts -->
+                                                                    <!-- Box 1 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage1" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1"
+                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                   background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                   justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload1').click();"
+                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <input type="file" id="imageUpload1" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage1', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+
+                                                                    <!-- Box 2 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage2" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload2').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <input type="file" id="imageUpload2" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage2', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+                                                                    <!-- Box 3 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage3" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload3').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <input type="file" id="imageUpload3" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage3', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+                                                                    <!-- Box 4 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage4" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload4').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo 04"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <input type="file" id="imageUpload4" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage4', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+                                                                    <!-- Box 5 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage5" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload5').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-06.jpg')}}" title="Demo 04"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <input type="file" id="imageUpload5" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage5', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+                                                                    <!-- Box 6 -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewImage6" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload6').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-07.jpg')}}" title="Demo 04"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-08.jpg')}}" title="Demo 04"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check  d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
+                                                                    <input type="file" id="imageUpload6" accept=".jpg,.jpeg,.svg"
+                                                                        onchange="handleImageUpload(event, 'previewImage6', ['image/jpeg','image/jpg','image/svg+xml'])"
+                                                                        style="display: none;">
+
+
+
+
                                                                 </div>
                                                                 <div class="col-lg-12 d-flex">
                                                                     <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
@@ -410,7 +423,7 @@
                                                 </div>
                                             </div>
                                             <!-- /chat bg -->
-                                            <!-- App logo -->
+                                            <!-- App Logo -->
                                             <div class="border-0 profile-list">
                                                 <div class="accordion-item border-0 border-bottom">
                                                     <h2 class="accordion-header border-0">
@@ -422,16 +435,23 @@
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="chat-user-photo">
                                                                 <div class="chat-img contact-gallery mb-3">
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <!-- App Logo Box -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewAppLogo" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="App Logo"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1"
+                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                                       background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                                       justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('uploadAppLogo').click();"
+                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
+                                                                    <input type="file" id="uploadAppLogo" accept=".png,.svg" style="display:none"
+                                                                        onchange="handleImageUpload(event, 'previewAppLogo', ['image/png', 'image/svg+xml'])">
                                                                 </div>
+
                                                                 <div class="col-lg-12 d-flex">
                                                                     <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
                                                                         <i class="ti ti-device-floppy me-2"></i>Save Changes
@@ -442,7 +462,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- /app logo -->
 
                                             <!-- URL Favicon -->
                                             <div class="border-0 profile-list">
@@ -456,16 +475,25 @@
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="chat-user-photo">
                                                                 <div class="chat-img contact-gallery mb-3">
-                                                                    <div class="img-wrap">
-                                                                        <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                                                        <div class="img-overlay-1">
-                                                                            <a class="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"></a>
-                                                                            <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center">
-                                                                                <i class="ti ti-check d-flex justify-content-center align-items-center"></i>
-                                                                            </span>
+                                                                    <!-- Favicon Box -->
+                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                        <img id="previewFavIcon" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="Favicon"
+                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                        <div class="img-overlay-1"
+                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                                       background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                                       justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                            <a href="javascript:void(0);" onclick="document.getElementById('uploadFavIcon').click();"
+                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
                                                                     </div>
+                                                                    <input type="file" id="uploadFavIcon" accept=".svg,.png"
+                                                                        style="display: none;"
+                                                                        onchange="handleImageUpload(event, 'previewFavIcon', ['image/svg+xml', 'image/png'])">
+
                                                                 </div>
+
                                                                 <div class="col-lg-12 d-flex">
                                                                     <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
                                                                         <i class="ti ti-device-floppy me-2"></i>Save Changes
@@ -476,7 +504,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- /URL favicon -->
+
                                             <!-- App Title -->
                                             <div class="border-0 profile-list">
                                                 <div class="accordion-item border-0 border-bottom">
@@ -705,13 +733,27 @@
 
 
 </div>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+<script>
+    function handleImageUpload(event, previewId, allowedTypes) {
+        const file = event.target.files[0];
+        if (file) {
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only allowed file types: ' + allowedTypes.join(', '));
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(previewId).src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 
 
 
-
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 @component('components.model-popup')
 @endcomponent
