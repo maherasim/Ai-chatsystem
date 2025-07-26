@@ -29,28 +29,28 @@ Route::get('/index', function () {
 
 Route::get('/chat', function () {
     return view('index');
-})->name('chat.index');
+})->middleware('auth')->name('chat.index');
 
 // Route::get('/chat', function () {
 //     return view('index');
 // })->name('chat');
 Route::get('/Ai', function () {
     return view('Chats.Ai');
-})->name('chat-ai');
+})->middleware('auth')->name('chat-ai');
 Route::get('/tasks', function () {
     return view('Chats.task');
-})->name('chat-task');
+})->middleware('auth')->name('chat-task');
 Route::get('/users', function () {
     return view('Chats.users');
-})->name('chat-users');
+})->middleware('auth')->name('chat-users');
 
 Route::get('/meetings', function () {
     return view('Chats.meetings');
-})->name('chat-meetings');
+})->middleware('auth')->name('chat-meetings');
 
 Route::get('/groups', function () {
     return view('Chats.groups');
-})->name('chat-groups');
+})->middleware('auth')->name('chat-groups');
 Route::get('/project', function () {
     return view('Chats.project');
 })->name('chat-project');
