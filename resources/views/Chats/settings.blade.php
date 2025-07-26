@@ -288,7 +288,7 @@
                                         <!-- /Profile Info -->
 
                                         <!-- Read Receipts -->
-                                        <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+                                        <div class="d-flex justify-content-between align-items-center pb-3 mt-2 mb-3">
                                             <h6 class="fs-14">
                                                 <a href="javascript:void(0);">
                                                     <i class="ti ti-checks text-gray me-2"></i>Read Receipts
@@ -503,6 +503,161 @@
                                             </div>
                                             <!-- /apps Title-->
 
+                                            <div class="file-item ">
+
+                                                <div class="card-body">
+                                                    <!-- Message Notification Sounds -->
+                                                    <div class="border-0 profile-list pb-1 mb-1">
+                                                        <div class="accordion-item border-0 border-bottom">
+                                                            <h2 class="accordion-header border-0">
+                                                                <button class="accordion-button border-0 collapsed px-0" type="button"
+                                                                    data-bs-toggle="collapse" data-bs-target="#message-sound-collapse"
+                                                                    aria-expanded="false" aria-controls="message-sound-collapse">
+                                                                    <i class="ti ti-message me-2"></i>Message Notifications
+                                                                </button>
+                                                            </h2>
+                                                            <div id="message-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                                <div class="accordion-body border-0 pb-0">
+                                                                    <div class="row">
+                                                                        <!-- Sound 1 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Ding</strong>
+                                                                                <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Sound 2 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Pop</strong>
+                                                                                <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Sound 3 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Bell</strong>
+                                                                                <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Sound 4 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Chime</strong>
+                                                                                <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 d-flex">
+                                                                        <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-2">
+                                                        <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-trash text-gray me-2 "></i>Show Previews</a></h6>
+                                                        <div class="form-check form-switch d-flex justify-content-end align-items-center">
+                                                            <input class="form-check-input" type="checkbox" role="switch">
+                                                        </div>
+                                                    </div>
+                                                    <!-- show reaction -->
+                                                    <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-1">
+                                                        <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-mood-smile text-gray me-2 "></i>Show Reaction Notifications</a></h6>
+                                                        <div class="form-check form-switch d-flex justify-content-end align-items-center">
+                                                            <input class="form-check-input" type="checkbox" role="switch">
+                                                        </div>
+                                                    </div>
+                                                    <!-- /show reaction -->
+                                                    <!-- /notification sound -->
+                                                    <div class="border-0 profile-list ">
+                                                        <div class="accordion-item border-0 ">
+                                                            <h2 class="accordion-header border-0">
+                                                                <button class="accordion-button border-0 collapsed px-0" type="button"
+                                                                    data-bs-toggle="collapse" data-bs-target="#notification-sound-collapse"
+                                                                    aria-expanded="false" aria-controls="notification-sound-collapse">
+                                                                    <i class="ti ti-bell-ringing text-gray me-2"></i> Notification Sound
+                                                                </button>
+                                                            </h2>
+                                                            <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                                <div class="accordion-body border-0 pb-0">
+                                                                    <div class="row">
+                                                                        <!-- Sound 1 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Ding</strong>
+                                                                                <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Sound 2 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Pop</strong>
+                                                                                <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Sound 3 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Bell</strong>
+                                                                                <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Sound 4 -->
+                                                                        <div class="col-6 mb-3">
+                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
+                                                                                <strong>Chime</strong>
+                                                                                <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
+                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-12 d-flex">
+                                                                        <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
+                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+
                                         </div>
 
                                     </div>
@@ -512,198 +667,10 @@
                         <!-- /App setting -->
 
                         <!-- Chat setting -->
-                        <div class="content-wrapper">
-                            <h5 class="sub-title">Chat</h5>
-                            <div class="chat-file">
-                                <div class="file-item ">
-                                    <div class="accordion accordion-flush chat-accordion" id="chat-setting">
 
-                                        <div class="d-flex justify-content-between profile-list align-items-center border-bottom pb-3 mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-clear-all text-gray me-2 "></i>Clear All Chat</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-trash text-gray me-2 "></i>Delete All Chat</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-restore text-gray me-2 "></i>Chat Backup</a></h6>
-                                            <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
                         <!-- /Chat setting -->
 
-                        <!-- Notification setting -->
-                        <div class="content-wrapper">
-                            <h5 class="sub-title">Notifications</h5>
-                            <div class="chat-file">
-                                <div class="file-item ">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <!-- Message Notification Sounds -->
-                                            <div class="border-0 profile-list pb-2 mb-3">
-                                                <div class="accordion-item border-0 border-bottom">
-                                                    <h2 class="accordion-header border-0">
-                                                        <button class="accordion-button border-0 collapsed px-0" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#message-sound-collapse"
-                                                            aria-expanded="false" aria-controls="message-sound-collapse">
-                                                            <i class="ti ti-message me-2"></i>Message Notifications
-                                                        </button>
-                                                    </h2>
-                                                    <div id="message-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="row">
-                                                                <!-- Sound 1 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Ding</strong>
-                                                                        <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Sound 2 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Pop</strong>
-                                                                        <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Sound 3 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Bell</strong>
-                                                                        <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Sound 4 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Chime</strong>
-                                                                        <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-
-                                            <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
-                                                <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-trash text-gray me-2 "></i>Show Previews</a></h6>
-                                                <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                    <input class="form-check-input" type="checkbox" role="switch">
-                                                </div>
-                                            </div>
-                                            <!-- show reaction -->
-                                            <div class="d-flex justify-content-between align-items-center profile-list border-bottom pb-3 mb-3">
-                                                <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-mood-smile text-gray me-2 "></i>Show Reaction Notifications</a></h6>
-                                                <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                    <input class="form-check-input" type="checkbox" role="switch">
-                                                </div>
-                                            </div>
-                                            <!-- /show reaction -->
-                                            <!-- /notification sound -->
-                                            <div class="border-0 profile-list mb-1">
-                                                <div class="accordion-item border-0 border-bottom">
-                                                    <h2 class="accordion-header border-0">
-                                                        <button class="accordion-button border-0 collapsed px-0" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#notification-sound-collapse"
-                                                            aria-expanded="false" aria-controls="notification-sound-collapse">
-                                                            <i class="ti ti-bell-ringing text-gray me-2"></i> Notification Sound
-                                                        </button>
-                                                    </h2>
-                                                    <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="row">
-                                                                <!-- Sound 1 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Ding</strong>
-                                                                        <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Sound 2 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Pop</strong>
-                                                                        <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Sound 3 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Bell</strong>
-                                                                        <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Sound 4 -->
-                                                                <div class="col-6 mb-3">
-                                                                    <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                        <strong>Chime</strong>
-                                                                        <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
-                                                                        <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Notification setting -->
 
                         <!-- Language setting -->
 
