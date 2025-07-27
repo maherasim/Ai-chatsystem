@@ -1163,13 +1163,15 @@
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
+                    <small style="color: fuchsia; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
 
                     <!-- Stats -->
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
 
                     <!-- Productivity -->
@@ -1194,7 +1196,7 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-                     <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
                         <span
                             id="actionDropdown"
@@ -1223,16 +1225,18 @@
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 65%</div>
+                    <div>Productivity: 30%</div>
                     <div class="progress mt-1">
-                        <div class="progress-bar bg-green" style="width: 55%"></div>
+                        <div class="progress-bar" style="width: 35%; background-color: #ffc107;"></div>
                     </div>
                 </div>
             </div>
@@ -1248,7 +1252,7 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-                     <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
                         <span
                             id="actionDropdown"
@@ -1278,16 +1282,18 @@
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 65%</div>
-                    <div class="progress mt-1">
-                        <div class="progress-bar bg-yellow" style="width: 25%"></div>
+                    <div>Productivity: 20%</div>
+                    <div class="progress mt-1" style="background-color: #e9ecef; border-radius: 4px;">
+                        <div class="progress-bar" style="width: 20%; background-color: red;"></div>
                     </div>
                 </div>
             </div>
@@ -1303,7 +1309,7 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-                  <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
                         <span
                             id="actionDropdown"
@@ -1333,13 +1339,131 @@
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
 
+                    <div>Productivity: 90%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar" style="width: 90%; background-color: green;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Full Stack Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 10%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-danger" style="width: 15%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #ff1493; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
                     <div>Productivity: 65%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-purple" style="width: 65%"></div>
@@ -1358,7 +1482,7 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-                <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
                         <span
                             id="actionDropdown"
@@ -1383,21 +1507,21 @@
                         </ul>
                     </div>
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
-
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
-
-                    <div>Productivity: 65%</div>
+                    <div>Productivity: 90%</div>
                     <div class="progress mt-1">
-                        <div class="progress-bar bg-purple" style="width: 65%"></div>
+                        <div class="progress-bar" style="width: 90%; background-color: green;"></div>
                     </div>
                 </div>
             </div>
@@ -1413,62 +1537,7 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-                     <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
-                        <!-- Just 3 vertical dots -->
-                        <span
-                            id="actionDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style="cursor: pointer; font-size: 20px;">
-                            &#8942;
-                        </span>
-
-                        <!-- Dropdown Menu -->
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <i class="ti ti-edit me-2 "></i> Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center " href="#">
-                                    <i class="ti ti-trash me-2"></i> Delete
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
-
-                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
-                    </h6>
-
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
-                    </div>
-
-                    <div>Productivity: 65%</div>
-                    <div class="progress mt-1">
-                        <div class="progress-bar bg-purple" style="width: 65%"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="elevated-card">
-                    <!-- Square Checkbox (top-left) -->
-                    <input type="checkbox" style="
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        width: 26px;
-        height: 22px;
-        accent-color: orange; /* Optional: purple tint */
-        cursor: pointer;
-    ">
-                  <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
                         <span
                             id="actionDropdown"
@@ -1497,72 +1566,21 @@
                         Anthony Lewis
                     </h6>
 
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <small style="color: #00bfff; background-color: #dff7ff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Tester
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 65%</div>
-                    <div class="progress mt-1">
-                        <div class="progress-bar bg-purple" style="width: 65%"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="elevated-card">
-                    <!-- Square Checkbox (top-left) -->
-                    <input type="checkbox" style="
-        position: absolute;
-        top: 30px;
-        left: 20px;
-        width: 26px;
-        height: 22px;
-        accent-color: orange; /* Optional: purple tint */
-        cursor: pointer;
-    ">
-                  <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
-                        <!-- Just 3 vertical dots -->
-                        <span
-                            id="actionDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style="cursor: pointer; font-size: 20px;">
-                            &#8942;
-                        </span>
-
-                        <!-- Dropdown Menu -->
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <i class="ti ti-edit me-2 "></i> Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center " href="#">
-                                    <i class="ti ti-trash me-2"></i> Delete
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
-                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
-                    </h6>
-
-
-                    <small>Software Developer</small>
-                    <div class="mt-2 d-flex justify-content-between">
-                        <span>Projects: 20</span>
-                        <span>Done: 13</span>
-                        <span>Progress: 7</span>
+                    <div>Productivity: 80%</div>
+                    <div class="progress mt-1" style=" background-color: #f0f2f5; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 80%; background-color: #ff2ea6; border-radius: 10px;"></div>
                     </div>
 
-                    <div>Productivity: 65%</div>
-                    <div class="progress mt-1">
-                        <div class="progress-bar bg-purple" style="width: 65%"></div>
-                    </div>
                 </div>
             </div>
 
@@ -1864,128 +1882,587 @@
 
     <!-- Add user -->
     <!-- Add User Modal -->
+    <!-- Add New Employee Modal -->
     <div class="modal fade" id="add_user" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
+
                 <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Add New User</h4>
-                    <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ti ti-x"></i>
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h4 class="modal-title fw-bold">Add New User</h4>
+                        <small class="text-muted">User ID : <strong>user -0024</strong></small>
+                    </div>
+                    <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        &times;
                     </button>
                 </div>
 
-                <!-- Form Start -->
-                <form action="{{ url('admin/users') }}">
-                    <div class="modal-body">
-                        <!-- Upload Section -->
-                        <div class="row mb-3">
-                            <div class="col-md-12 d-flex align-items-center gap-3">
-                                <!-- Circular Image Upload -->
-                                <div style="position: relative; width: 80px; height: 80px;">
-                                    <!-- Circular Dotted Image -->
-                                    <img id="previewImg"
-                                        src=""
-                                        style="border: 2px dashed #a855f7; width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                <!-- Modal Body -->
+                <div class="modal-body pt-0">
 
-                                    <!-- + Icon Exactly On Border -->
-                                    <span style="
-        position: absolute;
-        bottom: 2px;
-        right: 2px;
-        background: #7c3aed;
-        color: white;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        font-size: 13px;
-        text-align: center;
-        line-height: 20px;
-        cursor: pointer;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-    ">+</span>
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3 border-bottom-0">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-semibold"
+                                data-bs-toggle="tab"
+                                href="#basicInfo"
+                                style="border: none; color: #f65b0f; border-bottom: 2px solid #f65b0f; background-color: transparent;">
+                                Basic Information
+                            </a>
+                        </li>
 
-                                    <!-- Hidden File Input -->
-                                    <input type="file" id="imageInput" accept="image/*" onchange="preview(event)"
-                                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
-                                </div>
+                    </ul>
 
 
-                                <!-- Upload Text and Buttons -->
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Basic Information Tab -->
+                        <div class="tab-pane fade show active" id="basicInfo">
+
+                            <!-- Profile Upload -->
+                            <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
+                                <!-- Profile Image -->
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
+                                    class="rounded-circle me-4"
+                                    alt="Profile Image"
+                                    style="width: 80px; height: 80px; object-fit: cover;">
+
+                                <!-- Upload Text + Buttons -->
                                 <div>
-                                    <div style="font-weight: 600;">Upload Image</div>
-                                    <small style="color: #6c757d;">Image should be below 4 mb</small>
-                                    <div class="d-flex gap-2 mt-2">
-                                        <label class="btn btn-sm" style="background: #7c3aed; color: white; font-weight: 500; padding: 4px 12px; cursor: pointer;">
-                                            Upload
-                                            <input type="file" class="d-none" onchange="preview(event)">
+                                    <p class="mb-1 fw-medium">Upload Profile Image</p>
+                                    <small class="text-muted d-block mb-2">Image should be below 4 mb</small>
+                                    <button class="btn btn-warning me-2" style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
+                                    <button class="btn btn-outline">Cancel</button>
+                                </div>
+                            </div>
+
+
+                            <!-- Form Fields -->
+                            <form>
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">First & last Name</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Department</label>
+                                        <select class="form-select">
+                                            <option selected>Select</option>
+                                            <option>All Department</option>
+                                            <option>Finance</option>
+                                            <option>Developer</option>
+                                            <option>Executive</option>
+                                        </select>
+                                    </div>
+
+
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label"> Repeat Email</label>
+                                        <input type="email" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Repeat Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+
+                                    <!-- Department Field -->
+
+
+                                </div>
+                            </form>
+
+                            <div style="max-width: 950px; margin: 30px auto; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+
+                                <!-- Enable Options Header -->
+                                <div style="background-color: #f5f6fa; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                    <span style="font-weight: 600; color: #0b0b0b;">Enable Options</span>
+                                    <div style="display: flex; gap: 20px; align-items: center;">
+                                        <!-- Enable All Module Toggle -->
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                            <span style="color: #6c757d;">Enable all Module</span>
                                         </label>
-                                        <a href="javascript:void(0);" class="btn btn-outline-primary btn-sm">Remove</a>
+
+                                        <!-- Select All -->
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px; cursor: pointer;" checked>
+                                            <span style="color: #ff6600; font-weight: 500;">Select All</span>
+                                        </label>
                                     </div>
                                 </div>
+
+                                <!-- Permissions Table -->
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse; text-align: center;">
+
+                                        <tbody>
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Clients
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+
+                                            <!-- leavers -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Leaves
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <!-- clients -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Holidays
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+
+                                            <!-- projects -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Projects
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Tasks -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Tasks
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <!-- Chats -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Chats
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <!-- Assets -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Assets
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <!-- Timming sheets -->
+                                            <tr style="background: #fff;">
+                                                <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                                    <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                        <input type="checkbox" checked
+                                                            style="opacity: 0; width: 0; height: 0;"
+                                                            onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                            <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                        </span>
+                                                    </label>
+                                                    Timming Sheets
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Read</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Write</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Delete</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Import</span>
+                                                    </label>
+                                                </td>
+
+                                                <td style="text-align: center;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                        <span style="font-size: 14px;">Export</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+
+
                         </div>
 
-                        <!-- Input Fields -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Country</label>
-                                <select class="form-select">
-                                    <option>Select</option>
-                                    <option>United States</option>
-                                    <option>Germany</option>
-                                    <option>Canada</option>
-                                    <option>Australia</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Modal Footer -->
-                    <div class="modal-footer pt-0">
-                        <div class="d-flex w-100 justify-content-between">
-                            <a href="#" class="btn btn-outline-primary w-100 me-2" data-bs-dismiss="modal">Cancel</a>
-                            <button type="submit" class="btn btn-primary w-100">Add User</button>
-                        </div>
                     </div>
-                </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer border-top-0 pt-0">
+                    <div class="d-flex ms-auto gap-2">
+                        <button type="button" class="btn btn-outline" style="min-width: 100px;" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-white" style="background-color: #f65b0f; border-color: #f65b0f; min-width: 100px;">Save</button>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
 
-    <!-- JS for Image Preview -->
+</div>
+</div>
+
+<!-- JS for Image Preview -->
 
 
-    <!-- /Add user -->
+<!-- /Add user -->
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <!-- Header -->
-        <div class="offcanvas-header" style="padding: 0;">
-            <!-- Header with gradient -->
-            <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <!-- Header -->
+    <div class="offcanvas-header" style="padding: 0;">
+        <!-- Header with gradient -->
+        <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
 
-                <!-- Close Button -->
-                <button type="button"
-                    data-bs-dismiss="offcanvas"
-                    aria-label="Close"
-                    style="
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+                style="
             position: absolute;
             top: 10px;
             right: 10px;
@@ -2003,133 +2480,236 @@
             justify-content: center;
             box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
         ">
-                    &times;
-                </button>
+                &times;
+            </button>
 
-                <!-- Profile Image -->
-                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
-                    class="rounded-circle"
-                    alt="Profile"
-                    style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
-            </div>
-
-        </div>
-
-        <!-- Body -->
-        <div class="offcanvas-body pt-5">
-            <!-- Name and Badges -->
-            <div class="text-center mt-1 " style="margin-left: 30px;">
-                <h5 class="mb-0 fw-semibold">Stephan Peralt
-                    <i class="ti ti-check" style="color: #1d9f2f;"></i>
-                </h5>
-                <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
-                    <span class="badge bg-secondary-subtle text-dark border">Software Developer</span>
-
-                    <span class="badge bg-light text-dark border">10+ years of Experience</span>
-                </div>
-            </div>
-
-            <!-- Info -->
-            <div class="mt-4 px-3 ">
-                <div class="row g-3 border-bottom pb-2">
-                    <!-- Client ID -->
-                    <div class="col-12 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <i class="ti ti-id me-2 text-muted"></i>
-                            <small class="text-muted">Client ID</small>
-                        </div>
-                        <div class="fw-medium">CLT-0024</div>
-                    </div>
-
-                    <!-- Team -->
-                    <div class="col-12 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <i class="ti ti-users me-2 text-muted"></i>
-                            <small class="text-muted">Team</small>
-                        </div>
-                        <div class="fw-medium">UI/UX Design</div>
-                    </div>
-
-                    <!-- Date of Join -->
-                    <div class="col-12 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <i class="ti ti-calendar me-2 text-muted"></i>
-                            <small class="text-muted">Date Of Join</small>
-                        </div>
-                        <div class="fw-medium">1st Jan 2023</div>
-                    </div>
-
-                    <div class="d-flex justify-content-center gap-3 mt-4 px-3 ">
-                        <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-4 flex-grow-1" style="min-width: 150px;">
-                            <i class="ti ti-pencil"></i> Edit Info
-                        </a>
-                        <a href="#" class="btn btn-warning text-white d-flex align-items-center gap-2 px-4 flex-grow-1"
-                            style="background-color: #f65b0f; border-color: #f65b0f; min-width: 150px;">
-                            <i class="ti ti-message"></i> Message
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-            <!-- Basic Info -->
-            <div class="mt-4 px-3 border-bottom">
-                <h6 class="fw-bold mb-3">Basic Information</h6>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-phone text-muted"></i> Phone
-                    </small>
-
-                    <div class="fw-medium text-dark">(163) 2459 315</div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-mail text-muted"></i> Email
-                    </small>
-                    <div class="fw-medium text-dark">peralt12@example.com</div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-gender-male  text-muted"></i> Genfer
-                    </small>
-                    <div class="fw-medium text-dark">Male</div>
-                </div>
-            </div>
-
-            <!-- Persnal Info -->
-            <div class="mt-4 px-3 mb-4 border-bottom">
-                <h6 class="fw-bold mb-3">Personal Information</h6>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-e-passport  text-muted"></i> Passport No
-                    </small>
-                    <div class="fw-medium text-dark">QRET4566FGRT</div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-calendar-x  text-muted"></i> Passport Exp Date
-                    </small>
-
-                    <div class="fw-medium text-dark">15 May 2029</div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-2">
-                    <small class="text-muted">
-                        <i class="ti ti-gender-male  text-muted"></i> Nationality
-                    </small>
-
-                    <div class="fw-medium text-dark">Indian</div>
-                </div>
-            </div>
-
-
+            <!-- Profile Image -->
+            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
+                class="rounded-circle"
+                alt="Profile"
+                style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
         </div>
 
     </div>
+
+    <!-- Body -->
+    <div class="offcanvas-body pt-5">
+        <!-- Name and Badges -->
+        <div class="text-center mt-1 " style="margin-left: 30px;">
+            <h5 class="mb-0 fw-semibold">Stephan Peralt
+                <i class="ti ti-check" style="color: #1d9f2f;"></i>
+            </h5>
+            <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+                <span class="badge bg-secondary-subtle text-dark border">Software Developer</span>
+
+                <span class="badge bg-light text-dark border">10+ years of Experience</span>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="mt-4 px-3 ">
+            <div class="row g-3 border-bottom pb-2">
+                <!-- Client ID -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-id me-2 text-muted"></i>
+                        <small class="text-muted">Client ID</small>
+                    </div>
+                    <div class="fw-medium">CLT-0024</div>
+                </div>
+
+                <!-- Team -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-users me-2 text-muted"></i>
+                        <small class="text-muted">Team</small>
+                    </div>
+                    <div class="fw-medium">UI/UX Design</div>
+                </div>
+
+                <!-- Date of Join -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-calendar me-2 text-muted"></i>
+                        <small class="text-muted">Date Of Join</small>
+                    </div>
+                    <div class="fw-medium">1st Jan 2023</div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4 px-3 ">
+                    <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-4 flex-grow-1" style="min-width: 150px;">
+                        <i class="ti ti-pencil"></i> Edit Info
+                    </a>
+                    <a href="#" class="btn btn-warning text-white d-flex align-items-center gap-2 px-4 flex-grow-1"
+                        style="background-color: #f65b0f; border-color: #f65b0f; min-width: 150px;">
+                        <i class="ti ti-message"></i> Message
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <!-- Basic Info -->
+        <div class="mt-4 px-3 border-bottom">
+            <h6 class="fw-bold mb-3">Basic Information</h6>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-phone text-muted"></i> Phone
+                </small>
+
+                <div class="fw-medium text-dark">(163) 2459 315</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-mail text-muted"></i> Email
+                </small>
+                <div class="fw-medium text-dark">peralt12@example.com</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-gender-male  text-muted"></i> Genfer
+                </small>
+                <div class="fw-medium text-dark">Male</div>
+            </div>
+        </div>
+
+        <!-- Persnal Info -->
+        <div class="mt-4 px-3 mb-4 border-bottom">
+            <h6 class="fw-bold mb-3">Personal Information</h6>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-e-passport  text-muted"></i> Passport No
+                </small>
+                <div class="fw-medium text-dark">QRET4566FGRT</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-calendar-x  text-muted"></i> Passport Exp Date
+                </small>
+
+                <div class="fw-medium text-dark">15 May 2029</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-gender-male  text-muted"></i> Nationality
+                </small>
+
+                <div class="fw-medium text-dark">Indian</div>
+            </div>
+        </div>
+
+        <div class="mt-4 px-3 mb-4">
+            <h6 class="fw-bold mb-3">Projects</h6>
+            <div class="row g-3">
+                <!-- Project Card 1 -->
+                <div class="col-12">
+                    <div class="border rounded p-3">
+                        <!-- Top: Icon, Title, Task Info -->
+                        <div class="d-flex align-items-start mb-2">
+                            <!-- Project Icon -->
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+
+                            </div>
+
+
+                            <!-- Project Info -->
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="padding-left: 6px;">World Health</h6>
+                                <small class="text-muted">
+                                    8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Divider -->
+                        <div style="background-color: white; padding: 10px;">
+                            <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                        </div>
+
+
+                        <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                        <div class="d-flex justify-content-between align-items-start">
+                            <!-- Deadline Column -->
+                            <div>
+                                <small class="text-muted d-block mb-1">Deadline</small>
+                                <div class="fw-medium">31 July 2025</div>
+                            </div>
+
+                            <!-- Project Lead Column -->
+                            <div class="text-end">
+                                <small class="text-muted d-block mb-1">Project Lead</small>
+                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+                                    <div class="fw-medium">Leona</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Project Card 2 -->
+                <div class="col-12">
+                    <div class="border rounded p-3">
+                        <!-- Top: Icon, Title, Task Info -->
+                        <div class="d-flex align-items-start mb-2">
+                            <!-- Project Icon -->
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover; margin-left:8px" />
+                            </div>
+
+
+
+                            <!-- Project Info -->
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="padding-left: 6px;"> Hospital Administration</h6>
+                                <small class="text-muted">
+                                    8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Divider -->
+                        <div style="background-color: white; padding: 10px;">
+                            <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                        </div>
+
+                        <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                        <div class="d-flex justify-content-between align-items-start">
+                            <!-- Deadline Column -->
+                            <div>
+                                <small class="text-muted d-block mb-1">Deadline</small>
+                                <div class="fw-medium">31 July 2025</div>
+                            </div>
+
+                            <!-- Project Lead Column -->
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 </div>
@@ -2158,6 +2738,26 @@
         }
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.nav-link');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.style.color = '#333';
+                    t.style.borderBottom = 'none';
+                });
+
+                this.classList.add('active');
+                this.style.color = '#f65b0f';
+                this.style.borderBottom = '2px solid #f65b0f';
+            });
+        });
+    });
+</script>
+
 
 @component('components.model-popup')
 @endcomponent

@@ -1,7 +1,7 @@
 <?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
-<style>
+<!-- <style>
     /* Ensure base styles don't interfere */
     .task-icon-link {
         position: relative;
@@ -59,9 +59,135 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
+</style> -->
+
+<style>
+    /* Ensure base styles don't interfere */
+
+    .task-icon-link {
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+    }
+
+    .task-icon-link img {
+        width: 25px !important;
+        height: 25px !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease-in-out;
+    }
+
+
+    /* Stack both icons centered */
+    .task-icon-link img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease-in-out;
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Default: show black icon */
+    .task-icon-link .icon-black {
+        opacity: 1;
+    }
+
+    /* Default: hide white icon */
+    .task-icon-link .icon-white {
+        opacity: 0;
+    }
+
+    /* On hover (only if not active): show white icon */
+    .task-icon-link:hover:not(.active) .icon-black {
+        opacity: 0;
+    }
+
+    .task-icon-link:hover:not(.active) .icon-white {
+        opacity: 1;
+    }
+
+    /* Active state (white icon always shown) */
+    .task-icon-link.active .icon-black {
+        opacity: 0;
+    }
+
+    .task-icon-link.active .icon-white {
+        opacity: 1;
+    }
+
+    .elevated-card {
+        border-radius: 12px;
+        border: 1px solid #dee2e6;
+        /* Light-dark border */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        /* very light shadow */
+        transform: translateY(-2px);
+        /* very slight lift */
+        background-color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+
+    .employee-grid img {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .employee-grid h6 {
+        margin-bottom: 2px;
+        font-weight: 600;
+    }
+
+    .employee-grid small {
+        color: #888;
+        font-size: 12px;
+    }
+
+    .progress {
+        height: 6px;
+        border-radius: 3px;
+        background-color: #eee;
+    }
+
+    .progress-bar {
+        border-radius: 3px;
+    }
+
+    .bg-purple {
+        background-color: purple;
+    }
+
+    /* Thin scrollbar for Webkit browsers */
+    .offcanvas-body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .offcanvas-body::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .offcanvas-body::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+        border: 1px solid transparent;
+    }
+
+    /* Thin scrollbar for Firefox */
+    .offcanvas-body {
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
 </style>
-
-
 
 
 <!-- content -->
@@ -4528,7 +4654,560 @@
 
 
   
+ <div class="container py-4">
+        <!-- EMPLOYEE SECTION TITLE -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Users</h3>
+            <button
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#add_user"
+                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
 
+                <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
+                    +
+                </span>
+                Add User
+            </button>
+
+
+        </div>
+
+        <!-- EMPLOYEE STATS -->
+        <div class="row mb-4">
+            <!-- Total Users -->
+            <div class="col-md-3 mb-3">
+                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
+                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                        alt="img"
+                        class="rounded-circle"
+                        style="width: 48px; height: 48px; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600;">Total Users</div>
+                        <h4 class="text-dark mt-1 mb-0" style="font-size: 20px;">1007</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active -->
+            <div class="col-md-3 mb-3">
+                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
+                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                        alt="img"
+                        class="rounded-circle"
+                        style="width: 48px; height: 48px; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600;">Active</div>
+                        <h4 class="text-success mt-1 mb-0" style="font-size: 20px;">1007</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inactive -->
+            <div class="col-md-3 mb-3">
+                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
+                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                        alt="img"
+                        class="rounded-circle"
+                        style="width: 48px; height: 48px; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600;">Inactive</div>
+                        <h4 class="text-danger mt-1 mb-0" style="font-size: 20px;">1007</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Joiners -->
+            <div class="col-md-3 mb-3">
+                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
+                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                        alt="img"
+                        class="rounded-circle"
+                        style="width: 48px; height: 48px; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600;">New Joiners</div>
+                        <h4 class="text-primary mt-1 mb-0" style="font-size: 20px;">67</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- EMPLOYEES GRID -->
+        <div class="row employee-grid">
+            <!-- Employee Card 1 -->
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card" style="position: relative; padding-top: 24px;">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+
+                    <!-- 3-dots Icon (top-right) -->
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <!-- Profile -->
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: fuchsia; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
+
+                    <!-- Stats -->
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <!-- Productivity -->
+                    <div>Productivity: 65%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-purple" style="width: 65%"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Employee Card 2 -->
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 30%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar" style="width: 35%; background-color: #ffc107;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 20%</div>
+                    <div class="progress mt-1" style="background-color: #e9ecef; border-radius: 4px;">
+                        <div class="progress-bar" style="width: 20%; background-color: red;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 90%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar" style="width: 90%; background-color: green;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Full Stack Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 10%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-danger" style="width: 15%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #ff1493; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Software Developer
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+                    <div>Productivity: 65%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-purple" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Developer
+                    </small>
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+                    <div>Productivity: 90%</div>
+                    <div class="progress mt-1">
+                        <div class="progress-bar" style="width: 90%; background-color: green;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="elevated-card">
+                    <!-- Square Checkbox (top-left) -->
+                    <input type="checkbox" style="
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 26px;
+        height: 22px;
+        accent-color: orange; /* Optional: purple tint */
+        cursor: pointer;
+    ">
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
+                        <!-- Just 3 vertical dots -->
+                        <span
+                            id="actionDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="cursor: pointer; font-size: 20px;">
+                            &#8942;
+                        </span>
+
+                        <!-- Dropdown Menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="ti ti-edit me-2 "></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                    <i class="ti ti-trash me-2"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        Anthony Lewis
+                    </h6>
+
+                    <small style="color: #00bfff; background-color: #dff7ff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                        Tester
+                    </small>
+
+                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <span><strong>Projects</strong><br>20</span>
+                        <span><strong>Done</strong><br>13</span>
+                        <span><strong>Progress</strong><br>8</span>
+                    </div>
+
+                    <div>Productivity: 80%</div>
+                    <div class="progress mt-1" style=" background-color: #f0f2f5; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 80%; background-color: #ff2ea6; border-radius: 10px;"></div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- Add more employee cards as needed -->
+        </div>
+    </div>
 
 
 </div>
