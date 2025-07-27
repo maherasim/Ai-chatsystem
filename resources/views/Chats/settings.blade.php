@@ -287,18 +287,7 @@
                                         </div>
                                         <!-- /Profile Info -->
 
-                                        <!-- Read Receipts -->
-                                        <div class="d-flex justify-content-between align-items-center pb-1 mt-2 mb-3">
-                                            <h6 class="fs-14">
-                                                <a href="javascript:void(0);">
-                                                    <i class="ti ti-checks text-gray me-2"></i>Read Receipts
-                                                </a>
-                                            </h6>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
-                                        <!-- /Read Receipts -->
+                                       
 
                                     </div>
                                 </div>
@@ -599,12 +588,12 @@
                                                     </div>
 
 
-                                                    <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-2">
+                                                    {{-- <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-2">
                                                         <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-trash text-gray me-2 "></i>Show Previews</a></h6>
                                                         <div class="form-check form-switch d-flex justify-content-end align-items-center">
                                                             <input class="form-check-input" type="checkbox" role="switch">
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <!-- show reaction -->
                                                     <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-1">
                                                         <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-mood-smile text-gray me-2 "></i>Show Reaction Notifications</a></h6>
