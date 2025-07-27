@@ -313,6 +313,11 @@
                                                             <i class="ti ti-photo me-2"></i>Chats Background
                                                         </a>
                                                     </h2>
+                                                     <h2 class="accordion-header border-0">
+                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
+                                                            <i class="ti ti-photo me-2"></i>Login Background
+                                                        </a>
+                                                    </h2>
                                                     <div id="chatuser-collapse4" class="accordion-collapse border-0 collapse " data-bs-parent="#chat-setting">
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="chat-user-photo">
