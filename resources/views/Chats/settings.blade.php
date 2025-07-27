@@ -287,7 +287,7 @@
                                         </div>
                                         <!-- /Profile Info -->
 
-                                       
+
 
                                     </div>
                                 </div>
@@ -313,7 +313,7 @@
                                                             <i class="ti ti-photo me-2"></i>Chats Background
                                                         </a>
                                                     </h2>
-                                                     <h2 class="accordion-header border-0">
+                                                    <h2 class="accordion-header border-0">
                                                         <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
                                                             <i class="ti ti-photo me-2"></i>Login Background
                                                         </a>
@@ -510,7 +510,7 @@
                                                     <div id="url-app-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="form-group mb-3">
-                                                                <label for="app_name" class="form-label">App Name</label>
+
                                                                 <input type="text" class="form-control" id="app_name" name="app_name" placeholder="Enter App Name">
                                                             </div>
 
@@ -619,51 +619,101 @@
                                                             </h2>
                                                             <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
                                                                 <div class="accordion-body border-0 pb-0">
-                                                                    <div class="row">
-                                                                        <!-- Sound 1 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Ding</strong>
-                                                                                <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
+                                                                <div class="row">
+    <!-- Sound 1 -->
+    <div class="col-6 mb-3">
+        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
+            <audio id="audio-1" src="{{ URL::asset('/sounds/ding1.mp3') }}"></audio>
 
-                                                                        <!-- Sound 2 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Pop</strong>
-                                                                                <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
+            <div id="play-1" onclick="playSound(1)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #28a745; display: flex; align-items: center;
+                justify-content: center; color: white; font-size: 24px;
+                margin: auto; cursor: pointer;">
+                ▶
+            </div>
 
-                                                                        <!-- Sound 3 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Bell</strong>
-                                                                                <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
+            <div id="stop-1" onclick="stopSound(1)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #dc3545; display: none; align-items: center;
+                justify-content: center; color: white; font-size: 20px;
+                margin: auto; cursor: pointer;">
+                ⏹
+            </div>
+        </div>
+    </div>
 
-                                                                        <!-- Sound 4 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Chime</strong>
-                                                                                <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+    <!-- Sound 2 -->
+    <div class="col-6 mb-3">
+        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
+            <audio id="audio-2" src="{{ URL::asset('/sounds/ding2.mp3') }}"></audio>
+
+            <div id="play-2" onclick="playSound(2)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #28a745; display: flex; align-items: center;
+                justify-content: center; color: white; font-size: 24px;
+                margin: auto; cursor: pointer;">
+                ▶
+            </div>
+
+            <div id="stop-2" onclick="stopSound(2)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #dc3545; display: none; align-items: center;
+                justify-content: center; color: white; font-size: 20px;
+                margin: auto; cursor: pointer;">
+                ⏹
+            </div>
+        </div>
+    </div>
+
+    <!-- Sound 3 -->
+    <div class="col-6 mb-3">
+        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
+            <audio id="audio-3" src="{{ URL::asset('/sounds/ding3.mp3') }}"></audio>
+
+            <div id="play-3" onclick="playSound(3)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #28a745; display: flex; align-items: center;
+                justify-content: center; color: white; font-size: 24px;
+                margin: auto; cursor: pointer;">
+                ▶
+            </div>
+
+            <div id="stop-3" onclick="stopSound(3)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #dc3545; display: none; align-items: center;
+                justify-content: center; color: white; font-size: 20px;
+                margin: auto; cursor: pointer;">
+                ⏹
+            </div>
+        </div>
+    </div>
+
+    <!-- Sound 4 -->
+    <div class="col-6 mb-3">
+        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
+            <audio id="audio-4" src="{{ URL::asset('/sounds/ding4.mp3') }}"></audio>
+
+            <div id="play-4" onclick="playSound(4)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #28a745; display: flex; align-items: center;
+                justify-content: center; color: white; font-size: 24px;
+                margin: auto; cursor: pointer;">
+                ▶
+            </div>
+
+            <div id="stop-4" onclick="stopSound(4)" style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-color: #dc3545; display: none; align-items: center;
+                justify-content: center; color: white; font-size: 20px;
+                margin: auto; cursor: pointer;">
+                ⏹
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
                                                                     <div class="col-lg-12 d-flex">
                                                                         <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
@@ -710,7 +760,7 @@
     <!-- Chat -->
 
 
-    
+
 
 
 
@@ -734,7 +784,43 @@
     }
 </script>
 
+<script>
+    function playSound(index) {
+        const audio = document.getElementById(`audio-${index}`);
+        const playBtn = document.getElementById(`play-${index}`);
+        const stopBtn = document.getElementById(`stop-${index}`);
 
+        // Pause all others
+        for (let i = 1; i <= 4; i++) {
+            if (i !== index) {
+                document.getElementById(`audio-${i}`).pause();
+                document.getElementById(`audio-${i}`).currentTime = 0;
+                document.getElementById(`play-${i}`).style.display = 'flex';
+                document.getElementById(`stop-${i}`).style.display = 'none';
+            }
+        }
+
+        audio.play();
+        playBtn.style.display = 'none';
+        stopBtn.style.display = 'flex';
+
+        audio.addEventListener('ended', () => {
+            stopBtn.style.display = 'none';
+            playBtn.style.display = 'flex';
+        });
+    }
+
+    function stopSound(index) {
+        const audio = document.getElementById(`audio-${index}`);
+        const playBtn = document.getElementById(`play-${index}`);
+        const stopBtn = document.getElementById(`stop-${index}`);
+
+        audio.pause();
+        audio.currentTime = 0;
+        playBtn.style.display = 'flex';
+        stopBtn.style.display = 'none';
+    }
+</script>
 
 
 @component('components.model-popup')
