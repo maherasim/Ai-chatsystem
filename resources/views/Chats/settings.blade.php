@@ -266,7 +266,7 @@
 
 
                                         <!-- Profile Info -->
-                                        <div class="accordion-item border-0 border-bottom">
+                                      
                                             <h2 class="accordion-header others">
                                                 <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3" aria-expanded="false" aria-controls="chatuser-collapse3">
                                                     <i class="ti ti-mood-smile me-2"></i>Profile Info
@@ -284,7 +284,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                       
                                         <!-- /Profile Info -->
 
 
@@ -313,11 +313,13 @@
                                                             <i class="ti ti-photo me-2"></i>Chats Background
                                                         </a>
                                                     </h2>
+                                                </div>
+                                                <div class="accordion-item border-0 border-bottom">
                                                     <h2 class="accordion-header border-0">
                                                         <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
                                                             <i class="ti ti-photo me-2"></i>Login Background
                                                         </a>
-                                                    </h2>
+                                                    </h2></div>
                                                     <div id="chatuser-collapse4" class="accordion-collapse border-0 collapse " data-bs-parent="#chat-setting">
                                                         <div class="accordion-body border-0 pb-0">
                                                             <div class="chat-user-photo">
@@ -332,9 +334,9 @@
                                                                             style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
                                                                         <div class="img-overlay-1"
                                                                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                   background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
-                   justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                        background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                                                                                        justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                                                                                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
                                                                             <a href="javascript:void(0);" onclick="document.getElementById('imageUpload1').click();"
                                                                                 style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
                                                                         </div>
