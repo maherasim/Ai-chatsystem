@@ -194,9 +194,9 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
-   
 
-        @include('Chats.chatsidebar')
+
+    @include('Chats.chatsidebar')
 
     <!-- /Left Sidebar Menu -->
 
@@ -211,7 +211,7 @@
 
                 <!-- Chats sidebar -->
                 <div id="chats" class="sidebar-content active slimscroll">
-                  <div class="slimscroll">
+                    <div class="slimscroll">
                         <div class="chat-search-header">
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">Projects</h4>
@@ -4653,11 +4653,11 @@
     <!-- Chat -->
 
 
-  
- <div class="container py-4">
+
+    <div class="container py-4">
         <!-- EMPLOYEE SECTION TITLE -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Users</h3>
+            <h3>Our Projects</h3>
             <button
                 type="button"
                 data-bs-toggle="modal"
@@ -4667,70 +4667,40 @@
                 <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
                     +
                 </span>
-                Add User
+                Add Project
             </button>
 
-
         </div>
 
-        <!-- EMPLOYEE STATS -->
-        <div class="row mb-4">
-            <!-- Total Users -->
-            <div class="col-md-3 mb-3">
-                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
-                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                        alt="img"
-                        class="rounded-circle"
-                        style="width: 48px; height: 48px; object-fit: cover;">
-                    <div>
-                        <div style="font-weight: 600;">Total Users</div>
-                        <h4 class="text-dark mt-1 mb-0" style="font-size: 20px;">1007</h4>
-                    </div>
-                </div>
-            </div>
+        <!-- Project Grid STATS -->
+        <div class="row mb-4" style="padding-left: 14px; padding-right: 14px; ">
+            <div class="elevated-card" style="border-radius: 2;">
+                <div style="display: flex; justify-content: flex-end; align-items: center; padding: 6px 8px;">
 
-            <!-- Active -->
-            <div class="col-md-3 mb-3">
-                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
-                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                        alt="img"
-                        class="rounded-circle"
-                        style="width: 48px; height: 48px; object-fit: cover;">
-                    <div>
-                        <div style="font-weight: 600;">Active</div>
-                        <h4 class="text-success mt-1 mb-0" style="font-size: 20px;">1007</h4>
-                    </div>
-                </div>
-            </div>
+                    <select
+                        style="margin-right: 8px; padding: 6px 12px; font-size: 13px; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; color: #000; transition: 0.3s;"
+                        onmouseover="this.style.color='#ffa500'"
+                        onmouseout="this.style.color='#000'">
+                        <option>Select Status</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
 
-            <!-- Inactive -->
-            <div class="col-md-3 mb-3">
-                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
-                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                        alt="img"
-                        class="rounded-circle"
-                        style="width: 48px; height: 48px; object-fit: cover;">
-                    <div>
-                        <div style="font-weight: 600;">Inactive</div>
-                        <h4 class="text-danger mt-1 mb-0" style="font-size: 20px;">1007</h4>
-                    </div>
-                </div>
-            </div>
+                    <select
+                        style="padding: 6px 12px; font-size: 13px; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; color: #000; transition: 0.3s;"
+                        onmouseover="this.style.color='#ffa500'"
+                        onmouseout="this.style.color='#000'">
+                        <option>Sort By : Last 7 Days</option>
+                        <option>Recently added</option>
+                        <option>Ascending</option>
+                        <option>Descending</option>
+                    </select>
 
-            <!-- New Joiners -->
-            <div class="col-md-3 mb-3">
-                <div class="elevated-card" style="display: flex; align-items: center; gap: 12px; padding: 12px;">
-                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                        alt="img"
-                        class="rounded-circle"
-                        style="width: 48px; height: 48px; object-fit: cover;">
-                    <div>
-                        <div style="font-weight: 600;">New Joiners</div>
-                        <h4 class="text-primary mt-1 mb-0" style="font-size: 20px;">67</h4>
-                    </div>
                 </div>
+
             </div>
         </div>
+
 
 
         <!-- EMPLOYEES GRID -->
@@ -4779,22 +4749,22 @@
                     <!-- Profile -->
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: fuchsia; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Software Developer
+                        Project ID
                     </small>
 
                     <!-- Stats -->
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
                     <!-- Productivity -->
-                    <div>Productivity: 65%</div>
+                    <div class="mt-3">Productivity: 65%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-purple" style="width: 65%"></div>
                     </div>
@@ -4841,19 +4811,19 @@
                     </div>
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Developer
+                        Project ID
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 30%</div>
+                    <div class="mt-3">Productivity: 30%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 35%; background-color: #ffc107;"></div>
                     </div>
@@ -4898,18 +4868,19 @@
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
 
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Developer
+                        Project ID
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
+                    <div class="mt-3">Productivity: 30%</div>
                     <div>Productivity: 20%</div>
                     <div class="progress mt-1" style="background-color: #e9ecef; border-radius: 4px;">
                         <div class="progress-bar" style="width: 20%; background-color: red;"></div>
@@ -4955,20 +4926,22 @@
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
 
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Software Developer
+                        Project ID
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 90%</div>
+
+
+                    <div class="mt-3">Productivity: 90%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 90%; background-color: green;"></div>
                     </div>
@@ -5013,20 +4986,20 @@
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
 
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: #212529; background-color: #e9ecef; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Full Stack Developer
+                        Project ID
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 10%</div>
+                    <div class="mt-3">Productivity: 10%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-danger" style="width: 15%"></div>
                     </div>
@@ -5071,19 +5044,19 @@
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
 
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: #ff1493; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Software Developer
+                        Project ID
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
-                    <div>Productivity: 65%</div>
+                    <div class="mt-3">Productivity: 65%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-purple" style="width: 65%"></div>
                     </div>
@@ -5127,18 +5100,18 @@
                     </div>
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Developer
+                        Project ID
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
-                    <div>Productivity: 90%</div>
+                    <div class="mt-3">Productivity: 90%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 90%; background-color: green;"></div>
                     </div>
@@ -5182,30 +5155,286 @@
                     </div>
                     <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
                     <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
+                        Project Title
                     </h6>
 
                     <small style="color: #00bfff; background-color: #dff7ff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Tester
+                        Project ID
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 80%</div>
+                    <div class="mt-3">Productivity: 80%</div>
                     <div class="progress mt-1" style=" background-color: #f0f2f5; border-radius: 10px;">
                         <div class="progress-bar" style="width: 80%; background-color: #ff2ea6; border-radius: 10px;"></div>
                     </div>
 
                 </div>
             </div>
-
-
-
             <!-- Add more employee cards as needed -->
+        </div>
+        <!-- right sidebar popup -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <!-- Header -->
+            <div class="offcanvas-header" style="padding: 0;">
+                <!-- Header with gradient -->
+                <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
+
+                    <!-- Close Button -->
+                    <button type="button"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                        style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        ">
+                        &times;
+                    </button>
+
+                    <!-- Profile Image -->
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
+                        class="rounded-circle"
+                        alt="Profile"
+                        style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
+                </div>
+
+            </div>
+
+            <!-- Body -->
+            <div class="offcanvas-body pt-5">
+                <!-- Name and Badges -->
+                <div class="text-center mt-1 " style="margin-left: 30px;">
+                    <h5 class="mb-0 fw-semibold">Stephan Peralt
+                        <i class="ti ti-check" style="color: #1d9f2f;"></i>
+                    </h5>
+                    <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+                        <span class="badge bg-secondary-subtle text-dark border">Software Developer</span>
+
+                        <span class="badge bg-light text-dark border">10+ years of Experience</span>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="mt-4 px-3 ">
+                    <div class="row g-3 border-bottom pb-2">
+                        <!-- Client ID -->
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="ti ti-id me-2 text-muted"></i>
+                                <small class="text-muted">Client ID</small>
+                            </div>
+                            <div class="fw-medium">CLT-0024</div>
+                        </div>
+
+                        <!-- Team -->
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="ti ti-users me-2 text-muted"></i>
+                                <small class="text-muted">Team</small>
+                            </div>
+                            <div class="fw-medium">UI/UX Design</div>
+                        </div>
+
+                        <!-- Date of Join -->
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="ti ti-calendar me-2 text-muted"></i>
+                                <small class="text-muted">Date Of Join</small>
+                            </div>
+                            <div class="fw-medium">1st Jan 2023</div>
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-4 px-3 ">
+                            <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-4 flex-grow-1" style="min-width: 150px;">
+                                <i class="ti ti-pencil"></i> Edit Info
+                            </a>
+                            <a href="#" class="btn btn-warning text-white d-flex align-items-center gap-2 px-4 flex-grow-1"
+                                style="background-color: #f65b0f; border-color: #f65b0f; min-width: 150px;">
+                                <i class="ti ti-message"></i> Message
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Basic Info -->
+                <div class="mt-4 px-3 border-bottom">
+                    <h6 class="fw-bold mb-3">Basic Information</h6>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-phone text-muted"></i> Phone
+                        </small>
+
+                        <div class="fw-medium text-dark">(163) 2459 315</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-mail text-muted"></i> Email
+                        </small>
+                        <div class="fw-medium text-dark">peralt12@example.com</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-gender-male  text-muted"></i> Genfer
+                        </small>
+                        <div class="fw-medium text-dark">Male</div>
+                    </div>
+                </div>
+
+                <!-- Persnal Info -->
+                <div class="mt-4 px-3 mb-4 border-bottom">
+                    <h6 class="fw-bold mb-3">Personal Information</h6>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-e-passport  text-muted"></i> Passport No
+                        </small>
+                        <div class="fw-medium text-dark">QRET4566FGRT</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-calendar-x  text-muted"></i> Passport Exp Date
+                        </small>
+
+                        <div class="fw-medium text-dark">15 May 2029</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">
+                            <i class="ti ti-gender-male  text-muted"></i> Nationality
+                        </small>
+
+                        <div class="fw-medium text-dark">Indian</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 px-3 mb-4">
+                    <h6 class="fw-bold mb-3">Projects</h6>
+                    <div class="row g-3">
+                        <!-- Project Card 1 -->
+                        <div class="col-12">
+                            <div class="border rounded p-3">
+                                <!-- Top: Icon, Title, Task Info -->
+                                <div class="d-flex align-items-start mb-2">
+                                    <!-- Project Icon -->
+                                    <div class="d-flex align-items-center justify-content-end gap-2">
+                                        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+
+                                    </div>
+
+
+                                    <!-- Project Info -->
+                                    <div>
+                                        <h6 class="mb-0 fw-bold" style="padding-left: 6px;">World Health</h6>
+                                        <small class="text-muted">
+                                            8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Horizontal Divider -->
+                                <div style="background-color: white; padding: 10px;">
+                                    <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                                </div>
+
+
+                                <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <!-- Deadline Column -->
+                                    <div>
+                                        <small class="text-muted d-block mb-1">Deadline</small>
+                                        <div class="fw-medium">31 July 2025</div>
+                                    </div>
+
+                                    <!-- Project Lead Column -->
+                                    <div class="text-end">
+                                        <small class="text-muted d-block mb-1">Project Lead</small>
+                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+                                            <div class="fw-medium">Leona</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Project Card 2 -->
+                        <div class="col-12">
+                            <div class="border rounded p-3">
+                                <!-- Top: Icon, Title, Task Info -->
+                                <div class="d-flex align-items-start mb-2">
+                                    <!-- Project Icon -->
+                                    <div class="d-flex align-items-center justify-content-end gap-2">
+                                        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover; margin-left:8px" />
+                                    </div>
+
+
+
+                                    <!-- Project Info -->
+                                    <div>
+                                        <h6 class="mb-0 fw-bold" style="padding-left: 6px;"> Hospital Administration</h6>
+                                        <small class="text-muted">
+                                            8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Horizontal Divider -->
+                                <div style="background-color: white; padding: 10px;">
+                                    <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                                </div>
+
+                                <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <!-- Deadline Column -->
+                                    <div>
+                                        <small class="text-muted d-block mb-1">Deadline</small>
+                                        <div class="fw-medium">31 July 2025</div>
+                                    </div>
+
+                                    <!-- Project Lead Column -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
