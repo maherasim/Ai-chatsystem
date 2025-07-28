@@ -4673,10 +4673,9 @@
         </div>
 
         <!-- Project Grid STATS -->
-        <div class="row mb-4" style="padding-left: 14px; padding-right: 14px; ">
-            <div class="elevated-card" style="border-radius: 2;">
+        <div class="row mb-4" style="padding-left: 14px; padding-right: 14px;">
+            <div style="border-radius: 2; height:50px; border: 1px solid #d1d5db; padding-top:3px; border-radius:10px;">
                 <div style="display: flex; justify-content: flex-end; align-items: center; padding: 6px 8px;">
-
                     <select
                         style="margin-right: 8px; padding: 6px 12px; font-size: 13px; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; color: #000; transition: 0.3s;"
                         onmouseover="this.style.color='#ffa500'"
@@ -4880,8 +4879,8 @@
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div class="mt-3">Productivity: 30%</div>
-                    <div>Productivity: 20%</div>
+
+                    <div class="mt-3">Productivity: 20%</div>
                     <div class="progress mt-1" style="background-color: #e9ecef; border-radius: 4px;">
                         <div class="progress-bar" style="width: 20%; background-color: red;"></div>
                     </div>
@@ -5178,265 +5177,485 @@
             <!-- Add more employee cards as needed -->
         </div>
         <!-- right sidebar popup -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <!-- Header -->
-            <div class="offcanvas-header" style="padding: 0;">
-                <!-- Header with gradient -->
-                <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="padding: 20px; max-width: 450px; overflow-y: auto;">
+            <!-- Close Button -->
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+                style="
+        position: absolute;
+        top: 1px;
+        right: 2px;
+        background-color: #ffffff;
+        color: #111827;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+        font-weight: bold;
+        z-index: 1055;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    ">
+                &times;
+            </button>
 
-                    <!-- Close Button -->
-                    <button type="button"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                        style="
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: white;
-            color: black;
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 24px;
-            font-weight: bold;
-            z-index: 9999;
+            <!-- Header Section -->
+            <div style="border:1px solid #e2e8f0; border-radius:6px; background-color:#f9f9fb; padding:16px; margin-bottom:16px; padding-top:16px; margin-top: 20px;">
+
+                <!-- Top Center: Image + Hospital Administration + Project ID -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <img src="https://via.placeholder.com/52" style="width:52px; height:52px; border-radius:50%; display: inline-block; margin-bottom: 8px;" alt="" />
+                    <div style="font-size:18px; font-weight:600; color: #111827;">Hospital Administration</div>
+                    <div style="font-size:14px; color:#6b7280;">Project ID : <strong>PRO‑0004</strong></div>
+                </div>
+
+                <!-- Bottom Row: Priority and Tasks Details -->
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+
+                    <!-- Priority -->
+                    <div>
+                        <label style="font-size: 14px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">Priority</label>
+                        <div style="position: relative;">
+                            <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+                                style="
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-        ">
-                        &times;
-                    </button>
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #b91c1c;
+            background-color: #fef2f2;
+            padding: 6px 12px;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            cursor: pointer;
+          ">
+                                <span style="
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #dc2626;
+            border-radius: 50%;
+          "></span>
+                                High
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Low</a></li>
+                                <li><a class="dropdown-item" href="#">Medium</a></li>
+                                <li><a class="dropdown-item" href="#">High</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
-                    <!-- Profile Image -->
-                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
-                        class="rounded-circle"
-                        alt="Profile"
-                        style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
+                    <!-- Tasks Details -->
+                    <div style="text-align: right;">
+                        <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px; margin-right: 58px;">Tasks Details</div>
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; align-items: center;">
+                            <div>
+                                <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
+                                <div style="font-size: 20px; font-weight: bold; color: #111827;">0 / 0</div>
+                            </div>
+                            <div style="font-size: 13px; color: #6b7280;margin-top:-29px; margin-left:7px">0% Completed</div>
+                            <div style="margin-top: 12px; height: 6px; background-color: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 0%; height: 100%; background-color: #3b82f6; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
             </div>
 
-            <!-- Body -->
-            <div class="offcanvas-body pt-5">
-                <!-- Name and Badges -->
-                <div class="text-center mt-1 " style="margin-left: 30px;">
-                    <h5 class="mb-0 fw-semibold">Stephan Peralt
-                        <i class="ti ti-check" style="color: #1d9f2f;"></i>
-                    </h5>
-                    <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
-                        <span class="badge bg-secondary-subtle text-dark border">Software Developer</span>
 
-                        <span class="badge bg-light text-dark border">10+ years of Experience</span>
-                    </div>
+            <!-- Status -->
+            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                    <!-- Icon: Status -->
+                    <i class="ti ti-square-rounded me-2"> </i>Status
+
                 </div>
+                <span style="background-color:#f3e8ff; color:#9333ea; font-size:12px; padding:4px 10px; border-radius:12px;">InProgress</span>
+            </div>
 
-                <!-- Info -->
-                <div class="mt-4 px-3 ">
-                    <div class="row g-3 border-bottom pb-2">
-                        <!-- Client ID -->
-                        <div class="col-12 d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <i class="ti ti-id me-2 text-muted"></i>
-                                <small class="text-muted">Client ID</small>
-                            </div>
-                            <div class="fw-medium">CLT-0024</div>
-                        </div>
-
-                        <!-- Team -->
-                        <div class="col-12 d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <i class="ti ti-users me-2 text-muted"></i>
-                                <small class="text-muted">Team</small>
-                            </div>
-                            <div class="fw-medium">UI/UX Design</div>
-                        </div>
-
-                        <!-- Date of Join -->
-                        <div class="col-12 d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <i class="ti ti-calendar me-2 text-muted"></i>
-                                <small class="text-muted">Date Of Join</small>
-                            </div>
-                            <div class="fw-medium">1st Jan 2023</div>
-                        </div>
-
-                        <div class="d-flex justify-content-center gap-3 mt-4 px-3 ">
-                            <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-4 flex-grow-1" style="min-width: 150px;">
-                                <i class="ti ti-pencil"></i> Edit Info
-                            </a>
-                            <a href="#" class="btn btn-warning text-white d-flex align-items-center gap-2 px-4 flex-grow-1"
-                                style="background-color: #f65b0f; border-color: #f65b0f; min-width: 150px;">
-                                <i class="ti ti-message"></i> Message
-                            </a>
-                        </div>
-
-                    </div>
+            <!-- Team -->
+            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                    <!-- Icon: Team -->
+                    <i class="ti ti-users-group me-2"></i>
+                    Team
                 </div>
-                <!-- Basic Info -->
-                <div class="mt-4 px-3 border-bottom">
-                    <h6 class="fw-bold mb-3">Basic Information</h6>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-phone text-muted"></i> Phone
-                        </small>
-
-                        <div class="fw-medium text-dark">(163) 2459 315</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Lewis</span>
                     </div>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-mail text-muted"></i> Email
-                        </small>
-                        <div class="fw-medium text-dark">peralt12@example.com</div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Leona</span>
                     </div>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-gender-male  text-muted"></i> Genfer
-                        </small>
-                        <div class="fw-medium text-dark">Male</div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Pineiro</span>
                     </div>
-                </div>
-
-                <!-- Persnal Info -->
-                <div class="mt-4 px-3 mb-4 border-bottom">
-                    <h6 class="fw-bold mb-3">Personal Information</h6>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-e-passport  text-muted"></i> Passport No
-                        </small>
-                        <div class="fw-medium text-dark">QRET4566FGRT</div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Moseley</span>
                     </div>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-calendar-x  text-muted"></i> Passport Exp Date
-                        </small>
-
-                        <div class="fw-medium text-dark">15 May 2029</div>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">
-                            <i class="ti ti-gender-male  text-muted"></i> Nationality
-                        </small>
-
-                        <div class="fw-medium text-dark">Indian</div>
-                    </div>
-                </div>
-
-                <div class="mt-4 px-3 mb-4">
-                    <h6 class="fw-bold mb-3">Projects</h6>
-                    <div class="row g-3">
-                        <!-- Project Card 1 -->
-                        <div class="col-12">
-                            <div class="border rounded p-3">
-                                <!-- Top: Icon, Title, Task Info -->
-                                <div class="d-flex align-items-start mb-2">
-                                    <!-- Project Icon -->
-                                    <div class="d-flex align-items-center justify-content-end gap-2">
-                                        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
-
-                                    </div>
-
-
-                                    <!-- Project Info -->
-                                    <div>
-                                        <h6 class="mb-0 fw-bold" style="padding-left: 6px;">World Health</h6>
-                                        <small class="text-muted">
-                                            8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
-                                        </small>
-                                    </div>
-                                </div>
-
-                                <!-- Horizontal Divider -->
-                                <div style="background-color: white; padding: 10px;">
-                                    <hr style="
-    border: none;
-    border-top: 1px solid #444;  /* thicker and darker */
-    margin: 1rem 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
-  " />
-                                </div>
-
-
-                                <!-- Deadline & Project Lead: Two Columns, Same Row -->
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <!-- Deadline Column -->
-                                    <div>
-                                        <small class="text-muted d-block mb-1">Deadline</small>
-                                        <div class="fw-medium">31 July 2025</div>
-                                    </div>
-
-                                    <!-- Project Lead Column -->
-                                    <div class="text-end">
-                                        <small class="text-muted d-block mb-1">Project Lead</small>
-                                        <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
-                                            <div class="fw-medium">Leona</div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Project Card 2 -->
-                        <div class="col-12">
-                            <div class="border rounded p-3">
-                                <!-- Top: Icon, Title, Task Info -->
-                                <div class="d-flex align-items-start mb-2">
-                                    <!-- Project Icon -->
-                                    <div class="d-flex align-items-center justify-content-end gap-2">
-                                        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover; margin-left:8px" />
-                                    </div>
-
-
-
-                                    <!-- Project Info -->
-                                    <div>
-                                        <h6 class="mb-0 fw-bold" style="padding-left: 6px;"> Hospital Administration</h6>
-                                        <small class="text-muted">
-                                            8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
-                                        </small>
-                                    </div>
-                                </div>
-
-                                <!-- Horizontal Divider -->
-                                <div style="background-color: white; padding: 10px;">
-                                    <hr style="
-    border: none;
-    border-top: 1px solid #444;  /* thicker and darker */
-    margin: 1rem 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
-  " />
-                                </div>
-
-                                <!-- Deadline & Project Lead: Two Columns, Same Row -->
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <!-- Deadline Column -->
-                                    <div>
-                                        <small class="text-muted d-block mb-1">Deadline</small>
-                                        <div class="fw-medium">31 July 2025</div>
-                                    </div>
-
-                                    <!-- Project Lead Column -->
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
                 </div>
             </div>
+
+            <!-- Team Lead -->
+            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                    <!-- Icon: Team Lead -->
+                    <i class="ti ti-user-shield me-2"></i>
+                    Team Lead
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Ruth</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Meredith</span>
+                    </div>
+                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                </div>
+            </div>
+
+            <!-- Project Manager -->
+            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                    <!-- Icon: PM -->
+                    <i class="ti ti-user-star me-2"></i>
+                    Project Manager
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                        <span style="font-size:13px;">Dwight</span>
+                    </div>
+                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                    <!-- Icon: Tags -->
+                    <i class="ti ti-bookmark me-2"></i>
+                    Tags
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span style="background-color:#fde8e8; color:#b91c1c; font-size:12px; padding:4px 8px; border-radius:12px;">Admin Panel</span>
+                    <span style="background-color:#e8f2fe; color:#1e3a8a; font-size:12px; padding:4px 8px; border-radius:12px;">High Tech</span>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="pb-3 border-bottom">
+                <div style="font-size:14px; font-weight:500; margin-bottom:6px;">Description</div>
+                <p style="font-size:13px; color:#374151; line-height:1.6;">
+                    The Enhanced Patient Management System (EPMS) project aims to modernize and streamline the patient management processes within. By integrating advanced technologies and optimizing existing workflows, the project seeks to improve patient care, enhance operational efficiency, and ensure compliance with regulatory standards.
+                </p>
+            </div>
+            <details style="border-bottom: 1px solid #e5e7eb; padding-bottom: 12px; margin-bottom: 8px; cursor: pointer;">
+                <summary style="font-weight: 600; font-size: 16px; color: #111827; list-style: none;">
+                    Tasks
+                </summary>
+            </details>
+
+            <!-- Task Row -->
+            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;" class="border-bottom">
+
+                <!-- Checkbox -->
+                <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+
+                <!-- Drag Handle Icon -->
+                <div style="width: 16px; height: 16px; cursor: grab; display: flex; flex-direction: column; justify-content: space-between;">
+                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                </div>
+
+                <!-- Star Icon -->
+                <div style="color: #fbbf24; cursor: pointer;">&#9733;</div>
+
+                <!-- Task Name -->
+                <div style="font-weight: 600; font-size: 14px; color: #111827; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Patient
+                </div>
+
+                <!-- Status Label -->
+                <div style="
+      background-color: #fbcfe8; 
+      color: #be185d; 
+      font-size: 12px; 
+      padding: 3px 10px; 
+      border-radius: 12px;
+      white-space: nowrap;
+    ">
+                    Onhold
+                </div>
+
+                <!-- Avatars -->
+                <div style="display: flex; gap: -8px;">
+                    <img src="https://via.placeholder.com/32" alt="User 1" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
+                    <img src="https://via.placeholder.com/32" alt="User 2" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
+                </div>
+
+                <!-- Options (3 dots) -->
+                <div style="font-size: 20px; color: #9ca3af; cursor: pointer;">&#8942;</div>
+            </div>
+<h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Images</h3>
+
+  <!-- Images container -->
+  <div style="display: flex; gap: 12px;" class="pb-3">
+    <img src="https://via.placeholder.com/150x120?text=Image+1" alt="Image 1"
+      style="width: 48%; border-radius: 8px; object-fit: cover;"/>
+
+    <img src="https://via.placeholder.com/150x120?text=Image+2" alt="Image 2"
+      style="width: 48%; border-radius: 8px; object-fit: cover;"/>
+  </div>
+
+  <!-- files container -->
+   <h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Files</h3>
+  <div style="max-width: 400px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; font-family: Arial, sans-serif;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="doc icon" style="width: 28px; height: 28px;" />
+      <div>
+        <div style="font-weight: 600; font-size: 15px; color: #111827;">Project_1.docx</div>
+        <div style="font-size: 12px; color: #6b7280;">7.6 MB</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px; font-size: 18px; color: #6b7280; cursor: pointer;">
+      <span title="Download" style="user-select:none;">⬇️</span>
+      <span title="Delete" style="user-select:none;">🗑️</span>
+    </div>
+  </div>
+  <div style="font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px;">
+    <span>15 May 2024, 6:53 PM</span>
+    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="user" style="width: 28px; height: 28px; border-radius: 50%;" />
+  </div>
+</div>
 
         </div>
+
+
     </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Add New Project Modal -->
+<!-- Modal -->
+<div class="modal fade" id="add_user" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header border-0 pb-0">
+                <div>
+                    <h4 class="modal-title fw-bold">Add New Project</h4>
+                    <small class="text-muted">User ID : <strong>user -0024</strong></small>
+                </div>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body pt-0">
+
+                <!-- Tabs -->
+
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="basicInfo">
+
+                        <!-- Profile Upload -->
+                        <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
+                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle me-4"
+                                alt="Profile Image" style="width: 80px; height: 80px; object-fit: cover;">
+                            <div>
+                                <p class="mb-1 fw-medium">Upload Project Logo</p>
+                                <small class="text-muted d-block mb-2">Image should be below 4 MB</small>
+                                <button class="btn btn-warning me-2"
+                                    style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
+                                <button class="btn btn-outline">Cancel</button>
+                            </div>
+                        </div>
+
+                        <!-- Form -->
+                        <form>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Project Priority</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Start Date & End Date</label>
+                                    <input type="date" class="form-control" />
+                                </div>
+                            </div>
+                            <!-- Description Editor -->
+                            <div class="mb-3">
+
+                                <label class="form-label">Description</label>
+                                <div class="border p-2 bg-white rounded">
+                                    <div class="d-flex mb-2 gap-2">
+                                        <select id="fontSizeSelect" class="form-select form-select-sm w-auto"
+                                            onchange="setFontSize(this.value)">
+                                            <option value="3">14</option>
+                                            <option value="2">12</option>
+                                            <option value="4">16</option>
+                                            <option value="5">18</option>
+                                        </select>
+
+                                        <button type="button" class="btn btn-light btn-sm" onclick="format('bold')">
+                                            <i class="fa-solid fa-bold"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-sm" onclick="format('italic')">
+                                            <i class="fa-solid fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-sm" onclick="format('underline')">
+                                            <i class="fa-solid fa-underline"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-sm" onclick="format('strikethrough')">
+                                            <i class="fa-solid fa-strikethrough"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-sm" onclick="removeFormatting()">
+                                            <i class="fa-solid fa-eraser"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-sm">
+                                            <i class="fa-regular fa-image"></i>
+                                        </button>
+                                    </div>
+                                    <div id="editor" contenteditable="true"
+                                        style="min-height: 120px; border: 1px solid #ddd; padding: 8px; border-radius: 4px; color: #000;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Add Section Field -->
+                            <div class="mb-3">
+                                <label class="form-label">Add Section</label>
+                                <div id="section-container"></div>
+                                <button type="button" onclick="addSection()"
+                                    style="background-color: #17a2b8; color: white; border: 1px solid #17a2b8; border-radius: 6px; padding: 6px 16px; font-size: 14px; cursor: pointer; margin-top: 6px;">
+                                    Add Section
+                                </button>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Project Manager</label>
+                                    <div id="selectorContainer1"
+                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
+
+                                        <!-- Selected Tags -->
+                                        <div id="tagContainer1"
+                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
+                                        </div>
+
+                                        <!-- Options -->
+                                        <div style="display: block;">
+                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Artywiz</span>
+                                            </div>
+
+                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Groupama</span>
+                                            </div>
+
+                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Zenith</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Developer</label>
+                                    <div id="selectorContainer2"
+                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
+
+                                        <!-- Selected Tags -->
+                                        <div id="tagContainer2"
+                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
+                                        </div>
+
+                                        <!-- Options -->
+                                        <div style="display: block;">
+                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Artywiz</span>
+                                            </div>
+
+                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Groupama</span>
+                                            </div>
+
+                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
+                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
+                                                <span style="font-size: 14px;">Zenith</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Files</label>
+                                <input type="file" class="form-control" />
+                            </div>
+
+                            <!-- Upload Files -->
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer border-top-0 pt-0">
+                <div class="ms-auto d-flex gap-2">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn text-white"
+                        style="background-color: #f65b0f; border-color: #f65b0f;">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
 
 
 </div>
@@ -5453,7 +5672,105 @@
         }, 150);
     });
 </script>
+<script>
+    function format(command) {
+        document.execCommand(command, false, null);
+    }
 
+    function setFontSize(value) {
+        document.execCommand("fontSize", false, value);
+    }
+
+    function removeFormatting() {
+        document.execCommand('removeFormat', false, null);
+    }
+
+    function addSection() {
+        const container = document.getElementById('section-container');
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.width = '100%';
+        wrapper.style.marginBottom = '10px';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Enter title';
+        input.style.width = '100%';
+        input.style.paddingRight = '80px';
+        input.style.paddingLeft = '12px';
+        input.style.height = '38px';
+        input.style.border = '1px solid #ced4da';
+        input.style.borderRadius = '4px';
+        input.style.fontSize = '14px';
+        input.style.boxSizing = 'border-box';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => wrapper.remove();
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.right = '0';
+        removeBtn.style.top = '0';
+        removeBtn.style.height = '100%';
+        removeBtn.style.backgroundColor = '#dc3545';
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderTopRightRadius = '4px';
+        removeBtn.style.borderBottomRightRadius = '4px';
+        removeBtn.style.padding = '0 12px';
+        removeBtn.style.fontSize = '14px';
+        removeBtn.style.cursor = 'pointer';
+
+        wrapper.appendChild(input);
+        wrapper.appendChild(removeBtn);
+        container.appendChild(wrapper);
+    }
+
+    // Add initial section on page load
+    window.onload = () => addSection();
+</script>
+<script>
+    function selectItem(elem, containerId) {
+        const value = elem.getAttribute("data-value");
+        const label = elem.getAttribute("data-label");
+        const img = elem.getAttribute("data-img");
+
+        const tagContainer = document.getElementById(containerId);
+
+        // Check if already selected
+        if (tagContainer.querySelector(`[data-tag="${value}"]`)) return;
+
+        const tag = document.createElement("div");
+        tag.setAttribute("data-tag", value);
+        tag.setAttribute("style", `
+      display: flex;
+      align-items: center;
+      padding: 4px 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: nowrap;
+    `);
+
+        const image = document.createElement("img");
+        image.src = img;
+        image.setAttribute("style", "width: 20px; height: 20px; border-radius: 50%; margin-right: 6px;");
+
+        const span = document.createTextNode(label);
+
+        const close = document.createElement("span");
+        close.innerHTML = "&times;";
+        close.setAttribute("style", "margin-left: 8px; cursor: pointer; font-weight: bold; color: #333;");
+        close.onclick = () => tag.remove();
+
+        tag.appendChild(image);
+        tag.appendChild(span);
+        tag.appendChild(close);
+
+        tagContainer.appendChild(tag);
+    }
+</script>
 @component('components.model-popup')
 @endcomponent
 @endsection
