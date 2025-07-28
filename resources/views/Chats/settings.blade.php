@@ -77,6 +77,12 @@
     <!-- sidebar group -->
     <div class="sidebar-group">
         <div class="tab-content" style="width: 400px; border-right:1px solid rgba(0, 0, 0, 0.002)">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <!-- Profile sidebar -->
             <div class="sidebar-content active slimscroll">
@@ -112,41 +118,64 @@
                                                     <i class="ti ti-user me-2"></i>Profile Info
                                                 </a>
                                             </h2>
-                                            <div id="chatuser-collapse" class="accordion-collapse collapse show" data-bs-parent="#account-setting">
-                                                <div class="accordion-body">
-                                                    <div>
-                                                        <div class="d-flex justify-content-center align-items-center">
-                                                            <span class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
-                                                                <img src="{{URL::asset('/build/img/profiles/avatar-16.jpg')}}" class="rounded-circle" alt="user">
-                                                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center"><i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i></span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control" placeholder="First Name">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-user"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+                  <form action="{{ route('chatuser.store') }}" method="POST" enctype="multipart/form-data">
+                   @csrf
+            <div id="chatuser-collapse" class="accordion-collapse collapse show" data-bs-parent="#account-setting">
+                <div class="accordion-body">
+                    <div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
+                                <img id="preview-image"
+                                    src="{{ $setting && $setting->image ? asset('storage/' . $setting->image) : URL::asset('/build/img/profiles/avatar-16.jpg') }}"
+                                    class="rounded-circle" alt="user">
+                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center">
+                                    <label for="profile_img" class="m-0" style="cursor:pointer;">
+                                        <i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i>
+                                    </label>
+                                    <input type="file" id="profile_img" name="image" accept="image/*" style="display:none;">
+                                </span>
+                            </span>
+                        </div>
 
-                                                            <div class="col-lg-12">
-                                                                <div class="input-icon mb-3 position-relative">
-                                                                    <input type="text" value="" class="form-control datetimepicker" placeholder="Date of birth">
-                                                                    <span class="icon-addon">
-                                                                        <i class="ti ti-calendar-event"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-icon mb-3 position-relative">
+                                <input type="text" name="first_name" class="form-control"
+                                        value="{{ old('first_name', $setting->first_name ?? '') }}"
+                                        placeholder="First Name" required>
+                                    <span class="icon-addon"><i class="ti ti-user"></i></span>
+                                </div>
+                            </div>
 
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="col-lg-12">
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="date" name="dob" class="form-control"
+                                        value="{{ old('dob', $setting->dob ?? '') }}"
+                                        placeholder="Date of birth" required>
+                                    <span class="icon-addon"><i class="ti ti-calendar-event"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 d-flex">
+                                <button type="submit" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             </form>
+
+{{-- Preview uploaded image --}}
+<script>
+    document.getElementById('profile_img').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('preview-image').src = reader.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    });
+</script>
+
                                         </div>
 
 
@@ -163,36 +192,44 @@
                                     <div class="accordion accordion-flush chat-accordion" id="pwd-setting">
 
                                         <!-- Email -->
-                                        <div class="accordion-item others">
-                                            <h2 class="accordion-header">
-                                                <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#set-email" aria-expanded="false" aria-controls="set-email">
-                                                    <i class="ti ti-mail me-2"></i>Email
-                                                </a>
-                                            </h2>
-                                            <div id="set-email" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
-                                                <div class="accordion-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="input-group mb-3">
-                                                                <span class="input-group-text"><i class="ti ti-mail"></i></span>
-                                                                <input type="email" class="form-control" placeholder="Old Email">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="input-group mb-3">
-                                                                <span class="input-group-text"><i class="ti ti-mail-check"></i></span>
-                                                                <input type="email" class="form-control" placeholder="New Email">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12 d-flex">
-                                                            <a href="javascript:void(0);" class="btn btn-primary flex-fill">
-                                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                            </a>
+                                       @php
+                                            $setting = \App\Models\Setting::where('user_id', auth()->id())->first();
+                                        @endphp
+
+                                <div class="accordion-item others">
+                                    <h2 class="accordion-header">
+                                        <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#set-email" aria-expanded="false" aria-controls="set-email">
+                                            <i class="ti ti-mail me-2"></i>Email
+                                        </a>
+                                    </h2>
+                                    <div id="set-email" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
+                                        <div class="accordion-body">
+                                            <form method="POST" action="{{ route('chatuser.updateEmail') }}">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text"><i class="ti ti-mail"></i></span>
+                                                            <input type="email" class="form-control" name="old_email" value="{{ auth()->user()->email }}" readonly>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text"><i class="ti ti-mail-check"></i></span>
+                                                            <input type="email" class="form-control" name="new_email" placeholder="New Email" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 d-flex">
+                                                        <button type="submit" class="btn btn-primary flex-fill">
+                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
+                                    </div>
+                                </div>
+
                                         <!-- /Email -->
 
                                         <!-- Password -->
@@ -204,62 +241,72 @@
                                             </h2>
                                             <div id="set-password" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
                                                 <div class="accordion-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="input-icon mb-3 position-relative">
-                                                                <input type="password" class="form-control" placeholder="Old Password">
-                                                                <span class="ti toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                  <form action="{{ route('user.updatePassword') }}" method="POST">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="input-icon mb-3 position-relative">
+                                                                    <input type="password" name="old_password" class="form-control" placeholder="Old Password" required>
+                                                                    <span class="ti toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="input-icon mb-3 position-relative">
+                                                                    <input type="password" name="new_password" class="form-control" placeholder="New Password" required>
+                                                                    <span class="ti toggle-passwords ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="input-icon mb-3 position-relative">
+                                                                    <input type="password" name="new_password_confirmation" class="form-control" placeholder="Confirm Password" required>
+                                                                    <span class="ti conform-toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 d-flex">
+                                                                <button type="submit" class="btn btn-primary flex-fill">
+                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changesas
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="input-icon mb-3 position-relative">
-                                                                <input type="password" class="form-control" placeholder="New Password">
-                                                                <span class="ti toggle-passwords ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="input-icon mb-3 position-relative">
-                                                                <input type="password" class="form-control" placeholder="Confirm Password">
-                                                                <span class="ti conform-toggle-password ti-eye-off position-absolute end-0 top-50 translate-middle-y me-3"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12 d-flex">
-                                                            <a href="javascript:void(0);" class="btn btn-primary flex-fill">
-                                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- /Password -->
 
                                         <!-- Screen Lock -->
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <h6 class="fs-14">
-                                                <a href="javascript:void(0);">
-                                                    <i class="ti ti-lock-square text-gray me-2"></i>Screen Lock
-                                                </a>
-                                            </h6>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch">
+                                        <form action="{{ route('user.toggleScreenLock') }}" method="POST" id="screen-lock-form">
+                                            @csrf
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <h6 class="fs-14">
+                                                    <a href="javascript:void(0);">
+                                                        <i class="ti ti-lock-square text-gray me-2"></i>Screen Lock
+                                                    </a>
+                                                </h6>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="screen_lock" onchange="document.getElementById('screen-lock-form').submit();" {{ auth()->user()->screen_lock ? 'checked' : '' }}>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
 
                                         <!-- Divider after Screen Lock -->
                                         <div class="border-top my-3"></div>
 
                                         <!-- Two-Factor Auth -->
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="fs-14">
-                                                <a href="javascript:void(0);">
-                                                    <i class="ti ti-shield text-gray me-2"></i>Two Factor Authentication
-                                                </a>
-                                            </h6>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch">
-                                            </div>
-                                        </div>
+                                         <form action="{{ route('user.toggleTwoFactor') }}" method="POST" id="two-factor-form">
+                                                @csrf
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="fs-14">
+                                                        <a href="javascript:void(0);">
+                                                            <i class="ti ti-shield text-gray me-2"></i>Two Factor Authentication
+                                                        </a>
+                                                    </h6>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" name="two_factor_auth" onchange="document.getElementById('two-factor-form').submit();" {{ auth()->user()->two_factor_auth ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                            </form>
 
                                         <!-- Divider after Two-Factor -->
                                         <div class="border-top mt-3"></div>
@@ -428,33 +475,37 @@
                                                         </a>
                                                     </h2>
                                                     <div id="app-logo-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="chat-user-photo">
-                                                                <div class="chat-img contact-gallery mb-3">
-                                                                    <!-- App Logo Box -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewAppLogo" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="App Logo"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1"
-                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                                       background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
-                                       justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('uploadAppLogo').click();"
-                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
+                                                      <form action="{{ route('settings.uploadAppLogo') }}" method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div class="accordion-body border-0 pb-0">
+                                                                <div class="chat-user-photo">
+                                                                    <div class="chat-img contact-gallery mb-3">
+                                                                        <!-- App Logo Box -->
+                                                                        <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                            <img id="previewAppLogo" src="{{ $setting->app_logo ?? URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="App Logo"
+                                                                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                            <div class="img-overlay-1"
+                                                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                                                                                    background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                                                                                    justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                <a href="javascript:void(0);" onclick="document.getElementById('uploadAppLogo').click();"
+                                                                                    style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
+                                                                            </div>
                                                                         </div>
+                                                                        <input type="file" id="uploadAppLogo" name="app_logo" accept=".png,.svg" style="display:none"
+                                                                            onchange="handleImageUpload(event, 'previewAppLogo', ['image/png', 'image/svg+xml'])">
                                                                     </div>
-                                                                    <input type="file" id="uploadAppLogo" accept=".png,.svg" style="display:none"
-                                                                        onchange="handleImageUpload(event, 'previewAppLogo', ['image/png', 'image/svg+xml'])">
-                                                                </div>
 
-                                                                <div class="col-lg-12 d-flex">
-                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                        <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                    </a>
+                                                                    <div class="col-lg-12 d-flex">
+                                                                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </form>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -467,64 +518,84 @@
                                                             <i class="ti ti-photo me-2"></i>URL FavIcon
                                                         </a>
                                                     </h2>
-                                                    <div id="url-favicon-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="chat-user-photo">
-                                                                <div class="chat-img contact-gallery mb-3">
-                                                                    <!-- Favicon Box -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewFavIcon" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="Favicon"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1"
-                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                                       background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
-                                       justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('uploadFavIcon').click();"
-                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
+                                          <form action="{{ route('settings.uploadFavicon') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                                
+                                                <div class="border-0 profile-list"> 
+                                                    <div class="accordion-item border-0 border-bottom">
+                                                        <h2 class="accordion-header border-0">
+                                                            <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#url-favicon-collapse" aria-expanded="false" aria-controls="url-favicon-collapse">
+                                                                <i class="ti ti-photo me-2"></i>URL FavIcon
+                                                            </a>
+                                                        </h2>
+
+                                                        <div id="url-favicon-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                            <div class="accordion-body border-0 pb-0">
+                                                                <div class="chat-user-photo">
+                                                                    <div class="chat-img contact-gallery mb-3">
+                                                                        <!-- Favicon Box -->
+                                                                        <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                                            <img id="previewFavIcon" src="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}" alt="Favicon"
+                                                                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                                                            <div class="img-overlay-1"
+                                                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                                                                                        background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
+                                                                                        justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                                                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                <a href="javascript:void(0);" onclick="document.getElementById('uploadFavIcon').click();"
+                                                                                    style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
+                                                                            </div>
                                                                         </div>
+                                                                        <input type="file" name="favicon" id="uploadFavIcon" accept=".svg,.png"
+                                                                            style="display: none;"
+                                                                            onchange="handleImageUpload(event, 'previewFavIcon', ['image/svg+xml', 'image/png'])">
                                                                     </div>
-                                                                    <input type="file" id="uploadFavIcon" accept=".svg,.png"
-                                                                        style="display: none;"
-                                                                        onchange="handleImageUpload(event, 'previewFavIcon', ['image/svg+xml', 'image/png'])">
 
-                                                                </div>
-
-                                                                <div class="col-lg-12 d-flex">
-                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                        <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                    </a>
+                                                                    <div class="col-lg-12 d-flex">
+                                                                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </form>
+
                                                 </div>
                                             </div>
 
                                             <!-- App Title -->
-                                            <div class="border-0 profile-list">
-                                                <div class="accordion-item border-0 border-bottom">
-                                                    <h2 class="accordion-header border-0">
-                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#url-app-collapse" aria-expanded="false" aria-controls="url-app-collapse">
-                                                            <i class="ti ti-photo me-2"></i>App Title
-                                                        </a>
-                                                    </h2>
-                                                    <div id="url-app-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="form-group mb-3">
+                                           <form action="{{ route('settings.updateAppTitle') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
-                                                                <input type="text" class="form-control" id="app_name" name="app_name" placeholder="Enter App Name">
-                                                            </div>
+                                                <div class="border-0 profile-list">
+                                                    <div class="accordion-item border-0 border-bottom">
+                                                        <h2 class="accordion-header border-0">
+                                                            <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#url-app-collapse" aria-expanded="false" aria-controls="url-app-collapse">
+                                                                <i class="ti ti-photo me-2"></i>App Title
+                                                            </a>
+                                                        </h2>
+                                                        <div id="url-app-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                                                            <div class="accordion-body border-0 pb-0">
+                                                                <div class="form-group mb-3">
+                                                                    <input type="text" class="form-control" id="app_name" name="app_name" placeholder="Enter App Name" value="{{ $setting->app_name ?? '' }}">
+                                                                </div>
 
-                                                            <div class="col-lg-12 d-flex">
-                                                                <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                    <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                </a>
+                                                                <div class="col-lg-12 d-flex">
+                                                                    <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                                        <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </form>
+
                                             <!-- /apps Title-->
 
                                             <div class="file-item ">
@@ -602,12 +673,23 @@
                                                         </div>
                                                     </div> --}}
                                                     <!-- show reaction -->
+                                                  <form action="{{ route('settings.toggleReactionNotification') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
                                                     <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-1">
-                                                        <h6 class="fs-14"><a href="javascript:void(0);"><i class="ti ti-mood-smile text-gray me-2 "></i>Show Reaction Notifications</a></h6>
+                                                        <h6 class="fs-14">
+                                                            <a href="javascript:void(0);">
+                                                                <i class="ti ti-mood-smile text-gray me-2"></i>Show Reaction Notifications
+                                                            </a>
+                                                        </h6>
                                                         <div class="form-check form-switch d-flex justify-content-end align-items-center">
-                                                            <input class="form-check-input" type="checkbox" role="switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" name="show_reaction_notifications"
+                                                                onchange="this.form.submit()" {{ ($setting->show_reaction_notifications ?? false) ? 'checked' : '' }}>
                                                         </div>
                                                     </div>
+                                                </form>
+
                                                     <!-- /show reaction -->
                                                     <!-- /notification sound -->
                                                     <div class="border-0 profile-list ">
