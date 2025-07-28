@@ -1168,14 +1168,14 @@
                     </small>
 
                     <!-- Stats -->
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
                     <!-- Productivity -->
-                    <div>Productivity: 65%</div>
+                    <div class="mt-2">Productivity: 65%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-purple" style="width: 65%"></div>
                     </div>
@@ -1228,13 +1228,13 @@
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
                         Developer
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 30%</div>
+                    <div class="mt-2">Productivity: 30%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 35%; background-color: #ffc107;"></div>
                     </div>
@@ -1285,13 +1285,13 @@
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
                         Developer
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 20%</div>
+                    <div class="mt-2">Productivity: 20%</div>
                     <div class="progress mt-1" style="background-color: #e9ecef; border-radius: 4px;">
                         <div class="progress-bar" style="width: 20%; background-color: red;"></div>
                     </div>
@@ -1343,13 +1343,13 @@
                         Software Developer
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 90%</div>
+                    <div class="mt-2">Productivity: 90%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 90%; background-color: green;"></div>
                     </div>
@@ -1401,13 +1401,13 @@
                         Full Stack Developer
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 10%</div>
+                    <div class="mt-2">Productivity: 10%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-danger" style="width: 15%"></div>
                     </div>
@@ -1459,12 +1459,12 @@
                         Software Developer
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
-                    <div>Productivity: 65%</div>
+                    <div class="mt-2">Productivity: 65%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar bg-purple" style="width: 65%"></div>
                     </div>
@@ -1514,12 +1514,12 @@
                     <small style="color: purple; background-color: #f5e6fa; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
                         Developer
                     </small>
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
-                    <div>Productivity: 90%</div>
+                    <div class="mt-2">Productivity: 90%</div>
                     <div class="progress mt-1">
                         <div class="progress-bar" style="width: 90%; background-color: green;"></div>
                     </div>
@@ -1570,13 +1570,13 @@
                         Tester
                     </small>
 
-                    <div class="mt-2 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <div class="mt-3 d-flex justify-content-between" style="display: flex; justify-content: space-between; margin-top: 15px;">
                         <span><strong>Projects</strong><br>20</span>
                         <span><strong>Done</strong><br>13</span>
                         <span><strong>Progress</strong><br>8</span>
                     </div>
 
-                    <div>Productivity: 80%</div>
+                    <div class="mt-2">Productivity: 80%</div>
                     <div class="progress mt-1" style=" background-color: #f0f2f5; border-radius: 10px;">
                         <div class="progress-bar" style="width: 80%; background-color: #ff2ea6; border-radius: 10px;"></div>
                     </div>
