@@ -21,7 +21,10 @@ class Setting extends Model
         'login_backgrounds',
         'chat_backgrounds',
         'user_id',
-        'app_logo'
+        'chat_sounds',
+        'notification_sounds',        
+        'app_logo',
+         
     ];
 
     

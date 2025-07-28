@@ -13,7 +13,9 @@ class SettingController extends Controller
 public function showSettingsForm()
 {
     $setting = Setting::where('user_id', auth()->id())->first();
-
+    $chat_sounds = $setting && $setting->chat_sounds
+        ? json_decode($setting->chat_sounds, true)
+        : [];
     $images = $setting && $setting->login_backgrounds
         ? json_decode($setting->login_backgrounds, true)
         : [];
@@ -22,8 +24,72 @@ public function showSettingsForm()
         ? json_decode($setting->chat_backgrounds, true)
         : [];
 
-    return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds'));
+    return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds','chat_sounds'));
 }
+ public function uploadChatSounds(Request $request) 
+{
+    //dd($request->all());
+    $request->validate([
+        'chat_sounds.*' => 'required|file|mimes:mp3,wav,ogg|max:2048',
+    ]);
+
+    $userId = $request->input('user_id');
+    $chatSounds = $request->file('chat_sounds'); // Note: plural
+
+    $storedPaths = [];
+
+    foreach ($chatSounds as $file) {
+        if ($file && $file->isValid()) {
+            $filename = 'sound_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/chat_sounds', $filename);
+            $storedPaths[] = str_replace('public/', 'storage/', $path);
+        }
+    }
+
+    // Store all in one field as JSON, if needed
+    Setting::updateOrCreate(
+        ['user_id' => $userId],
+        ['chat_sounds' => json_encode($storedPaths)]
+    );
+
+    return back()->with('success', 'Chat sounds uploaded successfully.');
+}
+
+public function uploadNotificationSounds(Request $request)
+{
+    
+     dd($request->all(), $request->file());
+
+    $userId = $request->input('user_id');
+    $files = $request->file('notification_sounds'); // this will be an associative array: ['0' => file, '1' => file, ...]
+
+    $storedPaths = [];
+
+    if (is_array($files)) {
+        foreach ($files as $index => $file) {
+            if ($file && $file->isValid()) {
+                $filename = 'notif_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/notification_sounds', $filename);
+                $storedPaths[$index] = str_replace('public/', 'storage/', $path);
+            }
+        }
+    }
+
+    // Update setting
+    $setting = \App\Models\Setting::firstOrNew(['user_id' => $userId]);
+    $existing = json_decode($setting->notification_sounds ?? '[]', true);
+
+    // Merge new uploads into existing sounds
+    foreach ($storedPaths as $index => $soundPath) {
+        $existing[$index] = $soundPath;
+    }
+
+    $setting->notification_sounds = json_encode($existing);
+    $setting->save();
+
+    return back()->with('success', 'Notification sounds uploaded.');
+}
+
 
 
 public function store(Request $request)

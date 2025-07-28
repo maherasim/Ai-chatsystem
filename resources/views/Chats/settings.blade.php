@@ -1,6 +1,9 @@
 <?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
+<!-- Tabler Icons CSS (required for ti ti-play, ti-pause, etc.) -->
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.39.0/tabler-icons.min.css" rel="stylesheet">
+
 <style>
     /* Ensure base styles don't interfere */
     .task-icon-link {
@@ -370,7 +373,7 @@
                                 <div class="accordion-body border-0 pb-0">
                                     <div class="chat-user-photo">
                                         <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
-                                            @for ($i = 1; $i <= 2; $i++)
+                                            @for ($i = 1; $i <= 6; $i++)
                                                 <div class="img-wrap position-relative" style="width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
                                                     <img id="previewImage{{ $i }}" 
                                                         src="{{ isset($images[$i - 1]) ? asset($images[$i - 1]) : asset('/build/img/gallery/gallery-01.jpg') }}" 
@@ -417,7 +420,7 @@
             <div class="accordion-body border-0 pb-0">
                 <div class="chat-user-photo">
                     <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
-                        @for ($i = 1; $i <= 2; $i++)
+                        @for ($i = 1; $i <= 6; $i++)
                             @php
                                 $imageSrc = isset($chat_backgrounds[$i - 1]) && $chat_backgrounds[$i - 1]
                                     ? asset($chat_backgrounds[$i - 1])
@@ -647,68 +650,126 @@ function handleImageUpload(event, previewId) {
 
                                                 <div class="card-body">
                                                     <!-- Message Notification Sounds -->
-                                                    <div class="border-0 profile-list pb-1 mb-1">
-                                                        <div class="accordion-item border-0 border-bottom">
-                                                            <h2 class="accordion-header border-0">
-                                                                <button class="accordion-button border-0 collapsed px-0" type="button"
-                                                                    data-bs-toggle="collapse" data-bs-target="#message-sound-collapse"
-                                                                    aria-expanded="false" aria-controls="message-sound-collapse">
-                                                                    <i class="ti ti-message me-2"></i>Message Notifications
-                                                                </button>
-                                                            </h2>
-                                                            <div id="message-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                                <div class="accordion-body border-0 pb-0">
-                                                                    <div class="row">
-                                                                        <!-- Sound 1 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Ding</strong>
-                                                                                <audio id="ding-audio" src="{{ URL::asset('/sounds/ding.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- Sound 2 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Pop</strong>
-                                                                                <audio id="pop-audio" src="{{ URL::asset('/sounds/pop.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- Sound 3 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Bell</strong>
-                                                                                <audio id="bell-audio" src="{{ URL::asset('/sounds/bell.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- Sound 4 -->
-                                                                        <div class="col-6 mb-3">
-                                                                            <div class="sound-box position-relative p-3 border rounded text-center" style="cursor: pointer;">
-                                                                                <strong>Chime</strong>
-                                                                                <audio id="chime-audio" src="{{ URL::asset('/sounds/chime.mp3') }}"></audio>
-                                                                                <span class="check-icon avatar avatar-md d-flex justify-content-center align-items-center position-absolute top-0 end-0 m-1 d-none">
-                                                                                    <i class="ti ti-check"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-12 d-flex">
-                                                                        <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <form action="{{ route('upload.chat.sounds') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+    <div class="border-0 profile-list pb-1 mb-1">
+        <div class="accordion-item border-0 border-bottom">
+            <h2 class="accordion-header border-0">
+                <button class="accordion-button border-0 collapsed px-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#message-sound-collapse"
+                    aria-expanded="false" aria-controls="message-sound-collapse">
+                    <i class="ti ti-message me-2"></i>Message Notifications
+                </button>
+            </h2>
+
+            <div id="message-sound-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+                <div class="accordion-body border-0 pb-0">
+                    <div class="row">
+                        @for ($i = 1; $i <= 4; $i++)
+                            @php
+                                $audioSrc = isset($chat_sounds[$i - 1]) && $chat_sounds[$i - 1]
+                                    ? asset($chat_sounds[$i - 1])
+                                    : '';
+                            @endphp
+
+                            <div class="col-6 mb-3">
+                                <div class="sound-box position-relative p-3 border rounded text-center" style="min-height: 100px;">
+                                    <strong>Sound {{ $i }}</strong><br>
+
+                                    @if ($audioSrc)
+                                        <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="toggleAudio({{ $i }})">
+                                            <i class="ti ti-player-play" id="playIcon{{ $i }}"></i>
+                                        </button>
+
+                                        <audio id="audioPlayer{{ $i }}" style="display: none;" preload="none">
+                                            <source src="{{ $audioSrc }}" type="audio/{{ pathinfo($audioSrc, PATHINFO_EXTENSION) }}">
+                                        </audio>
+                                    @else
+                                        <p class="text-muted mt-2">No audio uploaded.</p>
+                                        <audio id="audioPlayer{{ $i }}" style="display: none;" preload="none"></audio>
+                                    @endif
+
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="document.getElementById('audioUpload{{ $i }}').click();">
+                                            <i class="ti ti-plus"></i> Upload New
+                                        </button>
+                                    </div>
+
+                                    <input type="file" name="chat_sounds[]" id="audioUpload{{ $i }}" accept=".mp3,.wav"
+                                        onchange="handleAudioUpload(event, {{ $i }})" style="display: none;">
+                                </div>
+                            </div>
+                        @endfor
+                    </div>
+
+                    <div class="col-lg-12 d-flex">
+                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+ <script>
+    function handleAudioUpload(event, index) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('audio/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const audio = document.getElementById(`audioPlayer${index}`);
+                const icon = document.getElementById(`playIcon${index}`);
+                if (audio) {
+                    // Replace source
+                    audio.innerHTML = `<source src="${e.target.result}" type="${file.type}">`;
+                    audio.load();
+                    audio.pause();
+                    audio.style.display = "none"; // Force hide in case browser shows it
+                    icon?.classList.remove('d-none');
+                    icon?.classList.add('ti-player-play');
+                    icon?.classList.remove('ti-player-pause');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function toggleAudio(index) {
+        const audio = document.getElementById(`audioPlayer${index}`);
+        const icon = document.getElementById(`playIcon${index}`);
+
+        if (!audio || !icon) return;
+
+        // Pause all other audio before playing current one
+        for (let i = 1; i <= 4; i++) {
+            if (i !== index) {
+                const otherAudio = document.getElementById(`audioPlayer${i}`);
+                const otherIcon = document.getElementById(`playIcon${i}`);
+                if (otherAudio && !otherAudio.paused) {
+                    otherAudio.pause();
+                    otherIcon?.classList.remove('ti-player-pause');
+                    otherIcon?.classList.add('ti-player-play');
+                }
+            }
+        }
+
+        if (audio.paused) {
+            audio.play();
+            icon.classList.remove('ti-player-play');
+            icon.classList.add('ti-player-pause');
+        } else {
+            audio.pause();
+            icon.classList.remove('ti-player-pause');
+            icon.classList.add('ti-player-play');
+        }
+    }
+</script>
+
 
 
                                                     {{-- <div class="d-flex justify-content-between align-items-center profile-list border-bottom pt-2 pb-3 mb-2">
@@ -737,122 +798,107 @@ function handleImageUpload(event, previewId) {
 
                                                     <!-- /show reaction -->
                                                     <!-- /notification sound -->
-                                                    <div class="border-0 profile-list ">
-                                                        <div class="accordion-item border-0 ">
-                                                            <h2 class="accordion-header border-0">
-                                                                <button class="accordion-button border-0 collapsed px-0" type="button"
-                                                                    data-bs-toggle="collapse" data-bs-target="#notification-sound-collapse"
-                                                                    aria-expanded="false" aria-controls="notification-sound-collapse">
-                                                                    <i class="ti ti-bell-ringing text-gray me-2"></i> Notification Sound
-                                                                </button>
-                                                            </h2>
-                                                            <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
-                                                                <div class="accordion-body border-0 pb-0">
-                                                                <div class="row">
-    <!-- Sound 1 -->
-    <div class="col-6 mb-3">
-        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
-            <audio id="audio-1" src="{{ URL::asset('/sounds/ding1.mp3') }}"></audio>
+ <form action="{{ route('upload.notification.sounds') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
-            <div id="play-1" onclick="playSound(1)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #28a745; display: flex; align-items: center;
-                justify-content: center; color: white; font-size: 24px;
-                margin: auto; cursor: pointer;">
-                ▶
-            </div>
+    @php
+        $setting = \App\Models\Setting::where('user_id', auth()->id())->first();
+        $uploadedSounds = $setting ? json_decode($setting->notification_sounds ?? '[]', true) : [];
+    @endphp
 
-            <div id="stop-1" onclick="stopSound(1)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #dc3545; display: none; align-items: center;
-                justify-content: center; color: white; font-size: 20px;
-                margin: auto; cursor: pointer;">
-                ⏹
-            </div>
-        </div>
-    </div>
+    <div class="border-0 profile-list">
+        <div class="accordion-item border-0">
+            <h2 class="accordion-header border-0">
+                <button class="accordion-button border-0 collapsed px-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#notification-sound-collapse"
+                    aria-expanded="false" aria-controls="notification-sound-collapse">
+                    <i class="ti ti-bell-ringing text-gray me-2"></i> Notification Sound
+                </button>
+            </h2>
 
-    <!-- Sound 2 -->
-    <div class="col-6 mb-3">
-        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
-            <audio id="audio-2" src="{{ URL::asset('/sounds/ding2.mp3') }}"></audio>
+            <div id="notification-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
+                <div class="accordion-body border-0 pb-0">
+                    <div class="row">
+                        @for ($i = 0; $i < 4; $i++)
+                            @php
+                                $soundSrc = isset($uploadedSounds[$i])
+                                    ? asset($uploadedSounds[$i])
+                                    : asset('storage/notification_sounds/default' . ($i+1) . '.mp3');
+                            @endphp
 
-            <div id="play-2" onclick="playSound(2)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #28a745; display: flex; align-items: center;
-                justify-content: center; color: white; font-size: 24px;
-                margin: auto; cursor: pointer;">
-                ▶
-            </div>
+                            <div class="col-6 mb-3">
+                                <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
+                                    
+                                    {{-- Audio Element --}}
+                                    <audio id="audio-{{ $i+1 }}" src="{{ $soundSrc }}"></audio>
 
-            <div id="stop-2" onclick="stopSound(2)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #dc3545; display: none; align-items: center;
-                justify-content: center; color: white; font-size: 20px;
-                margin: auto; cursor: pointer;">
-                ⏹
-            </div>
-        </div>
-    </div>
+                                    {{-- Play Button --}}
+                                    <div id="play-{{ $i+1 }}" onclick="playSound({{ $i+1 }})" style="
+                                        width: 50px; height: 50px; border-radius: 50%;
+                                        background-color: #28a745; display: flex; align-items: center;
+                                        justify-content: center; color: white; font-size: 24px;
+                                        margin: auto; cursor: pointer;">
+                                        ▶
+                                    </div>
 
-    <!-- Sound 3 -->
-    <div class="col-6 mb-3">
-        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
-            <audio id="audio-3" src="{{ URL::asset('/sounds/ding3.mp3') }}"></audio>
+                                    {{-- Stop Button --}}
+                                    <div id="stop-{{ $i+1 }}" onclick="stopSound({{ $i+1 }})" style="
+                                        width: 50px; height: 50px; border-radius: 50%;
+                                        background-color: #dc3545; display: none; align-items: center;
+                                        justify-content: center; color: white; font-size: 20px;
+                                        margin: auto; cursor: pointer;">
+                                        ⏹
+                                    </div>
 
-            <div id="play-3" onclick="playSound(3)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #28a745; display: flex; align-items: center;
-                justify-content: center; color: white; font-size: 24px;
-                margin: auto; cursor: pointer;">
-                ▶
-            </div>
+                                    {{-- Upload Input --}}
+                                   <input type="file" name="notification_sounds[]" 
+                                        id="audioUpload{{ $i }}" 
+                                       multiple  accept=".mp3,.wav,.ogg" 
+                                        style="display: none;" 
+                                        onchange="handleAudioSelected({{ $i }})">
 
-            <div id="stop-3" onclick="stopSound(3)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #dc3545; display: none; align-items: center;
-                justify-content: center; color: white; font-size: 20px;
-                margin: auto; cursor: pointer;">
-                ⏹
-            </div>
-        </div>
-    </div>
+                                     
+                                    {{-- Upload Button --}}
+                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2"
+                                        onclick="document.getElementById('audioUpload{{ $i }}').click();">
+                                        <i class="ti ti-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @endfor
+                    </div>
 
-    <!-- Sound 4 -->
-    <div class="col-6 mb-3">
-        <div class="sound-box position-relative p-3 border rounded text-center" style="background-color: #f8f9fa;">
-            <audio id="audio-4" src="{{ URL::asset('/sounds/ding4.mp3') }}"></audio>
-
-            <div id="play-4" onclick="playSound(4)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #28a745; display: flex; align-items: center;
-                justify-content: center; color: white; font-size: 24px;
-                margin: auto; cursor: pointer;">
-                ▶
-            </div>
-
-            <div id="stop-4" onclick="stopSound(4)" style="
-                width: 50px; height: 50px; border-radius: 50%;
-                background-color: #dc3545; display: none; align-items: center;
-                justify-content: center; color: white; font-size: 20px;
-                margin: auto; cursor: pointer;">
-                ⏹
+                    <div class="col-lg-12 d-flex">
+                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                            <i class="ti ti-device-floppy me-2"></i> Save Changes
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
+<script>
+function handleAudioSelected(event, index) {
+    const files = event.target.files;
+    if (files.length > 0) {
+        // You can preview the first file if needed
+        const firstFile = files[0];
+        const audioElement = document.getElementById(`audio-${index+1}`);
+        
+        // Create a URL for the first file and set it as audio source
+        const audioURL = URL.createObjectURL(firstFile);
+        audioElement.src = audioURL;
+        
+        // You might want to store all files in a data attribute
+        // for later processing when form is submitted
+        event.target.setAttribute('data-files', JSON.stringify(Array.from(files)));
+    }
+}
+</script>
 
-
-                                                                    <div class="col-lg-12 d-flex">
-                                                                        <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3">
-                                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
 
                                                 </div>
@@ -911,6 +957,57 @@ function handleImageUpload(event, previewId) {
             reader.readAsDataURL(file);
         }
     }
+</script>
+<script>
+    function playSound(index) {
+        const audio = document.getElementById('audio-' + index);
+        const playBtn = document.getElementById('play-' + index);
+        const stopBtn = document.getElementById('stop-' + index);
+
+        audio.play();
+        playBtn.style.display = 'none';
+        stopBtn.style.display = 'flex';
+
+        audio.onended = () => {
+            stopSound(index);
+        };
+    }
+
+    function stopSound(index) {
+        const audio = document.getElementById('audio-' + index);
+        const playBtn = document.getElementById('play-' + index);
+        const stopBtn = document.getElementById('stop-' + index);
+
+        audio.pause();
+        audio.currentTime = 0;
+        playBtn.style.display = 'flex';
+        stopBtn.style.display = 'none';
+    }
+</script>
+
+<script>
+function handleAudioUpload(event, index) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('audio/')) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const container = document.getElementById(`audioPlayer${index}`);
+            if (container) {
+                container.src = e.target.result;
+                container.load();
+                container.play();
+            } else {
+                const audio = document.createElement('audio');
+                audio.id = `audioPlayer${index}`;
+                audio.controls = true;
+                audio.src = e.target.result;
+                event.target.closest('.sound-box').appendChild(audio);
+                audio.play();
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+}
 </script>
 
 <script>
