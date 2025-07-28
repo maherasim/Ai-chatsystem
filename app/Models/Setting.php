@@ -18,6 +18,8 @@ class Setting extends Model
         'image',
         'first_name',
         'dob',
+        'login_backgrounds',
+        'chat_backgrounds',
         'user_id',
         'app_logo'
     ];

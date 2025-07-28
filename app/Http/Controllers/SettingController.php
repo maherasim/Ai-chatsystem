@@ -13,9 +13,18 @@ class SettingController extends Controller
 public function showSettingsForm()
 {
     $setting = Setting::where('user_id', auth()->id())->first();
-    $security = User::where('user_id', auth()->id())->first();
-    return view('Chats.settings', compact('setting'));
+
+    $images = $setting && $setting->login_backgrounds
+        ? json_decode($setting->login_backgrounds, true)
+        : [];
+
+    $chat_backgrounds = $setting && $setting->chat_backgrounds
+        ? json_decode($setting->chat_backgrounds, true)
+        : [];
+
+    return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds'));
 }
+
 
 public function store(Request $request)
 {
@@ -171,12 +180,13 @@ public function toggleReactionNotification(Request $request)
 
     return back()->with('success', 'Reaction notification setting updated.');
 }
-public function uploadLoginBackground(Request $request)
+ public function uploadLoginBackground(Request $request)
 {
     $request->validate([
         'images.*' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048',
     ]);
 
+    $userId = auth()->id(); // Ensure the user is authenticated
     $storedImages = [];
 
     if ($request->hasFile('images')) {
@@ -191,12 +201,44 @@ public function uploadLoginBackground(Request $request)
         }
     }
 
-    // Save to database (single row, JSON field recommended)
-    Setting::updateOrCreate([], [
-        'login_backgrounds' => json_encode($storedImages),
+    // Save to settings table for this user
+    Setting::updateOrCreate(
+        ['user_id' => $userId],
+        ['login_backgrounds' => json_encode($storedImages)]
+    );
+
+    return back()->with('success', 'Login background images updated successfully.');
+}
+ public function uploadchatBackground(Request $request)
+{
+    $request->validate([
+        'chat_images.*' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048',
     ]);
 
-    return back()->with('success', 'Login background images updated.');
+    $userId = auth()->id();
+    $storedImages = [];
+
+    if ($request->hasFile('chat_images')) {
+        foreach ($request->file('chat_images') as $file) {
+            if ($file) {
+                $filename = 'chat_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/chat_backgrounds', $filename);
+                $storedImages[] = 'storage/chat_backgrounds/' . $filename;
+            }
+        }
+    }
+
+    // Optional: if no new images, don’t overwrite
+    if (empty($storedImages)) {
+        return back()->with('warning', 'No chat background images were selected.');
+    }
+
+    Setting::updateOrCreate(
+        ['user_id' => $userId],
+        ['chat_backgrounds' => json_encode($storedImages)]
+    );
+
+    return back()->with('success', 'Chat background images updated successfully.');
 }
 
 

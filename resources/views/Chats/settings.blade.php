@@ -353,118 +353,163 @@
                                     <div class="accordion accordion-flush chat-accordion" id="privacy-setting">
                                         <div class="mb-3">
                                             <!-- chat bg -->
-                                            <div class="border-0 profile-list">
-                                                <div class="accordion-item border-0 border-bottom">
-                                                    <h2 class="accordion-header border-0">
-                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
-                                                            <i class="ti ti-photo me-2"></i>Chats Background
-                                                        </a>
-                                                    </h2>
-                                                </div>
-                                                <div class="accordion-item border-0 border-bottom">
-                                                    <h2 class="accordion-header border-0">
-                                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse4" aria-expanded="true" aria-controls="chatuser-collapse4">
-                                                            <i class="ti ti-photo me-2"></i>Login Background
-                                                        </a>
-                                                    </h2></div>
-                                                    <div id="chatuser-collapse4" class="accordion-collapse border-0 collapse " data-bs-parent="#chat-setting">
-                                                        <div class="accordion-body border-0 pb-0">
-                                                            <div class="chat-user-photo">
-                                                                <div class="chat-img contact-gallery mb-3">
-                                                                    <!-- Container for all 6 boxes -->
+                      <form action="{{ route('upload.login.backgrounds') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
+                            <div class="border-0 profile-list">
+                                <div class="accordion-item border-0 border-bottom">
+                                    <h2 class="accordion-header border-0">
+                                        <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#login-background-collapse" aria-expanded="false" aria-controls="login-background-collapse">
+                                            <i class="ti ti-photo me-2"></i>Login Background
+                                        </a>
+                                    </h2>
+                                </div>
 
-                                                                    <!-- Loop starts -->
-                                                                    <!-- Box 1 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage1" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1"
-                                                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                                                                                        background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; 
-                                                                                        justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                                                                                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload1').click();"
-                                                                                style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload1" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage1', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
+                            <div id="login-background-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+                                <div class="accordion-body border-0 pb-0">
+                                    <div class="chat-user-photo">
+                                        <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
+                                            @for ($i = 1; $i <= 2; $i++)
+                                                <div class="img-wrap position-relative" style="width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                                    <img id="previewImage{{ $i }}" 
+                                                        src="{{ isset($images[$i - 1]) ? asset($images[$i - 1]) : asset('/build/img/gallery/gallery-01.jpg') }}" 
+                                                        alt="Login Background {{ $i }}"
+                                                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
 
-
-                                                                    <!-- Box 2 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage2" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload2').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload2" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage2', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
-
-                                                                    <!-- Box 3 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage3" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload3').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload3" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage3', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
-
-                                                                    <!-- Box 4 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage4" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload4').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload4" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage4', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
-
-                                                                    <!-- Box 5 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage5" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload5').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload5" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage5', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
-
-                                                                    <!-- Box 6 -->
-                                                                    <div class="img-wrap" style="position: relative; width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
-                                                                        <img id="previewImage6" src="{{ URL::asset('/build/img/gallery/gallery-01.jpg') }}" alt="img"
-                                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-                                                                        <div class="img-overlay-1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
-                                                                            <a href="javascript:void(0);" onclick="document.getElementById('imageUpload6').click();" style="text-decoration: none; font-size: 40px; color: #007bff;">+</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="file" id="imageUpload6" accept=".jpg,.jpeg,.svg"
-                                                                        onchange="handleImageUpload(event, 'previewImage6', ['image/jpeg','image/jpg','image/svg+xml'])"
-                                                                        style="display: none;">
-
-
-
-
-                                                                </div>
-                                                                <div class="col-lg-12 d-flex">
-                                                                    <a href="javascript:void(0);" class="btn btn-primary flex-fill mb-3"><i class="ti ti-device-floppy me-2"></i>Save Changes</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="img-overlay-1 position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                                        style="background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                        <a href="javascript:void(0);" onclick="document.getElementById('imageUpload{{ $i }}').click();"
+                                                            style="text-decoration: none; font-size: 40px; color: #fff;">+</a>
                                                     </div>
                                                 </div>
-                                            </div>
+
+                                                <input type="file" name="images[]" id="imageUpload{{ $i }}" accept=".jpg,.jpeg,.svg,.png" style="display: none;">
+                                            @endfor
+                                        </div>
+
+                                        <div class="col-lg-12 d-flex">
+                                            <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    </div>
+          </form>
+          {{-- chat background --}}
+           <form action="{{ route('upload.chat.backgrounds') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+    <div class="border-0 profile-list">
+        <div class="accordion-item border-0 border-bottom">
+            <h2 class="accordion-header border-0">
+                <a href="#" class="accordion-button border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-background-collapse" aria-expanded="false" aria-controls="chat-background-collapse">
+                    <i class="ti ti-photo me-2"></i>Chat Background
+                </a>
+            </h2>
+        </div>
+
+        <div id="chat-background-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+            <div class="accordion-body border-0 pb-0">
+                <div class="chat-user-photo">
+                    <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
+                        @for ($i = 1; $i <= 2; $i++)
+                            @php
+                                $imageSrc = isset($chat_backgrounds[$i - 1]) && $chat_backgrounds[$i - 1]
+                                    ? asset($chat_backgrounds[$i - 1])
+                                    : asset('/build/img/gallery/gallery-01.jpg');
+                            @endphp
+
+                            <div class="img-wrap position-relative" style="width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px;">
+                                <img id="previewImagechat{{ $i }}" 
+                                     src="{{ $imageSrc }}" 
+                                     alt="Chat Background {{ $i }}"
+                                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+
+                                <div class="img-overlay-1 position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                     style="background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
+                                     onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                    <a href="javascript:void(0);" onclick="document.getElementById('imageUploadChat{{ $i }}').click();"
+                                       style="text-decoration: none; font-size: 40px; color: #fff;">+</a>
+                                </div>
+                            </div>
+
+                            <input type="file" name="chat_images[]" id="imageUploadChat{{ $i }}" accept=".jpg,.jpeg,.svg,.png"
+                                   onchange="handleChatImageUpload(event, 'previewImagechat{{ $i }}')"
+                                   style="display: none;">
+                        @endfor
+                    </div>
+
+                    <div class="col-lg-12 d-flex">
+                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInputs = document.querySelectorAll('input[type="file"][name="images[]"]');
+
+    fileInputs.forEach((input, index) => {
+        input.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            const previewImage = document.getElementById("previewImage" + (index + 1));
+            if (file && file.type.startsWith("image/") && previewImage) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInputs = document.querySelectorAll('input[type="file"][name="chat_images[]"]');
+
+    fileInputs.forEach((input, index) => {
+        input.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            const previewImagechat = document.getElementById("previewImagechat" + (index + 1));
+            if (file && file.type.startsWith("image/") && previewImagechat) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImagechat.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+});
+</script>
+
+ 
+  <script>
+function handleImageUpload(event, previewId) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById(previewId).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+ 
+
                                             <!-- /chat bg -->
                                             <!-- App Logo -->
                                             <div class="border-0 profile-list">
