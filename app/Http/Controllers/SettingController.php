@@ -58,7 +58,7 @@ public function showSettingsForm()
 public function uploadNotificationSounds(Request $request)
 {
     
-     dd($request->all(), $request->file());
+    // dd($request->all(), $request->file());
 
     $userId = $request->input('user_id');
     $files = $request->file('notification_sounds'); // this will be an associative array: ['0' => file, '1' => file, ...]
