@@ -5177,224 +5177,217 @@
             <!-- Add more employee cards as needed -->
         </div>
         <!-- right sidebar popup -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="padding: 20px; max-width: 450px; overflow-y: auto;">
-            <!-- Close Button -->
-            <!-- Close Button -->
-            <button type="button"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-                style="
-        position: absolute;
-        top: 1px;
-        right: 2px;
-        background-color: #ffffff;
-        color: #111827;
-        border: none;
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        font-size: 22px;
-        font-weight: bold;
-        z-index: 1055;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-    ">
-                &times;
-            </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style=" overflow-y: auto;width: 720px;">
+            <!-- Header -->
+            <div class="offcanvas-header" style="padding: 0;">
+                <!-- Header with gradient -->
+                <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
 
-            <!-- Header Section -->
-            <div style="border:1px solid #e2e8f0; border-radius:6px; background-color:#f9f9fb; padding:16px; margin-bottom:16px; padding-top:16px; margin-top: 20px;">
-
-                <!-- Top Center: Image + Hospital Administration + Project ID -->
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <img src="https://via.placeholder.com/52" style="width:52px; height:52px; border-radius:50%; display: inline-block; margin-bottom: 8px;" alt="" />
-                    <div style="font-size:18px; font-weight:600; color: #111827;">Hospital Administration</div>
-                    <div style="font-size:14px; color:#6b7280;">Project ID : <strong>PRO‑0004</strong></div>
-                </div>
-
-                <!-- Bottom Row: Priority and Tasks Details -->
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-
-                    <!-- Priority -->
-                    <div>
-                        <label style="font-size: 14px; font-weight: 500; color: #374151; display: block; margin-bottom: 6px;">Priority</label>
-                        <div style="position: relative;">
-                            <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                                style="
+                    <!-- Close Button -->
+                    <button type="button"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                        style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 9999;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #b91c1c;
-            background-color: #fef2f2;
-            padding: 6px 12px;
-            border: 1px solid #fca5a5;
-            border-radius: 8px;
-            cursor: pointer;
-          ">
-                                <span style="
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #dc2626;
-            border-radius: 50%;
-          "></span>
+            justify-content: center;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        ">
+                        &times;
+                    </button>
+
+                    <!-- Profile Image -->
+                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
+                        class="rounded-circle"
+                        alt="Profile"
+                        style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
+                </div>
+
+            </div>
+
+            <!-- /Header Section -->
+            <div class="offcanvas-body pt-5">
+                <div style="display: flex;  align-items: flex-start; flex-wrap: wrap; margin-bottom: 24px; border: 1px solid #e5e7eb; padding: 16px; border-radius: 8px;   background-color:#f9fafb">
+
+                    <!-- Left Side -->
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <img src="https://via.placeholder.com/52" alt="" style="width:52px; height:52px; border-radius:50%;" />
+                        <div>
+                            <div style="font-size:18px; font-weight:600; color: #111827; padding-right:14px">Hospital Administration</div>
+                            <div style="font-size:14px; color:#6b7280;">Project ID : <strong>PRO‑0004</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side -->
+                    <div style="display: flex; gap: 74px; align-items: flex-start; flex-wrap: wrap;">
+
+                        <!-- Priority Section -->
+                        <div>
+                            <div style=" margin-left:16px;font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Priority</div>
+                            <button type="button"
+                                style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #b91c1c;
+        background-color: #fef2f2; padding: 6px 12px; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer;">
+                                <span style="width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; display: inline-block; margin-left:15px"></span>
                                 High
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">Low</a></li>
-                                <li><a class="dropdown-item" href="#">Medium</a></li>
-                                <li><a class="dropdown-item" href="#">High</a></li>
-                            </ul>
                         </div>
-                    </div>
 
-                    <!-- Tasks Details -->
-                    <div style="text-align: right;">
-                        <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px; margin-right: 58px;">Tasks Details</div>
-                        <div style="display: flex; justify-content: flex-end; gap: 12px; align-items: center;">
-                            <div>
-                                <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
-                                <div style="font-size: 20px; font-weight: bold; color: #111827;">0 / 0</div>
+                        <!-- Task Details Section -->
+                        <div style="min-width: 200px;">
+                            <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">Tasks Details</div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
+                                    <div style="font-size: 20px; font-weight: bold; color: #111827;">0 / 0</div>
+                                </div>
+                                <div style="font-size: 13px; color: #6b7280; margin-top: -30px;">0% Completed</div>
                             </div>
-                            <div style="font-size: 13px; color: #6b7280;margin-top:-29px; margin-left:7px">0% Completed</div>
-                            <div style="margin-top: 12px; height: 6px; background-color: #e5e7eb; border-radius: 4px;">
-                                <div style="width: 0%; height: 100%; background-color: #3b82f6; border-radius: 4px;"></div>
+                            <div style="margin-top: 8px; width: 100%; height: 6px; background-color: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                                <div style="width: 0%; height: 100%; background-color: #3b82f6;"></div>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+
+
+                <!-- Status -->
+                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                        <!-- Icon: Status -->
+                        <i class="ti ti-square-rounded me-2"> </i>Status
+
+                    </div>
+                    <span style="background-color:#f3e8ff; color:#9333ea; font-size:12px; padding:4px 10px; border-radius:12px;">InProgress</span>
+                </div>
+
+                <!-- Team -->
+                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                        <!-- Icon: Team -->
+                        <i class="ti ti-users-group me-2"></i>
+                        Team
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Lewis</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Leona</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Pineiro</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Moseley</span>
+                        </div>
+                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                    </div>
+                </div>
+
+                <!-- Team Lead -->
+                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                        <!-- Icon: Team Lead -->
+                        <i class="ti ti-user-shield me-2"></i>
+                        Team Lead
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Ruth</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Meredith</span>
+                        </div>
+                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                    </div>
+                </div>
+
+                <!-- Project Manager -->
+                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                        <!-- Icon: PM -->
+                        <i class="ti ti-user-star me-2"></i>
+                        Project Manager
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                            <span style="font-size:13px;">Dwight</span>
+                        </div>
+                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                        <!-- Icon: Tags -->
+                        <i class="ti ti-bookmark me-2"></i>
+                        Tags
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <span style="background-color:#f5299d; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">Admin Panel</span>
+                        <span style="background-color:#1e90ff; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">High Tech</span>
                     </div>
 
                 </div>
-            </div>
 
-
-            <!-- Status -->
-            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                    <!-- Icon: Status -->
-                    <i class="ti ti-square-rounded me-2"> </i>Status
-
+                <!-- Description -->
+                <div class="pb-3 border-bottom">
+                    <div style="font-size:14px; font-weight:500; margin-bottom:6px;">Description</div>
+                    <p style="font-size:13px; color:#374151; line-height:1.6;">
+                        The Enhanced Patient Management System (EPMS) project aims to modernize and streamline the patient management processes within. By integrating advanced technologies and optimizing existing workflows, the project seeks to improve patient care, enhance operational efficiency, and ensure compliance with regulatory standards.
+                    </p>
                 </div>
-                <span style="background-color:#f3e8ff; color:#9333ea; font-size:12px; padding:4px 10px; border-radius:12px;">InProgress</span>
-            </div>
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; background-color: #fff;" class="mb-3 mt-3">
+                    <details style="border-bottom: 1px solid #e5e7eb; padding-bottom: 12px; margin-bottom: 8px; cursor: pointer;">
+                        <summary style="font-weight: 600; font-size: 16px; color: #111827; list-style: none;">
+                            Tasks
+                        </summary>
+                    </details>
 
-            <!-- Team -->
-            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                    <!-- Icon: Team -->
-                    <i class="ti ti-users-group me-2"></i>
-                    Team
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Lewis</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Leona</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Pineiro</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Moseley</span>
-                    </div>
-                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                </div>
-            </div>
+                    <!-- Task Row -->
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;" class="border-bottom">
 
-            <!-- Team Lead -->
-            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                    <!-- Icon: Team Lead -->
-                    <i class="ti ti-user-shield me-2"></i>
-                    Team Lead
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Ruth</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Meredith</span>
-                    </div>
-                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                </div>
-            </div>
+                        <!-- Checkbox -->
+                        <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
 
-            <!-- Project Manager -->
-            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                    <!-- Icon: PM -->
-                    <i class="ti ti-user-star me-2"></i>
-                    Project Manager
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                        <span style="font-size:13px;">Dwight</span>
-                    </div>
-                    <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                </div>
-            </div>
+                        <!-- Drag Handle Icon -->
+                        <div style="width: 16px; height: 16px; cursor: grab; display: flex; flex-direction: column; justify-content: space-between;">
+                            <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                            <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                            <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
+                        </div>
 
-            <!-- Tags -->
-            <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                    <!-- Icon: Tags -->
-                    <i class="ti ti-bookmark me-2"></i>
-                    Tags
-                </div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <span style="background-color:#fde8e8; color:#b91c1c; font-size:12px; padding:4px 8px; border-radius:12px;">Admin Panel</span>
-                    <span style="background-color:#e8f2fe; color:#1e3a8a; font-size:12px; padding:4px 8px; border-radius:12px;">High Tech</span>
-                </div>
-            </div>
+                        <!-- Star Icon -->
+                        <div style="color: #fbbf24; cursor: pointer;">&#9733;</div>
 
-            <!-- Description -->
-            <div class="pb-3 border-bottom">
-                <div style="font-size:14px; font-weight:500; margin-bottom:6px;">Description</div>
-                <p style="font-size:13px; color:#374151; line-height:1.6;">
-                    The Enhanced Patient Management System (EPMS) project aims to modernize and streamline the patient management processes within. By integrating advanced technologies and optimizing existing workflows, the project seeks to improve patient care, enhance operational efficiency, and ensure compliance with regulatory standards.
-                </p>
-            </div>
-            <details style="border-bottom: 1px solid #e5e7eb; padding-bottom: 12px; margin-bottom: 8px; cursor: pointer;">
-                <summary style="font-weight: 600; font-size: 16px; color: #111827; list-style: none;">
-                    Tasks
-                </summary>
-            </details>
+                        <!-- Task Name -->
+                        <div style="font-weight: 600; font-size: 14px; color: #111827; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            Patient
+                        </div>
 
-            <!-- Task Row -->
-            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;" class="border-bottom">
-
-                <!-- Checkbox -->
-                <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
-
-                <!-- Drag Handle Icon -->
-                <div style="width: 16px; height: 16px; cursor: grab; display: flex; flex-direction: column; justify-content: space-between;">
-                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
-                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
-                    <span style="background: #9ca3af; height: 2px; border-radius: 1px;"></span>
-                </div>
-
-                <!-- Star Icon -->
-                <div style="color: #fbbf24; cursor: pointer;">&#9733;</div>
-
-                <!-- Task Name -->
-                <div style="font-weight: 600; font-size: 14px; color: #111827; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    Patient
-                </div>
-
-                <!-- Status Label -->
-                <div style="
+                        <!-- Status Label -->
+                        <div style="
       background-color: #fbcfe8; 
       color: #be185d; 
       font-size: 12px; 
@@ -5402,54 +5395,184 @@
       border-radius: 12px;
       white-space: nowrap;
     ">
-                    Onhold
-                </div>
+                            Onhold
+                        </div>
 
-                <!-- Avatars -->
-                <div style="display: flex; gap: -8px;">
-                    <img src="https://via.placeholder.com/32" alt="User 1" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
-                    <img src="https://via.placeholder.com/32" alt="User 2" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
-                </div>
+                        <!-- Avatars -->
+                        <div style="display: flex; gap: -8px;">
+                            <img src="https://via.placeholder.com/32" alt="User 1" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
+                            <img src="https://via.placeholder.com/32" alt="User 2" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid white;">
+                        </div>
 
-                <!-- Options (3 dots) -->
-                <div style="font-size: 20px; color: #9ca3af; cursor: pointer;">&#8942;</div>
+                        <!-- Options (3 dots) -->
+                        <div style="font-size: 20px; color: #9ca3af; cursor: pointer;">&#8942;</div>
+                    </div>
+                </div>
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; background-color: #fff;" class="mb-3">
+                    <!-- Images container -->
+                    <h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Images</h3>
+
+                    <div style="display: flex; justify-content:space-between;" class="pb-3">
+                        <div class="col-mb-6">
+                            <img src="https://via.placeholder.com/150x120?text=Image+1" alt="Image 1"
+                                style="width: 48%; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                        <div class="col-mb-6">
+                            <img src="https://via.placeholder.com/150x120?text=Image+2" alt="Image 2"
+                                style="width: 48%; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                        <div class="col-mb-6">
+                            <img src="https://via.placeholder.com/150x120?text=Image+2" alt="Image 2"
+                                style="width: 48%; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                        <div class="col-mb-6">
+                            <img src="https://via.placeholder.com/150x120?text=Image+2" alt="Image 2"
+                                style="width: 48%; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+                <!-- files container -->
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; background-color: #fff;" class="mb-3">
+                    <h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Files</h3>
+                    <div style=" border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; font-family: Arial, sans-serif;" class="mb-3">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;" class="border-bottom">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="doc icon" style="width: 28px; height: 28px;" />
+                                <div>
+                                    <div style="font-weight: 600; font-size: 15px; color: #111827;">Project_1.docx</div>
+                                    <div style="font-size: 12px; color: #6b7280;">7.6 MB</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px; font-size: 18px; color: #6b7280; cursor: pointer;">
+                                <span title="Download" style="user-select:none;">⬇️</span>
+                                <span title="Delete" style="user-select:none;">🗑️</span>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px;">
+                            <span>15 May 2024, 6:53 PM</span>
+                            <img
+                                src="https://randomuser.me/api/portraits/men/32.jpg"
+                                alt="user"
+                                style="width: 28px; height: 28px; border-radius: 50%; margin-left: auto;" />
+                        </div>
+                    </div>
+                </div>
+                <!-- Notes -->
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; background-color: #fff;">
+
+                    <!-- Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0;">Notes</h2>
+                        <button style="background-color: #ff6d3d; border: none; color: white; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                            + Add New
+                        </button>
+
+
+                    </div>
+
+                    <!-- Styled Horizontal Line -->
+                    <hr style="border: none; border-top: 1px solid #838d99; margin: 13px 0; width: 100%;" />
+                    <!-- Notes Container -->
+                    <div style="margin-top: 20px;">
+                        <div style="background-color: white; padding: 16px; border-radius: 8px; position: relative; border: 1px solid #e2e8f0;">
+
+                            <!-- Options Icon -->
+                            <div style="position: absolute; top: 10px; right: 10px; font-size: 20px; cursor: pointer; color: #999;">⋮</div>
+
+                            <!-- Date -->
+                            <div style="font-size: 14px; color: #555;">15 May 2025</div>
+
+                            <!-- Title -->
+                            <div style="color: #003366; font-weight: bold; margin-top: 6px; margin-bottom: 8px;">
+                                <span style="height: 8px; width: 8px; background-color: #ff6d3d; border-radius: 50%; display: inline-block; margin-right: 6px;"></span>
+                                Changes & design
+                            </div>
+
+                            <!-- Description -->
+                            <div style="font-size: 14px; color: #666; line-height: 1.6;">
+                                An office management app project streamlines administrative tasks by integrating tools for scheduling, communication, and task management, enhancing overall productivity and efficiency.
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                 <!-- Activity container -->
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #fff; font-family: 'Segoe UI', sans-serif;" class="mt-3">
+
+                        <!-- Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0;">Activity</h3>
+                            <button style="background-color: #ff6d3d; border: none; color: white; padding: 6px 14px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                                + Add New
+                            </button>
+                        </div>
+
+                        <!-- Activity Timeline -->
+                        <div style="margin-top: 20px; position: relative;">
+
+                            <!-- Vertical line -->
+                            <div style="position: absolute; top: 0; left: 15px; width: 2px; height: 100%; background-color: #e2e8f0;"></div>
+
+                            <!-- Timeline items -->
+                            <div style="display: flex; flex-direction: column; gap: 32px; padding-left: 40px;">
+
+                                <!-- Item 1 -->
+                                <div style="position: relative;">
+                                    <!-- Icon -->
+                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/3114/3114883.png" width="16" height="16" />
+                                    </div>
+                                    <!-- Content -->
+                                    <div>
+                                        <strong>Andrew</strong> added a New Task<br>
+                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 2 -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #facc15; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="16" height="16" />
+                                    </div>
+                                    <div>
+                                        <strong>Jermai</strong> Moved task <strong>“Private chat module”</strong><br>
+                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span><br>
+                                        <div style="margin-top: 6px; display: flex; gap: 8px;">
+                                            <span style="background-color: #22c55e; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">✓ Completed</span>
+                                            <span style="background-color: #8b5cf6; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">↔ Inprogress</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Item 3 -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828811.png" width="16" height="16" />
+                                    </div>
+                                    <div>
+                                        <strong>Jermai</strong> Created task <strong>“Private chat module”</strong><br>
+                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 4 -->
+                                <div style="position: relative;">
+                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/2659/2659360.png" width="16" height="16" />
+                                    </div>
+                                    <div>
+                                        <strong>Hendry</strong> Updated Image <strong>“logo.jpg”</strong><br>
+                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
             </div>
-<h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Images</h3>
-
-  <!-- Images container -->
-  <div style="display: flex; gap: 12px;" class="pb-3">
-    <img src="https://via.placeholder.com/150x120?text=Image+1" alt="Image 1"
-      style="width: 48%; border-radius: 8px; object-fit: cover;"/>
-
-    <img src="https://via.placeholder.com/150x120?text=Image+2" alt="Image 2"
-      style="width: 48%; border-radius: 8px; object-fit: cover;"/>
-  </div>
-
-  <!-- files container -->
-   <h3 style="font-weight: 600; color: #111827; margin-bottom: 12px;">Files</h3>
-  <div style="max-width: 400px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; font-family: Arial, sans-serif;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="doc icon" style="width: 28px; height: 28px;" />
-      <div>
-        <div style="font-weight: 600; font-size: 15px; color: #111827;">Project_1.docx</div>
-        <div style="font-size: 12px; color: #6b7280;">7.6 MB</div>
-      </div>
-    </div>
-    <div style="display: flex; gap: 12px; font-size: 18px; color: #6b7280; cursor: pointer;">
-      <span title="Download" style="user-select:none;">⬇️</span>
-      <span title="Delete" style="user-select:none;">🗑️</span>
-    </div>
-  </div>
-  <div style="font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px;">
-    <span>15 May 2024, 6:53 PM</span>
-    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="user" style="width: 28px; height: 28px; border-radius: 50%;" />
-  </div>
-</div>
 
         </div>
-
-
     </div>
 </div>
 </div>
