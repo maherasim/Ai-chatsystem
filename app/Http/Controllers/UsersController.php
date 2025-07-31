@@ -10,19 +10,21 @@ class UsersController extends Controller
 {
   public function store(Request $request)
 {
-    // Step 1: Validation
+    //
+    // 
+    //  Step 1: Validation
     $validated = $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'remail' => 'required|same:email',
-        'passw' => 'required|string|min:6',
-        'rpassw' => 'required|same:passw',
-        'cpassw' => 'required|same:passw',
-        'phone' => 'required|digits_between:7,15',
-        'department' => 'required|string',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+        'email' => 'required',
+        'remail' => 'nullable',
+        'passw' => 'nullable',
+        'rpassw' => 'nullable',
+        'cpassw' => 'nullable',
+        'phone' => 'nullable',
+        'department' => 'nullable|string',
+        'image' => 'nullable',
     ]);
-
+dd($validated );
     // Step 2: Handle Image Upload
     $imagePath = null;
 
