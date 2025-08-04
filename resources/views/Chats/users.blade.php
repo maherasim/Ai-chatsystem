@@ -5,6 +5,7 @@
 <style>
     /* Ensure base styles don't interfere */
 
+
     .task-icon-link {
         position: relative;
         display: inline-block;
@@ -1035,7 +1036,7 @@
 
     <!-- Chat -->
 
-    <div class="container py-4">
+    <div class="container py-4" style="overflow-y: auto;scrollbar-width: thin; margin-right: 0; border-right: none;">
         <!-- EMPLOYEE SECTION TITLE -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Users</h3>
@@ -1050,10 +1051,19 @@
                 </span>
                 Add User
             </button>
-
-
         </div>
-
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3 mb-2" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> &times;</button>
+        </div>
+        @endif
+        @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3 mb-2" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> &times;</button>
+        </div>
+        @endif
         <!-- EMPLOYEE STATS -->
         <div class="row mb-4">
             <!-- Total Users -->
@@ -1117,7 +1127,9 @@
         <!-- EMPLOYEES GRID -->
         <div class="row employee-grid">
             <!-- Employee Card 1 -->
+            @foreach ($users as $user)
             <div class="col-md-3 mb-4">
+
                 <div class="elevated-card" style="position: relative; padding-top: 24px;">
                     <!-- Square Checkbox (top-left) -->
                     <input type="checkbox" style="
@@ -1129,7 +1141,6 @@
         accent-color: orange; /* Optional: purple tint */
         cursor: pointer;
     ">
-
                     <!-- 3-dots Icon (top-right) -->
                     <div class="dropdown" style="position: absolute; top: 20px; right: 10px;">
                         <!-- Just 3 vertical dots -->
@@ -1149,7 +1160,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center " href="#">
+                                <a class="dropdown-item d-flex align-items-center " href="{{ route('user.destroy', $user->_id) }}">
                                     <i class="ti ti-trash me-2"></i> Delete
                                 </a>
                             </li>
@@ -1158,13 +1169,25 @@
 
 
                     <!-- Profile -->
-                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="img">
-                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Anthony Lewis
-                    </h6>
 
+
+                    <img src="{{ asset($user->image) }}"
+                        onerror="this.onerror=null; this.src='{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}';"
+                        class="rounded-circle"
+                        alt="img">
+
+                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" onclick="showUserPopup(
+        '{{ $user->_id }}',
+        '{{ $user->name }}',
+        '{{ $user->email }}',
+        '{{ $user->phone }}',
+        '{{ $user->department }}',
+        '{{ asset($user->image) }}'
+    )">
+                        {{$user->name}}
+                    </h6>
                     <small style="color: fuchsia; background-color: #ffe6f0; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">
-                        Software Developer
+                        {{$user->department}}
                     </small>
 
                     <!-- Stats -->
@@ -1182,6 +1205,7 @@
                 </div>
 
             </div>
+            @endforeach
 
             <!-- Employee Card 2 -->
             <div class="col-md-3 mb-4">
@@ -1921,12 +1945,7 @@
                         <div class="tab-pane fade show active" id="basicInfo">
                             <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @if (session('success'))
-                                <div class="alert alert-success alert-dismissible fade show mt-3 mb-2" role="alert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> &times;</button>
-                                </div>
-                                @endif
+
                                 <!-- Profile Upload -->
                                 <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
                                     <!-- Profile Image -->
@@ -2573,7 +2592,7 @@
             </button>
 
             <!-- Profile Image -->
-            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}"
+            <img id="popupImage" src=""
                 class="rounded-circle"
                 alt="Profile"
                 style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
@@ -2585,11 +2604,13 @@
     <div class="offcanvas-body pt-5">
         <!-- Name and Badges -->
         <div class="text-center mt-1 " style="margin-left: 30px;">
-            <h5 class="mb-0 fw-semibold">Stephan Peralt
+
+            <h5 class="mb-0 fw-semibold" id="popupName">
                 <i class="ti ti-check" style="color: #1d9f2f;"></i>
             </h5>
             <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
-                <span class="badge bg-secondary-subtle text-dark border">Software Developer</span>
+                <span class="badge bg-secondary-subtle text-dark border" id="popupDept"></span>
+              
 
                 <span class="badge bg-light text-dark border">10+ years of Experience</span>
             </div>
@@ -2603,6 +2624,7 @@
                     <div class="d-flex align-items-center">
                         <i class="ti ti-id me-2 text-muted"></i>
                         <small class="text-muted">Client ID</small>
+                        
                     </div>
                     <div class="fw-medium">CLT-0024</div>
                 </div>
@@ -2613,7 +2635,8 @@
                         <i class="ti ti-users me-2 text-muted"></i>
                         <small class="text-muted">Team</small>
                     </div>
-                    <div class="fw-medium">UI/UX Design</div>
+                    <div class="fw-medium" id="popupDept">UI/UX Design</div>
+                    
                 </div>
 
                 <!-- Date of Join -->
@@ -2646,15 +2669,17 @@
                     <i class="ti ti-phone text-muted"></i> Phone
                 </small>
 
-                <div class="fw-medium text-dark">(163) 2459 315</div>
+                <div class="fw-medium text-dark " id="popupPhone"></div>
             </div>
 
             <div class="d-flex justify-content-between mb-2">
                 <small class="text-muted">
                     <i class="ti ti-mail text-muted"></i> Email
                 </small>
-                <div class="fw-medium text-dark">peralt12@example.com</div>
+                <div class="fw-medium text-dark" id="popupEmail"></div>
             </div>
+
+         
 
             <div class="d-flex justify-content-between mb-2">
                 <small class="text-muted">
@@ -2862,6 +2887,16 @@
         }
     }
 </script>
+<script>
+    function showUserPopup(id, name, email,phone, department, image) {
+        document.getElementById('popupImage').src = image;
+        document.getElementById('popupName').innerText = name;
+        document.getElementById('popupEmail').innerText = email;
+        document.getElementById('popupPhone').innerText = phone;
+        document.getElementById('popupDept').innerText = department;
+    }
+</script>
+
 
 @component('components.model-popup')
 @endcomponent
