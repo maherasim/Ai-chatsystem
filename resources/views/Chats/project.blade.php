@@ -4654,9 +4654,45 @@
 
 
 
-    <div class="container py-4">
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;">
         <!-- EMPLOYEE SECTION TITLE -->
+        <div class="chat chat-messages show" id="middle" style="visibility:visible;
+    margin-top: -21px;margin-left: -13px;    position: relative;
+    ">
+            <div>
+                <div class="chat-header" style="width:101.4%;">
+                    <div class="user-details">
+                        <div class="d-xl-none">
+                            <a class="text-muted chat-close me-2" href="#">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="avatar avatar-lg online flex-shrink-0">
+                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
+                        </div>
+                        <div class="ms-2 overflow-hidden">
+                            <h6>Username</h6>
+                            <p class="last-seen text-truncate"> Online</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Search -->
+                    <div class="chat-search search-wrap contact-search">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search Contacts">
+                                <span class="input-group-text"><i class="ti ti-search"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /Chat Search -->
+                </div>
+
+            </div>
+
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
+
             <h3>Our Projects</h3>
             <button
                 type="button"
@@ -5004,6 +5040,8 @@
                     </div>
                 </div>
             </div>
+
+            
             <div class="col-md-3 mb-4">
                 <div class="elevated-card">
                     <!-- Square Checkbox (top-left) -->
@@ -5219,43 +5257,47 @@
 
             <!-- /Header Section -->
             <div class="offcanvas-body pt-4">
-                <div style="background-color: #e7e8e9;border: 1px solid #c7c9cd; border-radius: 8px;padding:16px;">
-                    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; ">
+                <div style="background-color: #e7e8e9;border: 1px solid #c7c9cd; border-radius: 8px;padding:16px; margin-left: 17px;">
+                    <div style="display: flex; flex-direction: column;  margin-bottom: 24px; ">
 
                         <!-- Top Center -->
                         <div style="text-align: center; margin-bottom: 16px;">
                             <div style="font-size: 18px; font-weight: 600; color: #111827;">Hospital Administration</div>
                             <div style="font-size: 14px; color: #6b7280;">Project ID : <strong>PRO‑0004</strong></div>
                         </div>
+                        <!-- Task Details Section (Right) -->
+                        <div style="min-width: 200px; margin-left: auto;">
+                            <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">
+                                Tasks Details
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
+                                    <div style="font-size: 20px; font-weight: bold; color: #111827;">0 / 0</div>
+                                </div>
+                                <div style="font-size: 13px; color: #6b7280; margin-top: -30px;">0% Completed</div>
+                            </div>
+                            <div style="margin-top: 8px; width: 100%; height: 6px; background-color: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                                <div style="width: 0%; height: 100%; background-color: #3b82f6;"></div>
+                            </div>
+                        </div>
+
 
                         <!-- Bottom Row (Priority - Left, Task Details - Right) -->
-                        <div style="display: flex; justify-content: space-between; width: 100%; flex-wrap: wrap;">
 
-                            <!-- Priority Section (Left) -->
-                            <div style="margin-bottom: 12px;">
-                                <div style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Priority</div>
-                                <button type="button"
-                                    style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #b91c1c;
-                background-color: #fef2f2; padding: 6px 12px; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer; margin-top:22px;margin-left:-3px;">
-                                    <span style="width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; display: inline-block;"></span>
-                                    High
-                                </button>
-                            </div>
 
-                            <!-- Task Details Section (Right) -->
-                            <div style="min-width: 200px;">
-                                <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">Tasks Details</div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div>
-                                        <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
-                                        <div style="font-size: 20px; font-weight: bold; color: #111827;">0 / 0</div>
-                                    </div>
-                                    <div style="font-size: 13px; color: #6b7280; margin-top: -30px;">0% Completed</div>
-                                </div>
-                                <div style="margin-top: 8px; width: 100%; height: 6px; background-color: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 0%; height: 100%; background-color: #3b82f6;"></div>
-                                </div>
-                            </div>
+                        <!-- Priority Section (Left) -->
+                        <div style="margin-bottom: 12px; display:flex; justify-content:space-between">
+                            <div style="font-size: 14px; font-weight: 500; color: #374151;">Priority</div>
+                            <button type="button"
+                                style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #b91c1c;
+                background-color: #fef2f2; padding: 6px 12px; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer;margin-left:-3px;">
+                                <span style="width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; display: inline-block;"></span>
+                                High
+                            </button>
+
+
+
 
                         </div>
                     </div>
