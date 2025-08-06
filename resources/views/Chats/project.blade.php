@@ -4654,9 +4654,45 @@
 
 
 
-    <div class="container py-4">
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;">
         <!-- EMPLOYEE SECTION TITLE -->
+        <div class="chat chat-messages show" id="middle" style="visibility:visible;
+    margin-top: -21px;margin-left: -13px;    position: relative;
+    ">
+            <div>
+                <div class="chat-header" style="width:101.4%;">
+                    <div class="user-details">
+                        <div class="d-xl-none">
+                            <a class="text-muted chat-close me-2" href="#">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="avatar avatar-lg online flex-shrink-0">
+                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
+                        </div>
+                        <div class="ms-2 overflow-hidden">
+                            <h6>Username</h6>
+                            <p class="last-seen text-truncate"> Online</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Search -->
+                    <div class="chat-search search-wrap contact-search">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search Contacts">
+                                <span class="input-group-text"><i class="ti ti-search"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /Chat Search -->
+                </div>
+
+            </div>
+
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
+
             <h3>Our Projects</h3>
             <button
                 type="button"
@@ -5004,6 +5040,8 @@
                     </div>
                 </div>
             </div>
+
+            
             <div class="col-md-3 mb-4">
                 <div class="elevated-card">
                     <!-- Square Checkbox (top-left) -->
@@ -5218,35 +5256,20 @@
             </div>
 
             <!-- /Header Section -->
-            <div class="offcanvas-body pt-5">
-                <div style="display: flex;  align-items: flex-start; flex-wrap: wrap; margin-bottom: 24px; border: 1px solid #e5e7eb; padding: 16px; border-radius: 8px;   background-color:#f9fafb">
+            <div class="offcanvas-body pt-4">
+                <div style="background-color: #e7e8e9;border: 1px solid #c7c9cd; border-radius: 8px;padding:16px; margin-left: 17px;">
+                    <div style="display: flex; flex-direction: column;  margin-bottom: 24px; ">
 
-                    <!-- Left Side -->
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <img src="https://via.placeholder.com/52" alt="" style="width:52px; height:52px; border-radius:50%;" />
-                        <div>
-                            <div style="font-size:18px; font-weight:600; color: #111827; padding-right:14px">Hospital Administration</div>
-                            <div style="font-size:14px; color:#6b7280;">Project ID : <strong>PRO‑0004</strong></div>
+                        <!-- Top Center -->
+                        <div style="text-align: center; margin-bottom: 16px;">
+                            <div style="font-size: 18px; font-weight: 600; color: #111827;">Hospital Administration</div>
+                            <div style="font-size: 14px; color: #6b7280;">Project ID : <strong>PRO‑0004</strong></div>
                         </div>
-                    </div>
-
-                    <!-- Right Side -->
-                    <div style="display: flex; gap: 74px; align-items: flex-start; flex-wrap: wrap;">
-
-                        <!-- Priority Section -->
-                        <div>
-                            <div style=" margin-left:16px;font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Priority</div>
-                            <button type="button"
-                                style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #b91c1c;
-        background-color: #fef2f2; padding: 6px 12px; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer;">
-                                <span style="width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; display: inline-block; margin-left:15px"></span>
-                                High
-                            </button>
-                        </div>
-
-                        <!-- Task Details Section -->
-                        <div style="min-width: 200px;">
-                            <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">Tasks Details</div>
+                        <!-- Task Details Section (Right) -->
+                        <div style="min-width: 200px; margin-left: auto;">
+                            <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">
+                                Tasks Details
+                            </div>
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div>
                                     <div style="font-size: 13px; color: #6b7280;">Tasks Done</div>
@@ -5259,98 +5282,114 @@
                             </div>
                         </div>
 
+
+                        <!-- Bottom Row (Priority - Left, Task Details - Right) -->
+
+
+                        <!-- Priority Section (Left) -->
+                        <div style="margin-bottom: 12px; display:flex; justify-content:space-between">
+                            <div style="font-size: 14px; font-weight: 500; color: #374151;">Priority</div>
+                            <button type="button"
+                                style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #b91c1c;
+                background-color: #fef2f2; padding: 6px 12px; border: 1px solid #fca5a5; border-radius: 8px; cursor: pointer;margin-left:-3px;">
+                                <span style="width: 8px; height: 8px; background-color: #dc2626; border-radius: 50%; display: inline-block;"></span>
+                                High
+                            </button>
+
+
+
+
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                        <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                            <!-- Icon: Status -->
+                            <i class="ti ti-square-rounded me-2"> </i>Status
+
+                        </div>
+                        <span style="background-color:#f3e8ff; color:#9333ea; font-size:12px; padding:4px 10px; border-radius:12px;">InProgress</span>
+                    </div>
+
+                    <!-- Team -->
+                    <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                        <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                            <!-- Icon: Team -->
+                            <i class="ti ti-users-group me-2"></i>
+                            Team
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Lewis</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Leona</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Pineiro</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Moseley</span>
+                            </div>
+                            <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                        </div>
+                    </div>
+
+                    <!-- Team Lead -->
+                    <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                        <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                            <!-- Icon: Team Lead -->
+                            <i class="ti ti-user-shield me-2"></i>
+                            Team Lead
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Ruth</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Meredith</span>
+                            </div>
+                            <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Manager -->
+                    <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                        <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                            <!-- Icon: PM -->
+                            <i class="ti ti-user-star me-2"></i>
+                            Project Manager
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
+                                <span style="font-size:13px;">Dwight</span>
+                            </div>
+                            <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
+                        <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
+                            <!-- Icon: Tags -->
+                            <i class="ti ti-bookmark me-2"></i>
+                            Tags
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <span style="background-color:#f5299d; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">Admin Panel</span>
+                            <span style="background-color:#1e90ff; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">High Tech</span>
+                        </div>
+
                     </div>
                 </div>
-
-
-                <!-- Status -->
-                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                        <!-- Icon: Status -->
-                        <i class="ti ti-square-rounded me-2"> </i>Status
-
-                    </div>
-                    <span style="background-color:#f3e8ff; color:#9333ea; font-size:12px; padding:4px 10px; border-radius:12px;">InProgress</span>
-                </div>
-
-                <!-- Team -->
-                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                        <!-- Icon: Team -->
-                        <i class="ti ti-users-group me-2"></i>
-                        Team
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Lewis</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Leona</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Pineiro</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Moseley</span>
-                        </div>
-                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                    </div>
-                </div>
-
-                <!-- Team Lead -->
-                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                        <!-- Icon: Team Lead -->
-                        <i class="ti ti-user-shield me-2"></i>
-                        Team Lead
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Ruth</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Meredith</span>
-                        </div>
-                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                    </div>
-                </div>
-
-                <!-- Project Manager -->
-                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                        <!-- Icon: PM -->
-                        <i class="ti ti-user-star me-2"></i>
-                        Project Manager
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <img src="https://via.placeholder.com/32" style="border-radius:50%;" alt="">
-                            <span style="font-size:13px;">Dwight</span>
-                        </div>
-                        <a href="#" style="font-size:13px; color:#0c4a6e; text-decoration:none;">+ Add New</a>
-                    </div>
-                </div>
-
-                <!-- Tags -->
-                <div style="margin-bottom:20px; display: flex; justify-content: space-between;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:6px; display: flex; align-items: center; gap: 6px;">
-                        <!-- Icon: Tags -->
-                        <i class="ti ti-bookmark me-2"></i>
-                        Tags
-                    </div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <span style="background-color:#f5299d; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">Admin Panel</span>
-                        <span style="background-color:#1e90ff; color:white; font-size:12px; padding:4px 8px; border-radius:12px; font-weight:bold;">High Tech</span>
-                    </div>
-
-                </div>
-
                 <!-- Description -->
                 <div class="pb-3 border-bottom">
                     <div style="font-size:14px; font-weight:500; margin-bottom:6px;">Description</div>
@@ -5496,79 +5535,79 @@
                         </div>
                     </div>
                 </div>
-                 <!-- Activity container -->
-                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #fff; font-family: 'Segoe UI', sans-serif;" class="mt-3">
+                <!-- Activity container -->
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #fff; font-family: 'Segoe UI', sans-serif;" class="mt-3">
 
-                        <!-- Header -->
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0;">Activity</h3>
-                            <button style="background-color: #ff6d3d; border: none; color: white; padding: 6px 14px; border-radius: 5px; font-weight: bold; cursor: pointer;">
-                                + Add New
-                            </button>
-                        </div>
+                    <!-- Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Activity</h3>
+                        <button style="background-color: #ff6d3d; border: none; color: white; padding: 6px 14px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                            + Add New
+                        </button>
+                    </div>
 
-                        <!-- Activity Timeline -->
-                        <div style="margin-top: 20px; position: relative;">
+                    <!-- Activity Timeline -->
+                    <div style="margin-top: 20px; position: relative;">
 
-                            <!-- Vertical line -->
-                            <div style="position: absolute; top: 0; left: 15px; width: 2px; height: 100%; background-color: #e2e8f0;"></div>
+                        <!-- Vertical line -->
+                        <div style="position: absolute; top: 0; left: 15px; width: 2px; height: 100%; background-color: #e2e8f0;"></div>
 
-                            <!-- Timeline items -->
-                            <div style="display: flex; flex-direction: column; gap: 32px; padding-left: 40px;">
+                        <!-- Timeline items -->
+                        <div style="display: flex; flex-direction: column; gap: 32px; padding-left: 40px;">
 
-                                <!-- Item 1 -->
-                                <div style="position: relative;">
-                                    <!-- Icon -->
-                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/3114/3114883.png" width="16" height="16" />
-                                    </div>
-                                    <!-- Content -->
-                                    <div>
-                                        <strong>Andrew</strong> added a New Task<br>
-                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
-                                    </div>
+                            <!-- Item 1 -->
+                            <div style="position: relative;">
+                                <!-- Icon -->
+                                <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/3114/3114883.png" width="16" height="16" />
                                 </div>
-
-                                <!-- Item 2 -->
-                                <div style="position: relative;">
-                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #facc15; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="16" height="16" />
-                                    </div>
-                                    <div>
-                                        <strong>Jermai</strong> Moved task <strong>“Private chat module”</strong><br>
-                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span><br>
-                                        <div style="margin-top: 6px; display: flex; gap: 8px;">
-                                            <span style="background-color: #22c55e; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">✓ Completed</span>
-                                            <span style="background-color: #8b5cf6; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">↔ Inprogress</span>
-                                        </div>
-                                    </div>
+                                <!-- Content -->
+                                <div>
+                                    <strong>Andrew</strong> added a New Task<br>
+                                    <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
                                 </div>
-
-                                <!-- Item 3 -->
-                                <div style="position: relative;">
-                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828811.png" width="16" height="16" />
-                                    </div>
-                                    <div>
-                                        <strong>Jermai</strong> Created task <strong>“Private chat module”</strong><br>
-                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
-                                    </div>
-                                </div>
-
-                                <!-- Item 4 -->
-                                <div style="position: relative;">
-                                    <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/2659/2659360.png" width="16" height="16" />
-                                    </div>
-                                    <div>
-                                        <strong>Hendry</strong> Updated Image <strong>“logo.jpg”</strong><br>
-                                        <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
-                                    </div>
-                                </div>
-
                             </div>
+
+                            <!-- Item 2 -->
+                            <div style="position: relative;">
+                                <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #facc15; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" width="16" height="16" />
+                                </div>
+                                <div>
+                                    <strong>Jermai</strong> Moved task <strong>“Private chat module”</strong><br>
+                                    <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span><br>
+                                    <div style="margin-top: 6px; display: flex; gap: 8px;">
+                                        <span style="background-color: #22c55e; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">✓ Completed</span>
+                                        <span style="background-color: #8b5cf6; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">↔ Inprogress</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 -->
+                            <div style="position: relative;">
+                                <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828811.png" width="16" height="16" />
+                                </div>
+                                <div>
+                                    <strong>Jermai</strong> Created task <strong>“Private chat module”</strong><br>
+                                    <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
+                                </div>
+                            </div>
+
+                            <!-- Item 4 -->
+                            <div style="position: relative;">
+                                <div style="position: absolute; left: -38px; top: 0; width: 28px; height: 28px; background-color: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2659/2659360.png" width="16" height="16" />
+                                </div>
+                                <div>
+                                    <strong>Hendry</strong> Updated Image <strong>“logo.jpg”</strong><br>
+                                    <span style="font-size: 12px; color: #6b7280;">15 May 2024, 6:53 PM</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+                </div>
 
             </div>
 

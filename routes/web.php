@@ -16,6 +16,7 @@ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout')
 //  users
 
 Route::post('/store', [UsersController::class, 'store'])->name('user.store');
+Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/', function () {
     return view('signin');
 });
@@ -46,14 +47,14 @@ Route::get('/tasks', function () {
     return view('Chats.task');
 })->middleware('auth')->name('chat-task');
 Route::get('/users', function () {
+    $users=User::all();
     $totalUsers = User::count();
     $activeUsers = User::where('active', true)->count();
     $inactiveUsers = User::where('active', false)->count();
-
     $newJoinersToday = User::whereDate('created_at', \Carbon\Carbon::today())
         ->where('active', true)
         ->count();
-    return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday'));
+    return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday','users'));
 })->middleware('auth')->name('chat-users');
 
 Route::get('/meetings', function () {
