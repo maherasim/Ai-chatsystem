@@ -24,7 +24,7 @@ class UsersController extends Controller
         'department' => 'nullable|string',
         'image' => 'nullable',
     ]);
-dd($validated );
+// dd($validated );
     // Step 2: Handle Image Upload
     $imagePath = null;
 
@@ -51,9 +51,9 @@ dd($validated );
             $actions[$action] = true;
         }
     }
-
+       
     // Step 4: Store in database
-    User::create([
+    $user=User::create([
         'name' => $validated['name'],
         'email' => $validated['email'],
         'password' => Hash::make($validated['passw']),
@@ -63,8 +63,25 @@ dd($validated );
         'active'=>true,
         'permissions' => json_encode($permissions), // make sure 'permissions' is fillable in User model
     ]);
-
+      dd($request->all());
+    if($user){
+      
     return redirect()->back()->with('success', 'User registered successfully!');
+    }
+    else{
+        return redirect()->back()->with('error', 'User registered failed!!'); 
+    }
+
+}
+public function destroy($id){
+     $user=User::find($id);
+     if($user){
+         $user->delete();
+        return redirect()->back()->with('success','User deleted Successfull');
+     }
+     else{
+        return redirect()->back()->with('error','User deleted Successfull');
+     }
 }
 
 }
