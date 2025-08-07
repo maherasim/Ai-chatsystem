@@ -173,95 +173,175 @@
 
                             <div class="form-group col-md-4">
                                 @php
-                                    // Handle both edit and create scenarios
+                                    // Comprehensive attachment loading logic
                                     $existingAttachments = collect();
-                                    if (isset($servicedata) && $servicedata && method_exists($servicedata, 'getMedia')) {
-                                        try {
-                                            $existingAttachments = $servicedata->getMedia('service_attachment');
-                                        } catch (Exception $e) {
-                                            // Fallback if getMedia fails
-                                            $existingAttachments = collect();
+                                    $hasExistingAttachments = false;
+                                    
+                                    // Check if we have service data and it has an ID (editing mode)
+                                    if (isset($servicedata) && $servicedata && isset($servicedata->id) && $servicedata->id) {
+                                        // Try multiple methods to get attachments
+                                        if (method_exists($servicedata, 'getMedia')) {
+                                            try {
+                                                $existingAttachments = $servicedata->getMedia('service_attachment');
+                                            } catch (Exception $e) {
+                                                // Log error for debugging
+                                                \Log::warning('Failed to load media attachments: ' . $e->getMessage());
+                                            }
+                                        }
+                                        
+                                        // Alternative: Check if there's a media relationship
+                                        if ($existingAttachments->isEmpty() && method_exists($servicedata, 'media')) {
+                                            try {
+                                                $existingAttachments = $servicedata->media()->where('collection_name', 'service_attachment')->get();
+                                            } catch (Exception $e) {
+                                                \Log::warning('Failed to load media via relationship: ' . $e->getMessage());
+                                            }
+                                        }
+                                        
+                                        // Another alternative: Check for attachments table
+                                        if ($existingAttachments->isEmpty()) {
+                                            try {
+                                                // This assumes you might have a direct attachments relationship
+                                                if (method_exists($servicedata, 'attachments')) {
+                                                    $existingAttachments = $servicedata->attachments;
+                                                }
+                                            } catch (Exception $e) {
+                                                \Log::warning('Failed to load attachments via direct relationship: ' . $e->getMessage());
+                                            }
                                         }
                                     }
-                                    $hasExistingAttachments = $existingAttachments->count() > 0;
+                                    
+                                    $hasExistingAttachments = $existingAttachments && $existingAttachments->count() > 0;
                                 @endphp
                                 <label class="form-control-label" for="service_attachment">{{ __('messages.image') }}
-                                    @if(!$hasExistingAttachments)
-                                        <span class="text-danger">*</span>
-                                    @endif
+                                    <span class="text-danger attachment-required" @if($hasExistingAttachments) style="display: none;" @endif>*</span>
                                 </label>
                                 <div class="custom-file">
-                                    <input type="file" onchange="preview()" name="service_attachment[]"
-                                        class="custom-file-input"
-                                        data-file-error="{{ __('messages.files_not_allowed') }}" multiple
-                                        @if(!$hasExistingAttachments) required @endif>
-                                    <label
-                                        class="custom-file-label upload-label">{{ __('messages.choose_file', ['file' => __('messages.attachments')]) }}</label>
+                                    <input type="file" 
+                                           onchange="handleFilePreview(this)" 
+                                           name="service_attachment[]"
+                                           id="service_attachment"
+                                           class="custom-file-input"
+                                           data-file-error="{{ __('messages.files_not_allowed') }}" 
+                                           accept="image/*"
+                                           multiple
+                                           @if(!$hasExistingAttachments) required @endif>
+                                    <label class="custom-file-label upload-label" for="service_attachment">
+                                        {{ __('messages.choose_file', ['file' => __('messages.attachments')]) }}
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted">
+                                    {{ __('messages.allowed_file_types') }}: JPG, JPEG, PNG, GIF, WEBP
+                                </small>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="service_attachment_preview_container" style="display: none; margin-top: 10px;">
+                                    <label class="form-control-label">{{ __('messages.preview') }}:</label>
+                                    <div id="service_attachment_previews" class="d-flex flex-wrap gap-2"></div>
                                 </div>
                             </div>
-                            <img id="service_attachment_preview" src="" width="150px" style="display: none;" />
                         </div>
 
                         <div class="row service_attachment_div">
                             <div class="col-md-12">
                                 @if ($hasExistingAttachments)
                                     @php
-                                        $file_extention = config('constant.IMAGE_EXTENTIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                        $file_extention = config('constant.IMAGE_EXTENTIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg']);
                                     @endphp
-                                    <!-- Debug info -->
-                                    <div style="background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 12px;">
-                                        <strong>Debug Info:</strong> Found {{ $existingAttachments->count() }} existing attachments
-                                        @if($existingAttachments->count() > 0)
-                                            <br>First attachment: {{ $existingAttachments->first()->file_name ?? 'No filename' }}
-                                        @endif
-                                    </div>
-                                    <div class="border-left-2">
-                                        <p class="ml-2"><b>{{ __('messages.attached_files') }}</b></p>
-                                        <div class="ml-2 my-3">
-                                            <div class="row">
-                                                @foreach ($existingAttachments as $attchment)
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="card-title mb-0">
+                                                <i class="fas fa-images me-2"></i>{{ __('messages.existing_attachments') }} 
+                                                <span class="badge bg-primary ms-2">{{ $existingAttachments->count() }}</span>
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" id="existing_attachments_container">
+                                                @foreach ($existingAttachments as $attachment)
                                                     @php
-                                                        $fileUrl = $attchment->getFullUrl();
-                                                        $fileName = $attchment->file_name ?? '';
+                                                        // Enhanced file URL handling
+                                                        $fileUrl = '';
+                                                        $fileName = '';
+                                                        $fileSize = 0;
+                                                        
+                                                        // Try different methods to get file info
+                                                        if (method_exists($attachment, 'getFullUrl')) {
+                                                            $fileUrl = $attachment->getFullUrl();
+                                                        } elseif (isset($attachment->url)) {
+                                                            $fileUrl = $attachment->url;
+                                                        } elseif (isset($attachment->path)) {
+                                                            $fileUrl = asset('storage/' . $attachment->path);
+                                                        }
+                                                        
+                                                        if (isset($attachment->file_name)) {
+                                                            $fileName = $attachment->file_name;
+                                                        } elseif (isset($attachment->name)) {
+                                                            $fileName = $attachment->name;
+                                                        } else {
+                                                            $fileName = 'attachment_' . $attachment->id;
+                                                        }
+                                                        
+                                                        if (isset($attachment->size)) {
+                                                            $fileSize = $attachment->size;
+                                                        }
+                                                        
                                                         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                                                         $isImage = in_array($fileExtension, $file_extention);
                                                     @endphp
-                                                    <input type="hidden" name="existing_attachments[]" value="{{ $attchment->id }}">
-                                                    <div class="col-md-2 pr-10 text-center galary file-gallary-{{ $servicedata->id }}"
-                                                        data-gallery=".file-gallary-{{ $servicedata->id }}"
-                                                        id="service_attachment_preview_{{ $attchment->id }}">
-                                                        @if ($isImage)
-                                                            <a id="attachment_files"
-                                                                href="{{ $fileUrl }}"
-                                                                class="list-group-item-action attachment-list"
-                                                                target="_blank">
-                                                                <img src="{{ $fileUrl }}"
-                                                                    class="attachment-image" alt="{{ $fileName }}"
-                                                                    style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
-                                                            </a>
-                                                        @else
-                                                            <a id="attachment_files"
-                                                                class="video list-group-item-action attachment-list"
-                                                                href="{{ $fileUrl }}">
-                                                                <img src="{{ asset('images/file.png') }}"
-                                                                    class="attachment-file"
-                                                                    style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
-                                                            </a>
-                                                        @endif
-                                                        <a class="text-danger remove-file"
-                                                            href="{{ route('remove.file', ['id' => $attchment->id, 'type' => 'service_attachment']) }}"
-                                                            data--submit="confirm_form" data--confirmation='true'
-                                                            data--ajax="true" data-toggle="tooltip"
-                                                            title='{{ __('messages.remove_file_title', ['name' => __('messages.attachments')]) }}'
-                                                            data-title='{{ __('messages.remove_file_title', ['name' => __('messages.attachments')]) }}'
-                                                            data-message='{{ __('messages.remove_file_msg') }}'
-                                                            style="position: absolute; top: 5px; right: 5px; background: white; border-radius: 50%; padding: 2px;">
-                                                            <i class="ri-close-circle-line"></i>
-                                                        </a>
+                                                    
+                                                    <input type="hidden" name="existing_attachments[]" value="{{ $attachment->id }}" class="existing-attachment-input">
+                                                    
+                                                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3" id="attachment_{{ $attachment->id }}">
+                                                        <div class="card h-100 attachment-card position-relative">
+                                                            <div class="attachment-preview" style="height: 120px; overflow: hidden;">
+                                                                @if ($isImage && $fileUrl)
+                                                                    <a href="{{ $fileUrl }}" 
+                                                                       class="attachment-link" 
+                                                                       data-bs-toggle="modal" 
+                                                                       data-bs-target="#imageModal"
+                                                                       data-image-src="{{ $fileUrl }}"
+                                                                       data-image-title="{{ $fileName }}">
+                                                                        <img src="{{ $fileUrl }}" 
+                                                                             class="card-img-top attachment-image" 
+                                                                             alt="{{ $fileName }}"
+                                                                             style="width: 100%; height: 120px; object-fit: cover;"
+                                                                             loading="lazy"
+                                                                             onerror="this.src='{{ asset('images/image-placeholder.png') }}'; this.onerror=null;">
+                                                                    </a>
+                                                                @else
+                                                                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                                        <i class="fas fa-file fa-2x text-muted"></i>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                            
+                                                            <div class="card-body p-2">
+                                                                <h6 class="card-title text-truncate mb-1" style="font-size: 0.8rem;" title="{{ $fileName }}">
+                                                                    {{ Str::limit($fileName, 20) }}
+                                                                </h6>
+                                                                @if($fileSize > 0)
+                                                                    <small class="text-muted">{{ formatBytes($fileSize) }}</small>
+                                                                @endif
+                                                            </div>
+                                                            
+                                                            <button type="button" 
+                                                                    class="btn btn-danger btn-sm position-absolute remove-attachment-btn"
+                                                                    style="top: 5px; right: 5px; width: 25px; height: 25px; border-radius: 50%; padding: 0;"
+                                                                    data-attachment-id="{{ $attachment->id }}"
+                                                                    data-remove-url="{{ route('remove.file', ['id' => $attachment->id, 'type' => 'service_attachment']) }}"
+                                                                    title="{{ __('messages.remove_file') }}">
+                                                                <i class="fas fa-times" style="font-size: 0.7rem;"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
                                         </div>
+                                    </div>
+                                @else
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        {{ __('messages.no_attachments_found') }}. {{ __('messages.please_upload_images') }}.
                                     </div>
                                 @endif
                             </div>
@@ -316,57 +396,310 @@
             </div>
         </div>
     </div>
+
+    <!-- Image Modal for viewing attachments -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">{{ __('messages.view_attachment') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid" alt="Attachment">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @php
+        // Helper function for file size formatting
+        if (!function_exists('formatBytes')) {
+            function formatBytes($size, $precision = 2) {
+                if ($size == 0) return '0 B';
+                $base = log($size, 1024);
+                $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
+                return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+            }
+        }
+    @endphp
     @php
         $data = $servicedata->providerServiceAddress->pluck('provider_address_id')->implode(',');
     @endphp
     @section('bottom_script')
         <script type="text/javascript">
-            function preview() {
-                const fileInput = event.target;
-                const preview = document.getElementById('service_attachment_preview');
+            // Global variables for attachment handling
+            let attachmentValidation = {
+                hasExistingAttachments: false,
+                newFilesSelected: false
+            };
+
+            // Enhanced file preview function
+            function handleFilePreview(input) {
+                const previewContainer = document.getElementById('service_attachment_preview_container');
+                const previewsDiv = document.getElementById('service_attachment_previews');
                 
-                if (fileInput.files && fileInput.files[0]) {
-                    preview.src = URL.createObjectURL(fileInput.files[0]);
-                    preview.style.display = 'block';
+                if (input.files && input.files.length > 0) {
+                    previewsDiv.innerHTML = '';
+                    previewContainer.style.display = 'block';
+                    attachmentValidation.newFilesSelected = true;
+                    
+                    Array.from(input.files).forEach((file, index) => {
+                        if (file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const previewDiv = document.createElement('div');
+                                previewDiv.className = 'position-relative';
+                                previewDiv.innerHTML = `
+                                    <img src="${e.target.result}" 
+                                         class="img-thumbnail" 
+                                         style="width: 100px; height: 100px; object-fit: cover;"
+                                         alt="Preview ${index + 1}">
+                                    <button type="button" 
+                                            class="btn btn-danger btn-sm position-absolute remove-preview-btn"
+                                            style="top: -5px; right: -5px; width: 20px; height: 20px; border-radius: 50%; padding: 0;"
+                                            data-file-index="${index}">
+                                        <i class="fas fa-times" style="font-size: 0.6rem;"></i>
+                                    </button>
+                                `;
+                                previewsDiv.appendChild(previewDiv);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                    
+                    // Update file input label
+                    const label = input.nextElementSibling;
+                    if (label) {
+                        label.textContent = `${input.files.length} file(s) selected`;
+                    }
                 } else {
-                    preview.style.display = 'none';
+                    previewContainer.style.display = 'none';
+                    attachmentValidation.newFilesSelected = false;
+                    
+                    // Reset label
+                    const label = input.nextElementSibling;
+                    if (label) {
+                        label.textContent = '{{ __('messages.choose_file', ['file' => __('messages.attachments')]) }}';
+                    }
                 }
+                
+                // Re-validate after file selection
+                validateAttachments();
             }
 
-            var discountInput = document.getElementById('discount');
-            var discountError = document.getElementById('discount-error');
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var initialProviderId = document.getElementById('provider_id') ? document.getElementById('provider_id').value : '';
-                if (initialProviderId) {
-                    selectprovider({
-                        value: initialProviderId
-                    });
+            // Comprehensive attachment validation
+            function validateAttachments() {
+                const existingAttachments = document.querySelectorAll('.existing-attachment-input');
+                const fileInput = document.getElementById('service_attachment');
+                const requiredSpan = document.querySelector('.attachment-required');
+                
+                attachmentValidation.hasExistingAttachments = existingAttachments.length > 0;
+                
+                const hasAnyAttachments = attachmentValidation.hasExistingAttachments || 
+                                        attachmentValidation.newFilesSelected ||
+                                        (fileInput && fileInput.files && fileInput.files.length > 0);
+                
+                console.log('Attachment validation:', {
+                    existingCount: existingAttachments.length,
+                    newFilesSelected: attachmentValidation.newFilesSelected,
+                    hasAnyAttachments: hasAnyAttachments
+                });
+                
+                if (fileInput) {
+                    if (hasAnyAttachments) {
+                        fileInput.removeAttribute('required');
+                        if (requiredSpan) requiredSpan.style.display = 'none';
+                    } else {
+                        fileInput.setAttribute('required', 'required');
+                        if (requiredSpan) requiredSpan.style.display = 'inline';
+                    }
                 }
                 
-                var addProviderAddressLink = document.getElementById('add_provider_address_link');
+                return hasAnyAttachments;
+            }
+
+            // Enhanced file removal handler
+            function handleAttachmentRemoval() {
+                document.addEventListener('click', function(e) {
+                    const removeBtn = e.target.closest('.remove-attachment-btn');
+                    if (removeBtn) {
+                        e.preventDefault();
+                        
+                        const attachmentId = removeBtn.dataset.attachmentId;
+                        const removeUrl = removeBtn.dataset.removeUrl;
+                        const attachmentContainer = document.getElementById(`attachment_${attachmentId}`);
+                        
+                        if (confirm('{{ __('messages.are_you_sure_remove_attachment') }}')) {
+                            // Show loading state
+                            removeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            removeBtn.disabled = true;
+                            
+                            // Make AJAX call to remove from server
+                            fetch(removeUrl, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                                }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Remove from DOM
+                                    if (attachmentContainer) {
+                                        attachmentContainer.remove();
+                                    }
+                                    
+                                    // Remove hidden input
+                                    const hiddenInput = document.querySelector(`input[value="${attachmentId}"]`);
+                                    if (hiddenInput) {
+                                        hiddenInput.remove();
+                                    }
+                                    
+                                    // Update validation
+                                    setTimeout(validateAttachments, 100);
+                                    
+                                    // Show success message
+                                    showNotification('{{ __('messages.attachment_removed_successfully') }}', 'success');
+                                    
+                                    // Check if no more attachments exist
+                                    const remainingAttachments = document.querySelectorAll('.existing-attachment-input');
+                                    if (remainingAttachments.length === 0) {
+                                        const alertDiv = document.createElement('div');
+                                        alertDiv.className = 'alert alert-info';
+                                        alertDiv.innerHTML = `
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            {{ __('messages.no_attachments_found') }}. {{ __('messages.please_upload_images') }}.
+                                        `;
+                                        document.getElementById('existing_attachments_container').parentElement.parentElement.replaceWith(alertDiv);
+                                    }
+                                } else {
+                                    throw new Error('Failed to remove attachment');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error removing attachment:', error);
+                                showNotification('{{ __('messages.error_removing_attachment') }}', 'error');
+                                
+                                // Reset button state
+                                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                                removeBtn.disabled = false;
+                            });
+                        }
+                    }
+                });
+            }
+
+            // Notification helper
+            function showNotification(message, type = 'info') {
+                const alertClass = type === 'success' ? 'alert-success' : 
+                                 type === 'error' ? 'alert-danger' : 'alert-info';
+                
+                const notification = document.createElement('div');
+                notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed`;
+                notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
+                notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 5000);
+            }
+
+            // Form submission validation
+            function validateFormSubmission() {
+                const isValid = validateAttachments();
+                
+                if (!isValid) {
+                    showNotification('{{ __('messages.please_upload_at_least_one_image') }}', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+
+            // Initialize everything when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize attachment validation
+                validateAttachments();
+                
+                // Setup file removal handler
+                handleAttachmentRemoval();
+                
+                // Provider selection handler
+                const initialProviderId = document.getElementById('provider_id')?.value;
+                if (initialProviderId) {
+                    selectprovider({ value: initialProviderId });
+                }
+                
+                // Provider address link handler
+                const addProviderAddressLink = document.getElementById('add_provider_address_link');
                 if (addProviderAddressLink) {
                     addProviderAddressLink.addEventListener('click', function(event) {
                         event.preventDefault();
-                        var providerId = document.getElementById('provider_id').value;
-                        var providerAddressCreateUrl =
-                            "{{ route('provideraddress.create', ['provideraddress' => '']) }}";
-                        providerAddressCreateUrl = providerAddressCreateUrl.replace('provideraddress=',
-                            'provideraddress=' + providerId);
+                        const providerId = document.getElementById('provider_id').value;
+                        let providerAddressCreateUrl = "{{ route('provideraddress.create', ['provideraddress' => '']) }}";
+                        providerAddressCreateUrl = providerAddressCreateUrl.replace('provideraddress=', 'provideraddress=' + providerId);
                         window.location.href = providerAddressCreateUrl;
                     });
                 }
-
-                // Initialize form validation
-                initializeFormValidation();
                 
-                // Handle file removal
-                handleFileRemoval();
+                // Form submission handler
+                const form = document.getElementById('service');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        if (!validateFormSubmission()) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    });
+                }
+                
+                // Initialize discount validation
+                const discountInput = document.getElementById('discount');
+                const discountError = document.getElementById('discount-error');
+                
+                if (discountInput) {
+                    discountInput.addEventListener('input', function() {
+                        const discountValue = parseFloat(discountInput.value);
+                        if (isNaN(discountValue) || discountValue < 0 || discountValue > 99) {
+                            discountError.textContent = "{{ __('Discount value should be between 0 to 99') }}";
+                        } else {
+                            discountError.textContent = "";
+                        }
+                    });
+                }
+                
+                // Initialize image modal functionality
+                document.addEventListener('click', function(e) {
+                    const attachmentLink = e.target.closest('.attachment-link');
+                    if (attachmentLink) {
+                        e.preventDefault();
+                        const imageSrc = attachmentLink.dataset.imageSrc;
+                        const imageTitle = attachmentLink.dataset.imageTitle;
+                        
+                        document.getElementById('modalImage').src = imageSrc;
+                        document.getElementById('imageModalLabel').textContent = imageTitle || '{{ __('messages.view_attachment') }}';
+                        
+                        // Show modal (Bootstrap 5)
+                        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                        modal.show();
+                    }
+                });
+                
+                console.log('Service attachment system initialized successfully');
             });
 
             function selectprovider(selectElement) {
-                var providerId = selectElement.value;
-                var addProviderAddressLink = document.getElementById('add_provider_address_link');
+                const providerId = selectElement.value;
+                const addProviderAddressLink = document.getElementById('add_provider_address_link');
 
                 if (addProviderAddressLink) {
                     if (providerId) {
@@ -377,81 +710,7 @@
                 }
             }
 
-            function initializeFormValidation() {
-                // Check if existing attachments are present
-                var existingAttachments = document.querySelectorAll('input[name="existing_attachments[]"]');
-                var fileInput = document.querySelector('input[name="service_attachment[]"]');
-                var requiredSpan = document.querySelector('label[for="service_attachment"] .text-danger');
-                
-                console.log('Existing attachments found:', existingAttachments.length);
-                
-                if (fileInput) {
-                    if (existingAttachments.length > 0) {
-                        // Remove required attribute if existing attachments are present
-                        fileInput.removeAttribute('required');
-                        if (requiredSpan) {
-                            requiredSpan.style.display = 'none';
-                        }
-                        console.log('Removed required attribute - existing attachments found');
-                    } else {
-                        // Add required attribute if no existing attachments
-                        fileInput.setAttribute('required', 'required');
-                        if (requiredSpan) {
-                            requiredSpan.style.display = 'inline';
-                        }
-                        console.log('Added required attribute - no existing attachments');
-                    }
-                }
-            }
 
-            function handleFileRemoval() {
-                // Handle file removal clicks
-                document.addEventListener('click', function(e) {
-                    if (e.target.closest('.remove-file')) {
-                        e.preventDefault();
-                        var removeLink = e.target.closest('.remove-file');
-                        var fileContainer = removeLink.closest('.col-md-2');
-                        
-                        if (confirm('{{ __('messages.remove_file_msg') }}')) {
-                            // Remove the file container from DOM
-                            fileContainer.remove();
-                            
-                            // Re-initialize validation after file removal
-                            setTimeout(function() {
-                                initializeFormValidation();
-                            }, 100);
-                            
-                            // Make AJAX call to remove file from server
-                            var removeUrl = removeLink.getAttribute('href');
-                            if (removeUrl) {
-                                fetch(removeUrl, {
-                                    method: 'GET',
-                                    headers: {
-                                        'X-Requested-With': 'XMLHttpRequest'
-                                    }
-                                }).then(function(response) {
-                                    if (response.ok) {
-                                        console.log('File removed successfully');
-                                    }
-                                }).catch(function(error) {
-                                    console.error('Error removing file:', error);
-                                });
-                            }
-                        }
-                    }
-                });
-            }
-
-            if (discountInput) {
-                discountInput.addEventListener('input', function() {
-                    var discountValue = parseFloat(discountInput.value);
-                    if (isNaN(discountValue) || discountValue < 0 || discountValue > 99) {
-                        discountError.textContent = "{{ __('Discount value should be between 0 to 99') }}";
-                    } else {
-                        discountError.textContent = "";
-                    }
-                });
-            }
 
             var isEnableAdvancePayment = $("input[name='is_enable_advance_payment']").prop('checked');
             var priceType = $("#price_type").val();
