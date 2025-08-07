@@ -172,8 +172,21 @@
                             </div> 
 
                             <div class="form-group col-md-4">
+                                @php
+                                    // Handle both edit and create scenarios
+                                    $existingAttachments = collect();
+                                    if (isset($servicedata) && $servicedata && method_exists($servicedata, 'getMedia')) {
+                                        try {
+                                            $existingAttachments = $servicedata->getMedia('service_attachment');
+                                        } catch (Exception $e) {
+                                            // Fallback if getMedia fails
+                                            $existingAttachments = collect();
+                                        }
+                                    }
+                                    $hasExistingAttachments = $existingAttachments->count() > 0;
+                                @endphp
                                 <label class="form-control-label" for="service_attachment">{{ __('messages.image') }}
-                                    @if(!getMediaFileExit($servicedata, 'service_attachment'))
+                                    @if(!$hasExistingAttachments)
                                         <span class="text-danger">*</span>
                                     @endif
                                 </label>
@@ -181,7 +194,7 @@
                                     <input type="file" onchange="preview()" name="service_attachment[]"
                                         class="custom-file-input"
                                         data-file-error="{{ __('messages.files_not_allowed') }}" multiple
-                                        @if(!getMediaFileExit($servicedata, 'service_attachment')) required @endif>
+                                        @if(!$hasExistingAttachments) required @endif>
                                     <label
                                         class="custom-file-label upload-label">{{ __('messages.choose_file', ['file' => __('messages.attachments')]) }}</label>
                                 </div>
@@ -191,37 +204,48 @@
 
                         <div class="row service_attachment_div">
                             <div class="col-md-12">
-                                @if (getMediaFileExit($servicedata, 'service_attachment'))
+                                @if ($hasExistingAttachments)
                                     @php
-                                        $attchments = $servicedata->getMedia('service_attachment');
-                                        $file_extention = config('constant.IMAGE_EXTENTIONS');
+                                        $file_extention = config('constant.IMAGE_EXTENTIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
                                     @endphp
+                                    <!-- Debug info -->
+                                    <div style="background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 12px;">
+                                        <strong>Debug Info:</strong> Found {{ $existingAttachments->count() }} existing attachments
+                                        @if($existingAttachments->count() > 0)
+                                            <br>First attachment: {{ $existingAttachments->first()->file_name ?? 'No filename' }}
+                                        @endif
+                                    </div>
                                     <div class="border-left-2">
                                         <p class="ml-2"><b>{{ __('messages.attached_files') }}</b></p>
                                         <div class="ml-2 my-3">
                                             <div class="row">
-                                                @foreach ($attchments as $attchment)
-                                                    <?php
-                                                    $extention = in_array(strtolower(imageExtention($attchment->getFullUrl())), $file_extention);
-                                                    ?>
+                                                @foreach ($existingAttachments as $attchment)
+                                                    @php
+                                                        $fileUrl = $attchment->getFullUrl();
+                                                        $fileName = $attchment->file_name ?? '';
+                                                        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                                                        $isImage = in_array($fileExtension, $file_extention);
+                                                    @endphp
                                                     <input type="hidden" name="existing_attachments[]" value="{{ $attchment->id }}">
                                                     <div class="col-md-2 pr-10 text-center galary file-gallary-{{ $servicedata->id }}"
                                                         data-gallery=".file-gallary-{{ $servicedata->id }}"
                                                         id="service_attachment_preview_{{ $attchment->id }}">
-                                                        @if ($extention)
+                                                        @if ($isImage)
                                                             <a id="attachment_files"
-                                                                href="{{ $attchment->getFullUrl() }}"
+                                                                href="{{ $fileUrl }}"
                                                                 class="list-group-item-action attachment-list"
                                                                 target="_blank">
-                                                                <img src="{{ $attchment->getFullUrl() }}"
-                                                                    class="attachment-image" alt="">
+                                                                <img src="{{ $fileUrl }}"
+                                                                    class="attachment-image" alt="{{ $fileName }}"
+                                                                    style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
                                                             </a>
                                                         @else
                                                             <a id="attachment_files"
                                                                 class="video list-group-item-action attachment-list"
-                                                                href="{{ $attchment->getFullUrl() }}">
+                                                                href="{{ $fileUrl }}">
                                                                 <img src="{{ asset('images/file.png') }}"
-                                                                    class="attachment-file">
+                                                                    class="attachment-file"
+                                                                    style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
                                                             </a>
                                                         @endif
                                                         <a class="text-danger remove-file"
@@ -230,7 +254,8 @@
                                                             data--ajax="true" data-toggle="tooltip"
                                                             title='{{ __('messages.remove_file_title', ['name' => __('messages.attachments')]) }}'
                                                             data-title='{{ __('messages.remove_file_title', ['name' => __('messages.attachments')]) }}'
-                                                            data-message='{{ __('messages.remove_file_msg') }}'>
+                                                            data-message='{{ __('messages.remove_file_msg') }}'
+                                                            style="position: absolute; top: 5px; right: 5px; background: white; border-radius: 50%; padding: 2px;">
                                                             <i class="ri-close-circle-line"></i>
                                                         </a>
                                                     </div>
@@ -334,6 +359,9 @@
 
                 // Initialize form validation
                 initializeFormValidation();
+                
+                // Handle file removal
+                handleFileRemoval();
             });
 
             function selectprovider(selectElement) {
@@ -353,16 +381,65 @@
                 // Check if existing attachments are present
                 var existingAttachments = document.querySelectorAll('input[name="existing_attachments[]"]');
                 var fileInput = document.querySelector('input[name="service_attachment[]"]');
+                var requiredSpan = document.querySelector('label[for="service_attachment"] .text-danger');
+                
+                console.log('Existing attachments found:', existingAttachments.length);
                 
                 if (fileInput) {
                     if (existingAttachments.length > 0) {
                         // Remove required attribute if existing attachments are present
                         fileInput.removeAttribute('required');
+                        if (requiredSpan) {
+                            requiredSpan.style.display = 'none';
+                        }
+                        console.log('Removed required attribute - existing attachments found');
                     } else {
                         // Add required attribute if no existing attachments
                         fileInput.setAttribute('required', 'required');
+                        if (requiredSpan) {
+                            requiredSpan.style.display = 'inline';
+                        }
+                        console.log('Added required attribute - no existing attachments');
                     }
                 }
+            }
+
+            function handleFileRemoval() {
+                // Handle file removal clicks
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-file')) {
+                        e.preventDefault();
+                        var removeLink = e.target.closest('.remove-file');
+                        var fileContainer = removeLink.closest('.col-md-2');
+                        
+                        if (confirm('{{ __('messages.remove_file_msg') }}')) {
+                            // Remove the file container from DOM
+                            fileContainer.remove();
+                            
+                            // Re-initialize validation after file removal
+                            setTimeout(function() {
+                                initializeFormValidation();
+                            }, 100);
+                            
+                            // Make AJAX call to remove file from server
+                            var removeUrl = removeLink.getAttribute('href');
+                            if (removeUrl) {
+                                fetch(removeUrl, {
+                                    method: 'GET',
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                }).then(function(response) {
+                                    if (response.ok) {
+                                        console.log('File removed successfully');
+                                    }
+                                }).catch(function(error) {
+                                    console.error('Error removing file:', error);
+                                });
+                            }
+                        }
+                    }
+                });
             }
 
             if (discountInput) {
