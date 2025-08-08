@@ -35,7 +35,7 @@ public function customLogin(Request $request)
     if (Auth::attempt($credentials)) {
         // ✅ Authentication passed
         $request->session()->regenerate(); // Prevent session fixation
-        return redirect()->intended('index')->with('success', 'Signed in');
+        return redirect()->intended('home')->with('success', 'Signed in');
     }
 
     // ❌ Authentication failed
