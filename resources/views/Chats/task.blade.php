@@ -2239,7 +2239,7 @@ html, body {
 
         </div>
 
-  <div class="row g-3" style="margin-top: -170px;">
+  <div class="row g-3" style="margin-top: -150px;">
 
             <!-- Card Example -->
             <!-- New Tickets -->

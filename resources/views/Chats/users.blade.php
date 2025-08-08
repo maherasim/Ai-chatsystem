@@ -2195,7 +2195,7 @@
 
         </div>
         <!-- EMPLOYEE SECTION TITLE -->
-        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -170px;">
+        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -150px;">
             <h3>Users</h3>
             <button
                 type="button"
