@@ -2230,9 +2230,9 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
 
-            <h3>Our Projects</h3>
+            <h3>Ticket Grid</h3>
             <button
                 type="button"
                 data-bs-toggle="modal"
