@@ -11,7 +11,7 @@
 </style>
 <div class="sidebar-menu">
        <div class="logo">
-           <a href="{{ url('/') }}" class="logo-normal">
+           <a href="{{ url('/home') }}" class="logo-normal">
                <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
            </a>
        </div>
