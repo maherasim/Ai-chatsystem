@@ -2158,10 +2158,10 @@
     <!-- Chat -->
 
 
-    <div class="container py-4" style="overflow-y: auto;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;">
+    
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;  max-width: 1450px;">
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
-    margin-top: -21px;margin-left: -13px;    position: relative;
-   ">
+    margin-top: -21px;margin-left: -13px;    position: relative;">
             <div>
                 <div class="chat-header" style="width:102.4%;overflow-x:hiddone">
                     <div class="user-details">
@@ -2195,7 +2195,7 @@
 
         </div>
         <!-- EMPLOYEE SECTION TITLE -->
-        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
+        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -210px;">
             <h3>Users</h3>
             <button
                 type="button"

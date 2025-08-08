@@ -4654,7 +4654,8 @@
 
 
 
-    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;">
+   
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;  max-width: 1450px;">
 
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
       margin-top: -21px;margin-left: -13px;    position: relative;
@@ -4691,7 +4692,7 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
+        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -210px;">
             <h3>Our Projects</h3>
             <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
                 style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer; position: relative; z-index: 10;">

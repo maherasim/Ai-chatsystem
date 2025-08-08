@@ -66,7 +66,12 @@
     body {
         background-image: none !important;
     }
-
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* horizontal space hatayega */
+}
     .task-icon-link {
         position: relative;
         display: inline-block;
@@ -2196,7 +2201,7 @@
 
 
 
-    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;">
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;  max-width: 1450px;">
         <!-- EMPLOYEE SECTION TITLE -->
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
               margin-top: -21px;margin-left: -13px;    position: relative;
@@ -2234,7 +2239,7 @@
 
         </div>
 
-  <div class="row g-3" style="margin-top: -100px;">
+  <div class="row g-3" style="margin-top: -210px;">
 
             <!-- Card Example -->
             <!-- New Tickets -->
