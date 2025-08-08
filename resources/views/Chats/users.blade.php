@@ -4,10 +4,10 @@
 
 <style>
     /* Ensure base styles don't interfere */
-body{
-    overflow-x: hidden;
+    body {
+        overflow-x: hidden;
 
-}
+    }
 
     .task-icon-link {
         position: relative;
@@ -148,7 +148,7 @@ body{
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-   <div class="sidebar-group">
+    <div class="sidebar-group">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
                 <!-- Chats sidebar -->
@@ -2119,7 +2119,7 @@ body{
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                
+
                                 <div class="dropdown">
                                     <a href="#" class="text-default fs-16" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                     <ul class=" dropdown-menu dropdown-menu-end p-3" id="innerTab" role="tablist">
@@ -2163,7 +2163,7 @@ body{
     margin-top: -21px;margin-left: -13px;    position: relative;
    ">
             <div>
-                <div class="chat-header"style="width:102.4%;overflow-x:hiddone">
+                <div class="chat-header" style="width:102.4%;overflow-x:hiddone">
                     <div class="user-details">
                         <div class="d-xl-none">
                             <a class="text-muted chat-close me-2" href="#">
@@ -2195,20 +2195,40 @@ body{
 
         </div>
         <!-- EMPLOYEE SECTION TITLE -->
-        <div class="d-flex justify-content-between align-items-center mb-3"style="margin-top: -70px;">
+        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
             <h3>Users</h3>
             <button
                 type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#add_user"
-                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-
-                <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
+                style="background-color: #ff7700; 
+               color: white; 
+               border: none; 
+               padding: 8px 14px; 
+               border-radius: 6px; 
+               font-weight: 500; 
+               display: flex; 
+               align-items: center; 
+               gap: 6px; 
+               cursor: pointer; 
+               position: relative; 
+               z-index: 10;">
+                <span style="display: inline-block; 
+                     width: 18px; 
+                     height: 18px; 
+                     border-radius: 50%; 
+                     background-color: #e65c00; 
+                     color: white; 
+                     text-align: center; 
+                     line-height: 18px; 
+                     font-weight: bold; 
+                     font-size: 13px;">
                     +
                 </span>
                 Add User
             </button>
         </div>
+
         @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show mt-3 mb-2" role="alert">
             {{ session('success') }}

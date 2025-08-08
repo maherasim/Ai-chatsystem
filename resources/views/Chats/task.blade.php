@@ -63,6 +63,9 @@
 
 <style>
     /* Ensure base styles don't interfere */
+    body {
+        background-image: none !important;
+    }
 
     .task-icon-link {
         position: relative;
@@ -2193,7 +2196,7 @@
 
 
 
-    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible">
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;">
         <!-- EMPLOYEE SECTION TITLE -->
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
     margin-top: -21px;margin-left: -13px;    position: relative;
@@ -2230,22 +2233,39 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
-
-            <h3>Ticket Grid</h3>
-            <button
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#add_user"
-                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-
-                <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
-                    +
-                </span>
-                Add Ticket
-            </button>
-
-        </div>
+       <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
+    <h3>Users</h3>
+    <button
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#add_user"
+        style="background-color: #ff7700; 
+               color: white; 
+               border: none; 
+               padding: 8px 14px; 
+               border-radius: 6px; 
+               font-weight: 500; 
+               display: flex; 
+               align-items: center; 
+               gap: 6px; 
+               cursor: pointer; 
+               position: relative; 
+               z-index: 10;">
+        <span style="display: inline-block; 
+                     width: 18px; 
+                     height: 18px; 
+                     border-radius: 50%; 
+                     background-color: #e65c00; 
+                     color: white; 
+                     text-align: center; 
+                     line-height: 18px; 
+                     font-weight: bold; 
+                     font-size: 13px;">
+            +
+        </span>
+        Add Tickets
+    </button>
+</div>
 
         <!-- Project Grid STATS -->
         <div class="row mb-4" style="padding-left: 14px; padding-right: 14px;">
@@ -2449,7 +2469,7 @@
             </div>
 
             <!-- Employee Card 3 -->
-             <div class="col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="elevated-card" style="position: relative; padding: 24px 16px; border-radius: 12px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
                     <!-- Checkbox (Top-left) -->
@@ -2528,7 +2548,7 @@
                 </div>
             </div>
             <!-- card 4 -->
-             <div class="col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="elevated-card" style="position: relative; padding: 24px 16px; border-radius: 12px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
                     <!-- Checkbox (Top-left) -->

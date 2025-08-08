@@ -5,6 +5,7 @@
     body {
         overflow-x: hidden;
     }
+    
 
     .accordion-button::after {
         display: none !important;

@@ -4655,10 +4655,10 @@
 
 
     <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;">
-        <!-- EMPLOYEE SECTION TITLE -->
+
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
-    margin-top: -21px;margin-left: -13px;    position: relative;
-    ">
+      margin-top: -21px;margin-left: -13px;    position: relative;
+      ">
             <div>
                 <div class="chat-header" style="width:103.4%;">
                     <div class="user-details">
@@ -4692,22 +4692,13 @@
 
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: -70px;">
-
             <h3>Our Projects</h3>
-            <button
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#add_user"
-                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-
-                <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
-                    +
-                </span>
-                Add Project
+            <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
+                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer; position: relative; z-index: 10;">
+                + Add Project
             </button>
-
         </div>
-
+       
         <!-- Project Grid STATS -->
         <div class="row mb-4" style="padding-left: 14px; padding-right: 14px;">
             <div style="border-radius: 2; height:50px; border: 1px solid #d1d5db; padding-top:3px; border-radius:10px;">
@@ -5041,7 +5032,7 @@
                 </div>
             </div>
 
-            
+
             <div class="col-md-3 mb-4">
                 <div class="elevated-card">
                     <!-- Square Checkbox (top-left) -->
@@ -5933,6 +5924,7 @@
         tagContainer.appendChild(tag);
     }
 </script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 @component('components.model-popup')
 @endcomponent
 @endsection
