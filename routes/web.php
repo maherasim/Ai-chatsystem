@@ -34,7 +34,7 @@ Route::get('/login', function () {
 
 
 Route::get('/chat', function () {
-    return view('index');
+    return view('Chats.chat');
 })->middleware('auth')->name('chat.index');
 
 // Route::get('/chat', function () {
