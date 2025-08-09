@@ -5,7 +5,7 @@
     body {
         overflow-x: hidden;
     }
-    
+
 
     .accordion-button::after {
         display: none !important;
@@ -115,7 +115,7 @@
 <div class="content main_content">
     @include('Chats.chatsidebar')
     <!-- sidebar group -->
-     <div class="sidebar-group">
+    <div class="sidebar-group">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
                 <!-- Chats sidebar -->
@@ -123,59 +123,19 @@
 
                     <div class="slimscroll">
                         <div class="chat-search-header">
-                            <!-- <div class="header-title d-flex align-items-center justify-content-between">
-                                <h4 class="mb-3">AI's</h4>
-                                <div class="d-flex align-items-center mb-3">
-                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
-                                </div>
-                            </div> -->
-                            <!-- header Subject -->
-                            <div style="background-color: white;">
-                                <div class="modal-dialog modal-dialog-centered pb-2">
-                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
-                                        <!-- Top-Right Large Toggle Icon -->
-                                        <div class="d-flex justify-content-end px-3 pt-3">
-                                            <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
-                                                <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
-                                            </a>
-                                        </div>
-                                        <!-- Collapsible Form -->
-                                        <div class="collapse show" id="collapseSubjectForm">
-                                            <div class="modal-body">
-                                                <form action="{{ url('index') }}">
-                                                    <!-- Subject Type -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-12 text-start">
-                                                            <h5>Create Group</h5>
-                                                        </div>
-                                                    </div>
 
-                                                    <!-- Subject Title -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-6">
-                                                            <label class="form-label">Subject Title</label>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label class="form-label">Status</label>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Submit Button -->
-                                                    <div class="row">
-                                                        <div class="col-12 pb-1">
-                                                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- /collapse -->
-
-                                    </div>
+                          <div style="display: flex; justify-content: center; align-items: center; height:  76px; /* reduced height */ background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; font-family: 'Segoe UI', sans-serif; cursor: pointer; width: 100%;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="{{ asset('/build/img/Group.svg') }}" alt="Group Icon" width="44" height="44" />
+                                    <span style="font-weight: 600; font-size: 26px; color: #0070C9;">Create a group</span>
                                 </div>
                             </div>
+
+
+
+
+                            <!-- header Subject -->
+
                             <!-- /header subject -->
                         </div>
                         <!-- Online user -->
@@ -2142,7 +2102,7 @@
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                
+
                                 <div class="dropdown">
                                     <a href="#" class="text-default fs-16" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                     <ul class=" dropdown-menu dropdown-menu-end p-3" id="innerTab" role="tablist">
@@ -2184,7 +2144,7 @@
 
 
         </div>
-    </div> 
+    </div>
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -2193,8 +2153,10 @@
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle">
         <div>
-            <div class="chat-header">
-                <div class="user-details">
+            <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+
+                <!-- LEFT: User Info -->
+                <div class="user-details d-flex align-items-center gap-2">
                     <div class="d-xl-none">
                         <a class="text-muted chat-close me-2" href="#">
                             <i class="fas fa-arrow-left"></i>
@@ -2208,49 +2170,60 @@
                         <span class="last-seen">Online</span>
                     </div>
                 </div>
+
+                <!-- CENTER: Chat Options -->
                 <div class="chat-options">
-                    <ul style="display: flex; align-items: center; gap: 10px; list-style: none; padding: 0; margin: 0;">
+                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">
                         <li>
                             <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
-                                <!-- <i class="ti ti-search"></i> -->
-                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Black Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
+                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
                             </a>
-
                         </li>
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="White Icon" class="icon-white" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
                             </a>
                         </li>
-
                         <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="White Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
+                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
                             </a>
                         </li>
-                        <!-- voice -->
-
-                        <!-- /voic -->
-                        <!-- contact-profile -->
                         <li title="Contact Info" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
-                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="Black Icon" class="icon-black" width="18px">
-                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="white Icon" class="icon-black" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
                             </a>
                         </li>
-                        <!--  -->
-                        <li>
-                            <a class="btn no-bg" href="#" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
-                            </a>
-                           
-                        </li>
+
                     </ul>
                 </div>
-                <!-- Chat Search -->
+
+                <!-- RIGHT: Settings, Theme Toggle, Logout -->
+                <div class="right-icons d-flex align-items-center gap-4">
+                    <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
+                        <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
+                    </a>
+
+                    <!-- Dark Mode Toggle -->
+                    <a href="#" id="dark-mode-toggle">
+                        <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
+                    </a>
+                    <a href="#" id="light-mode-toggle" style="display: none;">
+                        <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
+                    </a>
+
+                    <!-- Logout -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
+                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
+                        </button>
+                    </form>
+                </div>
                 <div class="chat-search search-wrap contact-search">
                     <form>
                         <div class="input-group">
@@ -2259,8 +2232,9 @@
                         </div>
                     </form>
                 </div>
-                <!-- /Chat Search -->
+
             </div>
+
             <div class="chat-body chat-page-group slimscroll">
                 <div class="messages">
                     <div class="chats">
@@ -3227,7 +3201,7 @@
                 </div>
             </form>
         </div>
-    </div> 
+    </div>
     <!-- /Chat -->
 
     <!-- Contact Info -->
@@ -3851,7 +3825,27 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        const darkBtn = document.getElementById('dark-mode-toggle');
+        const lightBtn = document.getElementById('light-mode-toggle');
 
+        darkBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.add('dark-mode');
+            darkBtn.style.display = 'none';
+            lightBtn.style.display = 'inline';
+        });
+
+        lightBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.remove('dark-mode');
+            lightBtn.style.display = 'none';
+            darkBtn.style.display = 'inline';
+        });
+    });
+</script>
 
 <!-- Bootstrap JS Bundle (includes Popper) -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->

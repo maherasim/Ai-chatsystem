@@ -2155,12 +2155,12 @@
                         </a>
                     </li>
 
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-    @csrf
-    <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-        <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-    </button>
-</form>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
+                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
+                        </button>
+                    </form>
 
                 </div>
 
