@@ -89,7 +89,7 @@
         opacity: 1;
     }
 
-  /*  */
+    /*  */
 </style>
 
 
@@ -119,15 +119,19 @@
                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                                 </div>
                             </div> -->
-                                <div style="display: flex; justify-content: center; align-items: center; height:  76px; /* reduced height */ background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; font-family: 'Segoe UI', sans-serif; cursor: pointer; width: 100%;">
+                            <div
+                                style="display: flex; justify-content: center; align-items: center; height: 76px; background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; font-family: 'Segoe UI', sans-serif; cursor: pointer; width: 100%;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#new-group">
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <img src="{{ asset('/build/img/Group.svg') }}" alt="Group Icon" width="44" height="44" />
                                     <span style="font-weight: 600; font-size: 26px; color: #0070C9;">Create a group</span>
                                 </div>
                             </div>
+
                             <!-- header Subject -->
-                             
-                          
+
+
                             <!-- /header subject -->
                         </div>
                         <!-- Online user -->
@@ -2094,7 +2098,7 @@
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                
+
                                 <div class="dropdown">
                                     <a href="#" class="text-default fs-16" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                     <ul class=" dropdown-menu dropdown-menu-end p-3" id="innerTab" role="tablist">
@@ -2953,6 +2957,155 @@
         </div>
     </div>
     <!-- /Chat -->
+
+    <!-- New Group -->
+    <div class="modal fade" id="new-group">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Group</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ti ti-x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url('index')}}">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <label for="avatar-upload" class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
+                                <span class="avatar avatar-xl bg-transparent-dark rounded-circle"></span>
+                                <span class="add avatar avatar-sm d-flex justify-content-center align-items-center">
+                                    <i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i>
+                                </span>
+                            </label>
+                            <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="form-label">Group Name</label>
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="text" value="" class="form-control" placeholder="First Name">
+                                    <span class="icon-addon">
+                                        <i class="ti ti-users-group"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="form-label">About</label>
+                                <div class="input-icon mb-3 position-relative">
+                                    <input type="text" value="" class="form-control" placeholder="Last Name">
+                                    <span class="icon-addon">
+                                        <i class="ti ti-info-octagon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                         
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /New Group -->
+
+    <!-- Add Group -->
+<div class="modal fade" id="add-group">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Members</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url('index')}}">
+                    <div class="search-wrap contact-search mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <a href="javascript:void(0);" class="input-group-text"><i class="ti ti-search"></i></a>
+                        </div>
+                    </div>
+                    <h6 class="mb-3 fw-medium fs-16">Contacts</h6>
+                    <div class="contact-scroll contact-select mb-3">
+                        <div class="contact-user d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="image">
+                                </div>
+                                <div class="ms-2">
+                                    <h6>Aaryian Jose</h6>
+                                    <p>App Developer</p>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="contact">
+                            </div>
+                        </div>
+                        <div class="contact-user d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
+                                </div>
+                                <div class="ms-2">
+                                    <h6>Sarika Jain</h6>
+                                    <p>UI/UX Designer</p>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="contact">
+                            </div>
+                        </div>
+                        <div class="contact-user d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" alt="image">
+                                </div>
+                                <div class="ms-2">
+                                    <h6>Clyde Smith</h6>
+                                    <p>Web Developer</p>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="contact">
+                            </div>
+                        </div>
+                        <div class="contact-user d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-04.jpg')}}" class="rounded-circle" alt="image">
+                                </div>
+                                <div class="ms-2">
+                                    <h6>Carla Jenkins</h6>
+                                    <p>Business Analyst</p>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="contact">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#new-group">Previous</a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary w-100">Start Group</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add group -->
 </div>
 
 <script>
@@ -3033,7 +3186,7 @@
 
 <!-- Bootstrap JS Bundle (includes Popper) -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
- 
+
 
 @component('components.model-popup')
 @endcomponent
