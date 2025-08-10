@@ -13,33 +13,33 @@ class UsersController extends Controller
     {
         $users = User::where('is_admin', '!=', true)
             ->where(function ($q) {
-                $q->where('role', '!=', 'admin')->orWhereNull('role');
+                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
             })
             ->get();
 
         $totalUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
-                $q->where('role', '!=', 'admin')->orWhereNull('role');
+                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
             })
             ->count();
 
         $activeUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
-                $q->where('role', '!=', 'admin')->orWhereNull('role');
+                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
             })
             ->where('active', true)
             ->count();
 
         $inactiveUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
-                $q->where('role', '!=', 'admin')->orWhereNull('role');
+                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
             })
             ->where('active', false)
             ->count();
 
         $newJoinersToday = User::where('is_admin', '!=', true)
             ->where(function ($q) {
-                $q->where('role', '!=', 'admin')->orWhereNull('role');
+                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
             })
             ->whereDate('created_at', Carbon::today())
             ->where('active', true)
