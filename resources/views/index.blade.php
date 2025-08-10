@@ -5,6 +5,7 @@
     body {
         overflow-x: hidden;
     }
+    
 
     .accordion-button::after {
         display: none !important;
@@ -114,7 +115,7 @@
 <div class="content main_content">
     @include('Chats.chatsidebar')
     <!-- sidebar group -->
-    <div class="sidebar-group">
+    {{-- <div class="sidebar-group">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
                 <!-- Chats sidebar -->
@@ -2183,14 +2184,14 @@
 
 
         </div>
-    </div>
+    </div> --}}
     <!-- /Sidebar group -->
 
     <!-- Chat -->
 
 
     <!-- Chat -->
-    <div class="chat chat-messages show" id="middle">
+    {{-- <div class="chat chat-messages show" id="middle">
         <div>
             <div class="chat-header">
                 <div class="user-details">
@@ -3226,7 +3227,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
     <!-- /Chat -->
 
     <!-- Contact Info -->

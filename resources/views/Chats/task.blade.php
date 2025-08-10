@@ -63,7 +63,15 @@
 
 <style>
     /* Ensure base styles don't interfere */
-
+    body {
+        background-image: none !important;
+    }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* horizontal space hatayega */
+}
     .task-icon-link {
         position: relative;
         display: inline-block;
@@ -2193,11 +2201,11 @@
 
 
 
-    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin-right: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible">
+    <div class="container py-4" style="overflow-y: auto; overflow-x: hidden;scrollbar-width: thin; margin: 0; border-right: none;padding-bottom: 37.5rem !important;visibility:visible ; background-image: none !important;  max-width: 1450px;">
         <!-- EMPLOYEE SECTION TITLE -->
         <div class="chat chat-messages show" id="middle" style="visibility:visible;
-    margin-top: -21px;margin-left: -13px;    position: relative;
-    ">
+              margin-top: -21px;margin-left: -13px;    position: relative;
+              ">
             <div>
                 <div class="chat-header" style="width:103.4%;">
                     <div class="user-details">
@@ -2230,22 +2238,150 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <h3>Our Projects</h3>
+  <div class="row g-3" style="margin-top: -30px;">
+
+            <!-- Card Example -->
+            <!-- New Tickets -->
+            <div class="col-md-3">
+                <div class="card rgba(134, 133, 132, 1)sm" style="border: none; border-radius: 10px; padding: 15px;">
+                    <div class="row">
+                        <div class="col-7">
+                            <div style="width: 40px; height: 40px; border: 2px dotted #ff7700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ff7700; font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-ticket"></i>
+                            </div>
+                            <div style="font-size: 14px; color: #555;">New Tickets</div>
+                            <div style="font-size: 22px; font-weight: bold;">120</div>
+                        </div>
+                        <div class="col-5 text-end">
+                            <span style="background-color: #ffe9dd; color: #ff7700; font-size: 12px; padding: 2px 6px; border-radius: 6px;">+19.01%</span>
+                            <div style="margin-top: 8px; display: flex; align-items: end; gap: 3px; height: 80px; justify-content: flex-end;">
+                                <div style="width: 10px; height: 30px; background-color: #ff7700;"></div>
+                                <div style="width: 10px; height: 50px; background-color: #ff7700;"></div>
+                                <div style="width: 10px; height: 25px; background-color: #ff7700;"></div>
+                                <div style="width: 10px; height: 55px; background-color: #ff7700;"></div>
+                                <div style="width: 10px; height: 40px; background-color: #ff7700;"></div>
+                                <div style="width: 10px; height: 60px; background-color: #ff7700;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Tickets -->
+            <div class="col-md-3">
+                <div class="card shadow-sm" style="border: none; border-radius: 10px; padding: 15px;">
+                    <div class="row">
+                        <div class="col-7">
+                            <div style="width: 40px; height: 40px; border: 2px dotted #9c27b0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #9c27b0; font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-folder"></i>
+                            </div>
+                            <div style="font-size: 14px; color: #555;">Open Tickets</div>
+                            <div style="font-size: 22px; font-weight: bold;">60</div>
+                        </div>
+                        <div class="col-5 text-end">
+                            <span style="background-color: #f5e1f9; color: #9c27b0; font-size: 12px; padding: 2px 6px; border-radius: 6px;">+19.01%</span>
+                            <div style="margin-top: 8px; display: flex; align-items: end; gap: 3px; height: 80px; justify-content: flex-end;">
+                                <div style="width: 10px; height: 35px; background-color: #9c27b0;"></div>
+                                <div style="width: 10px; height: 60px; background-color: #9c27b0;"></div>
+                                <div style="width: 10px; height: 25px; background-color: #9c27b0;"></div>
+                                <div style="width: 10px; height: 55px; background-color: #9c27b0;"></div>
+                                <div style="width: 10px; height: 40px; background-color: #9c27b0;"></div>
+                                <div style="width: 10px; height: 70px; background-color: #9c27b0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solved Tickets -->
+            <div class="col-md-3">
+                <div class="card shadow-sm" style="border: none; border-radius: 10px; padding: 15px;">
+                    <div class="row">
+                        <div class="col-7">
+                            <div style="width: 40px; height: 40px; border: 2px dotted #00b050; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #00b050; font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-check2"></i>
+                            </div>
+                            <div style="font-size: 14px; color: #555;">Solved Tickets</div>
+                            <div style="font-size: 22px; font-weight: bold;">50</div>
+                        </div>
+                        <div class="col-5 text-end">
+                            <span style="background-color: #e0f6eb; color: #00b050; font-size: 12px; padding: 2px 6px; border-radius: 6px;">+19.01%</span>
+                            <div style="margin-top: 8px; display: flex; align-items: end; gap: 3px; height: 80px; justify-content: flex-end;">
+                                <div style="width: 10px; height: 35px; background-color: #00b050;"></div>
+                                <div style="width: 10px; height: 60px; background-color: #00b050;"></div>
+                                <div style="width: 10px; height: 25px; background-color: #00b050;"></div>
+                                <div style="width: 10px; height: 55px; background-color: #00b050;"></div>
+                                <div style="width: 10px; height: 40px; background-color: #00b050;"></div>
+                                <div style="width: 10px; height: 70px; background-color: #00b050;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Tickets -->
+            <div class="col-md-3">
+                <div class="card shadow-sm" style="border: none; border-radius: 10px; padding: 15px;">
+                    <div class="row">
+                        <div class="col-7">
+                            <div style="width: 40px; height: 40px; border: 2px dotted #00b0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #00b0f0; font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div style="font-size: 14px; color: #555;">Pending Tickets</div>
+                            <div style="font-size: 22px; font-weight: bold;">10</div>
+                        </div>
+                        <div class="col-5 text-end">
+                            <span style="background-color: #e0f5fb; color: #00b0f0; font-size: 12px; padding: 2px 6px; border-radius: 6px;">+19.01%</span>
+                            <div style="margin-top: 8px; display: flex; align-items: end; gap: 3px; height: 80px; justify-content: flex-end;">
+                                <div style="width: 10px; height: 35px; background-color: #00b0f0;"></div>
+                                <div style="width: 10px; height: 60px; background-color: #00b0f0;"></div>
+                                <div style="width: 10px; height: 25px; background-color: #00b0f0;"></div>
+                                <div style="width: 10px; height: 55px; background-color: #00b0f0;"></div>
+                                <div style="width: 10px; height: 40px; background-color: #00b0f0;"></div>
+                                <div style="width: 10px; height: 70px; background-color: #00b0f0;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Repeat this block for other colors/titles -->
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3 " style="margin-top: -3px;">
+            <h3>Ticket Grid</h3>
             <button
                 type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#add_user"
-                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-
-                <span style="display: inline-block; width: 18px; height: 18px; border-radius: 50%; background-color: #e65c00; color: white; text-align: center; line-height: 18px; font-weight: bold; font-size: 13px;">
+                style="background-color: #ff7700; 
+               color: white; 
+               border: none; 
+               padding: 8px 14px; 
+               border-radius: 6px; 
+               font-weight: 500; 
+               display: flex; 
+               align-items: center; 
+               gap: 6px; 
+               cursor: pointer; 
+               position: relative; 
+               z-index: 10;">
+                <span style="display: inline-block; 
+                     width: 18px; 
+                     height: 18px; 
+                     border-radius: 50%; 
+                     background-color: #e65c00; 
+                     color: white; 
+                     text-align: center; 
+                     line-height: 18px; 
+                     font-weight: bold; 
+                     font-size: 13px;">
                     +
                 </span>
-                Add Ticket
+                Add Tickets
             </button>
-
         </div>
+
 
         <!-- Project Grid STATS -->
         <div class="row mb-4" style="padding-left: 14px; padding-right: 14px;">
@@ -2449,7 +2585,7 @@
             </div>
 
             <!-- Employee Card 3 -->
-             <div class="col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="elevated-card" style="position: relative; padding: 24px 16px; border-radius: 12px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
                     <!-- Checkbox (Top-left) -->
@@ -2528,7 +2664,7 @@
                 </div>
             </div>
             <!-- card 4 -->
-             <div class="col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="elevated-card" style="position: relative; padding: 24px 16px; border-radius: 12px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
                     <!-- Checkbox (Top-left) -->

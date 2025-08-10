@@ -119,53 +119,15 @@
                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-Ai" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                                 </div>
                             </div> -->
-                            <!-- header Subject -->
-                            <div style="background-color: white;">
-                                <div class="modal-dialog modal-dialog-centered pb-2">
-                                    <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
-                                        <!-- Top-Right Large Toggle Icon -->
-                                        <div class="d-flex justify-content-end px-3 pt-3">
-                                            <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
-                                                <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
-                                            </a>
-                                        </div>
-                                        <!-- Collapsible Form -->
-                                        <div class="collapse show" id="collapseSubjectForm">
-                                            <div class="modal-body">
-                                                <form action="{{ url('index') }}">
-                                                    <!-- Subject Type -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-12 text-start">
-                                                            <h5>Create Group</h5>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Subject Title -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-6">
-                                                            <label class="form-label">Subject Title</label>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label class="form-label">Status</label>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Submit Button -->
-                                                    <div class="row">
-                                                        <div class="col-12 pb-1">
-                                                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- /collapse -->
-
-                                    </div>
+                                <div style="display: flex; justify-content: center; align-items: center; height:  76px; /* reduced height */ background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; font-family: 'Segoe UI', sans-serif; cursor: pointer; width: 100%;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="{{ asset('/build/img/Group.svg') }}" alt="Group Icon" width="44" height="44" />
+                                    <span style="font-weight: 600; font-size: 26px; color: #0070C9;">Create a group</span>
                                 </div>
                             </div>
+                            <!-- header Subject -->
+                             
+                          
                             <!-- /header subject -->
                         </div>
                         <!-- Online user -->
