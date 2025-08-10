@@ -123,7 +123,7 @@
                                             </h2>
                   <form action="{{ route('chatuser.store') }}" method="POST" enctype="multipart/form-data">
                    @csrf
-            <div id="chatuser-collapse" class="accordion-collapse collapse show" data-bs-parent="#account-setting">
+            <div id="chatuser-collapse" class="accordion-collapse collapse" data-bs-parent="#account-setting">
                 <div class="accordion-body">
                     <div>
                         <div class="d-flex justify-content-center align-items-center">
@@ -200,19 +200,19 @@
                                     </h2>
                                     <div id="set-email" class="accordion-collapse collapse" data-bs-parent="#pwd-setting">
                                         <div class="accordion-body">
-                                            <form method="POST" action="{{ route('chatuser.updateEmail') }}">
+                                            <form method="POST" action="{{ route('chatuser.updateEmail') }}" autocomplete="off">
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="input-group mb-3">
                                                             <span class="input-group-text"><i class="ti ti-mail"></i></span>
-                                                            <input type="email" class="form-control" name="old_email" value="{{ auth()->user()->email }}" readonly>
+                                                            <input type="email" class="form-control" name="old_email" value="{{ auth()->user()->email }}" readonly autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <div class="input-group mb-3">
                                                             <span class="input-group-text"><i class="ti ti-mail-check"></i></span>
-                                                            <input type="email" class="form-control" name="new_email" placeholder="New Email" required>
+                                                            <input type="email" class="form-control" name="new_email" placeholder="New Email" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12 d-flex">
@@ -362,7 +362,7 @@
                                     </h2>
                                 </div>
 
-                            <div id="login-background-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+                            <div id="login-background-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
                                 <div class="accordion-body border-0 pb-0">
                                     <div class="chat-user-photo">
                                         <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
@@ -409,7 +409,7 @@
             </h2>
         </div>
 
-        <div id="chat-background-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+        <div id="chat-background-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
             <div class="accordion-body border-0 pb-0">
                 <div class="chat-user-photo">
                     <div class="chat-img contact-gallery mb-3 d-flex flex-wrap gap-3">
@@ -657,7 +657,7 @@ function handleImageUpload(event, previewId) {
                 </button>
             </h2>
 
-            <div id="message-sound-collapse" class="accordion-collapse border-0 collapse show" data-bs-parent="#chat-setting">
+            <div id="message-sound-collapse" class="accordion-collapse border-0 collapse" data-bs-parent="#chat-setting">
                 <div class="accordion-body border-0 pb-0">
                     <div class="row">
                         @for ($i = 1; $i <= 4; $i++)
