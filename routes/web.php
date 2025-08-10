@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
 use App\Models\User;
@@ -31,6 +32,10 @@ Route::get('/login', function () {
     return view('signin');
 })->name('login');
 
+
+Route::post('/store', [ProjectController::class, 'store'])->name('project.store');
+Route::get('/project', [ProjectController::class, 'index'])->name('chat-project');
+ 
 
 
 Route::get('/chat', function () {
@@ -64,9 +69,7 @@ Route::get('/meetings', function () {
 Route::get('/groups', function () {
     return view('Chats.groups');
 })->middleware('auth')->name('chat-groups');
-Route::get('/project', function () {
-    return view('Chats.project');
-})->name('chat-project');
+
 
 Route::get('/Apis', function () {
     return view('Chats.Api');

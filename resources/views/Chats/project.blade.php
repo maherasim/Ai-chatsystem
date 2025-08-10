@@ -5611,9 +5611,10 @@
 </div>
 </div>
 
-<!-- Add New Project Modal -->
-<!-- Modal -->
+
 <div class="modal fade" id="add_user" tabindex="-1">
+    <form action="{{ route('project.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
 
@@ -5639,33 +5640,38 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="basicInfo">
 
-                        <!-- Profile Upload -->
-                        <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle me-4"
-                                alt="Profile Image" style="width: 80px; height: 80px; object-fit: cover;">
-                            <div>
-                                <p class="mb-1 fw-medium">Upload Project Logo</p>
-                                <small class="text-muted d-block mb-2">Image should be below 4 MB</small>
-                                <button class="btn btn-warning me-2"
-                                    style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
-                                <button class="btn btn-outline">Cancel</button>
-                            </div>
-                        </div>
+                        <div class="position-relative d-inline-block" style="width: 80px; height: 80px;">
+                                        <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                                            class="rounded-circle"
+                                            alt="Profile Image"
+                                            style="width: 80px; height: 80px; object-fit: cover;">
+
+                                        <!-- Hidden File Input -->
+                                        <input type="file" name="image" accept="image/*" id="profileImageInput" style="display: none;" onchange="previewImage(event)">
+
+                                        <!-- Overlay + Icon -->
+                                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
+                                            style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: 0.3s; cursor: pointer;"
+                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"
+                                            onclick="document.getElementById('profileImageInput').click();">
+                                            <span class="text-white fs-3">+</span>
+                                        </div>
+                                    </div>
 
                         <!-- Form -->
                         <form>
                             <div class="row g-3 mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Project Title</label>
-                                    <input type="text" class="form-control" />
+                                    <input type="text" name="title" class="form-control" />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Project Priority</label>
-                                    <input type="text" class="form-control" />
+                                    <input type="text"   name="priority" class="form-control" />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Start Date & End Date</label>
-                                    <input type="date" class="form-control" />
+                                    <input type="date"  name="date_time" class="form-control" />
                                 </div>
                             </div>
                             <!-- Description Editor -->
@@ -5674,7 +5680,7 @@
                                 <label class="form-label">Description</label>
                                 <div class="border p-2 bg-white rounded">
                                     <div class="d-flex mb-2 gap-2">
-                                        <select id="fontSizeSelect" class="form-select form-select-sm w-auto"
+                                        <select id="fontSizeSelect" class="form-select form-select-sm w-auto"  name="description"
                                             onchange="setFontSize(this.value)">
                                             <option value="3">14</option>
                                             <option value="2">12</option>
@@ -5717,76 +5723,31 @@
                             </div>
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Select Project Manager</label>
-                                    <div id="selectorContainer1"
-                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
-
-                                        <!-- Selected Tags -->
-                                        <div id="tagContainer1"
-                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
-                                        </div>
-
-                                        <!-- Options -->
-                                        <div style="display: block;">
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Artywiz</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Groupama</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Zenith</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <label for="project_managers" class="form-label">Select Project Managers</label>
+                                    <select name="project_managers[]" id="project_managers" class="form-select" multiple size="4">
+                                        <option value="artywiz">Artywiz</option>
+                                        <option value="groupama">Groupama</option>
+                                        <option value="zenith">Zenith</option>
+                                    </select>
+                                    <small class="form-text text-muted">Hold down Ctrl (Windows) or Command (Mac) to select multiple.</small>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Select Developer</label>
-                                    <div id="selectorContainer2"
-                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
 
-                                        <!-- Selected Tags -->
-                                        <div id="tagContainer2"
-                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
-                                        </div>
-
-                                        <!-- Options -->
-                                        <div style="display: block;">
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Artywiz</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Groupama</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Zenith</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                              <div class="col-md-6">
+                                <label for="developers" class="form-label">Select Developers</label>
+                                <select name="developers[]" id="developers" class="form-select" multiple size="4">
+                                    <option value="artywiz">Artywiz</option>
+                                    <option value="groupama">Groupama</option>
+                                    <option value="zenith">Zenith</option>
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</small>
+                            </div>
 
 
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Upload Files</label>
-                                <input type="file" class="form-control" />
+                                <input type="file" class="form-control" name="upload_files" />
                             </div>
 
                             <!-- Upload Files -->
@@ -5807,6 +5768,7 @@
             </div>
         </div>
     </div>
+</form>
 </div>
 
 <!-- JavaScript -->
@@ -5827,6 +5789,21 @@
     });
 </script>
 <script>
+    function previewImage(event) {
+        const input = event.target;
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = input.previousElementSibling; // The <img> element before the input
+            img.src = e.target.result;
+        }
+
+        if (input.files[0]) {
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script>
     function format(command) {
         document.execCommand(command, false, null);
     }
@@ -5839,47 +5816,48 @@
         document.execCommand('removeFormat', false, null);
     }
 
-    function addSection() {
-        const container = document.getElementById('section-container');
+function addSection() {
+    const container = document.getElementById('section-container');
 
-        const wrapper = document.createElement('div');
-        wrapper.style.position = 'relative';
-        wrapper.style.width = '100%';
-        wrapper.style.marginBottom = '10px';
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.width = '100%';
+    wrapper.style.marginBottom = '10px';
 
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'Enter title';
-        input.style.width = '100%';
-        input.style.paddingRight = '80px';
-        input.style.paddingLeft = '12px';
-        input.style.height = '38px';
-        input.style.border = '1px solid #ced4da';
-        input.style.borderRadius = '4px';
-        input.style.fontSize = '14px';
-        input.style.boxSizing = 'border-box';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'sections[]'; // ✅ This makes it go to backend
+    input.placeholder = 'Enter title';
+    input.style.width = '100%';
+    input.style.paddingRight = '80px';
+    input.style.paddingLeft = '12px';
+    input.style.height = '38px';
+    input.style.border = '1px solid #ced4da';
+    input.style.borderRadius = '4px';
+    input.style.fontSize = '14px';
+    input.style.boxSizing = 'border-box';
 
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.textContent = 'Remove';
-        removeBtn.onclick = () => wrapper.remove();
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.right = '0';
-        removeBtn.style.top = '0';
-        removeBtn.style.height = '100%';
-        removeBtn.style.backgroundColor = '#dc3545';
-        removeBtn.style.color = 'white';
-        removeBtn.style.border = 'none';
-        removeBtn.style.borderTopRightRadius = '4px';
-        removeBtn.style.borderBottomRightRadius = '4px';
-        removeBtn.style.padding = '0 12px';
-        removeBtn.style.fontSize = '14px';
-        removeBtn.style.cursor = 'pointer';
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = () => wrapper.remove();
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.right = '0';
+    removeBtn.style.top = '0';
+    removeBtn.style.height = '100%';
+    removeBtn.style.backgroundColor = '#dc3545';
+    removeBtn.style.color = 'white';
+    removeBtn.style.border = 'none';
+    removeBtn.style.borderTopRightRadius = '4px';
+    removeBtn.style.borderBottomRightRadius = '4px';
+    removeBtn.style.padding = '0 12px';
+    removeBtn.style.fontSize = '14px';
+    removeBtn.style.cursor = 'pointer';
 
-        wrapper.appendChild(input);
-        wrapper.appendChild(removeBtn);
-        container.appendChild(wrapper);
-    }
+    wrapper.appendChild(input);
+    wrapper.appendChild(removeBtn);
+    container.appendChild(wrapper);
+}
 
     // Add initial section on page load
     window.onload = () => addSection();
