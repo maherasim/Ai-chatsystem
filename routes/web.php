@@ -46,43 +46,7 @@ Route::get('/Ai', function () {
 Route::get('/tasks', function () {
     return view('Chats.task');
 })->middleware('auth')->name('chat-task');
-Route::get('/users', function () {
-    $users = User::where('is_admin', '!=', true)
-        ->where(function ($q) {
-            $q->where('role', '!=', 'admin')->orWhereNull('role');
-        })
-        ->get();
-
-    $totalUsers = User::where('is_admin', '!=', true)
-        ->where(function ($q) {
-            $q->where('role', '!=', 'admin')->orWhereNull('role');
-        })
-        ->count();
-
-    $activeUsers = User::where('is_admin', '!=', true)
-        ->where(function ($q) {
-            $q->where('role', '!=', 'admin')->orWhereNull('role');
-        })
-        ->where('active', true)
-        ->count();
-
-    $inactiveUsers = User::where('is_admin', '!=', true)
-        ->where(function ($q) {
-            $q->where('role', '!=', 'admin')->orWhereNull('role');
-        })
-        ->where('active', false)
-        ->count();
-
-    $newJoinersToday = User::where('is_admin', '!=', true)
-        ->where(function ($q) {
-            $q->where('role', '!=', 'admin')->orWhereNull('role');
-        })
-        ->whereDate('created_at', \Carbon\Carbon::today())
-        ->where('active', true)
-        ->count();
-
-    return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday', 'users'));
-})->middleware('auth')->name('chat-users');
+Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
 
 Route::get('/meetings', function () {
     return view('Chats.meetings');

@@ -5,9 +5,49 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UsersController extends Controller
 {
+  public function index()
+    {
+        $users = User::where('is_admin', '!=', true)
+            ->where(function ($q) {
+                $q->where('role', '!=', 'admin')->orWhereNull('role');
+            })
+            ->get();
+
+        $totalUsers = User::where('is_admin', '!=', true)
+            ->where(function ($q) {
+                $q->where('role', '!=', 'admin')->orWhereNull('role');
+            })
+            ->count();
+
+        $activeUsers = User::where('is_admin', '!=', true)
+            ->where(function ($q) {
+                $q->where('role', '!=', 'admin')->orWhereNull('role');
+            })
+            ->where('active', true)
+            ->count();
+
+        $inactiveUsers = User::where('is_admin', '!=', true)
+            ->where(function ($q) {
+                $q->where('role', '!=', 'admin')->orWhereNull('role');
+            })
+            ->where('active', false)
+            ->count();
+
+        $newJoinersToday = User::where('is_admin', '!=', true)
+            ->where(function ($q) {
+                $q->where('role', '!=', 'admin')->orWhereNull('role');
+            })
+            ->whereDate('created_at', Carbon::today())
+            ->where('active', true)
+            ->count();
+
+        return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday', 'users'));
+    }
+
   public function store(Request $request)
 {
     //
