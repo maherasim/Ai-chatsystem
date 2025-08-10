@@ -2384,6 +2384,7 @@
             </div>
             @endforeach
 
+{{--
             <!-- Employee Card 2 -->
             <div class="col-md-3 mb-4">
                 <div class="elevated-card">
@@ -2790,6 +2791,7 @@
             <!-- Add more employee cards as needed -->
         </div>
     </div>
+--}}
     <!-- Add Contact -->
     <div class="modal fade" id="add-contact">
         <div class="modal-dialog modal-dialog-centered">
