@@ -11,11 +11,13 @@ class UsersController extends Controller
 {
   public function index()
     {
-        $users = User::where('is_admin', '!=', true)
-            ->where(function ($q) {
-                $q->where('email', '!=', 'admin@gmail.com')->orWhereNull('role');
-            })
-            ->get();
+     $users = User::where('is_admin', '!=', true)
+    ->where(function ($q) {
+        $q->where('email', '!=', 'admin@gmail.com')
+          ->orWhereNull('role');
+    })
+    ->get();
+
 
         $totalUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
