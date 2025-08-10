@@ -22,11 +22,13 @@ class UsersController extends Controller
         'cpassw' => 'nullable',
         'phone' => 'nullable',
         'department' => 'nullable|string',
-        'image' => 'nullable',
-    ]);
-// dd($validated );
+                 'image' => 'nullable',
+         ]);
     // Step 2: Handle Image Upload
     $imagePath = null;
+
+    // ensure active defaults true, restrict role to non-admin if provided
+    $request->merge(['active' => true]);
 
     if ($request->hasFile('image')) {
         $file = $request->file('image');
@@ -56,14 +58,13 @@ class UsersController extends Controller
     $user=User::create([
         'name' => $validated['name'],
         'email' => $validated['email'],
-        'password' => Hash::make($validated['passw']),
-        'phone' => $validated['phone'],
-        'department' => $validated['department'],
+        'password' => Hash::make($validated['passw'] ?? ''),
+        'phone' => $validated['phone'] ?? null,
+        'department' => $validated['department'] ?? null,
         'image' => $imagePath,
-        'active'=>true,
-        'permissions' => json_encode($permissions), // make sure 'permissions' is fillable in User model
+        'active' => true,
+        'permissions' => json_encode($permissions),
     ]);
-      dd($request->all());
     if($user){
       
     return redirect()->back()->with('success', 'User registered successfully!');
