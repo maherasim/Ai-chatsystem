@@ -17,6 +17,8 @@ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout')
 
 Route::post('/store', [UsersController::class, 'store'])->name('user.store');
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
+Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
+
 Route::get('/', function () {
     return view('signin');
 });
@@ -46,7 +48,6 @@ Route::get('/Ai', function () {
 Route::get('/tasks', function () {
     return view('Chats.task');
 })->middleware('auth')->name('chat-task');
-Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
 
 Route::get('/meetings', function () {
     return view('Chats.meetings');
