@@ -4,10 +4,7 @@
 
 <style>
     /* Ensure base styles don't interfere */
-body{
-    overflow-x: hidden;
 
-}
 
     .task-icon-link {
         position: relative;
@@ -2163,7 +2160,7 @@ body{
     margin-top: -21px;margin-left: -13px;    position: relative;
    ">
             <div>
-                <div class="chat-header"style="width:102.4%;overflow-x:hiddone">
+                <div class="chat-header"style="width:101.4%;">
                     <div class="user-details">
                         <div class="d-xl-none">
                             <a class="text-muted chat-close me-2" href="#">

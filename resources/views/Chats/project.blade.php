@@ -4660,7 +4660,7 @@
     margin-top: -21px;margin-left: -13px;    position: relative;
     ">
             <div>
-                <div class="chat-header" style="width:103.4%;">
+                <div class="chat-header" style="width:101.4%;">
                     <div class="user-details">
                         <div class="d-xl-none">
                             <a class="text-muted chat-close me-2" href="#">
