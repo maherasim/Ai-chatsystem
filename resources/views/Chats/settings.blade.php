@@ -150,14 +150,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
-                                <div class="input-icon mb-3 position-relative">
-                                    <input type="date" name="dob" class="form-control"
-                                        value="{{ old('dob', $setting->dob ?? '') }}"
-                                        placeholder="Date of birth" required>
-                                    <span class="icon-addon"><i class="ti ti-calendar-event"></i></span>
-                                </div>
-                            </div>
+                            
 
                             <div class="col-lg-12 d-flex">
                                 <button type="submit" class="btn btn-primary flex-fill"><i class="ti ti-device-floppy me-2"></i>Save Changes</button>

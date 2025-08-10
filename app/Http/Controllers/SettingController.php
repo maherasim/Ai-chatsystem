@@ -96,7 +96,7 @@ public function store(Request $request)
 {
     $request->validate([
         'first_name' => 'required|string|max:255',
-        'dob' => 'required|date',
+        
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
