@@ -3122,7 +3122,7 @@
                     <div class="tab-content">
                         <!-- Basic Information Tab -->
                         <div class="tab-pane fade show active" id="basicInfo">
-                            <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                                 @csrf
 
                                 <!-- Profile Upload -->
@@ -3192,7 +3192,7 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" required>
+                                        <input type="email" name="email" class="form-control" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                                         @error('email')
                                         <div class="alert alert-danger mt-2">
                                             {{$message}}
@@ -3211,7 +3211,7 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="passw" required>
+                                        <input type="password" class="form-control" name="passw" required autocomplete="new-password">
                                         @error('passw')
                                         <div class="alert alert-danger mt-2">
                                             {{$message}}
@@ -3221,7 +3221,7 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label">Repeat Password</label>
-                                        <input type="password" class="form-control" name="rpassw" required>
+                                        <input type="password" class="form-control" name="rpassw" required autocomplete="new-password">
                                         @error('rpassw')
                                         <div class="alert alert-danger mt-2">
                                             {{$message}}
