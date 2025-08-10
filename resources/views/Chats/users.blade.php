@@ -3197,7 +3197,7 @@
                                         </div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label"> Repeat Email</label>
                                         <input type="email" class="form-control" name="remail" required>
                                         @error('remail')
@@ -3205,7 +3205,7 @@
                                             {{$message}}
                                         </div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-6">
                                         <label class="form-label">Password</label>
@@ -3226,7 +3226,7 @@
                                         </div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label">Confirm Password</label>
                                         <input type="password" name="cpassw" class="form-control" required>
                                         @error('cpassw')
@@ -3234,7 +3234,7 @@
                                             {{$message}}
                                         </div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-6">
                                         <label class="form-label">Phone Number</label>
