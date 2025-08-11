@@ -24,7 +24,11 @@ class Setting extends Model
         'chat_sounds',
         'notification_sounds',        
         'app_logo',
-         
+        'policy_html',
+        'policy_version',
+        'agreement_html',
+        'agreement_version',
+        'require_accept_on_next_login',
     ];
 
     

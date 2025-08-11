@@ -1168,6 +1168,17 @@
                             </div>
                             <div class="card-body">
                                 <textarea id="policyEditor"></textarea>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="badge bg-light text-dark">Version: <span id="policyVersion">0</span></span>
+                                    <div class="btn-group">
+                                        <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
+                                        <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
+                                    </div>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="policyRequireAccept">
+                                    <label class="form-check-label" for="policyRequireAccept">Require users to accept next time</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1179,6 +1190,17 @@
                             </div>
                             <div class="card-body">
                                 <textarea id="agreementEditor"></textarea>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="badge bg-light text-dark">Version: <span id="agreementVersion">0</span></span>
+                                    <div class="btn-group">
+                                        <button type="button" id="agreementEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
+                                        <button type="button" id="agreementSaveBtn" class="btn btn-primary btn-sm">Save</button>
+                                    </div>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="agreementRequireAccept">
+                                    <label class="form-check-label" for="agreementRequireAccept">Require users to accept next time</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1205,11 +1227,74 @@
                         toolbar: [
                             ['style', ['fontsize']],
                             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                            ['insert', ['picture', 'link']],
+                            // remove image and url buttons
+                            // ['insert', ['picture', 'link']],
                             ['para', ['ul', 'ol', 'paragraph']],
                             ['view', ['codeview']]
                         ],
                         fontSizes: ['12', '14', '16', '18', '20', '24', '28']
+                    });
+
+                    // wire up edit/save controls
+                    function setEditorDisabled(selector, disabled) {
+                        var $el = $(selector);
+                        if (disabled) {
+                            $el.summernote('disable');
+                        } else {
+                            $el.summernote('enable');
+                        }
+                    }
+
+                    // Load any previously saved values from localStorage as a placeholder for backend API
+                    var savedPolicy = localStorage.getItem('policy_html') || '';
+                    var savedAgreement = localStorage.getItem('agreement_html') || '';
+                    var policyVersion = parseInt(localStorage.getItem('policy_version') || '0', 10);
+                    var agreementVersion = parseInt(localStorage.getItem('agreement_version') || '0', 10);
+                    $('#policyEditor').summernote('code', savedPolicy);
+                    $('#agreementEditor').summernote('code', savedAgreement);
+                    $('#policyVersion').text(policyVersion);
+                    $('#agreementVersion').text(agreementVersion);
+
+                    // default to disabled until Edit clicked
+                    setEditorDisabled('#policyEditor', true);
+                    setEditorDisabled('#agreementEditor', true);
+
+                    $('#policyEditBtn').on('click', function(){ setEditorDisabled('#policyEditor', false); });
+                    $('#agreementEditBtn').on('click', function(){ setEditorDisabled('#agreementEditor', false); });
+
+                    function postJson(url, data) {
+                        return fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(data)
+                        }).then(function(r){ return r.json(); });
+                    }
+
+                    $('#policySaveBtn').on('click', function(){
+                        var html = $('#policyEditor').summernote('code');
+                        var increment = $('#policyRequireAccept').is(':checked');
+                        postJson(''+window.location.origin + '/settings/policy/save', { html: html, increment_version: increment })
+                            .then(function(resp){
+                                if (resp && resp.ok) {
+                                    if (resp.version !== undefined) $('#policyVersion').text(resp.version);
+                                    setEditorDisabled('#policyEditor', true);
+                                }
+                            });
+                    });
+
+                    $('#agreementSaveBtn').on('click', function(){
+                        var html = $('#agreementEditor').summernote('code');
+                        var increment = $('#agreementRequireAccept').is(':checked');
+                        postJson(''+window.location.origin + '/settings/agreement/save', { html: html, increment_version: increment })
+                            .then(function(resp){
+                                if (resp && resp.ok) {
+                                    if (resp.version !== undefined) $('#agreementVersion').text(resp.version);
+                                    setEditorDisabled('#agreementEditor', true);
+                                }
+                            });
                     });
                 };
                 document.body.appendChild(summernoteJs);

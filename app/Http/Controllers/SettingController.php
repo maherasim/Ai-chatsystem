@@ -307,7 +307,36 @@ public function toggleReactionNotification(Request $request)
     return back()->with('success', 'Chat background images updated successfully.');
 }
 
-
+public function savePolicy(Request $request)
+{
+    $request->validate([
+        'html' => 'required|string',
+        'increment_version' => 'boolean',
+    ]);
+    $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
+    $setting->policy_html = $request->html;
+    if ($request->boolean('increment_version')) {
+        $setting->policy_version = (int)($setting->policy_version ?? 0) + 1;
+        $setting->require_accept_on_next_login = true;
+    }
+    $setting->save();
+    return response()->json(['ok' => true, 'version' => (int)($setting->policy_version ?? 0)]);
+}
+public function saveAgreement(Request $request)
+{
+    $request->validate([
+        'html' => 'required|string',
+        'increment_version' => 'boolean',
+    ]);
+    $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
+    $setting->agreement_html = $request->html;
+    if ($request->boolean('increment_version')) {
+        $setting->agreement_version = (int)($setting->agreement_version ?? 0) + 1;
+        $setting->require_accept_on_next_login = true;
+    }
+    $setting->save();
+    return response()->json(['ok' => true, 'version' => (int)($setting->agreement_version ?? 0)]);
+}
 
 
 }
