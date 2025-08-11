@@ -1255,9 +1255,9 @@
                     $('#policyVersion').text(policyVersion);
                     $('#agreementVersion').text(agreementVersion);
 
-                    // default to disabled until Edit clicked
-                    setEditorDisabled('#policyEditor', true);
-                    setEditorDisabled('#agreementEditor', true);
+                    // default to enabled so you can type immediately
+                    setEditorDisabled('#policyEditor', false);
+                    setEditorDisabled('#agreementEditor', false);
 
                     $('#policyEditBtn').on('click', function(){ setEditorDisabled('#policyEditor', false); });
                     $('#agreementEditBtn').on('click', function(){ setEditorDisabled('#agreementEditor', false); });
