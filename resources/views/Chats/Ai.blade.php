@@ -2675,6 +2675,7 @@
         }, 150);
     });
 </script>
+<!-- dark and light mode -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;

@@ -92,9 +92,9 @@
 
     <!-- Left Sidebar Menu -->
 
-         <div style="visibility: visible;">
-    @include('Chats.chatsidebar')
-</div>
+    <div style="visibility: visible;">
+        @include('Chats.chatsidebar')
+    </div>
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
@@ -2103,18 +2103,184 @@
                     </div>
                 </div>
 
-                <!-- Chat Search -->
-                <div class="chat-search search-wrap contact-search">
-                    <form>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search Contacts">
-                            <span class="input-group-text"><i class="ti ti-search"></i></span>
-                        </div>
+                <!-- Right Side Icons -->
+                <div class="left-icons d-flex align-items-center gap-5">
+
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
+                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
+                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
+                        </a>
+                    </li>
+
+                    <li style="list-style: none;">
+                        <!-- Moon Icon -->
+                        <a href="#" id="dark-mode-toggle" style="display: inline;">
+                            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
+                        </a>
+
+                        <!-- Sun Icon -->
+                        <a href="#" id="light-mode-toggle" style="display: none;">
+                            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
+                        </a>
+                    </li>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
+                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
+                        </button>
                     </form>
                 </div>
-                <!-- /Chat Search -->
             </div>
-          
+            <!-- body -->
+            <div class="chat-body chat-page-group slimscroll">
+                <div class="messages mb-3">
+                    <div>
+                        <h3>Request A meeting</h3>
+                        <small>New Request 5</small>
+                    </div>
+                </div>
+                <!-- CARD CONTAINER -->
+                <div class="d-flex gap-3  flex-wrap">
+
+                    <!-- Start of Card 1 -->
+                    <div class="card " style="width: 350px; border-radius: 12px;">
+                        <!-- Card Header -->
+                        <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                            <div class="d-flex align-items-center">
+                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"  style="width: 40px; height: 40px;">
+                                <div>
+                                    <div style="font-weight: bold;">Admin name</div>
+                                    <small style="color: gray;">Created Time & Date</small>
+                                </div>
+                            </div>
+                            <span style="
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f3f3f3;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #5a5a5a;
+  font-weight: 500;
+">
+                                <span style="
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.2);
+  "></span>
+                                High
+                            </span>
+
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <!-- Title of Meeting with Avatars on the same line -->
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h5 class="card-title mb-0">Title of Meeting</h5>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                </div>
+                            </div>
+
+                            <!-- Project Title below -->
+                            <p class="text-muted" style="font-size: 0.85rem;">Project Title</p>
+
+                            <p style="font-size: 0.9rem;">Here we will add the description of the ToDo Only you is Superadmin ToDo</p>
+
+
+
+                            <!-- Date and Time -->
+                            <div class="d-flex align-items-center justify-content-between border rounded p-2" style="font-size: 0.85rem;">
+                                <div class="text-success">
+                                    📅 22.10.2024
+                                </div>
+                                <div class="text-success">
+                                    🕒 17:30 - 18:30
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Buttons -->
+                        <div class="d-flex">
+                            <button class="btn" style="flex: 1; background-color: #28a745; color: white; border-bottom-left-radius: 12px;">Accept</button>
+                            <button class="btn" style="flex: 1; background-color: #dc3545; color: white; border-bottom-right-radius: 12px;">Denied</button>
+                        </div>
+                    </div>
+                    <!-- End of Card 1 -->
+
+
+                    <!-- Start of Card 2 (Middle Priority) -->
+                    <div class="card" style="width: 350px; border-radius: 12px;">
+                        <!-- Card Header -->
+                        <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                            <div class="d-flex align-items-center">
+                               <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"  style="width: 40px; height: 40px;">
+                                <div>
+                                    <div style="font-weight: bold;">Admin name</div>
+                                    <small style="color: gray;">Created Time & Date</small>
+                                </div>
+                            </div>
+                            <span style="display: inline-flex;align-items: center;gap: 6px; background-color: #f3f3f3;padding: 4px 10px;border-radius: 20px;font-size: 14px;color: #5a5a5a;font-weight: 500;">
+                                <span style="
+    width: 10px;
+    height: 10px;
+    background-color: #ffc107;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.3);
+  "></span>
+                                Middle
+                            </span>
+
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <!-- Title of Meeting with Avatars on the same line -->
+<div class="d-flex justify-content-between align-items-center mb-1">
+  <h5 class="card-title mb-0">Title of Meeting</h5>
+  <div class="d-flex align-items-center">
+    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+  </div>
+</div>
+
+<!-- Project Title below -->
+<p class="text-muted" style="font-size: 0.85rem;">Project Title</p>
+
+                            <p style="font-size: 0.9rem;">Here we will add the description of the ToDo Only you is Superadmin ToDo</p>
+
+                           
+
+                            <!-- Date and Time -->
+                            <div class="d-flex align-items-center justify-content-between border rounded p-2" style="font-size: 0.85rem;">
+                                <div class="text-success">
+                                    
+                                    📅 22.10.2024
+                                </div>
+                                <div class="text-success">
+                                    🕒 17:30 - 18:30
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Buttons -->
+                        <div class="d-flex">
+                            <button class="btn" style="flex: 1; background-color: #28a745; color: white; border-bottom-left-radius: 12px;">Accept</button>
+                            <button class="btn" style="flex: 1; background-color: #dc3545; color: white; border-bottom-right-radius: 12px;">Denied</button>
+                        </div>
+                    </div>
+                    <!-- End of Card 2 -->
+
+                </div>
+            </div>
 
         </div>
 
@@ -2124,7 +2290,7 @@
 
 
 
-   
+
 
     <div class="modal fade" id="new-Ai">
         <div class="modal-dialog modal-dialog-centered">
@@ -2188,5 +2354,25 @@
         }, 150);
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        const darkBtn = document.getElementById('dark-mode-toggle');
+        const lightBtn = document.getElementById('light-mode-toggle');
 
+        darkBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.add('dark-mode');
+            darkBtn.style.display = 'none';
+            lightBtn.style.display = 'inline';
+        });
+
+        lightBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.remove('dark-mode');
+            lightBtn.style.display = 'none';
+            darkBtn.style.display = 'inline';
+        });
+    });
+</script>
 @endsection

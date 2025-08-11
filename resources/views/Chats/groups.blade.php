@@ -2057,29 +2057,37 @@
                                 <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                     <div class="chat-users-wrap">
                                         <div class="chat-list">
-                                            <a href="#" class="chat-user-list">
-                                                <div class="avatar avatar-lg online me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
-                                                </div>
-                                                <div class="chat-user-info">
-                                                    <div class="chat-user-msg">
-                                                        <h6>Mark Villiams</h6>
-                                                        <p><span class="animate-typing">is typing
-                                                                <span class="dot"></span>
-                                                                <span class="dot"></span>
-                                                                <span class="dot"></span>
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="chat-user-time">
-                                                        <span class="time">02:40 PM</span>
-                                                        <div class="chat-pin">
-                                                            <i class="ti ti-pin me-2"></i>
-                                                            <span class="count-message fs-12 fw-semibold">12</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                            <!-- now dynamic -->
+                                             <a href="#" 
+   class="chat-user-list"
+   data-members="40"
+   data-online="24"
+   data-avatar="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}">
+
+    <div class="avatar avatar-lg online me-2">
+        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" 
+             class="rounded-circle border border-warning border-2" alt="image">
+    </div>
+
+    <div class="chat-user-info">
+        <div class="chat-user-msg">
+            <h6>Mark Villiams</h6>
+            <p><span class="animate-typing">is typing
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </span></p>
+        </div>
+        <div class="chat-user-time">
+            <span class="time">02:40 PM</span>
+            <div class="chat-pin">
+                <i class="ti ti-pin me-2"></i>
+                <span class="count-message fs-12 fw-semibold">12</span>
+            </div>
+        </div>
+    </div>
+</a>
+<!-- end dynamuic -->
                                             <div class="chat-dropdown">
                                                 <a class="#" href="#" data-bs-toggle="dropdown">
                                                     <i class="ti ti-dots-vertical"></i>
@@ -3119,73 +3127,26 @@
         }, 150);
     });
 </script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Tooltip logic (same as before)
-        const tooltipElements = document.querySelectorAll('.main-menu [data-bs-toggle="tooltip"]');
-        tooltipElements.forEach(el => {
-            const tooltip = new bootstrap.Tooltip(el);
-
-            el.addEventListener('mouseenter', function() {
-                const link = el.querySelector('a');
-                if (link && link.classList.contains('active')) {
-                    tooltip.disable();
-                    tooltip.hide();
-                } else {
-                    tooltip.enable();
-                }
-            });
-
-            const link = el.querySelector('a');
-            if (link) {
-                link.addEventListener('click', () => {
-                    tooltip.hide();
-                    tooltip.disable();
-                });
-            }
-        });
-
-        // 👉 Tab activation logic on page load
-        const activeLink = document.querySelector('.main-menu .task-icon-link.active');
-        if (activeLink) {
-            const targetSelector = activeLink.getAttribute('data-bs-target');
-            const tabTrigger = new bootstrap.Tab(activeLink);
-            tabTrigger.show(); // manually activate tab
-
-            // Optional: Also make sure the tab-pane is visible
-            const targetPane = document.querySelector(targetSelector);
-            if (targetPane) {
-                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active', 'show'));
-                targetPane.classList.add('active', 'show');
-            }
-        }
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var activeTab = document.querySelector('.task-icon-link.active');
-        if (activeTab) {
-            var tabTrigger = new bootstrap.Tab(activeTab);
-            tabTrigger.show();
-        }
-    });
-</script>
-
 
 <script>
-    document.getElementById('open-settings-tab').addEventListener('click', function(e) {
+  document.querySelectorAll('.chat-user-list').forEach(chatItem => {
+    chatItem.addEventListener('click', function(e) {
         e.preventDefault();
-        const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#setting-menu"]'));
-        tab.show();
+
+        let name = this.querySelector('h6').textContent.trim();
+        let avatarSrc = this.dataset.avatar;
+        let members = this.dataset.members;
+        let online = this.dataset.online;
+
+        document.querySelector('.chat-header .avatar img').src = avatarSrc;
+        document.querySelector('.chat-header h6').textContent = name;
+        document.querySelector('.chat-header .last-seen').innerHTML =
+            `${members} Members, <span class="text-success">${online} Online</span>`;
     });
-</script> -->
+});
 
 
-
-
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+</script>
 
 
 @component('components.model-popup')
