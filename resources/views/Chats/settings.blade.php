@@ -1157,11 +1157,64 @@
         <!-- /Sidebar group -->
 
         <!-- Chat -->
+        <div class="chat chat-messages show" id="middle" style="overflow-y: auto;">
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header pb-0">
+                                <h6 class="mb-1">Policy and Terms</h6>
+                                <p class="text-muted small m-0">System policy</p>
+                            </div>
+                            <div class="card-body">
+                                <textarea id="policyEditor"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header pb-0">
+                                <h6 class="mb-1">Agreements</h6>
+                                <p class="text-muted small m-0">System Agreements</p>
+                            </div>
+                            <div class="card-body">
+                                <textarea id="agreementEditor"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-editor will come here 
+        <script>
+            // Load Summernote CSS/JS after jQuery is available, then initialize editors
+            window.addEventListener('load', function () {
+                var summernoteCss = document.createElement('link');
+                summernoteCss.rel = 'stylesheet';
+                summernoteCss.href = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css';
+                document.head.appendChild(summernoteCss);
 
-
-
+                var summernoteJs = document.createElement('script');
+                summernoteJs.src = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js';
+                summernoteJs.onload = function () {
+                    var $editors = $('#policyEditor, #agreementEditor');
+                    $editors.summernote({
+                        placeholder: 'Start typing...',
+                        tabsize: 2,
+                        height: 220,
+                        toolbar: [
+                            ['style', ['fontsize']],
+                            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                            ['insert', ['picture', 'link']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['view', ['codeview']]
+                        ],
+                        fontSizes: ['12', '14', '16', '18', '20', '24', '28']
+                    });
+                };
+                document.body.appendChild(summernoteJs);
+            });
+        </script>
 
     </div>
     <script>
