@@ -1169,7 +1169,7 @@
                             <div class="card-body">
                                 <textarea id="policyEditor"></textarea>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="badge bg-light text-dark">Version: <span id="policyVersion">0</span></span>
+                                    {{-- <span class="badge bg-light text-dark">Version: <span id="policyVersion">0</span></span> --}}
                                     <div class="btn-group">
                                         <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
                                         <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
@@ -1191,7 +1191,7 @@
                             <div class="card-body">
                                 <textarea id="agreementEditor"></textarea>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="badge bg-light text-dark">Version: <span id="agreementVersion">0</span></span>
+                                    {{-- <span class="badge bg-light text-dark">Version: <span id="agreementVersion">0</span></span> --}}
                                     <div class="btn-group">
                                         <button type="button" id="agreementEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
                                         <button type="button" id="agreementSaveBtn" class="btn btn-primary btn-sm">Save</button>
