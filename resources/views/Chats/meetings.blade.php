@@ -2148,7 +2148,7 @@
                         <!-- Card Header -->
                         <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
                             <div class="d-flex align-items-center">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"  style="width: 40px; height: 40px;">
+                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
                                 <div>
                                     <div style="font-weight: bold;">Admin name</div>
                                     <small style="color: gray;">Created Time & Date</small>
@@ -2221,7 +2221,7 @@
                         <!-- Card Header -->
                         <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
                             <div class="d-flex align-items-center">
-                               <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"  style="width: 40px; height: 40px;">
+                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
                                 <div>
                                     <div style="font-weight: bold;">Admin name</div>
                                     <small style="color: gray;">Created Time & Date</small>
@@ -2243,26 +2243,26 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <!-- Title of Meeting with Avatars on the same line -->
-<div class="d-flex justify-content-between align-items-center mb-1">
-  <h5 class="card-title mb-0">Title of Meeting</h5>
-  <div class="d-flex align-items-center">
-    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
-    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
-    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
-  </div>
-</div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h5 class="card-title mb-0">Title of Meeting</h5>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                    <img src="https://via.placeholder.com/30" class="rounded-circle me-1" />
+                                </div>
+                            </div>
 
-<!-- Project Title below -->
-<p class="text-muted" style="font-size: 0.85rem;">Project Title</p>
+                            <!-- Project Title below -->
+                            <p class="text-muted" style="font-size: 0.85rem;">Project Title</p>
 
                             <p style="font-size: 0.9rem;">Here we will add the description of the ToDo Only you is Superadmin ToDo</p>
 
-                           
+
 
                             <!-- Date and Time -->
                             <div class="d-flex align-items-center justify-content-between border rounded p-2" style="font-size: 0.85rem;">
                                 <div class="text-success">
-                                    
+
                                     📅 22.10.2024
                                 </div>
                                 <div class="text-success">

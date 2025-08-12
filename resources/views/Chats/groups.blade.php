@@ -246,7 +246,7 @@
                                         <div class="chat-list">
                                             <a href="#" class="chat-user-list">
                                                 <div class="avatar avatar-lg  me-2">
-                                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
+                                                    <img src="{{URL::asset('/build/img/ToDo-Black.svg')}}" class="rounded-circle" alt="image">
                                                 </div>
                                                 <div class="chat-user-info">
                                                     <div class="chat-user-msg">
