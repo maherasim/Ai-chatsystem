@@ -54,7 +54,8 @@ Route::get('/meetings', function () {
 })->middleware('auth')->name('chat-meetings');
 
 Route::get('/groups', function () {
-    return view('Chats.groups-dashboard');
+      return view('Chats.groups');
+    
 })->middleware('auth')->name('chat-groups');
 Route::get('/project', function () {
     return view('Chats.project');

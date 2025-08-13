@@ -89,9 +89,410 @@
         opacity: 1;
     }
 
-    /*  */
+    /* Card-like enhancements */
+    .card-like {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #eef2f7;
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    
+    .card-like:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+    
+    .create-group-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 112, 201, 0.15);
+        border: 2px dashed #0070C9;
+        transition: all 0.3s ease;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    
+    .create-group-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 112, 201, 0.25);
+        transform: translateY(-3px);
+        border-style: solid;
+    }
+    
+    .online-contacts-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .chat-user-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 12px;
+        margin-bottom: 12px;
+        transition: all 0.2s ease;
+    }
+    
+    .chat-user-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+    }
+    
+    .section-header {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .modal-card {
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+    
+    .modal-header {
+        background: linear-gradient(120deg, #0070C9, #0056b3);
+        color: white;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        padding: 20px;
+    }
+    
+    .contact-user.card-like {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+    }
+    
+    .contact-user .avatar {
+        flex-shrink: 0;
+    }
+    
+    .contact-user .ms-2 {
+        flex-grow: 1;
+        margin-left: 15px !important;
+    }
+    
+    .contact-user .form-check {
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+    
+    .chat-title.card-like {
+        background: #f8f9fa;
+        border-left: 4px solid #0070C9;
+        font-weight: 600;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+    }
 </style>
+<style>
+    .meeting-header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
 
+    .meeting-info h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 500;
+        color: #333333;
+    }
+
+    .meeting-info p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #666666;
+    }
+
+    .add-meeting-button {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    .add-meeting-button:hover {
+        background-color: #f1f1f1;
+    }
+
+    .icon-container {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+    }
+
+    .monitor-icon,
+    .camera-icon {
+        position: absolute;
+        background-color: #4CAF50;
+        border-radius: 3px;
+    }
+
+    .monitor-icon {
+        width: 25px;
+        height: 20px;
+        border: 2px solid #4CAF50;
+        background-color: #E8F5E9;
+        left: 0;
+        top: 5px;
+    }
+
+    .monitor-icon::before {
+        content: '';
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: #4CAF50;
+        bottom: -7px;
+        left: 10px;
+    }
+
+    .camera-icon {
+        width: 15px;
+        height: 10px;
+        background-color: #E53935;
+        border-radius: 2px;
+        right: 0;
+        top: 0;
+        transform: rotate(15deg);
+    }
+
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .text-container strong {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333333;
+    }
+
+    .text-container span {
+        font-size: 12px;
+        color: #999999;
+        margin-top: 2px;
+    }
+
+
+
+    .meeting-filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+    }
+
+    .meeting-filter-item {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #555555;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .meeting-filter-item.active {
+        background-color: #e0f7fa;
+        border-color: #b2ebf2;
+    }
+
+    .icon {
+        position: relative;
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .icon.green {
+        background-color: #4CAF50;
+    }
+
+    .icon.green::before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    .icon.green::after {
+        content: '✓';
+        position: absolute;
+        color: #4CAF50;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+
+    .icon.gray {
+        background-color: #78909C;
+    }
+
+    .icon.gray::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 18px;
+        background-color: white;
+        border-radius: 2px;
+        transform: rotate(-10deg);
+    }
+
+    .icon.gray::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #78909C;
+        border-radius: 50%;
+        top: 5px;
+        right: 5px;
+        transform: rotate(-10deg);
+    }
+
+
+    .icon.blue {
+        background-color: #2196F3;
+    }
+
+    .icon.blue::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    .icon.blue::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 5px;
+        background-color: #2196F3;
+        top: 8px;
+        left: 13px;
+        transform-origin: bottom center;
+        animation: tick-move 2s infinite linear;
+    }
+
+    .icon.blue .hour-hand {
+        position: absolute;
+        width: 2px;
+        height: 3px;
+        background-color: #2196F3;
+        top: 10px;
+        left: 13px;
+        transform-origin: bottom center;
+        transform: rotate(-30deg);
+    }
+
+    .icon.blue .dot {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background-color: #2196F3;
+        border-radius: 50%;
+    }
+
+    @keyframes tick-move {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+
+    .icon.red {
+        background-color: #F44336;
+    }
+
+    .icon.red::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    .icon.red::after {
+        content: 'x';
+        position: absolute;
+        color: #F44336;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+
+    .icon.yellow {
+        background-color: #FFC107;
+    }
+
+    .icon.yellow::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: white;
+        border-radius: 2px;
+    }
+
+    .icon.yellow::after {
+        content: '📂';
+        position: absolute;
+        font-size: 12px;
+    }
+
+    .filter-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .filter-text strong {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .filter-text span {
+        font-size: 12px;
+        color: #777;
+    }
+</style>
 
 
 <!-- content -->
@@ -2210,682 +2611,722 @@
                 </div>
                 <!-- /Chat Search -->
             </div>
-            <div class="chat-body chat-page-group slimscroll">
-                <div class="messages">
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    Hey Design Dynamos! How's everyone doing today?
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-file-export me-2"></i>Copy</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats chats-right">
-                        <div class="chat-content">
-                            <div class="chat-profile-name text-end">
-                                <h6>You<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                                <div class="message-content">
-                                    Hey Edward! Doing well. Just finished up a client meeting. How's everyone else?
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="emonji-wrap">
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" class="me-2" alt="icon">24</a>
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" class="me-2" alt="icon">15</a>
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-04.svg')}}" class="me-2" alt="icon">15</a>
-                            </div>
-                        </div>
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle dreams_chat" alt="image">
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Aaryian Jose<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:40 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="message-content">
-                                Hi all! I'm great, just wrapping up the wireframe for the new project. Excited to share it with you guys!
-                            </div>
-                            <div class="emonji-wrap">
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" class="me-2" alt="icon">24</a>
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" class="me-2" alt="icon">15</a>
-                                <a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-04.svg')}}" class="me-2" alt="icon">15</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Aaryian Jose<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:40 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="message-content">
-                                <span class="text-primary">@Aaryian Jose,</span> can you share the wireframe here? Would love to give feedback before our meeting later.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Aaryian Jose<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <div class="file-attach">
-                                        <span class="file-icon">
-                                            <i class="ti ti-files"></i>
-                                        </span>
-                                        <div class="ms-2 overflow-hidden">
-                                            <h6 class="mb-1">Ecommerce.zip</h6>
-                                            <p>14.23 KB</p>
-                                        </div>
-                                        <a href="javascript:void(0);" class="download-icon">
-                                            <i class="ti ti-download"></i>
-                                        </a>
-                                    </div>
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats chats-right">
-                        <div class="chat-content">
-                            <div class="chat-profile-name justify-content-end">
-                                <h6>You<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="message-content">
-                                Send me background images if any for our new project??
-                                <div class="emoj-group wrap-emoji-group ">
-                                    <ul>
-                                        <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                            <div class="emoj-group-list">
-                                                <ul>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                    <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li><a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle dreams_chat" alt="image">
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <div class="chat-img">
-                                        <div class="img-wrap">
-                                            <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                            <div class="img-overlay">
-                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" title="Demo 01"><i class="ti ti-eye"></i></a>
-                                                <a href="#"><i class="ti ti-download"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="img-wrap">
-                                            <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
-                                            <div class="img-overlay">
-                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"><i class="ti ti-eye"></i></a>
-                                                <a href="#"><i class="ti ti-download"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="img-wrap">
-                                            <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
-                                            <div class="img-overlay">
-                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"><i class="ti ti-eye"></i></a>
-                                                <a href="#"><i class="ti ti-download"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="img-wrap">
-                                            <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
-                                            <div class="img-overlay">
-                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"><i class="ti ti-eye"></i></a>
-                                                <a href="#"><i class="ti ti-download"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="img-wrap">
-                                            <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
-                                            <div class="img-overlay">
-                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo     04"><i class="ti ti-eye"></i></a>
-                                                <a href="#"><i class="ti ti-download"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a class="gallery-img view-all d-flex align-items-center justify-content-center mt-3" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" data-fancybox="gallery-img">
-                                        View All Images<i class="ti ti-arrow-right ms-2"></i>
-                                    </a>
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-line">
-                        <span class="chat-date">Yesterday</span>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-04.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Sarika Jain<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <a href="javascript:void(0);" class="link-info">@all</a> if anyone can you share final output video of current project?
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <div class="message-video">
-                                        <video width="400" controls>
-                                            <source src="build/img/video/video.mp4" type="video/mp4">
-                                            Your browser does not support HTML5 video.
-                                        </video>
-                                    </div>
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats chats-right">
-                        <div class="chat-content">
-                            <div class="chat-profile-name text-end">
-                                <h6>You<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                                <div class="message-content">
-                                    Thanks for Sharing!!! Can we have a call
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle dreams_chat" alt="image">
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Federico Wells<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <div class="chat-profile-name">
-                                        <h6>You</h6>
-                                    </div>
-                                    <div class="message-reply">
-                                        Thanks for Sharing!!! Can we have a call??
-                                    </div>
-                                    Yes Please
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Federico Wells<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    <div class="file-attach">
-                                        <div class="d-flex align-items-center">
-                                            <span class="file-icon bg-danger text-white">
-                                                <i class="ti ti-phone-call"></i>
-                                            </span>
-                                            <div class="ms-2 overflow-hidden">
-                                                <h6 class="mb-1 text-truncate">Missed Audio Call</h6>
-                                                <p>10 Min 23 Sec</p>
-                                            </div>
-                                        </div>
-                                        <a href="javascript:void(0);" class="download-icon">
-                                            <i class="ti ti-download"></i>
-                                        </a>
-                                    </div>
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chats chats-right">
-                        <div class="chat-content">
-                            <div class="chat-profile-name text-end">
-                                <h6>You<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="chat-actions">
-                                    <a class="#" href="#" data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#contact-message"><i class="ti ti-info-circle me-2"></i>Message Info</a></li>
-                                        <li><a class="dropdown-item reply-button" href="#"><i class="ti ti-arrow-back-up me-2"></i>Reply</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-arrow-forward-up-double me-2"></i>Forward</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete Group</a></li>
-                                    </ul>
-                                </div>
-                                <div class="message-content">
-                                    <div class="file-attach">
-                                        <span class="file-icon bg-success text-white">
-                                            <i class="ti ti-phone-incoming"></i>
-                                        </span>
-                                        <div class="ms-2 overflow-hidden">
-                                            <h6 class="mb-1">Audio Call Ended</h6>
-                                            <p>07 Min 34 Sec</p>
-                                        </div>
-                                        <a href="javascript:void(0);" class="download-icon">
-                                            <i class="ti ti-download"></i>
-                                        </a>
-                                    </div>
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-10.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-09.svg')}}" alt="Icon"></a></li>
-                                                        <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle dreams_chat" alt="image">
-                        </div>
-                    </div>
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-05.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Federico Wells<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="message-content">
-                                <span class="animate-typing">is typing
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
-                                </span>
-                                <div class="emoj-group">
-                                    <ul>
-                                        <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                            <div class="emoj-group-list">
-                                                <ul>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
-                                                    <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
-                                                    <li class="add-emoj"><a href="javascript:void(0);"><i class="ti ti-plus"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#forward-message"><i class="ti ti-arrow-forward-up"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="meeting-header-container">
+        <div class="meeting-info">
+            <h1>Meeting Overview</h1>
+            <p>Meeting List</p>
+        </div>
+        <button class="add-meeting-button">
+            <div class="icon-container">
+                <span class="monitor-icon"></span>
+                <span class="camera-icon"></span>
+            </div>
+            <div class="text-container">
+                <strong>Add Meeting</strong>
+                <span>Plan a Meeting</span>
+            </div>
+        </button>
+    </div>
 
+
+    <div class="meeting-filter-bar">
+        <div class="meeting-filter-item active">
+            <span class="icon green"></span>
+            <div class="filter-text">
+                <strong>Today Meetings</strong>
+                <span class="total">Total: 10</span>
+            </div>
+        </div>
+        <div class="meeting-filter-item">
+            <span class="icon gray"></span>
+            <div class="filter-text">
+                <strong>New Meetings</strong>
+                <span class="request">Meeting request</span>
+            </div>
+        </div>
+        <div class="meeting-filter-item">
+            <span class="icon blue"></span>
+            <div class="filter-text">
+                <strong>Meetings Soon</strong>
+                <span class="request">Meeting request</span>
+            </div>
+        </div>
+        <div class="meeting-filter-item">
+            <span class="icon red"></span>
+            <div class="filter-text">
+                <strong>Rejected Meetings</strong>
+                <span class="total">Total: 5</span>
+            </div>
+        </div>
+        <div class="meeting-filter-item">
+            <span class="icon yellow"></span>
+            <div class="filter-text">
+                <strong>Meetings Archive</strong>
+                <span class="total">Total List</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="shortly-meeting-header" style="padding: 0 20px; background-color: #ffffff; margin-top: 0;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #333333;">Shortly Meeting</h2>
+        <p style="margin: 0; font-size: 14px; color: #666666;">meeting in short Time</p>
+    </div>
+
+
+
+    <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 20px 0; ">
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: #F44336; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: #F44336; border-radius: 50%;"></span> High
                 </div>
             </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: #F44336;">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="padding: 0 20px; background-color: #ffffff;  margin-top: 0;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #333333;">Postponed meetings</h2>
+        <p style="margin: 0; font-size: 14px; color: #666666;">Meeting will started Later</p>
+    </div>
+
+
+
+    <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 20px 0; ">
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: #F44336; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: #F44336; border-radius: 50%;"></span> High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: #F44336;">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="meeting-card"
+            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="admin-info" style="display: flex; align-items: center;">
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                    <div class="admin-text" style="display: flex; flex-direction: column;">
+                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
+                        </div>
+                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
+                    </div>
+                </div>
+                <div class="priority-tag high"
+                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
+                    <span class="dot"
+                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
+                    High
+                </div>
+            </div>
+
+            <div class="card-body" style="margin-bottom: 20px;">
+                <div class="meeting-info-row"
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
+                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
+                            Meeting</span>
+                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
+                            Title</span>
+                    </div>
+                    <div class="avatars-group" style="display: flex;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
+                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                    </div>
+                </div>
+                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
+                    will add the description of the TODO Only you is Superadmin TODO</p>
+            </div>
+
+            <div class="card-footer"
+                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
+                <div class="time-schedule"
+                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span class="schedule-text">Now</span>
+                    </div>
+                    <div class="schedule-item time"
+                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
+                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
+                        <span class="schedule-text">10:00 - 10:30</span>
+                    </div>
+                </div>
+                <button class="action-button red"
+                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
+                    <span>join now</span>
+                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
         </div>
         <div class="chat-footer">
             <form class="footer-form">
