@@ -197,6 +197,12 @@
     }
 </style>
 <style>
+    /* Fix chat scrolling for Meeting Overview area */
+    .chat .slimscroll { height: calc(100vh - 140px) !important; overflow-y: auto; }
+    .chat .messages { display: block; }
+    .chat .messages > * { max-width: 100%; }
+
+    /* Meeting Overview section styles */
     .meeting-header-container {
         display: flex;
         justify-content: space-between;
@@ -2611,6 +2617,8 @@
                 </div>
                 <!-- /Chat Search -->
             </div>
+            <div class="chat-body chat-page-group slimscroll">
+                <div class="messages">
             <div class="meeting-header-container">
         <div class="meeting-info">
             <h1>Meeting Overview</h1>
@@ -2676,339 +2684,9 @@
 
 
 
-    <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 20px 0; ">
+    <div class="meeting-grid" style="display: flex; flex-wrap: wrap; gap: 12px; padding: 16px 20px; ">
         <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
-            <div class="card-header"
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="admin-info" style="display: flex; align-items: center;">
-                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
-                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                    <div class="admin-text" style="display: flex; flex-direction: column;">
-                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
-                        </div>
-                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
-                    </div>
-                </div>
-                <div class="priority-tag high"
-                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: #F44336; border: 1px solid #e0e0e0;">
-                    <span class="dot"
-                        style="width: 8px; height: 8px; background-color: #F44336; border-radius: 50%;"></span> High
-                </div>
-            </div>
-
-            <div class="card-body" style="margin-bottom: 20px;">
-                <div class="meeting-info-row"
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
-                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
-                            Meeting</span>
-                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
-                            Title</span>
-                    </div>
-                    <div class="avatars-group" style="display: flex;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                    </div>
-                </div>
-                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
-                    will add the description of the TODO Only you is Superadmin TODO</p>
-            </div>
-
-            <div class="card-footer"
-                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
-                <div class="time-schedule"
-                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
-                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span class="schedule-text">Now</span>
-                    </div>
-                    <div class="schedule-item time"
-                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
-                        <span class="schedule-text">10:00 - 10:30</span>
-                    </div>
-                </div>
-                <button class="action-button red"
-                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: #F44336;">
-                    <span>join now</span>
-                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
-                </button>
-            </div>
-        </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
-            <div class="card-header"
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="admin-info" style="display: flex; align-items: center;">
-                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
-                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                    <div class="admin-text" style="display: flex; flex-direction: column;">
-                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
-                        </div>
-                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
-                    </div>
-                </div>
-                <div class="priority-tag high"
-                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
-                    <span class="dot"
-                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
-                    High
-                </div>
-            </div>
-
-            <div class="card-body" style="margin-bottom: 20px;">
-                <div class="meeting-info-row"
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
-                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
-                            Meeting</span>
-                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
-                            Title</span>
-                    </div>
-                    <div class="avatars-group" style="display: flex;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                    </div>
-                </div>
-                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
-                    will add the description of the TODO Only you is Superadmin TODO</p>
-            </div>
-
-            <div class="card-footer"
-                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
-                <div class="time-schedule"
-                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
-                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span class="schedule-text">Now</span>
-                    </div>
-                    <div class="schedule-item time"
-                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
-                        <span class="schedule-text">10:00 - 10:30</span>
-                    </div>
-                </div>
-                <button class="action-button red"
-                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
-                    <span>join now</span>
-                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
-                </button>
-            </div>
-        </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
-            <div class="card-header"
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="admin-info" style="display: flex; align-items: center;">
-                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
-                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                    <div class="admin-text" style="display: flex; flex-direction: column;">
-                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
-                        </div>
-                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
-                    </div>
-                </div>
-                <div class="priority-tag high"
-                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
-                    <span class="dot"
-                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
-                    High
-                </div>
-            </div>
-
-            <div class="card-body" style="margin-bottom: 20px;">
-                <div class="meeting-info-row"
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
-                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
-                            Meeting</span>
-                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
-                            Title</span>
-                    </div>
-                    <div class="avatars-group" style="display: flex;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                    </div>
-                </div>
-                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
-                    will add the description of the TODO Only you is Superadmin TODO</p>
-            </div>
-
-            <div class="card-footer"
-                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
-                <div class="time-schedule"
-                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
-                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span class="schedule-text">Now</span>
-                    </div>
-                    <div class="schedule-item time"
-                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
-                        <span class="schedule-text">10:00 - 10:30</span>
-                    </div>
-                </div>
-                <button class="action-button red"
-                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
-                    <span>join now</span>
-                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
-                </button>
-            </div>
-        </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
-            <div class="card-header"
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="admin-info" style="display: flex; align-items: center;">
-                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
-                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                    <div class="admin-text" style="display: flex; flex-direction: column;">
-                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
-                        </div>
-                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
-                    </div>
-                </div>
-                <div class="priority-tag high"
-                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
-                    <span class="dot"
-                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
-                    High
-                </div>
-            </div>
-
-            <div class="card-body" style="margin-bottom: 20px;">
-                <div class="meeting-info-row"
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
-                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
-                            Meeting</span>
-                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
-                            Title</span>
-                    </div>
-                    <div class="avatars-group" style="display: flex;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                    </div>
-                </div>
-                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
-                    will add the description of the TODO Only you is Superadmin TODO</p>
-            </div>
-
-            <div class="card-footer"
-                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
-                <div class="time-schedule"
-                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
-                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span class="schedule-text">Now</span>
-                    </div>
-                    <div class="schedule-item time"
-                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
-                        <span class="schedule-text">10:00 - 10:30</span>
-                    </div>
-                </div>
-                <button class="action-button red"
-                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
-                    <span>join now</span>
-                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
-                </button>
-            </div>
-        </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
-            <div class="card-header"
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="admin-info" style="display: flex; align-items: center;">
-                    <img src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar"
-                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                    <div class="admin-text" style="display: flex; flex-direction: column;">
-                        <div class="admin-name" style="font-weight: 600; font-size: 14px; color: #333333;">Admin name
-                        </div>
-                        <div class="admin-date" style="font-size: 12px; color: #888888;">Created Time & Date</div>
-                    </div>
-                </div>
-                <div class="priority-tag high"
-                    style="font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: black; border: 1px solid #e0e0e0;">
-                    <span class="dot"
-                        style="width: 8px; height: 8px; background-color: rgb(76, 178, 76); border-radius: 50%;"></span>
-                    High
-                </div>
-            </div>
-
-            <div class="card-body" style="margin-bottom: 20px;">
-                <div class="meeting-info-row"
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div class="meeting-title-group" style="display: flex; flex-direction: column;">
-                        <span class="title-text" style="font-size: 18px; font-weight: 600; color: #333333;">Title of
-                            Meeting</span>
-                        <span class="project-title" style="font-size: 12px; color: #888888; margin-top: 5px;">Project
-                            Title</span>
-                    </div>
-                    <div class="avatars-group" style="display: flex;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        <img src="https://via.placeholder.com/20" alt="Avatar" class="member-avatar"
-                            style="width: 25px; height: 25px; border-radius: 50%; border: 2px solid #ffffff; margin-left: -8px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                    </div>
-                </div>
-                <p class="description" style="font-size: 14px; color: #666666; line-height: 1.4; margin: 0;">Here we
-                    will add the description of the TODO Only you is Superadmin TODO</p>
-            </div>
-
-            <div class="card-footer"
-                style="display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-top: 1px solid #eeeeee; margin-top: 15px; gap: 10px;">
-                <div class="time-schedule"
-                    style="display: flex; gap: 10px; background-color: #f9f9f9; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
-                    <div class="schedule-item" style="display: flex; align-items: center; color: #555555; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span class="schedule-text">Now</span>
-                    </div>
-                    <div class="schedule-item time"
-                        style="display: flex; align-items: center; color: #F44336; gap: 5px;">
-                        <span class="schedule-icon"><i class="fas fa-clock"></i></span>
-                        <span class="schedule-text">10:00 - 10:30</span>
-                    </div>
-                </div>
-                <button class="action-button red"
-                    style="border: none; border-radius: 20px; padding: 8px 16px; color: #ffffff; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background-color: rgb(233, 233, 96);">
-                    <span>join now</span>
-                    <span class="arrow-icon" style="font-size: 16px; transform: rotate(45deg);">→</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <div style="padding: 0 20px; background-color: #ffffff;  margin-top: 0;">
-        <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #333333;">Postponed meetings</h2>
-        <p style="margin: 0; font-size: 14px; color: #666666;">Meeting will started Later</p>
-    </div>
-
-
-
-    <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 20px 0; ">
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+            style="width: calc(20% - 12px); background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); padding: 16px; display: flex; flex-direction: column;">
             <div class="card-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="admin-info" style="display: flex; align-items: center;">
@@ -3328,6 +3006,8 @@
         </div>
     </div>
         </div>
+                </div>
+            </div>
         <div class="chat-footer">
             <form class="footer-form">
                 <div class="chat-footer-wrap">
