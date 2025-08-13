@@ -202,6 +202,15 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    @media (max-width: 768px) {
+        .meeting-header-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
     }
 
     .meeting-info h1 {
@@ -209,6 +218,12 @@
         font-size: 24px;
         font-weight: 500;
         color: #333333;
+    }
+    
+    @media (max-width: 768px) {
+        .meeting-info h1 {
+            font-size: 20px;
+        }
     }
 
     .meeting-info p {
@@ -225,6 +240,14 @@
         border-radius: 5px;
         background-color: #f9f9f9;
         cursor: pointer;
+        white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+        .add-meeting-button {
+            width: 100%;
+            justify-content: center;
+        }
     }
 
     .add-meeting-button:hover {
@@ -299,6 +322,13 @@
         align-items: center;
         gap: 10px;
         padding: 10px 20px;
+        flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+        .meeting-filter-bar {
+            justify-content: center;
+        }
     }
 
     .meeting-filter-item {
@@ -491,6 +521,40 @@
     .filter-text span {
         font-size: 12px;
         color: #777;
+    }
+    
+    .meeting-card {
+        width: calc(17.5% - 5px);
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    @media (max-width: 1200px) {
+        .meeting-card {
+            width: calc(25% - 5px);
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .meeting-card {
+            width: calc(33.33% - 5px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .meeting-card {
+            width: calc(50% - 5px);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .meeting-card {
+            width: calc(100% - 5px);
+        }
     }
 </style>
 
@@ -2677,8 +2741,31 @@
 
 
     <div style="display: flex; flex-wrap: wrap; gap: 5px; padding: 20px 0; ">
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+        <div class="meeting-card">
+            
+        @media (max-width: 1200px) {
+            .meeting-card {
+                width: calc(25% - 5px);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .meeting-card {
+                width: calc(33.33% - 5px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .meeting-card {
+                width: calc(50% - 5px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .meeting-card {
+                width: calc(100% - 5px);
+            }
+        }
             <div class="card-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="admin-info" style="display: flex; align-items: center;">
@@ -2740,8 +2827,7 @@
                 </button>
             </div>
         </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+        <div class="meeting-card">
             <div class="card-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="admin-info" style="display: flex; align-items: center;">
@@ -2804,8 +2890,7 @@
                 </button>
             </div>
         </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+        <div class="meeting-card">
             <div class="card-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="admin-info" style="display: flex; align-items: center;">
@@ -2868,8 +2953,7 @@
                 </button>
             </div>
         </div>
-        <div class="meeting-card"
-            style="width: calc(17.5% - 5px); background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; display: flex; flex-direction: column;">
+        <div class="meeting-card">
             <div class="card-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="admin-info" style="display: flex; align-items: center;">
