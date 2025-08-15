@@ -84,6 +84,15 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
+
+    /* Ensure offcanvas overlay dims entire screen and sits above content */
+    .offcanvas-backdrop {
+        z-index: 20000 !important;
+        background-color: #000 !important;
+    }
+    .offcanvas-backdrop.show {
+        opacity: 0.6 !important;
+    }
 </style>
 
 
@@ -2083,7 +2092,6 @@
         </div>
     </div>
     <!-- /Sidebar group -->
-
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle">
         <div>
@@ -3249,8 +3257,6 @@
         </div>
 
     </div>
-
-
     <!-- add project popup -->
     <div class="modal fade" id="add_user" tabindex="-1" style="visibility: visible;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -3449,7 +3455,7 @@
     </div>
 
     <!-- right sidebar popup -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-backdrop="true" style="overflow-y: auto; width: 770px;">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-backdrop="true" style="overflow-y: auto; width: 770px; --bs-offcanvas-zindex: 20001;">
 
         <!-- Header -->
         <div class="offcanvas-header" style="padding: 0;">
@@ -3805,9 +3811,6 @@
 
                 </div>
             </div>
-
-
-
             <!-- project tcikets -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
                 <!-- Section Title -->
@@ -4151,7 +4154,6 @@
             </div>
 
             <!-- /project tickts -->
-
             <!-- project Task -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
                 <!-- Section Title -->
