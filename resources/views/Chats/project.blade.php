@@ -87,11 +87,11 @@
 
     /* Ensure offcanvas overlay dims entire screen and sits above content */
     .offcanvas-backdrop {
-        z-index: 20000 !important;
+        z-index: 100000 !important;
         background-color: #000 !important;
     }
     .offcanvas-backdrop.show {
-        opacity: 0.6 !important;
+        opacity: 0.65 !important;
     }
 </style>
 
@@ -3255,7 +3255,6 @@
             </div>
 
         </div>
-
     </div>
     <!-- add project popup -->
     <div class="modal fade" id="add_user" tabindex="-1" style="visibility: visible;">
@@ -3455,7 +3454,7 @@
     </div>
 
     <!-- right sidebar popup -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-backdrop="true" style="overflow-y: auto; width: 770px; --bs-offcanvas-zindex: 20001;">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-backdrop="true" data-bs-scroll="true" style="overflow-y: auto; width: 770px; --bs-offcanvas-zindex: 100001; z-index: 100001 !important;">
 
         <!-- Header -->
         <div class="offcanvas-header" style="padding: 0;">
@@ -4152,7 +4151,6 @@
                     <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
             </div>
-
             <!-- /project tickts -->
             <!-- project Task -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
