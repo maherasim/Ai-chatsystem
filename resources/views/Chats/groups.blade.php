@@ -2875,7 +2875,7 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 330px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
+            <div class="Rightsidebar-group" style="width: 400px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
@@ -2928,10 +2928,10 @@
                                                 <div style="font-size: 11px; color: #6c757d; margin-bottom: 10px;">Set Start and Expired Time max. 90 Days</div>
                                                 <div style="display: flex; gap:1px;">
                                                     <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 95%; padding: 8px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+                                                        <input type="date" style="width: 98%; padding: 8px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                                     </div>
                                                     <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 95%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+                                                        <input type="date" style="width: 98%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                                     </div>
                                                 </div>
                                             </div>

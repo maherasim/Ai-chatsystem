@@ -2085,7 +2085,7 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-    <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
+    <div class="chat chat-messages show" id="middle">
         <div>
             <div class="chat-header">
                 <div class="user-details">
@@ -2133,2064 +2133,2513 @@
                 </div>
             </div>
             <!-- body -->
-            <div class="chat-body chat-page-group slimscroll">
-                <!-- Container for the full width -->
-                <div class="container-fluid px-4">
-                    <div class="row g-3 py-2">
-                        <!-- Card 1: Total Projects -->
-                        <div class="col-md-2">
-                            <div class="d-flex align-items-center px-3 py-2 h-100"
-                                style="border: 1px solid #28c76f; border-radius: 10px;">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                    style="width: 30px; height: 30px;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
-                                    <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">52</div>
+            <div style="overflow-y: auto;flex:1;height: 100vh;">
+                <div class="chat-body chat-page-group">
+                    <!-- Container for the full width -->
+                    <div class="container-fluid px-4">
+                        <div class="row g-3 py-2">
+                            <!-- Card 1: Total Projects -->
+                            <div class="col-md-2">
+                                <div class="d-flex align-items-center px-3 py-2 h-100"
+                                    style="border: 1px solid #28c76f; border-radius: 10px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
+                                        style="width: 30px; height: 30px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
+                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">52</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Repeat for other cards -->
+                            <!-- Repeat for other cards -->
 
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                            <div class="d-flex align-items-center px-3 py-2 h-100"
-                                style="border: 1px solid #28c76f; border-radius: 10px;">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                    style="width: 30px; height: 30px;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: #1e2b4d;">New Projects</div>
-                                    <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">2</div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
+                                <div class="d-flex align-items-center px-3 py-2 h-100"
+                                    style="border: 1px solid #28c76f; border-radius: 10px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
+                                        style="width: 30px; height: 30px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">New Projects</div>
+                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">2</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                            <div class="d-flex align-items-center px-3 py-2 h-100"
-                                style="border: 1px solid #28c76f; border-radius: 10px;">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                    style="width: 30px; height: 30px;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
-                                    <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
+                                <div class="d-flex align-items-center px-3 py-2 h-100"
+                                    style="border: 1px solid #28c76f; border-radius: 10px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
+                                        style="width: 30px; height: 30px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
+                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                            <div class="d-flex align-items-center px-3 py-2 h-100"
-                                style="border: 1px solid #28c76f; border-radius: 10px;">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                    style="width: 30px; height: 30px;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
-                                    <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
+                                <div class="d-flex align-items-center px-3 py-2 h-100"
+                                    style="border: 1px solid #28c76f; border-radius: 10px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
+                                        style="width: 30px; height: 30px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
+                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                            <div class="d-flex align-items-center px-3 py-2 h-100"
-                                style="border: 1px solid #28c76f; border-radius: 10px;">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                    style="width: 30px; height: 30px;">
-                                <div>
-                                    <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
-                                    <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
+                                <div class="d-flex align-items-center px-3 py-2 h-100"
+                                    style="border: 1px solid #28c76f; border-radius: 10px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
+                                        style="width: 30px; height: 30px;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
+                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
 
-                <!-- project overview -->
-                <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                    <!-- project overview -->
+                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 style="margin: 0;">Project overview</h3>
+                            <strong>Total projects: 10</strong>
+                        </div>
+
+                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
+                                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer; position: relative; z-index: 10;">
+                                + Add Project
+                            </button>
+                            <button type="button" class="btn"
+                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                All
+                            </button>
+                            <button type="button" class="btn"
+                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                In Progress
+                            </button>
+                            <button type="button" class="btn"
+                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                In Delayed
+                            </button>
+                            <button type="button" class="btn"
+                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                In Hold
+                            </button>
+                        </div>
+                    </div>
+                    <!-- box project section -->
+                    <div class="container mb-1">
+                        <div class="row g-3">
+                            <div class="col-md-6 col-lg-4 col-xl-4">
+                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                    <!-- Top Row: Circle, Center Image, 3 Dots -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div style="width: 60px; height: 60px; position: relative;">
+                                            <svg width="60" height="60">
+                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle
+                                                    cx="30"
+                                                    cy="30"
+                                                    r="26"
+                                                    stroke="url(#grad)"
+                                                    stroke-width="6"
+                                                    fill="none"
+                                                    stroke-dasharray="163.36"
+                                                    stroke-dashoffset="122.52"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 30 30)" />
+                                                <defs>
+                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stop-color="#ff7f00" />
+                                                        <stop offset="100%" stop-color="#fcd34d" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <!-- Center Text -->
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                25%
+                                            </div>
+                                        </div>
+
+                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
+                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Title -->
+                                    <!-- Project Title & Project ID -->
+                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
+                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                            Project Title
+                                        </h6>
+
+                                        <!-- Project ID styled exactly like screenshot -->
+                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
+                                            Project ID
+                                        </div>
+                                    </div>
+
+                                    <!-- Section Tags styled exactly like screenshot -->
+                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Stats Row -->
+                                    <div class="row text-center mb-2">
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Status -->
+                                    <div class="text-center mb-2">
+                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
+                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
+                                                style="height: 16px; width: 16px;" alt="flag" />
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Ticket Colors -->
+                                    <!-- Wrapper to center the inner block -->
+                                    <div class="d-flex justify-content-center">
+                                        <!-- Content box with light background and auto width -->
+                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
+                                            <!-- "Ticket" label -->
+                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+
+                                            <!-- Blue dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">1</span>
+
+                                            <!-- Orange dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">3</span>
+
+                                            <!-- Red dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Purple dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Green dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
+
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                        <!-- Start Date -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Start Date
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                        </div>
+
+                                        <!-- Work Days -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Work Days
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Days Left -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Days Left
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Blue Progress Bar (Full Width Below) -->
+                                        <div class="col-12 mt-3">
+                                            <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar"
+                                                    role="progressbar"
+                                                    style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
+                                                    aria-valuenow="60"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <!-- Section Progress Block -->
+                                    <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+
+                                        <!-- Section Titles -->
+                                        <div class="d-flex justify-content-between px-1"
+                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                        </div>
+
+                                        <!-- Progress Bars -->
+                                        <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                            <!-- Green Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Yellow Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Red Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!-- 2nd -->
+                            <div class="col-md-6 col-lg-4 col-xl-4">
+                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                    <!-- Top Row: Circle, Center Image, 3 Dots -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div style="width: 60px; height: 60px; position: relative;">
+                                            <svg width="60" height="60">
+                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle
+                                                    cx="30"
+                                                    cy="30"
+                                                    r="26"
+                                                    stroke="url(#grad)"
+                                                    stroke-width="6"
+                                                    fill="none"
+                                                    stroke-dasharray="163.36"
+                                                    stroke-dashoffset="122.52"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 30 30)" />
+                                                <defs>
+                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stop-color="#ff7f00" />
+                                                        <stop offset="100%" stop-color="#fcd34d" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <!-- Center Text -->
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                25%
+                                            </div>
+                                        </div>
+
+                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
+                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Title -->
+                                    <!-- Project Title & Project ID -->
+                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
+                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                            Project Title
+                                        </h6>
+
+                                        <!-- Project ID styled exactly like screenshot -->
+                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
+                                            Project ID
+                                        </div>
+                                    </div>
+
+                                    <!-- Section Tags styled exactly like screenshot -->
+                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Stats Row -->
+                                    <div class="row text-center mb-2">
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Status -->
+                                    <div class="text-center mb-2">
+                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
+                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
+                                                style="height: 16px; width: 16px;" alt="flag" />
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Ticket Colors -->
+                                      <div class="d-flex justify-content-center">
+                                        <!-- Content box with light background and auto width -->
+                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
+                                            <!-- "Ticket" label -->
+                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+
+                                            <!-- Blue dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">1</span>
+
+                                            <!-- Orange dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">3</span>
+
+                                            <!-- Red dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Purple dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Green dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
+
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Date + Work Days + Days Left -->
+                                    <!-- Date + Work Days + Days Left + Progress Bar -->
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                        <!-- Start Date -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Start Date
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                        </div>
+
+                                        <!-- Work Days -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Work Days
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Days Left -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Days Left
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Blue Progress Bar (Full Width Below) -->
+                                        <div class="col-12 mt-3">
+                                            <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar"
+                                                    role="progressbar"
+                                                    style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
+                                                    aria-valuenow="60"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <!-- Section Progress Block -->
+                                    <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+
+                                        <!-- Section Titles -->
+                                        <div class="d-flex justify-content-between px-1"
+                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                        </div>
+
+                                        <!-- Progress Bars -->
+                                        <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                            <!-- Green Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Yellow Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Red Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!-- 3rd -->
+                            <div class="col-md-6 col-lg-4 col-xl-4">
+                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                    <!-- Top Row: Circle, Center Image, 3 Dots -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div style="width: 60px; height: 60px; position: relative;">
+                                            <svg width="60" height="60">
+                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle
+                                                    cx="30"
+                                                    cy="30"
+                                                    r="26"
+                                                    stroke="url(#grad)"
+                                                    stroke-width="6"
+                                                    fill="none"
+                                                    stroke-dasharray="163.36"
+                                                    stroke-dashoffset="122.52"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 30 30)" />
+                                                <defs>
+                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stop-color="#ff7f00" />
+                                                        <stop offset="100%" stop-color="#fcd34d" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <!-- Center Text -->
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                25%
+                                            </div>
+                                        </div>
+
+                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
+                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Title -->
+                                    <!-- Project Title & Project ID -->
+                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
+                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                            Project Title
+                                        </h6>
+
+                                        <!-- Project ID styled exactly like screenshot -->
+                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
+                                            Project ID
+                                        </div>
+                                    </div>
+
+                                    <!-- Section Tags styled exactly like screenshot -->
+                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Stats Row -->
+                                    <div class="row text-center mb-2">
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Status -->
+                                    <div class="text-center mb-2">
+                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
+                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
+                                                style="height: 16px; width: 16px;" alt="flag" />
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Ticket Colors -->
+                                     <div class="d-flex justify-content-center">
+                                        <!-- Content box with light background and auto width -->
+                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
+                                            <!-- "Ticket" label -->
+                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+
+                                            <!-- Blue dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">1</span>
+
+                                            <!-- Orange dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">3</span>
+
+                                            <!-- Red dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Purple dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Green dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
+
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Date + Work Days + Days Left -->
+                                    <!-- Date + Work Days + Days Left + Progress Bar -->
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                        <!-- Start Date -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Start Date
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                        </div>
+
+                                        <!-- Work Days -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Work Days
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Days Left -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Days Left
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Blue Progress Bar (Full Width Below) -->
+                                        <div class="col-12 mt-3">
+                                            <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar"
+                                                    role="progressbar"
+                                                    style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
+                                                    aria-valuenow="60"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <!-- Section Progress Block -->
+                                    <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+
+                                        <!-- Section Titles -->
+                                        <div class="d-flex justify-content-between px-1"
+                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                        </div>
+
+                                        <!-- Progress Bars -->
+                                        <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                            <!-- Green Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Yellow Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Red Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!-- 4 -->
+                            <div class="col-md-6 col-lg-4 col-xl-4">
+                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                    <!-- Top Row: Circle, Center Image, 3 Dots -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div style="width: 60px; height: 60px; position: relative;">
+                                            <svg width="60" height="60">
+                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle
+                                                    cx="30"
+                                                    cy="30"
+                                                    r="26"
+                                                    stroke="url(#grad)"
+                                                    stroke-width="6"
+                                                    fill="none"
+                                                    stroke-dasharray="163.36"
+                                                    stroke-dashoffset="122.52"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 30 30)" />
+                                                <defs>
+                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stop-color="#ff7f00" />
+                                                        <stop offset="100%" stop-color="#fcd34d" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <!-- Center Text -->
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                25%
+                                            </div>
+                                        </div>
+
+                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
+                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Title -->
+                                    <!-- Project Title & Project ID -->
+                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
+                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                            Project Title
+                                        </h6>
+
+                                        <!-- Project ID styled exactly like screenshot -->
+                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
+                                            Project ID
+                                        </div>
+                                    </div>
+
+                                    <!-- Section Tags styled exactly like screenshot -->
+                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                        <div class="px-3 py-1"
+                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            Section #1
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Stats Row -->
+                                    <div class="row text-center mb-2">
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
+                                        </div>
+                                        <div class="col">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Status -->
+                                    <div class="text-center mb-2">
+                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
+                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
+                                                style="height: 16px; width: 16px;" alt="flag" />
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Ticket Colors -->
+                                      <div class="d-flex justify-content-center">
+                                        <!-- Content box with light background and auto width -->
+                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
+                                            <!-- "Ticket" label -->
+                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+
+                                            <!-- Blue dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">1</span>
+
+                                            <!-- Orange dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">3</span>
+
+                                            <!-- Red dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Purple dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                            <!-- Green dot + number -->
+                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                            <span style="font-size: 13px; color: #6c757d;">0</span>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
+
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <!-- Date + Work Days + Days Left + Progress Bar -->
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                        <!-- Start Date -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Start Date
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                        </div>
+
+                                        <!-- Work Days -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Work Days
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Days Left -->
+                                        <div class="col-4">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Days Left
+                                            </strong>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                        </div>
+
+                                        <!-- Blue Progress Bar (Full Width Below) -->
+                                        <div class="col-12 mt-3">
+                                            <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
+                                                <div class="progress-bar"
+                                                    role="progressbar"
+                                                    style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
+                                                    aria-valuenow="60"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <!-- Section Progress Block -->
+                                    <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+
+                                        <!-- Section Titles -->
+                                        <div class="d-flex justify-content-between px-1"
+                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                            <span>Section #1 75%</span>
+                                        </div>
+
+                                        <!-- Progress Bars -->
+                                        <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                            <!-- Green Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Yellow Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                            </div>
+
+                                            <!-- Red Progress -->
+                                            <div class="progress"
+                                                style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                                <div class="progress-bar"
+                                                    style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- add project popup -->
+    <div class="modal fade" id="add_user" tabindex="-1" style="visibility: visible;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0 pb-0">
                     <div>
-                        <h3 style="margin: 0;">Project overview</h3>
-                        <strong>Total projects: 10</strong>
+                        <h4 class="modal-title fw-bold">Add New Project</h4>
+                        <small class="text-muted">User ID : <strong>user -0024</strong></small>
                     </div>
-
-                    <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
-                        <button type="button" class="btn"
-                            style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            All
-                        </button>
-                        <button type="button" class="btn"
-                            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            In Progress
-                        </button>
-                        <button type="button" class="btn"
-                            style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            In Delayed
-                        </button>
-                        <button type="button" class="btn"
-                            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            In Hold
-                        </button>
-                    </div>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                    <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
                 </div>
-                <!-- box project section -->
-                <div class="container mb-1">
-                    <div class="row g-3">
-                        <div class="col-md-6 col-lg-4 col-xl-4">
-                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-                                <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div style="width: 35px; height: 35px; position: relative;">
-                                        <!-- Background Circle -->
-                                        <svg width="35" height="35">
-                                            <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
-                                            <circle
-                                                cx="17.5"
-                                                cy="17.5"
-                                                r="15"
-                                                stroke="url(#grad)"
-                                                stroke-width="4"
-                                                fill="none"
-                                                stroke-dasharray="94.2"
-                                                stroke-dashoffset="70.65"
-                                                stroke-linecap="round"
-                                                transform="rotate(-90 17.5 17.5)" />
-                                            <defs>
-                                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                    <stop offset="0%" stop-color="#ff7f00" />
-                                                    <stop offset="100%" stop-color="#fcd34d" />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
 
-                                        <!-- Center Text -->
-                                        <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
-                                            25%
+                <!-- Modal Body -->
+                <div class="modal-body pt-0">
+
+                    <!-- Tabs -->
+
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="basicInfo">
+
+                            <!-- Profile Upload -->
+                            <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle me-4"
+                                    alt="Profile Image" style="width: 80px; height: 80px; object-fit: cover;">
+                                <div>
+                                    <p class="mb-1 fw-medium">Upload Project Logo</p>
+                                    <small class="text-muted d-block mb-2">Image should be below 4 MB</small>
+                                    <button class="btn btn-warning me-2"
+                                        style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
+                                    <button class="btn btn-outline">Cancel</button>
+                                </div>
+                            </div>
+
+                            <!-- Form -->
+                            <form>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Project Title</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Project Priority</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Start Date & End Date</label>
+                                        <input type="date" class="form-control" />
+                                    </div>
+                                </div>
+                                <!-- Description Editor -->
+                                <div class="mb-3">
+
+                                    <label class="form-label">Description</label>
+                                    <div class="border p-2 bg-white rounded">
+                                        <div class="d-flex mb-2 gap-2">
+                                            <select id="fontSizeSelect" class="form-select form-select-sm w-auto"
+                                                onchange="setFontSize(this.value)">
+                                                <option value="3">14</option>
+                                                <option value="2">12</option>
+                                                <option value="4">16</option>
+                                                <option value="5">18</option>
+                                            </select>
+
+                                            <button type="button" class="btn btn-light btn-sm" onclick="format('bold')">
+                                                <i class="fa-solid fa-bold"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="format('italic')">
+                                                <i class="fa-solid fa-italic"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="format('underline')">
+                                                <i class="fa-solid fa-underline"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="format('strikethrough')">
+                                                <i class="fa-solid fa-strikethrough"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="removeFormatting()">
+                                                <i class="fa-solid fa-eraser"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-light btn-sm">
+                                                <i class="fa-regular fa-image"></i>
+                                            </button>
                                         </div>
-                                    </div>
-
-                                    <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 40px;" alt="Project Logo">
-                                    <div style="cursor:pointer">
-                                        <i class="bi bi-three-dots-vertical"></i>
+                                        <div id="editor" contenteditable="true"
+                                            style="min-height: 120px; border: 1px solid #ddd; padding: 8px; border-radius: 4px; color: #000;"></div>
                                     </div>
                                 </div>
 
-                                <!-- Project Title -->
-                                <!-- Project Title & Project ID -->
-                                <div class="text-center" style="cursor: pointer; margin-left:30px;">
-                                    <h6 data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-
-                                    <!-- Project ID styled exactly like screenshot -->
-                                    <div class="d-inline-block px-3 py-1 mb-2 mt-2"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; ">
-                                        Project ID
-                                    </div>
+                                <!-- Add Section Field -->
+                                <div class="mb-3">
+                                    <label class="form-label">Add Section</label>
+                                    <div id="section-container"></div>
+                                    <button type="button" onclick="addSection()"
+                                        style="background-color: #17a2b8; color: white; border: 1px solid #17a2b8; border-radius: 6px; padding: 6px 16px; font-size: 14px; cursor: pointer; margin-top: 6px;">
+                                        Add Section
+                                    </button>
                                 </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Select Project Manager</label>
+                                        <div id="selectorContainer1"
+                                            style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
 
-                                <!-- Section Tags styled exactly like screenshot -->
-                                <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                </div>
+                                            <!-- Selected Tags -->
+                                            <div id="tagContainer1"
+                                                style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
+                                            </div>
 
+                                            <!-- Options -->
+                                            <div style="display: block;">
+                                                <div onclick="selectItem(this, 'tagContainer1')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Artywiz</span>
+                                                </div>
 
-                                <!-- Stats Row -->
-                                <div class="row text-center mb-2">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                    </div>
-                                </div>
+                                                <div onclick="selectItem(this, 'tagContainer1')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Groupama</span>
+                                                </div>
 
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2">
-                                    <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                        <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                            style="height: 16px; width: 16px; margin-right: 18px;" alt="flag" />
-
-                                        Project is in Progress
-                                    </div>
-                                </div>
-
-
-                                <!-- Ticket Colors -->
-                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                    <!-- "Ticket" label -->
-                                    <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;">Ticket</span>
-
-                                    <!-- Blue dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                    <!-- Orange dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                    <!-- Red dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Purple dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Green dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0 </span>
-                                </div>
-
-
-                                <!-- Project Manager / Developers -->
-                                <div class="d-flex justify-content-between m-0 w-100"
-                                    style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                    <!-- Project Manager -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Project Manager
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Developers
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- Date + Work Days + Days Left -->
-                                <div class="d-flex justify-content-between mb-2 mt-2" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Start Date</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Work Days</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Days Left</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <!-- Progress Bar -->
-                                    <div class="px-2">
-                                        <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
-                                            <div class="progress-bar"
-                                                role="progressbar"
-                                                style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
-                                                aria-valuenow="60"
-                                                aria-valuemin="0"
-                                                aria-valuemax="100">
+                                                <div onclick="selectItem(this, 'tagContainer1')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Zenith</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                    <div class="col-md-6">
+                                        <label class="form-label">Select Developer</label>
+                                        <div id="selectorContainer2"
+                                            style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
 
+                                            <!-- Selected Tags -->
+                                            <div id="tagContainer2"
+                                                style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
+                                            </div>
 
+                                            <!-- Options -->
+                                            <div style="display: block;">
+                                                <div onclick="selectItem(this, 'tagContainer2')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Artywiz</span>
+                                                </div>
 
+                                                <div onclick="selectItem(this, 'tagContainer2')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Groupama</span>
+                                                </div>
 
-
-                                <!-- Section Progress Block -->
-                                <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
-                                    <!-- Section Titles -->
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <!-- 2nd -->
-                        <div class="col-md-6 col-lg-4 col-xl-4">
-                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-                                <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div style="width: 35px; height: 35px; position: relative;">
-                                        <!-- Background Circle -->
-                                        <svg width="35" height="35">
-                                            <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
-                                            <circle
-                                                cx="17.5"
-                                                cy="17.5"
-                                                r="15"
-                                                stroke="url(#grad)"
-                                                stroke-width="4"
-                                                fill="none"
-                                                stroke-dasharray="94.2"
-                                                stroke-dashoffset="70.65"
-                                                stroke-linecap="round"
-                                                transform="rotate(-90 17.5 17.5)" />
-                                            <defs>
-                                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                    <stop offset="0%" stop-color="#ff7f00" />
-                                                    <stop offset="100%" stop-color="#fcd34d" />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
-
-                                        <!-- Center Text -->
-                                        <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
-                                            25%
-                                        </div>
-                                    </div>
-
-                                    <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 40px;" alt="Project Logo">
-                                    <div style="cursor:pointer">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </div>
-                                </div>
-
-                                <!-- Project Title -->
-                                <!-- Project Title & Project ID -->
-                                <div class="text-center" style="cursor: pointer; margin-left:30px;">
-                                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-
-                                    <!-- Project ID styled exactly like screenshot -->
-                                    <div class="d-inline-block px-3 py-1 mb-2 mt-2"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
-                                        Project ID
-                                    </div>
-                                </div>
-
-                                <!-- Section Tags styled exactly like screenshot -->
-                                <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                </div>
-
-
-                                <!-- Stats Row -->
-                                <div class="row text-center mb-2">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                    </div>
-                                </div>
-
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2">
-                                    <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                        <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                            style="height: 16px; width: 16px; margin-right: 18px;" alt="flag" />
-
-                                        Project is in Progress
-                                    </div>
-                                </div>
-
-
-                                <!-- Ticket Colors -->
-                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                    <!-- "Ticket" label -->
-                                    <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;">Ticket</span>
-
-                                    <!-- Blue dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                    <!-- Orange dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                    <!-- Red dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Purple dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Green dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0 </span>
-                                </div>
-
-
-                                <!-- Project Manager / Developers -->
-                                <div class="d-flex justify-content-between m-0 w-100"
-                                    style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                    <!-- Project Manager -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Project Manager
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Developers
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- Date + Work Days + Days Left -->
-                                <div class="d-flex justify-content-between mb-2 mt-2" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Start Date</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Work Days</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Days Left</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <!-- Progress Bar -->
-                                    <div class="px-2">
-                                        <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
-                                            <div class="progress-bar"
-                                                role="progressbar"
-                                                style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
-                                                aria-valuenow="60"
-                                                aria-valuemin="0"
-                                                aria-valuemax="100">
+                                                <div onclick="selectItem(this, 'tagContainer2')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
+                                                    style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
+                                                    <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
+                                                    <span style="font-size: 14px;">Zenith</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Upload Files</label>
+                                    <input type="file" class="form-control" />
                                 </div>
 
+                                <!-- Upload Files -->
 
 
-
-
-
-                                <!-- Section Progress Block -->
-                                <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
-                                    <!-- Section Titles -->
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <!-- 3rd -->
-                        <div class="col-md-6 col-lg-4 col-xl-4">
-                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-                                <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div style="width: 35px; height: 35px; position: relative;">
-                                        <!-- Background Circle -->
-                                        <svg width="35" height="35">
-                                            <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
-                                            <circle
-                                                cx="17.5"
-                                                cy="17.5"
-                                                r="15"
-                                                stroke="url(#grad)"
-                                                stroke-width="4"
-                                                fill="none"
-                                                stroke-dasharray="94.2"
-                                                stroke-dashoffset="70.65"
-                                                stroke-linecap="round"
-                                                transform="rotate(-90 17.5 17.5)" />
-                                            <defs>
-                                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                    <stop offset="0%" stop-color="#ff7f00" />
-                                                    <stop offset="100%" stop-color="#fcd34d" />
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
-
-                                        <!-- Center Text -->
-                                        <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
-                                            25%
-                                        </div>
-                                    </div>
-
-                                    <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 40px;" alt="Project Logo">
-                                    <div style="cursor:pointer">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </div>
-                                </div>
-
-                                <!-- Project Title -->
-                                <!-- Project Title & Project ID -->
-                                <div class="text-center" style="cursor: pointer; margin-left:30px;">
-                                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-
-                                    <!-- Project ID styled exactly like screenshot -->
-                                    <div class="d-inline-block px-3 py-1 mb-2 mt-2"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
-                                        Project ID
-                                    </div>
-                                </div>
-
-                                <!-- Section Tags styled exactly like screenshot -->
-                                <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                    <div class="px-3 py-1"
-                                        style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                        Section #1
-                                    </div>
-                                </div>
-
-
-                                <!-- Stats Row -->
-                                <div class="row text-center mb-2">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                        <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                    </div>
-                                </div>
-
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2">
-                                    <div style=" background: #f8d7da;  ; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                        <img src="{{URL::asset('/build/img/redflag.svg')}}"
-                                            style="height: 16px; width: 16px; margin-right: 18px;" alt="flag" />
-
-                                        Project is in Delayed
-                                    </div>
-                                </div>
-
-
-                                <!-- Ticket Colors -->
-                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                    <!-- "Ticket" label -->
-                                    <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;">Ticket</span>
-
-                                    <!-- Blue dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                    <!-- Orange dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                    <!-- Red dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Purple dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                    <!-- Green dot + number -->
-                                    <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                    <span style="font-size: 13px; color: #6c757d;">0 </span>
-                                </div>
-
-
-                                <!-- Project Manager / Developers -->
-                                <div class="d-flex justify-content-between m-0 w-100"
-                                    style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                    <!-- Project Manager -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Project Manager
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                            Developers
-                                        </strong>
-                                        <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- Date + Work Days + Days Left -->
-                                <div class="d-flex justify-content-between mb-2 mt-2" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Start Date</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Work Days</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <div class="col">
-                                        <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;color: #1e60a1;">Days Left</strong>
-                                        <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
-                                    </div>
-                                    <!-- Progress Bar -->
-                                    <div class="px-2">
-                                        <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
-                                            <div class="progress-bar"
-                                                role="progressbar"
-                                                style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
-                                                aria-valuenow="60"
-                                                aria-valuemin="0"
-                                                aria-valuemax="100">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-
-
-                                <!-- Section Progress Block -->
-                                <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
-                                    <!-- Section Titles -->
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                        <span>Section #1 75%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
 
-
-
-
-
-
-
+                <!-- Modal Footer -->
+                <div class="modal-footer border-top-0 pt-0">
+                    <div class="ms-auto d-flex gap-2">
+                        <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-white"
+                            style="background-color: #f65b0f; border-color: #f65b0f;">Save</button>
+                    </div>
+                </div>
             </div>
-
-        </div>
-
-    </div>
-
-</div>
-<!-- right sidebar popup -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="overflow-y: auto; width: 770px;">
-
-    <!-- Header -->
-    <div class="offcanvas-header" style="padding: 0;">
-        <!-- Gradient Header Background -->
-        <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
-
-            <!-- Close Button -->
-            <button type="button"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-                style="
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    background-color: white;
-                    color: black;
-                    border: none;
-                    border-radius: 50%;
-                    width: 36px;
-                    height: 36px;
-                    font-size: 24px;
-                    font-weight: bold;
-                    z-index: 9999;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-                ">
-                &times;
-            </button>
-
-            <!-- Profile Logo -->
-            <img src="{{URL::asset('/build/img/yekbon.svg')}}"
-                class="rounded-circle"
-                alt="Profile"
-                style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover; z-index: 10;">
         </div>
     </div>
 
-    <!-- Body -->
-    <div class="offcanvas-body pt-5" style="font-family: 'Segoe UI', sans-serif; background-color: #fff;">
+    <!-- right sidebar popup -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-backdrop="true" style="overflow-y: auto; width: 770px;">
 
-        <!-- Project Title & ID -->
-        <div class="d-flex  align-items-center">
-            <div style="width: 35px; height: 35px; position: relative;">
-                <!-- Background Circle -->
-                <svg width="35" height="35">
-                    <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
-                    <circle
-                        cx="17.5"
-                        cy="17.5"
-                        r="15"
-                        stroke="url(#grad)"
-                        stroke-width="4"
-                        fill="none"
-                        stroke-dasharray="94.2"
-                        stroke-dashoffset="70.65"
-                        stroke-linecap="round"
-                        transform="rotate(-90 17.5 17.5)" />
-                    <defs>
-                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#ff7f00" />
-                            <stop offset="100%" stop-color="#fcd34d" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+        <!-- Header -->
+        <div class="offcanvas-header" style="padding: 0;">
+            <!-- Gradient Header Background -->
+            <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
 
-                <!-- Center Text -->
-                <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
-                    25%
+                <!-- Close Button -->
+                <button type="button"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                    style="position: absolute;top: 10px;right: 10px;background-color: white;color: black; border: none;border-radius: 50%;width: 36px;height: 36px;font-size: 24px;font-weight: bold;z-index: 9999;display: flex;align-items: center;justify-content: center;box-shadow: 0 0 6px rgba(0, 0, 0, 0.2)">
+                    &times;
+                </button>
+
+                <!-- Profile Logo -->
+                <img src="{{URL::asset('/build/img/yekbon.svg')}}"
+                    class="rounded-circle"
+                    alt="Profile"
+                    style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover; z-index: 10;">
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="offcanvas-body pt-5" style="font-family: 'Segoe UI', sans-serif; background-color: #fff;">
+
+            <!-- Project Title & ID -->
+            <div class="d-flex  align-items-center">
+                <div style="width: 35px; height: 35px; position: relative;">
+                    <!-- Background Circle -->
+                    <svg width="35" height="35">
+                        <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
+                        <circle
+                            cx="17.5"
+                            cy="17.5"
+                            r="15"
+                            stroke="url(#grad)"
+                            stroke-width="4"
+                            fill="none"
+                            stroke-dasharray="94.2"
+                            stroke-dashoffset="70.65"
+                            stroke-linecap="round"
+                            transform="rotate(-90 17.5 17.5)" />
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#ff7f00" />
+                                <stop offset="100%" stop-color="#fcd34d" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+
+                    <!-- Center Text -->
+                    <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
+                        25%
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="text-center mb-3" style="margin-top:-34px;margin-left:14px;">
+                <h5 style="font-weight: 600; color: #2e3a59;">Project Title</h5>
+
+                <div style="display: inline-block;background:#f5f5f5;color: #e53935; font-size: 12px;
+                font-weight: 600;padding: 4px 14px;border-radius: 999px;margin-top: 5px">
+                    Project ID
+                </div>
+            </div>
+
+            <!-- Wrapper to center the content -->
+            <div class="d-flex justify-content-center mb-3">
+                <!-- Compact Date & Priority Display -->
+                <div class="d-flex align-items-center flex-wrap"
+                    style="background: #f5f5f5; padding: 6px 12px; border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: #2e3a59;">
+
+                    <!-- Start and Deliver Dates -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="color: #34d399;">
+                            Start: <span style="color: #2e3a59;">22.10.2024</span>
+                        </div>
+                        <div style="color: #34d399;">
+                            Deliver: <span style="color: #2e3a59;">22.10.2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div style="width: 1px; height: 18px; background-color: #d1d5db; margin: 0 10px;"></div>
+
+                    <!-- Priority -->
+                    <div style="background: #ffffff; border-radius: 999px; padding: 2px 10px; display: flex; align-items: center; gap: 6px;">
+                        <span style="width: 8px; height: 8px; background-color: #34d399; border-radius: 50%; display: inline-block;"></span>
+                        <span style="color: #6b7280;">Low</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Tag -->
+            <div class="text-center mb-3">
+                <div style="background: #fff7da; /* soft yellow */color: #2e3a59;       /* dark slate for text */border-radius: 999px;display: inline-flex;align-items: center;padding: 4px 18px;font-weight: 600;font-size: 13px">
+                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
+                    Project is in Hold
                 </div>
             </div>
 
 
-        </div>
-        <div class="text-center mb-3" style="margin-top:-34px;margin-left:14px;">
-            <h5 style="font-weight: 600; color: #2e3a59;">Project Title</h5>
+            <!-- Project Progress Card -->
+            <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+                <!-- Title -->
+                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
 
-            <div style="
-                display: inline-block;
-                background:#f5f5f5;
-                color: #e53935;
-                font-size: 12px;
-                font-weight: 600;
-                padding: 4px 14px;
-                border-radius: 999px;
-                margin-top: 5px;
-            ">
-                Project ID
-            </div>
-        </div>
-
-        <!-- Wrapper to center the content -->
-        <div class="d-flex justify-content-center mb-3">
-            <!-- Compact Date & Priority Display -->
-            <div class="d-flex align-items-center flex-wrap"
-                style="background: #f5f5f5; padding: 6px 12px; border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: #2e3a59;">
-
-                <!-- Start and Deliver Dates -->
-                <div class="d-flex align-items-center gap-3">
-                    <div style="color: #34d399;">
-                        Start: <span style="color: #2e3a59;">22.10.2024</span>
-                    </div>
-                    <div style="color: #34d399;">
-                        Deliver: <span style="color: #2e3a59;">22.10.2024</span>
-                    </div>
-                </div>
-
-                <!-- Divider -->
-                <div style="width: 1px; height: 18px; background-color: #d1d5db; margin: 0 10px;"></div>
-
-                <!-- Priority -->
-                <div style="background: #ffffff; border-radius: 999px; padding: 2px 10px; display: flex; align-items: center; gap: 6px;">
-                    <span style="width: 8px; height: 8px; background-color: #34d399; border-radius: 50%; display: inline-block;"></span>
-                    <span style="color: #6b7280;">Low</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status Tag -->
-        <div class="text-center mb-3">
-            <div style="
-        background: #fff7da; /* soft yellow */
-        color: #2e3a59;       /* dark slate for text */
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        padding: 4px 18px;
-        font-weight: 600;
-        font-size: 13px;
-    ">
-                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
-                Project is in Hold
-            </div>
-        </div>
-
-
-        <!-- Project Progress Card -->
-        <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
-            <!-- Title -->
-            <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
-
-            <!-- Flex Row -->
-            <div class="d-flex flex-wrap justify-content-between gap-3">
-                <!-- Left Half -->
-                <div class="flex-grow-1  mt-1" style="min-width: 300px; max-width: 48%;border-radius:10px;background-color:white">
-                    <!-- Stats -->
-                    <div class="d-flex justify-content-between text-center mb-2">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
-                            <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
+                <!-- Flex Row -->
+                <div class="d-flex flex-wrap justify-content-between gap-3">
+                    <!-- Left Half -->
+                    <div class="flex-grow-1  mt-1" style="min-width: 300px; max-width: 48%;border-radius:10px;background-color:white">
+                        <!-- Stats -->
+                        <div class="d-flex justify-content-between text-center mb-2">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
+                                <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
+                                <div style="font-size: 12px; color: #6c757d;">#05</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
+                                <div style="font-size: 12px; color: #6c757d;">#05</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
+                                <div style="font-size: 12px; color: #6c757d;">75%</div>
+                            </div>
                         </div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
-                            <div style="font-size: 12px; color: #6c757d;">#05</div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
-                            <div style="font-size: 12px; color: #6c757d;">#05</div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
-                            <div style="font-size: 12px; color: #6c757d;">75%</div>
+
+                        <!-- Blue Progress Bar -->
+                        <div class="progress" style="height: 8px; background-color: #e9ecef; border-radius: 10px;margin-left:10px;margin-right:10px;">
+                            <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
                         </div>
                     </div>
 
-                    <!-- Blue Progress Bar -->
-                    <div class="progress" style="height: 8px; background-color: #e9ecef; border-radius: 10px;margin-left:10px;margin-right:10px;">
-                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                    </div>
-                </div>
+                    <!-- Right Half -->
+                    <div class="flex-grow-1 mb-1 " style="min-width: 300px; max-width: 48%;background-color:white;border-radius:10px;">
+                        <!-- Section Labels -->
+                        <div class="d-flex justify-content-between mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
+                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                        </div>
 
-                <!-- Right Half -->
-                <div class="flex-grow-1 mb-1 " style="min-width: 300px; max-width: 48%;background-color:white;border-radius:10px;">
-                    <!-- Section Labels -->
-                    <div class="d-flex justify-content-between mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                    </div>
-
-                    <!-- Section Progress Bars -->
-                    <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                        <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                        </div>
-                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                        </div>
-                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                        </div>
-                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                        <!-- Section Progress Bars -->
+                        <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
+                            <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
+                                <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                            </div>
+                            <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
+                                <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                            </div>
+                            <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                                <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                            </div>
+                            <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                                <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- Project Description Card -->
-        <!-- Project Description Section -->
-        <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
-            <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
-            <p style="font-size: 13px; color: #4b5563; line-height: 1.7; margin-bottom: 0;">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-                et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-                Stet clita kasd gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-                consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-                no sea takimata sanctus est lorem ipsum dolor sit amet.
-            </p>
-        </div>
+            <!-- Project Description Card -->
+            <!-- Project Description Section -->
+            <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+                <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
+                <p style="font-size: 13px; color: #4b5563; line-height: 1.7; margin-bottom: 0;">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+                    et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                    Stet clita kasd gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+                    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+                    sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                    no sea takimata sanctus est lorem ipsum dolor sit amet.
+                </p>
+            </div>
 
 
-        <!-- Project Sections Card -->
-        <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
+            <!-- Project Sections Card -->
+            <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
 
-            <!-- Title -->
-            <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
+                <!-- Title -->
+                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
 
-            <!-- Section Cards -->
-            <div class="d-flex  gap-2">
+                <!-- Section Cards -->
+                <div class="d-flex  gap-2">
 
-                <!-- Single Section Card -->
-                <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                    <!-- Single Section Card -->
+                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
 
-                    <!-- Options Icon -->
-                    <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer;border:1px ;border-radius:10px; background:#f8f9fa;">
-                        <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                            <circle cx="5" cy="12" r="2" />
-                            <circle cx="12" cy="12" r="2" />
-                            <circle cx="19" cy="12" r="2" />
-                        </svg>
+                        <!-- Options Icon -->
+                        <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer;border:1px ;border-radius:10px; background:#f8f9fa;">
+                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                <circle cx="5" cy="12" r="2" />
+                                <circle cx="12" cy="12" r="2" />
+                                <circle cx="19" cy="12" r="2" />
+                            </svg>
+                        </div>
+
+                        <!-- Image -->
+                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+
+                        <!-- Title -->
+                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+
+                        <!-- Tech Tags -->
+                        <div class="d-flex flex-wrap justify-content-center gap-1">
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                        </div>
+                    </div>
+                    <!-- 2nd -->
+                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+
+                        <!-- Options Icon -->
+                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
+                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                <circle cx="5" cy="12" r="2" />
+                                <circle cx="12" cy="12" r="2" />
+                                <circle cx="19" cy="12" r="2" />
+                            </svg>
+                        </div>
+
+                        <!-- Image -->
+                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+
+                        <!-- Title -->
+                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+
+                        <!-- Tech Tags -->
+                        <div class="d-flex flex-wrap justify-content-center gap-1">
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                        </div>
+                    </div>
+                    <!-- 3rd -->
+                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+
+                        <!-- Options Icon -->
+                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
+                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                <circle cx="5" cy="12" r="2" />
+                                <circle cx="12" cy="12" r="2" />
+                                <circle cx="19" cy="12" r="2" />
+                            </svg>
+                        </div>
+
+                        <!-- Image -->
+                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+
+                        <!-- Title -->
+                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+
+                        <!-- Tech Tags -->
+                        <div class="d-flex flex-wrap justify-content-center gap-1">
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                        </div>
                     </div>
 
-                    <!-- Image -->
-                    <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
 
-                    <!-- Title -->
-                    <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-
-                    <!-- Tech Tags -->
-                    <div class="d-flex flex-wrap justify-content-center gap-1">
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
+                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                <circle cx="5" cy="12" r="2" />
+                                <circle cx="12" cy="12" r="2" />
+                                <circle cx="19" cy="12" r="2" />
+                            </svg>
+                        </div>
+                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                        <div class="d-flex flex-wrap justify-content-center gap-1">
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
+                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                        </div>
                     </div>
+
+                    <!-- Add more blocks as needed... -->
+
+                </div>
+            </div>
+
+
+            <!-- Our team Card -->
+            <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding-left: 20px;padding-right: 20px; border-radius: 12px;">
+
+                <!-- Section Title -->
+                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59; font-size: 16px;padding-top: 16px;">· Our Team ·</h6>
+
+                <!-- Card Row -->
+                <div class="d-flex gap-3 flex-nowrap overflow-auto">
+
+                    <!-- CARD 1 -->
+                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
+                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                        </div>
+                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
+                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                        </div>
+                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
+                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                        </div>
+                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4 -->
+                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
+                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                        </div>
+                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- project tcikets -->
+            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
+                <!-- Section Title -->
+                <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
+
+                <!-- Ticket Title + Status and Metrics -->
+                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2 pt-3" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Ticket Title
+                            </div>
+
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- In Progress badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
+                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
+                                    </svg>
+                                    in Progress
+                                </span>
+
+                                <!-- Low badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
+
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
+
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- Circular Progress -->
+                            <div style="position: relative; width: 45px; height: 45px;">
+                                <svg viewBox="0 0 36 36" width="45" height="45">
+                                    <path
+                                        style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path
+                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                        stroke-dasharray="70, 100"
+                                        d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
                 <!-- 2nd -->
-                <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Ticket Title
+                            </div>
 
-                    <!-- Options Icon -->
-                    <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                        <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                            <circle cx="5" cy="12" r="2" />
-                            <circle cx="12" cy="12" r="2" />
-                            <circle cx="19" cy="12" r="2" />
-                        </svg>
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- In Progress badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
+                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
+                                    </svg>
+                                    in Progress
+                                </span>
+
+                                <!-- Low badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <!-- Image -->
-                    <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
 
-                    <!-- Title -->
-                    <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
 
-                    <!-- Tech Tags -->
-                    <div class="d-flex flex-wrap justify-content-center gap-1">
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- Circular Progress -->
+                            <div style="position: relative; width: 45px; height: 45px;">
+                                <svg viewBox="0 0 36 36" width="45" height="45">
+                                    <path
+                                        style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path
+                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                        stroke-dasharray="70, 100"
+                                        d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
                 <!-- 3rd -->
-                <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-
-                    <!-- Options Icon -->
-                    <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                        <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                            <circle cx="5" cy="12" r="2" />
-                            <circle cx="12" cy="12" r="2" />
-                            <circle cx="19" cy="12" r="2" />
-                        </svg>
-                    </div>
-
-                    <!-- Image -->
-                    <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-
-                    <!-- Title -->
-                    <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-
-                    <!-- Tech Tags -->
-                    <div class="d-flex flex-wrap justify-content-center gap-1">
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
-                    </div>
-                </div>
-
-
-                <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                    <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                        <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                            <circle cx="5" cy="12" r="2" />
-                            <circle cx="12" cy="12" r="2" />
-                            <circle cx="19" cy="12" r="2" />
-                        </svg>
-                    </div>
-                    <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-                    <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-                    <div class="d-flex flex-wrap justify-content-center gap-1">
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                        <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
-                    </div>
-                </div>
-
-                <!-- Add more blocks as needed... -->
-
-            </div>
-        </div>
-
-
-        <!-- Our team Card -->
-        <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding-left: 20px;padding-right: 20px; border-radius: 12px;">
-
-            <!-- Section Title -->
-            <h6 class="mb-3" style="font-weight: 600; color: #2e3a59; font-size: 16px;padding-top: 16px;">· Our Team ·</h6>
-
-            <!-- Card Row -->
-            <div class="d-flex gap-3 flex-nowrap overflow-auto">
-
-                <!-- CARD 1 -->
-                <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                    <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                            style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                    </div>
-                    <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                        <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                        <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                    </div>
-                </div>
-
-                <!-- CARD 2 -->
-                <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                    <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                            style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                    </div>
-                    <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                        <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                        <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                    </div>
-                </div>
-
-                <!-- CARD 3 -->
-                <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                    <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                            style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                    </div>
-                    <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                        <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                        <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                    </div>
-                </div>
-
-                <!-- CARD 4 -->
-                <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                    <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                            style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                    </div>
-                    <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                        <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                        <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-
-        <!-- project tcikets -->
-        <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
-            <!-- Section Title -->
-            <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
-
-            <!-- Ticket Title + Status and Metrics -->
-            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2 pt-3" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Ticket Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- In Progress badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
-                                    <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                </svg>
-                                in Progress
-                            </span>
-
-                            <!-- Low badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
-
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Ticket Title
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- In Progress badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
+                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
+                                    </svg>
+                                    in Progress
+                                </span>
+
+                                <!-- Low badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
                             </div>
                         </div>
 
+                    </div>
 
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path
-                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path
-                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100"
-                                    d="M18 2.0845
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
+
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
+
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- Circular Progress -->
+                            <div style="position: relative; width: 45px; height: 45px;">
+                                <svg viewBox="0 0 36 36" width="45" height="45">
+                                    <path
+                                        style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path
+                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                        stroke-dasharray="70, 100"
+                                        d="M18 2.0845
                  a 15.9155 15.9155 0 0 1 0 31.831
                  a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 2nd -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Ticket Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- In Progress badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
-                                    <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                 </svg>
-                                in Progress
-                            </span>
-
-                            <!-- Low badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
-
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                </div>
+                <!-- 4rth -->
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Ticket Title
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- In Progress badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
+                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
+                                    </svg>
+                                    in Progress
+                                </span>
+
+                                <!-- Low badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
                             </div>
                         </div>
 
+                    </div>
 
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path
-                                    style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path
-                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100"
-                                    d="M18 2.0845
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
+
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
+
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- Circular Progress -->
+                            <div style="position: relative; width: 45px; height: 45px;">
+                                <svg viewBox="0 0 36 36" width="45" height="45">
+                                    <path
+                                        style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path
+                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                        stroke-dasharray="70, 100"
+                                        d="M18 2.0845
                  a 15.9155 15.9155 0 0 1 0 31.831
                  a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 3rd -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Ticket Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- In Progress badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
-                                    <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                 </svg>
-                                in Progress
-                            </span>
-
-                            <!-- Low badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
-
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                             </div>
-
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path
-                                    style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path
-                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100"
-                                    d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 4rth -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Ticket Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- In Progress badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
-                                    <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                </svg>
-                                in Progress
-                            </span>
-
-                            <!-- Low badge -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
-
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                            </div>
-
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path
-                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path
-                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100"
-                                    d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
-                        </div>
-                    </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
             </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-        </div>
 
-        <!-- /project tickts -->
+            <!-- /project tickts -->
 
-        <!-- project Task -->
-        <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
-            <!-- Section Title -->
-            <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
+            <!-- project Task -->
+            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
+                <!-- Section Title -->
+                <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
 
-            <!-- Ticket Title + Status and Metrics -->
-            <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Task Title
-                        </div>
+                <!-- Ticket Title + Status and Metrics -->
+                <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Task Title
+                            </div>
 
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                            <!-- Red Badge with Lightning Icon -->
-                            <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
+                                <!-- Red Badge with Lightning Icon -->
+                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
 
-                                <!-- Left icon area -->
-                                <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                    <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                                    <!-- Left icon area -->
+                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+
+                                    <!-- Red badge area -->
+                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-weight: bold;">·</span>
+                                        01
+                                        <span style="font-weight: bold;">·</span>
+                                    </span>
+
                                 </span>
 
-                                <!-- Red badge area -->
-                                <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-weight: bold;">·</span>
-                                    01
-                                    <span style="font-weight: bold;">·</span>
+
+                                <!-- Low Badge with Green Dot -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
                                 </span>
 
-                            </span>
+                                <!-- Yellow Badge with Flag -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
 
-
-                            <!-- Low Badge with Green Dot -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-
-                            <!-- Yellow Badge with Flag -->
-                            <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                <span>
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
+                                    <span>
+                                        <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
                                 </span>
-                            </span>
+                            </div>
+
                         </div>
 
                     </div>
 
-                </div>
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
 
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
 
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                 </div>
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
+
+                            <!-- Circular Progress -->
+
                         </div>
-
-
-                        <!-- Circular Progress -->
-
                     </div>
                 </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 2nd -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Task Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                            <!-- Red Badge with Lightning Icon -->
-                            <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                <!-- Left icon area -->
-                                <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                    <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-
-                                <!-- Red badge area -->
-                                <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-weight: bold;">·</span>
-                                    02
-                                    <span style="font-weight: bold;">·</span>
-                                </span>
-
-                            </span>
-
-
-                            <!-- Low Badge with Green Dot -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-
-                            <!-- Yellow Badge with Flag -->
-                            <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                <span>
-                                    <img src="{{ asset('build/img/redflag.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
-
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
-
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
+                <!-- 2nd -->
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Task Title
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                            <!-- Status badges on the right -->
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
+                                <!-- Red Badge with Lightning Icon -->
+                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+
+                                    <!-- Left icon area -->
+                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+
+                                    <!-- Red badge area -->
+                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-weight: bold;">·</span>
+                                        02
+                                        <span style="font-weight: bold;">·</span>
+                                    </span>
+
+                                </span>
+
+
+                                <!-- Low Badge with Green Dot -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
+
+                                <!-- Yellow Badge with Flag -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
+
+                                    <span>
+                                        <img src="{{ asset('build/img/redflag.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+                                </span>
                             </div>
                         </div>
 
-
-
-                    </div>
-                </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 3rd -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Task Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                            <!-- Red Badge with Lightning Icon -->
-                            <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                <!-- Left icon area -->
-                                <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                    <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-
-                                <!-- Red badge area -->
-                                <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-weight: bold;">·</span>
-                                    01
-                                    <span style="font-weight: bold;">·</span>
-                                </span>
-
-                            </span>
-
-
-                            <!-- Low Badge with Green Dot -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-
-                            <!-- Yellow Badge with Flag -->
-                            <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                <span>
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-                            </span>
-                        </div>
                     </div>
 
-                </div>
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
 
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
 
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                 </div>
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                </div>
+                <!-- 3rd -->
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Task Title
+                            </div>
+
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
+                                <!-- Red Badge with Lightning Icon -->
+                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+
+                                    <!-- Left icon area -->
+                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+
+                                    <!-- Red badge area -->
+                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-weight: bold;">·</span>
+                                        01
+                                        <span style="font-weight: bold;">·</span>
+                                    </span>
+
+                                </span>
+
+
+                                <!-- Low Badge with Green Dot -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
+
+                                <!-- Yellow Badge with Flag -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
+
+                                    <span>
+                                        <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+                                </span>
                             </div>
                         </div>
 
-
-                        <!-- Circular Progress -->
-
-                    </div>
-                </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-            <!-- 4rth -->
-            <hr>
-            <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                <!-- Ticket Title & Status -->
-                <div style="background:#fff">
-                    <!-- Ticket Title -->
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                        <!-- Ticket Title on the left -->
-                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                            Task Title
-                        </div>
-
-                        <!-- Status badges on the right -->
-                        <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                            <!-- Red Badge with Lightning Icon -->
-                            <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                <!-- Left icon area -->
-                                <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                    <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-
-                                <!-- Red badge area -->
-                                <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                    <span style="font-weight: bold;">·</span>
-                                    01
-                                    <span style="font-weight: bold;">·</span>
-                                </span>
-
-                            </span>
-
-
-                            <!-- Low Badge with Green Dot -->
-                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                LOW
-                            </span>
-
-                            <!-- Yellow Badge with Flag -->
-                            <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                <span>
-                                    <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
-                                </span>
-                            </span>
-                        </div>
                     </div>
 
-                </div>
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
 
-                <!-- Ticket Metrics Box -->
-                <div style="max-width: 450px;">
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
 
-                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                            <div style="display: flex; gap: 25px; align-items: center;">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                 </div>
                             </div>
 
-                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+
+                            <!-- Circular Progress -->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                </div>
+                <!-- 4rth -->
+                <hr>
+                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
+                    <!-- Ticket Title & Status -->
+                    <div style="background:#fff">
+                        <!-- Ticket Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Ticket Title on the left -->
+                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
+                                Task Title
+                            </div>
+
+                            <!-- Status badges on the right -->
+                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
+                                <!-- Red Badge with Lightning Icon -->
+                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+
+                                    <!-- Left icon area -->
+                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+
+                                    <!-- Red badge area -->
+                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-weight: bold;">·</span>
+                                        01
+                                        <span style="font-weight: bold;">·</span>
+                                    </span>
+
+                                </span>
+
+
+                                <!-- Low Badge with Green Dot -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    LOW
+                                </span>
+
+                                <!-- Yellow Badge with Flag -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
+
+                                    <span>
+                                        <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
+                                    </span>
+                                </span>
                             </div>
                         </div>
 
+                    </div>
 
-                        <!-- Circular Progress -->
+                    <!-- Ticket Metrics Box -->
+                    <div style="max-width: 450px;">
 
+                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
+                            <!-- Metrics Box -->
+                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
+                                <div style="display: flex; gap: 25px; align-items: center;">
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                    </div>
+                                </div>
+
+                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
+                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- Circular Progress -->
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Ticket meta info -->
-            <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-            </div>
-        </div>
-        <!-- /project tickets -->
-
-        <!-- footer section -->
-        <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
-
-            <!-- Edit the Project -->
-            <div style="text-align: center; flex: 1;cursor:pointer;">
-                <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                    <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
+                <!-- Ticket meta info -->
+                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
+                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
+                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
-                <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit The Project</div>
+            </div>
+            <!-- /project tickets -->
+
+            <!-- footer section -->
+            <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
+
+                <!-- Edit the Project -->
+                <div style="text-align: center; flex: 1;cursor:pointer;">
+                    <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                        <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
+                    </div>
+                    <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit The Project</div>
+                </div>
+
+                <!-- Pause the Project -->
+                <div style="text-align: center; flex: 1; cursor: pointer;" onclick="openPauseModal()">
+                    <div style="background: #f4ba19; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                        <img src="{{ asset('build/img/pause.svg') }}" alt="Pause" width="30" height="30">
+                    </div>
+                    <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Pause The Project</div>
+                </div>
+
+                <!-- Remove the Project -->
+                <div style="text-align: center; flex: 1;cursor: pointer;" onclick="opendeleteModel()">
+                    <div style="background: #f44336; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                        <img src="{{ asset('build/img/deletep.svg') }}" alt="Delete" width="30" height="30">
+                    </div>
+                    <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Remove The Project</div>
+                </div>
+
             </div>
 
-            <!-- Pause the Project -->
-            <div style="text-align: center; flex: 1; cursor: pointer;" onclick="openPauseModal()">
-                <div style="background: #f4ba19; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                    <img src="{{ asset('build/img/pause.svg') }}" alt="Pause" width="30" height="30">
-                </div>
-                <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Pause The Project</div>
-            </div>
 
-            <!-- Remove the Project -->
-            <div style="text-align: center; flex: 1;cursor: pointer;" onclick="opendeleteModel()">
-                <div style="background: #f44336; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                    <img src="{{ asset('build/img/deletep.svg') }}" alt="Delete" width="30" height="30">
-                </div>
-                <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Remove The Project</div>
-            </div>
+
+
 
         </div>
-
-
-
-
-
     </div>
-</div>
 
-<!--pause project model Modal -->
-<div class="modal fade" id="pauseProjectModal" tabindex="-1" aria-labelledby="pauseModalLabel" aria-hidden="true" style="visibility: visible;">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 12px; background-color: #ffffff; padding: 0; font-family: 'Segoe UI', sans-serif;">
+    <!--pause project model Modal -->
+    <div class="modal fade" id="pauseProjectModal" tabindex="-1" aria-labelledby="pauseModalLabel" aria-hidden="true" style="visibility: visible;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 12px; background-color: #ffffff; padding: 0; font-family: 'Segoe UI', sans-serif;">
 
-      <!-- Header -->
-      <div class="modal-header" style="background-color: #f1f1f1; border-bottom: none; padding: 15px 20px;">
-        <h5 class="modal-title" id="pauseModalLabel" style="margin: 0; font-weight: 600; color: #1c2b48;">Pause the Project</h5>
-      </div>
+                <!-- Header -->
+                <div class="modal-header" style="background-color: #f1f1f1; border-bottom: none; padding: 15px 20px;">
+                    <h5 class="modal-title" id="pauseModalLabel" style="margin: 0; font-weight: 600; color: #1c2b48;">Pause the Project</h5>
+                </div>
 
-      <!-- Body -->
-      <div class="modal-body" style="text-align: center; padding: 30px 20px 20px;">
-        <!-- Icon -->
-        <div style="background-color: #f4ba19; width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
-          <img src="{{ asset('build/img/pause.svg') }}" alt="Pause Icon" width="28" height="28">
+                <!-- Body -->
+                <div class="modal-body" style="text-align: center; padding: 30px 20px 20px;">
+                    <!-- Icon -->
+                    <div style="background-color: #f4ba19; width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                        <img src="{{ asset('build/img/pause.svg') }}" alt="Pause Icon" width="28" height="28">
+                    </div>
+
+                    <!-- Text -->
+                    <p style="font-size: 16px; font-weight: 500; color: #1c2b48;">Please select the reason to Pause the Project</p>
+
+                    <!-- Dropdown -->
+                    <select style="background-color: #f1f1f1; border: none; padding: 10px; width: 70%; margin-top: 20px; border-radius: 6px; color: #1c2b48;">
+                        <option>Select the reason</option>
+                        <option>Client Request</option>
+                        <option>Budget Issue</option>
+                        <option>Resource Unavailable</option>
+                    </select>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer" style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
+                    <button type="button" class="btn " data-bs-dismiss="modal" style="background-color:#f1f1f1; color: #1c2b48; border: none; width: 100px;">Close</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal" style="background-color:#f1f1f1; color: #1c2b48; border: none; width: 130px;">Save & Close</button>
+                </div>
+
+            </div>
         </div>
-
-        <!-- Text -->
-        <p style="font-size: 16px; font-weight: 500; color: #1c2b48;">Please select the reason to Pause the Project</p>
-
-        <!-- Dropdown -->
-        <select style="background-color: #f1f1f1; border: none; padding: 10px; width: 70%; margin-top: 20px; border-radius: 6px; color: #1c2b48;">
-          <option>Select the reason</option>
-          <option>Client Request</option>
-          <option>Budget Issue</option>
-          <option>Resource Unavailable</option>
-        </select>
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer" style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style=" color: #1c2b48; border: none; width: 100px;">Close</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" style=" color: #1c2b48; border: none; width: 130px;">Save & Close</button>
-      </div>
-
     </div>
-  </div>
-</div>
-<!--delet project model Modal -->
-<div class="modal fade" id="removeproject" tabindex="-1" aria-labelledby="pauseModalLabel" aria-hidden="true" style="visibility: visible;">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 12px; background-color: #ffffff; padding: 0; font-family: 'Segoe UI', sans-serif;">
+    <!--delet project model Modal -->
+    <div class="modal fade" id="removeproject" tabindex="-1" aria-labelledby="pauseModalLabel" aria-hidden="true" style="visibility: visible;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 12px; background-color: #ffffff; padding: 0; font-family: 'Segoe UI', sans-serif;">
 
-      <!-- Header -->
-      <div class="modal-header" style="background-color: #f1f1f1; border-bottom: none; padding: 15px 20px;">
-        <h5 class="modal-title" id="pauseModalLabel" style="margin: 0; font-weight: 600; color: #1c2b48;">Remove the Project</h5>
-      </div>
+                <!-- Header -->
+                <div class="modal-header" style="background-color: #f1f1f1; border-bottom: none; padding: 15px 20px">
+                    <h5 class="modal-title" id="pauseModalLabel" style="margin: 0; font-weight: 600; color: #1c2b48;">Remove the Project</h5>
+                </div>
 
-      <!-- Body -->
-      <div class="modal-body" style="text-align: center; padding: 30px 20px 20px;">
-        <!-- Warning Message -->
-<div style="
-    background-color: #fff;
-     border: 1px solid #f1f1f1;
-    color: #f44336;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-      width: fit-content;
-       padding: 6px 12px;
-    border-radius: 6px;
-    margin: 0 auto 15px;
-    margin-bottom: 15px;
-">
-    <img src="{{ asset('build/img/tera.svg') }}" alt="Pause Icon" width="15" height="15">
-    Project can't be Removed if there Open Tickets
-</div>
+                <!-- Body -->
+                <div class="modal-body" style="text-align: center; padding: 30px 20px 20px;">
+                    <!-- Warning Message -->
+                    <div style="background-color: #fff;border: 1px solid #f1f1f1;color: #f44336;font-size: 14px;font-weight: 500;text-align: center;display: flex;align-items: center;justify-content: center;gap: 30px;width: fit-content;padding: 6px 12px;border-radius: 6px;margin: 0 auto 15px;margin-bottom: 15px;">
+                        <img src="{{ asset('build/img/tera.svg') }}" alt="Pause Icon" width="15" height="15">
+                        Project can't be Removed if there Open Tickets
+                    </div>
 
-        <!-- Icon -->
-        <div style="background-color: #f44336; width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
-          <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="28" height="28">
+                    <!-- Icon -->
+                    <div style="background-color: #f44336; width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                        <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="28" height="28">
+                    </div>
+
+                    <!-- Text -->
+                    <p style="font-size: 16px; font-weight: 500; color: #1c2b48;">Please select the reason to remove the Project</p>
+
+                    <!-- Dropdown -->
+                    <select style="background-color: #f1f1f1; border: none; padding: 10px; width: 70%; margin-top: 20px; border-radius: 6px; color: #1c2b48;">
+                        <option>Select the reason</option>
+                        <option>Client Request</option>
+                        <option>Budget Issue</option>
+                        <option>Resource Unavailable</option>
+                    </select>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer" style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
+                    <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 100px;">Close</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 150px;">Save & Close</button>
+                </div>
+
+            </div>
         </div>
-
-        <!-- Text -->
-        <p style="font-size: 16px; font-weight: 500; color: #1c2b48;">Please select the reason to remove the Project</p>
-
-        <!-- Dropdown -->
-        <select style="background-color: #f1f1f1; border: none; padding: 10px; width: 70%; margin-top: 20px; border-radius: 6px; color: #1c2b48;">
-          <option>Select the reason</option>
-          <option>Client Request</option>
-          <option>Budget Issue</option>
-          <option>Resource Unavailable</option>
-        </select>
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer" style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
-        <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 100px;">Close</button>
-        <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 150px;">Save & Close</button>
-      </div>
-
     </div>
-  </div>
+
 </div>
 <!--/delet project model Modal -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- pause model pop-up -->
 <script>
     function openPauseModal() {
         var offcanvasElement = document.getElementById('offcanvasRight');
@@ -4208,8 +4657,8 @@
     }
 </script>
 
-<!-- remove project -->
- <script>
+<!-- remove project pop-up -->
+<script>
     function opendeleteModel() {
         var offcanvasElement = document.getElementById('offcanvasRight');
         if (offcanvasElement) {
@@ -4224,6 +4673,65 @@
             pauseModal.show();
         }, 400);
     }
+</script>
+<!-- add prorject -->
+<script>
+    function format(command) {
+        document.execCommand(command, false, null);
+    }
+
+    function setFontSize(value) {
+        document.execCommand("fontSize", false, value);
+    }
+
+    function removeFormatting() {
+        document.execCommand('removeFormat', false, null);
+    }
+
+    function addSection() {
+        const container = document.getElementById('section-container');
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.width = '100%';
+        wrapper.style.marginBottom = '10px';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Enter title';
+        input.style.width = '100%';
+        input.style.paddingRight = '80px';
+        input.style.paddingLeft = '12px';
+        input.style.height = '38px';
+        input.style.border = '1px solid #ced4da';
+        input.style.borderRadius = '4px';
+        input.style.fontSize = '14px';
+        input.style.boxSizing = 'border-box';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => wrapper.remove();
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.right = '0';
+        removeBtn.style.top = '0';
+        removeBtn.style.height = '100%';
+        removeBtn.style.backgroundColor = '#dc3545';
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderTopRightRadius = '4px';
+        removeBtn.style.borderBottomRightRadius = '4px';
+        removeBtn.style.padding = '0 12px';
+        removeBtn.style.fontSize = '14px';
+        removeBtn.style.cursor = 'pointer';
+
+        wrapper.appendChild(input);
+        wrapper.appendChild(removeBtn);
+        container.appendChild(wrapper);
+    }
+
+    // Add initial section on page load
+    window.onload = () => addSection();
 </script>
 <!-- /Content -->
 <script>
@@ -4258,6 +4766,7 @@
         });
     });
 </script>
+
 @component('components.model-popup')
 @endcomponent
 @endsection
