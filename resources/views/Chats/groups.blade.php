@@ -110,53 +110,6 @@
     }
 </style>
 
-<style>
-    /* Full expansion class for when sidebar is hidden */
-    .full-width-content {
-        width: 100% !important;
-        flex: 1 1 auto !important;
-        height: 100% !important;
-    }
-
-    .sidebar-hidden {
-        display: none !important;
-    }
-
-    /* Ensure proper height expansion */
-    .expanded-container {
-        height: 100vh !important;
-        width: 100% !important;
-    }
-
-    /* Ensure flex container allows main content to grow when sidebar hidden */
-    .d-flex.flex-grow-1.overflow-hidden {
-        align-items: stretch;
-    }
-
-    /* Wrap card rows to occupy full width */
-    .main-center-content .d-flex.gap-3 {
-        flex-wrap: wrap;
-    }
-
-    /* Avoid flex overflow clipping */
-    .main-center-content {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-
-    /* When sidebar hidden, turn card rows into responsive grid covering full width */
-    .expanded-container .main-center-content .d-flex.gap-3 {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        width: 100%;
-    }
-
-    /* Maintain sidebar width as fixed in flex layout */
-    .Rightsidebar-group {
-        flex: 0 0 350px;
-    }
-</style>
-
 
 <!-- content -->
 <div class="content main_content">
@@ -2245,7 +2198,7 @@
                 </div>
             </div> -->
             <!-- body -->
-            <div id="main-center-content" class="main-center-content" style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
+            <div style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
 
 
                 <div class="chat-body chat-page-group ">
@@ -2286,7 +2239,7 @@
 
                     </div>
                     <!-- CARD CONTAINER -->
-                    <div class="d-flex flex-wrap gap-3" style="margin-right:20px;">
+                    <div class="d-flex gap-3" style="margin-right:20px;">
 
                         <!-- Start of Card 1 -->
                         <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -2928,7 +2881,7 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible; display: block;">
+            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
@@ -3148,65 +3101,39 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const toggleBtn = document.getElementById('toggle-right-sidebar');
-        if (!toggleBtn) return;
-
         const rightSidebar = document.querySelector('.Rightsidebar-group');
-        const mainContent = document.getElementById('main-center-content');
+        const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
         const toggleIcon = toggleBtn.querySelector('i');
-        const contentContainer = mainContent ? mainContent.parentElement : null;
-
-        const applyState = (showSidebar) => {
-            if (!rightSidebar) return;
-
-            if (showSidebar) {
-                rightSidebar.classList.remove('sidebar-hidden');
-                rightSidebar.style.removeProperty('display');
-
-                if (toggleIcon) {
-                    toggleIcon.classList.remove('ti-layout-sidebar-right');
-                    toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
-                }
-
-                if (mainContent) {
-                    mainContent.classList.remove('full-width-content');
-                    mainContent.style.removeProperty('flex');
-                    mainContent.style.removeProperty('width');
-                }
-
-                if (contentContainer) {
-                    contentContainer.classList.remove('expanded-container');
-                    contentContainer.style.removeProperty('width');
-                }
-            } else {
-                rightSidebar.classList.add('sidebar-hidden');
-                rightSidebar.style.display = 'none';
-
-                if (toggleIcon) {
-                    toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
-                    toggleIcon.classList.add('ti-layout-sidebar-right');
-                }
-
-                if (mainContent) {
-                    mainContent.classList.add('full-width-content');
-                    mainContent.style.flex = '1 1 auto';
-                    mainContent.style.width = '100%';
-                }
-
-                if (contentContainer) {
-                    contentContainer.classList.add('expanded-container');
-                    contentContainer.style.width = '100%';
-                }
-            }
-        };
-
-        // Initialize based on computed visibility
-        const initialVisible = rightSidebar ? window.getComputedStyle(rightSidebar).display !== 'none' : false;
-        applyState(initialVisible);
-
+        
         toggleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const visible = rightSidebar ? window.getComputedStyle(rightSidebar).display !== 'none' : false;
-            applyState(!visible);
+            
+            // Check if sidebar is currently visible
+            const isSidebarVisible = rightSidebar.style.display !== 'none' && rightSidebar.style.display !== '';
+            
+            if (isSidebarVisible) {
+                // Hide sidebar and expand main content
+                rightSidebar.style.display = 'none';
+                toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
+                toggleIcon.classList.add('ti-layout-sidebar-right');
+                // Expand main content to fill available space
+                if (mainContent) {
+                    mainContent.style.flex = '1 1 auto';
+                    mainContent.style.width = '100%';
+                    mainContent.style.paddingRight = '20px';
+                }
+            } else {
+                // Show sidebar
+                rightSidebar.style.display = 'block';
+                toggleIcon.classList.remove('ti-layout-sidebar-right');
+                toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
+                // Restore main content
+                if (mainContent) {
+                    mainContent.style.flex = '';
+                    mainContent.style.width = '';
+                    mainContent.style.paddingRight = '20px';
+                }
+            }
         });
     });
 </script>
