@@ -136,9 +136,11 @@
 <div class="content main_content">
 
     <!-- Left Sidebar Menu -->
+   <div style="visibility:visible;">
+        @include('Chats.chatsidebar')
+    </div>
 
-
-    @include('Chats.chatsidebar')
+  
 
     <!-- /Left Sidebar Menu -->
 
