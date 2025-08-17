@@ -5763,7 +5763,6 @@
             </div>
 
         </div>
-
     </div>
     <!-- right sidebar popup -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" data-bs-backdrop="true" aria-labelledby="offcanvasRightLabel" style="overflow-y: auto; width: 770px;">
@@ -6463,7 +6462,6 @@
                     <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                 </div>
             </div>
-
             <!-- /project tickts -->
             <!-- project Task -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
