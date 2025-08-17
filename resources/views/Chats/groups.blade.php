@@ -2875,18 +2875,18 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 468px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
+            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
-                            <div class="slimscroll" style="padding: 15px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
+                            <div class="slimscroll" style="padding: 12px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
 
                                 <!-- Priority Colors Box -->
-                                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 15px;">
-                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 10px;">
+                                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 12px;">
+                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 8px;">
                                         Priority Colors
                                     </div>
-                                    <div style="display: flex; gap: 33px; margin-bottom: 15px;">
+                                    <div style="display: flex; gap: 25px; margin-bottom: 12px;">
                                         <!-- Low -->
                                         <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
                                             <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
@@ -2909,38 +2909,38 @@
 
                                     <!-- Create new ToDo -->
                                     <div style="font-weight: 600; font-size: 14px; color: #2c3e50;">Create new ToDO</div>
-                                    <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Manage your Time</div>
+                                    <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Manage your Time</div>
 
                                     <!-- About ToDo Form -->
                                    
-                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 15px;">
-                                            <div style="margin-bottom: 15px;width: 100%">
+                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 12px;">
+                                            <div style="margin-bottom: 12px;width: 100%">
                                                 <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">About ToDo</label>
                                                 <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                             </div>
-                                            <div style="margin-bottom: 15px;">
+                                            <div style="margin-bottom: 12px;">
                                                 <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; height: 80px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                             </div>
 
                                             <!-- ToDo Date -->
                                             <div>
                                                 <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">ToDo Date</label>
-                                                <div style="font-size: 11px; color: #6c757d; margin-bottom: 10px;">Set Start and Expired Time max. 90 Days</div>
+                                                <div style="font-size: 11px; color: #6c757d; margin-bottom: 8px;">Set Start and Expired Time max. 90 Days</div>
                                                 <div style="display: flex; gap:1px;">
                                                     <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 8px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+                                                        <input type="date" style="width: 98%; padding: 6px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                                     </div>
                                                     <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+                                                        <input type="date" style="width: 98%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- ToDo Priority -->
-                                            <div style="margin-top: 20px;">
+                                            <div style="margin-top: 15px;">
                                                 <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Priority</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set the Priority of the ToDo</div>
+                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Priority of the ToDo</div>
 
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 20px;">
+                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
                                                     <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Low</p>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Middle</button>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">High</button>
@@ -2950,9 +2950,9 @@
                                             <!-- ToDo Type -->
                                             <div>
                                                 <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Type</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set the Type of the ToDo</div>
+                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Type of the ToDo</div>
 
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 10px;">
+                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 8px;">
                                                     <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Private ToDO</button>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Shared ToDo</button>
                                                 </div>
@@ -2960,12 +2960,12 @@
                                                 <input type="text" placeholder="Select the Member for Shared ToDo" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
                                             </div>
                                             <!-- ToDo Reminder -->
-                                            <div style="margin-top: 25px;">
+                                            <div style="margin-top: 20px;">
                                                 <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Reminder</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set a reminder before expired</div>
+                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set a reminder before expired</div>
 
                                                 <!-- Reminder Buttons -->
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 20px;">
+                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
                                                     <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 14px; font-size: 13px;">6 Hour</button>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">12 Hour</button>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">24 Hour</button>
