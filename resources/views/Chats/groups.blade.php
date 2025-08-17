@@ -2140,11 +2140,7 @@
                 <!-- ✅ Right: Left Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
                     <!-- Toggle Button for Right Sidebar -->
-                    <li style="list-style: none;">
-                        <a href="#" id="toggle-right-sidebar" style="display: inline;">
-                            <i class="ti ti-layout-sidebar-right-collapse" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
+                   
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
                         <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
