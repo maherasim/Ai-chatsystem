@@ -117,20 +117,15 @@
         flex: 1 1 auto !important;
         height: 100% !important;
     }
-
+    
     .sidebar-hidden {
         display: none !important;
     }
-
+    
     /* Ensure proper height expansion */
     .expanded-container {
         height: 100vh !important;
         width: 100% !important;
-    }
-
-    /* Ensure flex container allows main content to grow when sidebar hidden */
-    .d-flex.flex-grow-1.overflow-hidden {
-        align-items: stretch;
     }
 </style>
 
@@ -2905,7 +2900,7 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible; display: block;">
+            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
@@ -3125,65 +3120,47 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const toggleBtn = document.getElementById('toggle-right-sidebar');
-        if (!toggleBtn) return;
-
         const rightSidebar = document.querySelector('.Rightsidebar-group');
         const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
         const toggleIcon = toggleBtn.querySelector('i');
+        // Get the parent container that holds both main content and sidebar
         const contentContainer = mainContent ? mainContent.parentElement : null;
-
-        const applyState = (showSidebar) => {
-            if (!rightSidebar) return;
-
-            if (showSidebar) {
-                rightSidebar.classList.remove('sidebar-hidden');
-                rightSidebar.style.removeProperty('display');
-
-                if (toggleIcon) {
-                    toggleIcon.classList.remove('ti-layout-sidebar-right');
-                    toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
-                }
-
-                if (mainContent) {
-                    mainContent.classList.remove('full-width-content');
-                    mainContent.style.removeProperty('flex');
-                    mainContent.style.removeProperty('width');
-                }
-
-                if (contentContainer) {
-                    contentContainer.classList.remove('expanded-container');
-                    contentContainer.style.removeProperty('width');
-                }
-            } else {
-                rightSidebar.classList.add('sidebar-hidden');
-                rightSidebar.style.display = 'none';
-
-                if (toggleIcon) {
-                    toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
-                    toggleIcon.classList.add('ti-layout-sidebar-right');
-                }
-
-                if (mainContent) {
-                    mainContent.classList.add('full-width-content');
-                    mainContent.style.flex = '1 1 auto';
-                    mainContent.style.width = '100%';
-                }
-
-                if (contentContainer) {
-                    contentContainer.classList.add('expanded-container');
-                    contentContainer.style.width = '100%';
-                }
-            }
-        };
-
-        // Initialize based on computed visibility
-        const initialVisible = rightSidebar ? window.getComputedStyle(rightSidebar).display !== 'none' : false;
-        applyState(initialVisible);
-
+        
         toggleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const visible = rightSidebar ? window.getComputedStyle(rightSidebar).display !== 'none' : false;
-            applyState(!visible);
+            
+            // Check if sidebar is currently visible
+            const isSidebarVisible = rightSidebar.style.display !== 'none' && rightSidebar.style.display !== '';
+            
+            if (isSidebarVisible) {
+                // Hide sidebar and expand main content
+                rightSidebar.style.display = 'none';
+                toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
+                toggleIcon.classList.add('ti-layout-sidebar-right');
+                // Expand main content to fill available space
+                if (mainContent) {
+                    mainContent.style.width = '100%';
+                    mainContent.style.flex = '1';
+                }
+                // Ensure container expands properly
+                if (contentContainer) {
+                    contentContainer.style.width = '100%';
+                }
+            } else {
+                // Show sidebar
+                rightSidebar.style.display = 'block';
+                toggleIcon.classList.remove('ti-layout-sidebar-right');
+                toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
+                // Restore main content
+                if (mainContent) {
+                    mainContent.style.width = '';
+                    mainContent.style.flex = '';
+                }
+                // Restore container
+                if (contentContainer) {
+                    contentContainer.style.width = '';
+                }
+            }
         });
     });
 </script>
