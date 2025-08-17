@@ -2875,7 +2875,7 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 400px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
+            <div class="Rightsidebar-group" style="width: 468px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
