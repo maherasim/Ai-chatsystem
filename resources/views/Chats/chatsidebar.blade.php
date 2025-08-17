@@ -53,10 +53,10 @@
                        </a>
                    </li>
 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Groups" data-bs-custom-class="tooltip-primary">
+                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('groups') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Group-White.svg') }}" alt="Group White" class="icon-white">
-                           <img src="{{ asset('/build/img/Group-Black.svg') }}" alt="Group Black" class="icon-black">
+                           <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
+                           <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>
                    </li>
 

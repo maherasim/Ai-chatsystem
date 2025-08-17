@@ -53,7 +53,7 @@ Route::get('/meetings', function () {
     return view('Chats.meetings');
 })->middleware('auth')->name('chat-meetings');
 
-Route::get('/groups', function () {
+Route::get('/todo', function () {
       return view('Chats.groups');
     
 })->middleware('auth')->name('chat-groups');
