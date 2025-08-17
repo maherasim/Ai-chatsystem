@@ -110,6 +110,25 @@
     }
 </style>
 
+<style>
+    /* Full expansion class for when sidebar is hidden */
+    .full-width-content {
+        width: 100% !important;
+        flex: 1 1 auto !important;
+        height: 100% !important;
+    }
+    
+    .sidebar-hidden {
+        display: none !important;
+    }
+    
+    /* Ensure proper height expansion */
+    .expanded-container {
+        height: 100vh !important;
+        width: 100% !important;
+    }
+</style>
+
 
 <!-- content -->
 <div class="content main_content">
@@ -2139,6 +2158,12 @@
 
                 <!-- ✅ Right: Left Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
+                    <!-- Toggle Button for Right Sidebar -->
+                    <li style="list-style: none;">
+                        <a href="#" id="toggle-right-sidebar" style="display: inline;">
+                            <i class="ti ti-layout-sidebar-right-collapse" style="font-size: 22px; cursor: pointer;"></i>
+                        </a>
+                    </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
                         <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
@@ -3087,6 +3112,55 @@
             body.classList.remove('dark-mode');
             lightBtn.style.display = 'none';
             darkBtn.style.display = 'inline';
+        });
+    });
+</script>
+
+<!-- Right Sidebar Toggle -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggle-right-sidebar');
+        const rightSidebar = document.querySelector('.Rightsidebar-group');
+        const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
+        const toggleIcon = toggleBtn.querySelector('i');
+        // Get the parent container that holds both main content and sidebar
+        const contentContainer = mainContent ? mainContent.parentElement : null;
+        
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Check if sidebar is currently visible
+            const isSidebarVisible = rightSidebar.style.display !== 'none' && rightSidebar.style.display !== '';
+            
+            if (isSidebarVisible) {
+                // Hide sidebar and expand main content
+                rightSidebar.style.display = 'none';
+                toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
+                toggleIcon.classList.add('ti-layout-sidebar-right');
+                // Expand main content to fill available space
+                if (mainContent) {
+                    mainContent.style.width = '100%';
+                    mainContent.style.flex = '1';
+                }
+                // Ensure container expands properly
+                if (contentContainer) {
+                    contentContainer.style.width = '100%';
+                }
+            } else {
+                // Show sidebar
+                rightSidebar.style.display = 'block';
+                toggleIcon.classList.remove('ti-layout-sidebar-right');
+                toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
+                // Restore main content
+                if (mainContent) {
+                    mainContent.style.width = '';
+                    mainContent.style.flex = '';
+                }
+                // Restore container
+                if (contentContainer) {
+                    contentContainer.style.width = '';
+                }
+            }
         });
     });
 </script>
