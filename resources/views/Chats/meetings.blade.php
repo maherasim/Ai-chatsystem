@@ -2814,12 +2814,12 @@
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
-                            <div style="display: flex; justify-content: center;">
+                           
                                 <div class="slimscroll" style="padding: 15px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
 
                                     <!-- Priority Colors Box -->
                                     <!-- Container -->
-                                    <div style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; font-family: 'Poppins', sans-serif; max-width: 350px;">
+                                    <div style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; font-family: 'Poppins', sans-serif;">
 
                                         <!-- Priority Colors Section -->
                                         <div style="background-color: #ffffff; padding: 12px 16px; border-radius: 10px; margin-bottom: 15px;">
@@ -2935,7 +2935,6 @@
                                     </div>
                                 </div>
 
-                            </div>
 
                         </div>
                     </div>
