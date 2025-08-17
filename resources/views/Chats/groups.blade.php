@@ -132,29 +132,6 @@
     .d-flex.flex-grow-1.overflow-hidden {
         align-items: stretch;
     }
-
-    /* Wrap card rows to occupy full width */
-    .main-center-content .d-flex.gap-3 {
-        flex-wrap: wrap;
-    }
-
-    /* Avoid flex overflow clipping */
-    .main-center-content {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-
-    /* When sidebar hidden, turn card rows into responsive grid covering full width */
-    .expanded-container .main-center-content .d-flex.gap-3 {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        width: 100%;
-    }
-
-    /* Maintain sidebar width as fixed in flex layout */
-    .Rightsidebar-group {
-        flex: 0 0 350px;
-    }
 </style>
 
 
@@ -2245,7 +2222,7 @@
                 </div>
             </div> -->
             <!-- body -->
-            <div id="main-center-content" class="main-center-content" style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
+            <div style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
 
 
                 <div class="chat-body chat-page-group ">
@@ -2286,7 +2263,7 @@
 
                     </div>
                     <!-- CARD CONTAINER -->
-                    <div class="d-flex flex-wrap gap-3" style="margin-right:20px;">
+                    <div class="d-flex gap-3" style="margin-right:20px;">
 
                         <!-- Start of Card 1 -->
                         <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -3151,7 +3128,7 @@
         if (!toggleBtn) return;
 
         const rightSidebar = document.querySelector('.Rightsidebar-group');
-        const mainContent = document.getElementById('main-center-content');
+        const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
         const toggleIcon = toggleBtn.querySelector('i');
         const contentContainer = mainContent ? mainContent.parentElement : null;
 
