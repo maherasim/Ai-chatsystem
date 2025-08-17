@@ -2810,131 +2810,132 @@
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 468px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
+            <div class="Rightsidebar-group text-center" style="width: 468px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat-menu">
                         <div id="chats" class="sidebar-content active slimscroll">
-                            <div class="slimscroll" style="padding: 15px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
+                            <div style="display: flex; justify-content: center;">
+                                <div class="slimscroll" style="padding: 15px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
 
-                                <!-- Priority Colors Box -->
-                                <!-- Container -->
-                                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; font-family: 'Poppins', sans-serif; max-width: 350px;">
+                                    <!-- Priority Colors Box -->
+                                    <!-- Container -->
+                                    <div style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; font-family: 'Poppins', sans-serif; max-width: 350px;">
 
-                                    <!-- Priority Colors Section -->
-                                    <div style="background-color: #ffffff; padding: 12px 16px; border-radius: 10px; margin-bottom: 15px;">
-                                        <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-bottom: 10px;">
-                                            Priority Colors
-                                        </div>
-                                        <div style="display: flex; gap: 33px;">
-                                            <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
-                                                <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
-                                                <span style="font-size: 12px; color: #4b5563;">Low</span>
+                                        <!-- Priority Colors Section -->
+                                        <div style="background-color: #ffffff; padding: 12px 16px; border-radius: 10px; margin-bottom: 15px;">
+                                            <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-bottom: 10px;">
+                                                Priority Colors
                                             </div>
-                                            <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
-                                                <span style="width: 10px; height: 10px; background-color: #ffca28; border-radius: 50%; display: inline-block;"></span>
-                                                <span style="font-size: 12px; color: #4b5563;">Middle</span>
+                                            <div style="display: flex; gap: 33px;">
+                                                <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                                    <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
+                                                    <span style="font-size: 12px; color: #4b5563;">Low</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                                    <span style="width: 10px; height: 10px; background-color: #ffca28; border-radius: 50%; display: inline-block;"></span>
+                                                    <span style="font-size: 12px; color: #4b5563;">Middle</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                                    <span style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%; display: inline-block;"></span>
+                                                    <span style="font-size: 12px; color: #4b5563;">High</span>
+                                                </div>
                                             </div>
-                                            <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
-                                                <span style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%; display: inline-block;"></span>
-                                                <span style="font-size: 12px; color: #4b5563;">High</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Create New Meeting -->
-                                    <div style="font-weight: 600; font-size: 14px; color: #1e293b;">Create new Meeting</div>
-                                    <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Connect the Team</div>
-
-                                    <!-- Form -->
-                                    <div style="background-color: #ffffff; border-radius: 10px; padding: 15px;">
-
-                                        <!-- Select Project -->
-                                        <input type="text" placeholder="Select a project" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
-
-                                        <!-- Title -->
-                                        <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
-
-                                        <!-- Subtitle -->
-                                        <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
-
-                                        <!-- Scheduled Meetings -->
-                                        <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-top: 10px;">Scheduled Meetings</div>
-                                        <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set Meeting Start</div>
-
-                                        <!-- Buttons -->
-                                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                                            <button style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">Meeting Today</button>
-                                            <button style="flex: 1; background-color: #f1f5f9; color: #1e293b; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">Meeting by Date</button>
                                         </div>
 
-                                        <!-- Date & Time -->
-                                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 11px; color: #6b7280;">Start Date</label>
-                                                <div style="position: relative;">
-                                                    <input type="text" placeholder="DD:MM:YY" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
-                                                    <i class="bi bi-calendar" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                        <!-- Create New Meeting -->
+                                        <div style="font-weight: 600; font-size: 14px; color: #1e293b;">Create new Meeting</div>
+                                        <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Connect the Team</div>
+
+                                        <!-- Form -->
+                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 15px;">
+
+                                            <!-- Select Project -->
+                                            <input type="text" placeholder="Select a project" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
+
+                                            <!-- Title -->
+                                            <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
+
+                                            <!-- Subtitle -->
+                                            <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
+
+                                            <!-- Scheduled Meetings -->
+                                            <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-top: 10px;">Scheduled Meetings</div>
+                                            <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set Meeting Start</div>
+
+                                            <!-- Buttons -->
+                                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                                <button style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">Meeting Today</button>
+                                                <button style="flex: 1; background-color: #f1f5f9; color: #1e293b; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">Meeting by Date</button>
+                                            </div>
+
+                                            <!-- Date & Time -->
+                                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                                <div style="flex: 1;">
+                                                    <label style="font-size: 11px; color: #6b7280;">Start Date</label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" placeholder="DD:MM:YY" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
+                                                        <i class="bi bi-calendar" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div style="flex: 1;">
+                                                    <label style="font-size: 11px; color: #6b7280;">End Time</label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" placeholder="HH:MM" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
+                                                        <i class="bi bi-alarm" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 11px; color: #6b7280;">End Time</label>
+                                            <!-- Start Time -->
+                                            <div style="margin-top: 10px;">
+                                                <label style="font-size: 11px; color: #6b7280;">Start Time</label>
                                                 <div style="position: relative;">
                                                     <input type="text" placeholder="HH:MM" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
                                                     <i class="bi bi-alarm" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="mt-2">
+                                                <!-- Team Meeting -->
+                                                <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Team Meeting</div>
+                                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Select the Member for the Meeting</div>
+                                                <input type="text" placeholder="Select the Member for Shared ToDo"
+                                                    style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
 
-                                        <!-- Start Time -->
-                                        <div style="margin-top: 10px;">
-                                            <label style="font-size: 11px; color: #6b7280;">Start Time</label>
-                                            <div style="position: relative;">
-                                                <input type="text" placeholder="HH:MM" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
-                                                <i class="bi bi-alarm" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                                <!-- Meeting Link -->
+                                                <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Link</div>
+                                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Add Meeting Link here</div>
+                                                <input type="text" placeholder="Zoom or Meet link here"
+                                                    style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
+
+                                                <!-- ToDo Priority -->
+                                                <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">ToDo Priority</div>
+                                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set the Priority of the ToDo</div>
+                                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                                    <button type="button" style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">Low</button>
+                                                    <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">Middle</button>
+                                                    <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">High</button>
+                                                </div>
+
+                                                <!-- Meeting Reminder -->
+                                                <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Reminder</div>
+                                                <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set a reminder before expired</div>
+                                                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                                    <button type="button" style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">30 Min</button>
+                                                    <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">45 Min</button>
+                                                    <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">60 Min</button>
+                                                </div>
+
+                                                <!-- Create Button -->
+                                                <button style="width: 100%; background-color: #7c3aed; color: white; font-size: 13px; font-weight: 500; border: none; padding: 10px; border-radius: 6px;">
+                                                    Create
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <!-- Team Meeting -->
-                                            <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Team Meeting</div>
-                                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Select the Member for the Meeting</div>
-                                            <input type="text" placeholder="Select the Member for Shared ToDo"
-                                                style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
-
-                                            <!-- Meeting Link -->
-                                            <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Link</div>
-                                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Add Meeting Link here</div>
-                                            <input type="text" placeholder="Zoom or Meet link here"
-                                                style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
-
-                                            <!-- ToDo Priority -->
-                                            <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">ToDo Priority</div>
-                                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set the Priority of the ToDo</div>
-                                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                                                <button type="button" style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">Low</button>
-                                                <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">Middle</button>
-                                                <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">High</button>
-                                            </div>
-
-                                            <!-- Meeting Reminder -->
-                                            <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Reminder</div>
-                                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set a reminder before expired</div>
-                                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                                                <button type="button" style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">30 Min</button>
-                                                <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">45 Min</button>
-                                                <button type="button" style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">60 Min</button>
-                                            </div>
-
-                                            <!-- Create Button -->
-                                            <button style="width: 100%; background-color: #7c3aed; color: white; font-size: 13px; font-weight: 500; border: none; padding: 10px; border-radius: 6px;">
-                                                Create
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-
-
 
                         </div>
                     </div>
