@@ -2444,8 +2444,8 @@
                         </div>
 
                         <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-                            
-                            
+
+
                             <button type="button" class="btn"
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 All
@@ -2525,7 +2525,7 @@
                             </div>
 
                             <!-- Footer Button -->
-                         
+
                         </div>
                         <!-- End of Card 1 -->
                         <!-- Start of Card 2 (Middle Priority) -->
@@ -2588,7 +2588,7 @@
                             </div>
 
                             <!-- Footer Button -->
-                            
+
                         </div>
                         <!-- End of Card 2 -->
                         <!-- card 3 -->
@@ -2651,18 +2651,18 @@
                             </div>
 
                             <!-- Footer Button -->
-                          
+
                         </div>
                     </div>
-                     <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
                         <div>
                             <h3 style="margin: 0;">Shared ToDo's</h3>
                             <strong>Total ToDo's: 10</strong>
                         </div>
 
                         <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-                          
-                          
+
+
                             <button type="button" class="btn"
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 All
@@ -2742,7 +2742,7 @@
                             </div>
 
                             <!-- Footer Button -->
-                          
+
                         </div>
                         <!-- End of Card 1 -->
                         <!-- Start of Card 2 (Middle Priority) -->
@@ -2805,7 +2805,7 @@
                             </div>
 
                             <!-- Footer Button -->
-                           
+
                         </div>
                         <!-- End of Card 2 -->
                         <!-- card 3 -->
@@ -2868,7 +2868,7 @@
                             </div>
 
                             <!-- Footer Button -->
-                           
+
                         </div>
                     </div>
                 </div>
@@ -2912,7 +2912,7 @@
                                     <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Manage your Time</div>
 
                                     <!-- About ToDo Form -->
-                                    <form action="">
+                                   
                                         <div style="background-color: #ffffff; border-radius: 10px; padding: 15px;">
                                             <div style="margin-bottom: 15px;width: 100%">
                                                 <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">About ToDo</label>
@@ -2941,7 +2941,7 @@
                                                 <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set the Priority of the ToDo</div>
 
                                                 <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 20px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Low</button>
+                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Low</p>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Middle</button>
                                                     <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">High</button>
                                                 </div>
@@ -2980,7 +2980,7 @@
                                             </div>
 
                                         </div>
-                                    </form>
+                                    
                                 </div>
 
 
