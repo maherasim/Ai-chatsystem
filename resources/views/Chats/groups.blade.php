@@ -1,32 +1,9 @@
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
 @section('content')
+
 <style>
     body {
-        overflow-x: hidden;
-    }
-
-    .dark-icon {
-        content: url('/build/img/Moon.svg');
-        transition: 0.3s ease;
-    }
-
-    /* .dark-mode-toggle:hover .dark-icon {
-  content: url('/build/img/Moon-White.svg');
-} */
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        overflow-x: hidden;
-        /* prevents horizontal scroll */
-    }
-
-    .d-flex.flex-column.vh-100 {
-        width: 100%;
-        padding: 0;
-        margin: 0;
         overflow-x: hidden;
     }
 
@@ -116,15 +93,13 @@
 
     <!-- Left Sidebar Menu -->
 
-    <div style="visibility:visible;">
+    <div style="visibility: visible;">
         @include('Chats.chatsidebar')
     </div>
-
-
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-    <div class="sidebar-group" style="visibility:visible;">
+    <div class="sidebar-group" style="visibility: visible;">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
 
@@ -2111,42 +2086,33 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-    <div class="d-flex flex-column vh-100" style="visibility:visible;">
-        <div class="chat-header px-4 py-2 border-bottom" style="background-color: white;">
-            <div class="d-flex align-items-center justify-content-between">
-
-                <!-- ✅ Left: User Info -->
-                <div class="user-details d-flex align-items-center">
-                    <a class="text-muted chat-close me-2 d-xl-none" href="#">
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                    <div class="avatar avatar-lg online flex-shrink-0 me-2">
+    <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
+        <div>
+            <div class="chat-header">
+                <div class="user-details">
+                    <div class="d-xl-none">
+                        <a class="text-muted chat-close me-2" href="#">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                    <div class="avatar avatar-lg online flex-shrink-0">
                         <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
                     </div>
-                    <div class="overflow-hidden">
-                        <h6 class="mb-0">Username</h6>
-                        <p class="last-seen text-truncate mb-0">Online</p>
+                    <div class="ms-2 overflow-hidden">
+                        <h6>Username</h6>
+                        <p class="last-seen text-truncate"> Online</p>
                     </div>
                 </div>
 
-                <!-- ✅ Center: Chat Action Icons -->
-                <!-- <div class="chat-icons d-flex align-items-center gap-5">
-                    <img src="{{URL::asset('/build/img/Search-Black.svg')}}" alt="search" style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/VideoCall-Black.svg')}}" alt="video call" style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/Call-Black.svg')}}" alt="call"  style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/User-Info-Black.svg')}}" alt="info"  style="height: 25px;cursor: pointer;">
-                </div> -->
-
-                <!-- ✅ Right: Left Side Icons -->
+                <!-- Right Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
-                    <!-- Toggle Button for Right Sidebar -->
-                   
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
                         <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px;cursor: pointer;">
+                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
                         </a>
                     </li>
+
                     <li style="list-style: none;">
                         <!-- Moon Icon -->
                         <a href="#" id="dark-mode-toggle" style="display: inline;">
@@ -2165,972 +2131,2062 @@
                             <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
                         </button>
                     </form>
-
-                </div>
-
-            </div>
-        </div>
-
-
-
-        <!-- ✅ Main Body Area -->
-        <div class="d-flex flex-grow-1 overflow-hidden">
-
-            <!-- Optional Left Sidebar (if any) -->
-            <!-- <div class="sidebar-left">Left content</div> -->
-
-            <!-- ✅ Center Chat Area -->
-            <!-- <div class="flex-grow-1 d-flex justify-content-center align-items-center bg-body">
-                <div class="chatbox-input-container w-100 px-4 max-auto">
-                    <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
-                        <input type="text" class="form-control border-0 bg-transparent fs-4 me-3" placeholder="Ask anything..." style="min-height: 60px;">
-                        <button class="btn btn-light btn-icon rounded-circle me-2" type="button" title="Voice" style="width: 50px; height: 50px;">
-                            <i class="ti ti-microphone text-muted fs-3"></i>
-                        </button>
-                        <button class="btn btn-primary btn-icon rounded-circle" type="button" title="Send" style="width: 50px; height: 50px;">
-                            <i class="ti ti-send text-white fs-3"></i>
-                        </button>
-                    </div>
-                </div>
-            </div> -->
-            <!-- body -->
-            <div style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
-
-
-                <div class="chat-body chat-page-group ">
-                    <!-- alltodo  -->
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 style="margin: 0;">TOday ToDo's</h3>
-                            <strong>Total ToDo's: 10</strong>
-                        </div>
-
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Private
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Shared
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Low
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Middle
-                            </button>
-
-                        </div>
-
-                    </div>
-                    <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
-
-                        <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
-                                    Need Counte
-                                </button>
-                            </div>
-                        </div>
-                        <!-- End of Card 1 -->
-                        <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
-                                    Need Counte
-                                </button>
-                            </div>
-                        </div>
-                        <!-- End of Card 2 -->
-                        <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
-                                    Need Counte
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- private todo -->
-                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 style="margin: 0;">Private ToDo's</h3>
-                            <strong>Total private ToDo's: 10</strong>
-                        </div>
-
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-
-
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Low
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
-                                Middle
-                            </button>
-
-                        </div>
-
-                    </div>
-                    <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
-
-                        <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 1 -->
-                        <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 2 -->
-                        <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                    </div>
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 style="margin: 0;">Shared ToDo's</h3>
-                            <strong>Total ToDo's: 10</strong>
-                        </div>
-
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-
-
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Low
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Middle
-                            </button>
-
-                        </div>
-
-                    </div>
-                    <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
-
-                        <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 1 -->
-                        <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 2 -->
-                        <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                    </div>
                 </div>
             </div>
+            <!-- Wrapper -->
+            <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
+                <div class="chat-body chat-page-group">
 
-            <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
-                <div class="tab-content">
-                    <div class="tab-pane fade active show" id="chat-menu">
-                        <div id="chats" class="sidebar-content active slimscroll">
-                            <div class="slimscroll" style="padding: 12px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
+                    <div class="chat-body chat-page-group ">
+                        <!-- alltodo  -->
+                        <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 style="margin: 0;">TOday ToDo's</h3>
+                                <strong>Total ToDo's: 10</strong>
+                            </div>
 
-                                <!-- Priority Colors Box -->
-                                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 12px;">
-                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 8px;">
-                                        Priority Colors
-                                    </div>
-                                    <div style="display: flex; gap: 25px; margin-bottom: 12px;">
-                                        <!-- Low -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">Low</span>
-                                        </div>
+                            <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel">
+                                    Add TODO
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    All
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Private
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Shared
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    All
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Low
+                                </button>
 
-                                        <!-- Middle -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #ffca28; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">Middle</span>
-                                        </div>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Middle
+                                </button>
 
-                                        <!-- High -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">High</span>
-                                        </div>
-                                    </div>
+                            </div>
 
-
-                                    <!-- Create new ToDo -->
-                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50;">Create new ToDO</div>
-                                    <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Manage your Time</div>
-
-                                    <!-- About ToDo Form -->
-                                   
-                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 12px;">
-                                            <div style="margin-bottom: 12px;width: 100%">
-                                                <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">About ToDo</label>
-                                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
-                                            <div style="margin-bottom: 12px;">
-                                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; height: 80px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
-
-                                            <!-- ToDo Date -->
+                        </div>
+                        <!-- CARD CONTAINER -->
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <!-- Start of Card 1 -->
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">ToDo Date</label>
-                                                <div style="font-size: 11px; color: #6c757d; margin-bottom: 8px;">Set Start and Expired Time max. 90 Days</div>
-                                                <div style="display: flex; gap:1px;">
-                                                    <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 6px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                                    </div>
-                                                    <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                                    </div>
-                                                </div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
                                             </div>
-                                            <!-- ToDo Priority -->
-                                            <div style="margin-top: 15px;">
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Priority</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Priority of the ToDo</div>
-
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Low</p>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Middle</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">High</button>
-                                                </div>
-                                            </div>
-
-                                            <!-- ToDo Type -->
-                                            <div>
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Type</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Type of the ToDo</div>
-
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 8px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Private ToDO</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Shared ToDo</button>
-                                                </div>
-
-                                                <input type="text" placeholder="Select the Member for Shared ToDo" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
-                                            <!-- ToDo Reminder -->
-                                            <div style="margin-top: 20px;">
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Reminder</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set a reminder before expired</div>
-
-                                                <!-- Reminder Buttons -->
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 14px; font-size: 13px;">6 Hour</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">12 Hour</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">24 Hour</button>
-                                                </div>
-
-                                                <!-- Create Button -->
-                                                <div style="text-align: center;" class="mb-2">
-                                                    <button type="submit" style="background-color: #7f52f7; color: white; border: none; border-radius: 6px; padding: 10px 0; width: 100%; font-size: 14px; font-weight: 500;">
-                                                        Create
-                                                    </button>
-                                                </div>
-                                            </div>
-
                                         </div>
-                                    
-                                </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                            </div>
-                        </div>
-                    </div>
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
 
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-
-
-
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-
-
-
-
-    <div class="modal fade" id="new-Ai">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add New Subject</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ti ti-x"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{url('index')}}">
-                        <div class="row">
-                            <label class="form-label">Subject Type</label>
-                            <div class="d-flex" style="float: right;">
-
-                                <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="mute" id="group1">
-                                    <label class="form-check-label" for="group1">Public</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="mute" id="group2">
-                                    <label class="form-check-label" for="group2">Private</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-lg-12">
-                                <label class="form-label">Subject Title</label>
-                                <div class="input-icon mb-3 position-relative">
-                                    <input type="text" value="" class="form-control" placeholder="Last Name">
-
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                            Need Counte
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- End of Card 1 -->
+                            <!-- Start of Card 2 (Middle Priority) -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                            Need Counte
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Card 2 -->
+                            <!-- card 3 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                            Need Counte
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- card 4 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                            Need Counte
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- private todo -->
+                        <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 style="margin: 0;">Private ToDo's</h3>
+                                <strong>Total private ToDo's: 10</strong>
+                            </div>
+
+                            <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
+
+
+                                <button type="button" class="btn"
+                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    All
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Low
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
+                                    Middle
+                                </button>
+
+                            </div>
 
                         </div>
+                        <!-- CARD CONTAINER -->
+                        <div class="row g-3">
+                            <!-- Start of Card 1 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- End of Card 1 -->
+                            <!-- Start of Card 2 (Middle Priority) -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- End of Card 2 -->
+                            <!-- card 3 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- shared todo -->
+                        <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 style="margin: 0;">Shared ToDo's</h3>
+                                <strong>Total ToDo's: 10</strong>
+                            </div>
+
+                            <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
+
+
+                                <button type="button" class="btn"
+                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    All
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Low
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    Middle
+                                </button>
+
+                            </div>
+
+                        </div>
+                        <!-- CARD CONTAINER -->
                         <div class="row g-3">
 
-                            <div class="col-12">
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
+                            <!-- Start of Card 1 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- End of Card 1 -->
+                            <!-- Start of Card 2 (Middle Priority) -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>private
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- End of Card 2 -->
+                            <!-- card 3 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- card 4 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Admin name</div>
+                                                <small style="color: gray;">Created Time & Date</small>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-share me-1"></i>Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
+                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+                                            Here we will add the description of the ToDo. Only you is Superadmin ToDo.
+                                        </p>
+
+                                        <!-- Date & Priority Row -->
+                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="text-success fw-semibold">Start:</span>
+                                                <span>22.10.2024</span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver:</span>
+                                                <span style="color: #f44336;">Today</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer Button -->
+
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
+
+
             </div>
+
         </div>
+
     </div>
 
 </div>
 
-<!-- /Content -->
-<script>
-    const toggleIcon = document.getElementById("toggleIcon");
-    const chevron = document.getElementById("chevronIcon");
+<!-- Modal -->
+<div class="modal fade" id="todomodel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;">
 
-    toggleIcon.addEventListener("click", () => {
-        setTimeout(() => {
-            chevron.classList.toggle("ti-chevron-down");
-            chevron.classList.toggle("ti-chevron-up");
-        }, 150);
-    });
-</script>
-<!-- dark and light mode -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const body = document.body;
-        const darkBtn = document.getElementById('dark-mode-toggle');
-        const lightBtn = document.getElementById('light-mode-toggle');
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                ×
+            </button>
 
-        darkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.add('dark-mode');
-            darkBtn.style.display = 'none';
-            lightBtn.style.display = 'inline';
-        });
+            <div class="modal-body p-4" style="background-color: white;">
+                <!-- Header -->
+                <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo</h5>
+                <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
 
-        lightBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.remove('dark-mode');
-            lightBtn.style.display = 'none';
-            darkBtn.style.display = 'inline';
-        });
-    });
-</script>
+                <!-- ToDo Details -->
+                <!-- ToDo Details Section -->
+                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <!-- Heading and Subtext -->
+                    <div style="margin-bottom: 12px;">
+                        <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">ToDo Details</p>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">Manage your time</p>
+                    </div>
 
-<!-- Right Sidebar Toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.getElementById('toggle-right-sidebar');
-        const rightSidebar = document.querySelector('.Rightsidebar-group');
-        const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
-        const toggleIcon = toggleBtn.querySelector('i');
-        
-        toggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Check if sidebar is currently visible
-            const isSidebarVisible = rightSidebar.style.display !== 'none' && rightSidebar.style.display !== '';
-            
-            if (isSidebarVisible) {
-                // Hide sidebar and expand main content
-                rightSidebar.style.display = 'none';
-                toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
-                toggleIcon.classList.add('ti-layout-sidebar-right');
-                // Expand main content to fill available space
-                if (mainContent) {
-                    mainContent.style.flex = '1 1 auto';
-                    mainContent.style.width = '100%';
-                    mainContent.style.paddingRight = '20px';
-                }
-            } else {
-                // Show sidebar
-                rightSidebar.style.display = 'block';
-                toggleIcon.classList.remove('ti-layout-sidebar-right');
-                toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
-                // Restore main content
-                if (mainContent) {
-                    mainContent.style.flex = '';
-                    mainContent.style.width = '';
-                    mainContent.style.paddingRight = '20px';
-                }
-            }
-        });
-    });
-</script>
-@endsection
+                    <!-- Inputs -->
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="ToDo Title"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Describe the ToDo's"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Today/Scheduled Toggle + Date/Time Section -->
+                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <!-- Toggle Today/Scheduled -->
+                    <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+                        <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                            <button id="btnTodoToday"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnTodoScheduled').style.backgroundColor='transparent';
+                    document.getElementById('btnTodoScheduled').style.color='#64748b';
+                    document.getElementById('todoStartDate').style.display='none';
+                    document.getElementById('todoStartTime').className='col-md-4';
+                    document.getElementById('todoEndTime').className='col-md-4';
+                "
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Today ToDo's
+                            </button>
+                            <button id="btnTodoScheduled"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnTodoToday').style.backgroundColor='transparent';
+                    document.getElementById('btnTodoToday').style.color='#64748b';
+                    document.getElementById('todoStartDate').style.display='block';
+                    document.getElementById('todoStartTime').className='col-md-4';
+                    document.getElementById('todoEndTime').className='col-md-4';
+                "
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Scheduled ToDo's
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Date & Time Inputs -->
+                    <div class="row g-2 align-items-center mb-0" style="justify-content: center;">
+                        <!-- Start Date (Initially hidden) -->
+                        <div id="todoStartDate" class="col-md-4" style="display: none;">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Start Date DD:MM:YY"
+                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+
+                        <!-- Start Time -->
+                        <div id="todoStartTime" class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Start Time HH:MM"
+                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+
+                        <!-- End Time -->
+                        <div id="todoEndTime" class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="End Time HH:MM"
+                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Shared / Private ToDo Section -->
+                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+
+                    <!-- Toggle Buttons -->
+                    <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+                        <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                            <button id="btnShared"
+                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Shared ToDo's
+                            </button>
+                            <button id="btnPrivate"
+                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Private ToDo's
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project & Members Inputs -->
+                <div class="row g-2 mb-0 justify-content-center">
+    <div class="col-md-4">
+        <input type="text" class="form-control"
+            placeholder="Select Project"
+            style="font-size: 13px; background-color: white; border-radius: 8px;">
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control"
+            placeholder="Select the Members"
+            style="font-size: 13px; background-color: white; border-radius: 8px;">
+    </div>
+</div>
+
+                </div>
+
+
+                <!-- Priority & Reminder -->
+                <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
+                    <div class="row g-3">
+                        <!-- Priority -->
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Meeting Priority</p>
+                            <p style="font-size: 11px; color: #6b7280;">Set the priority of the meeting</p>
+                            <div class="d-flex gap-2">
+                                <button id="priorityLow" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Low</button>
+                                <button id="priorityMiddle" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Middle</button>
+                                <button id="priorityHigh" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">High</button>
+                            </div>
+                        </div>
+
+                        <!-- Reminder -->
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Expired Reminder</p>
+                            <p style="font-size: 11px; color: #6b7280;">Set a reminder before expired</p>
+                            <div class="d-flex gap-2">
+                                <button id="reminder6" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">6 Hour</button>
+                                <button id="reminder12" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">12 Hour</button>
+                                <button id="reminder24" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">24 Hour</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Button -->
+                <div class="text-center">
+                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
+                        Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Denied Modal -->
+<div class="modal fade" id="deniedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; padding: 15px;">
+
+            <!-- Modal Header -->
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
+                Deneid Reason
+            </div>
+            <div style="font-size: 13px; color:black">
+                Tell us why ?!
+            </div>
+            <hr style="background-color: #777; height: 1px; border: none; margin: 10px 0;">
+
+            <!-- Denied Section -->
+            <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
+
+                <!-- Icon + Text left aligned -->
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+                    <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="38px" height="38px">
+                    <div>
+                        <div style="font-size: 18px; font-weight: 600;color:black">Denied</div>
+                        <div style="color: #777; font-size: 13px;">Select reason or Type the reason</div>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <input type="text" placeholder="Task Priority Select"
+                    style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
+
+                <textarea placeholder="Type reason here"
+                    style="width: 100%;  padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff; resize: none;"></textarea>
+
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center" style="margin-top: 15px;">
+                <button class="btn" data-bs-dismiss="modal"
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save & Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- meeting Modal -->
+<div class="modal fade" id="meetingModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+
+            <!-- Close Button -->
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                ×
+            </button>
+
+
+
+            <div class="modal-body p-4" style="background-color: white;">
+                <!-- Header -->
+                <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
+                <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
+
+                <!-- Meeting Details -->
+                <div class="border rounded p-3 mb-3" style="background-color: #f9f9fb;">
+                    <p style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Meeting Details</p>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Select Project" style="font-size: 13px;">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Meeting Title" style="font-size: 13px;">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Describe the meeting" style="font-size: 13px;">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Select Members" style="font-size: 13px;">
+                        </div>
+                    </div>
+                </div>
+                <!-- Schedule Type Toggle -->
+                <div style="background-color: #f9f9fb;">
+                    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;background-color: #f9f9fb;">
+                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; justify-content: center;">
+                            <button id="btnToday"
+                                onclick="document.getElementById('btnToday').style.backgroundColor='#22c55e';
+             document.getElementById('btnToday').style.color='white';
+             document.getElementById('btnScheduled').style.backgroundColor='transparent';
+             document.getElementById('btnScheduled').style.color='#64748b';"
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px;
+           border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Meeting Today
+                            </button>
+
+                            <button id="btnScheduled"
+                                onclick="document.getElementById('btnScheduled').style.backgroundColor='#22c55e';
+             document.getElementById('btnScheduled').style.color='white';
+             document.getElementById('btnToday').style.backgroundColor='transparent';
+             document.getElementById('btnToday').style.color='#64748b';"
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px;
+           border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Scheduled Meeting
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Date & Time Fields -->
+                    <div class="row g-2 align-items-center mb-3" style="background-color: #f9f9fb;padding-bottom:4px;">
+                        <!-- <div class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control"
+                                    placeholder="Start Date DD.MM.YY"
+                                    style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div> -->
+                        <div class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control"
+                                    placeholder="Start Time HH:MM"
+                                    style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control"
+                                    placeholder="End Time HH:MM"
+                                    style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Meeting Links -->
+                <!-- Link Toggle Section -->
+                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; margin: auto;margin-bottom: 12px;">
+
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
+                        <button id="btnMeet"
+                            onclick="
+      this.style.backgroundColor='#22c55e';
+      this.style.color='white';
+      document.getElementById('btnZoom').style.backgroundColor='white';
+      document.getElementById('btnZoom').style.color='#64748b';
+    "
+                            style="border: none; background-color: #22c55e; color: white; padding: 6px 16px;
+           border-radius: 6px; font-size: 13px; font-weight: 500;">
+                            Meet Link
+                        </button>
+
+                        <button id="btnZoom"
+                            onclick="
+      this.style.backgroundColor='#22c55e';
+      this.style.color='white';
+      document.getElementById('btnMeet').style.backgroundColor='white';
+      document.getElementById('btnMeet').style.color='#64748b';
+    "
+                            style="border: none; background-color: white; color: #64748b; padding: 6px 16px;
+           border-radius: 6px; font-size: 13px; font-weight: 500;">
+                            Zoom Link
+                        </button>
+                    </div>
+
+
+                    <input type="text"
+                        placeholder="Past link"
+                        style="width: 100%; background-color: white; color: #64748b; border: none;
+           border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
+                </div>
+
+
+                <!-- ✅ Priority & Reminder Section Styled Box -->
+                <div class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
+                    <div class="row g-3">
+                        <!-- Meeting Priority -->
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Meeting Priority</p>
+                            <p style="font-size: 11px; color: #6b7280;">Set the Priority of the Meeting</p>
+                            <div class="d-flex gap-2">
+                                <button id="priorityLow" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('priorityMiddle').style.backgroundColor='white';
+          document.getElementById('priorityMiddle').style.color='#64748b';
+          document.getElementById('priorityHigh').style.backgroundColor='white';
+          document.getElementById('priorityHigh').style.color='#64748b';
+        " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    Low
+                                </button>
+
+                                <button id="priorityMiddle" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('priorityLow').style.backgroundColor='white';
+          document.getElementById('priorityLow').style.color='#64748b';
+          document.getElementById('priorityHigh').style.backgroundColor='white';
+          document.getElementById('priorityHigh').style.color='#64748b';
+        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    Middle
+                                </button>
+
+                                <button id="priorityHigh" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('priorityLow').style.backgroundColor='white';
+          document.getElementById('priorityLow').style.color='#64748b';
+          document.getElementById('priorityMiddle').style.backgroundColor='white';
+          document.getElementById('priorityMiddle').style.color='#64748b';
+        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    High
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Expired Reminder -->
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Expired Reminder</p>
+                            <p style="font-size: 11px; color: #6b7280;">Set a reminder before expired</p>
+                            <div class="d-flex gap-2">
+                                <button id="reminder6" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('reminder12').style.backgroundColor='white';
+          document.getElementById('reminder12').style.color='#64748b';
+          document.getElementById('reminder24').style.backgroundColor='white';
+          document.getElementById('reminder24').style.color='#64748b';
+        " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    6 Hour
+                                </button>
+
+                                <button id="reminder12" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('reminder6').style.backgroundColor='white';
+          document.getElementById('reminder6').style.color='#64748b';
+          document.getElementById('reminder24').style.backgroundColor='white';
+          document.getElementById('reminder24').style.color='#64748b';
+        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    12 Hour
+                                </button>
+
+                                <button id="reminder24" onclick="
+          this.style.backgroundColor='#22c55e';
+          this.style.color='white';
+          document.getElementById('reminder6').style.backgroundColor='white';
+          document.getElementById('reminder6').style.color='#64748b';
+          document.getElementById('reminder12').style.backgroundColor='white';
+          document.getElementById('reminder12').style.color='#64748b';
+        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    24 Hour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
+                        Create
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- add user -->
+<div class="modal fade" id="add_user" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header border-0 pb-0">
+                <div>
+                    <h4 class="modal-title fw-bold">Add New User</h4>
+                    <small class="text-muted">User ID : <strong>user -0024</strong></small>
+                </div>
+                <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body pt-0">
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs mb-3 border-bottom-0">
+                    <li class="nav-item">
+                        <a class="nav-link active fw-semibold"
+                            data-bs-toggle="tab"
+                            href="#basicInfo"
+                            style="border: none; color: #f65b0f; border-bottom: 2px solid #f65b0f; background-color: transparent;">
+                            Basic Information
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Basic Information Tab -->
+                    <div class="tab-pane fade show active" id="basicInfo">
+                        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            @csrf
+
+                            <!-- Profile Upload -->
+                            <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
+                                <!-- Profile Image -->
+                                <div class="position-relative d-inline-block" style="width: 80px; height: 80px;">
+                                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                                        class="rounded-circle"
+                                        alt="Profile Image"
+                                        style="width: 80px; height: 80px; object-fit: cover;">
+
+                                    <!-- Hidden File Input -->
+                                    <input type="file" name="image" accept="image/*" id="profileImageInput" style="display: none;" onchange="previewImage(event)">
+
+                                    <!-- Overlay + Icon -->
+                                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
+                                        style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: 0.3s; cursor: pointer;"
+                                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"
+                                        onclick="document.getElementById('profileImageInput').click();">
+                                        <span class="text-white fs-3">+</span>
+                                    </div>
+                                </div>
+
+
+                                <!-- Upload Text + Buttons -->
+                                <div style="margin-left: 20px;">
+                                    <p class="mb-1 fw-medium">Upload Profile Image</p>
+                                    <small class="text-muted d-block mb-2">Image should be below 4 mb</small>
+                                    <button class="btn btn-warning me-2" style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
+                                    <button class="btn btn-outline">Cancel</button>
+                                </div>
+                            </div>
+
+
+                            <!-- Form Fields -->
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">First & last Name</label>
+
+                                    <input type="text" name="name" class="form-control" required>
+                                    @error('name')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Projects</label>
+                                    <select class="form-select" name="department" required>
+                                        <option selected>Select</option>
+                                        <option>All Department</option>
+                                        <option>Finance</option>
+                                        <option>Developer</option>
+                                        <option>Executive</option>
+                                    </select>
+                                    @error('department')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Position</label>
+                                    <select class="form-select" name="position" required>
+                                        <option selected>Select</option>
+                                        <option>All Department</option>
+                                        <option>Finance</option>
+                                        <option>Developer</option>
+                                        <option>Executive</option>
+                                    </select>
+                                    @error('position')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+
+
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                    @error('email')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label"> Repeat Email</label>
+                                    <input type="email" class="form-control" name="remail" required>
+                                    @error('remail')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" name="passw" required autocomplete="new-password">
+                                    @error('passw')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Repeat Password</label>
+                                    <input type="password" class="form-control" name="rpassw" required autocomplete="new-password">
+                                    @error('rpassw')
+                                    <div class="alert alert-danger mt-2">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                                {{-- <div class="col-md-6">
+                                        <label class="form-label">Confirm Password</label>
+                                        <input type="password" name="cpassw" class="form-control" required>
+                                        @error('cpassw')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                            </div>
+                            @enderror
+                    </div> --}}
+
+
+                </div>
+                <div style="max-width: 950px; margin: 30px auto; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+
+                    <!-- Enable Options Header -->
+                    <div style="background-color: #f5f6fa; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 600; color: #0b0b0b;">Enable Options</span>
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <!-- Enable All Module Toggle -->
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="color: #6c757d;">Enable all Module</span>
+                            </label>
+
+                            <!-- Select All -->
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px; cursor: pointer;" checked>
+                                <span style="color: #ff6600; font-weight: 500;">Select All</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Permissions Table -->
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+
+                            <tbody>
+                                <!-- clients -->
+                                <tr style="background: #fff;">
+                                    <!-- Module Enable Switch -->
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[clients][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Clients
+                                    </td>
+
+                                    <!-- Read -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[clients][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Write -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[clients][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Delete -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[clients][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Import -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[clients][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Export -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[clients][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                                <tr style="background: #fff;">
+                                    <!-- Module Enable Switch -->
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[leaves][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Leaves
+                                    </td>
+
+                                    <!-- Read -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[leaves][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Write -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[leaves][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Delete -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[leaves][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Import -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[leaves][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Export -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[leaves][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                                <tr style="background: #fff;">
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <!-- Enabled Switch -->
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[holidays][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Holidays
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[holidays][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[holidays][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[holidays][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[holidays][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[holidays][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                                <!-- projects -->
+                                <tr style="background: #fff;">
+                                    <!-- Module Enable Switch -->
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[projects][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Projects
+                                    </td>
+
+                                    <!-- Read -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[projects][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Write -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[projects][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Delete -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[projects][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Import -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[projects][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <!-- Export -->
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[projects][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+                                <!-- Tasks -->
+                                <tr style="background: #fff;">
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[tasks][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Tasks
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[tasks][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[tasks][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[tasks][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[tasks][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[tasks][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <!-- Chats -->
+                                <tr style="background: #fff;">
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[chats][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Chats
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[chats][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[chats][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[chats][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[chats][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[chats][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <!-- Assets -->
+                                <tr style="background: #fff;">
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[assets][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Assets
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[assets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[assets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[assets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[assets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[assets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+                                <!-- Timming sheets -->
+                                <tr style="background: #fff;">
+                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][enabled]" checked
+                                                style="opacity: 0; width: 0; height: 0;"
+                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                            </span>
+                                        </label>
+                                        Timming Sheets
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Read</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Write</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Delete</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Import</span>
+                                        </label>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                            <input type="checkbox" name="permissions[timming_sheets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                            <span style="font-size: 14px;">Export</span>
+                                        </label>
+                                    </td>
+                                </tr>
+
+
+
+
+
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer border-top-0 pt-0">
+                    <div class="d-flex ms-auto gap-2">
+                        <button type="button" class="btn btn-outline" style="min-width: 100px;" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-white" style="background-color: #f65b0f; border-color: #f65b0f; min-width: 100px;">Save</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- creaTE meting MODEL POPIP -->
+
+        <script>
+            const toggleIcon = document.getElementById("toggleIcon");
+            const chevron = document.getElementById("chevronIcon");
+
+            toggleIcon.addEventListener("click", () => {
+                setTimeout(() => {
+                    chevron.classList.toggle("ti-chevron-down");
+                    chevron.classList.toggle("ti-chevron-up");
+                }, 150);
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const body = document.body;
+                const darkBtn = document.getElementById('dark-mode-toggle');
+                const lightBtn = document.getElementById('light-mode-toggle');
+
+                darkBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    body.classList.add('dark-mode');
+                    darkBtn.style.display = 'none';
+                    lightBtn.style.display = 'inline';
+                });
+
+                lightBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    body.classList.remove('dark-mode');
+                    lightBtn.style.display = 'none';
+                    darkBtn.style.display = 'inline';
+                });
+            });
+        </script>
+        @endsection
