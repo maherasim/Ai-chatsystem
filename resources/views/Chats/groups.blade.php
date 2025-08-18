@@ -2161,7 +2161,7 @@
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Shared
                                 </button>
-                                 <button type="button" class="btn"
+                                <button type="button" class="btn"
                                     style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     All
                                 </button>
@@ -2169,7 +2169,7 @@
                                     style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Low
                                 </button>
-                               
+
                                 <button type="button" class="btn"
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
@@ -3087,17 +3087,32 @@
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
                 <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-
                     <!-- Toggle Today/Scheduled -->
                     <div style="display: flex; justify-content: center; margin-bottom: 16px;">
                         <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-                            <button id="btnToday"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnScheduled').style.backgroundColor='transparent'; document.getElementById('btnScheduled').style.color='#64748b';"
+                            <button id="btnTodoToday"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnTodoScheduled').style.backgroundColor='transparent';
+                    document.getElementById('btnTodoScheduled').style.color='#64748b';
+                    document.getElementById('todoStartDate').style.display='none';
+                    document.getElementById('todoStartTime').className='col-md-4';
+                    document.getElementById('todoEndTime').className='col-md-4';
+                "
                                 style="border: none; background-color: #22c55e; color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Today ToDo's
                             </button>
-                            <button id="btnScheduled"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnToday').style.backgroundColor='transparent'; document.getElementById('btnToday').style.color='#64748b';"
+                            <button id="btnTodoScheduled"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnTodoToday').style.backgroundColor='transparent';
+                    document.getElementById('btnTodoToday').style.color='#64748b';
+                    document.getElementById('todoStartDate').style.display='block';
+                    document.getElementById('todoStartTime').className='col-md-4';
+                    document.getElementById('todoEndTime').className='col-md-4';
+                "
                                 style="border: none; background-color: transparent; color: #64748b; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled ToDo's
                             </button>
@@ -3105,8 +3120,9 @@
                     </div>
 
                     <!-- Date & Time Inputs -->
-                    <div class="row g-2 align-items-center mb-0">
-                        <div class="col-md-4">
+                    <div class="row g-2 align-items-center mb-0" style="justify-content: center;">
+                        <!-- Start Date (Initially hidden) -->
+                        <div id="todoStartDate" class="col-md-4" style="display: none;">
                             <div class="position-relative">
                                 <input type="text" class="form-control" placeholder="Start Date DD:MM:YY"
                                     style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
@@ -3114,7 +3130,9 @@
                                     style="position: absolute; top: 8px; right: 10px; width: 18px;">
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <!-- Start Time -->
+                        <div id="todoStartTime" class="col-md-4">
                             <div class="position-relative">
                                 <input type="text" class="form-control" placeholder="Start Time HH:MM"
                                     style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
@@ -3122,7 +3140,9 @@
                                     style="position: absolute; top: 8px; right: 10px; width: 18px;">
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <!-- End Time -->
+                        <div id="todoEndTime" class="col-md-4">
                             <div class="position-relative">
                                 <input type="text" class="form-control" placeholder="End Time HH:MM"
                                     style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
@@ -3132,6 +3152,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
                 <!-- Shared / Private ToDo Section -->
@@ -3154,18 +3175,19 @@
                     </div>
 
                     <!-- Project & Members Inputs -->
-                    <div class="row g-2 mb-0">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control"
-                                placeholder="Select Project"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control"
-                                placeholder="Select the Members"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                        </div>
-                    </div>
+                <div class="row g-2 mb-0 justify-content-center">
+    <div class="col-md-4">
+        <input type="text" class="form-control"
+            placeholder="Select Project"
+            style="font-size: 13px; background-color: white; border-radius: 8px;">
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control"
+            placeholder="Select the Members"
+            style="font-size: 13px; background-color: white; border-radius: 8px;">
+    </div>
+</div>
+
                 </div>
 
 
@@ -3327,7 +3349,7 @@
 
                     <!-- Date & Time Fields -->
                     <div class="row g-2 align-items-center mb-3" style="background-color: #f9f9fb;padding-bottom:4px;">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="position-relative">
                                 <input type="text" class="form-control"
                                     placeholder="Start Date DD.MM.YY"
@@ -3335,7 +3357,7 @@
                                 <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
                                     style="position: absolute; top: 8px; right: 10px; width: 18px;">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-4">
                             <div class="position-relative">
                                 <input type="text" class="form-control"

@@ -102,10 +102,7 @@
     <div class="sidebar-group" style="visibility: visible;">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
-
-                <!-- Chats sidebar -->
                 <div class="slimscroll">
-
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -2175,64 +2172,110 @@
                         </div>
 
                         <!-- TOday reminde  -->
-                        <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                        <div class="project-succes pt-4 pb-2 d-flex justify-content-between ">
                             <div>
-                                <h3 style="margin: 0;">TOday Reminder's</h3>
+                                <h3 style="margin: 0;">TOday's Reminder's</h3>
                                 <strong>Reminders: 10</strong>
                             </div>
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal">
-                                Add Meeting
-                            </button>
-                            <div class="d-flex" style="gap: 3px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
 
+                            <div class="d-flex" style="gap: 7px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+
+                                <!-- Add Meeting (Stays Red Always) -->
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
+                                    style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; margin-right:8px;">
+                                    Add Meeting
+                                </button>
+
+                                <!-- Filter Buttons -->
                                 <button type="button" class="btn"
-                                    onclick="setActive(this)"
+                                    onclick="
+            let btns = this.parentElement.querySelectorAll('button');
+            btns.forEach(b => {
+                if (!b.classList.contains('btn-danger')) {
+                    b.style.background = '#f8fafc';
+                    b.style.color = '#566a7f';
+                    b.style.border = '1px solid transparent';
+                }
+            });
+            this.style.background = '#32b768';
+            this.style.color = 'white';
+            this.style.border = '1px solid #32b768';
+        "
                                     style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     All
                                 </button>
+
                                 <button type="button" class="btn"
-                                    onclick="setActive(this)"
+                                    onclick="let btns = this.parentElement.querySelectorAll('button');btns.forEach(b => {if (!b.classList.contains('btn-danger')) {b.style.background = '#f8fafc';b.style.color = '#566a7f';b.style.border = '1px solid transparent';}});this.style.background = '#32b768';this.style.color = 'white';this.style.border = '1px solid #32b768';
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Today Meeting
                                 </button>
+
                                 <button type="button" class="btn"
-                                    onclick="setActive(this)"
+                                    onclick="
+            let btns = this.parentElement.querySelectorAll('button');
+            btns.forEach(b => {
+                if (!b.classList.contains('btn-danger')) {
+                    b.style.background = '#f8fafc';
+                    b.style.color = '#566a7f';
+                    b.style.border = '1px solid transparent';
+                }
+            });
+            this.style.background = '#32b768';
+            this.style.color = 'white';
+            this.style.border = '1px solid #32b768';
+        "
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     New Meeting
                                 </button>
+
                                 <button type="button" class="btn"
-                                    onclick="setActive(this)"
-                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    onclick="
+            let btns = this.parentElement.querySelectorAll('button');
+            btns.forEach(b => {
+                if (!b.classList.contains('btn-danger')) {
+                    b.style.background = '#f8fafc';
+                    b.style.color = '#566a7f';
+                    b.style.border = '1px solid transparent';
+                }
+            });
+            this.style.background = '#32b768';
+            this.style.color = 'white';
+            this.style.border = '1px solid #32b768';
+        "
+                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;margin-right:5px;">
                                     Missed Meeting
                                 </button>
+                                <script>
+                                    function setActive(button) {
+                                        const buttons = button.parentElement.querySelectorAll('button');
+                                        buttons.forEach(btn => {
+                                            btn.style.background = '#f8fafc';
+                                            btn.style.color = '#566a7f';
+                                            btn.style.border = '1px solid transparent';
+                                        });
+
+                                        button.style.background = '#32b768';
+                                        button.style.color = 'white';
+                                        button.style.border = '1px solid #32b768';
+                                    }
+                                </script>
+
+                                <div style="position: relative; width: 150px;">
+                                    <select style="appearance: none;width: 100%;padding: 10px 35px 10px 12px;border: none;border-radius: 12px;background-color: #f8f9fa;color: #94a3b8;font-size: 13px;font-family: 'Poppins', sans-serif;font-weight: 500;box-shadow: inset 0 0 0 1px #e2e8f0;cursor: pointer;">
+                                        <option disabled selected>Select Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="middle">Middle</option>
+                                        <option value="high">High</option>
+                                    </select>
+
+                                    <!-- Dropdown Icon -->
+                                    <i class="bi bi-chevron-down" style="position: absolute;right: 12px;top: 50%;transform: translateY(-50%);font-size: 12px;color: #94a3b8;pointer-events: none;"></i>
+                                </div>
                             </div>
 
-                            <script>
-                                function setActive(button) {
-                                    const buttons = button.parentElement.querySelectorAll('button');
-                                    buttons.forEach(btn => {
-                                        btn.style.background = '#f8fafc';
-                                        btn.style.color = '#566a7f';
-                                        btn.style.border = '1px solid transparent';
-                                    });
 
-                                    button.style.background = '#32b768';
-                                    button.style.color = 'white';
-                                    button.style.border = '1px solid #32b768';
-                                }
-                            </script>
 
-                            <div style="position: relative; width: 150px;margin-right:6px;margin-left:6px;">
-                                <select style="appearance: none;width: 100%;padding: 10px 35px 10px 12px;border: none;border-radius: 12px;background-color: #f8f9fa;color: #94a3b8;font-size: 13px;font-family: 'Poppins', sans-serif;font-weight: 500;box-shadow: inset 0 0 0 1px #e2e8f0;cursor: pointer;">
-                                    <option disabled selected>Select Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="middle">Middle</option>
-                                    <option value="high">High</option>
-                                </select>
-
-                                <!-- Dropdown Icon -->
-                                <i class="bi bi-chevron-down" style="position: absolute;right: 12px;top: 50%;transform: translateY(-50%);font-size: 12px;color: #94a3b8;pointer-events: none;"></i>
-                            </div>
 
                         </div>
                         <!-- CARD CONTAINER -->
@@ -3060,64 +3103,71 @@
                     </div>
                 </div>
                 <!-- Schedule Type Toggle -->
-                <div style="background-color: #f9f9fb;">
-                    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;background-color: #f9f9fb;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; justify-content: center;">
-                            <button id="btnToday"
-                                onclick="document.getElementById('btnToday').style.backgroundColor='#22c55e';
-             document.getElementById('btnToday').style.color='white';
-             document.getElementById('btnScheduled').style.backgroundColor='transparent';
-             document.getElementById('btnScheduled').style.color='#64748b';"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px;
-           border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Meeting Today
-                            </button>
+              <div style="background-color: #f9f9fb;">
+    <!-- Toggle Buttons -->
+    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;">
+        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+            <button id="btnToday"
+                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                    document.getElementById('btnScheduled').style.color='#64748b';
 
-                            <button id="btnScheduled"
-                                onclick="document.getElementById('btnScheduled').style.backgroundColor='#22c55e';
-             document.getElementById('btnScheduled').style.color='white';
-             document.getElementById('btnToday').style.backgroundColor='transparent';
-             document.getElementById('btnToday').style.color='#64748b';"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px;
-           border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled Meeting
-                            </button>
+                    document.getElementById('startDateField').style.display='none';
 
-                        </div>
+                    document.getElementById('timeRow').classList.add('justify-content-center');
+                "
+                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                Meeting Today
+            </button>
 
-                    </div>
+            <button id="btnScheduled"
+                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnToday').style.backgroundColor='transparent';
+                    document.getElementById('btnToday').style.color='#64748b';
 
-                    <!-- Date & Time Fields -->
-                    <div class="row g-2 align-items-center mb-3" style="background-color: #f9f9fb;padding-bottom:4px;">
-                        <div class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control"
-                                    placeholder="Start Date DD.MM.YY"
-                                    style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control"
-                                    placeholder="Start Time HH:MM"
-                                    style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control"
-                                    placeholder="End Time HH:MM"
-                                    style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    document.getElementById('startDateField').style.display='block';
+
+                    document.getElementById('timeRow').classList.remove('justify-content-center');
+                "
+                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                Scheduled Meeting
+            </button>
+        </div>
+    </div>
+
+    <!-- Date & Time Fields -->
+    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="background-color: #f9f9fb; padding-bottom: 4px;">
+        
+        <!-- Start Date -->
+        <div class="col-md-4" id="startDateField" style="display: none;">
+            <div class="position-relative">
+                <input type="text" class="form-control" placeholder="Start Date DD.MM.YY" style="font-size: 13px; padding-right: 35px;">
+                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+            </div>
+        </div>
+
+        <!-- Start Time -->
+        <div class="col-md-4">
+            <div class="position-relative">
+                <input type="text" class="form-control" placeholder="Start Time HH:MM" style="font-size: 13px; padding-right: 35px;">
+                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+            </div>
+        </div>
+
+        <!-- End Time -->
+        <div class="col-md-4">
+            <div class="position-relative">
+                <input type="text" class="form-control" placeholder="End Time HH:MM" style="font-size: 13px; padding-right: 35px;">
+                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+            </div>
+        </div>
+    </div>
+</div>
+
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
                 <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; margin: auto;margin-bottom: 12px;">
