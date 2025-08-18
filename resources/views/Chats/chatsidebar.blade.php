@@ -54,7 +54,7 @@
                    </li>
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('groups') ? 'active' : '' }}">
+                       <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('todo') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
                            <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>

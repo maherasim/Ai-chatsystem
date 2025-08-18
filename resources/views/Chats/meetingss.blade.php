@@ -110,25 +110,6 @@
     }
 </style>
 
-<style>
-    /* Full expansion class for when sidebar is hidden */
-    .full-width-content {
-        width: 100% !important;
-        flex: 1 1 auto !important;
-        height: 100% !important;
-    }
-    
-    .sidebar-hidden {
-        display: none !important;
-    }
-    
-    /* Ensure proper height expansion */
-    .expanded-container {
-        height: 100vh !important;
-        width: 100% !important;
-    }
-</style>
-
 
 <!-- content -->
 <div class="content main_content">
@@ -2130,7 +2111,7 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-    <div class="d-flex flex-column vh-100" style="visibility:visible;">
+    <div class="d-flex flex-column " style="visibility:visible;">
         <div class="chat-header px-4 py-2 border-bottom" style="background-color: white;">
             <div class="d-flex align-items-center justify-content-between">
 
@@ -2148,22 +2129,10 @@
                     </div>
                 </div>
 
-                <!-- ✅ Center: Chat Action Icons -->
-                <!-- <div class="chat-icons d-flex align-items-center gap-5">
-                    <img src="{{URL::asset('/build/img/Search-Black.svg')}}" alt="search" style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/VideoCall-Black.svg')}}" alt="video call" style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/Call-Black.svg')}}" alt="call"  style="height: 25px;cursor: pointer;">
-                    <img src="{{URL::asset('/build/img/User-Info-Black.svg')}}" alt="info"  style="height: 25px;cursor: pointer;">
-                </div> -->
+
 
                 <!-- ✅ Right: Left Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
-                    <!-- Toggle Button for Right Sidebar -->
-                    <li style="list-style: none;">
-                        <a href="#" id="toggle-right-sidebar" style="display: inline;">
-                            <i class="ti ti-layout-sidebar-right-collapse" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
 
                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
                         <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
@@ -2198,887 +2167,890 @@
 
         <!-- ✅ Main Body Area -->
         <div class="d-flex flex-grow-1 overflow-hidden">
-
-            <!-- Optional Left Sidebar (if any) -->
-            <!-- <div class="sidebar-left">Left content</div> -->
-
-            <!-- ✅ Center Chat Area -->
-            <!-- <div class="flex-grow-1 d-flex justify-content-center align-items-center bg-body">
-                <div class="chatbox-input-container w-100 px-4 max-auto">
-                    <div class="chatbox-wrapper d-flex align-items-center bg-white border rounded-5 shadow-sm px-4 py-3">
-                        <input type="text" class="form-control border-0 bg-transparent fs-4 me-3" placeholder="Ask anything..." style="min-height: 60px;">
-                        <button class="btn btn-light btn-icon rounded-circle me-2" type="button" title="Voice" style="width: 50px; height: 50px;">
-                            <i class="ti ti-microphone text-muted fs-3"></i>
-                        </button>
-                        <button class="btn btn-primary btn-icon rounded-circle" type="button" title="Send" style="width: 50px; height: 50px;">
-                            <i class="ti ti-send text-white fs-3"></i>
-                        </button>
-                    </div>
-                </div>
-            </div> -->
             <!-- body -->
-            <div style="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;">
+            <div style="visibility:visible;overflow:auto;scrollbar-width:thin">
 
 
                 <div class="chat-body chat-page-group ">
-                    <!-- alltodo  -->
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                    <div class="container mt-4">
+                        <div class="row g-3">
+
+                            <!-- Card 1 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TOday reminde  -->
+                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center" style="margin-left: 30px;">
                         <div>
-                            <h3 style="margin: 0;">TOday ToDo's</h3>
-                            <strong>Total ToDo's: 10</strong>
+                            <h3 style="margin: 0;">TOday Reminder's</h3>
+                            <strong>Reminders: 10</strong>
                         </div>
 
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
+                        <div class="d-flex" style="gap: 3px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
                             <button type="button" class="btn"
+                                onclick="setActive(this)"
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 All
                             </button>
                             <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Private
+                                onclick="setActive(this)"
+                                style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                Today Meeting
                             </button>
                             <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Shared
+                                onclick="setActive(this)"
+                                style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                New Meeting
                             </button>
                             <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
+                                onclick="setActive(this)"
+                                style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                Missed Meeting
                             </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Low
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Middle
-                            </button>
+                        </div>
 
+                        <script>
+                            function setActive(button) {
+                                const buttons = button.parentElement.querySelectorAll('button');
+                                buttons.forEach(btn => {
+                                    btn.style.background = '#f8fafc';
+                                    btn.style.color = '#566a7f';
+                                    btn.style.border = '1px solid transparent';
+                                });
+
+                                button.style.background = '#32b768';
+                                button.style.color = 'white';
+                                button.style.border = '1px solid #32b768';
+                            }
+                        </script>
+
+                        <div style="position: relative; width: 150px;margin-right:6px;margin-left:6px;">
+                            <select style="appearance: none;width: 100%;padding: 10px 35px 10px 12px;border: none;border-radius: 12px;background-color: #f8f9fa;color: #94a3b8;font-size: 13px;font-family: 'Poppins', sans-serif;font-weight: 500;box-shadow: inset 0 0 0 1px #e2e8f0;cursor: pointer;">
+                                <option disabled selected>Select Priority</option>
+                                <option value="low">Low</option>
+                                <option value="middle">Middle</option>
+                                <option value="high">High</option>
+                            </select>
+
+                            <!-- Dropdown Icon -->
+                            <i class="bi bi-chevron-down" style="position: absolute;right: 12px;top: 50%;transform: translateY(-50%);font-size: 12px;color: #94a3b8;pointer-events: none;"></i>
                         </div>
 
                     </div>
                     <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
+                    <div class="d-flex gap-4" style="margin-left: 30px;">
 
                         <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <div class="card" style="width: 300px; height:fit-content; border: 1px solid #ef4444; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Avatars + user count -->
+                            <div class="text-center mt-2">
+                                <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
+                                </div>
+                                <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
+                            </div>
+
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
+                                <!-- Green dot -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
                                 </div>
 
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
+                                <!-- Bell Icon -->
+                                <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
 
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- "Now" Text -->
+                                <span style="color: red; font-weight: 500;">Now</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock Icon + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+                                    <span style="color: #ef4444;">17:30 - 18:00</span>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
-                                    Need Counte
+                            <!-- Join Now Button -->
+                            <div class="text-center py-2">
+                                <button style="background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                                    Join now
                                 </button>
                             </div>
+
                         </div>
                         <!-- End of Card 1 -->
-                        <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <!-- Start of Card 2-->
+                        <div class="card" style="width: 300px; height:fit-content; border: 1px solid #eee;; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Avatars + user count -->
+                            <div class="text-center mt-2">
+                                <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
+                                </div>
+                                <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
+                            </div>
+
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
+                                <!-- Green dot -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
                                 </div>
 
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
+                                <!-- Bell Icon -->
+                                <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
 
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- "Now" Text -->
+                                <span style="color: red; font-weight: 500;">Now</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock Icon + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+                                    <span style="color: #ef4444;">17:30 - 18:00</span>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                            <!-- Join Now Button -->
+                            <div class="text-center py-2">
+                                <button style="background-color: #fbbc05; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
                                     Need Counte
                                 </button>
                             </div>
+
+
                         </div>
                         <!-- End of Card 2 -->
                         <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <div class="card" style="width: 300px; height:fit-content; border: 1px solid #eee;; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Avatars + user count -->
+                            <div class="text-center mt-2">
+                                <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
+                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
+                                </div>
+                                <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
+                            </div>
+
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
+                                <!-- Green dot -->
+                                <div class="d-flex align-items-center gap-2">
+                                    <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
                                 </div>
 
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
+                                <!-- Bell Icon -->
+                                <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
 
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- "Now" Text -->
+                                <span style="color: red; font-weight: 500;">Now</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock Icon + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+                                    <span style="color: #ef4444;">17:30 - 18:00</span>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
-                            <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
-                                    Need Counte
+                            <!-- Join Now Button -->
+                            <div style="text-align: center; padding: 6px 0;">
+                                <button style="background-color: #ef233c;color: white;padding: 6px 18px;border: none;border-radius: 25px;font-size: 13px;font-weight: 500;cursor: pointer;display: inline-flex;align-items: center;gap: 8px;">
+                                    Missed Meeting
+                                    <i class="bi bi-telephone-x" style="font-size: 16px;"></i>
                                 </button>
                             </div>
+
+
+
+
                         </div>
                     </div>
-                    <!-- private todo -->
-                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
+                    <!-- meeting todo -->
+                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="margin-left: 30px;">
                         <div>
-                            <h3 style="margin: 0;">Private ToDo's</h3>
-                            <strong>Total private ToDo's: 10</strong>
+                            <h3 style="margin: 0;">Meetings Events</h3>
+                            <strong>Events: 10</strong>
                         </div>
 
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-
-
+                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px; margin-right: 20px;">
                             <button type="button" class="btn"
+                                onclick="setActive(this)"
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 All
                             </button>
                             <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                onclick="setActive(this)"
+                                style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 Low
                             </button>
                             <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
+                                onclick="setActive(this)"
+                                style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 Middle
                             </button>
-
                         </div>
+
+                        <script>
+                            function setActive(button) {
+                                const buttons = button.parentElement.querySelectorAll('button');
+                                buttons.forEach(btn => {
+                                    btn.style.background = '#f8fafc';
+                                    btn.style.color = '#566a7f';
+                                    btn.style.border = '1px solid transparent';
+                                });
+
+                                button.style.background = '#32b768';
+                                button.style.color = 'white';
+                                button.style.border = '1px solid #32b768';
+                            }
+                        </script>
+
 
                     </div>
                     <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
+                    <div class="d-flex gap-4" style="margin-left: 30px;">
 
                         <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <div class="card" style="width: 300px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Accepted / Rejected Avatars -->
+                            <div class="d-flex justify-content-around px-3 pb-2">
+                                <!-- Accepted -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
 
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                <!-- Rejected -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 13px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
+
+                                <!-- Green Dot -->
+                                <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Video Icon -->
+                                <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Date -->
+                                <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                    <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Scheduled Tag -->
+                            <div class="text-center mb-2">
+                                <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
+                                    Scheduled
+                                </span>
+                            </div>
+
+                            <!-- Footer Buttons -->
+                            <div class="d-flex">
+                                <button class="flex-fill text-center py-2" style="background-color: #f1f5f9; border: none; color: #1e293b; font-weight: 500; font-size: 13px;">
+                                    Edit
+                                </button>
+                                <button class="flex-fill text-center py-2" style="background-color: #fca5a5; border: none; color: white; font-weight: 500; font-size: 13px;">
+                                    Remove
+                                </button>
+                            </div>
 
                         </div>
+
                         <!-- End of Card 1 -->
                         <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <div class="card" style="width: 300px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Accepted / Rejected Avatars -->
+                            <div class="d-flex justify-content-around px-3 pb-2">
+                                <!-- Accepted -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
 
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                <!-- Rejected -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 13px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
+
+                                <!-- Green Dot -->
+                                <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Video Icon -->
+                                <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Date -->
+                                <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                    <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Scheduled Tag -->
+                            <div class="text-center mb-2">
+                                <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
+                                    posponed
+                                </span>
+                            </div>
+
+                            <!-- Footer Buttons -->
+                            <div class="d-flex">
+                                <!-- Accept Button -->
+                                <button class="flex-fill text-center py-2"
+                                    style="background-color: #66d19e; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-left-radius: 8px;">
+                                    Accept
+                                </button>
+
+                                <!-- Denied Button -->
+                                <button class="flex-fill text-center py-2" data-bs-toggle="modal" data-bs-target="#deniedModal"
+                                    style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-right-radius: 8px;">
+                                    Denied
+                                </button>
+                            </div>
+
 
                         </div>
                         <!-- End of Card 2 -->
                         <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                        <div class="card" style="width: 300px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
+                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                     </div>
                                 </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
                             </div>
 
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
+                            <!-- Description -->
+                            <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
+                                Here we will add the description of the ToDo Only you is Superadmin ToDo
+                            </div>
+
+                            <!-- Accepted / Rejected Avatars -->
+                            <div class="d-flex justify-content-around px-3 pb-2">
+                                <!-- Accepted -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
 
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
+                                <!-- Rejected -->
+                                <div class="text-center">
+                                    <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
+                                    <div style="position: relative; width: 45px; height: 30px;">
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
+                                            style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Footer Button -->
+                            <!-- Status Row -->
+                            <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 13px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
+
+                                <!-- Green Dot -->
+                                <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Video Icon -->
+                                <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Date -->
+                                <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
+
+                                <!-- Divider -->
+                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+
+                                <!-- Clock + Time -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                    <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Scheduled Tag -->
+                            <div class="text-center mb-2">
+                                <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
+                                    cancelled
+                                </span>
+                            </div>
+
+                            <!-- Footer Buttons -->
+                            <div>
+                                <button class="w-100 text-center py-2"
+                                    style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                                    Meeting Cancelled
+                                </button>
+                            </div>
+
+
 
                         </div>
                     </div>
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 style="margin: 0;">Shared ToDo's</h3>
-                            <strong>Total ToDo's: 10</strong>
-                        </div>
 
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
-
-
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Low
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Middle
-                            </button>
-
-                        </div>
-
-                    </div>
-                    <!-- CARD CONTAINER -->
-                    <div class="d-flex gap-3" style="margin-right:20px;">
-
-                        <!-- Start of Card 1 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 1 -->
-                        <!-- Start of Card 2 (Middle Priority) -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>private
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                        <!-- End of Card 2 -->
-                        <!-- card 3 -->
-                        <div class="card" style="width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
-                            <!-- Card Header -->
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <div style="font-weight: bold;">Admin name</div>
-                                        <small style="color: gray;">Created Time & Date</small>
-                                    </div>
-                                </div>
-                                <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body ">
-                                <!-- Title & Avatars -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                        <div>
-                                            <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-share me-1"></i>Shared
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Avatars -->
-                                    <div class="d-flex" style="margin-left: auto;">
-                                        <div style="position: relative; width: 60px; height: 30px;">
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                            <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Description -->
-                                <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                    Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                                </p>
-
-                                <!-- Date & Priority Row -->
-                                <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="text-success fw-semibold">Start:</span>
-                                        <span>22.10.2024</span>
-                                        <span class="text-muted">|</span>
-                                        <span class="text-success fw-semibold">Deliver:</span>
-                                        <span style="color: #f44336;">Today</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                        <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Button -->
-
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <!-- ✅ Right Sidebar -->
-            <div class="Rightsidebar-group" style="width: 350px; background: #fff; border-left: 1px solid #eee;visibility:visible;">
-                <div class="tab-content">
-                    <div class="tab-pane fade active show" id="chat-menu">
-                        <div id="chats" class="sidebar-content active slimscroll">
-                            <div class="slimscroll" style="padding: 12px; font-family: 'Poppins', sans-serif;overflow-y: auto; max-height: calc(100vh - 100px)">
-
-                                <!-- Priority Colors Box -->
-                                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 12px;">
-                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 8px;">
-                                        Priority Colors
+            <div class="Rightsidebar-group" style="width: 25%; background: #fff; border-left: 1px solid #eee; visibility: visible;margin-right:0px">
+                <div id="chats" class="sidebar-content active slimscroll" style="height: 100vh; overflow-y: auto; overflow-x: hidden;">
+                    <div style="padding:16px; padding-top:3px; font-family: 'Poppins', sans-serif;">
+                        <div style="background-color: #f8f9fa; border-radius: 10px; font-family: 'Poppins', sans-serif;">
+                            <!-- Priority Colors Section -->
+                            <div style="background-color: #ffffff; padding: 12px 16px; border-radius: 10px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-bottom: 10px;">
+                                    Priority Colors
+                                </div>
+                                <div style="display: flex; gap: 34px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                        <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
+                                        <span style="font-size: 12px; color: #4b5563;">Low</span>
                                     </div>
-                                    <div style="display: flex; gap: 25px; margin-bottom: 12px;">
-                                        <!-- Low -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #00c853; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">Low</span>
-                                        </div>
-
-                                        <!-- Middle -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #ffca28; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">Middle</span>
-                                        </div>
-
-                                        <!-- High -->
-                                        <div style="display: flex; align-items: center; gap: 6px; background-color: #fff; padding: 4px 10px; border-radius: 10px;">
-                                            <span style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #607d8b;">High</span>
-                                        </div>
+                                    <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                        <span style="width: 10px; height: 10px; background-color: #ffca28; border-radius: 50%; display: inline-block;"></span>
+                                        <span style="font-size: 12px; color: #4b5563;">Middle</span>
                                     </div>
+                                    <div style="display: flex; align-items: center; gap: 6px; background-color: #f1f5f9; padding: 4px 12px; border-radius: 8px;">
+                                        <span style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%; display: inline-block;"></span>
+                                        <span style="font-size: 12px; color: #4b5563;">High</span>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Create New Meeting -->
+                            <div style="font-weight: 600; font-size: 14px; color: #1e293b;">Create new Meeting</div>
+                            <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Connect the Team</div>
 
-                                    <!-- Create new ToDo -->
-                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50;">Create new ToDO</div>
-                                    <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Manage your Time</div>
+                            <!-- Form -->
+                            <div style="background-color: #ffffff; border-radius: 10px; padding: 15px;">
 
-                                    <!-- About ToDo Form -->
-                                   
-                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 12px;">
-                                            <div style="margin-bottom: 12px;width: 100%">
-                                                <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">About ToDo</label>
-                                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
-                                            <div style="margin-bottom: 12px;">
-                                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 8px 10px; height: 80px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
+                                <!-- Form Inputs (same as yours) -->
+                                <input type="text" placeholder="Select a project" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
+                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
+                                <input type="text" placeholder="Type the Title" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 13px;">
 
-                                            <!-- ToDo Date -->
-                                            <div>
-                                                <label style="font-weight: 500; font-size: 13px; color: #2c3e50;">ToDo Date</label>
-                                                <div style="font-size: 11px; color: #6c757d; margin-bottom: 8px;">Set Start and Expired Time max. 90 Days</div>
-                                                <div style="display: flex; gap:1px;">
-                                                    <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 6px 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                                    </div>
-                                                    <div style="flex: 1; position: relative;">
-                                                        <input type="date" style="width: 98%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- ToDo Priority -->
-                                            <div style="margin-top: 15px;">
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Priority</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Priority of the ToDo</div>
+                                <div style="font-weight: 600; font-size: 14px; color: #1e293b; margin-top: 10px;">Scheduled Meetings</div>
+                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 10px;">Set Meeting Start</div>
 
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Low</p>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Middle</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">High</button>
-                                                </div>
-                                            </div>
+                                <!-- Meeting Type Button Group with Inline JS -->
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                    <button
+                                        type="button"
+                                        onclick=" this.style.backgroundColor = '#22c55e'; this.style.color = 'white'; Array.from(this.parentElement.children).forEach(btn => { if (btn !== this) { btn.style.backgroundColor = '#f1f5f9'; btn.style.color = '#1e293b'; } }) "
+                                        style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">
+                                        Meeting Today
+                                    </button>
 
-                                            <!-- ToDo Type -->
-                                            <div>
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Type</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set the Type of the ToDo</div>
-
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 8px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 13px;">Private ToDO</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 12px; font-size: 13px;">Shared ToDo</button>
-                                                </div>
-
-                                                <input type="text" placeholder="Select the Member for Shared ToDo" style="width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-                                            </div>
-                                            <!-- ToDo Reminder -->
-                                            <div style="margin-top: 20px;">
-                                                <label style="font-weight: 600; font-size: 14px; color: #2c3e50;">ToDO Reminder</label>
-                                                <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">Set a reminder before expired</div>
-
-                                                <!-- Reminder Buttons -->
-                                                <div style="background-color: #f8f9fa; display: flex; justify-content: space-between; padding: 6px; border-radius: 8px; margin-bottom: 15px;">
-                                                    <button style="background-color: #00c853; color: white; border: none; border-radius: 6px; padding: 6px 14px; font-size: 13px;">6 Hour</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">12 Hour</button>
-                                                    <button style="background-color: transparent; color: #2c3e50; border: none; padding: 6px 14px; font-size: 13px;">24 Hour</button>
-                                                </div>
-
-                                                <!-- Create Button -->
-                                                <div style="text-align: center;" class="mb-2">
-                                                    <button type="submit" style="background-color: #7f52f7; color: white; border: none; border-radius: 6px; padding: 10px 0; width: 100%; font-size: 14px; font-weight: 500;">
-                                                        Create
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    
+                                    <button
+                                        type="button"
+                                        onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) { btn.style.backgroundColor = '#f1f5f9'; btn.style.color = '#1e293b';}})"
+                                        style="flex: 1; background-color: #f1f5f9; color: #1e293b; border: none; padding: 8px 0; border-radius: 8px; font-size: 13px;">
+                                        Meeting by Date
+                                    </button>
                                 </div>
 
 
+                                <!-- Date/Time -->
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 11px; color: #6b7280;">Start Date</label>
+                                        <div style="position: relative;">
+                                            <input type="text" placeholder="DD:MM:YY" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
+                                            <i class="bi bi-calendar" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 11px; color: #6b7280;">End Time</label>
+                                        <div style="position: relative;">
+                                            <input type="text" placeholder="HH:MM" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
+                                            <i class="bi bi-alarm" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Start Time -->
+                                <div style="margin-top: 10px;">
+                                    <label style="font-size: 11px; color: #6b7280;">Start Time</label>
+                                    <div style="position: relative;">
+                                        <input type="text" placeholder="HH:MM" style="width: 100%; padding: 10px; padding-right: 30px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 12px;">
+                                        <i class="bi bi-alarm" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: #6b7280; font-size: 14px;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- More Fields -->
+                                <div class="mt-2">
+                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Team Meeting</div>
+                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Select the Member for the Meeting</div>
+                                    <input type="text" placeholder="Select the Member for Shared ToDo" style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
+
+                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Link</div>
+                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Add Meeting Link here</div>
+                                    <input type="text" placeholder="Zoom or Meet link here" style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
+
+                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">ToDo Priority</div>
+                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set the Priority of the ToDo</div>
+                                    <!-- Priority Button Group with Inline JS -->
+                                    <div id="priorityButtons" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) {btn.style.backgroundColor = '#f1f1f1';btn.style.color = '#6b7280';}})"
+                                            style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            Low
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) {btn.style.backgroundColor = '#f1f1f1'; btn.style.color = '#6b7280'; }});"
+                                            style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            Middle
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) { btn.style.backgroundColor = '#f1f1f1'; btn.style.color = '#6b7280';}})"
+                                            style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            High
+                                        </button>
+                                    </div>
+
+
+                                    <div style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 3px;">Meeting Reminder</div>
+                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px;">Set a reminder before expired</div>
+                                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => { if (btn !== this) { btn.style.backgroundColor = '#f1f1f1'; btn.style.color = '#6b7280';}});"
+                                            style="flex: 1; background-color: #22c55e; color: white; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            30 Min
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) { btn.style.backgroundColor = '#f1f1f1'; btn.style.color = '#6b7280';}})"
+                                            style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            45 Min
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onclick="this.style.backgroundColor = '#22c55e';this.style.color = 'white';Array.from(this.parentElement.children).forEach(btn => {if (btn !== this) { btn.style.backgroundColor = '#f1f1f1'; btn.style.color = '#6b7280'; }}); "
+                                            style="flex: 1; background-color: #f1f1f1; color: #6b7280; border: none; padding: 8px 0; border-radius: 8px; font-size: 12px;">
+                                            60 Min
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <!-- 🔻 Create Button -->
+                                <div style="margin-top: 10px;">
+                                    <button type="submit" style="width: 100%; background-color: #1d4ed8; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                                        Create
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
+
+
+                        <!-- Spacer to ensure scroll goes all the way down -->
+                        <div style="height: 40px;"></div>
+
                     </div>
-
-
-
-
-
-
                 </div>
             </div>
+
+
+
+
+
+
 
         </div>
 
     </div>
 
+</div>
 
 
 
 
 
 
-    <div class="modal fade" id="new-Ai">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add New Subject</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ti ti-x"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{url('index')}}">
-                        <div class="row">
-                            <label class="form-label">Subject Type</label>
-                            <div class="d-flex" style="float: right;">
 
-                                <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="mute" id="group1">
-                                    <label class="form-check-label" for="group1">Public</label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="mute" id="group2">
-                                    <label class="form-check-label" for="group2">Private</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
 
-                            <div class="col-lg-12">
-                                <label class="form-label">Subject Title</label>
-                                <div class="input-icon mb-3 position-relative">
-                                    <input type="text" value="" class="form-control" placeholder="Last Name">
 
-                                </div>
-                            </div>
+</div>
+<!-- Denied Modal -->
+<div class="modal fade" id="deniedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; padding: 15px;">
 
-                        </div>
-                        <div class="row g-3">
-
-                            <div class="col-12">
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <!-- Modal Header -->
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
+                Deneid Reason
             </div>
+            <div style="font-size: 13px; color:black">
+                Tell us why ?!
+            </div>
+            <hr style="background-color: #777; height: 1px; border: none; margin: 10px 0;">
+
+            <!-- Denied Section -->
+            <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
+
+                <!-- Icon + Text left aligned -->
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+                    <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="38px" height="38px">
+                    <div>
+                        <div style="font-size: 18px; font-weight: 600;color:black">Denied</div>
+                        <div style="color: #777; font-size: 13px;">Select reason or Type the reason</div>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <input type="text" placeholder="Task Priority Select"
+                    style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
+
+                <textarea placeholder="Type reason here"
+                    style="width: 100%;  padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff; resize: none;"></textarea>
+
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center" style="margin-top: 15px;">
+                <button class="btn" data-bs-dismiss="modal"
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save & Close
+                </button>
+            </div>
+
         </div>
     </div>
-
 </div>
 
 <!-- /Content -->
@@ -3112,55 +3084,6 @@
             body.classList.remove('dark-mode');
             lightBtn.style.display = 'none';
             darkBtn.style.display = 'inline';
-        });
-    });
-</script>
-
-<!-- Right Sidebar Toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.getElementById('toggle-right-sidebar');
-        const rightSidebar = document.querySelector('.Rightsidebar-group');
-        const mainContent = document.querySelector('div[style*="padding-left: 20px;visibility:visible;overflow:auto;scrollbar-width:thin;"]');
-        const toggleIcon = toggleBtn.querySelector('i');
-        // Get the parent container that holds both main content and sidebar
-        const contentContainer = mainContent ? mainContent.parentElement : null;
-        
-        toggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Check if sidebar is currently visible
-            const isSidebarVisible = rightSidebar.style.display !== 'none' && rightSidebar.style.display !== '';
-            
-            if (isSidebarVisible) {
-                // Hide sidebar and expand main content
-                rightSidebar.style.display = 'none';
-                toggleIcon.classList.remove('ti-layout-sidebar-right-collapse');
-                toggleIcon.classList.add('ti-layout-sidebar-right');
-                // Expand main content to fill available space
-                if (mainContent) {
-                    mainContent.style.width = '100%';
-                    mainContent.style.flex = '1';
-                }
-                // Ensure container expands properly
-                if (contentContainer) {
-                    contentContainer.style.width = '100%';
-                }
-            } else {
-                // Show sidebar
-                rightSidebar.style.display = 'block';
-                toggleIcon.classList.remove('ti-layout-sidebar-right');
-                toggleIcon.classList.add('ti-layout-sidebar-right-collapse');
-                // Restore main content
-                if (mainContent) {
-                    mainContent.style.width = '';
-                    mainContent.style.flex = '';
-                }
-                // Restore container
-                if (contentContainer) {
-                    contentContainer.style.width = '';
-                }
-            }
         });
     });
 </script>
