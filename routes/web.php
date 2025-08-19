@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PostJobController;
 use App\Models\User;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
@@ -124,3 +125,32 @@ Route::get('/forgot-password', function () {
 })->name('forgot-password');
 
 Route::post('/chatuser/store', [App\Http\Controllers\SettingController::class, 'store'])->name('chatuser.store');
+
+// Post Job Requests + Bidding
+Route::middleware('auth')->group(function () {
+    Route::get('/post-job-request', [PostJobController::class, 'index'])->name('post-jobs.index');
+    Route::post('/post-job-request', [PostJobController::class, 'store'])->name('post-jobs.store');
+    Route::get('/post-job-request/{id}', [PostJobController::class, 'show'])->name('post-jobs.show');
+
+    // Provider bidding
+    Route::post('/post-job-request/{id}/bid', [PostJobController::class, 'bid'])->name('post-jobs.bid');
+
+    // User accepts bid
+    Route::post('/post-job-request/{jobId}/accept/{bidId}', [PostJobController::class, 'acceptBid'])->name('post-jobs.accept');
+
+    // Provider workflow
+    Route::post('/post-job-request/{jobId}/start', [PostJobController::class, 'start'])->name('post-jobs.start');
+    Route::post('/post-job-request/{jobId}/user-start', [PostJobController::class, 'userStart'])->name('post-jobs.user-start');
+    Route::post('/post-job-request/{jobId}/hold', [PostJobController::class, 'hold'])->name('post-jobs.hold');
+    Route::post('/post-job-request/{jobId}/done', [PostJobController::class, 'done'])->name('post-jobs.done');
+
+    // User confirms
+    Route::post('/post-job-request/{jobId}/confirm', [PostJobController::class, 'confirm'])->name('post-jobs.confirm');
+
+    // Provider completes or adds extras
+    Route::post('/post-job-request/{jobId}/complete', [PostJobController::class, 'completeWithoutExtras'])->name('post-jobs.complete');
+    Route::post('/post-job-request/{jobId}/extra-charges', [PostJobController::class, 'addExtraCharges'])->name('post-jobs.extra');
+
+    // Payment
+    Route::post('/post-job-request/{jobId}/pay', [PostJobController::class, 'pay'])->name('post-jobs.pay');
+});
