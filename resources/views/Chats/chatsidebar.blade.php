@@ -80,11 +80,6 @@
                            <img src="{{ asset('/build/img/Library-Black.svg') }}" alt="Library Black" class="icon-black">
                        </a>
                    </li>
-                  <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Post Jobs" data-bs-custom-class="tooltip-primary">
-                      <a href="{{ route('post-jobs.index') }}" class="nav-link task-icon-link {{ request()->is('post-job-request*') ? 'active' : '' }}">
-                          <i class="ti ti-briefcase" style="font-size: 20px;"></i>
-                      </a>
-                  </li>
                </ul>
            </div>
 
@@ -94,20 +89,20 @@
 
                    <!-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
                        <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
-                           <img src="{{ asset('/build/img/profiles/avatar-11.jpg') }}" alt="Image" class="rounded-circle">
+                           <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Dark Mode" class="icon-white">
                        </a>
                        <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
                            <img src="{{ asset('/build/img/Moon-White.svg') }}" alt="Light Mode" class="icon-white">
                        </a>
                    </li> -->
                    <!-- <li>
-   <a href="#" id="dark-mode-toggle" class="dark-mode-toggle">
-     <img src="{{ asset('/build/img/Moon-Black.svg') }}" alt="Dark Mode" class="dark-icon">
-   </a>
-   <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
-     <i class="ti ti-sun"></i>
-   </a>
- </li> -->
+  <a href="#" id="dark-mode-toggle" class="dark-mode-toggle">
+    <img src="{{ asset('/build/img/Moon-Black.svg') }}" alt="Dark Mode" class="dark-icon">
+  </a>
+  <a href="#" id="light-mode-toggle" class="dark-mode-toggle">
+    <i class="ti ti-sun"></i>
+  </a>
+</li> -->
 
 <!-- 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
