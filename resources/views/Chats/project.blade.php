@@ -4475,9 +4475,7 @@
                                     <path
                                         style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
                                         stroke-dasharray="70, 100"
-                                        d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                                 </svg>
                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                             </div>

@@ -2134,188 +2134,563 @@
                 </div>
             </div>
             <!-- Wrapper -->
-            <div class="chat-body chat-page-group slimscroll">
-                <div class="container mt-4">
-                    <div class="row g-3">
+            <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
+                <div class="chat-body chat-page-group ">
+                    <div class="container mt-4">
+                        <div class="row g-3">
 
+                            <!-- Card 1 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
+                                    Place holder
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- members overwiew -->
+                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
+
+                        <!-- Left Side -->
+                        <div>
+                            <h3 style="margin: 0;">Members's Overview</h3>
+                            <strong>Total members: 10</strong>
+                        </div>
+
+                        <!-- Right Side -->
+                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
+                            <button
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#add_user"
+                                style="background-color: #ff7700; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                Add User
+                            </button>
+
+                            <button type="button" class="btn"
+                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                All
+                            </button>
+
+                            <button type="button" class="btn"
+                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                Developer
+                            </button>
+
+                            <button type="button" class="btn"
+                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                Employe
+                            </button>
+
+                            <button type="button" class="btn"
+                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                Admin
+                            </button>
+                        </div>
+                    </div>
+                    <!-- users cards -->
+                    <div class="row g-2">
                         <!-- Card 1 -->
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                Place holder
-                            </div>
-                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
-                        <!-- Card 2 -->
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                Place holder
-                            </div>
-                        </div>
+                                <!-- Top Background with Overlay Elements -->
+                                <div style="position: relative;">
+                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
-                        <!-- Card 3 -->
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                Place holder
-                            </div>
-                        </div>
+                                    <!-- Top-right overlay group -->
+                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                        <!-- Circular progress -->
 
-                        <!-- Card 4 -->
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                Place holder
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- members overwiew -->
-                <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
-
-                    <!-- Left Side -->
-                    <div>
-                        <h3 style="margin: 0;">Members's Overview</h3>
-                        <strong>Total members: 10</strong>
-                    </div>
-
-                    <!-- Right Side -->
-                    <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
-                        <button
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_user"
-                            style="background-color: #ff7700; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            Add User
-                        </button>
-
-                        <button type="button" class="btn"
-                            style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            All
-                        </button>
-
-                        <button type="button" class="btn"
-                            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            Developer
-                        </button>
-
-                        <button type="button" class="btn"
-                            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            Employe
-                        </button>
-
-                        <button type="button" class="btn"
-                            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                            Admin
-                        </button>
-                    </div>
-                </div>
-                <!-- users cards -->
-                <div class="card shadow" style="width: 320px; border-radius: 15px; overflow: hidden; font-family: sans-serif;">
-
-                    <!-- Top Background Image with Circle Progress -->
-                    <div style="position: relative;">
-                           <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
+                                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                                <path
+                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path
+                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                                    stroke-dasharray="70, 100"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
+                                                75%
+                                            </div>
+                                        </div>
 
 
-                        <!-- Circle with 75% -->
-                        <div style="position: absolute; top: 10px; right: 10px; background-color: #fff; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #000;">
-                            75%
-                        </div>
+                                        <!-- Stars -->
+                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
+                                            ★★★☆☆
+                                        </div>
 
-                        <!-- Star Rating -->
-                        <div style="position: absolute; bottom: 10px; right: 10px; color: #fbc02d;">
-                            ★★★★☆
-                        </div>
-                    </div>
+                                        <!-- Date with icon -->
+                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                            10.09.2025
+                                        </div>
+                                    </div>
 
-                    <!-- Date -->
-                    <div class="text-end px-3 mt-1" style="font-size: 14px; color: #555;">
-                        <span>10.09.2025</span>
-                    </div>
-
-                    <!-- Profile Image -->
-                    <div class="text-center">
-                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                    </div>
-
-                    <!-- Developer Badge -->
-                    <div class="text-center mt-2">
-                        <span class="badge" style="background-color: #f8d7da; color: #c82333;">Developer</span>
-                    </div>
-
-                    <!-- Name -->
-                    <div class="text-center mt-2" style="font-weight: bold;">Name Lastname</div>
-
-                    <!-- Assigned Projects -->
-                    <div class="text-center mt-3">
-                        <div style="font-weight: bold;">Asigend Projects</div>
-
-                        <div class="d-flex justify-content-center gap-3 mt-2">
-                            <!-- Project 1 -->
-                            <div>
-                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
-                                
-                                
-                            </div>
-
-                            <!-- Project 2 -->
-                            <div>
-                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
-                               
-                            </div>
-                        </div>
-                          <div class="d-flex justify-content-center gap-3 mt-2">
-                            <!-- Project 1 -->
-                            <div>
-                                <!-- <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo"> -->
-                                <div style="display: inline-flex; align-items: center; background: #d4edda; padding: 4px 8px; border-radius: 10px; margin-top: 5px;">
-                                    <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                    <!-- Profile Image (overlapping) -->
+                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                    </div>
                                 </div>
-                                 <div style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px; margin-top: 5px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+
+                                <!-- Content Below Image -->
+                                <div style="padding-top: 40px;" class="text-center">
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+
+                                    <!-- Developer Badge -->
+                                    <div style="margin-top: 5px;">
+                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                            Developer
+                                        </span>
+                                    </div>
+
+
                                 </div>
+
+                                <!-- Assigned Projects -->
+                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
+                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+
+                                    <!-- Logos Row -->
+                                    <div class="d-flex justify-content-center gap-4 mt-1">
+                                        <!-- Project 1 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+
+                                        <!-- Project 2 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+                                    </div>
+
+                                    <!-- Flags Row -->
+                                    <div class="d-flex justify-content-center gap-5 mt-1">
+                                        <!-- Flag 1 -->
+                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
+                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                        </div>
+
+                                        <!-- Flag 2 -->
+                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Stats -->
+                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Tickets</div>
+                                        <div>1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tickets</div>
+                                        <div>10</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tasks</div>
+                                        <div>10</div>
+                                    </div>
+                                </div>
+
+                                <!-- Productivity -->
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+
                             </div>
+                        </div>
+                        <!-- card 2 -->
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
-                            <!-- Project 2 -->
-                            <div>
-                                <!-- <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo"> -->
-                               
+                                <!-- Top Background with Overlay Elements -->
+                                <div style="position: relative;">
+                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+
+                                    <!-- Top-right overlay group -->
+                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                        <!-- Circular progress -->
+
+                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
+                                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                                <path
+                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path
+                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                                    stroke-dasharray="70, 100"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
+                                                75%
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Stars -->
+                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
+                                            ★★★☆☆
+                                        </div>
+
+                                        <!-- Date with icon -->
+                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                            10.09.2025
+                                        </div>
+                                    </div>
+
+                                    <!-- Profile Image (overlapping) -->
+                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                    </div>
+                                </div>
+
+                                <!-- Content Below Image -->
+                                <div style="padding-top: 40px;" class="text-center">
+                                   <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+
+                                    <!-- Developer Badge -->
+                                    <div style="margin-top: 5px;">
+                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                            Developer
+                                        </span>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Assigned Projects -->
+                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
+                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+
+                                    <!-- Logos Row -->
+                                    <div class="d-flex justify-content-center gap-4 mt-1">
+                                        <!-- Project 1 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+
+                                        <!-- Project 2 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+                                    </div>
+
+                                    <!-- Flags Row -->
+                                    <div class="d-flex justify-content-center gap-5 mt-1">
+                                        <!-- Flag 1 -->
+                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
+                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                        </div>
+
+                                        <!-- Flag 2 -->
+                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Stats -->
+                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Tickets</div>
+                                        <div>1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tickets</div>
+                                        <div>10</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tasks</div>
+                                        <div>10</div>
+                                    </div>
+                                </div>
+
+                                <!-- Productivity -->
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
+                        <!-- card 3 -->
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+
+                                <!-- Top Background with Overlay Elements -->
+                                <div style="position: relative;">
+                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+
+                                    <!-- Top-right overlay group -->
+                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                        <!-- Circular progress -->
+
+                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
+                                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                                <path
+                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path
+                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                                    stroke-dasharray="70, 100"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
+                                                75%
+                                            </div>
+                                        </div>
 
 
-                    <!-- Stats -->
-                    <div class="d-flex justify-content-around mt-4" style="font-size: 14px;">
-                        <div class="text-center">
-                            <div style="font-weight: bold;">Tickets</div>
-                            <div>1</div>
+                                        <!-- Stars -->
+                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
+                                            ★★★☆☆
+                                        </div>
+
+                                        <!-- Date with icon -->
+                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                            10.09.2025
+                                        </div>
+                                    </div>
+
+                                    <!-- Profile Image (overlapping) -->
+                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                    </div>
+                                </div>
+
+                                <!-- Content Below Image -->
+                                <div style="padding-top: 40px;" class="text-center">
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+
+                                    <!-- Developer Badge -->
+                                    <div style="margin-top: 5px;">
+                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                            Developer
+                                        </span>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Assigned Projects -->
+                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
+                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+
+                                    <!-- Logos Row -->
+                                    <div class="d-flex justify-content-center gap-4 mt-1">
+                                        <!-- Project 1 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+
+                                        <!-- Project 2 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+                                    </div>
+
+                                    <!-- Flags Row -->
+                                    <div class="d-flex justify-content-center gap-5 mt-1">
+                                        <!-- Flag 1 -->
+                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
+                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                        </div>
+
+                                        <!-- Flag 2 -->
+                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Stats -->
+                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Tickets</div>
+                                        <div>1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tickets</div>
+                                        <div>10</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tasks</div>
+                                        <div>10</div>
+                                    </div>
+                                </div>
+
+                                <!-- Productivity -->
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <div style="font-weight: bold;">Total Tickets</div>
-                            <div>10</div>
+                        <!-- card 4 -->
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+
+                                <!-- Top Background with Overlay Elements -->
+                                <div style="position: relative;">
+                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+
+                                    <!-- Top-right overlay group -->
+                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                        <!-- Circular progress -->
+
+                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
+                                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                                <path
+                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path
+                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                                    stroke-dasharray="70, 100"
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
+                                                75%
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Stars -->
+                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
+                                            ★★★☆☆
+                                        </div>
+
+                                        <!-- Date with icon -->
+                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                            10.09.2025
+                                        </div>
+                                    </div>
+
+                                    <!-- Profile Image (overlapping) -->
+                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                    </div>
+                                </div>
+
+                                <!-- Content Below Image -->
+                                <div style="padding-top: 40px;" class="text-center">
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+
+                                    <!-- Developer Badge -->
+                                    <div style="margin-top: 5px;">
+                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                            Developer
+                                        </span>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Assigned Projects -->
+                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
+                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+
+                                    <!-- Logos Row -->
+                                    <div class="d-flex justify-content-center gap-4 mt-1">
+                                        <!-- Project 1 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+
+                                        <!-- Project 2 -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        </div>
+                                    </div>
+
+                                    <!-- Flags Row -->
+                                    <div class="d-flex justify-content-center gap-5 mt-1">
+                                        <!-- Flag 1 -->
+                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
+                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                        </div>
+
+                                        <!-- Flag 2 -->
+                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Stats -->
+                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Tickets</div>
+                                        <div>1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tickets</div>
+                                        <div>10</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div style="font-weight: bold;">Total Tasks</div>
+                                        <div>10</div>
+                                    </div>
+                                </div>
+
+                                <!-- Productivity -->
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <div style="font-weight: bold;">Total Tasks</div>
-                            <div>10</div>
-                        </div>
+
                     </div>
 
-                    <!-- Productivity -->
-                    <div class="text-center mt-3 mb-3">
-                        <div style="font-weight: bold;">Productivity 75%</div>
-                        <div class="progress" style="height: 6px; width: 90%; margin: 0 auto;">
-                            <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #007bff;"></div>
-                        </div>
-                    </div>
                 </div>
-
-
-
-
             </div>
 
         </div>
@@ -2324,15 +2699,277 @@
 
 </div>
 
+<!-- user pop-up -->
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <!-- Header -->
+    <div class="offcanvas-header" style="padding: 0;">
+        <!-- Header with gradient -->
+        <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
+
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+                style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        ">
+                &times;
+            </button>
+
+            <!-- Profile Image -->
+            <img id="popupImage" src=""
+                class="rounded-circle"
+                alt="Profile"
+                style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover;">
+        </div>
+
+    </div>
+
+    <!-- Body -->
+    <div class="offcanvas-body pt-5">
+        <!-- Name and Badges -->
+        <div class="text-center mt-1 " style="margin-left: 30px;">
+
+            <h5 class="mb-0 fw-semibold" id="popupName">
+                <i class="ti ti-check" style="color: #1d9f2f;"></i>
+            </h5>
+            <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+                <span class="badge bg-secondary-subtle text-dark border" id="popupDept"></span>
+
+
+                <span class="badge bg-light text-dark border">10+ years of Experience</span>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="mt-4 px-3 ">
+            <div class="row g-3 border-bottom pb-2">
+                <!-- Client ID -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-id me-2 text-muted"></i>
+                        <small class="text-muted">Client ID</small>
+
+                    </div>
+                    <div class="fw-medium">CLT-0024</div>
+                </div>
+
+                <!-- Team -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-users me-2 text-muted"></i>
+                        <small class="text-muted">Team</small>
+                    </div>
+                    <div class="fw-medium" id="popupDept">UI/UX Design</div>
+
+                </div>
+
+                <!-- Date of Join -->
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-calendar me-2 text-muted"></i>
+                        <small class="text-muted">Date Of Join</small>
+                    </div>
+                    <div class="fw-medium">1st Jan 2023</div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4 px-3 ">
+                    <a href="#" class="btn btn-dark d-flex align-items-center gap-2 px-4 flex-grow-1" style="min-width: 150px;">
+                        <i class="ti ti-pencil"></i> Edit Info
+                    </a>
+                    <a href="#" class="btn btn-warning text-white d-flex align-items-center gap-2 px-4 flex-grow-1"
+                        style="background-color: #f65b0f; border-color: #f65b0f; min-width: 150px;">
+                        <i class="ti ti-message"></i> Message
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <!-- Basic Info -->
+        <div class="mt-4 px-3 border-bottom">
+            <h6 class="fw-bold mb-3">Basic Information</h6>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-phone text-muted"></i> Phone
+                </small>
+
+                <div class="fw-medium text-dark " id="popupPhone"></div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-mail text-muted"></i> Email
+                </small>
+                <div class="fw-medium text-dark" id="popupEmail"></div>
+            </div>
+
+
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-gender-male  text-muted"></i> Genfer
+                </small>
+                <div class="fw-medium text-dark">Male</div>
+            </div>
+        </div>
+
+        <!-- Persnal Info -->
+        <div class="mt-4 px-3 mb-4 border-bottom">
+            <h6 class="fw-bold mb-3">Personal Information</h6>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-e-passport  text-muted"></i> Passport No
+                </small>
+                <div class="fw-medium text-dark">QRET4566FGRT</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-calendar-x  text-muted"></i> Passport Exp Date
+                </small>
+
+                <div class="fw-medium text-dark">15 May 2029</div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">
+                    <i class="ti ti-gender-male  text-muted"></i> Nationality
+                </small>
+
+                <div class="fw-medium text-dark">Indian</div>
+            </div>
+        </div>
+
+        <div class="mt-4 px-3 mb-4">
+            <h6 class="fw-bold mb-3">Projects</h6>
+            <div class="row g-3">
+                <!-- Project Card 1 -->
+                <div class="col-12">
+                    <div class="border rounded p-3">
+                        <!-- Top: Icon, Title, Task Info -->
+                        <div class="d-flex align-items-start mb-2">
+                            <!-- Project Icon -->
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+
+                            </div>
+
+
+                            <!-- Project Info -->
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="padding-left: 6px;">World Health</h6>
+                                <small class="text-muted">
+                                    8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Divider -->
+                        <div style="background-color: white; padding: 10px;">
+                            <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                        </div>
+
+
+                        <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                        <div class="d-flex justify-content-between align-items-start">
+                            <!-- Deadline Column -->
+                            <div>
+                                <small class="text-muted d-block mb-1">Deadline</small>
+                                <div class="fw-medium">31 July 2025</div>
+                            </div>
+
+                            <!-- Project Lead Column -->
+                            <div class="text-end">
+                                <small class="text-muted d-block mb-1">Project Lead</small>
+                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                    <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover;" />
+                                    <div class="fw-medium">Leona</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Project Card 2 -->
+                <div class="col-12">
+                    <div class="border rounded p-3">
+                        <!-- Top: Icon, Title, Task Info -->
+                        <div class="d-flex align-items-start mb-2">
+                            <!-- Project Icon -->
+                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" alt="Leona" style="width: 24px; height: 24px; object-fit: cover; margin-left:8px" />
+                            </div>
+
+
+
+                            <!-- Project Info -->
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="padding-left: 6px;"> Hospital Administration</h6>
+                                <small class="text-muted">
+                                    8 tasks <span class="mx-1" style="color: #f65b0f;">•</span> 15 Completed
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Divider -->
+                        <div style="background-color: white; padding: 10px;">
+                            <hr style="
+    border: none;
+    border-top: 1px solid #444;  /* thicker and darker */
+    margin: 1rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* subtle shadow */
+  " />
+                        </div>
+
+                        <!-- Deadline & Project Lead: Two Columns, Same Row -->
+                        <div class="d-flex justify-content-between align-items-start">
+                            <!-- Deadline Column -->
+                            <div>
+                                <small class="text-muted d-block mb-1">Deadline</small>
+                                <div class="fw-medium">31 July 2025</div>
+                            </div>
+
+                            <!-- Project Lead Column -->
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
-
-
 
 <!-- add user -->
 <div class="modal fade" id="add_user" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header border-0 pb-0">
                 <div>
@@ -2969,42 +3606,44 @@
 
 
             </div>
-
-
         </div>
+    </div>
+</div>
 
 
 
-        <script>
-            const toggleIcon = document.getElementById("toggleIcon");
-            const chevron = document.getElementById("chevronIcon");
 
-            toggleIcon.addEventListener("click", () => {
-                setTimeout(() => {
-                    chevron.classList.toggle("ti-chevron-down");
-                    chevron.classList.toggle("ti-chevron-up");
-                }, 150);
-            });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const body = document.body;
-                const darkBtn = document.getElementById('dark-mode-toggle');
-                const lightBtn = document.getElementById('light-mode-toggle');
 
-                darkBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    body.classList.add('dark-mode');
-                    darkBtn.style.display = 'none';
-                    lightBtn.style.display = 'inline';
-                });
+<script>
+    const toggleIcon = document.getElementById("toggleIcon");
+    const chevron = document.getElementById("chevronIcon");
 
-                lightBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    body.classList.remove('dark-mode');
-                    lightBtn.style.display = 'none';
-                    darkBtn.style.display = 'inline';
-                });
-            });
-        </script>
-        @endsection
+    toggleIcon.addEventListener("click", () => {
+        setTimeout(() => {
+            chevron.classList.toggle("ti-chevron-down");
+            chevron.classList.toggle("ti-chevron-up");
+        }, 150);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        const darkBtn = document.getElementById('dark-mode-toggle');
+        const lightBtn = document.getElementById('light-mode-toggle');
+
+        darkBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.add('dark-mode');
+            darkBtn.style.display = 'none';
+            lightBtn.style.display = 'inline';
+        });
+
+        lightBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            body.classList.remove('dark-mode');
+            lightBtn.style.display = 'none';
+            darkBtn.style.display = 'inline';
+        });
+    });
+</script>
+@endsection
