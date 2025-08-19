@@ -2207,7 +2207,7 @@
 
                                 <button type="button" class="btn"
                                     onclick="let btns = this.parentElement.querySelectorAll('button');btns.forEach(b => {if (!b.classList.contains('btn-danger')) {b.style.background = '#f8fafc';b.style.color = '#566a7f';b.style.border = '1px solid transparent';}});this.style.background = '#32b768';this.style.color = 'white';this.style.border = '1px solid #32b768';
-                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    style=" background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Today Meeting
                                 </button>
 
@@ -3061,10 +3061,8 @@
 
 <!-- meeting Modal -->
 <div class="modal fade" id="meetingModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
-
-            <!-- Close Button -->
             <!-- Close Button -->
             <button type="button"
                 data-bs-dismiss="modal"
@@ -3103,12 +3101,12 @@
                     </div>
                 </div>
                 <!-- Schedule Type Toggle -->
-              <div style="background-color: #f9f9fb;">
-    <!-- Toggle Buttons -->
-    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;">
-        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-            <button id="btnToday"
-                onclick="
+                <div style="background-color: #f9f9fb;">
+                    <!-- Toggle Buttons -->
+                    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;">
+                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                            <button id="btnToday"
+                                onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
                     document.getElementById('btnScheduled').style.backgroundColor='transparent';
@@ -3118,12 +3116,12 @@
 
                     document.getElementById('timeRow').classList.add('justify-content-center');
                 "
-                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                Meeting Today
-            </button>
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Meeting Today
+                            </button>
 
-            <button id="btnScheduled"
-                onclick="
+                            <button id="btnScheduled"
+                                onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
                     document.getElementById('btnToday').style.backgroundColor='transparent';
@@ -3133,40 +3131,40 @@
 
                     document.getElementById('timeRow').classList.remove('justify-content-center');
                 "
-                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                Scheduled Meeting
-            </button>
-        </div>
-    </div>
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Scheduled Meeting
+                            </button>
+                        </div>
+                    </div>
 
-    <!-- Date & Time Fields -->
-    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="background-color: #f9f9fb; padding-bottom: 4px;">
-        
-        <!-- Start Date -->
-        <div class="col-md-4" id="startDateField" style="display: none;">
-            <div class="position-relative">
-                <input type="text" class="form-control" placeholder="Start Date DD.MM.YY" style="font-size: 13px; padding-right: 35px;">
-                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
-            </div>
-        </div>
+                    <!-- Date & Time Fields -->
+                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="background-color: #f9f9fb; padding-bottom: 4px;">
 
-        <!-- Start Time -->
-        <div class="col-md-4">
-            <div class="position-relative">
-                <input type="text" class="form-control" placeholder="Start Time HH:MM" style="font-size: 13px; padding-right: 35px;">
-                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
-            </div>
-        </div>
+                        <!-- Start Date -->
+                        <div class="col-md-4" id="startDateField" style="display: none;">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Start Date DD.MM.YY" style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
 
-        <!-- End Time -->
-        <div class="col-md-4">
-            <div class="position-relative">
-                <input type="text" class="form-control" placeholder="End Time HH:MM" style="font-size: 13px; padding-right: 35px;">
-                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
-            </div>
-        </div>
-    </div>
-</div>
+                        <!-- Start Time -->
+                        <div class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Start Time HH:MM" style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="col-md-4">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="End Time HH:MM" style="font-size: 13px; padding-right: 35px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
@@ -3211,39 +3209,18 @@
                     <div class="row g-3">
                         <!-- Meeting Priority -->
                         <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Meeting Priority</p>
-                            <p style="font-size: 11px; color: #6b7280;">Set the Priority of the Meeting</p>
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
+                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the Priority of the Meeting</p>
                             <div class="d-flex gap-2">
-                                <button id="priorityLow" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('priorityMiddle').style.backgroundColor='white';
-          document.getElementById('priorityMiddle').style.color='#64748b';
-          document.getElementById('priorityHigh').style.backgroundColor='white';
-          document.getElementById('priorityHigh').style.color='#64748b';
-        " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                <button id="priorityLow" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
                                     Low
                                 </button>
 
-                                <button id="priorityMiddle" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('priorityLow').style.backgroundColor='white';
-          document.getElementById('priorityLow').style.color='#64748b';
-          document.getElementById('priorityHigh').style.backgroundColor='white';
-          document.getElementById('priorityHigh').style.color='#64748b';
-        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                <button id="priorityMiddle" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px ;font-size: 12px;">
                                     Middle
                                 </button>
 
-                                <button id="priorityHigh" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('priorityLow').style.backgroundColor='white';
-          document.getElementById('priorityLow').style.color='#64748b';
-          document.getElementById('priorityMiddle').style.backgroundColor='white';
-          document.getElementById('priorityMiddle').style.color='#64748b';
-        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                <button id="priorityHigh" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
                                     High
                                 </button>
                             </div>
@@ -3251,40 +3228,19 @@
 
                         <!-- Expired Reminder -->
                         <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;">Expired Reminder</p>
-                            <p style="font-size: 11px; color: #6b7280;">Set a reminder before expired</p>
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Expired Reminder</p>
+                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set a reminder before expired</p>
                             <div class="d-flex gap-2">
-                                <button id="reminder6" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('reminder12').style.backgroundColor='white';
-          document.getElementById('reminder12').style.color='#64748b';
-          document.getElementById('reminder24').style.backgroundColor='white';
-          document.getElementById('reminder24').style.color='#64748b';
-        " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    6 Hour
+                                <button id="reminder6" onclick="this.style.backgroundColor='#22c55e';this.style.color='white';document.getElementById('reminder12').style.backgroundColor='white';document.getElementById('reminder12').style.color='#64748b';document.getElementById('reminder24').style.backgroundColor='white';document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px;font-size: 12px;">
+                                    6 Hr
                                 </button>
 
-                                <button id="reminder12" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('reminder6').style.backgroundColor='white';
-          document.getElementById('reminder6').style.color='#64748b';
-          document.getElementById('reminder24').style.backgroundColor='white';
-          document.getElementById('reminder24').style.color='#64748b';
-        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    12 Hour
+                                <button id="reminder12" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    12 Hr
                                 </button>
 
-                                <button id="reminder24" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('reminder6').style.backgroundColor='white';
-          document.getElementById('reminder6').style.color='#64748b';
-          document.getElementById('reminder12').style.backgroundColor='white';
-          document.getElementById('reminder12').style.color='#64748b';
-        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    24 Hour
+                                <button id="reminder24" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                    24 Hr
                                 </button>
                             </div>
                         </div>
