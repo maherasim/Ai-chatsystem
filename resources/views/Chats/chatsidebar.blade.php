@@ -32,33 +32,43 @@
                        </a>
                    </li>
 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-meetings') }}" class="nav-link task-icon-link {{ request()->is('meetings') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
-                           <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
+                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Project" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-project') }}" class="nav-link task-icon-link {{ request()->is('project') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Project-White.svg') }}" alt="Project White" class="icon-white">
+                           <img src="{{ asset('/build/img/Project-Black.svg') }}" alt="Project Black" class="icon-black">
                        </a>
                    </li>
-
+                   
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-task') }}" class="nav-link task-icon-link {{ request()->is('tasks') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/Tasks-White.svg') }}" alt="Task White" class="icon-white">
                            <img src="{{ asset('/build/img/Tasks-Black.svg') }}" alt="Task Black" class="icon-black">
                        </a>
                    </li>
-
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-users') }}" class="nav-link task-icon-link {{ request()->is('users') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Users-White.svg') }}" alt="User White" class="icon-white">
-                           <img src="{{ asset('/build/img/Users-Black.svg') }}" alt="User Black" class="icon-black">
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-meetings') }}" class="nav-link task-icon-link {{ request()->is('meetings') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
+                           <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
                        </a>
                    </li>
-
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('todo') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
                            <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>
                    </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-users') }}" class="nav-link task-icon-link {{ request()->is('users') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Users-White.svg') }}" alt="User White" class="icon-white">
+                           <img src="{{ asset('/build/img/Users-Black.svg') }}" alt="User Black" class="icon-black">
+                       </a>
+                   </li>
+                 
+
+
+                
+
+                 
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-api') }}" class="nav-link task-icon-link {{ request()->is('Apis') ? 'active' : '' }}">
@@ -67,12 +77,6 @@
                        </a>
                    </li>
 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Project" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-project') }}" class="nav-link task-icon-link {{ request()->is('project') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Project-White.svg') }}" alt="Project White" class="icon-white">
-                           <img src="{{ asset('/build/img/Project-Black.svg') }}" alt="Project Black" class="icon-black">
-                       </a>
-                   </li>
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Library" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-library') }}" class="nav-link task-icon-link {{ request()->is('library') ? 'active' : '' }}">
