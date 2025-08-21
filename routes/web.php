@@ -49,6 +49,9 @@ Route::get('/tasks', function () {
     return view('Chats.task');
 })->middleware('auth')->name('chat-task');
 
+Route::get('/teams', function () {
+    return view('Chats.teams');
+})->middleware('auth')->name('chat-team');
 Route::get('/meetings', function () {
     return view('Chats.meetings');
 })->middleware('auth')->name('chat-meetings');

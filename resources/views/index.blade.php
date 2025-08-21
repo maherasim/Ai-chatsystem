@@ -2465,7 +2465,7 @@
 
 
 
-<script>
+<!-- <script>
     const toggleIcon = document.getElementById("toggleIcon");
     const chevron = document.getElementById("chevronIcon");
 
@@ -2475,7 +2475,7 @@
             chevron.classList.toggle("ti-chevron-up");
         }, 150);
     });
-</script>
+</script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;
