@@ -2385,11 +2385,11 @@
                                             <div style="margin-left: 30px; width: 100%; position: relative;">
                                                 <!-- Dotted Lines -->
                                                 <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;">
-                                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                                    <div style="border-top: 12px  #ccc; height: 2%;"></div>
+                                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
                                                 </div>
 
                                                 <!-- Bars -->

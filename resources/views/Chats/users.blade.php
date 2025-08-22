@@ -2148,7 +2148,7 @@
 
                                 <!-- Main Card -->
                                 <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow:  0 1px 1px rgba(0,0,0,0.05);">
 
                                     <!-- Icon section -->
                                     <div style="width: 80px; height: 80px; background-color: #e6eef5; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
@@ -2174,7 +2174,7 @@
 
                                 <!-- Main Card -->
                                 <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow:  0 1px 1px rgba(0,0,0,0.05);">
 
                                     <!-- Icon section -->
                                     <div style="width: 80px; height: 80px; background-color: #c8f1da; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
@@ -2199,7 +2199,7 @@
 
                                 <!-- Main Card -->
                                 <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 1px 1px rgba(0,0,0,0.05);">
 
                                     <!-- Icon section -->
                                     <div style="width: 80px; height: 80px; background-color: #a3bacb; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
@@ -2224,7 +2224,7 @@
 
                                 <!-- Main Card -->
                                 <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 1px 1px rgba(0,0,0,0.05);">
 
                                     <!-- Icon section -->
                                     <div style="width: 80px; height: 80px; background-color: #1166c1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
@@ -2285,14 +2285,14 @@
                     <div class="row g-2">
                         <!-- Card 1 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
                                     <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
                                         <!-- Circular progress -->
 
                                         <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
@@ -2311,16 +2311,7 @@
                                         </div>
 
 
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
-                                        </div>
 
-                                        <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
                                     </div>
 
                                     <!-- Profile Image (overlapping) -->
@@ -2342,6 +2333,18 @@
 
 
                                 </div>
+                                <div class="d-flex justify-content-between" style="padding: 10px;">
+                                    <!-- Stars -->
+                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        ★★★☆☆
+                                    </div>
+
+                                    <!-- Date with icon -->
+                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                        10.09.2025
+                                    </div>
+                                </div>
 
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
@@ -2351,12 +2354,12 @@
                                     <div class="d-flex justify-content-center gap-4 mt-1">
                                         <!-- Project 1 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
 
                                         <!-- Project 2 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
                                     </div>
 
@@ -2392,9 +2395,9 @@
                                 </div>
 
                                 <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
@@ -2403,14 +2406,14 @@
                         </div>
                         <!-- card 2 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
                                     <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
                                         <!-- Circular progress -->
 
                                         <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
@@ -2429,16 +2432,7 @@
                                         </div>
 
 
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
-                                        </div>
 
-                                        <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
                                     </div>
 
                                     <!-- Profile Image (overlapping) -->
@@ -2460,6 +2454,18 @@
 
 
                                 </div>
+                                <div class="d-flex justify-content-between" style="padding: 10px;">
+                                    <!-- Stars -->
+                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        ★★★☆☆
+                                    </div>
+
+                                    <!-- Date with icon -->
+                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                        10.09.2025
+                                    </div>
+                                </div>
 
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
@@ -2469,12 +2475,12 @@
                                     <div class="d-flex justify-content-center gap-4 mt-1">
                                         <!-- Project 1 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
 
                                         <!-- Project 2 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
                                     </div>
 
@@ -2510,9 +2516,9 @@
                                 </div>
 
                                 <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
@@ -2521,14 +2527,14 @@
                         </div>
                         <!-- card 3 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
                                     <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
                                         <!-- Circular progress -->
 
                                         <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
@@ -2547,16 +2553,7 @@
                                         </div>
 
 
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
-                                        </div>
 
-                                        <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
                                     </div>
 
                                     <!-- Profile Image (overlapping) -->
@@ -2578,6 +2575,18 @@
 
 
                                 </div>
+                                <div class="d-flex justify-content-between" style="padding: 10px;">
+                                    <!-- Stars -->
+                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        ★★★☆☆
+                                    </div>
+
+                                    <!-- Date with icon -->
+                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                        10.09.2025
+                                    </div>
+                                </div>
 
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
@@ -2587,12 +2596,12 @@
                                     <div class="d-flex justify-content-center gap-4 mt-1">
                                         <!-- Project 1 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
 
                                         <!-- Project 2 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
                                     </div>
 
@@ -2628,9 +2637,9 @@
                                 </div>
 
                                 <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
@@ -2639,14 +2648,14 @@
                         </div>
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
+                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
                                     <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
                                         <!-- Circular progress -->
 
                                         <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
@@ -2665,16 +2674,7 @@
                                         </div>
 
 
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
-                                        </div>
 
-                                        <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
                                     </div>
 
                                     <!-- Profile Image (overlapping) -->
@@ -2696,6 +2696,18 @@
 
 
                                 </div>
+                                <div class="d-flex justify-content-between" style="padding: 10px;">
+                                    <!-- Stars -->
+                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        ★★★☆☆
+                                    </div>
+
+                                    <!-- Date with icon -->
+                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
+                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
+                                        10.09.2025
+                                    </div>
+                                </div>
 
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
@@ -2705,12 +2717,12 @@
                                     <div class="d-flex justify-content-center gap-4 mt-1">
                                         <!-- Project 1 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
 
                                         <!-- Project 2 -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
                                         </div>
                                     </div>
 
@@ -2746,9 +2758,9 @@
                                 </div>
 
                                 <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
@@ -2822,56 +2834,56 @@
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-gender-ambiguous me-2"></i> Gender</div>
+                                    <div> <img src="{{URL::asset('/build/img/user11.svg')}}" alt="" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">Female</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-person-badge me-2"></i> User ID</div>
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> User ID</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-geo-alt me-2"></i> Country</div>
+                                    <div><img src="{{URL::asset('/build/img/globus.svg')}}" alt="" style="width: 20px;"> Country</div>
                                     <div class="fw-bold">Pakistan</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-people me-2"></i> Team</div>
+                                    <div><img src="{{URL::asset('/build/img/teamicon.svg')}}" alt="" style="width: 20px;"> Team</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-calendar-check me-2"></i> Join Date</div>
+                                    <div><img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="" style="width: 20px;"> Join Date</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-telephone me-2"></i> Phone</div>
+                                    <div><img src="{{URL::asset('/build/img/calling.svg')}}" alt="" style="width: 20px;"> Phone</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-envelope me-2"></i> E-Mail</div>
+                                    <div> <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-chat-dots me-2"></i> Message</div>
+                                    <div> <img src="{{URL::asset('/build/img/msg.svg')}}" alt="" style="width: 20px;"> Message</div>
                                     <div class="fw-bold text-primary">@LogiTeam</div>
                                 </div>
                             </div>
@@ -4329,56 +4341,56 @@
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-gender-ambiguous me-2"></i> Gender</div>
+                                    <div> <img src="{{URL::asset('/build/img/user11.svg')}}" alt="" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">Female</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-person-badge me-2"></i> User ID</div>
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> User ID</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-geo-alt me-2"></i> Country</div>
+                                    <div><img src="{{URL::asset('/build/img/globus.svg')}}" alt="" style="width: 20px;"> Country</div>
                                     <div class="fw-bold">Pakistan</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-people me-2"></i> Team</div>
+                                    <div><img src="{{URL::asset('/build/img/teamicon.svg')}}" alt="" style="width: 20px;"> Team</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-calendar-check me-2"></i> Join Date</div>
+                                    <div><img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="" style="width: 20px;"> Join Date</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-telephone me-2"></i> Phone</div>
+                                    <div><img src="{{URL::asset('/build/img/calling.svg')}}" alt="" style="width: 20px;"> Phone</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-envelope me-2"></i> E-Mail</div>
+                                    <div> <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><i class="bi bi-chat-dots me-2"></i> Message</div>
+                                    <div> <img src="{{URL::asset('/build/img/msg.svg')}}" alt="" style="width: 20px;"> Message</div>
                                     <div class="fw-bold text-primary">@LogiTeam</div>
                                 </div>
                             </div>
@@ -4521,10 +4533,11 @@
                 </div>
             </div>
 
+
             <!-- Right Panel: col-9 -->
             <div class="col-md-8 col-sm-12">
 
-                <div  style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
+                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
                     <!-- Title Outside Card -->
                     <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
                     <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
@@ -4550,11 +4563,11 @@
                             <div style="margin-left: 30px; width: 100%; position: relative;">
                                 <!-- Dotted Lines -->
                                 <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;">
-                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                    <div style="border-top: 2px dotted #ccc; height: 20%;"></div>
-                                    <div style="border-top: 12px  #ccc; height: 2%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
                                 </div>
 
                                 <!-- Bars -->
@@ -4607,7 +4620,7 @@
                         </div>
                     </div>
                 </div>
-                 <!-- timeboxes -->
+                <!-- timeboxes -->
                 <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
 
                     <!-- Box 1 -->
@@ -4690,7 +4703,7 @@
 
                     <!-- Log Entry Card #2 -->
 
-                     <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                         <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
                             <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
                             <div style="flex: 1;margin-right:45px;">
@@ -4712,7 +4725,7 @@
                         </div>
                     </div>
                     <!-- Log Entry Card #3 -->
- <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                         <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
                             <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
                             <div style="flex: 1;margin-right:45px;">
@@ -4756,7 +4769,7 @@
                         </div>
                     </div>
                 </div>
-               
+
 
             </div>
 

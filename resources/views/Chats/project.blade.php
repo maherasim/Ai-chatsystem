@@ -253,7 +253,7 @@
                             </div>
                         </div>
                         <!-- Pinned Chats-->
-                         <!-- todo list -->
+                        <!-- todo list -->
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <h5 class="chat-title">Today ToDO List</h5>
                         </div>
@@ -1993,7 +1993,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
 
                         <!-- Today Ending task -->
                         <div class="d-flex justify-content-between align-items-center">
@@ -2023,7 +2023,7 @@
                         </div>
 
 
-                         <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
                             <h5 class="chat-title mb-2">Current Active Chats</h5>
                         </div>
                         <div class="tab-content mb-4 " id="innerTabContent">
@@ -2071,7 +2071,7 @@
 
                         </div>
                         <!-- current active groups -->
-                          <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
                             <h5 class="chat-title mb-2">Current Active Groups</h5>
                         </div>
                         <div class="tab-content " id="innerTabContent">
@@ -2933,65 +2933,96 @@
                     <div class="container-fluid px-4">
                         <div class="row g-3 py-2">
                             <!-- Card 1: Total Projects -->
-                            <div class="col-md-2">
-                                <div class="d-flex align-items-center px-3 py-2 h-100"
-                                    style="border: 1px solid #28c76f; border-radius: 10px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                        style="width: 30px; height: 30px;">
-                                    <div>
+                            <div class="col-md-3 mb-3">
+                                <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
+
+                                    <!-- Top Row -->
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
-                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">52</div>
+                                        <div style="background-color: #eae8fd; border-radius: 50%; padding: 5px;">
+                                            <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 32px; height: 28px;" />
+                                        </div>
                                     </div>
+
+                                    <!-- Project Number -->
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+
+                                    <!-- Percentage Change (Bottom Right) -->
+                                    <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
+                                        <i class="bi bi-arrow-up-right"></i> 8.5%
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <!-- Repeat for other cards -->
+                            <!-- card-2 -->
+                            <div class="col-md-3 mb-3">
+                                <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                                <div class="d-flex align-items-center px-3 py-2 h-100"
-                                    style="border: 1px solid #28c76f; border-radius: 10px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                        style="width: 30px; height: 30px;">
-                                    <div>
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">New Projects</div>
-                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">2</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                                <div class="d-flex align-items-center px-3 py-2 h-100"
-                                    style="border: 1px solid #28c76f; border-radius: 10px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                        style="width: 30px; height: 30px;">
-                                    <div>
+                                    <!-- Top Row -->
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
-                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                        <div style="background-color: #e9f8dd; border-radius: 50%; padding: 5px;">
+                                            <img src="{{URL::asset('/build/img/greenflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
+                                        </div>
                                     </div>
+
+                                    <!-- Project Number -->
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+
+                                    <!-- Percentage Change (Bottom Right) -->
+                                    <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
+                                        <i class="bi bi-arrow-up-right"></i> 8.5%
+                                    </div>
+
                                 </div>
                             </div>
+                            <!-- card 3 -->
 
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                                <div class="d-flex align-items-center px-3 py-2 h-100"
-                                    style="border: 1px solid #28c76f; border-radius: 10px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                        style="width: 30px; height: 30px;">
-                                    <div>
+                            <div class="col-md-3 mb-3">
+                                <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
+
+                                    <!-- Top Row -->
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
-                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                        <div style="background-color: #fff3cd; border-radius: 50%; padding: 5px;">
+                                            <img src="{{URL::asset('/build/img/yelowflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
+                                        </div>
                                     </div>
+
+                                    <!-- Project Number -->
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+
+                                    <!-- Percentage Change (Bottom Right) -->
+                                    <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e">
+                                        <i class="bi bi-arrow-down-right"></i> 8.5%
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" style="margin-left: 46px;">
-                                <div class="d-flex align-items-center px-3 py-2 h-100"
-                                    style="border: 1px solid #28c76f; border-radius: 10px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image"
-                                        style="width: 30px; height: 30px;">
-                                    <div>
+
+                            <!-- card 4 -->
+
+                            <div class="col-md-3 mb-3">
+                                <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
+
+                                    <!-- Top Row -->
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
-                                        <div class="fw-bold" style="font-size: 1.2rem; color: #1e2b4d;">45</div>
+                                        <div style="background-color: #fddede; border-radius: 50%; padding: 5px;">
+                                            <img src="{{URL::asset('/build/img/redflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
+                                        </div>
                                     </div>
+
+                                    <!-- Project Number -->
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+
+                                    <!-- Percentage Change (Bottom Right) -->
+                                    <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e;">
+                                        <i class="bi bi-arrow-down-right"></i> 8.5%
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -3030,11 +3061,12 @@
                     </div>
                     <!-- box project section -->
                     <div class="container mb-1">
-                        <div class="row g-3">
-                            <div class="col-md-6 col-lg-4 col-xl-4">
-                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                        <div class="row g-2">
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!-- Progress Circle -->
                                         <div style="width: 60px; height: 60px; position: relative;">
                                             <svg width="60" height="60">
                                                 <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
@@ -3056,22 +3088,29 @@
                                                     </linearGradient>
                                                 </defs>
                                             </svg>
-                                            <!-- Center Text -->
                                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                                                 25%
                                             </div>
                                         </div>
 
-                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <!-- Logo Image -->
                                         <div>
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                        </div>
 
+                                        <!-- Progress Status Badge -->
+                                        <div>
+                                            <div style="background: #e1effe; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
+                                                <img src="{{URL::asset('/build/img/blueflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                                new
+                                            </div>
                                         </div>
                                     </div>
 
+
                                     <!-- Project Title -->
                                     <!-- Project Title & Project ID -->
-                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
+                                    <div class="text-center" style="cursor: pointer;">
                                         <h6 style="cursor: pointer;"
                                             data-bs-toggle="offcanvas"
                                             data-bs-target="#offcanvasRight"
@@ -3085,118 +3124,6 @@
                                             Project ID
                                         </div>
                                     </div>
-
-                                    <!-- Section Tags styled exactly like screenshot -->
-                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Stats Row -->
-                                    <div class="row text-center mb-2">
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Status -->
-                                    <div class="text-center mb-2">
-                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                                style="height: 16px; width: 16px;" alt="flag" />
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Ticket Colors -->
-                                    <!-- Wrapper to center the inner block -->
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Content box with light background and auto width -->
-                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
-                                            <!-- "Ticket" label -->
-                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
-
-                                            <!-- Blue dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                            <!-- Orange dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                            <!-- Red dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Purple dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Green dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Project Manager / Developers -->
-                                    <div class="d-flex justify-content-between m-0 w-100"
-                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                        <!-- Project Manager -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Project Manager
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Developers -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Developers
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
@@ -3235,16 +3162,104 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
 
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
 
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="mt-2 mb-2" style="background-color:#f9f9f9;border-radius:10px;">
+                                        <!-- Stats Row -->
+                                        <div class="row text-center mb-2">
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                            </div>
+                                        </div>
+                                        <!-- Ticket Colors -->
+                                        <div class="d-flex justify-content-center">
+                                            <!-- Content box with light background and auto width -->
+                                            <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
+                                                <!-- "Ticket" label -->
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
 
+                                                <!-- Blue dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">1</span>
 
+                                                <!-- Orange dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">3</span>
 
+                                                <!-- Red dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Purple dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Green dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
+                                        <!-- Section Tags styled exactly like screenshot -->
+                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                        </div>
                                         <!-- Section Titles -->
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
@@ -3276,16 +3291,23 @@
                                                     style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-center gap-2 mt-3">
+                                            <div style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                        </div>
+
                                     </div>
 
 
                                 </div>
                             </div>
                             <!-- 2nd -->
-                            <div class="col-md-6 col-lg-4 col-xl-4">
-                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                           <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!-- Progress Circle -->
                                         <div style="width: 60px; height: 60px; position: relative;">
                                             <svg width="60" height="60">
                                                 <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
@@ -3307,23 +3329,33 @@
                                                     </linearGradient>
                                                 </defs>
                                             </svg>
-                                            <!-- Center Text -->
                                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                                                 25%
                                             </div>
                                         </div>
 
-                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <!-- Logo Image -->
                                         <div>
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                        </div>
 
+                                        <!-- Progress Status Badge -->
+                                        <div>
+                                            <div style="background: #fff7da; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
+                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                               
+                                            </div>
                                         </div>
                                     </div>
 
+
                                     <!-- Project Title -->
                                     <!-- Project Title & Project ID -->
-                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
-                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                    <div class="text-center" style="cursor: pointer;">
+                                        <h6 style="cursor: pointer;"
+                                            data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvasRight"
+                                            aria-controls="offcanvasRight">
                                             Project Title
                                         </h6>
 
@@ -3333,120 +3365,6 @@
                                             Project ID
                                         </div>
                                     </div>
-
-                                    <!-- Section Tags styled exactly like screenshot -->
-                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Stats Row -->
-                                    <div class="row text-center mb-2">
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Status -->
-                                    <div class="text-center mb-2">
-                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                                style="height: 16px; width: 16px;" alt="flag" />
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Ticket Colors -->
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Content box with light background and auto width -->
-                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
-                                            <!-- "Ticket" label -->
-                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
-
-                                            <!-- Blue dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                            <!-- Orange dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                            <!-- Red dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Purple dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Green dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Project Manager / Developers -->
-                                    <div class="d-flex justify-content-between m-0 w-100"
-                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                        <!-- Project Manager -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Project Manager
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Developers -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Developers
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Date + Work Days + Days Left -->
-                                    <!-- Date + Work Days + Days Left + Progress Bar -->
                                     <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
@@ -3485,16 +3403,104 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
 
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
 
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="mt-2 mb-2" style="background-color:#f9f9f9;border-radius:10px;">
+                                        <!-- Stats Row -->
+                                        <div class="row text-center mb-2">
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                            </div>
+                                        </div>
+                                        <!-- Ticket Colors -->
+                                        <div class="d-flex justify-content-center">
+                                            <!-- Content box with light background and auto width -->
+                                            <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
+                                                <!-- "Ticket" label -->
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
 
+                                                <!-- Blue dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">1</span>
 
+                                                <!-- Orange dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">3</span>
 
+                                                <!-- Red dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Purple dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Green dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
+                                        <!-- Section Tags styled exactly like screenshot -->
+                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                        </div>
                                         <!-- Section Titles -->
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
@@ -3526,16 +3532,23 @@
                                                     style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-center gap-2 mt-3">
+                                            <div style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                        </div>
+
                                     </div>
 
 
                                 </div>
                             </div>
                             <!-- 3rd -->
-                            <div class="col-md-6 col-lg-4 col-xl-4">
-                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                           <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!-- Progress Circle -->
                                         <div style="width: 60px; height: 60px; position: relative;">
                                             <svg width="60" height="60">
                                                 <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
@@ -3557,23 +3570,33 @@
                                                     </linearGradient>
                                                 </defs>
                                             </svg>
-                                            <!-- Center Text -->
                                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                                                 25%
                                             </div>
                                         </div>
 
-                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <!-- Logo Image -->
                                         <div>
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                        </div>
 
+                                        <!-- Progress Status Badge -->
+                                        <div>
+                                            <div style="background: #fddede; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
+                                                <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                                
+                                            </div>
                                         </div>
                                     </div>
 
+
                                     <!-- Project Title -->
                                     <!-- Project Title & Project ID -->
-                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
-                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                    <div class="text-center" style="cursor: pointer;">
+                                        <h6 style="cursor: pointer;"
+                                            data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvasRight"
+                                            aria-controls="offcanvasRight">
                                             Project Title
                                         </h6>
 
@@ -3583,120 +3606,6 @@
                                             Project ID
                                         </div>
                                     </div>
-
-                                    <!-- Section Tags styled exactly like screenshot -->
-                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Stats Row -->
-                                    <div class="row text-center mb-2">
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Status -->
-                                    <div class="text-center mb-2">
-                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                                style="height: 16px; width: 16px;" alt="flag" />
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Ticket Colors -->
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Content box with light background and auto width -->
-                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
-                                            <!-- "Ticket" label -->
-                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
-
-                                            <!-- Blue dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                            <!-- Orange dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                            <!-- Red dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Purple dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Green dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Project Manager / Developers -->
-                                    <div class="d-flex justify-content-between m-0 w-100"
-                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                        <!-- Project Manager -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Project Manager
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Developers -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Developers
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Date + Work Days + Days Left -->
-                                    <!-- Date + Work Days + Days Left + Progress Bar -->
                                     <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
@@ -3735,16 +3644,104 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
 
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
 
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="mt-2 mb-2" style="background-color:#f9f9f9;border-radius:10px;">
+                                        <!-- Stats Row -->
+                                        <div class="row text-center mb-2">
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                            </div>
+                                        </div>
+                                        <!-- Ticket Colors -->
+                                        <div class="d-flex justify-content-center">
+                                            <!-- Content box with light background and auto width -->
+                                            <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
+                                                <!-- "Ticket" label -->
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
 
+                                                <!-- Blue dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">1</span>
 
+                                                <!-- Orange dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">3</span>
 
+                                                <!-- Red dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Purple dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Green dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
+                                        <!-- Section Tags styled exactly like screenshot -->
+                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                        </div>
                                         <!-- Section Titles -->
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
@@ -3776,16 +3773,23 @@
                                                     style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-center gap-2 mt-3">
+                                            <div style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                        </div>
+
                                     </div>
 
 
                                 </div>
                             </div>
                             <!-- 4 -->
-                            <div class="col-md-6 col-lg-4 col-xl-4">
-                                <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                           <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!-- Progress Circle -->
                                         <div style="width: 60px; height: 60px; position: relative;">
                                             <svg width="60" height="60">
                                                 <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
@@ -3807,23 +3811,33 @@
                                                     </linearGradient>
                                                 </defs>
                                             </svg>
-                                            <!-- Center Text -->
                                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                                                 25%
                                             </div>
                                         </div>
 
-                                        <!-- <img src="" class="rounded-circle" alt="image"> -->
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px;" alt="Project Logo">
+                                        <!-- Logo Image -->
                                         <div>
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                        </div>
 
+                                        <!-- Progress Status Badge -->
+                                        <div>
+                                            <div style="background: #fff7da; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
+                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                                new
+                                            </div>
                                         </div>
                                     </div>
 
+
                                     <!-- Project Title -->
                                     <!-- Project Title & Project ID -->
-                                    <div class="text-center" style="cursor: pointer; margin-left:50px;">
-                                        <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                    <div class="text-center" style="cursor: pointer;">
+                                        <h6 style="cursor: pointer;"
+                                            data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvasRight"
+                                            aria-controls="offcanvasRight">
                                             Project Title
                                         </h6>
 
@@ -3833,120 +3847,6 @@
                                             Project ID
                                         </div>
                                     </div>
-
-                                    <!-- Section Tags styled exactly like screenshot -->
-                                    <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                        <div class="px-3 py-1"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                            Section #1
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Stats Row -->
-                                    <div class="row text-center mb-2">
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tickets</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">5</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Total Tasks</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">10</div>
-                                        </div>
-                                        <div class="col">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                            <div class="text-dark" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">25%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Status -->
-                                    <div class="text-center mb-2">
-                                        <div style="background: #c9e9d7; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 2px 24px; font-weight: 500; font-size: 14px;">
-                                            <img src="{{URL::asset('/build/img/flag.svg')}}"
-                                                style="height: 16px; width: 16px;" alt="flag" />
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Ticket Colors -->
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Content box with light background and auto width -->
-                                        <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f8f8f8; border-radius: 10px; width: fit-content;">
-                                            <!-- "Ticket" label -->
-                                            <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
-
-                                            <!-- Blue dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">1</span>
-
-                                            <!-- Orange dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">3</span>
-
-                                            <!-- Red dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Purple dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-
-                                            <!-- Green dot + number -->
-                                            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                            <span style="font-size: 13px; color: #6c757d;">0</span>
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Project Manager / Developers -->
-                                    <div class="d-flex justify-content-between m-0 w-100"
-                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
-
-                                        <!-- Project Manager -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Project Manager
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Developers -->
-                                        <div class="text-center">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
-                                                Developers
-                                            </strong>
-                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!-- Date + Work Days + Days Left + Progress Bar -->
                                     <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
@@ -3985,16 +3885,104 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Project Manager / Developers -->
+                                    <div class="d-flex justify-content-between m-0 w-100"
+                                        style="background-color: #f9f9f9; border-radius: 12px; padding: 10px;">
 
+                                        <!-- Project Manager -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Project Manager
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                            </div>
+                                        </div>
 
+                                        <!-- Developers -->
+                                        <div class="text-center">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                                Developers
+                                            </strong>
+                                            <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
+                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="mt-2 mb-2" style="background-color:#f9f9f9;border-radius:10px;">
+                                        <!-- Stats Row -->
+                                        <div class="row text-center mb-2">
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                            </div>
+                                            <div class="col">
+                                                <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                            </div>
+                                        </div>
+                                        <!-- Ticket Colors -->
+                                        <div class="d-flex justify-content-center">
+                                            <!-- Content box with light background and auto width -->
+                                            <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
+                                                <!-- "Ticket" label -->
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
 
+                                                <!-- Blue dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">1</span>
 
+                                                <!-- Orange dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">3</span>
 
+                                                <!-- Red dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Purple dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #a855f7; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+
+                                                <!-- Green dot + number -->
+                                                <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-
+                                        <!-- Section Tags styled exactly like screenshot -->
+                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                            <div class="px-2 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+                                        </div>
                                         <!-- Section Titles -->
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
@@ -4026,6 +4014,12 @@
                                                     style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-center gap-2 mt-3">
+                                            <div style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                        </div>
+
                                     </div>
 
 
@@ -5148,202 +5142,234 @@
 
 
 
-<!-- Add New Project Modal -->
-<div class="modal fade" id="add_user" tabindex="-1" style="visibility: visible;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header border-0 pb-0">
-                <div>
-                    <h4 class="modal-title fw-bold">Add New Project</h4>
-                    <small class="text-muted">User ID : <strong>user -0024</strong></small>
-                </div>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
-                    &times;
-                </button>
-            </div>
+<div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
 
-            <!-- Modal Body -->
-            <div class="modal-body pt-0">
+        <div class="modal-content" style="background-color: #fff; border-radius: 12px; font-family: 'Poppins', sans-serif;">
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                ×
+            </button>
+            <div class="modal-body px-4 py-4">
+                <h5>Add new Projects</h5>
+                <small>Project ID</small>
 
-                <!-- Tabs -->
+                <!-- Upload and File Row -->
+                <div class="row  mt-2" style=" background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Upload Logo -->
+                    <div class="col-3">
+                        <label for="uploadLogo" class="d-flex flex-column justify-content-center align-items-center text-center"
+                            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer;background:#f7f9fc">
+                            <div style="font-size: 28px; color: #a0a4ab;">+</div>
+                            <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
+                            <input type="file" id="uploadLogo" hidden />
+                        </label>
+                    </div>
 
+                    <!-- File Upload Section -->
+                    <div class="col-9">
+                        <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px;background:#f7f9fc">
+                            <div class="d-flex gap-2">
+                                <!-- File Box 1 -->
 
-                <!-- Tab Content -->
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="basicInfo">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <div style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <small style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                        <img src="{{ asset('build/img/trash.svg') }}" style="width: 20px; height: 28px; cursor: pointer;" />
+                                    </div>
 
-                        <!-- Profile Upload -->
-                        <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle me-4"
-                                alt="Profile Image" style="width: 80px; height: 80px; object-fit: cover;">
-                            <div>
-                                <p class="mb-1 fw-medium">Upload Project Logo</p>
-                                <small class="text-muted d-block mb-2">Image should be below 4 MB</small>
-                                <button class="btn btn-warning me-2"
-                                    style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
-                                <button class="btn btn-outline">Cancel</button>
+                                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload1" hidden />
+                                    </label>
+                                </div>
+
+                                <!-- File Box 2 -->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <div style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <small style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                        <img src="{{ asset('build/img/trash.svg') }}" style="width: 20px; height: 28px; cursor: pointer;" />
+                                    </div>
+
+                                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload2" hidden />
+                                    </label>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- Form -->
-                        <form>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">Project Title</label>
-                                    <input type="text" class="form-control" />
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Project Priority</label>
-                                    <input type="text" class="form-control" />
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Start Date & End Date</label>
-                                    <input type="date" class="form-control" />
-                                </div>
-                            </div>
-                            <!-- Description Editor -->
-                            <div class="mb-3">
-
-                                <label class="form-label">Description</label>
-                                <div class="border p-2 bg-white rounded">
-                                    <div class="d-flex mb-2 gap-2">
-                                        <select id="fontSizeSelect" class="form-select form-select-sm w-auto"
-                                            onchange="setFontSize(this.value)">
-                                            <option value="3">14</option>
-                                            <option value="2">12</option>
-                                            <option value="4">16</option>
-                                            <option value="5">18</option>
-                                        </select>
-
-                                        <button type="button" class="btn btn-light btn-sm" onclick="format('bold')">
-                                            <i class="fa-solid fa-bold"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-sm" onclick="format('italic')">
-                                            <i class="fa-solid fa-italic"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-sm" onclick="format('underline')">
-                                            <i class="fa-solid fa-underline"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-sm" onclick="format('strikethrough')">
-                                            <i class="fa-solid fa-strikethrough"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-sm" onclick="removeFormatting()">
-                                            <i class="fa-solid fa-eraser"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-sm">
-                                            <i class="fa-regular fa-image"></i>
-                                        </button>
-                                    </div>
-                                    <div id="editor" contenteditable="true"
-                                        style="min-height: 120px; border: 1px solid #ddd; padding: 8px; border-radius: 4px; color: #000;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Add Section Field -->
-                            <div class="mb-3">
-                                <label class="form-label">Add Section</label>
-                                <div id="section-container"></div>
-                                <button type="button" onclick="addSection()"
-                                    style="background-color: #17a2b8; color: white; border: 1px solid #17a2b8; border-radius: 6px; padding: 6px 16px; font-size: 14px; cursor: pointer; margin-top: 6px;">
-                                    Add Section
-                                </button>
-                            </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Select Project Manager</label>
-                                    <div id="selectorContainer1"
-                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
-
-                                        <!-- Selected Tags -->
-                                        <div id="tagContainer1"
-                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
-                                        </div>
-
-                                        <!-- Options -->
-                                        <div style="display: block;">
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Artywiz</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Groupama</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer1')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Zenith</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Select Developer</label>
-                                    <div id="selectorContainer2"
-                                        style="border: 1px solid #ccc; border-radius: 4px; background-color: #fff; padding: 8px; min-height: 80px;">
-
-                                        <!-- Selected Tags -->
-                                        <div id="tagContainer2"
-                                            style="display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; margin-bottom: 8px; min-height: 42px;">
-                                        </div>
-
-                                        <!-- Options -->
-                                        <div style="display: block;">
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="artywiz" data-label="Artywiz" data-img="https://via.placeholder.com/24x24?text=A"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=A" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Artywiz</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="groupama" data-label="Groupama" data-img="https://via.placeholder.com/24x24?text=G"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=G" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Groupama</span>
-                                            </div>
-
-                                            <div onclick="selectItem(this, 'tagContainer2')" data-value="zenith" data-label="Zenith" data-img="https://via.placeholder.com/24x24?text=Z"
-                                                style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; background: #f9f9f9; margin-bottom: 6px;">
-                                                <img src="https://via.placeholder.com/24x24?text=Z" style="width: 24px; height: 24px;" />
-                                                <span style="font-size: 14px;">Zenith</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Upload Files</label>
-                                <input type="file" class="form-control" />
-                            </div>
-
-                            <!-- Upload Files -->
-
-
-                        </form>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal Footer -->
-            <div class="modal-footer border-top-0 pt-0">
-                <div class="ms-auto d-flex gap-2">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn text-white"
-                        style="background-color: #f65b0f; border-color: #f65b0f;">Save</button>
+                <!-- Priority Section -->
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Ticket Priority -->
+                    <div class="col-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
+                        <input type="text" placeholder="Project Title" class="form-control mt-2" style="border-radius: 8px;" />
+                    </div>
+
+                    <!-- Task Priority -->
+                    <div class="col-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
+
+                        <!-- Priority Button Group -->
+                        <div class="d-flex justify-content-between mt-2 px-2 py-1"
+                            style="background-color: #fff; border-radius: 12px;">
+
+                            <!-- Active: Low -->
+                            <button class="btn text-white"
+                                style="background-color: #1cc375; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
+
+                            <!-- Inactive -->
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
+                        </div>
+                    </div>
+
                 </div>
+                <!-- duration -->
+
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 20px;">
+                    <!-- Project Duration -->
+                    <div class="col-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Project duration</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the duration of the Project</div>
+
+                        <!-- Start Date -->
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="position-relative w-100">
+                                <input type="text" class="form-control" placeholder="Start Date DD:MM:YYYY"
+                                    style="font-size: 11px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 10px; right: 10px; width: 18px;">
+                            </div>
+
+                            <!-- Deliver Date -->
+                            <div class="position-relative w-100">
+                                <input type="text" class="form-control" placeholder="Deliver Date DD:MM:YYYY"
+                                    style="font-size: 11px;padding-left: 5px;">
+                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                    style="position: absolute; top: 10px; right: 10px; width: 18px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expired Reminder -->
+                    <div class="col-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
+
+                        <!-- Reminder Buttons -->
+                        <div class="d-flex justify-content-between mt-2 px-1 py-1" style="background-color: #fff; border-radius: 12px;">
+                            <button class="btn text-white"
+                                style="background-color: #1cc375; border-radius: 8px; padding: 6px 18px; font-size: 14px;">7 Days</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">15
+                                Days</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">30
+                                Days</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- description -->
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Ticket Priority -->
+                    <div class="col-12">
+                        <label class="fw-semibold" style="font-size: 14px;">Project Description</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Describe the Project well</div>
+                        <input type="text" placeholder="Use the currect Editor in the old design" class="form-control mt-2" style="border-radius: 8px;" />
+                    </div>
+
+                    <!-- Task Priority -->
+                </div>
+                <!-- add project section -->
+                <div class=" row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px;padding: 15px;">
+                    <!-- Heading -->
+                    <div class="mb-3">
+                        <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                    </div>
+
+                    <!-- Section Row 1 -->
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <input type="text" class="form-control" placeholder="Section Name"
+                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                        <input type="text" class="form-control" placeholder="Section Description"
+                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                        <button class="btn d-flex justify-content-center align-items-center"
+                            style="background-color: #1cc375; border-radius: 6px; width: 32px; height: 32px;">
+                            <span style="width: 20px;">+</span>
+                        </button>
+                    </div>
+
+                    <!-- Section Row 2 -->
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <input type="text" class="form-control" placeholder="Section Name"
+                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                        <input type="text" class="form-control" placeholder="Section Description"
+                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                        <button class="btn d-flex justify-content-center align-items-center"
+                            style="background-color: #f44336; border-radius: 6px; width: 32px; height: 32px;">
+                            <i class="fas fa-trash" style="color: white; font-size: 14px;"></i>
+                        </button>
+                    </div>
+
+                    <!-- Footer Buttons -->
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <button class="btn"
+                            style="background-color: #f1f1f1; color: #7d7f85; border-radius: 8px; padding: 6px 20px; font-weight: 500;" data-bs-dismiss="modal">
+
+                            Close
+                        </button>
+                        <button class="btn"
+                            style="background-color: #f1f1f1; color: #7d7f85; border-radius: 8px; padding: 6px 20px; font-weight: 500;"
+                            data-bs-dismiss="modal">
+                            Save & Close
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
             </div>
         </div>
     </div>
 </div>
+
+
 <!--pause project model Modal -->
 <div class="modal fade" id="pauseProjectModal" tabindex="-1" aria-labelledby="pauseModalLabel" aria-hidden="true" style="visibility: visible;">
     <div class="modal-dialog modal-dialog-centered">
