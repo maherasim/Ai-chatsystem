@@ -2840,7 +2840,7 @@
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/user11.svg')}}" alt="" style="width: 20px;"> Gender</div>
+                                    <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">Female</div>
                                 </div>
                             </div>
@@ -2854,7 +2854,7 @@
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/globus.svg')}}" alt="" style="width: 20px;"> Country</div>
+                                    <div><img src="{{URL::asset('/build/img/Globus.svg')}}" alt="" style="width: 20px;"> Country</div>
                                     <div class="fw-bold">Pakistan</div>
                                 </div>
                             </div>
@@ -2882,7 +2882,7 @@
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
+                                    <div> <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
@@ -4347,7 +4347,7 @@
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/user11.svg')}}" alt="user" style="width: 20px;"> Gender</div>
+                                    <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="user" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">Female</div>
                                 </div>
                             </div>
@@ -4361,7 +4361,7 @@
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/globus.svg')}}" alt="" style="width: 20px;"> Country</div>
+                                    <div><img src="{{URL::asset('/build/img/Globus.svg')}}" alt="" style="width: 20px;"> Country</div>
                                     <div class="fw-bold">Pakistan</div>
                                 </div>
                             </div>
@@ -4389,7 +4389,7 @@
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
+                                    <div> <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
                                     <div class="fw-bold">Ticket ID</div>
                                 </div>
                             </div>
