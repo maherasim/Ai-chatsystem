@@ -3062,7 +3062,7 @@
                     <!-- box project section -->
                     <div class=" mb-1">
                         <div class="row g-1">
-                            <div style="width:295px">
+                            <div  class="col-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3306,7 +3306,7 @@
                                 </div>
                             </div>
                             <!-- 2nd -->
-                            <div style="width:295px">
+                            <div  class="col-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3549,7 +3549,7 @@
                                 </div>
                             </div>
                             <!-- 3rd -->
-                            <div style="width:295px">
+                            <div class="col-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3792,7 +3792,7 @@
                                 </div>
                             </div>
                             <!-- 4 -->
-                            <div style="width:295px">
+                            <div  class="col-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -5199,25 +5199,25 @@
                         <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px;background:#f7f9fc">
                             <div class="d-flex gap-2">
                                 <!-- File Box 1 -->
-<div class="col-6">
-    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-        <div class="d-flex align-items-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-            <div>
-                <!-- File name -->
-                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
-                <!-- File size -->
-                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
-            </div>
-        </div>
-    </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <!-- File name -->
+                                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <!-- File size -->
+                                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                    </div>
 
-    <!-- Upload button -->
-    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
-        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-        <input type="file" id="fileUpload1" hidden
-            onchange="
+                                    <!-- Upload button -->
+                                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload1" hidden
+                                            onchange="
                 if (this.files.length > 0) {
                     var file = this.files[0];
                     var name = file.name;
@@ -5226,29 +5226,29 @@
                     document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
                 }
             " />
-    </label>
-</div>
+                                    </label>
+                                </div>
 
                                 <!-- File Box 2 -->
-                               <div class="col-6">
-    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-        <div class="d-flex align-items-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-            <div>
-                <!-- File name -->
-                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
-                <!-- File size -->
-                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
-            </div>
-        </div>
-    </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <!-- File name -->
+                                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <!-- File size -->
+                                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                    </div>
 
-    <!-- Upload Button -->
-    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
-        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-        <input type="file" id="fileUpload2" hidden
-            onchange="
+                                    <!-- Upload Button -->
+                                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload2" hidden
+                                            onchange="
                 if (this.files.length > 0) {
                     var file = this.files[0];
                     var name = file.name;
@@ -5257,8 +5257,8 @@
                     document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
                 }
             " />
-    </label>
-</div>
+                                    </label>
+                                </div>
 
                             </div>
                         </div>
