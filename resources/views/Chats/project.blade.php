@@ -3060,9 +3060,9 @@
                         </div>
                     </div>
                     <!-- box project section -->
-                    <div class="container mb-1">
-                        <div class="row g-2">
-                            <div class="col-12 col-sm-6 col-lg-4">
+                    <div class=" mb-1">
+                        <div class="row g-1">
+                            <div style="width:295px">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3124,29 +3124,29 @@
                                             Project ID
                                         </div>
                                     </div>
-                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-right:13px;">
                                                 Start Date
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">DD:MM:YY</div>
                                         </div>
 
                                         <!-- Work Days -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 11px;margin-left: 8px;">
                                                 Work Days
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">5 Days</div>
                                         </div>
 
                                         <!-- Days Left -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-left:13px;">
                                                 Days Left
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">5 Days</div>
                                         </div>
 
                                         <!-- Blue Progress Bar (Full Width Below) -->
@@ -3198,15 +3198,15 @@
                                         <div class="row text-center mb-2">
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">5 tickets</div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">10 tasks </div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">25%</div>
                                             </div>
                                         </div>
                                         <!-- Ticket Colors -->
@@ -3214,7 +3214,7 @@
                                             <!-- Content box with light background and auto width -->
                                             <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
                                                 <!-- "Ticket" label -->
-                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Task</span>
 
                                                 <!-- Blue dot + number -->
                                                 <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
@@ -3238,25 +3238,25 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Section Tags styled exactly like screenshot -->
-                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                            <div class="px-2 py-1"
+                                        <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+
+                                            <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
                                         </div>
@@ -3291,11 +3291,14 @@
                                                     style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-center gap-2 mt-3">
-                                            <div style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px;"></div>
-                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
-                                            <div style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px;"></div>
+                                        <!-- Step Progress Bar -->
+                                        <div class="d-flex justify-content-center gap-2 mt-3" id="stepBar">
+                                            <div id="step1" onclick=" document.getElementById('step1').style.backgroundColor = '#1cc375'; document.getElementById('step2').style.backgroundColor = '#ffffff'; document.getElementById('step3').style.backgroundColor = '#ffffff';" style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px; cursor: pointer;"></div>
+                                            <div id="step2" onclick=" document.getElementById('step1').style.backgroundColor = '#ffffff'; document.getElementById('step2').style.backgroundColor = '#1cc375'; document.getElementById('step3').style.backgroundColor = '#ffffff'; " style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px; cursor: pointer;"></div>
+
+                                            <div id="step3" onclick=" document.getElementById('step1').style.backgroundColor = '#ffffff'; document.getElementById('step2').style.backgroundColor = '#ffffff'; document.getElementById('step3').style.backgroundColor = '#1cc375'; " style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px; cursor: pointer;"></div>
                                         </div>
+
 
                                     </div>
 
@@ -3303,7 +3306,7 @@
                                 </div>
                             </div>
                             <!-- 2nd -->
-                           <div class="col-12 col-sm-6 col-lg-4">
+                            <div style="width:295px">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3343,7 +3346,7 @@
                                         <div>
                                             <div style="background: #fff7da; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
                                                 <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -3365,29 +3368,29 @@
                                             Project ID
                                         </div>
                                     </div>
-                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-right:13px;">
                                                 Start Date
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">DD:MM:YY</div>
                                         </div>
 
                                         <!-- Work Days -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 11px;margin-left: 8px;">
                                                 Work Days
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">5 Days</div>
                                         </div>
 
                                         <!-- Days Left -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-left:13px;">
                                                 Days Left
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">5 Days</div>
                                         </div>
 
                                         <!-- Blue Progress Bar (Full Width Below) -->
@@ -3439,15 +3442,15 @@
                                         <div class="row text-center mb-2">
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">5 tickets</div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">10 tasks </div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">25%</div>
                                             </div>
                                         </div>
                                         <!-- Ticket Colors -->
@@ -3455,7 +3458,7 @@
                                             <!-- Content box with light background and auto width -->
                                             <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
                                                 <!-- "Ticket" label -->
-                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Task</span>
 
                                                 <!-- Blue dot + number -->
                                                 <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
@@ -3479,25 +3482,25 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Section Tags styled exactly like screenshot -->
-                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                            <div class="px-2 py-1"
+                                        <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+
+                                            <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
                                         </div>
@@ -3541,10 +3544,12 @@
                                     </div>
 
 
+
+
                                 </div>
                             </div>
                             <!-- 3rd -->
-                           <div class="col-12 col-sm-6 col-lg-4">
+                            <div style="width:295px">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3584,7 +3589,7 @@
                                         <div>
                                             <div style="background: #fddede; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
                                                 <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -3606,29 +3611,29 @@
                                             Project ID
                                         </div>
                                     </div>
-                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-right:13px;">
                                                 Start Date
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">DD:MM:YY</div>
                                         </div>
 
                                         <!-- Work Days -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 11px;margin-left: 8px;">
                                                 Work Days
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">5 Days</div>
                                         </div>
 
                                         <!-- Days Left -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-left:13px;">
                                                 Days Left
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">5 Days</div>
                                         </div>
 
                                         <!-- Blue Progress Bar (Full Width Below) -->
@@ -3680,15 +3685,15 @@
                                         <div class="row text-center mb-2">
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">5 tickets</div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">10 tasks </div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">25%</div>
                                             </div>
                                         </div>
                                         <!-- Ticket Colors -->
@@ -3696,7 +3701,7 @@
                                             <!-- Content box with light background and auto width -->
                                             <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
                                                 <!-- "Ticket" label -->
-                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Task</span>
 
                                                 <!-- Blue dot + number -->
                                                 <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
@@ -3720,25 +3725,25 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Section Tags styled exactly like screenshot -->
-                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                            <div class="px-2 py-1"
+                                        <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+
+                                            <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
                                         </div>
@@ -3782,10 +3787,12 @@
                                     </div>
 
 
+
+
                                 </div>
                             </div>
                             <!-- 4 -->
-                           <div class="col-12 col-sm-6 col-lg-4">
+                            <div style="width:295px">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3847,29 +3854,29 @@
                                             Project ID
                                         </div>
                                     </div>
-                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
+                                    <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
                                         <!-- Start Date -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-right:13px;">
                                                 Start Date
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">DD:MM:YY</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">DD:MM:YY</div>
                                         </div>
 
                                         <!-- Work Days -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 11px;margin-left: 8px;">
                                                 Work Days
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">5 Days</div>
                                         </div>
 
                                         <!-- Days Left -->
                                         <div class="col-4">
-                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
+                                            <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-left:13px;">
                                                 Days Left
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 13px;">5 Days</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">5 Days</div>
                                         </div>
 
                                         <!-- Blue Progress Bar (Full Width Below) -->
@@ -3921,15 +3928,15 @@
                                         <div class="row text-center mb-2">
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"> <img src="{{URL::asset('/build/img/redsigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tickets</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">5 tickets</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">5 tickets</div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 24px; width: fit-content; padding: 3px;">10 tasks </div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">10 tasks </div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 37px; width: fit-content; padding: 3px;">25%</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">25%</div>
                                             </div>
                                         </div>
                                         <!-- Ticket Colors -->
@@ -3937,7 +3944,7 @@
                                             <!-- Content box with light background and auto width -->
                                             <div class="d-flex align-items-center gap-2 mb-3 px-3" style="background: #f1f1f1; border-radius: 10px; width: fit-content;">
                                                 <!-- "Ticket" label -->
-                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Ticket</span>
+                                                <span style="background: #f1f1f1; padding: 4px 8px; border-radius: 6px; font-size: 12px; color: #6c757d;margin-left:-15px;">Task</span>
 
                                                 <!-- Blue dot + number -->
                                                 <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
@@ -3961,25 +3968,25 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Section Progress Block -->
                                     <div style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Section Tags styled exactly like screenshot -->
-                                        <div class="d-flex justify-content-center gap-2 mb-3 flex-nowrap">
-                                            <div class="px-2 py-1"
+                                        <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                                Section #1
+                                            </div>
+
+                                            <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-2 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
+                                            <div class="px-1 py-1"
+                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 Section #1
                                             </div>
                                         </div>
@@ -4021,6 +4028,8 @@
                                         </div>
 
                                     </div>
+
+
 
 
                                 </div>
@@ -5165,58 +5174,92 @@
                 <div class="row  mt-2" style=" background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
                     <div class="col-3">
-                        <label for="uploadLogo" class="d-flex flex-column justify-content-center align-items-center text-center"
-                            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer;background:#f7f9fc">
-                            <div style="font-size: 28px; color: #a0a4ab;">+</div>
-                            <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
-                            <input type="file" id="uploadLogo" hidden />
+                        <label for="uploadLogo"
+                            class="d-flex flex-column justify-content-center align-items-center text-center"
+                            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
+
+                            <!-- Preview Image (initially hidden) -->
+                            <img id="logoPreview" src="" style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
+
+                            <!-- Plus Icon and Text -->
+                            <div id="uploadIconText">
+                                <div style="font-size: 28px; color: #a0a4ab;">+</div>
+                                <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
+                            </div>
+
+                            <!-- Hidden File Input -->
+                            <input type="file" id="uploadLogo" accept="image/*" hidden
+                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
                     </div>
+
 
                     <!-- File Upload Section -->
                     <div class="col-9">
                         <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px;background:#f7f9fc">
                             <div class="d-flex gap-2">
                                 <!-- File Box 1 -->
+<div class="col-6">
+    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+        <div class="d-flex align-items-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+            <div>
+                <!-- File name -->
+                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
+                <!-- File size -->
+                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
+            </div>
+        </div>
+    </div>
 
-                                <div class="col-6">
-                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-                                            <div>
-                                                <div style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                        <img src="{{ asset('build/img/trash.svg') }}" style="width: 20px; height: 28px; cursor: pointer;" />
-                                    </div>
-
-                                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload1" hidden />
-                                    </label>
-                                </div>
+    <!-- Upload button -->
+    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
+        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+        <input type="file" id="fileUpload1" hidden
+            onchange="
+                if (this.files.length > 0) {
+                    var file = this.files[0];
+                    var name = file.name;
+                    var sizeKB = (file.size / 1024).toFixed(1);
+                    document.getElementById('pdfName1').innerText = name;
+                    document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
+                }
+            " />
+    </label>
+</div>
 
                                 <!-- File Box 2 -->
-                                <div class="col-6">
-                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-                                            <div>
-                                                <div style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                        <img src="{{ asset('build/img/trash.svg') }}" style="width: 20px; height: 28px; cursor: pointer;" />
-                                    </div>
+                               <div class="col-6">
+    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
+        <div class="d-flex align-items-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+            <div>
+                <!-- File name -->
+                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
+                <!-- File size -->
+                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
+            </div>
+        </div>
+    </div>
 
-                                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload2" hidden />
-                                    </label>
-                                </div>
+    <!-- Upload Button -->
+    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
+        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+        <input type="file" id="fileUpload2" hidden
+            onchange="
+                if (this.files.length > 0) {
+                    var file = this.files[0];
+                    var name = file.name;
+                    var sizeKB = (file.size / 1024).toFixed(1);
+                    document.getElementById('pdfName2').innerText = name;
+                    document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
+                }
+            " />
+    </label>
+</div>
+
                             </div>
                         </div>
                     </div>
@@ -5240,17 +5283,43 @@
                         <div class="d-flex justify-content-between mt-2 px-2 py-1"
                             style="background-color: #fff; border-radius: 12px;">
 
-                            <!-- Active: Low -->
-                            <button class="btn text-white"
-                                style="background-color: #1cc375; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
-
-                            <!-- Inactive -->
                             <button class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
+                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">Low</button>
 
                             <button class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">Middle</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">High</button>
                         </div>
+
                     </div>
 
                 </div>
@@ -5264,20 +5333,58 @@
 
                         <!-- Start Date -->
                         <div class="d-flex gap-2 mt-2">
-                            <div class="position-relative w-100">
-                                <input type="text" class="form-control" placeholder="Start Date DD:MM:YYYY"
-                                    style="font-size: 11px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 10px; right: 10px; width: 18px;">
+                            <div style="position: relative; width: 100%;">
+                                <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+
+                                    <!-- Label -->
+                                    <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+
+                                    <!-- Selected Date -->
+                                    <div id="displayDate" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+
+                                    <!-- Calendar Icon & Input -->
+                                    <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                        <!-- Icon -->
+                                        <img
+                                            src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                            onclick="document.getElementById('dateInput').showPicker()"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+
+                                        <!-- Hidden Input (works with showPicker) -->
+                                        <input
+                                            type="date"
+                                            id="dateInput"
+                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                            style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Deliver Date -->
-                            <div class="position-relative w-100">
-                                <input type="text" class="form-control" placeholder="Deliver Date DD:MM:YYYY"
-                                    style="font-size: 11px;padding-left: 5px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 10px; right: 10px; width: 18px;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0;height: 45px; display: flex; flex-direction: column; justify-content: center;">
+
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Deliver Date</div>
+
+                                <!-- Display selected date -->
+                                <div id="deliverDateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+
+                                <!-- Calendar Icon + Hidden Input container -->
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <!-- Calendar Icon -->
+                                    <img
+                                        src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('deliverDateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+
+                                    <!-- Hidden Date Input -->
+                                    <input
+                                        type="date"
+                                        id="deliverDateInput"
+                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -5288,17 +5395,44 @@
 
                         <!-- Reminder Buttons -->
                         <div class="d-flex justify-content-between mt-2 px-1 py-1" style="background-color: #fff; border-radius: 12px;">
-                            <button class="btn text-white"
-                                style="background-color: #1cc375; border-radius: 8px; padding: 6px 18px; font-size: 14px;">7 Days</button>
 
                             <button class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">15
-                                Days</button>
+                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">7 Days</button>
 
                             <button class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">30
-                                Days</button>
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">15 Days</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">30 Days</button>
                         </div>
+
                     </div>
                 </div>
 
@@ -5327,10 +5461,7 @@
                             style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                         <input type="text" class="form-control" placeholder="Section Description"
                             style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
-                        <button class="btn d-flex justify-content-center align-items-center"
-                            style="background-color: #1cc375; border-radius: 6px; width: 32px; height: 32px;">
-                            <span style="width: 20px;">+</span>
-                        </button>
+
                     </div>
 
                     <!-- Section Row 2 -->
@@ -5339,10 +5470,7 @@
                             style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                         <input type="text" class="form-control" placeholder="Section Description"
                             style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
-                        <button class="btn d-flex justify-content-center align-items-center"
-                            style="background-color: #f44336; border-radius: 6px; width: 32px; height: 32px;">
-                            <i class="fas fa-trash" style="color: white; font-size: 14px;"></i>
-                        </button>
+
                     </div>
 
                     <!-- Footer Buttons -->
@@ -5624,6 +5752,7 @@
         });
     });
 </script>
+
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 @component('components.model-popup')
 @endcomponent

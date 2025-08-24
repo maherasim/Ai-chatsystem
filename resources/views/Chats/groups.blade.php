@@ -3086,68 +3086,84 @@
 
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
-                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                <div style="background-color: #f9f9fb;">
                     <!-- Toggle Today/Scheduled -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                        <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-                            <button id="btnTodoToday"
+                     <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
+                   <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                            <button id="btnToday"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
-                    document.getElementById('btnTodoScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnTodoScheduled').style.color='#64748b';
-                    document.getElementById('todoStartDate').style.display='none';
-                    document.getElementById('todoStartTime').className='col-md-4';
-                    document.getElementById('todoEndTime').className='col-md-4';
-                "
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Today ToDo's
+                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                    document.getElementById('btnScheduled').style.color='#64748b';
+                    document.getElementById('startDateField').style.display='none';
+                    document.getElementById('timeRow').classList.add('justify-content-center');"
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                              Today ToDo's
                             </button>
-                            <button id="btnTodoScheduled"
+
+                            <button id="btnScheduled"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
-                    document.getElementById('btnTodoToday').style.backgroundColor='transparent';
-                    document.getElementById('btnTodoToday').style.color='#64748b';
-                    document.getElementById('todoStartDate').style.display='block';
-                    document.getElementById('todoStartTime').className='col-md-4';
-                    document.getElementById('todoEndTime').className='col-md-4';
-                "
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                    document.getElementById('btnToday').style.backgroundColor='transparent';
+                    document.getElementById('btnToday').style.color='#64748b';
+                    document.getElementById('startDateField').style.display='block';
+                    document.getElementById('timeRow').classList.remove('justify-content-center');"
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled ToDo's
                             </button>
                         </div>
                     </div>
 
                     <!-- Date & Time Inputs -->
-                    <div class="row g-2 align-items-center mb-0" style="justify-content: center;">
-                        <!-- Start Date (Initially hidden) -->
-                        <div id="todoStartDate" class="col-md-4" style="display: none;">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="Start Date DD:MM:YY"
-                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                      <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
+
+                        <!-- Start Date (hidden by default) -->
+                        <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('dateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="date" id="dateInput"
+                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
 
                         <!-- Start Time -->
-                        <div id="todoStartTime" class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="Start Time HH:MM"
-                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
+                                <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('startTimeInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="time" id="startTimeInput"
+                                        onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
 
                         <!-- End Time -->
-                        <div id="todoEndTime" class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="End Time HH:MM"
-                                    style="font-size: 13px; background-color: white; border-radius: 8px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                    style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">End Time</div>
+                                <div id="endTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('endTimeInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="time" id="endTimeInput"
+                                        onchange="if(this.value)document.getElementById('endTimeDisplay').innerText=this.value;"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -2134,45 +2134,9 @@
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group">
                     <div class="chat-body chat-page-group">
-                        <div class="container mt-2">
-                            <div class="row g-3">
-                                <!-- Card 1 -->
-                                <div class="col-12 col-sm-6 col-lg-3">
-                                    <div class="d-flex align-items-center justify-content-center"
-                                        style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                        Place holder
-                                    </div>
-                                </div>
-
-                                <!-- Card 2 -->
-                                <div class="col-12 col-sm-6 col-lg-3">
-                                    <div class="d-flex align-items-center justify-content-center"
-                                        style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                        Place holder
-                                    </div>
-                                </div>
-
-                                <!-- Card 3 -->
-                                <div class="col-12 col-sm-6 col-lg-3">
-                                    <div class="d-flex align-items-center justify-content-center"
-                                        style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                        Place holder
-                                    </div>
-                                </div>
-
-                                <!-- Card 4 -->
-                                <div class="col-12 col-sm-6 col-lg-3">
-                                    <div class="d-flex align-items-center justify-content-center"
-                                        style="width: 100%; height: 100px; background-color: #f4f4f4; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer;">
-                                        Place holder
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
 
                         <!-- TOday reminde  -->
-                        <div class="project-succes pt-4 pb-2 d-flex justify-content-between ">
+                        <div class="project-succes pt-1 pb-2 d-flex justify-content-between ">
                             <div>
                                 <h3 style="margin: 0;">TOday's Reminder's</h3>
                                 <strong>Reminders: 10</strong>
@@ -2499,7 +2463,7 @@
                             </div>
                             <!-- 4 -->
                             <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" height:fit-content; border: 1px solid #ef4444; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                                <div class="card" style=" border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
 
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-start p-2 pt-3">
@@ -2798,7 +2762,7 @@
                                         </button>
 
                                         <!-- Denied Button -->
-                                        <button class="flex-fill text-center py-2" data-bs-toggle="modal" data-bs-target="#deniedModal"
+                                        <button class="flex-fill text-center py-2"
                                             style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-right-radius: 8px;">
                                             Denied
                                         </button>
@@ -2892,7 +2856,7 @@
 
                                     <!-- Footer Buttons -->
                                     <div>
-                                        <button class="w-100 text-center py-2"
+                                        <button class="w-100 text-center py-2" data-bs-toggle="modal" data-bs-target="#deniedModal"
                                             style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
                                             Meeting Cancelled
                                         </button>
@@ -3103,19 +3067,16 @@
                 <!-- Schedule Type Toggle -->
                 <div style="background-color: #f9f9fb;">
                     <!-- Toggle Buttons -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 16px; margin-top: 10px;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                    <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
+                     <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button id="btnToday"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
                     document.getElementById('btnScheduled').style.backgroundColor='transparent';
                     document.getElementById('btnScheduled').style.color='#64748b';
-
                     document.getElementById('startDateField').style.display='none';
-
-                    document.getElementById('timeRow').classList.add('justify-content-center');
-                "
+                    document.getElementById('timeRow').classList.add('justify-content-center');"
                                 style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Meeting Today
                             </button>
@@ -3126,11 +3087,8 @@
                     this.style.color='white';
                     document.getElementById('btnToday').style.backgroundColor='transparent';
                     document.getElementById('btnToday').style.color='#64748b';
-
                     document.getElementById('startDateField').style.display='block';
-
-                    document.getElementById('timeRow').classList.remove('justify-content-center');
-                "
+                    document.getElementById('timeRow').classList.remove('justify-content-center');"
                                 style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled Meeting
                             </button>
@@ -3138,33 +3096,58 @@
                     </div>
 
                     <!-- Date & Time Fields -->
-                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="background-color: #f9f9fb; padding-bottom: 4px;">
+                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
 
-                        <!-- Start Date -->
-                        <div class="col-md-4" id="startDateField" style="display: none;">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="Start Date DD.MM.YY" style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                        <!-- Start Date (hidden by default) -->
+                        <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('dateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="date" id="dateInput"
+                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
 
                         <!-- Start Time -->
-                        <div class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="Start Time HH:MM" style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
+                                <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('startTimeInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="time" id="startTimeInput"
+                                        onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
 
                         <!-- End Time -->
-                        <div class="col-md-4">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="End Time HH:MM" style="font-size: 13px; padding-right: 35px;">
-                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="position: absolute; top: 8px; right: 10px; width: 18px;">
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">End Time</div>
+                                <div id="endTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('endTimeInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="time" id="endTimeInput"
+                                        onchange="if(this.value)document.getElementById('endTimeDisplay').innerText=this.value;"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
