@@ -122,6 +122,7 @@
                 <div id="chats" class="sidebar-content active slimscroll">
 
                     <div class="slimscroll">
+                          @include('Chats.notification')
                         <div class="chat-search-header">
                             <div
                                 style="display: flex; justify-content: center; align-items: center; height: 76px; background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; font-family: 'Segoe UI', sans-serif; cursor: pointer; width: 100%;"

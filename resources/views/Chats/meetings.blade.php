@@ -103,6 +103,7 @@
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
                 <div class="slimscroll">
+                      @include('Chats.notification')
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -2136,112 +2137,60 @@
                     <div class="chat-body chat-page-group">
 
                         <!-- TOday reminde  -->
-                        <div class="project-succes pt-1 pb-2 d-flex justify-content-between ">
-                            <div>
-                                <h3 style="margin: 0;">TOday's Reminder's</h3>
-                                <strong>Reminders: 10</strong>
-                            </div>
+                        <div class="project-succes pt-1 pb-2 d-flex justify-content-between align-items-center flex-wrap" style="gap:10px;">
 
-                            <div class="d-flex" style="gap: 7px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+  <div>
+    <h3 style="margin: 0;">TOday's Reminder's</h3>
+    <strong>Reminders: 10</strong>
+  </div>
 
-                                <!-- Add Meeting (Stays Red Always) -->
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
-                                    style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; margin-right:8px;">
-                                    Add Meeting
-                                </button>
+  <div class="d-flex flex-wrap justify-content-end align-items-center" 
+       style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 7px; max-width: 100%;">
 
-                                <!-- Filter Buttons -->
-                                <button type="button" class="btn"
-                                    onclick="
-            let btns = this.parentElement.querySelectorAll('button');
-            btns.forEach(b => {
-                if (!b.classList.contains('btn-danger')) {
-                    b.style.background = '#f8fafc';
-                    b.style.color = '#566a7f';
-                    b.style.border = '1px solid transparent';
-                }
-            });
-            this.style.background = '#32b768';
-            this.style.color = 'white';
-            this.style.border = '1px solid #32b768';
-        "
-                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    All
-                                </button>
+    <!-- Buttons -->
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
+      style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Add Meeting
+    </button>
 
-                                <button type="button" class="btn"
-                                    onclick="let btns = this.parentElement.querySelectorAll('button');btns.forEach(b => {if (!b.classList.contains('btn-danger')) {b.style.background = '#f8fafc';b.style.color = '#566a7f';b.style.border = '1px solid transparent';}});this.style.background = '#32b768';this.style.color = 'white';this.style.border = '1px solid #32b768';
-                                    style=" background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    Today Meeting
-                                </button>
+    <button type="button" class="btn"
+      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+      style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      All
+    </button>
 
-                                <button type="button" class="btn"
-                                    onclick="
-            let btns = this.parentElement.querySelectorAll('button');
-            btns.forEach(b => {
-                if (!b.classList.contains('btn-danger')) {
-                    b.style.background = '#f8fafc';
-                    b.style.color = '#566a7f';
-                    b.style.border = '1px solid transparent';
-                }
-            });
-            this.style.background = '#32b768';
-            this.style.color = 'white';
-            this.style.border = '1px solid #32b768';
-        "
-                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    New Meeting
-                                </button>
+    <button type="button" class="btn"
+      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Today Meeting
+    </button>
 
-                                <button type="button" class="btn"
-                                    onclick="
-            let btns = this.parentElement.querySelectorAll('button');
-            btns.forEach(b => {
-                if (!b.classList.contains('btn-danger')) {
-                    b.style.background = '#f8fafc';
-                    b.style.color = '#566a7f';
-                    b.style.border = '1px solid transparent';
-                }
-            });
-            this.style.background = '#32b768';
-            this.style.color = 'white';
-            this.style.border = '1px solid #32b768';
-        "
-                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;margin-right:5px;">
-                                    Missed Meeting
-                                </button>
-                                <script>
-                                    function setActive(button) {
-                                        const buttons = button.parentElement.querySelectorAll('button');
-                                        buttons.forEach(btn => {
-                                            btn.style.background = '#f8fafc';
-                                            btn.style.color = '#566a7f';
-                                            btn.style.border = '1px solid transparent';
-                                        });
+    <button type="button" class="btn"
+      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      New Meeting
+    </button>
 
-                                        button.style.background = '#32b768';
-                                        button.style.color = 'white';
-                                        button.style.border = '1px solid #32b768';
-                                    }
-                                </script>
+    <button type="button" class="btn"
+      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Missed Meeting
+    </button>
 
-                                <div style="position: relative; width: 150px;">
-                                    <select style="appearance: none;width: 100%;padding: 10px 35px 10px 12px;border: none;border-radius: 12px;background-color: #f8f9fa;color: #94a3b8;font-size: 13px;font-family: 'Poppins', sans-serif;font-weight: 500;box-shadow: inset 0 0 0 1px #e2e8f0;cursor: pointer;">
-                                        <option disabled selected>Select Priority</option>
-                                        <option value="low">Low</option>
-                                        <option value="middle">Middle</option>
-                                        <option value="high">High</option>
-                                    </select>
+    <div style="position: relative; width: 150px; white-space: nowrap; min-width: 150px;">
+      <select style="appearance: none; width: 100%; padding: 10px 35px 10px 12px; border: none; border-radius: 12px; background-color: #f8f9fa; color: #94a3b8; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 500; box-shadow: inset 0 0 0 1px #e2e8f0; cursor: pointer;">
+        <option disabled selected>Select Priority</option>
+        <option value="low">Low</option>
+        <option value="middle">Middle</option>
+        <option value="high">High</option>
+      </select>
+      <i class="bi bi-chevron-down" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #94a3b8; pointer-events: none;"></i>
+    </div>
 
-                                    <!-- Dropdown Icon -->
-                                    <i class="bi bi-chevron-down" style="position: absolute;right: 12px;top: 50%;transform: translateY(-50%);font-size: 12px;color: #94a3b8;pointer-events: none;"></i>
-                                </div>
-                            </div>
+  </div>
 
+</div>
 
-
-
-                        </div>
                         <!-- CARD CONTAINER -->
                         <div class=" row g-3">
                             <div class="col-12 col-sm-6 col-lg-3">
@@ -2257,7 +2206,8 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg); display: inline-block;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2287,30 +2237,34 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Bell Icon -->
-                                        <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
+                                        <img src="{{URL::asset('/build/img/bell.svg')}}" alt="Image" style="width: 20px;height:20px;" class="rounded-circle">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- "Now" Text -->
-                                        <span style="color: red; font-weight: 500;">Now</span>
+                                        <span style="color: red; font-weight: 500;">
+                                            <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 20px;height:20px;"> Now</span>
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock Icon + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
                                             <span style="color: #ef4444;">17:30 - 18:00</span>
                                         </div>
                                     </div>
 
                                     <!-- Join Now Button -->
                                     <div class="text-center py-2">
-                                        <button style="background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                                        <button style=" background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                                             Join now
+                                            <img src="{{ URL::asset('/build/img/Logout1.svg') }}" alt="arrow" style="width: 16px; height: 16px;" />
                                         </button>
                                     </div>
+
 
                                 </div>
                             </div>
@@ -2358,20 +2312,18 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Bell Icon -->
-                                        <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
+                                        <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 16px;height:16px;">
+                                        <span style="color: red;">Today</span>
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- "Now" Text -->
-                                        <span style="color: red; font-weight: 500;">Now</span>
 
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock Icon + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
                                             <span style="color: #ef4444;">17:30 - 18:00</span>
                                         </div>
                                     </div>
@@ -2427,23 +2379,24 @@
                                         </div>
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
+                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+                                        <span> <img src="{{URL::asset('/build/img/call.svg')}}" alt="Image" style="width: 20px;height:20px;"></span>
+                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
                                         <!-- Bell Icon -->
-                                        <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
+                                        <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 16px;height:16px;">
+                                        <span style="color: red;"> Today</span>
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
-                                        <!-- "Now" Text -->
-                                        <span style="color: red; font-weight: 500;">Now</span>
+
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock Icon + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
                                             <span style="color: #ef4444;">17:30 - 18:00</span>
                                         </div>
                                     </div>
@@ -2474,7 +2427,7 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2589,7 +2542,8 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg); display: inline-block;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2632,7 +2586,7 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Video Icon -->
-                                        <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+                                        <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -2641,11 +2595,11 @@
                                         <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
                                             <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
                                         </div>
 
@@ -2684,7 +2638,7 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2727,7 +2681,7 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Video Icon -->
-                                        <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+                                        <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -2736,11 +2690,11 @@
                                         <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
                                             <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
                                         </div>
 
@@ -2785,7 +2739,7 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2828,7 +2782,7 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Video Icon -->
-                                        <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+                                        <img src="{{URL::asset('/build/img/de.svg')}}" alt="Image" style="width: 20px;height:20px;">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -2837,11 +2791,11 @@
                                         <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
                                             <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
                                         </div>
 
@@ -2879,7 +2833,7 @@
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px;"></i>
+
                                     </div>
 
                                     <!-- Description -->
@@ -2922,7 +2876,7 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Video Icon -->
-                                        <i class="bi bi-camera-video-fill" style="color: #e91e63; font-size: 16px;"></i>
+                                        <img src="{{URL::asset('/build/img/headphone.svg')}}" alt="Image" style="width: 20px;height:20px;">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -2931,11 +2885,11 @@
                                         <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
 
                                         <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
+                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #374151;"></i>
+                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
                                             <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
                                         </div>
 
@@ -3068,7 +3022,7 @@
                 <div style="background-color: #f9f9fb;">
                     <!-- Toggle Buttons -->
                     <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
-                     <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button id="btnToday"
                                 onclick="
                     this.style.backgroundColor='#22c55e';

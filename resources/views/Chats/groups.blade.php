@@ -105,7 +105,7 @@
 
                 <!-- Chats sidebar -->
                 <div class="slimscroll">
-
+  @include('Chats.notification')
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -2139,60 +2139,53 @@
 
                     <div class="chat-body chat-page-group ">
                         <!-- alltodo  -->
-                        <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3 style="margin: 0;">TOday ToDo's</h3>
-                                <strong>Total ToDo's: 10</strong>
-                            </div>
+                       <div class="project-succes pt-2 pb-2 d-flex flex-wrap justify-content-between align-items-center" style="gap: 10px;">
 
-                            <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel">
-                                    Add TODO
-                                </button>
-                                <button type="button" class="btn"
-                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    All
-                                </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    Private
-                                </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    Shared
-                                </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    All
-                                </button>
-                                <button type="button" class="btn"
-                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    Low
-                                </button>
+  <div>
+    <h3 style="margin: 0;">TOday ToDo's</h3>
+    <strong>Total ToDo's: 10</strong>
+  </div>
 
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                    Middle
-                                </button>
+  <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
+      Add TODO
+    </button>
+    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      All
+    </button>
+    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Private
+    </button>
+    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Shared
+    </button>
+    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      All
+    </button>
+    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Low
+    </button>
+    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+      Middle
+    </button>
+  </div>
 
-                            </div>
+</div>
 
-                        </div>
                         <!-- CARD CONTAINER -->
                         <div class="row g-3">
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <!-- Start of Card 1 -->
-                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2204,7 +2197,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -2242,7 +2235,7 @@
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
                                             Need Counte
                                         </button>
                                     </div>
@@ -2253,15 +2246,15 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center " style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2273,18 +2266,18 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                         <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;">private
                                                     </small>
                                                 </div>
                                             </div>
                                             <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
+                                            <!-- <div class="d-flex" style="margin-left: auto;">
                                                 <div style="position: relative; width: 60px; height: 30px;">
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
 
 
@@ -2311,7 +2304,7 @@
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
                                             Need Counte
                                         </button>
                                     </div>
@@ -2322,15 +2315,15 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2342,7 +2335,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -2380,25 +2373,25 @@
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
                                             Need Counte
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <!-- card 4 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center " style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2410,18 +2403,18 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;">private
                                                     </small>
                                                 </div>
                                             </div>
                                             <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
+                                            <!-- <div class="d-flex" style="margin-left: auto;">
                                                 <div style="position: relative; width: 60px; height: 30px;">
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
                                                     <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
 
 
@@ -2448,7 +2441,7 @@
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
                                             Need Counte
                                         </button>
                                     </div>
@@ -2487,15 +2480,15 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2507,18 +2500,11 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                           <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
-                                            <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
-                                                <div style="position: relative; width: 60px; height: 30px;">
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                                </div>
-                                            </div>
+                                        
                                         </div>
 
 
@@ -2534,7 +2520,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span >12.20.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2549,18 +2535,18 @@
                             </div>
                             <!-- End of Card 1 -->
                             <!-- Start of Card 2 (Middle Priority) -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2572,18 +2558,11 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                           <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
-                                            <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
-                                                <div style="position: relative; width: 60px; height: 30px;">
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                                </div>
-                                            </div>
+                                        
                                         </div>
 
 
@@ -2599,7 +2578,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span >12.20.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2617,15 +2596,15 @@
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2637,18 +2616,11 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                           <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
-                                            <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
-                                                <div style="position: relative; width: 60px; height: 30px;">
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                                </div>
-                                            </div>
+                                        
                                         </div>
 
 
@@ -2664,7 +2636,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span >12.20.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2677,18 +2649,18 @@
 
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6 col-lg-3">
+                           <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">Admin name</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2700,18 +2672,11 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                           <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
-                                            <!-- Avatars -->
-                                            <div class="d-flex" style="margin-left: auto;">
-                                                <div style="position: relative; width: 60px; height: 30px;">
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                                </div>
-                                            </div>
+                                        
                                         </div>
 
 
@@ -2727,7 +2692,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span >12.20.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2771,18 +2736,18 @@
                         <div class="row g-3">
 
                             <!-- Start of Card 1 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
+                              <div class="col-12 col-sm-6 col-lg-3">
                                 <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2794,7 +2759,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -2821,7 +2786,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span>12.10.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2831,23 +2796,23 @@
                                     </div>
 
                                     <!-- Footer Button -->
-
+                                  
                                 </div>
                             </div>
                             <!-- End of Card 1 -->
                             <!-- Start of Card 2 (Middle Priority) -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2859,7 +2824,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>private
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -2886,7 +2851,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span>22.10.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2896,23 +2861,23 @@
                                     </div>
 
                                     <!-- Footer Button -->
-
+                                  
                                 </div>
                             </div>
                             <!-- End of Card 2 -->
                             <!-- card 3 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2924,7 +2889,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -2951,7 +2916,7 @@
                                                 <span>22.10.2024</span>
                                                 <span class="text-muted">|</span>
                                                 <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
+                                                <span>12.10.22</span>
                                             </div>
                                             <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
@@ -2961,22 +2926,22 @@
                                     </div>
 
                                     <!-- Footer Button -->
-
+                                  
                                 </div>
                             </div>
                             <!-- card 4 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                              <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f8f9fa;">
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                        <div class="d-flex">
+                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">Admin name</div>
+                                                <div style="font-weight: bold;">Admin jname</div>
                                                 <small style="color: gray;">Created Time & Date</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer;">&#8942;</div>
+                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
                                     </div>
 
                                     <!-- Card Body -->
@@ -2988,7 +2953,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
                                                     <small class="text-muted">
-                                                        <i class="bi bi-share me-1"></i>Shared
+                                                         <img src="{{URL::asset('/build/img/share.svg')}}"  style="width: 20px; height: 20px;" /> Shared
                                                     </small>
                                                 </div>
                                             </div>
@@ -3025,7 +2990,7 @@
                                     </div>
 
                                     <!-- Footer Button -->
-
+                                  
                                 </div>
                             </div>
                         </div>
@@ -3179,12 +3144,12 @@
                         <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button id="btnShared"
                                 onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Shared ToDo's
                             </button>
                             <button id="btnPrivate"
                                 onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Private ToDo's
                             </button>
                         </div>

@@ -84,7 +84,7 @@
             <div id="chats" class="sidebar-content active slimscroll">
 
                 <div class="slimscroll">
-
+  @include('Chats.notification')
                     <div class="chat-search-header">
                         <div class="header-title d-flex align-items-center justify-content-between">
                             <h4 class="mb-3">Libary</h4>

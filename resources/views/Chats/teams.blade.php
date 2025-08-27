@@ -105,7 +105,7 @@
 
                 <!-- Chats sidebar -->
                 <div class="slimscroll">
-
+                    @include('Chats.notification')
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -2136,118 +2136,14 @@
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group ">
-                    <div class="container mt-4">
-                        <div class="row g-3">
 
-                            <!-- Card 1 -->
-                            <div class="col-12 col-sm-6 col-lg-3 position-relative">
-                                <!-- +4% Box -->
-                                <div style="position: absolute; right: 20px; background: white; padding: 10px 6px; font-size: 14px; color: #1cc88a; font-weight: 600; border-radius: 6px;">
-                                    &#9650; +4%
-                                </div>
-
-                                <!-- Main Card -->
-                                <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-
-                                    <!-- Icon section -->
-                                    <div style="width: 80px; height: 80px; background-color: #e6eef5; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                        <img src="{{URL::asset('/build/img/card1.svg')}}" alt="Members Icon" style="width: 80px; height: 80px;">
-                                    </div>
-
-                                    <!-- Text section -->
-                                    <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
-                                        <div style="color: #8c94a3; font-weight: 500;">Members</div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <!-- Card 2 -->
-                            <div class="col-12 col-sm-6 col-lg-3 position-relative">
-                                <!-- -4% Box -->
-                                <div style="position: absolute;  right: 20px; background: white; padding: 10px 6px; font-size: 14px; color: #e74a3b; font-weight: 600; border-radius: 6px;">
-                                    &#9660; -4%
-                                </div>
-
-                                <!-- Main Card -->
-                                <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-
-                                    <!-- Icon section -->
-                                    <div style="width: 80px; height: 80px; background-color: #c8f1da; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                        <img src="{{URL::asset('/build/img/card2.svg')}}" alt="Admins Icon" style="width: 80px; height: 80px;">
-                                    </div>
-
-                                    <!-- Text section -->
-                                    <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
-                                        <div style="color: #8c94a3; font-weight: 500;">Admins</div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- Card 3 -->
-                            <div class="col-12 col-sm-6 col-lg-3 position-relative">
-                                <!-- +4% Box -->
-                                <div style="position: absolute; right: 20px; background: white; padding: 10px 6px; font-size: 14px; color: #1cc88a; font-weight: 600; border-radius: 6px;">
-                                    &#9650; +4%
-                                </div>
-
-                                <!-- Main Card -->
-                                <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-
-                                    <!-- Icon section -->
-                                    <div style="width: 80px; height: 80px; background-color: #a3bacb; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                        <img src="{{URL::asset('/build/img/card3.svg')}}" alt="Developer Icon" style="width: 80px; height: 80px;">
-                                    </div>
-
-                                    <!-- Text section -->
-                                    <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
-                                        <div style="color: #8c94a3; font-weight: 500;">Developer</div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- Card 4 -->
-                            <div class="col-12 col-sm-6 col-lg-3 position-relative">
-                                <!-- -4% Box -->
-                                <div style="position: absolute;  right: 20px; background: white; padding: 10px 6px; font-size: 14px; color: #e74a3b; font-weight: 600; border-radius: 6px;">
-                                    &#9660; -4%
-                                </div>
-
-                                <!-- Main Card -->
-                                <div class="d-flex align-items-center justify-content-start px-3"
-                                    style="width: 100%; height: 100px; background-color: #fff; border-radius: 12px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #2e3a59; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-
-                                    <!-- Icon section -->
-                                    <div style="width: 80px; height: 80px; background-color: #1166c1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                        <img src="{{URL::asset('/build/img/card4.svg')}}" alt="Employee Icon" style="width: 80px; height: 80px;">
-                                    </div>
-
-                                    <!-- Text section -->
-                                    <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
-                                        <div style="color: #8c94a3; font-weight: 500;">Employee</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                     <!-- members overwiew -->
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
+                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
 
                         <!-- Left Side -->
                         <div>
-                            <h3 style="margin: 0;">Members's Overview</h3>
-                            <strong>Total members: 10</strong>
+                            <h3 style="margin: 0;">Our team</h3>
+                            <strong>Our Team:10</strong>
                         </div>
 
                         <!-- Right Side -->
@@ -2256,124 +2152,112 @@
                                 type="button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#add_user"
-                                style="background-color: #ff7700; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                Add User
+                                style="background-color: green; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                + Create Team
                             </button>
 
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
 
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Developer
-                            </button>
 
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Employe
-                            </button>
 
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                Admin
-                            </button>
                         </div>
                     </div>
                     <!-- users cards -->
                     <div class="row g-2">
                         <!-- Card 1 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
+                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <!-- Background Image -->
+                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
+                                    <!-- 3-Dot Button + Popup -->
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
 
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
+                                        <!-- Trigger Button -->
+                                        <div
+                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                        </div>
+
+                                        <!-- Popup Menu -->
+                                        <div
+                                            class="menu-box"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            onclick="event.stopPropagation();">
+                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                            <div class="d-flex justify-content-between px-2">
+                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;"data-bs-toggle="modal"
+                                data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
                                             </div>
                                         </div>
-
-
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
-                                        </div>
-
-                                        <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
                                     </div>
 
-                                    <!-- Profile Image (overlapping) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
+                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
+
+                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
+
+
+                                        <!-- Profile Image (overlapping bottom center) -->
+                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
+                                            yekbon project
                                         </span>
                                     </div>
 
 
                                 </div>
 
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                    <!-- Top Row: Title and Date -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
+                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <span>10.09.2025</span>
                                         </div>
                                     </div>
 
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                    <!-- Bottom Row: Logo + PM + Team -->
+                                    <div class="d-flex justify-content-between align-items-center text-center">
+
+                                        <!-- Left: Logo + Flag -->
+                                        <div class="d-flex flex-column align-items-center gap-2">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
+                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                            </div>
                                         </div>
 
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        <!-- Center: PM -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                                         </div>
+
+                                        <!-- Right: Overlapping team members -->
+                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                        </div>
+
                                     </div>
                                 </div>
-
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
@@ -2390,7 +2274,38 @@
                                         <div>10</div>
                                     </div>
                                 </div>
+                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="d-flex justify-content-between px-1"
+                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                    </div>
 
+                                    <!-- Progress Bars -->
+                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                        <!-- Green Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Yellow Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Red Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
@@ -2403,95 +2318,80 @@
                         </div>
                         <!-- card 2 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
+                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <!-- Background Image -->
+                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
+                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
 
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
+                                        <!-- 3 Dots Circle Button -->
+                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
                                         </div>
 
                                         <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
+
                                     </div>
 
-                                    <!-- Profile Image (overlapping) -->
+                                    <!-- Profile Image (overlapping bottom center) -->
                                     <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
+                                            yekbon project
                                         </span>
                                     </div>
 
 
                                 </div>
 
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                    <!-- Top Row: Title and Date -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
+                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <span>10.09.2025</span>
                                         </div>
                                     </div>
 
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                    <!-- Bottom Row: Logo + PM + Team -->
+                                    <div class="d-flex justify-content-between align-items-center text-center">
+
+                                        <!-- Left: Logo + Flag -->
+                                        <div class="d-flex flex-column align-items-center gap-2">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
+                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                            </div>
                                         </div>
 
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        <!-- Center: PM -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                                         </div>
+
+                                        <!-- Right: Overlapping team members -->
+                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                        </div>
+
                                     </div>
                                 </div>
-
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
@@ -2508,7 +2408,38 @@
                                         <div>10</div>
                                     </div>
                                 </div>
+                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="d-flex justify-content-between px-1"
+                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                    </div>
 
+                                    <!-- Progress Bars -->
+                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                        <!-- Green Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Yellow Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Red Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
@@ -2521,95 +2452,80 @@
                         </div>
                         <!-- card 3 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
+                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <!-- Background Image -->
+                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
+                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
 
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
+                                        <!-- 3 Dots Circle Button -->
+                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
                                         </div>
 
                                         <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
+
                                     </div>
 
-                                    <!-- Profile Image (overlapping) -->
+                                    <!-- Profile Image (overlapping bottom center) -->
                                     <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
+                                            yekbon project
                                         </span>
                                     </div>
 
 
                                 </div>
 
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                    <!-- Top Row: Title and Date -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
+                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <span>10.09.2025</span>
                                         </div>
                                     </div>
 
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                    <!-- Bottom Row: Logo + PM + Team -->
+                                    <div class="d-flex justify-content-between align-items-center text-center">
+
+                                        <!-- Left: Logo + Flag -->
+                                        <div class="d-flex flex-column align-items-center gap-2">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
+                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                            </div>
                                         </div>
 
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        <!-- Center: PM -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                                         </div>
+
+                                        <!-- Right: Overlapping team members -->
+                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                        </div>
+
                                     </div>
                                 </div>
-
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
@@ -2626,7 +2542,38 @@
                                         <div>10</div>
                                     </div>
                                 </div>
+                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="d-flex justify-content-between px-1"
+                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                    </div>
 
+                                    <!-- Progress Bars -->
+                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                        <!-- Green Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Yellow Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Red Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
@@ -2639,95 +2586,80 @@
                         </div>
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card shadow" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
+                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <!-- Background Image -->
+                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 10px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
+                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
 
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Stars -->
-                                        <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;">
-                                            ★★★☆☆
+                                        <!-- 3 Dots Circle Button -->
+                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
                                         </div>
 
                                         <!-- Date with icon -->
-                                        <div style="font-size: 12px; color: #f1f1f1; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: white;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                            10.09.2025
-                                        </div>
+
                                     </div>
 
-                                    <!-- Profile Image (overlapping) -->
+                                    <!-- Profile Image (overlapping bottom center) -->
                                     <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
+                                            yekbon project
                                         </span>
                                     </div>
 
 
                                 </div>
 
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
+                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                    <!-- Top Row: Title and Date -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
+                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
+                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <span>10.09.2025</span>
                                         </div>
                                     </div>
 
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 4px 10px;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                    <!-- Bottom Row: Logo + PM + Team -->
+                                    <div class="d-flex justify-content-between align-items-center text-center">
+
+                                        <!-- Left: Logo + Flag -->
+                                        <div class="d-flex flex-column align-items-center gap-2">
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
+                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
+                                            </div>
                                         </div>
 
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
+                                        <!-- Center: PM -->
+                                        <div class="text-center">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                                         </div>
+
+                                        <!-- Right: Overlapping team members -->
+                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                        </div>
+
                                     </div>
                                 </div>
-
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
@@ -2744,7 +2676,38 @@
                                         <div>10</div>
                                     </div>
                                 </div>
+                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
+                                    <div class="d-flex justify-content-between px-1"
+                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                        <span>Section #175%</span>
+                                    </div>
 
+                                    <!-- Progress Bars -->
+                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
+                                        <!-- Green Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Yellow Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                        </div>
+
+                                        <!-- Red Progress -->
+                                        <div class="progress"
+                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
+                                            <div class="progress-bar"
+                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
@@ -4524,7 +4487,7 @@
             <!-- Right Panel: col-9 -->
             <div class="col-md-8 col-sm-12">
 
-                <div  style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
+                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
                     <!-- Title Outside Card -->
                     <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
                     <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
@@ -4607,7 +4570,7 @@
                         </div>
                     </div>
                 </div>
-                 <!-- timeboxes -->
+                <!-- timeboxes -->
                 <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
 
                     <!-- Box 1 -->
@@ -4690,7 +4653,7 @@
 
                     <!-- Log Entry Card #2 -->
 
-                     <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                         <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
                             <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
                             <div style="flex: 1;margin-right:45px;">
@@ -4712,7 +4675,7 @@
                         </div>
                     </div>
                     <!-- Log Entry Card #3 -->
- <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                         <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
                             <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
                             <div style="flex: 1;margin-right:45px;">
@@ -4756,7 +4719,7 @@
                         </div>
                     </div>
                 </div>
-               
+
 
             </div>
 
@@ -4767,648 +4730,974 @@
 </div>
 </div>
 <!-- add user -->
-<div class="modal fade" id="add_user" tabindex="-1" style="visibility: visible;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
+
+<div class="modal fade" id="add_user" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 10px;">
             <!-- Modal Header -->
-            <div class="modal-header border-0 pb-0">
-                <div>
-                    <h4 class="modal-title fw-bold">Add New User</h4>
-                    <small class="text-muted">User ID : <strong>user -0024</strong></small>
+            <style>
+                @media (max-width: 576px) {
+                    .modal-header {
+                        flex-wrap: wrap !important;
+                        padding-right: 15px !important;
+                    }
+
+                    .modal-header>div.title-subtitle {
+                        flex: 1 1 100% !important;
+                        margin-bottom: 8px;
+                    }
+
+                    .modal-header>div.warning-box {
+                        max-width: 100% !important;
+                    }
+                }
+            </style>
+
+            <div class="modal-header d-flex"
+                style="border-bottom: none; position: relative; padding-right: 40px; flex-wrap: nowrap; align-items: flex-start;">
+
+                <!-- Title and subtitle -->
+                <div class="title-subtitle" style="flex: 1;">
+                    <h5 class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
+                        Create New Team
+                    </h5>
+                    <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
                 </div>
-                <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+
+                <!-- Warning box -->
+                <div class="warning-box" style="background-color: #ffe6e6; color: red; font-size: 12px; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; max-width: 260px;">
+
+                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 25px; height: 25px;">
+                    <span>Please Note! Projects, Ticket and Task must be created before add a Team</span>
+                </div>
+
+                <!-- Close button -->
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                    style="position: absolute; top: 10px; right: 10px; font-size: 24px; background: none; border: none; line-height: 1;">
                     &times;
                 </button>
             </div>
 
+
+
             <!-- Modal Body -->
-            <div class="modal-body pt-0">
-
-                <!-- Tabs -->
-                <ul class="nav nav-tabs mb-3 border-bottom-0">
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold"
-                            data-bs-toggle="tab"
-                            href="#basicInfo"
-                            style="border: none; color: #f65b0f; border-bottom: 2px solid #f65b0f; background-color: transparent;">
-                            Basic Information
-                        </a>
-                    </li>
-
-                </ul>
-
-
-                <!-- Tab Content -->
-                <div class="tab-content">
-                    <!-- Basic Information Tab -->
-                    <div class="tab-pane fade show active" id="basicInfo">
-                        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-                            @csrf
-
-                            <!-- Profile Upload -->
-                            <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
-                                <!-- Profile Image -->
-                                <div class="position-relative d-inline-block" style="width: 80px; height: 80px;">
-                                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                                        class="rounded-circle"
-                                        alt="Profile Image"
-                                        style="width: 80px; height: 80px; object-fit: cover;">
-
-                                    <!-- Hidden File Input -->
-                                    <input type="file" name="image" accept="image/*" id="profileImageInput" style="display: none;" onchange="previewImage(event)">
-
-                                    <!-- Overlay + Icon -->
-                                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
-                                        style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"
-                                        onclick="document.getElementById('profileImageInput').click();">
-                                        <span class="text-white fs-3">+</span>
-                                    </div>
-                                </div>
-
-
-                                <!-- Upload Text + Buttons -->
-                                <div style="margin-left: 20px;">
-                                    <p class="mb-1 fw-medium">Upload Profile Image</p>
-                                    <small class="text-muted d-block mb-2">Image should be below 4 mb</small>
-                                    <button class="btn btn-warning me-2" style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
-                                    <button class="btn btn-outline">Cancel</button>
-                                </div>
-                            </div>
-
-
-                            <!-- Form Fields -->
-
-                            <div class="row g-3">
-
-                                <div class="col-md-6">
-                                    <label class="form-label">First & last Name</label>
-
-                                    <input type="text" name="name" class="form-control" required>
-                                    @error('name')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">Projects</label>
-                                    <select class="form-select" name="department" required>
-                                        <option selected>Select</option>
-                                        <option>All Department</option>
-                                        <option>Finance</option>
-                                        <option>Developer</option>
-                                        <option>Executive</option>
-                                    </select>
-                                    @error('department')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Position</label>
-                                    <select class="form-select" name="position" required>
-                                        <option selected>Select</option>
-                                        <option>All Department</option>
-                                        <option>Finance</option>
-                                        <option>Developer</option>
-                                        <option>Executive</option>
-                                    </select>
-                                    @error('position')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-
-
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                                    @error('email')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label"> Repeat Email</label>
-                                    <input type="email" class="form-control" name="remail" required>
-                                    @error('remail')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="passw" required autocomplete="new-password">
-                                    @error('passw')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Repeat Password</label>
-                                    <input type="password" class="form-control" name="rpassw" required autocomplete="new-password">
-                                    @error('rpassw')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                </div>
-                                {{-- <div class="col-md-6">
-                                        <label class="form-label">Confirm Password</label>
-                                        <input type="password" name="cpassw" class="form-control" required>
-                                        @error('cpassw')
-                                        <div class="alert alert-danger mt-2">
-                                            {{$message}}
-                            </div>
-                            @enderror
-                    </div> --}}
-
-
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
+                <!-- Upload Banner -->
+                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 24px; color: #888;">+</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
                 </div>
-                <div style="max-width: 950px; margin: 30px auto; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
 
-                    <!-- Enable Options Header -->
-                    <div style="background-color: #f5f6fa; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span style="font-weight: 600; color: #0b0b0b;">Enable Options</span>
-                        <div style="display: flex; gap: 20px; align-items: center;">
-                            <!-- Enable All Module Toggle -->
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
-                                <span style="color: #6c757d;">Enable all Module</span>
-                            </label>
+                <!-- Sub Image Upload -->
+                <div onclick="this.nextElementSibling.click();"
+                    style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 20px; color: #888;">+</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
+                </div>
 
-                            <!-- Select All -->
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px; cursor: pointer;" checked>
-                                <span style="color: #ff6600; font-weight: 500;">Select All</span>
-                            </label>
+                <!-- Hidden File Input -->
+                <input type="file" accept="image/*" style="display: none;"
+                    onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); 
+             this.previousElementSibling.querySelector('img').style.display='block'; 
+             this.previousElementSibling.querySelector('.text-box').style.display='none';">
+
+                <!-- Team Details Section -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
+
+                    <!-- Title & Subtitle -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">Team Details</h6>
+                        <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
+                    </div>
+
+                    <!-- Inputs Row -->
+                    <div class="row g-2">
+
+                        <!-- Team Title -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <input type="text" class="form-control" placeholder="Team Title"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
                         </div>
+
+                        <!-- Select Project -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select Project</option>
+                                <option>Project A</option>
+                                <option>Project B</option>
+                            </select>
+                        </div>
+
+                        <!-- Select PM -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select PM</option>
+                                <option>PM A</option>
+                                <option>PM B</option>
+                            </select>
+                        </div>
+
+                        <!-- Timeline Color -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Timeline Color</option>
+                                <option>Red</option>
+                                <option>Blue</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- select tickets -->
+
+
+                </div>
+
+                <!-- tasks -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 10px;">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
+                            Select Ticket & Task
+                        </h6>
                     </div>
 
-                    <!-- Permissions Table -->
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+                    <!-- Ticket Buttons Row -->
+                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
 
-                            <tbody>
-                                <!-- clients -->
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[clients][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Clients
-                                    </td>
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
+                            #1 Ticket Title
+                        </button>
 
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #2 Ticket Title
+                        </button>
 
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #3 Ticket Title
+                        </button>
 
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[leaves][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Leaves
-                                    </td>
-
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <!-- Enabled Switch -->
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[holidays][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Holidays
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <!-- projects -->
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[projects][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Projects
-                                    </td>
-
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <!-- Tasks -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[tasks][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Tasks
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Chats -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[chats][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Chats
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Assets -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[assets][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Assets
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Timming sheets -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Timming Sheets
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-
-
-
-
-
-                            </tbody>
-                        </table>
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #4 Ticket Title
+                        </button>
 
                     </div>
 
                 </div>
-                <!-- Modal Footer -->
-                <div class="modal-footer border-top-0 pt-0">
-                    <div class="d-flex ms-auto gap-2">
-                        <button type="button" class="btn btn-outline" style="min-width: 100px;" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn text-white" style="background-color: #f65b0f; border-color: #f65b0f; min-width: 100px;">Save</button>
+
+
+                <!-- task1 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border-radius: 10px; padding: 10px;">
+
+                            <!-- Dates Section -->
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; flex: 1 1 200px;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+
+                                <!-- Deliver Date -->
+                                <div style="font-size: 13px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+
+                            </div>
+
+                            <!-- Status Badge Section -->
+                            <div style="display: flex; align-items: center; gap: 6px; flex: 0 0 auto;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+
+                        </div>
+
+
                     </div>
                 </div>
-                </form>
+                <!-- task2 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
 
 
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task3 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- footer -->
+
+                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
+
+                    <!-- Left Warning Box -->
+                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 13px;">
+                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
+                        There some section not asigned yet
+                    </div>
+
+                    <!-- Right Save Button -->
+                    <button type="button"
+                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
+                        + Save and create work flow
+                    </button>
+
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <!-- Tabs -->
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                data-bs-toggle="tab"
+                                href="#basicInfo">
+
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
 
 
             </div>
+
         </div>
     </div>
 </div>
+
+<!-- edit team -->
+ <div class="modal fade" id="edit_team" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 10px;">
+            <!-- Modal Header -->
+            <style>
+                @media (max-width: 576px) {
+                    .modal-header {
+                        flex-wrap: wrap !important;
+                        padding-right: 15px !important;
+                    }
+
+                    .modal-header>div.title-subtitle {
+                        flex: 1 1 100% !important;
+                        margin-bottom: 8px;
+                    }
+
+                    .modal-header>div.warning-box {
+                        max-width: 100% !important;
+                    }
+                }
+            </style>
+
+            <div class="modal-header d-flex"
+                style="border-bottom: none; position: relative; padding-right: 40px; flex-wrap: nowrap; align-items: flex-start;">
+
+                <!-- Title and subtitle -->
+                <div class="title-subtitle" style="flex: 1;">
+                    <h5 class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
+                        Edit Team
+                    </h5>
+                    <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
+                </div>
+
+                <!-- Warning box -->
+                <div class="warning-box" style="background-color: #ffe6e6; color: red; font-size: 12px; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; max-width: 260px;">
+
+                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 25px; height: 25px;">
+                    <span>Please Note! Projects, Ticket and Task must be created before add a Team</span>
+                </div>
+
+                <!-- Close button -->
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                    style="position: absolute; top: 10px; right: 10px; font-size: 24px; background: none; border: none; line-height: 1;">
+                    &times;
+                </button>
+            </div>
+
+
+
+            <!-- Modal Body -->
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
+                <!-- Upload Banner -->
+                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 24px; color: #888;">+</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
+                </div>
+                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+
+                <!-- Sub Image Upload -->
+                <div onclick="this.nextElementSibling.click();"
+                    style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 20px; color: #888;">+</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
+                </div>
+
+                <!-- Hidden File Input -->
+                <input type="file" accept="image/*" style="display: none;"
+                    onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); 
+             this.previousElementSibling.querySelector('img').style.display='block'; 
+             this.previousElementSibling.querySelector('.text-box').style.display='none';">
+
+                <!-- Team Details Section -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
+
+                    <!-- Title & Subtitle -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">Team Details</h6>
+                        <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
+                    </div>
+
+                    <!-- Inputs Row -->
+                    <div class="row g-2">
+
+                        <!-- Team Title -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <input type="text" class="form-control" placeholder="Team Title"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
+                        </div>
+
+                        <!-- Select Project -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select Project</option>
+                                <option>Project A</option>
+                                <option>Project B</option>
+                            </select>
+                        </div>
+
+                        <!-- Select PM -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select PM</option>
+                                <option>PM A</option>
+                                <option>PM B</option>
+                            </select>
+                        </div>
+
+                        <!-- Timeline Color -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Timeline Color</option>
+                                <option>Red</option>
+                                <option>Blue</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- select tickets -->
+
+
+                </div>
+
+                <!-- tasks -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 10px;">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
+                            Select Ticket & Task
+                        </h6>
+                    </div>
+
+                    <!-- Ticket Buttons Row -->
+                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
+                            #1 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #2 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #3 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #4 Ticket Title
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- task1 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border-radius: 10px; padding: 10px;">
+
+                            <!-- Dates Section -->
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; flex: 1 1 200px;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+
+                                <!-- Deliver Date -->
+                                <div style="font-size: 13px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+
+                            </div>
+
+                            <!-- Status Badge Section -->
+                            <div style="display: flex; align-items: center; gap: 6px; flex: 0 0 auto;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- task2 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task3 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- footer -->
+
+                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
+
+                    <!-- Left Warning Box -->
+                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 13px;">
+                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
+                        There some section not asigned yet
+                    </div>
+
+                    <!-- Right Save Button -->
+                    <button type="button"
+                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
+                        + Save and create work flow
+                    </button>
+
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <!-- Tabs -->
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                data-bs-toggle="tab"
+                                href="#basicInfo">
+
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 
 

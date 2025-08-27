@@ -105,6 +105,7 @@
 
                 <!-- Chats sidebar -->
                 <div class="slimscroll">
+                      @include('Chats.notification')
 
                     <!-- Online user -->
                     <div class="top-online-contacts">
@@ -2793,18 +2794,18 @@
         <!-- Profile Image (top-right, overlapping) -->
         <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile"
             style="position: absolute; top: 20px; right: 50px; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 10;">
-              <div style="font-size: 18px; color: #fbc02d;border-radius:9px;padding:3px;position: absolute; top: 107px; right: 50px;">
-                                        ★★★☆☆
-                                    </div>
+        <div style="font-size: 18px; color: #fbc02d;border-radius:9px;padding:3px;position: absolute; top: 107px; right: 50px;">
+            ★★★☆☆
+        </div>
 
-            
+
 
         <!-- Close Button -->
         <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"
             style="position: absolute; top: 10px; right: 10px; background-color: white; color: black; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 24px; font-weight: bold; z-index: 9999; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2)">
             &times;
         </button>
-        
+
     </div>
 
     <!-- Buttons Under Header -->
@@ -4573,7 +4574,7 @@
                                     <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
                                     <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
                                     <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                     <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
                                     <div style="border-top: 1px solid #ccc; height: 1%;"></div>
                                 </div>
 
@@ -4839,10 +4840,15 @@
             <div
                 style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; display: flex; gap: 16px; flex-wrap: wrap; position: relative;">
                 <!-- User Type (Top-right) -->
-                <input
-                    type="text"
-                    placeholder="User type"
-                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;" />
+                <select
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>User type</option>
+                    <option value="admin">Admin</option>
+                    <option value="subadmin">Subadmin</option>
+                    <option value="employee">Employee</option>
+                    <option value="developer">Developer</option>
+                </select>
+
 
                 <!-- User Image Upload -->
                 <div
@@ -4889,6 +4895,11 @@
                             type="text"
                             placeholder="Username and Lastname"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
+                        <input
+                            type="text"
+                            placeholder="Describe User"
+                            style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
+
                     </div>
                 </div>
 
@@ -4906,7 +4917,7 @@
                     <!-- Email Input -->
                     <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
                         <span style="color: #9ca3af; margin-right: 8px;">
-                            <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;">
+                            <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
                         <input type="email" placeholder="Type User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
@@ -4914,7 +4925,7 @@
                     <!-- Confirm Email Input -->
                     <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
                         <span style="color: #9ca3af; margin-right: 8px;">
-                            <img src="{{URL::asset('/build/img/letter.svg')}}" alt="" style="width: 20px;">
+                            <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
                         <input type="email" placeholder="Repeat User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
@@ -4929,21 +4940,21 @@
 
                 <!-- Input Fields Row -->
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                    <!-- Password Field -->
-                    <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
-                        <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input type="password" placeholder="Type User Password" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
-                        <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password1')">
-                    </div>
+    <!-- Password Field -->
+    <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
+        <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
+        <input type="password" placeholder="Type User Password" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+        <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password1')">
+    </div>
 
-                    <!-- Confirm Password Field -->
-                    <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
-                        <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input type="password" placeholder="Repeat User Password" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
-                        <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password2')">
-                    </div>
+    <!-- Confirm Password Field -->
+    <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
+        <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
+        <input type="password" placeholder="Repeat User Password" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+        <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password2')">
+    </div>
+</div>
 
-                </div>
             </div>
             <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 10px; font-family: sans-serif;">
                 <!-- Section Title -->
@@ -5429,6 +5440,24 @@
                         </div>
 
                     </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="d-flex px-3 py-2"
+                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Close
+                    </button>
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Save & Close
+                    </button>
+
+
                 </div>
             </div>
 

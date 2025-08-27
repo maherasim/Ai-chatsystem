@@ -150,7 +150,7 @@
             <div class="tab-pane fade active show " id="chat-menu">
                 <!-- <div id="chats" class="sidebar-content active slimscroll"> -->
                 <div class="slimscroll">
-
+  @include('Chats.notification')
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -3030,39 +3030,40 @@
                     </div>
 
                     <!-- project overview -->
-                    <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 style="margin: 0;">Project overview</h3>
-                            <strong>Total projects: 10</strong>
-                        </div>
+                  <div class="project-succes pt-4 pb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+    <div>
+        <h3 style="margin: 0;">Project overview</h3>
+        <strong>Total projects: 10</strong>
+    </div>
 
-                        <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
-                                style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer; position: relative; z-index: 10;">
-                                + Add Project
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                All
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                In Progress
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                In Delayed
-                            </button>
-                            <button type="button" class="btn"
-                                style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                In Hold
-                            </button>
-                        </div>
-                    </div>
+    <div class="d-flex flex-wrap justify-content-start" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
+            style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer;">
+            + Add Project
+        </button>
+        <button type="button" class="btn"
+            style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+            All
+        </button>
+        <button type="button" class="btn"
+            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+            In Progress
+        </button>
+        <button type="button" class="btn"
+            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+            In Delayed
+        </button>
+        <button type="button" class="btn"
+            style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+            In Hold
+        </button>
+    </div>
+</div>
+
                     <!-- box project section -->
                     <div class=" mb-1">
                         <div class="row g-1">
-                            <div  class="col-3">
+                            <div  class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3306,7 +3307,7 @@
                                 </div>
                             </div>
                             <!-- 2nd -->
-                            <div  class="col-3">
+                            <div  class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3549,7 +3550,7 @@
                                 </div>
                             </div>
                             <!-- 3rd -->
-                            <div class="col-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -3792,7 +3793,7 @@
                                 </div>
                             </div>
                             <!-- 4 -->
-                            <div  class="col-3">
+                            <div  class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -5171,111 +5172,80 @@
                 <small>Project ID</small>
 
                 <!-- Upload and File Row -->
-                <div class="row  mt-2" style=" background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
-                    <!-- Upload Logo -->
-                    <div class="col-3">
-                        <label for="uploadLogo"
-                            class="d-flex flex-column justify-content-center align-items-center text-center"
-                            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
+               <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+    <!-- Upload Logo -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0">
+        <label for="uploadLogo"
+            class="d-flex flex-column justify-content-center align-items-center text-center"
+            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
+            <img id="logoPreview" src="" style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
+            <div id="uploadIconText">
+                <div style="font-size: 28px; color: #a0a4ab;">+</div>
+                <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
+            </div>
+            <input type="file" id="uploadLogo" accept="image/*" hidden
+                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
+        </label>
+    </div>
 
-                            <!-- Preview Image (initially hidden) -->
-                            <img id="logoPreview" src="" style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
-
-                            <!-- Plus Icon and Text -->
-                            <div id="uploadIconText">
-                                <div style="font-size: 28px; color: #a0a4ab;">+</div>
-                                <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
-                            </div>
-
-                            <!-- Hidden File Input -->
-                            <input type="file" id="uploadLogo" accept="image/*" hidden
-                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
-                        </label>
-                    </div>
-
-
-                    <!-- File Upload Section -->
-                    <div class="col-9">
-                        <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px;background:#f7f9fc">
-                            <div class="d-flex gap-2">
-                                <!-- File Box 1 -->
-                                <div class="col-6">
-                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-                                            <div>
-                                                <!-- File name -->
-                                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <!-- File size -->
-                                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Upload button -->
-                                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload1" hidden
-                                            onchange="
-                if (this.files.length > 0) {
-                    var file = this.files[0];
-                    var name = file.name;
-                    var sizeKB = (file.size / 1024).toFixed(1);
-                    document.getElementById('pdfName1').innerText = name;
-                    document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
-                }
-            " />
-                                    </label>
-                                </div>
-
-                                <!-- File Box 2 -->
-                                <div class="col-6">
-                                    <div class="d-flex align-items-start justify-content-between bg-white p-2 rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
-                                            <div>
-                                                <!-- File name -->
-                                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <!-- File size -->
-                                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Upload Button -->
-                                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload2" hidden
-                                            onchange="
-                if (this.files.length > 0) {
-                    var file = this.files[0];
-                    var name = file.name;
-                    var sizeKB = (file.size / 1024).toFixed(1);
-                    document.getElementById('pdfName2').innerText = name;
-                    document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB';
-                }
-            " />
-                                    </label>
-                                </div>
-
+    <!-- File Upload Section -->
+    <div class="col-12 col-sm-6 col-md-8 col-lg-9">
+        <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px; background:#f7f9fc">
+            <div class="row g-2">
+                <!-- File Box 1 -->
+                <div class="col-12 col-md-6">
+                    <div class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                            <div>
+                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
+                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
                             </div>
                         </div>
                     </div>
+                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
+                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                        <input type="file" id="fileUpload1" hidden
+                            onchange=" if (this.files.length > 0) { var file = this.files[0];  var name = file.name;  var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName1').innerText = name; document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
+                    </label>
                 </div>
+
+                <!-- File Box 2 -->
+                <div class="col-12 col-md-6">
+                    <div class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                            <div>
+                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
+                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
+                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                        <input type="file" id="fileUpload2" hidden
+                            onchange=" if (this.files.length > 0) { var file = this.files[0]; var name = file.name; var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName2').innerText = name; document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
                 <!-- Priority Section -->
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Ticket Priority -->
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
                         <input type="text" placeholder="Project Title" class="form-control mt-2" style="border-radius: 8px;" />
                     </div>
 
                     <!-- Task Priority -->
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
@@ -5327,7 +5297,7 @@
 
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 20px;">
                     <!-- Project Duration -->
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <label class="fw-semibold" style="font-size: 14px;">Project duration</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the duration of the Project</div>
 
@@ -5389,7 +5359,7 @@
                     </div>
 
                     <!-- Expired Reminder -->
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <label class="fw-semibold" style="font-size: 14px;">Expired Reminder</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
 

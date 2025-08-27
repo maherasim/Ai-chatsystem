@@ -125,10 +125,11 @@
     <div class="sidebar-group">
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
-
                 <!-- Chats sidebar -->
                 <div class="slimscroll">
-
+                   
+                    @include('Chats.notification')
+                       
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">

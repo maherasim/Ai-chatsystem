@@ -156,31 +156,33 @@
                     <!-- Header -->
                     <!-- Main Layout -->
                     <div class="container-fluid mt-3" style="padding-left: 85px;">
-
                         <div class="row">
                             <!-- Left Column -->
                             <div class="col-lg-9">
-                                <div class="container-fluid" style="background:#f8f9fb;border-radius: 12px; padding: 12px 20px;">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="col-md-8 d-flex align-items-center">
+                                <div class="container-fluid" style="background:#f8f9fb; border-radius: 12px; padding: 12px 20px;">
+                                    <div class="row align-items-center">
+                                        <!-- Welcome Section -->
+                                        <div class="col-12 col-md-8 d-flex align-items-start mb-3 mb-md-0">
                                             <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
                                             <div>
-                                                <h6 style="margin:0;">Welcome Back, <b>Admin Name</b></h6>
+                                                <h6 class="mb-1">Welcome Back, <b>Admin Name</b></h6>
                                                 <small>
-                                                    Dear <b>"Admin name"</b> u have for today
+                                                    Dear <b>"Admin name"</b> you have for today
                                                     <span style="color:red; font-weight:600;">12 Messages</span>,
-                                                    and <span style="color:#e75480; font-weight:600;">5 Meetings</span>,
-                                                    and <span style="color:#e75480; font-weight:600;">3 ToDo’s</span>,
-                                                    and <span style="color:#d9534f; font-weight:600;">3 Private Tasks</span>.
+                                                    <span style="color:#e75480; font-weight:600;">5 Meetings</span>,
+                                                    <span style="color:#e75480; font-weight:600;">3 ToDo’s</span>,
+                                                    <span style="color:#d9534f; font-weight:600;">3 Private Tasks</span>.
                                                 </small>
                                             </div>
                                         </div>
 
-                                        <!-- Right Side Buttons -->
-                                        <div class="col-md-4 d-flex justify-content-end" style="margin-top:-26px">
-                                            <button class="btn btn-primary btn-sm me-2">+ Add Project</button>
-                                            <button class="btn btn-danger btn-sm me-2">+ Add ToDo’s</button>
-                                            <button class="btn btn-success btn-sm">+ Add Meeting</button>
+                                        <!-- Buttons -->
+                                        <div class="col-12 col-md-4">
+                                            <div class="d-flex flex-nowrap justify-content-md-end gap-2">
+                                                <button class="btn btn-primary btn-sm">+ Add Project</button>
+                                                <button class="btn btn-danger btn-sm">+ Add ToDo’s</button>
+                                                <button class="btn btn-success btn-sm">+ Add Meeting</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,8 +192,8 @@
                                         <div>
                                             <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                        <div class="col-12 col-sm-6 col-lg-4">
+                                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:'Segoe UI', sans-serif;">
 
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                                     <!-- Left: Circular Progress -->
@@ -254,7 +256,7 @@
                                                 </div>
 
                                                 <!-- Section Progress Block -->
-                                                <div class="flex-grow-1  mt-1" style="min-width: 300px;  background:#f8f9fa;border-radius:10px;">
+                                                <div class="flex-grow-1  mt-1" style="background:#f8f9fa;border-radius:10px;">
                                                     <!-- Stats -->
                                                     <div class="d-flex justify-content-between text-center mb-2">
                                                         <div style="flex: 1;">
@@ -284,7 +286,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-12 col-sm-6 col-lg-4">
                                             <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
 
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -348,7 +350,7 @@
                                                 </div>
 
                                                 <!-- Section Progress Block -->
-                                                <div class="flex-grow-1  mt-1" style="min-width: 300px;  background:#f8f9fa;border-radius:10px;">
+                                                <div class="flex-grow-1  mt-1" style=" background:#f8f9fa;border-radius:10px;">
                                                     <!-- Stats -->
                                                     <div class="d-flex justify-content-between text-center mb-2">
                                                         <div style="flex: 1;">
@@ -378,7 +380,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-12 col-sm-6 col-lg-4">
                                             <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
 
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -442,7 +444,7 @@
                                                 </div>
 
                                                 <!-- Section Progress Block -->
-                                                <div class="flex-grow-1  mt-1" style="min-width: 300px;  background:#f8f9fa;border-radius:10px;">
+                                                <div class="flex-grow-1  mt-1" style="background:#f8f9fa;border-radius:10px;">
                                                     <!-- Stats -->
                                                     <div class="d-flex justify-content-between text-center mb-2">
                                                         <div style="flex: 1;">
@@ -477,7 +479,7 @@
                                 </div>
                                 <!-- Calendar + Clock -->
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
+                                    <div class="col-12 col-sm-12 col-md-6">
                                         <div class="card p-4" style="border-radius:16px; background:#f4f4f4;">
 
                                             <!-- Top Date and Time -->
@@ -2465,17 +2467,7 @@
 
 
 
-<!-- <script>
-    const toggleIcon = document.getElementById("toggleIcon");
-    const chevron = document.getElementById("chevronIcon");
 
-    toggleIcon.addEventListener("click", () => {
-        setTimeout(() => {
-            chevron.classList.toggle("ti-chevron-down");
-            chevron.classList.toggle("ti-chevron-up");
-        }, 150);
-    });
-</script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;
