@@ -2190,8 +2190,8 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-between px-2">
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;"data-bs-toggle="modal"
-                                data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
+                                                    data-bs-target="#edit_team">
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
                                             </div>
                                         </div>
@@ -2325,21 +2325,40 @@
                                     <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                    <!-- 3-Dot Button + Popup -->
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
 
-                                        <!-- 3 Dots Circle Button -->
-                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
+                                        <!-- Trigger Button -->
+                                        <div
+                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
 
-                                        <!-- Date with icon -->
-
+                                        <!-- Popup Menu -->
+                                        <div
+                                            class="menu-box"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            onclick="event.stopPropagation();">
+                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                            <div class="d-flex justify-content-between px-2">
+                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
+                                                    data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <!-- Profile Image (overlapping bottom center) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
+                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
+
+                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
+
+
+                                        <!-- Profile Image (overlapping bottom center) -->
+                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        </div>
                                 </div>
 
                                 <!-- Content Below Image -->
@@ -2459,21 +2478,40 @@
                                     <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                    <!-- 3-Dot Button + Popup -->
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
 
-                                        <!-- 3 Dots Circle Button -->
-                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
+                                        <!-- Trigger Button -->
+                                        <div
+                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
 
-                                        <!-- Date with icon -->
-
+                                        <!-- Popup Menu -->
+                                        <div
+                                            class="menu-box"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            onclick="event.stopPropagation();">
+                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                            <div class="d-flex justify-content-between px-2">
+                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
+                                                    data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <!-- Profile Image (overlapping bottom center) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
+                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
+
+                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
+
+
+                                        <!-- Profile Image (overlapping bottom center) -->
+                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        </div>
                                 </div>
 
                                 <!-- Content Below Image -->
@@ -2585,7 +2623,7 @@
                             </div>
                         </div>
                         <!-- card 4 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
+                     <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
@@ -2593,21 +2631,40 @@
                                     <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 110px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                    <!-- 3-Dot Button + Popup -->
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
 
-                                        <!-- 3 Dots Circle Button -->
-                                        <div style=" width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold;margin-bottom: 8px;">...</span>
+                                        <!-- Trigger Button -->
+                                        <div
+                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
 
-                                        <!-- Date with icon -->
-
+                                        <!-- Popup Menu -->
+                                        <div
+                                            class="menu-box"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            onclick="event.stopPropagation();">
+                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                            <div class="d-flex justify-content-between px-2">
+                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
+                                                    data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <!-- Profile Image (overlapping bottom center) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
+                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
+
+                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
+
+
+                                        <!-- Profile Image (overlapping bottom center) -->
+                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
+                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        </div>
                                 </div>
 
                                 <!-- Content Below Image -->
@@ -5215,7 +5272,7 @@
 </div>
 
 <!-- edit team -->
- <div class="modal fade" id="edit_team" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="edit_team" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content" style="border-radius: 10px;">
             <!-- Modal Header -->

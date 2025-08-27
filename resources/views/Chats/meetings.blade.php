@@ -103,7 +103,7 @@
         <div class="tab-content">
             <div class="tab-pane fade active show " id="chat-menu">
                 <div class="slimscroll">
-                      @include('Chats.notification')
+                    @include('Chats.notification')
                     <!-- Online user -->
                     <div class="top-online-contacts">
                         <div class="d-flex align-items-center justify-content-between">
@@ -2139,57 +2139,57 @@
                         <!-- TOday reminde  -->
                         <div class="project-succes pt-1 pb-2 d-flex justify-content-between align-items-center flex-wrap" style="gap:10px;">
 
-  <div>
-    <h3 style="margin: 0;">TOday's Reminder's</h3>
-    <strong>Reminders: 10</strong>
-  </div>
+                            <div>
+                                <h3 style="margin: 0;">TOday's Reminder's</h3>
+                                <strong>Reminders: 10</strong>
+                            </div>
 
-  <div class="d-flex flex-wrap justify-content-end align-items-center" 
-       style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 7px; max-width: 100%;">
+                            <div class="d-flex flex-wrap justify-content-end align-items-center"
+                                style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 7px; max-width: 100%;">
 
-    <!-- Buttons -->
-    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
-      style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-      Add Meeting
-    </button>
+                                <!-- Buttons -->
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
+                                    style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    Add Meeting
+                                </button>
 
-    <button type="button" class="btn"
-      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
-      style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-      All
-    </button>
+                                <button type="button" class="btn"
+                                    onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    All
+                                </button>
 
-    <button type="button" class="btn"
-      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
-      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-      Today Meeting
-    </button>
+                                <button type="button" class="btn"
+                                    onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    Today Meeting
+                                </button>
 
-    <button type="button" class="btn"
-      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
-      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-      New Meeting
-    </button>
+                                <button type="button" class="btn"
+                                    onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    New Meeting
+                                </button>
 
-    <button type="button" class="btn"
-      onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
-      style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-      Missed Meeting
-    </button>
+                                <button type="button" class="btn"
+                                    onclick="let btns = this.parentElement.querySelectorAll('button'); btns.forEach(b => { if (!b.classList.contains('btn-danger')) { b.style.background = '#f8fafc'; b.style.color = '#566a7f'; b.style.border = '1px solid transparent'; } }); this.style.background = '#32b768'; this.style.color = 'white'; this.style.border = '1px solid #32b768';"
+                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    Missed Meeting
+                                </button>
 
-    <div style="position: relative; width: 150px; white-space: nowrap; min-width: 150px;">
-      <select style="appearance: none; width: 100%; padding: 10px 35px 10px 12px; border: none; border-radius: 12px; background-color: #f8f9fa; color: #94a3b8; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 500; box-shadow: inset 0 0 0 1px #e2e8f0; cursor: pointer;">
-        <option disabled selected>Select Priority</option>
-        <option value="low">Low</option>
-        <option value="middle">Middle</option>
-        <option value="high">High</option>
-      </select>
-      <i class="bi bi-chevron-down" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #94a3b8; pointer-events: none;"></i>
-    </div>
+                                <div style="position: relative; width: 150px; white-space: nowrap; min-width: 150px;">
+                                    <select style="appearance: none; width: 100%; padding: 10px 35px 10px 12px; border: none; border-radius: 12px; background-color: #f8f9fa; color: #94a3b8; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 500; box-shadow: inset 0 0 0 1px #e2e8f0; cursor: pointer;">
+                                        <option disabled selected>Select Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="middle">Middle</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                    <i class="bi bi-chevron-down" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #94a3b8; pointer-events: none;"></i>
+                                </div>
 
-  </div>
+                            </div>
 
-</div>
+                        </div>
 
                         <!-- CARD CONTAINER -->
                         <div class=" row g-3">
