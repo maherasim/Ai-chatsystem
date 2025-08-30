@@ -106,18 +106,19 @@
                     </div>
                     <div class="avatar avatar-lg online" style="visibility: visible;">
                         <img src="{{ asset('build/img/groups/group-01.jpg') }}" class="rounded-circle" alt="image">
-
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <!-- Image -->
-                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
-
                         <!-- Username and Status -->
                         <div class="overflow-hidden">
                             <h6 class="mb-0">Username</h6>
                             <p class="last-seen text-truncate mb-0">Online</p>
                         </div>
+
                     </div>
+                    <!-- <div class="d-flex align-items-center">
+                        Image
+                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
+
+                        
+                    </div> -->
 
                 </div>
 

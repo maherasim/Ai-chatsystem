@@ -183,12 +183,12 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h6 class="mb-0" style="font-weight: 600;">API Keys List</h6>
                                 <div class="d-flex gap-2">
-                                    <select class="form-select form-select-sm" style="width: 140px;">
+                                    <select class="form-select form-select-sm">
                                         <option selected>Select Status</option>
                                         <option value="1">Success</option>
                                         <option value="2">Failed</option>
                                     </select>
-                                    <select class="form-select form-select-sm" style="width: 160px;">
+                                    <select class="form-select form-select-sm">
                                         <option selected>Sort By : Last 7 Days</option>
                                         <option>Last 30 Days</option>
                                         <option>All Time</option>
@@ -204,15 +204,15 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
                                     <span class="me-2">Row Per Page</span>
-                                    <select class="form-select form-select-sm" style="width: 70px;">
+                                    <select class="form-select form-select-sm">
                                         <option>10</option>
                                         <option selected>50</option>
                                         <option>100</option>
                                     </select>
-                                    <span class="ms-2">Entries</span>
+                                    <span class="ms-2" style="margin-right:10px;">Entries </span>
                                 </div>
 
-                                <input type="search" class="form-control form-control-sm" placeholder="Search" style="width: 200px;">
+                                <input type="search" class="form-control form-control-sm" placeholder="Search" >
                             </div>
 
                             <!-- Table -->
