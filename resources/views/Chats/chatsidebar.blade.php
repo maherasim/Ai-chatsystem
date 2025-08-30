@@ -39,10 +39,22 @@
                        </a>
                    </li>
                    
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tasks" data-bs-custom-class="tooltip-primary">
+                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Ticket" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-ticket') }}" class="nav-link task-icon-link {{ request()->is('ticket') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/ticket_icon_white.svg') }}" alt="Task White" class="icon-white">
+                           <img src="{{ asset('/build/img/ticket_icon_black.svg') }}" alt="Task Black" class="icon-black">
+                       </a>
+                   </li>
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-task') }}" class="nav-link task-icon-link {{ request()->is('tasks') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Tasks-White.svg') }}" alt="Task White" class="icon-white">
-                           <img src="{{ asset('/build/img/Tasks-Black.svg') }}" alt="Task Black" class="icon-black">
+                           <img src="{{ asset('/build/img/Tasks_icon_white.svg') }}" alt="Task White" class="icon-white">
+                           <img src="{{ asset('/build/img/Tasks_icon_Balck.svg') }}" alt="Task Black" class="icon-black">
+                       </a>
+                   </li>
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Teams" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-team') }}" class="nav-link task-icon-link {{ request()->is('teams') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Teams_Icon_White.svg') }}" alt="User White" class="icon-white">
+                           <img src="{{ asset('/build/img/Teams_Icon_Black.svg') }}" alt="User Black" class="icon-black">
                        </a>
                    </li>
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
