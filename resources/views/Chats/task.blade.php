@@ -1812,14 +1812,14 @@
                                             <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
                                             Task Title
                                         </div>
-                                       <div class="d-flex align-items-center gap-2" style="position: relative;">
+                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
                                             <button
                                                 onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
                                                 style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -1883,14 +1883,14 @@
                                             <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
                                             Task Title
                                         </div>
-                                         <div class="d-flex align-items-center gap-2" style="position: relative;">
+                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
                                             <button
                                                 onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
                                                 style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -1960,7 +1960,7 @@
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -2251,7 +2251,7 @@
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -2323,7 +2323,7 @@
                                                 style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
- <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -2713,7 +2713,7 @@
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -2784,7 +2784,7 @@
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
@@ -2854,7 +2854,7 @@
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
 
-                                             <div
+                                            <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
