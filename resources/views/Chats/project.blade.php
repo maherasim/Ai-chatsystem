@@ -145,7 +145,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-   @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -574,11 +574,7 @@
 
                                             <div id="step3" onclick=" document.getElementById('step1').style.backgroundColor = '#ffffff'; document.getElementById('step2').style.backgroundColor = '#ffffff'; document.getElementById('step3').style.backgroundColor = '#1cc375'; " style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px; cursor: pointer;"></div>
                                         </div>
-
-
                                     </div>
-
-
                                 </div>
                             </div>
                             <!-- 2nd -->
@@ -1430,68 +1426,73 @@
 
 
             <!-- Project Progress Card -->
-            <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
-                <!-- Title -->
-                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
+         <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+    <!-- Title -->
+    <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
 
-                <!-- Flex Row -->
-                <div class="d-flex flex-wrap justify-content-between gap-3">
-                    <!-- Left Half -->
-                    <div class="flex-grow-1  mt-1" style="min-width: 300px; max-width: 48%;border-radius:10px;background-color:white">
-                        <!-- Stats -->
-                        <div class="d-flex justify-content-between text-center mb-2">
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
-                                <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
-                                <div style="font-size: 12px; color: #6c757d;">#05</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
-                                <div style="font-size: 12px; color: #6c757d;">#05</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
-                                <div style="font-size: 12px; color: #6c757d;">75%</div>
-                            </div>
-                        </div>
-
-                        <!-- Blue Progress Bar -->
-                        <div class="progress" style="height: 8px; background-color: #e9ecef; border-radius: 10px;margin-left:10px;margin-right:10px;">
-                            <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                        </div>
+    <!-- Responsive Row -->
+    <div class="row g-3">
+        <!-- Left Half -->
+        <div class="col-12 col-md-6">
+            <div style="border-radius:10px;background-color:white;" class="p-2">
+                <!-- Stats -->
+                <div class="d-flex justify-content-between text-center mb-2 flex-wrap">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
+                        <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
                     </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
+                        <div style="font-size: 12px; color: #6c757d;">#05</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
+                        <div style="font-size: 12px; color: #6c757d;">#05</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
+                        <div style="font-size: 12px; color: #6c757d;">75%</div>
+                    </div>
+                </div>
 
-                    <!-- Right Half -->
-                    <div class="flex-grow-1 mb-1 " style="min-width: 300px; max-width: 48%;background-color:white;border-radius:10px;">
-                        <!-- Section Labels -->
-                        <div class="d-flex justify-content-between mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                            <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                        </div>
+                <!-- Progress Bar -->
+                <div class="progress mx-2" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
+                    <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Section Progress Bars -->
-                        <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                            <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                            </div>
-                            <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                            </div>
-                            <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                            </div>
-                            <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                            </div>
-                        </div>
+        <!-- Right Half -->
+        <div class="col-12 col-md-6">
+            <div style="border-radius:10px;background-color:white;" class="p-2">
+                <!-- Section Labels -->
+                <div class="d-flex justify-content-between flex-wrap mb-2 px-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;">
+                    <span>Section#1 75%</span>
+                    <span>Section#2 75%</span>
+                    <span>Section#3 75%</span>
+                   
+                </div>
+
+                <!-- Section Progress Bars -->
+                <div class="d-flex justify-content-between align-items-center gap-2 px-2 mb-2 flex-wrap">
+                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                    </div>
+                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fef3d3; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                    </div>
+                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                    </div>
+                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
 
 
             <!-- Project Description Card -->
@@ -1510,204 +1511,239 @@
 
 
             <!-- Project Sections Card -->
-            <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
-
+            <div class="p-3 mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
                 <!-- Title -->
                 <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
 
-                <!-- Section Cards -->
-                <div class="d-flex  gap-2">
-
-                    <!-- Single Section Card -->
-                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-
-                        <!-- Options Icon -->
-                        <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer;border:1px ;border-radius:10px; background:#f8f9fa;">
-                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                <circle cx="5" cy="12" r="2" />
-                                <circle cx="12" cy="12" r="2" />
-                                <circle cx="19" cy="12" r="2" />
-                            </svg>
-                        </div>
-
-                        <!-- Image -->
-                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-
-                        <!-- Title -->
-                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-
-                        <!-- Tech Tags -->
-                        <div class="d-flex flex-wrap justify-content-center gap-1">
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                <!-- Responsive Grid Layout -->
+                <div class="row g-3">
+                    <!-- Card Start -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                            <!-- Options Icon -->
+                            <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
+                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                    <circle cx="5" cy="12" r="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="19" cy="12" r="2" />
+                                </svg>
+                            </div>
+                            <!-- Image -->
+                            <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                            <!-- Title -->
+                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                            <!-- Tags -->
+                            <div class="d-flex flex-wrap justify-content-center gap-1">
+                                <span class="badge-tag">Laravel</span>
+                                <span class="badge-tag">Bootstrap</span>
+                                <span class="badge-tag">MongoDB</span>
+                                <span class="badge-tag">RestFul API</span>
+                            </div>
                         </div>
                     </div>
-                    <!-- 2nd -->
-                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-
-                        <!-- Options Icon -->
-                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                <circle cx="5" cy="12" r="2" />
-                                <circle cx="12" cy="12" r="2" />
-                                <circle cx="19" cy="12" r="2" />
-                            </svg>
-                        </div>
-
-                        <!-- Image -->
-                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-
-                        <!-- Title -->
-                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-
-                        <!-- Tech Tags -->
-                        <div class="d-flex flex-wrap justify-content-center gap-1">
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
-                        </div>
-                    </div>
-                    <!-- 3rd -->
-                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-
-                        <!-- Options Icon -->
-                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                <circle cx="5" cy="12" r="2" />
-                                <circle cx="12" cy="12" r="2" />
-                                <circle cx="19" cy="12" r="2" />
-                            </svg>
-                        </div>
-
-                        <!-- Image -->
-                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-
-                        <!-- Title -->
-                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-
-                        <!-- Tech Tags -->
-                        <div class="d-flex flex-wrap justify-content-center gap-1">
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                    <!-- Card End -->
+                    <!-- Card Start -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                            <!-- Options Icon -->
+                            <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
+                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                    <circle cx="5" cy="12" r="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="19" cy="12" r="2" />
+                                </svg>
+                            </div>
+                            <!-- Image -->
+                            <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                            <!-- Title -->
+                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                            <!-- Tags -->
+                            <div class="d-flex flex-wrap justify-content-center gap-1">
+                                <span class="badge-tag">Laravel</span>
+                                <span class="badge-tag">Bootstrap</span>
+                                <span class="badge-tag">MongoDB</span>
+                                <span class="badge-tag">RestFul API</span>
+                            </div>
                         </div>
                     </div>
-
-
-                    <div style="background: white; padding: 16px; border-radius: 12px; width: 160px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                        <div style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
-                            <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                <circle cx="5" cy="12" r="2" />
-                                <circle cx="12" cy="12" r="2" />
-                                <circle cx="19" cy="12" r="2" />
-                            </svg>
-                        </div>
-                        <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
-                        <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
-                        <div class="d-flex flex-wrap justify-content-center gap-1">
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Laravel</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">Bootstrap</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">MongoDB</span>
-                            <span style="background: #f8f9fa; color: #d63333; font-size: 11px; padding: 2px 8px; border-radius: 6px;">RestFul API</span>
+                    <!-- Card End -->
+                    <!-- Card Start -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                            <!-- Options Icon -->
+                            <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
+                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                    <circle cx="5" cy="12" r="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="19" cy="12" r="2" />
+                                </svg>
+                            </div>
+                            <!-- Image -->
+                            <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                            <!-- Title -->
+                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                            <!-- Tags -->
+                            <div class="d-flex flex-wrap justify-content-center gap-1">
+                                <span class="badge-tag">Laravel</span>
+                                <span class="badge-tag">Bootstrap</span>
+                                <span class="badge-tag">MongoDB</span>
+                                <span class="badge-tag">RestFul API</span>
+                            </div>
                         </div>
                     </div>
+                    <!-- Card End -->
+                    <!-- Card Start -->
 
-                    <!-- Add more blocks as needed... -->
+                    <!-- Card End -->
+                    <!-- Card Start -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+                            <!-- Options Icon -->
+                            <div class="rounded-circle" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
+                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
+                                    <circle cx="5" cy="12" r="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="19" cy="12" r="2" />
+                                </svg>
+                            </div>
+                            <!-- Image -->
+                            <img src="{{URL::asset('/build/img/project.svg')}}" style="height: 40px; margin-bottom: 10px;" alt="icon">
+                            <!-- Title -->
+                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin Dashboard</div>
+                            <!-- Tags -->
+                            <div class="d-flex flex-wrap justify-content-center gap-1">
+                                <span class="badge-tag">Laravel</span>
+                                <span class="badge-tag">Bootstrap</span>
+                                <span class="badge-tag">MongoDB</span>
+                                <span class="badge-tag">RestFul API</span>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
+
 
 
             <!-- Our team Card -->
-            <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding-left: 20px;padding-right: 20px; border-radius: 12px;">
-
+            <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 12px;">
                 <!-- Section Title -->
-                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59; font-size: 16px;padding-top: 16px;">· Our Team ·</h6>
+                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59; font-size: 16px;">· Our Team ·</h6>
 
-                <!-- Card Row -->
-                <div class="d-flex gap-3 flex-nowrap overflow-auto">
+                <!-- Grid Row -->
+                <div class="row g-3">
+                    <!-- TEAM CARD (Repeat as needed) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
-                    <!-- CARD 1 -->
-                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                        </div>
-                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            <!-- Background Image using IMG tag -->
+                            <div style="position: relative; height: 80px;">
+                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+
+                                <!-- Profile Image -->
+                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            </div>
                         </div>
                     </div>
+                    <!-- 2 -->
+                      <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
-                    <!-- CARD 2 -->
-                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                        </div>
-                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            <!-- Background Image using IMG tag -->
+                            <div style="position: relative; height: 80px;">
+                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+
+                                <!-- Profile Image -->
+                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            </div>
                         </div>
                     </div>
+                    <!-- 3 -->
+ <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
-                    <!-- CARD 3 -->
-                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                        </div>
-                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            <!-- Background Image using IMG tag -->
+                            <div style="position: relative; height: 80px;">
+                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+
+                                <!-- Profile Image -->
+                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            </div>
                         </div>
                     </div>
+                    <!-- 4 -->
+                      <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
-                    <!-- CARD 4 -->
-                    <div class="card text-center" style="width: 180px; border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="position: relative; background-image: url('{{ URL::asset('/build/img/bgractangle.svg') }}'); background-size: cover; background-position: center; height: 80px;">
-                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
-                                style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                        </div>
-                        <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                            <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
-                            <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            <!-- Background Image using IMG tag -->
+                            <div style="position: relative; height: 80px;">
+                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+
+                                <!-- Profile Image -->
+                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile" class="rounded-circle border border-white border-3"
+                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
+                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">Name Lastname</h6>
+                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
+                            </div>
                         </div>
                     </div>
-
+                    <!-- Duplicate above <div class="col-6 ..."> block for more team members -->
                 </div>
             </div>
+
             <!-- project tcikets -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
                 <!-- Section Title -->
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
-                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2 pt-3" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+                    style="background: #fff; border-radius: 10px;">
+
+                    <!-- Left Side: Title + Badges + Meta Info -->
+                    <div class="flex-grow-1">
+                        <!-- Title & Badges -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                             <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
                                 Ticket Title
                             </div>
 
-                            <!-- Status badges on the right -->
                             <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress badge -->
-                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                <!-- In Progress -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
                                         <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                     </svg>
                                     in Progress
                                 </span>
 
-                                <!-- Low badge -->
+                                <!-- LOW Priority -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
                                     <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
                                     LOW
@@ -1715,81 +1751,80 @@
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
+                    <!-- Right Side: Stats -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
+                        <!-- Metrics Box -->
+                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
+                            <div class="d-flex gap-3 justify-content-between mb-2">
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
                                 </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                </div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
                                 </div>
                             </div>
 
-
-                            <!-- Circular Progress -->
-                            <div style="position: relative; width: 45px; height: 45px;">
-                                <svg viewBox="0 0 36 36" width="45" height="45">
-                                    <path
-                                        style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path
-                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                        stroke-dasharray="70, 100"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                </svg>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            <!-- Progress Bar -->
+                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
+                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                             </div>
+                        </div>
+
+                        <!-- Circular Progress -->
+                        <div style="position: relative; width: 45px; height: 45px;">
+                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                    stroke-dasharray="70, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
+
                 <!-- 2nd -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+                    style="background: #fff; border-radius: 10px;">
+
+                    <!-- Left Side: Title + Badges + Meta Info -->
+                    <div class="flex-grow-1">
+                        <!-- Title & Badges -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                             <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
                                 Ticket Title
                             </div>
 
-                            <!-- Status badges on the right -->
                             <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress badge -->
-                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                <!-- In Progress -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
                                         <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                     </svg>
                                     in Progress
                                 </span>
 
-                                <!-- Low badge -->
+                                <!-- LOW Priority -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
                                     <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
                                     LOW
@@ -1797,83 +1832,77 @@
                             </div>
                         </div>
 
-                    </div>
-
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                </div>
-                            </div>
-
-
-                            <!-- Circular Progress -->
-                            <div style="position: relative; width: 45px; height: 45px;">
-                                <svg viewBox="0 0 36 36" width="45" height="45">
-                                    <path
-                                        style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path
-                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                        stroke-dasharray="70, 100"
-                                        d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                </svg>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
-                            </div>
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                         </div>
                     </div>
-                </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+
+                    <!-- Right Side: Stats -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
+                        <!-- Metrics Box -->
+                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
+                            <div class="d-flex gap-3 justify-content-between mb-2">
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                </div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                </div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
+                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Circular Progress -->
+                        <div style="position: relative; width: 45px; height: 45px;">
+                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                    stroke-dasharray="70, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                        </div>
+                    </div>
                 </div>
                 <!-- 3rd -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+                    style="background: #fff; border-radius: 10px;">
+
+                    <!-- Left Side: Title + Badges + Meta Info -->
+                    <div class="flex-grow-1">
+                        <!-- Title & Badges -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                             <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
                                 Ticket Title
                             </div>
 
-                            <!-- Status badges on the right -->
                             <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress badge -->
-                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                <!-- In Progress -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
                                         <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                     </svg>
                                     in Progress
                                 </span>
 
-                                <!-- Low badge -->
+                                <!-- LOW Priority -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
                                     <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
                                     LOW
@@ -1881,83 +1910,79 @@
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
+                    <!-- Right Side: Stats -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
+                        <!-- Metrics Box -->
+                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
+                            <div class="d-flex gap-3 justify-content-between mb-2">
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
                                 </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                </div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
                                 </div>
                             </div>
 
-
-                            <!-- Circular Progress -->
-                            <div style="position: relative; width: 45px; height: 45px;">
-                                <svg viewBox="0 0 36 36" width="45" height="45">
-                                    <path
-                                        style="fill: none; stroke: #b7b7b7; stroke-width: 3.8;"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path
-                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                        stroke-dasharray="70, 100"
-                                        d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                </svg>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            <!-- Progress Bar -->
+                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
+                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                             </div>
+                        </div>
+
+                        <!-- Circular Progress -->
+                        <div style="position: relative; width: 45px; height: 45px;">
+                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                    stroke-dasharray="70, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                         </div>
                     </div>
                 </div>
                 <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
                 <!-- 4rth -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+                    style="background: #fff; border-radius: 10px;">
+
+                    <!-- Left Side: Title + Badges + Meta Info -->
+                    <div class="flex-grow-1">
+                        <!-- Title & Badges -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                             <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
                                 Ticket Title
                             </div>
 
-                            <!-- Status badges on the right -->
                             <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress badge -->
-                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;margin-left: 52px;">
+                                <!-- In Progress -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#28c76f" viewBox="0 0 16 16">
                                         <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
                                     </svg>
                                     in Progress
                                 </span>
 
-                                <!-- Low badge -->
+                                <!-- LOW Priority -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
                                     <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
                                     LOW
@@ -1965,60 +1990,55 @@
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
+                    <!-- Right Side: Stats -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
+                        <!-- Metrics Box -->
+                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
+                            <div class="d-flex gap-3 justify-content-between mb-2">
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
                                 </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                </div>
+                                <div class="text-center">
+                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
+                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
                                 </div>
                             </div>
 
-
-                            <!-- Circular Progress -->
-                            <div style="position: relative; width: 45px; height: 45px;">
-                                <svg viewBox="0 0 36 36" width="45" height="45">
-                                    <path
-                                        style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path
-                                        style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                        stroke-dasharray="70, 100"
-                                        d="M18 2.0845
-                 a 15.9155 15.9155 0 0 1 0 31.831
-                 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                </svg>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
+                            <!-- Progress Bar -->
+                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
+                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                             </div>
+                        </div>
+
+                        <!-- Circular Progress -->
+                        <div style="position: relative; width: 45px; height: 45px;">
+                            <svg viewBox="0 0 36 36" width="45" height="45">
+                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                    stroke-dasharray="70, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 
+                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">70%</div>
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
             </div>
             <!-- /project tickts -->
             <!-- project Task -->
@@ -2027,361 +2047,282 @@
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
-                <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Task Title
-                            </div>
 
-                            <!-- Status badges on the right -->
-                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                                <!-- Red Badge with Lightning Icon -->
-                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
-                                    <!-- Left icon area -->
-                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                    <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
-
-                                    <!-- Red badge area -->
-                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                        <span style="font-weight: bold;">·</span>
-                                        01
-                                        <span style="font-weight: bold;">·</span>
+                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
                                     </span>
+                                </div>
 
-                                </span>
-
-
-                                <!-- Low Badge with Green Dot -->
+                                <!-- Low Badge -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
                                     LOW
                                 </span>
 
-                                <!-- Yellow Badge with Flag -->
-                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                    <span>
-                                        <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
-                                    </span>
+                                <!-- Yellow Flag Badge -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
                                 </span>
                             </div>
-
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                </div>
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
                             </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
 
-
-                            <!-- Circular Progress -->
-
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
+
                 <!-- 2nd -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Task Title
-                            </div>
 
-                            <!-- Status badges on the right -->
-                            <!-- Status badges on the right -->
-                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                                <!-- Red Badge with Lightning Icon -->
-                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
-                                    <!-- Left icon area -->
-                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                    <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
-
-                                    <!-- Red badge area -->
-                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                        <span style="font-weight: bold;">·</span>
-                                        02
-                                        <span style="font-weight: bold;">·</span>
+                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
                                     </span>
+                                </div>
 
-                                </span>
-
-
-                                <!-- Low Badge with Green Dot -->
+                                <!-- Low Badge -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
                                     LOW
                                 </span>
 
-                                <!-- Yellow Badge with Flag -->
-                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                    <span>
-                                        <img src="{{ asset('build/img/redflag.svg') }}" alt="Icon" width="14" height="14" />
-                                    </span>
+                                <!-- Yellow Flag Badge -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
                                 </span>
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                </div>
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
                             </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
 
-
-
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
                 <!-- 3rd -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Task Title
-                            </div>
 
-                            <!-- Status badges on the right -->
-                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                                <!-- Red Badge with Lightning Icon -->
-                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
-                                    <!-- Left icon area -->
-                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                    <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
-
-                                    <!-- Red badge area -->
-                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                        <span style="font-weight: bold;">·</span>
-                                        01
-                                        <span style="font-weight: bold;">·</span>
+                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
                                     </span>
+                                </div>
 
-                                </span>
-
-
-                                <!-- Low Badge with Green Dot -->
+                                <!-- Low Badge -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
                                     LOW
                                 </span>
 
-                                <!-- Yellow Badge with Flag -->
-                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                    <span>
-                                        <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
-                                    </span>
+                                <!-- Yellow Flag Badge -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
                                 </span>
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                </div>
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
                             </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
 
-
-                            <!-- Circular Progress -->
-
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                         </div>
                     </div>
                 </div>
                 <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
                 <!-- 4rth -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px; ">
-                    <!-- Ticket Title & Status -->
-                    <div style="background:#fff">
-                        <!-- Ticket Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                            <!-- Ticket Title on the left -->
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Task Title
-                            </div>
 
-                            <!-- Status badges on the right -->
-                            <div class="d-flex align-items-center gap-2" style="margin-left: 52px;">
-                                <!-- Red Badge with Lightning Icon -->
-                                <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
-                                    <!-- Left icon area -->
-                                    <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
+                    <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
-
-                                    <!-- Red badge area -->
-                                    <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                        <span style="font-weight: bold;">·</span>
-                                        01
-                                        <span style="font-weight: bold;">·</span>
+                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
                                     </span>
+                                </div>
 
-                                </span>
-
-
-                                <!-- Low Badge with Green Dot -->
+                                <!-- Low Badge -->
                                 <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
                                     LOW
                                 </span>
 
-                                <!-- Yellow Badge with Flag -->
-                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
-
-                                    <span>
-                                        <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
-                                    </span>
+                                <!-- Yellow Flag Badge -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
                                 </span>
                             </div>
                         </div>
 
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
                     </div>
 
-                    <!-- Ticket Metrics Box -->
-                    <div style="max-width: 450px;">
-
-                        <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                            <!-- Metrics Box -->
-                            <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; flex-grow: 1; max-width: 100%;">
-                                <div style="display: flex; gap: 25px; align-items: center;">
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                        <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                    </div>
-                                </div>
-
-                                <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                    <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                </div>
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
                             </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
 
-
-                            <!-- Circular Progress -->
-
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-                <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-50px;margin-left:10px;background:#f8f9fa;width:323px;border-radius:7px;">
-                    <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                </div>
+
             </div>
             <!-- /project tickets -->
 
@@ -2411,18 +2352,9 @@
                     </div>
                     <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Remove The Project</div>
                 </div>
-
             </div>
-
-
-
-
-
         </div>
     </div>
-
-    <!-- new -->
-
 </div>
 
 

@@ -1054,11 +1054,12 @@
 
                 <!-- Our projects -->
                 <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 0px;" class="mb-2">
-                    <div class="row g-1">
-                        <div>
+                     <div>
                             <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
                         </div>
-                        <div class="col-md-6">
+                    <div class="row g-1">
+                       
+                        <div class=" col-12 col-md-6">
                             <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
 
                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -1120,7 +1121,7 @@
                                 </div>
 
                                 <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style="min-width: 300px;  background:#f8f9fa;border-radius:10px;">
+                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
                                     <!-- Stats -->
                                     <div class="d-flex justify-content-between text-center mb-2">
                                         <div style="flex: 1;">
@@ -1180,7 +1181,7 @@
                                 <!-- sections -->
                                 <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
                                     <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
+                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
@@ -1204,7 +1205,7 @@
                             </div>
                         </div>
                         <!-- card 2 -->
-                        <div class="col-md-6">
+                        <div class=" col-12 col-md-6">
                             <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
 
                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -1266,7 +1267,7 @@
                                 </div>
 
                                 <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style="min-width: 300px;  background:#f8f9fa;border-radius:10px;">
+                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
                                     <!-- Stats -->
                                     <div class="d-flex justify-content-between text-center mb-2">
                                         <div style="flex: 1;">
@@ -1326,7 +1327,7 @@
                                 <!-- sections -->
                                 <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
                                     <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
+                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
                                         <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>

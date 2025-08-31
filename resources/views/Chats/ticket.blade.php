@@ -204,16 +204,39 @@
             <!-- body -->
             <div style="overflow-y: auto;flex:1;height: 92vh;">
                 <div class="chat-body chat-page-group">
+                       <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
+
+                        <!-- Left Side -->
+                        <div>
+                            <h3 style="margin: 0;">Ticket Overview</h3>
+                            <strong>Total Tickets:10</strong>
+                        </div>
+
+                        <!-- Right Side -->
+                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
+                            <button
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ticketModal"
+                                style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                + Create Ticket
+                            </button>
+
+
+
+
+                        </div>
+                    </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
                         <div class="row g-3 py-2">
                             <!-- Card 1: Total Projects -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-3 mb-1">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">Total Tickets</div>
                                         <div style="background-color: #eae8fd; border-radius: 50%; padding: 5px;">
                                             <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 32px; height: 28px;" />
                                         </div>
