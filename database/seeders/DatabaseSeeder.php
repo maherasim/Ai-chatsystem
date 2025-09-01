@@ -23,4 +23,4 @@ class DatabaseSeeder extends Seeder
         'password' => Hash::make('123456'), // Hash the password
     ]);
     }
-}
+}//test
