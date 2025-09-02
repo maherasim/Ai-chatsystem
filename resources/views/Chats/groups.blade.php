@@ -99,7 +99,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-   @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -163,29 +163,42 @@
                                 <strong>Total ToDo's: 10</strong>
                             </div>
 
-                            <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
-                                    Add TODO
-                                </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    All
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Private
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Shared
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    All
-                                </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Low
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Middle
-                                </button>
+                            <div class="d-flex flex-wrap align-items-center justify-content-between" style="border-radius: 8px; padding: 6px 10px; gap: 16px;">
+
+                                <!-- Group 1: wrapped in white box -->
+                                <div style="background: #f8fafc;  border-radius: 8px; padding: 6px 12px; display: flex; gap: 8px; align-items: center;">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
+                                        Add TODO
+                                    </button>
+                                    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        All
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Private
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Shared
+                                    </button>
+                                </div>
+
+                                <!-- Group 2: wrapped in white box -->
+                                <div style="background: #f8fafc;  border-radius: 8px; padding: 6px 12px; display: flex; gap: 8px; align-items: center;">
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        All
+                                    </button>
+                                    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Low
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Middle
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        high
+                                    </button>
+                                </div>
+
                             </div>
+
 
                         </div>
 
@@ -484,9 +497,14 @@
                                     Low
                                 </button>
                                 <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; ">
                                     Middle
                                 </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; ">
+                                    High
+                                </button>
+
 
                             </div>
 
@@ -744,6 +762,10 @@
                                 <button type="button" class="btn"
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    High
                                 </button>
 
                             </div>

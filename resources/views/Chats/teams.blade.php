@@ -194,7 +194,7 @@
 
                                         <!-- Trigger Button -->
                                         <div
-                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
@@ -348,7 +348,7 @@
 
                                         <!-- Trigger Button -->
                                         <div
-                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
@@ -501,7 +501,7 @@
 
                                         <!-- Trigger Button -->
                                         <div
-                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
@@ -654,7 +654,7 @@
 
                                         <!-- Trigger Button -->
                                         <div
-                                            style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
@@ -1018,7 +1018,7 @@
                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
                         <!-- Replace with actual image tag -->
                         <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
@@ -1041,94 +1041,9 @@
                                     <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
                                     <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
                                 </div>
-
                             </div>
-
-
                             <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border-radius: 10px; padding: 10px;">
-
-                            <!-- Dates Section -->
-                            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; flex: 1 1 200px;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-
-                                <!-- Deliver Date -->
-                                <div style="font-size: 13px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-
-                            </div>
-
-                            <!-- Status Badge Section -->
-                            <div style="display: flex; align-items: center; gap: 6px; flex: 0 0 auto;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </div>
-                <!-- task2 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
                                 <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
                                     <option>Priority</option>
                                 </select>
@@ -1155,6 +1070,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1164,7 +1081,85 @@
                             </div>
 
                             <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task2 -->
+                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+                            </div>
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
 
                                 <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
@@ -1176,10 +1171,10 @@
                     </div>
                 </div>
                 <!-- task3 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
                         <!-- Replace with actual image tag -->
                         <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
@@ -1202,12 +1197,9 @@
                                     <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
                                     <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
                                 </div>
-
                             </div>
-
-
                             <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
                                 <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
                                     <option>Priority</option>
                                 </select>
@@ -1234,6 +1226,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1243,7 +1237,7 @@
                             </div>
 
                             <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
 
                                 <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
@@ -1499,10 +1493,10 @@
 
 
                 <!-- task1 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                  <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
                         <!-- Replace with actual image tag -->
                         <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
@@ -1530,89 +1524,7 @@
 
 
                             <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border-radius: 10px; padding: 10px;">
-
-                            <!-- Dates Section -->
-                            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; flex: 1 1 200px;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-
-                                <!-- Deliver Date -->
-                                <div style="font-size: 13px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-
-                            </div>
-
-                            <!-- Status Badge Section -->
-                            <div style="display: flex; align-items: center; gap: 6px; flex: 0 0 auto;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </div>
-                <!-- task2 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
                                 <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
                                     <option>Priority</option>
                                 </select>
@@ -1639,6 +1551,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
+                                 <!-- divider -->
+                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1648,7 +1562,88 @@
                             </div>
 
                             <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task2 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                 <!-- divider -->
+                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
 
                                 <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
@@ -1660,10 +1655,10 @@
                     </div>
                 </div>
                 <!-- task3 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                  <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
-                    <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
                         <!-- Replace with actual image tag -->
                         <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
@@ -1691,7 +1686,7 @@
 
 
                             <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
                                 <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
                                     <option>Priority</option>
                                 </select>
@@ -1718,6 +1713,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
+                                 <!-- divider -->
+                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1727,7 +1724,7 @@
                             </div>
 
                             <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
 
                                 <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
@@ -1779,162 +1776,163 @@
 </div>
 
 <!-- timelines -->
- <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="scheduleModal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="border-radius:10px; background:#f6f6f8;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="border-radius:10px; background:#f6f6f8;">
 
-      <!-- Header -->
-      <div class="d-flex justify-content-between align-items-center px-3 py-2" 
-           style="background:#ffffff; border-bottom:1px solid #e1e1e1;">
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-light btn-sm"><i class="fa fa-angle-left"></i></button>
-          <span style="font-weight:bold;">April 2025</span>
-          <button class="btn btn-light btn-sm"><i class="fa fa-angle-right"></i></button>
-          <button class="btn btn-sm btn-outline-primary ms-3">Project Title</button>
-          <button class="btn btn-sm btn-outline-secondary">Other Projects</button>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-success btn-sm">Start Developers Sprint</button>
-          <button class="btn btn-success btn-sm">Developer QA Sprint</button>
-          <img src="https://i.pravatar.cc/30?img=1" class="rounded-circle" width="30">
-          <img src="https://i.pravatar.cc/30?img=2" class="rounded-circle" width="30">
-          <img src="https://i.pravatar.cc/30?img=3" class="rounded-circle" width="30">
-        </div>
-      </div>
-
-      <!-- Body -->
-      <div class="d-flex flex-grow-1" style="height:80vh;">
-        
-        <!-- Left Time Column -->
-        <div style="width:70px; background:#fafafa; border-right:1px solid #e1e1e1; text-align:right; font-size:12px; color:#666; position:relative;">
-          <div class="text-center py-2" style="border-bottom:1px solid #ddd;">
-            <i class="fa fa-clock"></i>
-          </div>
-          <!-- Times -->
-          <div style="height:40px;">00:00</div>
-          <div style="height:40px;">01:00</div>
-          <div style="height:40px;">02:00</div>
-          <div style="height:40px;">03:00</div>
-          <div style="height:40px;">04:00</div>
-          <div style="height:40px;">05:00</div>
-          <div style="height:40px;">06:00</div>
-          <div style="height:40px;">07:00</div>
-          <div style="height:40px;">08:00</div>
-          <div style="height:40px;">09:00</div>
-          <div style="height:40px;">10:00</div>
-          <div style="height:40px;">11:00</div>
-          <div style="height:40px;">12:00</div>
-          <div style="height:40px;">13:00</div>
-          <div style="height:40px;">14:00</div>
-          <div style="height:40px;">15:00</div>
-          <div style="height:40px;">16:00</div>
-          <div style="height:40px;">17:00</div>
-          <div style="height:40px;">18:00</div>
-          <div style="height:40px;">19:00</div>
-          <div style="height:40px;">20:00</div>
-          <div style="height:40px;">21:00</div>
-          <div style="height:40px;">22:00</div>
-          <div style="height:40px;">23:00</div>
-        </div>
-
-        <!-- Timeline Grid -->
-        <div class="flex-grow-1 d-flex flex-column" style="overflow-x:auto; background:#fff;">
-
-          <!-- Date Bar -->
-          <div class="d-flex" style="border-bottom:1px solid #ddd; background:#fafafa; font-size:12px; color:#555;">
-            <!-- Example dates (loop in real) -->
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Thu 1</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Fri 2</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sat 3</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sun 4</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Mon 5</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Tue 6</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-            <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div><div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 76</div>
-          </div>
-
-          <!-- Vertical Grid + Tasks -->
-          <div class="d-flex flex-grow-1 position-relative">
-            
-            <!-- Day Column Example -->
-            <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-              <!-- Vertical guide line -->
-              <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-              
-              <!-- Example Task -->
-              <div class="position-absolute text-white px-2 py-1 rounded" 
-                   style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                Project Title <br>
-                <small>Task #14 - 45%</small>
-                <div class="mt-1">
-                  <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                  <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center px-3 py-2"
+                style="background:#ffffff; border-bottom:1px solid #e1e1e1;">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-light btn-sm"><i class="fa fa-angle-left"></i></button>
+                    <span style="font-weight:bold;">April 2025</span>
+                    <button class="btn btn-light btn-sm"><i class="fa fa-angle-right"></i></button>
+                    <button class="btn btn-sm btn-outline-primary ms-3">Project Title</button>
+                    <button class="btn btn-sm btn-outline-secondary">Other Projects</button>
                 </div>
-              </div>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-success btn-sm">Start Developers Sprint</button>
+                    <button class="btn btn-success btn-sm">Developer QA Sprint</button>
+                    <img src="https://i.pravatar.cc/30?img=1" class="rounded-circle" width="30">
+                    <img src="https://i.pravatar.cc/30?img=2" class="rounded-circle" width="30">
+                    <img src="https://i.pravatar.cc/30?img=3" class="rounded-circle" width="30">
+                </div>
             </div>
 
-            <!-- More Day Columns... -->
-             <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-              <!-- Vertical guide line -->
-              <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-              
-              <!-- Example Task -->
-              <div class="position-absolute text-white px-2 py-1 rounded" 
-                   style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                Project Title <br>
-                <small>Task #14 - 45%</small>
-                <div class="mt-1">
-                  <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                  <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+            <!-- Body -->
+            <div class="d-flex flex-grow-1" style="height:80vh;">
+
+                <!-- Left Time Column -->
+                <div style="width:70px; background:#fafafa; border-right:1px solid #e1e1e1; text-align:right; font-size:12px; color:#666; position:relative;">
+                    <div class="text-center py-2" style="border-bottom:1px solid #ddd;">
+                        <i class="fa fa-clock"></i>
+                    </div>
+                    <!-- Times -->
+                    <div style="height:40px;">00:00</div>
+                    <div style="height:40px;">01:00</div>
+                    <div style="height:40px;">02:00</div>
+                    <div style="height:40px;">03:00</div>
+                    <div style="height:40px;">04:00</div>
+                    <div style="height:40px;">05:00</div>
+                    <div style="height:40px;">06:00</div>
+                    <div style="height:40px;">07:00</div>
+                    <div style="height:40px;">08:00</div>
+                    <div style="height:40px;">09:00</div>
+                    <div style="height:40px;">10:00</div>
+                    <div style="height:40px;">11:00</div>
+                    <div style="height:40px;">12:00</div>
+                    <div style="height:40px;">13:00</div>
+                    <div style="height:40px;">14:00</div>
+                    <div style="height:40px;">15:00</div>
+                    <div style="height:40px;">16:00</div>
+                    <div style="height:40px;">17:00</div>
+                    <div style="height:40px;">18:00</div>
+                    <div style="height:40px;">19:00</div>
+                    <div style="height:40px;">20:00</div>
+                    <div style="height:40px;">21:00</div>
+                    <div style="height:40px;">22:00</div>
+                    <div style="height:40px;">23:00</div>
                 </div>
-              </div>
-            </div>
-             <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-              <!-- Vertical guide line -->
-              <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-              
-              <!-- Example Task -->
-              <div class="position-absolute text-white px-2 py-1 rounded" 
-                   style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                Project Title <br>
-                <small>Task #14 - 45%</small>
-                <div class="mt-1">
-                  <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                  <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+
+                <!-- Timeline Grid -->
+                <div class="flex-grow-1 d-flex flex-column" style="overflow-x:auto; background:#fff;">
+
+                    <!-- Date Bar -->
+                    <div class="d-flex" style="border-bottom:1px solid #ddd; background:#fafafa; font-size:12px; color:#555;">
+                        <!-- Example dates (loop in real) -->
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Thu 1</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Fri 2</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sat 3</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sun 4</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Mon 5</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Tue 6</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
+                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 76</div>
+                    </div>
+
+                    <!-- Vertical Grid + Tasks -->
+                    <div class="d-flex flex-grow-1 position-relative">
+
+                        <!-- Day Column Example -->
+                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
+                            <!-- Vertical guide line -->
+                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
+
+                            <!-- Example Task -->
+                            <div class="position-absolute text-white px-2 py-1 rounded"
+                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
+                                Project Title <br>
+                                <small>Task #14 - 45%</small>
+                                <div class="mt-1">
+                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
+                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More Day Columns... -->
+                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
+                            <!-- Vertical guide line -->
+                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
+
+                            <!-- Example Task -->
+                            <div class="position-absolute text-white px-2 py-1 rounded"
+                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
+                                Project Title <br>
+                                <small>Task #14 - 45%</small>
+                                <div class="mt-1">
+                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
+                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
+                            <!-- Vertical guide line -->
+                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
+
+                            <!-- Example Task -->
+                            <div class="position-absolute text-white px-2 py-1 rounded"
+                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
+                                Project Title <br>
+                                <small>Task #14 - 45%</small>
+                                <div class="mt-1">
+                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
+                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
+                            <!-- Vertical guide line -->
+                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
+
+                            <!-- Example Task -->
+                            <div class="position-absolute text-white px-2 py-1 rounded"
+                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
+                                Project Title <br>
+                                <small>Task #14 - 45%</small>
+                                <div class="mt-1">
+                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
+                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-              </div>
             </div>
-             <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-              <!-- Vertical guide line -->
-              <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-              
-              <!-- Example Task -->
-              <div class="position-absolute text-white px-2 py-1 rounded" 
-                   style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                Project Title <br>
-                <small>Task #14 - 45%</small>
-                <div class="mt-1">
-                  <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                  <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
-      </div>
-
     </div>
-  </div>
 </div>
 
 

@@ -99,7 +99,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-  @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -168,7 +168,7 @@
 
                         <!-- Right Side: Add Key Button -->
                         <div>
-                            <button class="btn" style="  background-color: #f46c22;  color: white;font-weight: 500; padding: 6px 16px; border-radius: 6px; font-size: 0.9rem;display: flex;align-items: center; "data-bs-toggle="modal" data-bs-target="#addkey">
+                            <button class="btn" style="  background-color: #f46c22;  color: white;font-weight: 500; padding: 6px 16px; border-radius: 6px; font-size: 0.9rem;display: flex;align-items: center; " data-bs-toggle="modal" data-bs-target="#addkey">
                                 <i class="ti ti-circle-plus me-2"></i> Add Key
                             </button>
                         </div>
@@ -182,18 +182,7 @@
                             <!-- Header Row: API Keys List + Filters -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h6 class="mb-0" style="font-weight: 600;">API Keys List</h6>
-                                <div class="d-flex gap-2">
-                                    <select class="form-select form-select-sm">
-                                        <option selected>Select Status</option>
-                                        <option value="1">Success</option>
-                                        <option value="2">Failed</option>
-                                    </select>
-                                    <select class="form-select form-select-sm">
-                                        <option selected>Sort By : Last 7 Days</option>
-                                        <option>Last 30 Days</option>
-                                        <option>All Time</option>
-                                    </select>
-                                </div>
+
                             </div>
 
                             <!-- Horizontal line -->
@@ -201,19 +190,21 @@
 
 
                             <!-- Entries + Search -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">Row Per Page</span>
-                                    <select class="form-select form-select-sm">
-                                        <option>10</option>
-                                        <option selected>50</option>
-                                        <option>100</option>
-                                    </select>
-                                    <span class="ms-2" style="margin-right:10px;">Entries </span>
-                                </div>
+                           <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center flex-grow-1 flex-wrap">
+        <span class="me-2">Row Per Page</span>
+        <select class="form-select form-select-sm w-auto">
+            <option>10</option>
+            <option selected>50</option>
+            <option>100</option>
+        </select>
+        <span class="ms-2">Entries</span>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <input type="search" class="form-control form-control-sm" placeholder="Search">
+    </div>
+</div>
 
-                                <input type="search" class="form-control form-control-sm" placeholder="Search" >
-                            </div>
 
                             <!-- Table -->
                             <div class="table-responsive">
@@ -241,7 +232,7 @@
                                             </td>
                                             <td>
                                                 paytm1234567890abcdef
-                                                
+
                                                 <i class="ti ti-clipboard"></i>
                                             </td>
                                             <td>
@@ -252,7 +243,7 @@
                                                 <!-- Edit Icon -->
                                                 <i class="ti ti-edit me-2" role="button" data-bs-toggle="modal"
                                                     data-bs-target="#editKeyModal"></i>
-                                                
+
 
                                                 <!-- Delete Icon triggers modal -->
                                                 <i class="ti ti-trash " role="button"
@@ -415,65 +406,65 @@
 </div>
 <!-- delete popup end -->
 <!-- add key -->
- <div class="modal fade" id="addkey" tabindex="-1" aria-labelledby="editKeyModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-centered">
-    <div class="modal-content">
+<div class="modal fade" id="addkey" tabindex="-1" aria-labelledby="editKeyModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="editKeyModalLabel">Add  Key</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
-      </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="editKeyModalLabel">Add Key</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
 
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="apiKeyName" class="form-label fw-semibold" style="font-size: 0.9rem;">API Key Name</label>
-          <input type="text" class="form-control" id="apiKeyName" placeholder="">
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="apiKeyName" class="form-label fw-semibold" style="font-size: 0.9rem;">API Key Name</label>
+                    <input type="text" class="form-control" id="apiKeyName" placeholder="">
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn" style="background-color: #f46c22; color: white; font-weight: 500;">
+                    Save Key
+                </button>
+            </div>
+
         </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn" style="background-color: #f46c22; color: white; font-weight: 500;">
-          Save Key
-        </button>
-      </div>
-
     </div>
-  </div>
 </div>
- <!-- end add key -->
-  <!-- Edit Key Modal -->
+<!-- end add key -->
+<!-- Edit Key Modal -->
 <div class="modal fade" id="editKeyModal" tabindex="-1" aria-labelledby="editKeyModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="editKeyModalLabel">Edit Key</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
-      </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="editKeyModalLabel">Edit Key</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
 
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="apiKeyName" class="form-label fw-semibold" style="font-size: 0.9rem;">API Key Name</label>
-          <input type="text" class="form-control" id="apiKeyName" placeholder="">
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="apiKeyName" class="form-label fw-semibold" style="font-size: 0.9rem;">API Key Name</label>
+                    <input type="text" class="form-control" id="apiKeyName" placeholder="">
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn" style="background-color: #f46c22; color: white; font-weight: 500;">
+                    Save Key
+                </button>
+            </div>
+
         </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn" style="background-color: #f46c22; color: white; font-weight: 500;">
-          Save Key
-        </button>
-      </div>
-
     </div>
-  </div>
 </div>
 <!-- end edit -->
 <!-- /Content -->

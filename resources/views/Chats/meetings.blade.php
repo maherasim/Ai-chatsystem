@@ -527,6 +527,11 @@
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
                                 </button>
+                                 <button type="button" class="btn"
+                                    onclick="setActive(this)"
+                                    style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    High
+                                </button>
                             </div>
 
                             <script>

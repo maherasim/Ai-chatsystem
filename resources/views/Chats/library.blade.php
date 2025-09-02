@@ -89,7 +89,7 @@
                         <div class="header-title d-flex align-items-center justify-content-between">
                             <h4 class="mb-3">Libary</h4>
                             <div class="d-flex align-items-center mb-3">
-                                
+
                                 <div class="dropdown">
                                     <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default">
                                         <i class="ti ti-dots-vertical"></i>
@@ -111,27 +111,33 @@
                                 </form>
                             </div> -->
                         <!-- /Chat Search -->
-                        <div style="background-color: white;">
+                        <div style="background-color: white;border-radius:7px;">
                             <div class="modal-dialog modal-dialog-centered pb-2">
                                 <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
 
-                                    <!-- Top-Right Large Toggle Icon -->
-                                    <div class="d-flex justify-content-end px-3 pt-3">
-                                        <a data-bs-toggle="collapse" href="#collapseSubjectForm" role="button" aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleIcon">
-                                            <i class="ti ti-chevron-up fs-3" id="chevronIcon"></i> <!-- fs-3 makes it larger -->
-                                        </a>
+                                    <!-- Header with Icon, Label, Toggle Icon -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 pt-3"
+                                        data-bs-toggle="collapse" href="#collapseSubjectForm" role="button"
+                                        aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleArea">
+
+                                        <!-- Left side: Icon + Label -->
+                                        <div class="d-flex align-items-start mb-3">
+                                            <i class="ti ti-pencil me-2"></i>
+                                            <span style="font-size: 14px;">Add A Word</span>
+                                        </div>
+
+                                        <!-- Right side: Toggle Icon -->
+                                        <i class="ti ti-chevron-up fs-4" id="chevronIcon" style="margin-top: -23px;"></i>
                                     </div>
 
                                     <!-- Collapsible Form -->
                                     <div class="collapse show" id="collapseSubjectForm">
                                         <div class="modal-body">
                                             <form action="{{ url('index') }}">
-
-
                                                 <!-- Subject Title -->
                                                 <div class="row mb-3">
                                                     <div class="col-12">
-                                                        <label class="form-label">Add A Word</label>
+                                                        <!-- <label class="form-label">Add A Word</label> -->
                                                         <input type="text" class="form-control" placeholder="Enter A Word">
                                                     </div>
                                                 </div>
@@ -145,15 +151,15 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- /collapse -->
 
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
 
                     <!-- Online Contacts -->
-                  
+
                     <!-- /Online Contacts -->
 
                     <div class="sidebar-body chat-body">
@@ -166,10 +172,7 @@
 
                         <div class="chat-users-wrap">
 
-                            <!-- REUSABLE USER BOX FUNCTION -->
-                            <!-- You can duplicate this block and change the letter (A, B, ...) and name -->
-                            <!-- Start of user block -->
-                            <!-- Just replace `Label` and `Clyde Smith PW Website` accordingly -->
+
 
                             <!-- A -->
                             <div class="mb-2">
@@ -1127,6 +1130,22 @@
             }, 150);
         });
     </script>
+    <!-- JS Script to toggle icon -->
+         <script>
+                            const collapseEl = document.getElementById('collapseSubjectForm');
+                            const chevronIcon = document.getElementById('chevronIcon');
+
+                            collapseEl.addEventListener('hide.bs.collapse', () => {
+                                chevronIcon.classList.remove('ti-chevron-up');
+                                chevronIcon.classList.add('ti-chevron-right');
+                            });
+
+                            collapseEl.addEventListener('show.bs.collapse', () => {
+                                chevronIcon.classList.remove('ti-chevron-right');
+                                chevronIcon.classList.add('ti-chevron-up');
+                            });
+                        </script>
+  
     @component('components.model-popup')
     @endcomponent
     @endsection
