@@ -204,7 +204,7 @@
             <!-- body -->
             <div style="overflow-y: auto;flex:1;height: 92vh;">
                 <div class="chat-body chat-page-group">
-                       <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
+                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
 
                         <!-- Left Side -->
                         <div>
@@ -221,10 +221,6 @@
                                 style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
                                 + Create Ticket
                             </button>
-
-
-
-
                         </div>
                     </div>
                     <!-- Container for the full width -->
@@ -338,7 +334,7 @@
                     <!--  -->
                     <!-- cards -->
                     <div class="mb-2">
-                        <div class="row g-2">
+                        <div class="row g-3">
                             <!-- 1-->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
@@ -357,10 +353,10 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -370,7 +366,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -412,10 +408,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -425,7 +421,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -467,10 +463,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -480,7 +476,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -542,10 +538,10 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -555,7 +551,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -597,10 +593,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -610,7 +606,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -652,10 +648,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -665,7 +661,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -727,10 +723,10 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -740,7 +736,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -782,10 +778,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -795,7 +791,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -837,10 +833,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -850,7 +846,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -912,10 +908,10 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -925,7 +921,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -967,10 +963,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -980,7 +976,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -1022,10 +1018,10 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
@@ -1035,7 +1031,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
 
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
@@ -1199,8 +1195,8 @@
                                     </div>
 
                                     <!-- Bottom Stats Row -->
-                                    <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
+                                    <div class="d-flex justify-content-between  flex-wrap align-items-center px-2 mt-1"
+                                        style="font-size: 10px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
 
                                         <!-- Tickets -->
                                         <div style="color: #1e293b; white-space: nowrap;">
@@ -1274,7 +1270,7 @@
                                         </div>
 
                                         <!-- Dropdown (Right) -->
-                                          <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
+                                        <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
                                     </div>
 
                                     <!-- Project Title and Up Icon -->
@@ -1304,8 +1300,8 @@
                                     </div>
 
                                     <!-- Bottom Stats Row -->
-                                    <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
+                                    <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
+                                        style="font-size: 10px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
 
                                         <!-- Tickets -->
                                         <div style="color: #1e293b; white-space: nowrap;">
@@ -1379,7 +1375,7 @@
                                         </div>
 
                                         <!-- Dropdown (Right) -->
-                                           <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
+                                        <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
                                     </div>
 
                                     <!-- Project Title and Up Icon -->
@@ -1409,8 +1405,8 @@
                                     </div>
 
                                     <!-- Bottom Stats Row -->
-                                    <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
+                                    <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
+                                        style="font-size: 10px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
 
                                         <!-- Tickets -->
                                         <div style="color: #1e293b; white-space: nowrap;">
@@ -1484,7 +1480,7 @@
                                         </div>
 
                                         <!-- Dropdown (Right) -->
-                                           <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
+                                        <img src="{{URL::asset('/build/img/ticket_icon_black.svg')}}" style="height: 25px; width: 25px;cursor:pointer" alt="ticke" data-bs-toggle="modal" data-bs-target="#ticketModal">
                                     </div>
                                     <!-- Project Title and Up Icon -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1511,8 +1507,8 @@
                                         </div>
                                     </div>
                                     <!-- Bottom Stats Row -->
-                                    <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
+                                    <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
+                                        style="font-size: 10px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
 
                                         <!-- Tickets -->
                                         <div style="color: #1e293b; white-space: nowrap;">
@@ -1543,25 +1539,25 @@
                                             <strong>End:</strong> 22.10.2024
                                         </div>
                                     </div>
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
                                             <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
                                             <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/pen.svg')}}" alt="pen" width="16px" height="16px;" style="cursor: pointer;"  data-bs-toggle="modal" data-bs-target="#ticketModal">
-                                            </div>
                                         </div>
- 
+
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
+
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
+
                                             <span class="text-success">Deliver: 22.10.2024</span>
-
-
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ms-auto d-flex">
                                                 <img src="{{URL::asset('/build/img/profile.svg')}}" class="rounded-circle" style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;" alt="User">
@@ -1573,7 +1569,6 @@
 
                                         <!-- Progress Bar -->
                                         <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
@@ -1583,7 +1578,7 @@
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex  flex-wrap align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1597,60 +1592,27 @@
 
                                         </div>
                                         <!-- tasks -->
-
                                     </div>
                                     <!-- 2 -->
-                                       <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  gap: 3px; padding: 8px 10px;">
-
-                                        <!-- Tickets -->
-                                        <div style="color: #1e293b; white-space: nowrap;">
-                                            <strong>Tickets:</strong> 5
-                                        </div>
-
-                                        <!-- Divider -->
-                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                        <!-- Tasks -->
-                                        <div style="color: #1e293b; white-space: nowrap;">
-                                            <strong>Tasks:</strong> 15
-                                        </div>
-
-                                        <!-- Divider -->
-                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                        <!-- Start -->
-                                        <div style="color: #10b981; white-space: nowrap;">
-                                            <strong>Start:</strong> 22.10.2024
-                                        </div>
-
-                                        <!-- Divider -->
-                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                        <!-- End -->
-                                        <div style="color: #ef4444; white-space: nowrap;">
-                                            <strong>End:</strong> 22.10.2024
-                                        </div>
-                                    </div>
-                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
+                                    <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
                                         <!-- Header -->
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
                                             <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
                                             <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/pen.svg')}}" alt="pen" width="16px" height="16px;" style="cursor: pointer;"  data-bs-toggle="modal" data-bs-target="#ticketModal">
-                                            </div>
                                         </div>
- 
+
                                         <!-- Task Line -->
-                                        <div class="mt-3 d-flex justify-content-between flex-nowrap" style="background-color:#fff;border-radius:10px;">
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
                                             <span class="me-3"><strong>5 Tasks</strong></span>
+
                                             <span class="me-3 text-success">Start: 22.10.2024</span>
+
                                             <span class="text-success">Deliver: 22.10.2024</span>
-
-
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ms-auto d-flex">
                                                 <img src="{{URL::asset('/build/img/profile.svg')}}" class="rounded-circle" style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;" alt="User">
@@ -1662,7 +1624,6 @@
 
                                         <!-- Progress Bar -->
                                         <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
@@ -1686,7 +1647,60 @@
 
                                         </div>
                                         <!-- tasks -->
+                                    </div>
+                                   <div class=" mt-2" style=" background-color: #f1f5f9; border-radius: 10px;padding:2px;font-size: 9px;">
 
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
+
+                                        <!-- Task Line -->
+                                        <div class="mt-3 d-flex justify-content-between flex-wrap" style="background-color:#fff;border-radius:10px;">
+                                            <span class="me-3"><strong>5 Tasks</strong></span>
+
+                                            <span class="me-3 text-success">Start: 22.10.2024</span>
+
+                                            <span class="text-success">Deliver: 22.10.2024</span>
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div class="ms-auto d-flex">
+                                                <img src="{{URL::asset('/build/img/profile.svg')}}" class="rounded-circle" style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;" alt="User">
+                                                <img src="{{URL::asset('/build/img/profile.svg')}}" class="rounded-circle" style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;" alt="User">
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Progress Bar -->
+                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                </div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                            </div>
+
+                                            <!-- Status Dots -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+
+                                            </div>
+                                            <div>
+                                                <img src="{{URL::asset('/build/img/flag.svg')}}" style="width: 20px; background-color: #c8f7dc; border-radius: 5px; padding: 2px; " alt="flag">
+                                            </div>
+
+                                        </div>
+                                        <!-- tasks -->
                                     </div>
                                 </div>
                             </div>
