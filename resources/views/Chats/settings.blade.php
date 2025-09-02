@@ -404,7 +404,7 @@
                                 <h5 class="sub-title">App Setting</h5>
                                 <div class="chat-file">
                                     <div class="file-item ">
-                                        <div class="accordion accordion-flush chat-accordion" id="privacy-setting">
+                                        <div class="accordion accordion-flush chat-accordion" id="privacy-setting" style="padding-bottom: 0px;">
                                             <div class="mb-3">
                                                 <!-- chat bg -->
                                                 <form action="{{ route('upload.login.backgrounds') }}" method="POST"
@@ -667,16 +667,8 @@
 
                                                 <!-- URL Favicon -->
                                                 <div class="border-0 profile-list">
-                                                    <div class="accordion-item border-0 border-bottom">
-                                                        <h2 class="accordion-header border-0">
-                                                            <a href="#" class="accordion-button border-0 collapsed"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#url-favicon-collapse"
-                                                                aria-expanded="false"
-                                                                aria-controls="url-favicon-collapse">
-                                                                <i class="ti ti-photo me-2"></i>URL FavIcon
-                                                            </a>
-                                                        </h2>
+                                                    <div class="accordion-item border-0 ">
+                                                       
                                                         <form action="{{ route('settings.uploadFavicon') }}"
                                                             method="POST" enctype="multipart/form-data">
                                                             @csrf
@@ -1007,7 +999,7 @@
 
                                                             <div class="border-0 profile-list">
                                                                 <div class="accordion-item border-0">
-                                                                    <h2 class="accordion-header border-0">
+                                                                    <h2 class="accordion-header border-0" style="margin-bottom: 0px;">
                                                                         <button
                                                                             class="accordion-button border-0 collapsed px-0"
                                                                             type="button" data-bs-toggle="collapse"
