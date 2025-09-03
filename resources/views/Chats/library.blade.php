@@ -88,17 +88,7 @@
                     <div class="chat-search-header">
                         <div class="header-title d-flex align-items-center justify-content-between">
                             <h4 class="mb-3">Libary</h4>
-                            <div class="d-flex align-items-center mb-3">
-
-                                <div class="dropdown">
-                                    <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu p-3">
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#invite"><i class="ti ti-send me-2"></i>Invite Others</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                          
                         </div>
                         <div class="content-wrapper">
                             
@@ -169,16 +159,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Chat Search -->
-                        <!-- <div class="search-wrap">
-                                <form action="{{url('chat')}}">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search For Contacts or Messages">
-                                        <span class="input-group-text"><i class="ti ti-search"></i></span>
-                                    </div>
-                                </form>
-                            </div> -->
-                        <!-- /Chat Search -->
+                   
                         
                     </div>
 
@@ -1154,21 +1135,7 @@
             }, 150);
         });
     </script>
-    <!-- JS Script to toggle icon -->
-    <script>
-        const collapseEl = document.getElementById('collapseSubjectForm');
-        const chevronIcon = document.getElementById('chevronIcon');
-
-        collapseEl.addEventListener('hide.bs.collapse', () => {
-            chevronIcon.classList.remove('ti-chevron-up');
-            chevronIcon.classList.add('ti-chevron-right');
-        });
-
-        collapseEl.addEventListener('show.bs.collapse', () => {
-            chevronIcon.classList.remove('ti-chevron-right');
-            chevronIcon.classList.add('ti-chevron-up');
-        });
-    </script>
+   
 
     @component('components.model-popup')
     @endcomponent
