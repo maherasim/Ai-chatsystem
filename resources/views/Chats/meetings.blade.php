@@ -99,7 +99,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
- @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -348,11 +348,28 @@
                                     </div>
 
                                     <!-- Join Now Button -->
-                                    <div class="text-center py-2">
-                                        <button style="background-color: #fbbc05; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                                            Need Counte
-                                        </button>
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 120px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+                                            <!-- Top green section with time -->
+                                            <div style="
+            background-color: #4CAF50;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        ">
+                                                00:00:00
+                                            </div>
+
+                                            <!-- Bottom gray section (empty for now) -->
+                                            <div style="background-color: #f1f1f1; height: 18px;"></div>
+                                        </div>
                                     </div>
+
 
 
                                 </div>
@@ -527,7 +544,7 @@
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
                                 </button>
-                                 <button type="button" class="btn"
+                                <button type="button" class="btn"
                                     onclick="setActive(this)"
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     High
