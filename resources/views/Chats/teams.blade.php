@@ -190,13 +190,16 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
-                                        <!-- Trigger Button -->
+                                        <!-- Trigger Button (Styled) -->
                                         <div
-                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <!-- Your span (not replaced) -->
+                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            </div>
                                         </div>
 
                                         <!-- Popup Menu -->
@@ -207,10 +210,8 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-between px-2">
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#edit_team">
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#scheduleModal">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
                                             </div>
                                         </div>
                                     </div>
@@ -257,15 +258,16 @@
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <div style="background: #c8ede0; padding: 3px 6px;display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
                                         </div>
 
                                         <!-- Center: PM -->
-                                        <div class="text-center">
+                                       <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
+                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
+   
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -344,13 +346,16 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
-                                        <!-- Trigger Button -->
+                                        <!-- Trigger Button (Styled) -->
                                         <div
-                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <!-- Your span (not replaced) -->
+                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            </div>
                                         </div>
 
                                         <!-- Popup Menu -->
@@ -361,9 +366,8 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-between px-2">
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#edit_team">
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
                                             </div>
                                         </div>
                                     </div>
@@ -410,7 +414,7 @@
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <div style="background: #c8ede0; padding: 3px 6px;  display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
                                         </div>
@@ -418,7 +422,8 @@
                                         <!-- Center: PM -->
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
+                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
+   
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -497,13 +502,16 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
+                                   <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
-                                        <!-- Trigger Button -->
+                                        <!-- Trigger Button (Styled) -->
                                         <div
-                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <!-- Your span (not replaced) -->
+                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            </div>
                                         </div>
 
                                         <!-- Popup Menu -->
@@ -514,9 +522,8 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-between px-2">
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#edit_team">
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
                                             </div>
                                         </div>
                                     </div>
@@ -563,15 +570,16 @@
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <div style="background: #c8ede0; padding: 3px 6px; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
                                         </div>
 
                                         <!-- Center: PM -->
-                                        <div class="text-center">
+                                      <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
+                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
+   
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -650,13 +658,16 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 110px; right: 10px; z-index: 2;">
+                                  <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
-                                        <!-- Trigger Button -->
+                                        <!-- Trigger Button (Styled) -->
                                         <div
-                                            style="width: 25px; height: 25px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
+                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <!-- Your span (not replaced) -->
+                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                            </div>
                                         </div>
 
                                         <!-- Popup Menu -->
@@ -667,9 +678,8 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-between px-2">
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#edit_team">
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
                                             </div>
                                         </div>
                                     </div>
@@ -716,7 +726,7 @@
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                                            <div style="background: #c8ede0; padding: 3px 6px; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
                                         </div>
@@ -724,7 +734,8 @@
                                         <!-- Center: PM -->
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
+                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
+   
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -1093,7 +1104,7 @@
                     </div>
                 </div>
                 <!-- task2 -->
-                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
@@ -1171,7 +1182,7 @@
                     </div>
                 </div>
                 <!-- task3 -->
-                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
@@ -1266,20 +1277,6 @@
 
                 </div>
                 <!-- Modal Body -->
-                <div class="modal-body">
-
-                    <!-- Tabs -->
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                data-bs-toggle="tab"
-                                href="#basicInfo">
-
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
 
 
             </div>
@@ -1493,7 +1490,7 @@
 
 
                 <!-- task1 -->
-                  <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
@@ -1551,8 +1548,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
-                                 <!-- divider -->
-                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1632,8 +1629,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
-                                 <!-- divider -->
-                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1655,7 +1652,7 @@
                     </div>
                 </div>
                 <!-- task3 -->
-                  <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Image / Icon -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
@@ -1713,8 +1710,8 @@
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
                                 </div>
-                                 <!-- divider -->
-                                 <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
@@ -1753,20 +1750,7 @@
 
                 </div>
                 <!-- Modal Body -->
-                <div class="modal-body">
 
-                    <!-- Tabs -->
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                data-bs-toggle="tab"
-                                href="#basicInfo">
-
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
 
 
             </div>
