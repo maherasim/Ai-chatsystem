@@ -264,28 +264,22 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
-    <div style="width: 120px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
-        <!-- Top green section with time -->
-        <div style="
-            background-color: #4CAF50;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
-        ">
-            00:00:00
-        </div>
+                                  <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
 
-        <!-- Bottom gray section (empty for now) -->
-        <div style="background-color: #f1f1f1; height: 18px;"></div>
-    </div>
-</div>
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
 
+
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -351,27 +345,22 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
-    <div style="width: 120px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
-        <!-- Top green section with time -->
-        <div style="
-            background-color: #4CAF50;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
-        ">
-            00:00:00
-        </div>
+                                   <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
 
-        <!-- Bottom gray section (empty for now) -->
-        <div style="background-color: #f1f1f1; height: 18px;"></div>
-    </div>
-</div>
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -438,27 +427,21 @@
 
                                     <!-- Footer Button -->
                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
-    <div style="width: 120px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
-        <!-- Top green section with time -->
-        <div style="
-            background-color: #4CAF50;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
-        ">
-            00:00:00
-        </div>
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
 
-        <!-- Bottom gray section (empty for now) -->
-        <div style="background-color: #f1f1f1; height: 18px;"></div>
-    </div>
-</div>
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
 
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- card 4 -->
@@ -522,27 +505,22 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                  <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
-    <div style="width: 120px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
-        <!-- Top green section with time -->
-        <div style="
-            background-color: #4CAF50;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
-        ">
-            00:00:00
-        </div>
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
 
-        <!-- Bottom gray section (empty for now) -->
-        <div style="background-color: #f1f1f1; height: 18px;"></div>
-    </div>
-</div>
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
