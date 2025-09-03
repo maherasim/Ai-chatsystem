@@ -90,22 +90,7 @@
                 <!-- Profile sidebar -->
                 <div class="sidebar-content active slimscroll">
                     <div class="slimscroll">
-                        <div class="chat-search-header">
-                            <div class="header-title d-flex align-items-center justify-content-between">
-                                <h4 class="mb-3">Settings</h4>
-                            </div>
-
-                            <!-- Settings Search -->
-                            <div class="search-wrap">
-                                <form action="#">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search Settings">
-                                        <span class="input-group-text"><i class="ti ti-search"></i></span>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /Settings Search -->
-                        </div>
+                      
 
                         <div class="sidebar-body chat-body">
 

@@ -100,7 +100,75 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="content-wrapper">
+                            
+                            <div class="chat-file">
+                                <div class="file-item">
+                                    <div class="accordion accordion-flush chat-accordion" id="account-setting">
+                                        <div class="accordion-item others">
+                                            <h2 class="accordion-header">
+                                                <a href="#" class="accordion-button" data-bs-toggle="collapse"
+                                                    data-bs-target="#chatuser-collapse" aria-expanded="true"
+                                                    aria-controls="chatuser-collapse">
+                                                    <i class="ti ti-pencil me-2"></i>Add A Word
+                                                </a>
+                                            </h2>
+                                            <form action="#" method="POST"
+                                                enctype="multipart/form-data">
 
+                                                <div id="chatuser-collapse" class="accordion-collapse collapse"
+                                                    data-bs-parent="#account-setting">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <span>
+
+                                                                    <span
+                                                                        class="add avatar avatar-sm d-flex justify-content-center align-items-center">
+
+                                                                        <input type="text" id="profile_img"
+                                                                            name="image"
+                                                                            style="display:none;">
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="input-icon mb-3 position-relative">
+                                                                        <input type="text" name="word"
+                                                                            class="form-control"
+                                                                            value=""
+                                                                            placeholder="Add a word" required>
+                                                                        <span class="icon-addon"><i
+                                                                                class="ti ti-pen"></i></span>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="col-lg-12 d-flex">
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary flex-fill"><i
+                                                                            class="ti ti-device-floppy me-2"></i>Save
+                                                                        Changes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Chat Search -->
                         <!-- <div class="search-wrap">
                                 <form action="{{url('chat')}}">
@@ -111,51 +179,7 @@
                                 </form>
                             </div> -->
                         <!-- /Chat Search -->
-                        <div style="background-color: white;border-radius:7px;">
-                            <div class="modal-dialog modal-dialog-centered pb-2">
-                                <div class="modal-content" style="padding-left: 16px; padding-right: 16px;">
-
-                                    <!-- Header with Icon, Label, Toggle Icon -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 pt-3"
-                                        data-bs-toggle="collapse" href="#collapseSubjectForm" role="button"
-                                        aria-expanded="true" aria-controls="collapseSubjectForm" id="toggleArea">
-
-                                        <!-- Left side: Icon + Label -->
-                                        <div class="d-flex align-items-start mb-3">
-                                            <i class="ti ti-pencil me-2"></i>
-                                            <span style="font-size: 14px;">Add A Word</span>
-                                        </div>
-
-                                        <!-- Right side: Toggle Icon -->
-                                        <i class="ti ti-chevron-up fs-4" id="chevronIcon" style="margin-top: -23px;"></i>
-                                    </div>
-
-                                    <!-- Collapsible Form -->
-                                    <div class="collapse show" id="collapseSubjectForm">
-                                        <div class="modal-body">
-                                            <form action="{{ url('index') }}">
-                                                <!-- Subject Title -->
-                                                <div class="row mb-3">
-                                                    <div class="col-12">
-                                                        <!-- <label class="form-label">Add A Word</label> -->
-                                                        <input type="text" class="form-control" placeholder="Enter A Word">
-                                                    </div>
-                                                </div>
-
-                                                <!-- Submit Button -->
-                                                <div class="row">
-                                                    <div class="col-12 pb-1">
-                                                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Create</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    
+                        
                     </div>
 
                     <!-- Online Contacts -->
@@ -1131,21 +1155,21 @@
         });
     </script>
     <!-- JS Script to toggle icon -->
-         <script>
-                            const collapseEl = document.getElementById('collapseSubjectForm');
-                            const chevronIcon = document.getElementById('chevronIcon');
+    <script>
+        const collapseEl = document.getElementById('collapseSubjectForm');
+        const chevronIcon = document.getElementById('chevronIcon');
 
-                            collapseEl.addEventListener('hide.bs.collapse', () => {
-                                chevronIcon.classList.remove('ti-chevron-up');
-                                chevronIcon.classList.add('ti-chevron-right');
-                            });
+        collapseEl.addEventListener('hide.bs.collapse', () => {
+            chevronIcon.classList.remove('ti-chevron-up');
+            chevronIcon.classList.add('ti-chevron-right');
+        });
 
-                            collapseEl.addEventListener('show.bs.collapse', () => {
-                                chevronIcon.classList.remove('ti-chevron-right');
-                                chevronIcon.classList.add('ti-chevron-up');
-                            });
-                        </script>
-  
+        collapseEl.addEventListener('show.bs.collapse', () => {
+            chevronIcon.classList.remove('ti-chevron-right');
+            chevronIcon.classList.add('ti-chevron-up');
+        });
+    </script>
+
     @component('components.model-popup')
     @endcomponent
     @endsection
