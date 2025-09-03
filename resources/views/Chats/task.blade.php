@@ -260,7 +260,7 @@
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div style="font-size: 0.9rem; color: #1e2b4d;">Rejected Task</div>
                                     <div style="background-color: #fddede; border-radius: 50%; padding: 5px;">
-                                        <img src="{{URL::asset('/build/img/Rejected.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
+                                        <img src="{{URL::asset('/build/img/rejected.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
                                 <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
@@ -276,7 +276,7 @@
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div style="font-size: 0.9rem; color: #1e2b4d;">Total Done</div>
                                     <div style="background-color: #d9f5e8; border-radius: 50%; padding: 5px;">
-                                        <img src="{{URL::asset('/build/img/done.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
+                                        <img src="{{URL::asset('/build/img/Done.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
                                 <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
