@@ -99,7 +99,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-   @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -163,29 +163,42 @@
                                 <strong>Total ToDo's: 10</strong>
                             </div>
 
-                            <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
-                                    Add TODO
-                                </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    All
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Private
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Shared
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    All
-                                </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Low
-                                </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
-                                    Middle
-                                </button>
+                            <div class="d-flex flex-wrap align-items-center justify-content-between" style="border-radius: 8px; padding: 6px 10px; gap: 16px;">
+
+                                <!-- Group 1: wrapped in white box -->
+                                <div style="background: #f8fafc;  border-radius: 8px; padding: 6px 12px; display: flex; gap: 8px; align-items: center;">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
+                                        Add TODO
+                                    </button>
+                                    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        All
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Private
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Shared
+                                    </button>
+                                </div>
+
+                                <!-- Group 2: wrapped in white box -->
+                                <div style="background: #f8fafc;  border-radius: 8px; padding: 6px 12px; display: flex; gap: 8px; align-items: center;">
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        All
+                                    </button>
+                                    <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Low
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        Middle
+                                    </button>
+                                    <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                        high
+                                    </button>
+                                </div>
+
                             </div>
+
 
                         </div>
 
@@ -251,11 +264,23 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                            Need Counte
-                                        </button>
+                                  <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                             <!-- End of Card 1 -->
@@ -320,11 +345,23 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                            Need Counte
-                                        </button>
+                                   <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                             <!-- End of Card 2 -->
@@ -389,10 +426,21 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                            Need Counte
-                                        </button>
+                                   <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -457,11 +505,23 @@
                                     </div>
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                            Need Counte
-                                        </button>
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                        <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+
+                                            <!-- Green bar with current time -->
+                                            <div style=" background-color: #4CAF50; height: 43px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
+                                                <script>
+                                                    document.write(new Date().toLocaleTimeString('en-GB'));
+                                                    setInterval(function() {
+                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+                                                    }, 1000);
+                                                </script>
+                                            </div>
+
+
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -484,9 +544,14 @@
                                     Low
                                 </button>
                                 <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; ">
                                     Middle
                                 </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; ">
+                                    High
+                                </button>
+
 
                             </div>
 
@@ -744,6 +809,10 @@
                                 <button type="button" class="btn"
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
+                                </button>
+                                <button type="button" class="btn"
+                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                    High
                                 </button>
 
                             </div>
