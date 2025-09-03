@@ -3622,10 +3622,10 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="modal-body">
+            <!-- <div class="modal-body"> -->
 
                 <!-- Tabs -->
-                <ul class="nav">
+                <!-- <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link"
                             data-bs-toggle="tab"
@@ -3634,8 +3634,8 @@
                         </a>
                     </li>
 
-                </ul>
-            </div>
+                </ul> -->
+            <!-- </div> -->
         </div>
     </div>
 </div>
