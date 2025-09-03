@@ -862,11 +862,11 @@
                         <!-- Info Section Background -->
                         <div style="background-color: #fafcfc; padding: 20px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                             <!-- Profile Image (Overlapping) -->
-                            <div style="position: relative; margin-top: -60px; text-align: center;">
+                            <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
                                 <h5 class="mt-2 mb-1">Name Lastname</h5>
-                                <span class="badge bg-light text-danger" style="font-size: 12px;">Developer</span>
-                                <span class="badge bg-light text-danger" style="font-size: 12px;">Description</span>
+                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
+                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
                             </div>
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
@@ -949,9 +949,39 @@
                                                 <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
                                             </div>
                                         </div>
-                                        <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                        <!-- Trigger Button -->
+                                        <div style="position: relative; display: inline-block;">
+                                            <div
+                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                            </div>
+
+                                            <!-- Popup Menu -->
+                                            <div
+                                                class="menu-box"
+                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                                onclick="event.stopPropagation();">
+
+                                                <!-- Title -->
+                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                                <!-- Icons -->
+                                                <div style="display:flex; justify-content: space-between; align-items:center;">
+                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <!-- Close on outside click -->
+                                        <script>
+                                            document.addEventListener("click", function() {
+                                                document.querySelectorAll(".menu-box").forEach(el => el.style.display = "none");
+                                            });
+                                        </script>
+
                                     </div>
                                 </div>
 
@@ -967,8 +997,30 @@
                                                 <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
                                             </div>
                                         </div>
-                                        <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                        <!-- Trigger Button -->
+                                        <div style="position: relative; display: inline-block;">
+                                            <div
+                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                            </div>
+
+                                            <!-- Popup Menu -->
+                                            <div
+                                                class="menu-box"
+                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                                onclick="event.stopPropagation();">
+
+                                                <!-- Title -->
+                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                                <!-- Icons -->
+                                                <div style="display:flex; justify-content: space-between; align-items:center;">
+                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -2378,11 +2430,11 @@
                         <!-- Info Section Background -->
                         <div style="background-color: #fafcfc; padding: 20px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                             <!-- Profile Image (Overlapping) -->
-                            <div style="position: relative; margin-top: -60px; text-align: center;">
+                            <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
                                 <h5 class="mt-2 mb-1">Name Lastname</h5>
-                                <span class="badge bg-light text-danger" style="font-size: 12px;">Developer</span>
-                                <span class="badge bg-light text-danger" style="font-size: 12px;">Description</span>
+                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
+                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
                             </div>
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
@@ -2465,8 +2517,30 @@
                                                 <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
                                             </div>
                                         </div>
-                                        <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                         <!-- Trigger Button -->
+                                        <div style="position: relative; display: inline-block;">
+                                            <div
+                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                            </div>
+
+                                            <!-- Popup Menu -->
+                                            <div
+                                                class="menu-box"
+                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                                onclick="event.stopPropagation();">
+
+                                                <!-- Title -->
+                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                                <!-- Icons -->
+                                                <div style="display:flex; justify-content: space-between; align-items:center;">
+                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2483,8 +2557,30 @@
                                                 <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
                                             </div>
                                         </div>
-                                        <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                         <!-- Trigger Button -->
+                                        <div style="position: relative; display: inline-block;">
+                                            <div
+                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                            </div>
+
+                                            <!-- Popup Menu -->
+                                            <div
+                                                class="menu-box"
+                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                                onclick="event.stopPropagation();">
+
+                                                <!-- Title -->
+                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                                <!-- Icons -->
+                                                <div style="display:flex; justify-content: space-between; align-items:center;">
+                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -2669,6 +2765,19 @@
                 </div>
                 <!-- timeboxes -->
                 <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5>Working Times</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
 
                     <!-- Box 1 -->
                     <div style="background-color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
@@ -2723,8 +2832,20 @@
                 <!-- system log -->
                 <div class="mt-2" style="background-color: #f0f2f5; padding: 20px;padding-bottom:10px; border-radius: 14px;">
                     <!-- Header -->
-                    <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
 
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
                     <!-- Log Entry Card #1 -->
                     <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                         <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
