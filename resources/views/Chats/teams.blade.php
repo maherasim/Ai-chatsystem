@@ -205,14 +205,25 @@
                                         <!-- Popup Menu -->
                                         <div
                                             class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
                                             onclick="event.stopPropagation();">
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-between px-2">
+                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
+
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
+
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -229,7 +240,7 @@
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
@@ -264,10 +275,10 @@
                                         </div>
 
                                         <!-- Center: PM -->
-                                       <div class="text-center">
+                                        <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-   
+
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -361,14 +372,25 @@
                                         <!-- Popup Menu -->
                                         <div
                                             class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 177px; text-align: center;"
                                             onclick="event.stopPropagation();">
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-between px-2">
+                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
+
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -385,7 +407,7 @@
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
@@ -423,7 +445,7 @@
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-   
+
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -502,7 +524,7 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                   <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
                                         <!-- Trigger Button (Styled) -->
                                         <div
@@ -517,14 +539,26 @@
                                         <!-- Popup Menu -->
                                         <div
                                             class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
                                             onclick="event.stopPropagation();">
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-between px-2">
+                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
+
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+
                                             </div>
+
+
                                         </div>
                                     </div>
 
@@ -541,7 +575,7 @@
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
@@ -576,10 +610,10 @@
                                         </div>
 
                                         <!-- Center: PM -->
-                                      <div class="text-center">
+                                        <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-   
+
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -658,7 +692,7 @@
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
-                                  <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
+                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
 
                                         <!-- Trigger Button (Styled) -->
                                         <div
@@ -673,14 +707,25 @@
                                         <!-- Popup Menu -->
                                         <div
                                             class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 140px; text-align: center;"
+                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
                                             onclick="event.stopPropagation();">
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-between px-2">
+                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
+
                                                 <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+
+                                                <!-- Vertical Divider -->
+                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -697,7 +742,7 @@
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Team Name </div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
@@ -735,7 +780,7 @@
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-   
+
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
@@ -815,475 +860,226 @@
     </div>
 
 </div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+    style="width:75vw; max-width:100%; overflow-x:hidden;">
 
-<!-- user pop-up -->
+    <!-- Close -->
+    <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+        style="position:absolute; top:10px; right:10px; background-color:#ffffff; color:#000; border:none; border-radius:50%; width:36px; height:36px; font-size:24px; font-weight:bold; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 0 6px rgba(0,0,0,.2)">&times;</button>
 
-
-
-<!-- add user -->
-
-<div class="modal fade" id="add_user" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 10px;">
-            <!-- Modal Header -->
-            <style>
-                @media (max-width: 576px) {
-                    .modal-header {
-                        flex-wrap: wrap !important;
-                        padding-right: 15px !important;
-                    }
-
-                    .modal-header>div.title-subtitle {
-                        flex: 1 1 100% !important;
-                        margin-bottom: 8px;
-                    }
-
-                    .modal-header>div.warning-box {
-                        max-width: 100% !important;
-                    }
-                }
-            </style>
-
-            <div class="modal-header d-flex"
-                style="border-bottom: none; position: relative; padding-right: 40px; flex-wrap: nowrap; align-items: flex-start;">
-
-                <!-- Title and subtitle -->
-                <div class="title-subtitle" style="flex: 1;">
-                    <h5 class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
-                        Create New Team
-                    </h5>
-                    <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
-                </div>
-
-                <!-- Warning box -->
-                <div class="warning-box" style="background-color: #ffe6e6; color: red; font-size: 12px; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; max-width: 260px;">
-
-                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 25px; height: 25px;">
-                    <span>Please Note! Projects, Ticket and Task must be created before add a Team</span>
-                </div>
-
-                <!-- Close button -->
-                <button type="button" data-bs-dismiss="modal" aria-label="Close"
-                    style="position: absolute; top: 10px; right: 10px; font-size: 24px; background: none; border: none; line-height: 1;">
-                    &times;
-                </button>
+    <!-- HEADER (same bg as body) -->
+    <div class="offcanvas-header p-0" style="background:#f6f6f8; border-bottom:1px solid #e5e7eb;">
+        <div class="w-100 d-flex align-items-center flex-nowrap px-2" style="gap:8px; height:56px; overflow:hidden;">
+            <!-- Left month nav -->
+            <div class="d-flex align-items-center" style="gap:8px; flex:0 0 auto;">
+                <div class="d-inline-flex align-items-center justify-content-center"
+                    style="width:28px; height:28px; border:1px solid #a6aec1; border-radius:50%; font-size:14px; color:#2e3a59;">‹</div>
+                <div class="fw-semibold" style="font-size:14px; color:#2e3a59;">April 2022</div>
+                <div class="d-inline-flex align-items-center justify-content-center"
+                    style="width:28px; height:28px; border:1px solid #a6aec1; border-radius:50%; font-size:14px; color:#2e3a59;">›</div>
             </div>
 
+            <!-- Pills / chips -->
+            <div class="d-flex align-items-center flex-nowrap" style="gap:8px; flex:0 0 auto; margin-left:8px;">
+                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Project Title</div>
+                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Other Projects</div>
+                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Other Projects</div>
 
+                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #d1d5db; border-radius:999px; font-size:12px; color:#2e3a59;">View Tickets</div>
+                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #d1d5db; border-radius:999px; font-size:12px; color:#2e3a59;">View Tasks</div>
 
-            <!-- Modal Body -->
-            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
-                <!-- Upload Banner -->
-                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-                <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
-                    <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 24px; color: #888;">+</div>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
-                    </div>
+                <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">Start: 01.04.2022</div>
+                <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">End: 30.04.2022</div>
+
+                <!-- Avatars -->
+                <div class="d-flex align-items-center" style="gap:6px; margin-left:6px;">
+                    <img src="https://i.pravatar.cc/28?img=3" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                    <img src="https://i.pravatar.cc/28?img=5" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                    <img src="https://i.pravatar.cc/28?img=8" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
                 </div>
-                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-
-                <!-- Sub Image Upload -->
-                <div onclick="this.nextElementSibling.click();"
-                    style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
-                    <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 20px; color: #888;">+</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
-                    </div>
-                </div>
-
-                <!-- Hidden File Input -->
-                <input type="file" accept="image/*" style="display: none;"
-                    onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); 
-             this.previousElementSibling.querySelector('img').style.display='block'; 
-             this.previousElementSibling.querySelector('.text-box').style.display='none';">
-
-                <!-- Team Details Section -->
-                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
-
-                    <!-- Title & Subtitle -->
-                    <div class="mb-3">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">Team Details</h6>
-                        <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
-                    </div>
-
-                    <!-- Inputs Row -->
-                    <div class="row g-2">
-
-                        <!-- Team Title -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <input type="text" class="form-control" placeholder="Team Title"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
-                        </div>
-
-                        <!-- Select Project -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Select Project</option>
-                                <option>Project A</option>
-                                <option>Project B</option>
-                            </select>
-                        </div>
-
-                        <!-- Select PM -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Select PM</option>
-                                <option>PM A</option>
-                                <option>PM B</option>
-                            </select>
-                        </div>
-
-                        <!-- Timeline Color -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Timeline Color</option>
-                                <option>Red</option>
-                                <option>Blue</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <!-- select tickets -->
-
-
-                </div>
-
-                <!-- tasks -->
-                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 10px;">
-
-                    <!-- Title -->
-                    <div class="mb-3">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
-                            Select Ticket & Task
-                        </h6>
-                    </div>
-
-                    <!-- Ticket Buttons Row -->
-                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
-                            #1 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #2 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #3 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #4 Ticket Title
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- task1 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-                            </div>
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- task2 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-                            </div>
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- task3 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-                            </div>
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:5px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- footer -->
-
-                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
-
-                    <!-- Left Warning Box -->
-                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 13px;">
-                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
-                        There some section not asigned yet
-                    </div>
-
-                    <!-- Right Save Button -->
-                    <button type="button"
-                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
-                        + Save and create work flow
-                    </button>
-
-                </div>
-                <!-- Modal Body -->
-
-
             </div>
 
+            <!-- Spacer -->
+            <div class="ms-auto"></div>
+
+            <!-- Right date -->
+            <div class="d-flex align-items-center" style="gap:6px; flex:0 0 auto;">
+                <div class="fw-semibold" style="font-size:13px; color:#2e3a59;">26 April</div>
+                <div class="d-inline-flex align-items-center justify-content-center"
+                    style="width:24px; height:24px; border:1px solid #a6aec1; border-radius:50%; font-size:12px; color:#2e3a59;">›</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BODY (timeline) -->
+    <div class="offcanvas-body p-0" style="background:#f6f6f8;">
+        <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
+
+            <!-- Left time column (white) -->
+            <div style="background:#ffffff; border-right:1px solid #e5e7eb; font-size:12px;">
+                <!-- 00:00 .. 23:00 -->
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">00:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">01:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">02:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">03:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">04:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">05:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">06:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">07:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">08:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">09:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">10:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">11:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">12:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">13:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">14:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">15:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">16:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">17:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">18:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">19:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">20:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">21:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">22:00</div>
+                <div class="d-flex justify-content-center align-items-center" style="height:48px; color:#4b5563;">23:00</div>
+            </div>
+
+            <!-- Right main area -->
+            <div style="position:relative; background:#f6f6f8;">
+
+                <!-- Vertical grid lines (touch labels) -->
+                <div class="d-grid" style="grid-template-columns: repeat(30, 1fr); position: absolute; inset: 0; pointer-events: none; margin-left: 9px;">
+
+                    <!-- First 29 vertical lines -->
+                    <!-- You can loop or copy as needed -->
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
+                    <!-- 30th line with black dot -->
+                    <div style="position: relative;">
+                        <!-- Dot -->
+                        <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                        <!-- Line -->
+                        <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                    </div>
+
+                    <!-- 30th line with black dot -->
+                    <div style="position: relative;">
+                        <!-- Dot -->
+                        <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                        <!-- Line -->
+                        <div style="border-left: 1px solid #d0d2d6; height: 100%;margin-left: 9px;"></div>
+                    </div>
+
+                </div>
+
+
+                <!-- Day labels (sticky, exactly above lines) -->
+                <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
+                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
+                </div>
+
+                <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
+                <div style="position:relative;">
+                    <!-- Pink task around 21:00 spanning 3 cols -->
+                    <div style="position:absolute; top:21*48px; left:calc((9 - 1) * (100%/30) + 8px); width:calc((3 * (100%/30)) - 16px); background:#f06292; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
+                        <div class="d-flex align-items-center" style="gap:6px;">
+                            <div style="width:20px; height:20px; background:#ffffff; color:#f06292; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">P</div>
+                            <div class="fw-semibold">Project Title</div>
+                            <div class="ms-auto">45%</div>
+                        </div>
+                    </div>
+
+                    <!-- Yellow task around 18:00 spanning 4 cols -->
+                    <div style="position:absolute; top:18*48px; left:calc((2 - 1) * (100%/30) + 8px); width:calc((4 * (100%/30)) - 16px); background:#f59e0b; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
+                        <div class="d-flex align-items-center" style="gap:6px;">
+                            <div style="width:20px; height:20px; background:#ffffff; color:#f59e0b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">T</div>
+                            <div class="fw-semibold">Project Title</div>
+                            <div class="ms-auto">45%</div>
+                        </div>
+                    </div>
+
+                    <!-- Blue task around 13:00 spanning 4 cols -->
+                    <div style="position:absolute; top:13*48px; left:calc((6 - 1) * (100%/30) + 8px); width:calc((4 * (100%/30)) - 16px); background:#3b82f6; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
+                        <div class="d-flex align-items-center" style="gap:6px;">
+                            <div style="width:20px; height:20px; background:#ffffff; color:#3b82f6; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">S</div>
+                            <div class="fw-semibold">Project Title</div>
+                            <div class="ms-auto">45%</div>
+                        </div>
+                    </div>
+
+                    <!-- White task around 17:00 spanning 5 cols -->
+                    <div style="position:absolute; top:17*48px; left:calc((16 - 1) * (100%/30) + 8px); width:calc((5 * (100%/30)) - 16px); background:#ffffff; color:#374151; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08); border:1px solid #e5e7eb;">
+                        <div class="d-flex align-items-center" style="gap:6px;">
+                            <div style="width:20px; height:20px; background:#3b82f6; color:#ffffff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">›</div>
+                            <div class="fw-semibold">Project Title</div>
+                            <div class="ms-auto">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
+
+
 
 <!-- edit team -->
 <div class="modal fade" id="edit_team" tabindex="-1" aria-hidden="true">
@@ -1737,7 +1533,7 @@
                 <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
 
                     <!-- Left Warning Box -->
-                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 13px;">
+                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 12px;">
                         <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
                         There some section not asigned yet
                     </div>
@@ -1758,6 +1554,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- timelines -->
 <!-- Modal -->
