@@ -6,6 +6,12 @@
     body {
         overflow-x: hidden;
     }
+    #meetingModal .modal-content {
+    border-radius: 10px !important;
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
 
     .dropdown-menu {
         max-height: 300px;
@@ -1038,7 +1044,10 @@
 
 <!-- meeting Modal -->
 <div class="modal fade" id="meetingModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-md">
+
+    <div class="modal-dialog modal-dialog-centered modal-md"style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+        <div class="modal-content" style="border-radius: 10px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
             <!-- Close Button -->
             <button type="button"
@@ -1053,7 +1062,7 @@
 
 
 
-            <div class="modal-body p-4" style="background-color: white;">
+            <div class="modal-body p-4" style="background-color: white; border-radius: 10px">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
                 <p style="color: #64748b; font-size: 14px;">Connect your Team</p>

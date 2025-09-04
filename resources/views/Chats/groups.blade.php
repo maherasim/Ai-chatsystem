@@ -1370,7 +1370,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     ×
                 </button>
 
-                <div class="modal-body p-4" style="background-color: white;">
+                <div class="modal-body p-4" style="background-color: white;border-radius: 10px">
                     <!-- Header -->
                     <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo</h5>
                     <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
