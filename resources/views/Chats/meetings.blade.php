@@ -353,11 +353,35 @@
 
                                             <!-- Green bar with current time -->
                                             <div style=" background-color: #4CAF50; height: 33px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
-                                                <script>
-                                                    document.write(new Date().toLocaleTimeString('en-GB'));
-                                                    setInterval(function() {
-                                                        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
-                                                    }, 1000);
+                                            <script>
+                                                    // set countdown duration (in seconds)
+                                                    let duration = 10; // example: 10 seconds
+
+                                                    function updateClock() {
+                                                        let hours = Math.floor(duration / 3600);
+                                                        let minutes = Math.floor((duration % 3600) / 60);
+                                                        let seconds = duration % 60;
+
+                                                        // format as HH:MM:SS
+                                                        let formatted =
+                                                            String(hours).padStart(2, '0') + ":" +
+                                                            String(minutes).padStart(2, '0') + ":" +
+                                                            String(seconds).padStart(2, '0');
+
+                                                        document.getElementById('clock').innerText = formatted;
+
+                                                        if (duration <= 0) {
+                                                            // change background to red when finished
+                                                            document.getElementById('clock').style.backgroundColor = "#e74c3c";
+                                                            clearInterval(timer);
+                                                        }
+
+                                                        duration--;
+                                                    }
+
+                                                    // update every second
+                                                    updateClock();
+                                                    let timer = setInterval(updateClock, 1000);
                                                 </script>
                                             </div>
 
