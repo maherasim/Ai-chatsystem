@@ -99,7 +99,7 @@
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
- @include('Chats.notification')
+    @include('Chats.notification')
     <!-- /Sidebar group -->
 
     <!-- Chat -->
@@ -348,7 +348,7 @@
                                     </div>
 
                                     <!-- Join Now Button -->
-                                   <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: 1px; cursor: pointer;">
                                         <div style="width: 130px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
 
                                             <!-- Green bar with current time -->
@@ -538,7 +538,7 @@
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
                                 </button>
-                                 <button type="button" class="btn"
+                                <button type="button" class="btn"
                                     onclick="setActive(this)"
                                     style="background: #f8fafc; color: #566a7f; border: 1px solid transparent; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     High
@@ -1221,40 +1221,23 @@
 
 
                 <!-- Submit Button -->
-                 <div class="d-flex justify-content-center">
-                <div class="d-flex px-3 py-2"
-                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex px-3 py-2"
+                        style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
 
-                    <button class="btn" data-bs-dismiss="modal"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Close
-                    </button>
+                        <button class="btn" data-bs-dismiss="modal"
+                            style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                            Close
+                        </button>
 
-                    <button class="btn" data-bs-dismiss="modal"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Save & Close
-                    </button>
+                        <button class="btn" data-bs-dismiss="modal"
+                            style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                            Save & Close
+                        </button>
 
 
+                    </div>
                 </div>
-            </div>
- <div class="d-flex justify-content-center">
-                <div class="d-flex px-3 py-2"
-                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
-
-                    <button class="btn" data-bs-dismiss="modal"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Close
-                    </button>
-
-                    <button class="btn" data-bs-dismiss="modal"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Save & Close
-                    </button>
-
-
-                </div>
-            </div>
 
 
             </div>

@@ -865,12 +865,12 @@
     style="width:75vw; max-width:100%; overflow-x:hidden;">
 
     <!-- Close -->
-    <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"
-        style="position:absolute; top:10px; right:10px; background-color:#ffffff; color:#000; border:none; border-radius:50%; width:36px; height:36px; font-size:24px; font-weight:bold; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 0 6px rgba(0,0,0,.2)">&times;</button>
+    <!-- <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+        style="position:absolute; top:10px; right:10px; background-color:#ffffff; color:#000; border:none; border-radius:50%; width:36px; height:36px; font-size:24px; font-weight:bold; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 0 6px rgba(0,0,0,.2)">&times;</button> -->
     <!-- MAIN CONTENT -->
 
     <!-- HEADER (same bg as body) -->
-    <div class="offcanvas-header p-0" style="background:#f6f6f8; border-bottom:1px solid #e5e7eb;            margin-top:55px;">
+    <div class="offcanvas-header p-0" style="background:#f6f6f8; border-bottom:1px solid #e5e7eb;">
         <div id="mainHeader">
             <div class="w-100 d-flex align-items-center flex-nowrap px-2" style="gap:8px; height:56px;overflow-x:auto;">
 
@@ -1408,7 +1408,7 @@
 
                             <!-- Right Section -->
                             <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
-                                <div style="display:flex; position:relative;">
+                                <div style="display:flex; position:relative;"> 
                                     <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
                                     <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
                                     <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
@@ -1810,7 +1810,7 @@
                             </div>
                             <!-- Right Section -->
                             <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;">
+                                <div style="display:flex; position:relative;margin-left: 44px;">
                                     <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
                                     <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
                                     <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
@@ -1833,7 +1833,7 @@
                             </div>
                             <!-- Right Section -->
                             <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;">
+                                <div style="display:flex; position:relative;margin-left: 44px;">
                                     <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
                                     <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
                                     <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
@@ -1855,7 +1855,7 @@
                             </div>
                             <!-- Right Section -->
                             <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;">
+                                <div style="display:flex; position:relative;margin-left: 44px;">
                                     <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
                                     <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
                                     <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
