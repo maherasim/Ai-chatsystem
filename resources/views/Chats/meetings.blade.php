@@ -1029,13 +1029,13 @@
 
 
 
-            <div class="modal-body p-4" style="background-color: white;">
+            <div class="modal-body p-4" style="background-color: white;border-radius:10px;">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
                 <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
 
                 <!-- Meeting Details -->
-                <div class="border rounded p-3 mb-3" style="background-color: #f9f9fb;">
+                <div class="p-3 mb-3" style="background-color: #f9f9fb;">
                     <p style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Meeting Details</p>
 
                     <div class="row g-2 mb-2">
@@ -1060,24 +1060,24 @@
                         <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button id="btnToday"
                                 onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='none';
-                    document.getElementById('timeRow').classList.add('justify-content-center');"
+                                this.style.backgroundColor='#22c55e';
+                                this.style.color='white';
+                                document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                                document.getElementById('btnScheduled').style.color='#64748b';
+                                document.getElementById('startDateField').style.display='none';
+                                document.getElementById('timeRow').classList.add('justify-content-center');"
                                 style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Meeting Today
                             </button>
 
                             <button id="btnScheduled"
                                 onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnToday').style.backgroundColor='transparent';
-                    document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='block';
-                    document.getElementById('timeRow').classList.remove('justify-content-center');"
+                                this.style.backgroundColor='#22c55e';
+                                this.style.color='white';
+                                document.getElementById('btnToday').style.backgroundColor='transparent';
+                                document.getElementById('btnToday').style.color='#64748b';
+                                document.getElementById('startDateField').style.display='block';
+                                document.getElementById('timeRow').classList.remove('justify-content-center');"
                                 style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled Meeting
                             </button>
@@ -1140,7 +1140,7 @@
 
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
-                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; margin: auto;margin-bottom: 12px;">
+                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%;  margin: auto;margin-bottom: 12px;">
 
                     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
                         <button id="btnMeet"
@@ -1177,7 +1177,7 @@
 
 
                 <!-- ✅ Priority & Reminder Section Styled Box -->
-                <div class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
+                <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb;">
                     <div class="row g-3">
                         <!-- Meeting Priority -->
                         <div class="col-md-6">
@@ -1221,11 +1221,41 @@
 
 
                 <!-- Submit Button -->
-                <div class="text-center">
-                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
-                        Create
+                 <div class="d-flex justify-content-center">
+                <div class="d-flex px-3 py-2"
+                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Close
                     </button>
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Save & Close
+                    </button>
+
+
                 </div>
+            </div>
+ <div class="d-flex justify-content-center">
+                <div class="d-flex px-3 py-2"
+                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Close
+                    </button>
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Save & Close
+                    </button>
+
+
+                </div>
+            </div>
+
 
             </div>
         </div>

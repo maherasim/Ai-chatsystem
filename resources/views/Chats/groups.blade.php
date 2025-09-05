@@ -1095,7 +1095,7 @@
 <!-- Modal -->
 <div class="modal fade" id="todomodel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;">
+        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;border-radius: 10px;">
 
             <!-- Close Button -->
             <button type="button"
@@ -1108,7 +1108,7 @@
                 ×
             </button>
 
-            <div class="modal-body p-4" style="background-color: white;">
+            <div class="modal-body p-4" style="background-color: white;border-radius:10px;">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo</h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
@@ -1286,11 +1286,24 @@
                 </div>
 
                 <!-- Create Button -->
-                <div class="text-center">
-                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
-                        Create
+               <div class="d-flex justify-content-center">
+                <div class="d-flex px-3 py-2"
+                    style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Close
                     </button>
+
+                    <button class="btn" data-bs-dismiss="modal"
+                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        Save & Close
+                    </button>
+
+
                 </div>
+            </div>
+
             </div>
         </div>
     </div>
