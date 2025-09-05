@@ -168,7 +168,7 @@
                             <button
                                 type="button"
                                 data-bs-toggle="modal"
-                                data-bs-target="#add_user"
+                                data-bs-target="#add_team"
                                 style="background-color: green; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
                                 + Create Team
                             </button>
@@ -387,7 +387,7 @@
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
 
                                             </div>
 
@@ -554,7 +554,7 @@
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
 
                                             </div>
 
@@ -722,7 +722,7 @@
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
 
                                             </div>
 
@@ -860,226 +860,1876 @@
     </div>
 
 </div>
+<!-- projects -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
     style="width:75vw; max-width:100%; overflow-x:hidden;">
 
     <!-- Close -->
     <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"
         style="position:absolute; top:10px; right:10px; background-color:#ffffff; color:#000; border:none; border-radius:50%; width:36px; height:36px; font-size:24px; font-weight:bold; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 0 6px rgba(0,0,0,.2)">&times;</button>
+    <!-- MAIN CONTENT -->
 
     <!-- HEADER (same bg as body) -->
-    <div class="offcanvas-header p-0" style="background:#f6f6f8; border-bottom:1px solid #e5e7eb;">
-        <div class="w-100 d-flex align-items-center flex-nowrap px-2" style="gap:8px; height:56px; overflow:hidden;">
-            <!-- Left month nav -->
-            <div class="d-flex align-items-center" style="gap:8px; flex:0 0 auto;">
-                <div class="d-inline-flex align-items-center justify-content-center"
-                    style="width:28px; height:28px; border:1px solid #a6aec1; border-radius:50%; font-size:14px; color:#2e3a59;">‹</div>
-                <div class="fw-semibold" style="font-size:14px; color:#2e3a59;">April 2022</div>
-                <div class="d-inline-flex align-items-center justify-content-center"
-                    style="width:28px; height:28px; border:1px solid #a6aec1; border-radius:50%; font-size:14px; color:#2e3a59;">›</div>
-            </div>
+    <div class="offcanvas-header p-0" style="background:#f6f6f8; border-bottom:1px solid #e5e7eb;            margin-top:55px;">
+        <div id="mainHeader">
+            <div class="w-100 d-flex align-items-center flex-nowrap px-2" style="gap:8px; height:56px;overflow-x:auto;">
 
-            <!-- Pills / chips -->
-            <div class="d-flex align-items-center flex-nowrap" style="gap:8px; flex:0 0 auto; margin-left:8px;">
-                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Project Title</div>
-                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Other Projects</div>
-                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:999px; font-size:12px; color:#2e3a59;">Other Projects</div>
+                <!-- Calendar Top Bar -->
+                <div class="d-flex align-items-center position-relative"
+                    style="gap:8px; flex:0 0 auto; background:#fff; border-radius:10px; padding:1px 6px; border:1px solid #e0e0e0; z-index:1;">
 
-                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #d1d5db; border-radius:999px; font-size:12px; color:#2e3a59;">View Tickets</div>
-                <div class="px-3 py-1" style="background:#ffffff; border:1px solid #d1d5db; border-radius:999px; font-size:12px; color:#2e3a59;">View Tasks</div>
+                    <!-- Calendar Icon -->
+                    <div onclick="document.getElementById('calendarPopup').style.display='block'; renderCalendar();" style="cursor:pointer;">
+                        <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width:20px; height:20px;" />
+                    </div>
 
-                <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">Start: 01.04.2022</div>
-                <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">End: 30.04.2022</div>
+                    <!-- Left Arrow -->
+                    <div onclick="changeMonth(-1)" class="d-inline-flex align-items-center justify-content-center"
+                        style="width:28px; height:28px;  border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
+                        «
+                    </div>
 
-                <!-- Avatars -->
-                <div class="d-flex align-items-center" style="gap:6px; margin-left:6px;">
-                    <img src="https://i.pravatar.cc/28?img=3" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
-                    <img src="https://i.pravatar.cc/28?img=5" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
-                    <img src="https://i.pravatar.cc/28?img=8" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                    <!-- Month Year Display -->
+                    <div id="monthYearDisplay" class="fw-semibold" style="font-size:14px; color:#2e3a59;">
+                        April 2022
+                    </div>
+
+                    <!-- Right Arrow -->
+                    <div onclick="changeMonth(1)" class="d-inline-flex align-items-center justify-content-center"
+                        style="width:28px; height:28px;  border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
+                        »
+                    </div>
+
+                    <!-- Calendar Popup -->
+                    <div id="calendarPopup"
+                        style="display:none; position:absolute; top:76px; left:0; margin-top:6px; background:#fff; border:1px solid #ccc; border-radius:6px; padding:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); z-index:1050;">
+                        <div id="calendarGrid" class="d-grid"
+                            style="grid-template-columns: repeat(7, 32px); gap:4px; text-align:center; font-size:12px; padding: 4px 6px;">
+                            <!-- Calendar will be rendered here -->
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Spacer -->
-            <div class="ms-auto"></div>
+                <!-- Inline JS inside hidden span -->
+                <div style="display:none;">
+                    <span>
+                        <script>
+                            let currentDate = new Date(2022, 3); // April 2022
 
-            <!-- Right date -->
-            <div class="d-flex align-items-center" style="gap:6px; flex:0 0 auto;">
-                <div class="fw-semibold" style="font-size:13px; color:#2e3a59;">26 April</div>
-                <div class="d-inline-flex align-items-center justify-content-center"
-                    style="width:24px; height:24px; border:1px solid #a6aec1; border-radius:50%; font-size:12px; color:#2e3a59;">›</div>
+                            function changeMonth(offset) {
+                                currentDate.setMonth(currentDate.getMonth() + offset);
+                                renderCalendar();
+                            }
+
+                            function renderCalendar() {
+                                const monthYearText = currentDate.toLocaleDateString('en-US', {
+                                    month: 'long',
+                                    year: 'numeric'
+                                });
+                                document.getElementById('monthYearDisplay').innerText = monthYearText;
+
+                                const calendarGrid = document.getElementById('calendarGrid');
+                                calendarGrid.innerHTML = '';
+
+                                // Day headers
+                                ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => {
+                                    const day = document.createElement('div');
+                                    day.innerText = d;
+                                    day.style.fontWeight = 'bold';
+                                    calendarGrid.appendChild(day);
+                                });
+
+                                const year = currentDate.getFullYear();
+                                const month = currentDate.getMonth();
+                                const firstDay = new Date(year, month, 1).getDay();
+                                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                                for (let i = 0; i < firstDay; i++) {
+                                    const empty = document.createElement('div');
+                                    calendarGrid.appendChild(empty);
+                                }
+
+                                for (let day = 1; day <= daysInMonth; day++) {
+                                    const cell = document.createElement('div');
+                                    cell.innerText = day;
+                                    cell.style.cursor = 'pointer';
+                                    cell.style.padding = '6px';
+                                    cell.style.borderRadius = '4px';
+
+                                    cell.onclick = function() {
+                                        currentDate.setDate(day);
+                                        document.getElementById('calendarPopup').style.display = 'none'; // close after select
+                                        renderCalendar();
+                                    };
+
+                                    cell.onmouseover = function() {
+                                        cell.style.background = '#f0f0f0';
+                                    };
+                                    cell.onmouseout = function() {
+                                        cell.style.background = '';
+                                    };
+
+                                    calendarGrid.appendChild(cell);
+                                }
+                            }
+                        </script>
+                    </span>
+                </div>
+
+
+
+                <!-- Pills / chips -->
+                <div class="d-flex align-items-center flex-nowrap" style="gap:8px; flex:0 0 auto; margin-left:8px;">
+                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
+                        style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
+                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
+                        <div>Project Title</div>
+                    </div>
+
+                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
+                        style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
+                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
+                        <div>Other Projects</div>
+                    </div>
+                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
+                        style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
+                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
+                        <div>Other Projects</div>
+                    </div>
+
+
+                    <div class="d-inline-flex" style="background:#ffffff; border-radius:9px;">
+
+                        <div id="viewTickets" class="px-3 py-1"
+                            onclick="
+            showProjectView();
+            this.style.backgroundColor='#22c55e';
+            this.style.color='#ffffff';
+            document.getElementById('viewTasks').style.backgroundColor='';
+            document.getElementById('viewTasks').style.color='#9ca3af';
+        "
+                            style="border-radius:999px; font-size:12px; color:#9ca3af; cursor:pointer; user-select:none;">
+                            View Tickets
+                        </div>
+
+                        <div id="viewTasks" class="px-3 py-1"
+                            onclick="
+            showTaskView();
+            this.style.backgroundColor='#22c55e';
+            this.style.color='#ffffff';
+            document.getElementById('viewTickets').style.backgroundColor='';
+            document.getElementById('viewTickets').style.color='#9ca3af';
+        "
+                            style="border-radius:999px; font-size:12px; color:#9ca3af; cursor:pointer; user-select:none;">
+                            View all Tasks
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-inline-flex" style="gap:8px;background:white">
+                        <div class="px-3 py-1" style="background:#a6f09c; color:#ffffff; border-radius:999px; font-size:12px;">
+                            Start: 01.04.2025 - 22:15
+                        </div>
+                        <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">
+                            Deliver: 07.04.2025 - 22:15
+                        </div>
+                    </div>
+
+
+                    <!-- Avatars -->
+                    <div class="d-flex align-items-center" style="gap:6px; margin-left:6px;">
+                        <img src="https://i.pravatar.cc/28?img=3" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                        <img src="https://i.pravatar.cc/28?img=5" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                        <img src="https://i.pravatar.cc/28?img=8" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                    </div>
+                </div>
+
+                <!-- Spacer -->
+                <div class="ms-auto"></div>
+
+                <!-- Right date -->
+                <div class="d-flex align-items-center justify-content-center"
+                    style="gap:8px; background:#ffffff; border-radius:8px; padding:4px 8px;margin-left: 76px;">
+
+                    <!-- Left Arrow -->
+                    <div onclick="
+            currentDate.setDate(currentDate.getDate() - 1);
+             document.getElementById('dateDisplay').innerText = currentDate.getDate() + ' ' + monthNames[currentDate.getMonth()]; "
+                        class="d-inline-flex align-items-center justify-content-center"
+                        style="width:24px; height:24px;border-radius:50%; font-size:12px; color:#2e3a59; cursor:pointer;">
+                        «
+                    </div>
+
+                    <!-- Date Text -->
+                    <div id="dateDisplay" class="fw-semibold"
+                        style="font-size:13px; color:#2e3a59;">
+                        26 April
+                    </div>
+
+                    <!-- Right Arrow -->
+                    <div onclick="
+                        currentDate.setDate(currentDate.getDate() + 1);
+                document.getElementById('dateDisplay').innerText = currentDate.getDate() + ' ' + monthNames [currentDate.getMonth()];
+           "
+                        class="d-inline-flex align-items-center justify-content-center"
+                        style="width:24px; height:24px; border: border-radius:50%; font-size:12px; color:#2e3a59; cursor:pointer;">
+                        »
+                    </div>
+                </div>
+
+                <!-- Inline JavaScript Date Setup (no <script> tag used) -->
+                <span style="display:none;">
+                    <script>
+                        var currentDate1 = new Date(2025, 3, 26); // April is month 3 (0-indexed)
+                        var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                            'August', 'September', 'October', 'November', 'December'
+                        ];
+                    </script>
+                </span>
+
             </div>
         </div>
+
+
     </div>
 
     <!-- BODY (timeline) -->
     <div class="offcanvas-body p-0" style="background:#f6f6f8;">
-        <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
+        <!-- Toggleable Bodies -->
+        <div id="mainContent">
+            <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
 
-            <!-- Left time column (white) -->
-            <div style="background:#ffffff; border-right:1px solid #e5e7eb; font-size:12px;">
-                <!-- 00:00 .. 23:00 -->
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">00:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">01:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">02:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">03:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">04:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">05:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">06:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">07:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">08:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">09:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">10:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">11:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">12:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">13:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">14:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">15:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">16:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">17:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">18:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">19:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">20:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">21:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">22:00</div>
-                <div class="d-flex justify-content-center align-items-center" style="height:48px; color:#4b5563;">23:00</div>
+                <!-- Left time column (white) -->
+                <div style="background:#ffffff; border-right:1px solid #e5e7eb; font-size:12px;">
+                    <!-- 00:00 .. 23:00 -->
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">00:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">01:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">02:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">03:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">04:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">05:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">06:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">07:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">08:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">09:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">10:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">11:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">12:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">13:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">14:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">15:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">16:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">17:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">18:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">19:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">20:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">21:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">22:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; color:#4b5563;">23:00</div>
+                </div>
+
+                <!-- Right main area -->
+                <div style="position:relative; background:#f6f6f8;">
+                    <!-- Vertical grid lines (touch labels) -->
+                    <div class="d-grid" style="grid-template-columns: repeat(30, 1fr); position: absolute; inset: 0; pointer-events: none; margin-left: 9px;">
+
+                        <!-- First 29 vertical lines -->
+                        <!-- You can loop or copy as needed -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #d0d2d6; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Day labels (sticky, exactly above lines) -->
+                    <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
+                    </div>
+
+                    <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
+                    <div style="position:relative;">
+                        <!-- Pink task around 21:00 spanning 3 cols -->
+
+                        <div onclick="showProjectView()" style="position:absolute; top:90px; left:calc((2 - 1) * (100%/4) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
+                            <!-- Left Section -->
+                            <div
+                                class="d-flex flex-column justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:65%; cursor:pointer;">
+
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+
+                            <!-- Right Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Yellow task around 18:00 spanning 4 cols -->
+                        <div onclick="showProjectView()" style="position:absolute; top:118px; left:calc((2 - 1) * (100%/30) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
+
+                            <!-- Left (Orange) Section -->
+                            <div class="d-flex flex-column justify-content-between" style="background:#f59e0b; color:#ffffff; padding:6px 8px; width:65%;">
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+
+
+                            <!-- Right (White) Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Blue task around 13:00 spanning 4 cols -->
+                        <div onclick="showProjectView()" style="position:absolute; top:620px; left:calc((2 - 1) * (100%/3) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
+
+                            <!-- Left (Orange) Section -->
+                            <div class="d-flex flex-column justify-content-between" style="background:#3578a8; color:#ffffff; padding:6px 8px; width:65%;">
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+
+                            <!-- Right (White) Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- White task around 17:00 spanning 5 cols -->
+                        <div onclick="showProjectView()" style="position:absolute; top:816px; left:calc((16 - 1) * (100%/30) + 8px); width:calc((5 * (100%/18)) - 16px); background:#ffffff; color:#374151; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08); border:1px solid #e5e7eb; display:flex; overflow:hidden;cursor:pointer">
+
+                            <!-- Left blue border -->
+                            <div style="width:4px; background:#3b82f6; border-radius:4px; margin-right:8px;"></div>
+
+                            <!-- Main content (title + % + avatars) -->
+                            <div class="d-flex flex-grow-1 justify-content-between align-items-center" style="width:100%; gap:6px;">
+
+                                <!-- Title + Icon -->
+                                <div class="d-flex flex-column" style="gap:2px;">
+                                    <div class="d-flex align-items-center" style="gap:6px;">
+                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                        <div class="fw-semibold" style="color:#1f2937;">Project Title</div>
+                                    </div>
+                                    <div style="font-size:11px; opacity:0.8; padding-left:26px;">Ticket #1 - #4</div>
+                                </div>
+
+                                <!-- % Progress -->
+                                <div class="fw-semibold" style="white-space:nowrap;">0%</div>
+
+                                <!-- Avatars -->
+                                <div class="d-flex align-items-center" style="margin-left:8px;">
+                                    <div style="position:relative;">
+                                        <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                        <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                        <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
+        </div>
+        <div id="projectDetails" style="display:none;">
+            <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
 
-            <!-- Right main area -->
-            <div style="position:relative; background:#f6f6f8;">
+                <!-- Left time column (white) -->
+                <div style="background:#ffffff; border-right:1px solid #e5e7eb; font-size:12px;">
+                    <!-- 00:00 .. 23:00 -->
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">00:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">01:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">02:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">03:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">04:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">05:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">06:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">07:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">08:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">09:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">10:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">11:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">12:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">13:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">14:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">15:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">16:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">17:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">18:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">19:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">20:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">21:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">22:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; color:#4b5563;">23:00</div>
+                </div>
 
-                <!-- Vertical grid lines (touch labels) -->
-                <div class="d-grid" style="grid-template-columns: repeat(30, 1fr); position: absolute; inset: 0; pointer-events: none; margin-left: 9px;">
+                <!-- Right main area -->
+                <div style="position:relative; background:#f6f6f8;">
+                    <!-- Vertical grid lines (touch labels) -->
+                    <div class="d-grid" style="grid-template-columns: repeat(30, 1fr); position: absolute; inset: 0; pointer-events: none; margin-left: 9px;">
 
-                    <!-- First 29 vertical lines -->
-                    <!-- You can loop or copy as needed -->
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <div style="border-left: 1px solid #e5e7eb;margin-left: 9px;"></div>
-                    <!-- 30th line with black dot -->
-                    <div style="position: relative;">
-                        <!-- Dot -->
-                        <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+                        <!-- First 29 vertical lines -->
+                        <!-- You can loop or copy as needed -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
 
-                        <!-- Line -->
-                        <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #d0d2d6; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
                     </div>
 
-                    <!-- 30th line with black dot -->
-                    <div style="position: relative;">
-                        <!-- Dot -->
-                        <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
 
-                        <!-- Line -->
-                        <div style="border-left: 1px solid #d0d2d6; height: 100%;margin-left: 9px;"></div>
+                    <!-- Day labels (sticky, exactly above lines) -->
+                    <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
+                    </div>
+
+                    <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
+                    <div style="position:relative;">
+                        <!-- Pink task around 21:00 spanning 3 cols -->
+                        <div onclick="showTaskView()" style="position:absolute; top:90px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+                            <!-- Left Section -->
+                            <div
+                                class="d-flex flex-column justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title2</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+                            <!-- Right Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- pink task around 18:00 spanning 4 cols -->
+                        <div onclick="showTaskView()" style="position:absolute; top:190px; left:calc((2 - 1) * (100%/9) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+                            <!-- Left Section -->
+                            <div
+                                class="d-flex flex-column justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title2</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+                            <!-- Right Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--yyello  -->
+                        <div onclick="showTaskView()" style="position:absolute; top:350px; left:calc((2 - 1) * (100%/4) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+                            <!-- Left Section -->
+                            <div
+                                class="d-flex flex-column justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
+                                <div class="d-flex align-items-center" style="gap:6px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
+                                    <div class="fw-semibold">Project Title2</div>
+                                    <div class="ms-auto fw-semibold">45%</div>
+                                </div>
+                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                            </div>
+                            <!-- Right Section -->
+                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
+                                <div style="display:flex; position:relative;">
+                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
                     </div>
 
                 </div>
+            </div>
+        </div>
+        <div id="taskDetails" style="display:none;">
+            <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
 
-
-                <!-- Day labels (sticky, exactly above lines) -->
-                <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
-                    <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
+                <!-- Left time column (white) -->
+                <div style="background:#ffffff; border-right:1px solid #e5e7eb; font-size:12px;">
+                    <!-- 00:00 .. 23:00 -->
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">00:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">01:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">02:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">03:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">04:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">05:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">06:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">07:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">08:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">09:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">10:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">11:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">12:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">13:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">14:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">15:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">16:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">17:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">18:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">19:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">20:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">21:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; border-bottom:1px solid #f1f5f9; color:#4b5563;">22:00</div>
+                    <div class="d-flex justify-content-center align-items-center" style="height:48px; color:#4b5563;">23:00</div>
                 </div>
 
-                <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
-                <div style="position:relative;">
-                    <!-- Pink task around 21:00 spanning 3 cols -->
-                    <div style="position:absolute; top:21*48px; left:calc((9 - 1) * (100%/30) + 8px); width:calc((3 * (100%/30)) - 16px); background:#f06292; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
-                        <div class="d-flex align-items-center" style="gap:6px;">
-                            <div style="width:20px; height:20px; background:#ffffff; color:#f06292; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">P</div>
-                            <div class="fw-semibold">Project Title</div>
-                            <div class="ms-auto">45%</div>
+                <!-- Right main area -->
+                <div style="position:relative; background:#f6f6f8;">
+                    <!-- Vertical grid lines (touch labels) -->
+                    <div class="d-grid" style="grid-template-columns: repeat(30, 1fr); position: absolute; inset: 0; pointer-events: none; margin-left: 9px;">
+
+                        <!-- First 29 vertical lines -->
+                        <!-- You can loop or copy as needed -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
                         </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #e5e7eb; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
+                        <!-- 30th line with black dot -->
+                        <div style="position: relative;">
+                            <!-- Dot -->
+                            <div style="width: 8px; height: 8px; background-color: #d0d2d6; border-radius: 50%; position: absolute; left: 5px; top: 33px;"></div>
+
+                            <!-- Line -->
+                            <div style="border-left: 1px solid #d0d2d6; height: 100%;margin-left: 9px;"></div>
+                        </div>
+
                     </div>
 
-                    <!-- Yellow task around 18:00 spanning 4 cols -->
-                    <div style="position:absolute; top:18*48px; left:calc((2 - 1) * (100%/30) + 8px); width:calc((4 * (100%/30)) - 16px); background:#f59e0b; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
-                        <div class="d-flex align-items-center" style="gap:6px;">
-                            <div style="width:20px; height:20px; background:#ffffff; color:#f59e0b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">T</div>
-                            <div class="fw-semibold">Project Title</div>
-                            <div class="ms-auto">45%</div>
-                        </div>
+
+                    <!-- Day labels (sticky, exactly above lines) -->
+                    <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
+                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
                     </div>
 
-                    <!-- Blue task around 13:00 spanning 4 cols -->
-                    <div style="position:absolute; top:13*48px; left:calc((6 - 1) * (100%/30) + 8px); width:calc((4 * (100%/30)) - 16px); background:#3b82f6; color:#ffffff; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08);">
-                        <div class="d-flex align-items-center" style="gap:6px;">
-                            <div style="width:20px; height:20px; background:#ffffff; color:#3b82f6; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">S</div>
-                            <div class="fw-semibold">Project Title</div>
-                            <div class="ms-auto">45%</div>
+                    <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
+                    <div style="position:relative;">
+                        <!-- Pink task around 21:00 spanning 3 cols -->
+                        <div style="position:absolute; top:90px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08); font-size:13px; font-family: Arial, sans-serif;">
+                            <div class="d-flex align-items-stretch" style="width: 340px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.08); font-size: 12px;">
+
+                                <!-- Left (Pink) Side -->
+                                <div style="background:#f43f7f; padding: 8px 10px; display:flex; align-items:center; gap:10px; flex:1;">
+                                    <!-- Avatar -->
+                                    <div>
+                                        <img src="https://i.pravatar.cc/40?img=12" style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
+                                    </div>
+
+                                    <!-- Text Content -->
+                                    <div class="d-flex flex-column" style="color:#ffffff;">
+                                        <div style="font-weight:600; font-size:13px;">Task Title</div>
+                                        <div style="font-size:11px; opacity:0.8;">Task ID - Ticket #1</div>
+                                    </div>
+                                </div>
+
+                                <!-- Right (White) Side -->
+                                <div class="d-flex align-items-center justify-content-end px-3" style="background:#ffffff; min-width:70px;">
+                                    <div style="font-weight:600; font-size:13px; color:#1e293b;">25%</div>
+                                </div>
+                            </div>
+
+
                         </div>
+
+                        <!-- pink task around 18:00 spanning 4 cols -->
+                        <div style="position:absolute; top:217px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+                            <div style="display: flex; align-items: center; background: #fff; border-radius: 10px; padding: 8px 12px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); width: 260px; border-left: 6px solid #f43f5e;">
+
+                                <!-- Avatar -->
+                                <div style="margin-right: 10px;">
+                                    <img src="https://i.pravatar.cc/32?img=3" alt="Avatar"
+                                        style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff;" />
+                                </div>
+
+                                <!-- Text Content -->
+                                <div style="flex-grow: 1;">
+                                    <div style="font-weight: 600; font-size: 14px; color: #1e293b;">Task Title</div>
+                                    <div style="font-size: 12px; color: #64748b;">Task ID - Ticket #1</div>
+                                </div>
+
+                                <!-- Percentage -->
+                                <div style="font-weight: 600; font-size: 13px; color: #1e293b;">0%</div>
+                            </div>
+
+
+                        </div>
+                        <!--yyello  -->
+                        <div style="position:absolute; top:350px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+                            <div class="d-flex align-items-center"
+                                style="width:280px; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
+
+                                <!-- Left Pink Section -->
+                                <div class="d-flex justify-content-center align-items-center"
+                                    style="background:#ec4899; padding:6px; width:55px; height:55px;">
+                                    <img src="https://i.pravatar.cc/48?img=5"
+                                        style="width:42px; height:42px; border-radius:8px; object-fit:cover;" />
+                                </div>
+
+                                <!-- Right White Section -->
+                                <div class="d-flex flex-column justify-content-center flex-grow-1"
+                                    style="background:#ffffff; padding:6px 10px; position:relative;">
+
+                                    <!-- Top row (title + percentage) -->
+                                    <div class="d-flex align-items-center">
+                                        <div style="font-weight:600; color:#2e3a59; font-size:13px;">Task Title</div>
+                                        <div class="ms-auto" style="font-weight:600; font-size:13px; color:#2e3a59;">15%</div>
+                                    </div>
+
+                                    <!-- Bottom row (subtitle) -->
+                                    <div style="font-size:11px; color:#6b7280;">Task ID - Ticket #1</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+
                     </div>
 
-                    <!-- White task around 17:00 spanning 5 cols -->
-                    <div style="position:absolute; top:17*48px; left:calc((16 - 1) * (100%/30) + 8px); width:calc((5 * (100%/30)) - 16px); background:#ffffff; color:#374151; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08); border:1px solid #e5e7eb;">
-                        <div class="d-flex align-items-center" style="gap:6px;">
-                            <div style="width:20px; height:20px; background:#3b82f6; color:#ffffff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">›</div>
-                            <div class="fw-semibold">Project Title</div>
-                            <div class="ms-auto">0%</div>
-                        </div>
-                    </div>
                 </div>
-
             </div>
         </div>
     </div>
+
+
 </div>
 
+<!-- add team -->
 
+<div class="modal fade" id="add_team" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 10px;">
+            <!-- Modal Header -->
+            <style>
+                @media (max-width: 576px) {
+                    .modal-header {
+                        flex-wrap: wrap !important;
+                        padding-right: 15px !important;
+                    }
+
+                    .modal-header>div.title-subtitle {
+                        flex: 1 1 100% !important;
+                        margin-bottom: 8px;
+                    }
+
+                    .modal-header>div.warning-box {
+                        max-width: 100% !important;
+                    }
+                }
+            </style>
+
+            <div class="modal-header d-flex"
+                style="border-bottom: none; position: relative; padding-right: 40px; flex-wrap: nowrap; align-items: flex-start;">
+
+                <!-- Title and subtitle -->
+                <div class="title-subtitle" style="flex: 1;">
+                    <h5 class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
+                        Add Team
+                    </h5>
+                    <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
+                </div>
+
+                <!-- Warning box -->
+                <div class="warning-box" style="background-color: #ffe6e6; color: red; font-size: 12px; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; max-width: 260px;">
+
+                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 25px; height: 25px;">
+                    <span>Please Note! Projects, Ticket and Task must be created before add a Team</span>
+                </div>
+
+                <!-- Close button -->
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                    style="position: absolute; top: 10px; right: 10px; font-size: 24px; background: none; border: none; line-height: 1;">
+                    &times;
+                </button>
+            </div>
+
+
+
+            <!-- Modal Body -->
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
+                <!-- Upload Banner -->
+                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 24px; color: #888;">+</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
+                </div>
+                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+
+                <!-- Sub Image Upload -->
+                <div onclick="this.nextElementSibling.click();"
+                    style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <div class="text-box" style="text-align: center;">
+                        <div style="font-size: 20px; color: #888;">+</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                    </div>
+                </div>
+
+                <!-- Hidden File Input -->
+                <input type="file" accept="image/*" style="display: none;"
+                    onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); 
+             this.previousElementSibling.querySelector('img').style.display='block'; 
+             this.previousElementSibling.querySelector('.text-box').style.display='none';">
+
+                <!-- Team Details Section -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
+
+                    <!-- Title & Subtitle -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">Team Details</h6>
+                        <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
+                    </div>
+
+                    <!-- Inputs Row -->
+                    <div class="row g-2">
+
+                        <!-- Team Title -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <input type="text" class="form-control" placeholder="Team Title"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
+                        </div>
+
+                        <!-- Select Project -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select Project</option>
+                                <option>Project A</option>
+                                <option>Project B</option>
+                            </select>
+                        </div>
+
+                        <!-- Select PM -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Select PM</option>
+                                <option>PM A</option>
+                                <option>PM B</option>
+                            </select>
+                        </div>
+
+                        <!-- Timeline Color -->
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <select class="form-select"
+                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
+                                <option selected>Timeline Color</option>
+                                <option>Red</option>
+                                <option>Blue</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- select tickets -->
+
+
+                </div>
+
+                <!-- tasks -->
+                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 10px;">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
+                            Select Ticket & Task
+                        </h6>
+                    </div>
+
+                    <!-- Ticket Buttons Row -->
+                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
+                            #1 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #2 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #3 Ticket Title
+                        </button>
+
+                        <button class="btn"
+                            onclick="
+      Array.from(this.parentNode.children).forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = '#7a7a9d';
+      });
+      this.style.backgroundColor = '#47ca7a';
+      this.style.color = 'white';
+    "
+                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            #4 Ticket Title
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- task1 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task2 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- task3 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Priority</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>Developer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+
+                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                    01
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- footer -->
+
+                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
+
+                    <!-- Left Warning Box -->
+                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 12px;">
+                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
+                        There some section not asigned yet
+                    </div>
+
+                    <!-- Right Save Button -->
+                    <button type="button"
+                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
+                        + Save and create work flow
+                    </button>
+
+                </div>
+                <!-- Modal Body -->
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- edit team -->
 <div class="modal fade" id="edit_team" tabindex="-1" aria-hidden="true">
@@ -1558,163 +3208,7 @@
 
 <!-- timelines -->
 <!-- Modal -->
-<div class="modal fade" id="scheduleModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="border-radius:10px; background:#f6f6f8;">
 
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center px-3 py-2"
-                style="background:#ffffff; border-bottom:1px solid #e1e1e1;">
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-light btn-sm"><i class="fa fa-angle-left"></i></button>
-                    <span style="font-weight:bold;">April 2025</span>
-                    <button class="btn btn-light btn-sm"><i class="fa fa-angle-right"></i></button>
-                    <button class="btn btn-sm btn-outline-primary ms-3">Project Title</button>
-                    <button class="btn btn-sm btn-outline-secondary">Other Projects</button>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-success btn-sm">Start Developers Sprint</button>
-                    <button class="btn btn-success btn-sm">Developer QA Sprint</button>
-                    <img src="https://i.pravatar.cc/30?img=1" class="rounded-circle" width="30">
-                    <img src="https://i.pravatar.cc/30?img=2" class="rounded-circle" width="30">
-                    <img src="https://i.pravatar.cc/30?img=3" class="rounded-circle" width="30">
-                </div>
-            </div>
-
-            <!-- Body -->
-            <div class="d-flex flex-grow-1" style="height:80vh;">
-
-                <!-- Left Time Column -->
-                <div style="width:70px; background:#fafafa; border-right:1px solid #e1e1e1; text-align:right; font-size:12px; color:#666; position:relative;">
-                    <div class="text-center py-2" style="border-bottom:1px solid #ddd;">
-                        <i class="fa fa-clock"></i>
-                    </div>
-                    <!-- Times -->
-                    <div style="height:40px;">00:00</div>
-                    <div style="height:40px;">01:00</div>
-                    <div style="height:40px;">02:00</div>
-                    <div style="height:40px;">03:00</div>
-                    <div style="height:40px;">04:00</div>
-                    <div style="height:40px;">05:00</div>
-                    <div style="height:40px;">06:00</div>
-                    <div style="height:40px;">07:00</div>
-                    <div style="height:40px;">08:00</div>
-                    <div style="height:40px;">09:00</div>
-                    <div style="height:40px;">10:00</div>
-                    <div style="height:40px;">11:00</div>
-                    <div style="height:40px;">12:00</div>
-                    <div style="height:40px;">13:00</div>
-                    <div style="height:40px;">14:00</div>
-                    <div style="height:40px;">15:00</div>
-                    <div style="height:40px;">16:00</div>
-                    <div style="height:40px;">17:00</div>
-                    <div style="height:40px;">18:00</div>
-                    <div style="height:40px;">19:00</div>
-                    <div style="height:40px;">20:00</div>
-                    <div style="height:40px;">21:00</div>
-                    <div style="height:40px;">22:00</div>
-                    <div style="height:40px;">23:00</div>
-                </div>
-
-                <!-- Timeline Grid -->
-                <div class="flex-grow-1 d-flex flex-column" style="overflow-x:auto; background:#fff;">
-
-                    <!-- Date Bar -->
-                    <div class="d-flex" style="border-bottom:1px solid #ddd; background:#fafafa; font-size:12px; color:#555;">
-                        <!-- Example dates (loop in real) -->
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Thu 1</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Fri 2</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sat 3</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Sun 4</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Mon 5</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Tue 6</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 7</div>
-                        <div style="width:120px; text-align:center; padding:5px; border-right:1px solid #e1e1e1;">Wed 76</div>
-                    </div>
-
-                    <!-- Vertical Grid + Tasks -->
-                    <div class="d-flex flex-grow-1 position-relative">
-
-                        <!-- Day Column Example -->
-                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-                            <!-- Vertical guide line -->
-                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-
-                            <!-- Example Task -->
-                            <div class="position-absolute text-white px-2 py-1 rounded"
-                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                                Project Title <br>
-                                <small>Task #14 - 45%</small>
-                                <div class="mt-1">
-                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- More Day Columns... -->
-                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-                            <!-- Vertical guide line -->
-                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-
-                            <!-- Example Task -->
-                            <div class="position-absolute text-white px-2 py-1 rounded"
-                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                                Project Title <br>
-                                <small>Task #14 - 45%</small>
-                                <div class="mt-1">
-                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-                            <!-- Vertical guide line -->
-                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-
-                            <!-- Example Task -->
-                            <div class="position-absolute text-white px-2 py-1 rounded"
-                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                                Project Title <br>
-                                <small>Task #14 - 45%</small>
-                                <div class="mt-1">
-                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-shrink-0 position-relative" style="width:120px; border-right:1px solid #e1e1e1;">
-                            <!-- Vertical guide line -->
-                            <div style="position:absolute; top:0; bottom:0; left:50%; border-left:1px solid #f0f0f0;"></div>
-
-                            <!-- Example Task -->
-                            <div class="position-absolute text-white px-2 py-1 rounded"
-                                style="top:220px; left:10px; width:90px; background:#ff5c8d; font-size:12px;">
-                                Project Title <br>
-                                <small>Task #14 - 45%</small>
-                                <div class="mt-1">
-                                    <img src="https://i.pravatar.cc/20?img=4" class="rounded-circle" width="20">
-                                    <img src="https://i.pravatar.cc/20?img=5" class="rounded-circle" width="20">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
 
@@ -1754,21 +3248,53 @@
         });
     });
 </script>
-<!-- JavaScript Function -->
+
 <script>
-    function showContent(tab) {
-        // Show/hide content
-        document.getElementById("overviewContent").style.display = tab === 'overview' ? 'block' : 'none';
-        document.getElementById("statisticsContent").style.display = tab === 'statistics' ? 'block' : 'none';
+    function showProjectView() {
+        // Show project header & details
+        document.getElementById("mainHeader").style.display = "block";
+        // document.getElementById("projectHeader").style.display = "block";
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("projectDetails").style.display = "block";
+        document.getElementById("taskDetails").style.display = "none";
+        // ✅ Hide task header & task details if they were open
+        // document.getElementById("taskHeader").style.display = "none";
+        // document.getElementById("taskDetails").style.display = "none";
+    }
 
-        // Toggle button styles
-        document.getElementById("btnOverview").className = tab === 'overview' ?
-            'btn btn-success me-2' :
-            'btn btn-light border me-2';
+    function goBack() {
+        // Show main view
+        document.getElementById("mainHeader").style.display = "block";
+        document.getElementById("projectHeader").style.display = "none";
+        document.getElementById("taskHeader").style.display = "none";
 
-        document.getElementById("btnStatistics").className = tab === 'statistics' ?
-            'btn btn-success' :
-            'btn btn-light border';
+        document.getElementById("mainContent").style.display = "block";
+        document.getElementById("projectDetails").style.display = "none";
+        document.getElementById("taskDetails").style.display = "none";
+    }
+
+    function showTaskView() {
+        // Show task header & task details
+        document.getElementById("mainHeader").style.display = "block";
+        // document.getElementById("projectHeader").style.display = "none";
+        // document.getElementById("taskHeader").style.display = "block";
+
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("projectDetails").style.display = "none";
+        document.getElementById("taskDetails").style.display = "block";
     }
 </script>
+
+
+<script>
+    function setActiveButton(el) {
+        [...el.parentNode.children].forEach(child => {
+            child.style.backgroundColor = '';
+            child.style.color = '#9ca3af';
+        });
+        el.style.backgroundColor = '#22c55e';
+        el.style.color = '#ffffff';
+    }
+</script>
+
 @endsection
