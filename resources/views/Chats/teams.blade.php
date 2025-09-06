@@ -258,7 +258,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
                                         </div>
                                     </div>
@@ -425,7 +425,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
                                         </div>
                                     </div>
@@ -593,7 +593,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
                                         </div>
                                     </div>
@@ -760,7 +760,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
+                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
                                         </div>
                                     </div>
@@ -879,13 +879,26 @@
                     style="gap:8px; flex:0 0 auto; background:#fff; border-radius:10px; padding:1px 6px; border:1px solid #e0e0e0; z-index:1;">
 
                     <!-- Calendar Icon -->
-                    <div onclick="document.getElementById('calendarPopup').style.display='block'; renderCalendar();" style="cursor:pointer;">
+                    <div onclick="toggleCalendar()" style="cursor:pointer;">
                         <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width:20px; height:20px;" />
                     </div>
 
+                    <script>
+                        function toggleCalendar() {
+                            let popup = document.getElementById('calendarPopup');
+                            if (popup.style.display === 'block') {
+                                popup.style.display = 'none';
+                            } else {
+                                popup.style.display = 'block';
+                                renderCalendar();
+                            }
+                        }
+                    </script>
+
+
                     <!-- Left Arrow -->
                     <div onclick="changeMonth(-1)" class="d-inline-flex align-items-center justify-content-center"
-                        style="width:28px; height:28px;  border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
+                        style="width:28px; height:28px; border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
                         «
                     </div>
 
@@ -896,85 +909,81 @@
 
                     <!-- Right Arrow -->
                     <div onclick="changeMonth(1)" class="d-inline-flex align-items-center justify-content-center"
-                        style="width:28px; height:28px;  border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
+                        style="width:28px; height:28px; border-radius:50%; font-size:14px; color:#2e3a59; cursor:pointer;">
                         »
                     </div>
 
-                    <!-- Calendar Popup -->
-                    <div id="calendarPopup"
-                        style="display:none; position:absolute; top:76px; left:0; margin-top:6px; background:#fff; border:1px solid #ccc; border-radius:6px; padding:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); z-index:1050;">
-                        <div id="calendarGrid" class="d-grid"
-                            style="grid-template-columns: repeat(7, 32px); gap:4px; text-align:center; font-size:12px; padding: 4px 6px;">
-                            <!-- Calendar will be rendered here -->
-                        </div>
-                    </div>
+                  
+
+
                 </div>
 
-                <!-- Inline JS inside hidden span -->
-                <div style="display:none;">
-                    <span>
-                        <script>
-                            let currentDate = new Date(2022, 3); // April 2022
+                <!-- Inline JS (not hidden) -->
+                <script>
+                    let currentDate = new Date(2022, 3); // April 2022
 
-                            function changeMonth(offset) {
-                                currentDate.setMonth(currentDate.getMonth() + offset);
+                    function changeMonth(offset) {
+                        currentDate.setMonth(currentDate.getMonth() + offset);
+                        renderCalendar();
+                    }
+
+                    function renderCalendar() {
+                        const monthYearText = currentDate.toLocaleDateString('en-US', {
+                            month: 'long',
+                            year: 'numeric'
+                        });
+                        document.getElementById('monthYearDisplay').innerText = monthYearText;
+
+                        const calendarGrid = document.getElementById('calendarGrid');
+                        calendarGrid.innerHTML = '';
+
+                        // Day headers
+                        ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => {
+                            const day = document.createElement('div');
+                            day.innerText = d;
+                            day.style.fontWeight = 'bold';
+                            calendarGrid.appendChild(day);
+                        });
+
+                        const year = currentDate.getFullYear();
+                        const month = currentDate.getMonth();
+                        const firstDay = new Date(year, month, 1).getDay();
+                        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                        for (let i = 0; i < firstDay; i++) {
+                            const empty = document.createElement('div');
+                            calendarGrid.appendChild(empty);
+                        }
+
+                        for (let day = 1; day <= daysInMonth; day++) {
+                            const cell = document.createElement('div');
+                            cell.innerText = day;
+                            cell.style.cursor = 'pointer';
+                            cell.style.padding = '6px';
+                            cell.style.borderRadius = '4px';
+
+                            cell.onclick = function() {
+                                currentDate.setDate(day);
+                                document.getElementById('calendarPopup').style.display = 'none'; // close after select
                                 renderCalendar();
-                            }
+                            };
 
-                            function renderCalendar() {
-                                const monthYearText = currentDate.toLocaleDateString('en-US', {
-                                    month: 'long',
-                                    year: 'numeric'
-                                });
-                                document.getElementById('monthYearDisplay').innerText = monthYearText;
+                            cell.onmouseover = function() {
+                                cell.style.background = '#f0f0f0';
+                            };
+                            cell.onmouseout = function() {
+                                cell.style.background = '';
+                            };
 
-                                const calendarGrid = document.getElementById('calendarGrid');
-                                calendarGrid.innerHTML = '';
+                            calendarGrid.appendChild(cell);
+                        }
+                    }
 
-                                // Day headers
-                                ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => {
-                                    const day = document.createElement('div');
-                                    day.innerText = d;
-                                    day.style.fontWeight = 'bold';
-                                    calendarGrid.appendChild(day);
-                                });
+                    // run once so calendar is ready
+                    renderCalendar();
+                </script>
 
-                                const year = currentDate.getFullYear();
-                                const month = currentDate.getMonth();
-                                const firstDay = new Date(year, month, 1).getDay();
-                                const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                                for (let i = 0; i < firstDay; i++) {
-                                    const empty = document.createElement('div');
-                                    calendarGrid.appendChild(empty);
-                                }
-
-                                for (let day = 1; day <= daysInMonth; day++) {
-                                    const cell = document.createElement('div');
-                                    cell.innerText = day;
-                                    cell.style.cursor = 'pointer';
-                                    cell.style.padding = '6px';
-                                    cell.style.borderRadius = '4px';
-
-                                    cell.onclick = function() {
-                                        currentDate.setDate(day);
-                                        document.getElementById('calendarPopup').style.display = 'none'; // close after select
-                                        renderCalendar();
-                                    };
-
-                                    cell.onmouseover = function() {
-                                        cell.style.background = '#f0f0f0';
-                                    };
-                                    cell.onmouseout = function() {
-                                        cell.style.background = '';
-                                    };
-
-                                    calendarGrid.appendChild(cell);
-                                }
-                            }
-                        </script>
-                    </span>
-                </div>
 
 
 
@@ -1002,24 +1011,24 @@
 
                         <div id="viewTickets" class="px-3 py-1"
                             onclick="
-            showProjectView();
-            this.style.backgroundColor='#22c55e';
-            this.style.color='#ffffff';
-            document.getElementById('viewTasks').style.backgroundColor='';
-            document.getElementById('viewTasks').style.color='#9ca3af';
-        "
+                                  showProjectView();
+                                this.style.backgroundColor='#22c55e';
+                                  this.style.color='#ffffff';
+                            document.getElementById('viewTasks').style.backgroundColor='';
+                               document.getElementById('viewTasks').style.color='#9ca3af';
+                                  "
                             style="border-radius:999px; font-size:12px; color:#9ca3af; cursor:pointer; user-select:none;">
                             View Tickets
                         </div>
 
                         <div id="viewTasks" class="px-3 py-1"
                             onclick="
-            showTaskView();
-            this.style.backgroundColor='#22c55e';
-            this.style.color='#ffffff';
-            document.getElementById('viewTickets').style.backgroundColor='';
-            document.getElementById('viewTickets').style.color='#9ca3af';
-        "
+                              showTaskView();
+                              this.style.backgroundColor='#22c55e';
+                              this.style.color='#ffffff';
+                            document.getElementById('viewTickets').style.backgroundColor='';
+                             document.getElementById('viewTickets').style.color='#9ca3af';
+                                 "
                             style="border-radius:999px; font-size:12px; color:#9ca3af; cursor:pointer; user-select:none;">
                             View all Tasks
                         </div>
@@ -1095,8 +1104,20 @@
     </div>
 
     <!-- BODY (timeline) -->
-    <div class="offcanvas-body p-0" style="background:#f6f6f8;">
+    <div class="offcanvas-body p-0" style="background:#f6f6f8;overflow:visible;position:relative; z-index:1;">
+          <!-- Calendar Popup -->
+                    <div id="calendarPopup"
+                        style="display:none; position:absolute; top:5px; left:14px; 
+                        background:#fff; border:1px solid #ccc; border-radius:6px; 
+                          padding:10px; box-shadow:0 4px 8px rgba(0,0,0,0.15); 
+                            z-index:10000;"> <!-- 👈 z-index bada kar diya -->
+                        <div id="calendarGrid" class="d-grid"
+                            style="grid-template-columns: repeat(7, 32px); gap:4px; 
+                        text-align:center; font-size:12px; padding: 4px 6px;">
+                        </div>
+                    </div>
         <!-- Toggleable Bodies -->
+
         <div id="mainContent">
             <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
 
@@ -1391,78 +1412,158 @@
                     <div style="position:relative;">
                         <!-- Pink task around 21:00 spanning 3 cols -->
 
-                        <div onclick="showProjectView()" style="position:absolute; top:90px; left:calc((2 - 1) * (100%/4) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
-                            <!-- Left Section -->
-                            <div
-                                class="d-flex flex-column justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:65%; cursor:pointer;">
+                        <div onclick="showProjectView()"
+                            style="position:absolute; top:80px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
 
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
 
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
 
-                            <!-- Right Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
-                                <div style="display:flex; position:relative;"> 
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Yellow task around 18:00 spanning 4 cols -->
-                        <div onclick="showProjectView()" style="position:absolute; top:118px; left:calc((2 - 1) * (100%/30) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
+                        <div onclick="showProjectView()"
+                            style="position:absolute; top:208px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
 
-                            <!-- Left (Orange) Section -->
-                            <div class="d-flex flex-column justify-content-between" style="background:#f59e0b; color:#ffffff; padding:6px 8px; width:65%;">
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#f59e0b; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
 
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
 
-                            <!-- Right (White) Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
-                                <div style="display:flex; position:relative;">
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
-
                         </div>
+                        <!-- yellow -->
+                        <div onclick="showProjectView()"
+                            style="position:absolute; top:80px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
 
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
+                                </div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
+                            </div>
+
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                </div>
+                            </div>
+                        </div>
                         <!-- Blue task around 13:00 spanning 4 cols -->
-                        <div onclick="showProjectView()" style="position:absolute; top:620px; left:calc((2 - 1) * (100%/3) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer">
+                        <div onclick="showProjectView()"
+                            style="position:absolute; top:550px; left:calc((2 - 1) * (100%/6) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
 
-                            <!-- Left (Orange) Section -->
-                            <div class="d-flex flex-column justify-content-between" style="background:#3578a8; color:#ffffff; padding:6px 8px; width:65%;">
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#3578a8; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
 
-                            <!-- Right (White) Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 35%;">
-                                <div style="display:flex; position:relative;">
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
-
                         </div>
 
                         <!-- White task around 17:00 spanning 5 cols -->
@@ -1475,13 +1576,22 @@
                             <div class="d-flex flex-grow-1 justify-content-between align-items-center" style="width:100%; gap:6px;">
 
                                 <!-- Title + Icon -->
-                                <div class="d-flex flex-column" style="gap:2px;">
-                                    <div class="d-flex align-items-center" style="gap:6px;">
-                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                        <div class="fw-semibold" style="color:#1f2937;">Project Title</div>
+                                <!-- Left Pink Section -->
+                                <div class="d-flex align-items-center">
+
+                                    <!-- Icon on Left -->
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
+                                        style="width:24px; height:24px; flex-shrink:0;" />
+
+                                    <!-- Text content stacked vertically -->
+                                    <div class="d-flex flex-column ms-3" style="line-height:1;">
+                                        <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                        <div style="font-size:11px; opacity:0.8;">Ticket #1 - #4</div>
                                     </div>
-                                    <div style="font-size:11px; opacity:0.8; padding-left:26px;">Ticket #1 - #4</div>
+
+
                                 </div>
+
 
                                 <!-- % Progress -->
                                 <div class="fw-semibold" style="white-space:nowrap;">0%</div>
@@ -1503,6 +1613,7 @@
                 </div>
             </div>
         </div>
+
         <div id="projectDetails" style="display:none;">
             <div class="d-grid" style="grid-template-columns:72px auto; height:calc(100vh - 56px);">
 
@@ -1796,69 +1907,119 @@
                     <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
                     <div style="position:relative;">
                         <!-- Pink task around 21:00 spanning 3 cols -->
-                        <div onclick="showTaskView()" style="position:absolute; top:90px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-                            <!-- Left Section -->
-                            <div
-                                class="d-flex flex-column justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title2</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                        <div onclick="showTaskView()"
+                            style="position:absolute; top:90px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
+
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
-                            <!-- Right Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;margin-left: 44px;">
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+
+
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
                         </div>
 
+
                         <!-- pink task around 18:00 spanning 4 cols -->
-                        <div onclick="showTaskView()" style="position:absolute; top:190px; left:calc((2 - 1) * (100%/9) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-                            <!-- Left Section -->
-                            <div
-                                class="d-flex flex-column justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title2</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                        <div onclick="showTaskView()"
+                            style="position:absolute; top:170px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
+
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
-                            <!-- Right Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;margin-left: 44px;">
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
                         </div>
                         <!--yyello  -->
-                        <div onclick="showTaskView()" style="position:absolute; top:350px; left:calc((2 - 1) * (100%/4) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-                            <!-- Left Section -->
-                            <div
-                                class="d-flex flex-column justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 8px; width:50%; cursor:pointer;">
-                                <div class="d-flex align-items-center" style="gap:6px;">
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width:20px; height:20px;" />
-                                    <div class="fw-semibold">Project Title2</div>
-                                    <div class="ms-auto fw-semibold">45%</div>
+                        <div onclick="showTaskView()"
+                            style="position:absolute; top:250px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
+                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
+
+                            <!-- Pink Section -->
+                            <div class="d-flex align-items-center justify-content-between"
+                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+
+                                <!-- Icon -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
+                                    style="width:22px; height:22px; margin-right:8px;" />
+
+                                <!-- Text Content -->
+                                <div class="d-flex flex-column" style="line-height:1;">
+                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
+                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
                                 </div>
-                                <div style="opacity:0.8; font-size:11px; padding-left:26px;">Ticket #1 - #4</div>
+
+                                <!-- Percent -->
+                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
                             </div>
-                            <!-- Right Section -->
-                            <div class="d-flex align-items-center" style="background:#ffffff; padding:0 6px; border-top-right-radius:10px; border-bottom-right-radius:10px;width: 50%;">
-                                <div style="display:flex; position:relative;margin-left: 44px;">
-                                    <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+
+                            <!-- White Section with Avatars -->
+                            <div class="d-flex align-items-center justify-content-end"
+                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+
+                                <!-- Avatars (Close together) -->
+                                <div style="display:flex; align-items:center;">
+                                    <img src="https://i.pravatar.cc/24?img=1"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
+                                    <img src="https://i.pravatar.cc/24?img=2"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
+                                    <img src="https://i.pravatar.cc/24?img=3"
+                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
                                 </div>
                             </div>
                         </div>
@@ -2165,31 +2326,31 @@
                     <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
                     <div style="position:relative;">
                         <!-- Pink task around 21:00 spanning 3 cols -->
-                        <div style="position:absolute; top:90px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08); font-size:13px; font-family: Arial, sans-serif;">
-                            <div class="d-flex align-items-stretch" style="width: 340px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.08); font-size: 12px;">
+                        <div style="position:absolute; top:90px; left:calc((2 - 1) * (100%/96) + 8px); 
+            display:flex; border-radius:12px; overflow:hidden; 
+            box-shadow:0 2px 6px rgba(0,0,0,0.08); font-size:13px; font-family: Arial, sans-serif; width: 500px;">
 
-                                <!-- Left (Pink) Side -->
-                                <div style="background:#f43f7f; padding: 8px 10px; display:flex; align-items:center; gap:10px; flex:1;">
-                                    <!-- Avatar -->
-                                    <div>
-                                        <img src="https://i.pravatar.cc/40?img=12" style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
-                                    </div>
+                            <!-- Left (Pink) Section -->
+                            <div style="background:#f43f7f; padding: 8px 10px; display:flex; align-items:center; gap:10px; width:160px;border-radius:10px;">
 
-                                    <!-- Text Content -->
-                                    <div class="d-flex flex-column" style="color:#ffffff;">
-                                        <div style="font-weight:600; font-size:13px;">Task Title</div>
-                                        <div style="font-size:11px; opacity:0.8;">Task ID - Ticket #1</div>
-                                    </div>
-                                </div>
+                                <!-- Avatar -->
+                                <img src="https://i.pravatar.cc/40?img=12"
+                                    style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
 
-                                <!-- Right (White) Side -->
-                                <div class="d-flex align-items-center justify-content-end px-3" style="background:#ffffff; min-width:70px;">
-                                    <div style="font-weight:600; font-size:13px; color:#1e293b;">25%</div>
+                                <!-- Text -->
+                                <div class="d-flex flex-column" style="color:#ffffff;">
+                                    <div style="font-weight:600; font-size:13px;">Task Title</div>
+                                    <div style="font-size:11px; opacity:0.8;">Task ID - Ticket #1</div>
                                 </div>
                             </div>
 
-
+                            <!-- Right (White) Section -->
+                            <div class="d-flex align-items-center justify-content-end px-3"
+                                style="background:#ffffff; flex:1;">
+                                <div style="font-weight:600; font-size:13px; color:#1e293b;">25%</div>
+                            </div>
                         </div>
+
 
                         <!-- pink task around 18:00 spanning 4 cols -->
                         <div style="position:absolute; top:217px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
@@ -2413,7 +2574,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
+                            style="flex: 1 1 130px;  background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #1 Ticket Title
                         </button>
 
@@ -2426,7 +2587,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #2 Ticket Title
                         </button>
 
@@ -2439,7 +2600,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #3 Ticket Title
                         </button>
 
@@ -2452,7 +2613,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #4 Ticket Title
                         </button>
 
@@ -2887,7 +3048,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 12px;">
+                            style="flex: 1 1 130px;  background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #1 Ticket Title
                         </button>
 
@@ -2900,7 +3061,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #2 Ticket Title
                         </button>
 
@@ -2913,7 +3074,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #3 Ticket Title
                         </button>
 
@@ -2926,7 +3087,7 @@
       this.style.backgroundColor = '#47ca7a';
       this.style.color = 'white';
     "
-                            style="flex: 1 1 130px; max-width: 160px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
+                            style="flex: 1 1 130px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
                             #4 Ticket Title
                         </button>
 
@@ -3253,13 +3414,18 @@
     function showProjectView() {
         // Show project header & details
         document.getElementById("mainHeader").style.display = "block";
-        // document.getElementById("projectHeader").style.display = "block";
+      
         document.getElementById("mainContent").style.display = "none";
         document.getElementById("projectDetails").style.display = "block";
         document.getElementById("taskDetails").style.display = "none";
-        // ✅ Hide task header & task details if they were open
-        // document.getElementById("taskHeader").style.display = "none";
-        // document.getElementById("taskDetails").style.display = "none";
+         
+        // Active button styles
+        document.getElementById("viewTickets").style.background = "#22c55e";
+        document.getElementById("viewTickets").style.color = "#fff";
+
+        // Inactive button styles
+        document.getElementById("viewTasks").style.background = "";
+        document.getElementById("viewTasks").style.color = "#9ca3af";
     }
 
     function goBack() {
@@ -3274,14 +3440,18 @@
     }
 
     function showTaskView() {
-        // Show task header & task details
         document.getElementById("mainHeader").style.display = "block";
-        // document.getElementById("projectHeader").style.display = "none";
-        // document.getElementById("taskHeader").style.display = "block";
-
         document.getElementById("mainContent").style.display = "none";
         document.getElementById("projectDetails").style.display = "none";
         document.getElementById("taskDetails").style.display = "block";
+
+        // Active button styles
+        document.getElementById("viewTasks").style.background = "#22c55e";
+        document.getElementById("viewTasks").style.color = "#fff";
+
+        // Inactive button styles
+        document.getElementById("viewTickets").style.background = "";
+        document.getElementById("viewTickets").style.color = "#9ca3af";
     }
 </script>
 
