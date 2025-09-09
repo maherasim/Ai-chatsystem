@@ -212,7 +212,7 @@
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div style="font-size: 0.9rem; color: #1e2b4d;">Received Tasks</div>
                                     <div style="background-color: #eae8fd; border-radius: 50%; padding: 5px;">
-                                        <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 32px; height: 28px;" />
+                                        <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 18px; height: 18px;" />
                                     </div>
                                 </div>
                                 <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
@@ -321,12 +321,12 @@
 
                             <!-- Project Summary -->
                             <div style="background-color: white;border-radius:6px;padding:5px;">
-                                <div style="font-size: 15px; font-weight: 600; color: #2e3a59;">Project Title</div>
+
                                 <div class="d-flex gap-1 mt-1 flex-nowrap">
                                     <!-- Project Tag 1 -->
                                     <div class="d-flex align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
                                         <!-- Logo -->
-                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 24px; height: 24px;">
+                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 30px; height: 30px;">
 
                                         <!-- Project Title and Badges -->
                                         <div class="d-flex flex-column" style="line-height: 1.2;">
@@ -345,7 +345,7 @@
                                     <!-- Project Tag 2 -->
                                     <div class="d-flex align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
                                         <!-- Logo -->
-                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 24px; height: 24px;">
+                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 30px; height: 30px;">
 
                                         <!-- Project Title and Badges -->
                                         <div class="d-flex flex-column" style="line-height: 1.2;">
@@ -360,59 +360,149 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- project tag 3 -->
+                                    <div class="d-flex align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
+                                        <!-- Logo -->
+                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 30px; height: 30px;">
+
+                                        <!-- Project Title and Badges -->
+                                        <div class="d-flex flex-column" style="line-height: 1.2;">
+                                            <strong style="color: #1a2343; font-size: 13px;">Project Title</strong>
+                                            <div class="d-flex gap-2 mt-1">
+                                                <span style="color: #1a2343;">Tickets
+                                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                </span>
+                                                <span style="color: #1a2343;">Tasks
+                                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- project tag 4 -->
+                                    <div class="d-flex align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
+                                        <!-- Logo -->
+                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 30px; height: 30px;">
+
+                                        <!-- Project Title and Badges -->
+                                        <div class="d-flex flex-column" style="line-height: 1.2;">
+                                            <strong style="color: #1a2343; font-size: 13px;">Project Title</strong>
+                                            <div class="d-flex gap-2 mt-1">
+                                                <span style="color: #1a2343;">Tickets
+                                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                </span>
+                                                <span style="color: #1a2343;">Tasks
+                                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
 
                         <!-- Task Status Cards -->
-                        <div class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius: 10px; padding: 5px; padding-left: 1px;">
-                            <!-- Card Template -->
-                            <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/newtask.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">New Task</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                        <div class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius:10px; padding:1px;">
+
+                            <!-- Card 1 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/totaltask.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">Total Tasks</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">150</div>
                             </div>
 
-                            <div style="flex: 1; min-width: 80px;  border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/totaltask.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Total Tasks</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 2 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/newtask.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">New Task</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">50</div>
                             </div>
 
-                            <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/progress.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Progress</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 3 -->
+                            <div style="flex:1; min-width:100px; text-align:center;  border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/progress.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Progress</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">75</div>
                             </div>
 
-                            <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/inhold.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Hold</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 4 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/inhold.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Hold</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">25</div>
                             </div>
 
-                            <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/incheck.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Check</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 5 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/incheck.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Checked</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
                             </div>
 
-                            <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
-                                <img src="{{ asset('build/img/delayed.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Delayed</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 6 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/delayed.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Delayed</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
                             </div>
 
-                            <!-- Last item: No border-right -->
-                            <div style="flex: 1; min-width: 80px; padding: 0 8px;">
-                                <img src="{{ asset('build/img/rejected.svg') }}" style="width: 26px;" alt="">
-                                <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Rejected</div>
-                                <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 7 -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/rejected.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Rejected</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
                             </div>
+
+                            <!-- Divider -->
+                            <div style="width:2px; height:42px; background:#e2e8f0; align-self:center;"></div>
+
+                            <!-- Card 8 (Last without divider) -->
+                            <div style="flex:1; min-width:100px; text-align:center; border-radius:8px; padding:8px; margin:7px; transition:0.3s; cursor:pointer; background:#fff;"
+                                onmouseover="this.style.background='#f1f1f1'"
+                                onmouseout="this.style.background='#fff'">
+                                <img src="{{ asset('build/img/indone.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
+                                <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Done</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
+                            </div>
+
                         </div>
+
 
                     </div>
                     <!-- cards -->
+                     
                     <div class=" row g-2 mt-2">
                         <!-- in progress -->
                         <div class="col-12 col-sm-6 col-lg-3">
@@ -4232,7 +4322,7 @@
             <div class="modal-body p-0">
                 <!-- Header -->
                 <div style="background: linear-gradient(to right, #21c064, #a0eac8);
- color: white; padding: 25px 20px; position: relative;">
+                   color: white; padding: 25px 20px; position: relative;">
 
                     <!-- Text Left-Aligned -->
                     <div style="text-align: left;">
@@ -4568,12 +4658,12 @@
 
                             <!-- File Box -->
                             <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                <img src="pdf-icon.svg" alt="PDF" style="width: 32px; height: 32px;">
+                                <img src="#" alt="PDF" style="width: 32px; height: 32px;">
                                 <div style="flex: 1;">
                                     <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf</div>
                                     <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
                                 </div>
-                                <img src="download-icon.svg" alt="D" style="width: 16px; height: 16px;">
+                                <img src="#" alt="D" style="width: 16px; height: 16px;">
                             </div>
 
                             <!-- File Box Copy 2 -->
@@ -4793,14 +4883,14 @@
                                 <img src="download-icon.svg" alt="Download" style="width: 16px; height: 16px;">
                             </div>
 
-                           
+
 
                         </div>
                     </div>
 
 
 
-                  <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
+                    <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
 
                         <!-- Edit the Project -->
                         <div style="text-align: center; flex: 1;cursor:pointer;">
