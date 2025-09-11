@@ -1420,7 +1420,7 @@
             <!-- Status Tag -->
             <div class="text-center mb-3">
                 <div style="background: #fff7da; /* soft yellow */color: #2e3a59;       /* dark slate for text */border-radius: 999px;display: inline-flex;align-items: center;padding: 4px 18px;font-weight: 600;font-size: 13px">
-                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
+                    <img src="{{URL::asset('/build/img/yelow.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
                     Project is in Hold
                 </div>
             </div>
