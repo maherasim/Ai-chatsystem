@@ -1,5 +1,6 @@
 <?php $page = 'signin'; ?>
- 
+@extends('layout.mainlayout')
+@section('content')
 
 <style>
 .img-fluid {
@@ -84,3 +85,4 @@
     </div>
 </div>
 
+@endsection
