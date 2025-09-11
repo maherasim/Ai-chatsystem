@@ -1,5 +1,5 @@
 <?php $page = 'signin'; ?>
- 
+@extends('layout.mainlayout')
 @section('content')
 
 <style>
