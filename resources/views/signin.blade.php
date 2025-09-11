@@ -1,5 +1,6 @@
 <?php $page = 'signin'; ?>
  
+@section('content')
 
 <style>
 .img-fluid {
@@ -83,3 +84,5 @@
 
     </div>
 </div>
+
+@endsection
