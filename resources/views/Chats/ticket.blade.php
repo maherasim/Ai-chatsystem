@@ -234,7 +234,7 @@
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">Total Tickets</div>
                                         <div style="background-color: #eae8fd; border-radius: 50%; padding: 5px;">
-                                            <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 32px; height: 28px;" />
+                                            <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                         </div>
                                     </div>
 
@@ -345,7 +345,7 @@
                                             <div style="font-size: 13px; color: #7ED957;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                            <select class="form-select form-select-sm" style=" font-size: 13px;">
                                                 <option selected>Select Projects</option>
                                                 <option selected>Yekbon</option>
                                                 <option selected>CMS</option>
@@ -353,7 +353,7 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -366,25 +366,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -404,11 +404,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -424,7 +424,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -437,25 +437,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                       <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -475,11 +475,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -495,7 +495,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -508,25 +508,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -546,11 +546,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -586,7 +586,7 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -599,25 +599,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -637,11 +637,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -657,7 +657,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -670,25 +670,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -708,11 +708,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -728,7 +728,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -741,25 +741,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -779,11 +779,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -819,7 +819,7 @@
                                         </div>
                                     </div>
 
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -832,25 +832,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -870,11 +870,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -890,7 +890,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -903,25 +903,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -941,11 +941,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -961,7 +961,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -974,25 +974,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -1012,11 +1012,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1051,8 +1051,7 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -1065,25 +1064,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -1103,11 +1102,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1123,7 +1122,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -1136,25 +1135,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                       <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -1174,11 +1173,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1194,7 +1193,7 @@
                                         <!-- tasks -->
                                     </div>
                                     <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
@@ -1207,25 +1206,25 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div style="display: flex; align-items: center; margin-left: 10px;">
@@ -1237,7 +1236,6 @@
                                         </div>
 
 
-
                                         <!-- Progress Bar -->
                                         <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
                                             <!-- Progress Bar + Percentage -->
@@ -1245,11 +1243,11 @@
                                                 <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                     <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                             </div>
 
                                             <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1317,7 +1315,7 @@
                     <!-- cards -->
                     <div class="mb-2">
                         <div class="row g-1">
-                           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-start mb-3">
@@ -1395,7 +1393,7 @@
                                                 <img src="{{URL::asset('/build/img/flag.svg')}}" width="16" height="16" alt="flag">
                                             </div>
                                             <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be here</small>
+                                                <small style="color: #64748b; font-size: 14px;">Description will be here</small>
                                             </div>
                                             <div class="d-flex align-items-center gap-1">
                                                 <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
@@ -1436,7 +1434,7 @@
                                             </div>
                                         </div>
                                         <!-- 1 -->
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -1449,34 +1447,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                             <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
+                                        </div>
 
 
 
@@ -1487,11 +1485,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -1500,13 +1498,13 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
                                             <!-- tasks -->
                                         </div>
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -1519,34 +1517,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
+                                        </div>
 
 
 
@@ -1557,11 +1555,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -1570,7 +1568,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
@@ -1662,7 +1660,7 @@
                                                 <img src="{{URL::asset('/build/img/flag.svg')}}" width="16" height="16" alt="flag">
                                             </div>
                                             <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be here</small>
+                                                <small style="color: #64748b; font-size: 14px;">Description will be here</small>
                                             </div>
                                             <div class="d-flex align-items-center gap-1">
                                                 <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
@@ -1703,7 +1701,7 @@
                                             </div>
                                         </div>
                                         <!-- 1 -->
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -1716,35 +1714,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                           <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
-
+                                        </div>
 
 
                                             <!-- Progress Bar -->
@@ -1754,11 +1751,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -1767,13 +1764,13 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
                                             <!-- tasks -->
                                         </div>
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -1786,34 +1783,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
+                                        </div>
 
 
 
@@ -1824,11 +1821,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -1837,7 +1834,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
@@ -1851,7 +1848,7 @@
                                 </div>
                             </div>
                             <!-- 3 -->
-                          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-start mb-3">
@@ -1929,7 +1926,7 @@
                                                 <img src="{{URL::asset('/build/img/flag.svg')}}" width="16" height="16" alt="flag">
                                             </div>
                                             <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be here</small>
+                                                <small style="color: #64748b; font-size: 14px;">Description will be here</small>
                                             </div>
                                             <div class="d-flex align-items-center gap-1">
                                                 <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
@@ -1970,7 +1967,7 @@
                                             </div>
                                         </div>
                                         <!-- 1 -->
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -1983,34 +1980,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                             <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
+                                        </div>
 
 
 
@@ -2021,11 +2018,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -2034,13 +2031,13 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
                                             <!-- tasks -->
                                         </div>
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -2053,35 +2050,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                             <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
-
+                                        </div>
 
 
                                             <!-- Progress Bar -->
@@ -2091,11 +2087,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -2104,7 +2100,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>
@@ -2196,7 +2192,7 @@
                                                 <img src="{{URL::asset('/build/img/flag.svg')}}" width="16" height="16" alt="flag">
                                             </div>
                                             <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be here</small>
+                                                <small style="color: #64748b; font-size: 14px;">Description will be here</small>
                                             </div>
                                             <div class="d-flex align-items-center gap-1">
                                                 <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
@@ -2237,77 +2233,79 @@
                                             </div>
                                         </div>
                                         <!-- 1 -->
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                         <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
-                                            <!-- Header -->
-                                            <div class="d-flex justify-content-between flex-wrap">
-                                                <div>
-                                                    <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                                </div>
-                                                <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                                <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                                <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
 
-                                            <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                        <!-- Task Line -->
+                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                                </div>
-                                            </div>
-
-
-
-                                            <!-- Progress Bar -->
-                                            <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                                <!-- Progress Bar + Percentage -->
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                    </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
-                                                </div>
-
-                                                <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
-                                                    <span style="color: #8BC34A;">● 1</span>
-                                                    <span style="color: #FF9800;">● 3</span>
-                                                    <span style="color: #F44336;">● 0</span>
-                                                    <span style="color: #9C27B0;">● 0</span>
-                                                    <span style="color: #4CAF50;">● 0</span>
-
-                                                </div>
-                                                <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
-                                                </div>
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
+                                        </div>
+
+
+
+                                        <!-- Progress Bar -->
+                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                </div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                            </div>
+
+                                            <!-- Status Dots -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+
+                                            </div>
+                                            <div>
+                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
+                                            </div>
+
+                                        </div>
+                                        <!-- tasks -->
+                                    </div>
                                             <!-- tasks -->
                                         </div>
-                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 9px;">
+                                        <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                             <!-- Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
@@ -2320,34 +2318,34 @@
                                             </div>
 
                                             <!-- Task Line -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 10px; font-size: 12px; color: #333;font-size:9px;">
+                                             <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
-                                                <!-- Task Count -->
-                                                <span style="margin-right: 10px; font-weight: bold;">5 Tasks</span>
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Start Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Start: 22.10.2024</span>
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Delivery Date -->
-                                                <span style="margin-right: 10px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
 
-                                                <!-- Divider -->
-                                                <span style="margin-right: 10px; color: #ccc;">|</span>
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
 
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
-                                                </div>
                                             </div>
+                                        </div>
 
 
 
@@ -2358,11 +2356,11 @@
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
 
                                                 <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 2px;margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -2371,7 +2369,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <img src="{{URL::asset('/build/img/greenflag.svg')}}" style="width: 20px; background-color: #e9f8dd; border-radius: 5px; padding: 4px; " alt="flag">
+                                                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
                                                 </div>
 
                                             </div>

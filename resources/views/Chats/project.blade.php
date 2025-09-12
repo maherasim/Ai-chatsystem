@@ -214,8 +214,8 @@
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
-                                        <div style="background-color: #eae8fd; border-radius: 50%; padding: 5px;">
-                                            <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 32px; height: 28px;" />
+                                        <div style="background-color: #eae8fd; padding: 5px;">
+                                            <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                         </div>
                                     </div>
 
@@ -237,7 +237,7 @@
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
-                                        <div style="background-color: #e9f8dd; border-radius: 50%; padding: 5px;">
+                                        <div style="background-color: #e9f8dd;  padding: 5px;">
                                             <img src="{{URL::asset('/build/img/greenflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                         </div>
                                     </div>
@@ -260,7 +260,7 @@
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
-                                        <div style="background-color: #fff3cd; border-radius: 50%; padding: 5px;">
+                                        <div style="background-color: #fff3cd;  padding: 5px;">
                                             <img src="{{URL::asset('/build/img/yelowflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
-                                        <div style="background-color: #fddede; border-radius: 50%; padding: 5px;">
+                                        <div style="background-color: #fddede;  padding: 5px;">
                                             <img src="{{URL::asset('/build/img/redflag.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                         </div>
                                     </div>
@@ -312,7 +312,7 @@
                         </div>
 
                         <div class="d-flex flex-wrap justify-content-start" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#add_project"
                                 style="background-color: #ff7700; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer;">
                                 + Add Project
                             </button>
@@ -376,9 +376,9 @@
 
                                         <!-- Progress Status Badge -->
                                         <div>
-                                            <div style="background: #e1effe; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
-                                                <img src="{{URL::asset('/build/img/blueflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
-                                                new
+                                            <div style="background: #e1effe;padding: 5px;">
+                                                <img src="{{URL::asset('/build/img/blueflag.svg')}}" style="height: 20px; width: 20px; " alt="flag" />
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -616,8 +616,8 @@
 
                                         <!-- Progress Status Badge -->
                                         <div>
-                                            <div style="background: #fff7da; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                            <div style="background: #fff7da;padding: 5px;">
+                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 20px; width: 20px; " alt="flag" />
 
                                             </div>
                                         </div>
@@ -859,8 +859,8 @@
 
                                         <!-- Progress Status Badge -->
                                         <div>
-                                            <div style="background: #fddede; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
-                                                <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
+                                            <div style="background: #fddede; padding: 5px;">
+                                                <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 20px; width: 20px; " alt="flag" />
 
                                             </div>
                                         </div>
@@ -1102,9 +1102,9 @@
 
                                         <!-- Progress Status Badge -->
                                         <div>
-                                            <div style="background: #fff7da; color: #1e2b4d; border-radius: 6px; display: inline-flex; align-items: center; padding: 4px 16px; font-weight: 500; font-size: 14px;">
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 16px; width: 16px; margin-right: 6px;" alt="flag" />
-                                                new
+                                            <div style="background: #fff7da;padding: 5px;">
+                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 20px; width: 20px;" alt="flag" />
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -1326,14 +1326,16 @@
         <!-- Header -->
         <div class="offcanvas-header" style="padding: 0;">
             <!-- Gradient Header Background -->
-            <div style="background: linear-gradient(90deg, #fd8f39, #f65b0f); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
+            <div style="background: linear-gradient(90deg, #ED9D23, #FABB05); width: 100%; padding: 30px 20px 60px; position: relative; text-align: center;">
 
                 <!-- Close Button -->
                 <button type="button"
                     data-bs-dismiss="offcanvas"
                     aria-label="Close"
-                    style="position: absolute;top: 10px;right: 10px;background-color: white;color: black; border: none;border-radius: 50%;width: 36px;height: 36px;font-size: 24px;font-weight: bold;z-index: 9999;display: flex;align-items: center;justify-content: center;box-shadow: 0 0 6px rgba(0, 0, 0, 0.2)">
-                    &times;
+                    onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                    style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                    ×
                 </button>
 
                 <!-- Profile Logo -->
@@ -1348,22 +1350,21 @@
         <div class="offcanvas-body pt-5" style="font-family: 'Segoe UI', sans-serif; background-color: #fff;">
 
             <!-- Project Title & ID -->
-            <div class="d-flex  align-items-center">
-                <div style="width: 35px; height: 35px; position: relative;">
-                    <!-- Background Circle -->
-                    <svg width="35" height="35">
-                        <circle cx="17.5" cy="17.5" r="15" stroke="#d1d1d1" stroke-width="4" fill="none" />
+            <div class="d-flex  align-items-center" style="margin-top: -25px;">
+                <div style="width: 60px; height: 60px; position: relative;">
+                    <svg width="60" height="60">
+                        <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
                         <circle
-                            cx="17.5"
-                            cy="17.5"
-                            r="15"
+                            cx="30"
+                            cy="30"
+                            r="26"
                             stroke="url(#grad)"
-                            stroke-width="4"
+                            stroke-width="6"
                             fill="none"
-                            stroke-dasharray="94.2"
-                            stroke-dashoffset="70.65"
+                            stroke-dasharray="163.36"
+                            stroke-dashoffset="122.52"
                             stroke-linecap="round"
-                            transform="rotate(-90 17.5 17.5)" />
+                            transform="rotate(-90 30 30)" />
                         <defs>
                             <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%" stop-color="#ff7f00" />
@@ -1371,9 +1372,7 @@
                             </linearGradient>
                         </defs>
                     </svg>
-
-                    <!-- Center Text -->
-                    <div style=" position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px;font-weight: bold;color: #333;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                         25%
                     </div>
                 </div>
@@ -1396,10 +1395,12 @@
                     style="background: #f5f5f5; padding: 6px 12px; border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: #2e3a59;">
 
                     <!-- Start and Deliver Dates -->
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center">
                         <div style="color: #34d399;">
                             Start: <span style="color: #2e3a59;">22.10.2024</span>
                         </div>
+                        <!-- Divider -->
+                        <div style="width: 1px; height: 18px; background-color: #d1d5db; margin: 0 10px;"></div>
                         <div style="color: #34d399;">
                             Deliver: <span style="color: #2e3a59;">22.10.2024</span>
                         </div>
@@ -1419,85 +1420,82 @@
             <!-- Status Tag -->
             <div class="text-center mb-3">
                 <div style="background: #fff7da; /* soft yellow */color: #2e3a59;       /* dark slate for text */border-radius: 999px;display: inline-flex;align-items: center;padding: 4px 18px;font-weight: 600;font-size: 13px">
-                    <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
+                    <img src="{{URL::asset('/build/img/yelow.svg')}}" style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
                     Project is in Hold
                 </div>
             </div>
 
 
             <!-- Project Progress Card -->
-         <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
-    <!-- Title -->
-    <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
+            <div class="card p-3 shadow-sm mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+                <!-- Title -->
+                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
 
-    <!-- Responsive Row -->
-    <div class="row g-3">
-        <!-- Left Half -->
-        <div class="col-12 col-md-6">
-            <div style="border-radius:10px;background-color:white;" class="p-2">
-                <!-- Stats -->
-                <div class="d-flex justify-content-between text-center mb-2 flex-wrap">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
-                        <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
-                        <div style="font-size: 12px; color: #6c757d;">#05</div>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
-                        <div style="font-size: 12px; color: #6c757d;">#05</div>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
-                        <div style="font-size: 12px; color: #6c757d;">75%</div>
-                    </div>
-                </div>
+                <!-- Responsive Row -->
+                <div class="row g-3">
+                    <!-- Left Half -->
+                    <div class="col-12 col-md-6">
+                        <div style="border-radius:10px;background-color:white;" class="p-2">
+                            <!-- Stats -->
+                            <div class="d-flex justify-content-between text-center mb-2 flex-wrap">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
+                                    <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
+                                    <div style="font-size: 12px; color: #6c757d;">#05</div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
+                                    <div style="font-size: 12px; color: #6c757d;">#05</div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
+                                    <div style="font-size: 12px; color: #6c757d;">75%</div>
+                                </div>
+                            </div>
 
-                <!-- Progress Bar -->
-                <div class="progress mx-2" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                    <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
+                            <!-- Progress Bar -->
+                            <div class="progress mx-2" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
+                                <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Half -->
+                    <div class="col-12 col-md-6">
+                        <div style="border-radius:10px;background-color:white;" class="p-2">
+                            <!-- Section Labels -->
+                            <div class="d-flex justify-content-between flex-wrap mb-2 px-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;">
+                                <span>Section#1 75%</span>
+                                <span>Section#2 75%</span>
+                                <span>Section#3 75%</span>
+
+                            </div>
+
+                            <!-- Section Progress Bars -->
+                            <div class="d-flex justify-content-between align-items-center gap-2 px-2 mb-2 flex-wrap">
+                                <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
+                                    <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                </div>
+                                <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fef3d3; border-radius: 10px;">
+                                    <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                </div>
+                                <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                                    <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                </div>
+                                <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                                    <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right Half -->
-        <div class="col-12 col-md-6">
-            <div style="border-radius:10px;background-color:white;" class="p-2">
-                <!-- Section Labels -->
-                <div class="d-flex justify-content-between flex-wrap mb-2 px-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;">
-                    <span>Section#1 75%</span>
-                    <span>Section#2 75%</span>
-                    <span>Section#3 75%</span>
-                   
-                </div>
-
-                <!-- Section Progress Bars -->
-                <div class="d-flex justify-content-between align-items-center gap-2 px-2 mb-2 flex-wrap">
-                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                        <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                    </div>
-                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                        <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                    </div>
-                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                        <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                    </div>
-                    <div class="progress" style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                        <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-            <!-- Project Description Card -->
             <!-- Project Description Section -->
-            <div class="card p-3 mb-4" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+            <div class="card p-3 mb-3" style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
                 <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
                 <p style="font-size: 13px; color: #4b5563; line-height: 1.7; margin-bottom: 0;">
                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
@@ -1511,9 +1509,9 @@
 
 
             <!-- Project Sections Card -->
-            <div class="p-3 mb-4" style="border-radius: 12px; background-color: #f8f9fa;">
+            <div class="p-3 mb-3" style="border-radius: 12px; background-color: #f8f9fa;">
                 <!-- Title -->
-                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
+                <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
 
                 <!-- Responsive Grid Layout -->
                 <div class="row g-3">
@@ -1628,7 +1626,7 @@
             <!-- Our team Card -->
             <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 12px;">
                 <!-- Section Title -->
-                <h6 class="mb-3" style="font-weight: 600; color: #2e3a59; font-size: 16px;">· Our Team ·</h6>
+                <h6 class="mb-2" style="font-weight: 600; color: #2e3a59; font-size: 16px;">· Our Team ·</h6>
 
                 <!-- Grid Row -->
                 <div class="row g-3">
@@ -1653,7 +1651,7 @@
                         </div>
                     </div>
                     <!-- 2 -->
-                      <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
                         <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
                             <!-- Background Image using IMG tag -->
@@ -1673,7 +1671,7 @@
                         </div>
                     </div>
                     <!-- 3 -->
- <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
                         <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
                             <!-- Background Image using IMG tag -->
@@ -1693,7 +1691,7 @@
                         </div>
                     </div>
                     <!-- 4 -->
-                      <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
                         <div class="card text-center" style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
 
                             <!-- Background Image using IMG tag -->
@@ -1717,13 +1715,13 @@
             </div>
 
             <!-- project tcikets -->
-            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
+            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px; padding-bottom:1px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-2">
                 <!-- Section Title -->
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
 
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
                     style="background: #fff; border-radius: 10px;">
 
                     <!-- Left Side: Title + Badges + Meta Info -->
@@ -1800,11 +1798,8 @@
                     </div>
                 </div>
 
-
-                <!-- 2nd -->
-                <hr>
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+<!-- 2 -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
                     style="background: #fff; border-radius: 10px;">
 
                     <!-- Left Side: Title + Badges + Meta Info -->
@@ -1881,8 +1876,8 @@
                     </div>
                 </div>
                 <!-- 3rd -->
-                <hr>
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+              
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-2 gap-2 p-3"
                     style="background: #fff; border-radius: 10px;">
 
                     <!-- Left Side: Title + Badges + Meta Info -->
@@ -1958,11 +1953,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Ticket meta info -->
-
-                <!-- 4rth -->
-                <hr>
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 p-3"
+               
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
                     style="background: #fff; border-radius: 10px;">
 
                     <!-- Left Side: Title + Badges + Meta Info -->
@@ -2041,14 +2033,192 @@
 
             </div>
             <!-- /project tickts -->
+            <!-- documents -->
+            <div class="mt-3" style="background-color: #f8f9fa; padding: 20px;border-radius:10px;">
+                <h6 class="mb-2" style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Files ·</h6>
+                <div class="row">
+                    <!-- Document Card -->
+                    <div class="col-12 col-md-6 mb-2">
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+                            <div class="d-flex align-items-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                                    alt="PDF Icon"
+                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
+                                <div>
+                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
+                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
+                                </div>
+                            </div>
+                            <!-- Trigger Button -->
+                            <div style="position: relative; display: inline-block;">
+                                <div
+                                    style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                </div>
+
+                                <!-- Popup Menu -->
+                                <div
+                                    class="menu-box"
+                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                    onclick="event.stopPropagation();">
+
+                                    <!-- Title -->
+                                    <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                    <!-- Icons -->
+                                    <div style="display:flex; justify-content: space-between; align-items:center;">
+                                        <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                        <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Close on outside click -->
+                            <script>
+                                document.addEventListener("click", function() {
+                                    document.querySelectorAll(".menu-box").forEach(el => el.style.display = "none");
+                                });
+                            </script>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-2">
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+                            <div class="d-flex align-items-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                                    alt="PDF Icon"
+                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
+                                <div>
+                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
+                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
+                                </div>
+                            </div>
+                            <!-- Trigger Button -->
+                            <div style="position: relative; display: inline-block;">
+                                <div
+                                    style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                </div>
+
+                                <!-- Popup Menu -->
+                                <div
+                                    class="menu-box"
+                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                    onclick="event.stopPropagation();">
+
+                                    <!-- Title -->
+                                    <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                    <!-- Icons -->
+                                    <div style="display:flex; justify-content: space-between; align-items:center;">
+                                        <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                        <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-0">
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+                            <div class="d-flex align-items-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                                    alt="PDF Icon"
+                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
+                                <div>
+                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
+                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
+                                </div>
+                            </div>
+                            <!-- Trigger Button -->
+                            <div style="position: relative; display: inline-block;">
+                                <div
+                                    style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                </div>
+
+                                <!-- Popup Menu -->
+                                <div
+                                    class="menu-box"
+                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                    onclick="event.stopPropagation();">
+
+                                    <!-- Title -->
+                                    <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                    <!-- Icons -->
+                                    <div style="display:flex; justify-content: space-between; align-items:center;">
+                                        <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                        <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-0">
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+                            <div class="d-flex align-items-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                                    alt="PDF Icon"
+                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
+                                <div>
+                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
+                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
+                                </div>
+                            </div>
+                            <!-- Trigger Button -->
+                            <div style="position: relative; display: inline-block;">
+                                <div
+                                    style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                                </div>
+
+                                <!-- Popup Menu -->
+                                <div
+                                    class="menu-box"
+                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                    onclick="event.stopPropagation();">
+
+                                    <!-- Title -->
+                                    <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+
+                                    <!-- Icons -->
+                                    <div style="display:flex; justify-content: space-between; align-items:center;">
+                                        <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                        <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- documents -->
             <!-- project Task -->
-            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-4">
+            <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px; padding-bottom:1px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-2">
                 <!-- Section Title -->
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
 
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2" style="background:#fff; padding: 12px; border-radius: 10px;">
 
                     <!-- Left Side: Title + Badges -->
                     <div style="flex-grow: 1;">
@@ -2061,7 +2231,73 @@
 
                                 <!-- Red Lightning + Count -->
                                 <div class="d-flex align-items-center">
-                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                    <span style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
+                                    </span>
+                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
+                                    </span>
+                                </div>
+
+                                <!-- Low Badge -->
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
+                                    LOW
+                                </span>
+
+                                <!-- Yellow Flag Badge -->
+                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
+
+                    <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
                                         <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
                                     <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
@@ -2115,10 +2351,7 @@
                 </div>
 
 
-                <!-- 2nd -->
-                <hr>
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
                     <!-- Left Side: Title + Badges -->
                     <div style="flex-grow: 1;">
@@ -2131,7 +2364,7 @@
 
                                 <!-- Red Lightning + Count -->
                                 <div class="d-flex align-items-center">
-                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                    <span style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
                                         <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
                                     <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
@@ -2183,10 +2416,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- 3rd -->
-                <hr>
-
+ 
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
 
                     <!-- Left Side: Title + Badges -->
@@ -2200,77 +2430,7 @@
 
                                 <!-- Red Lightning + Count -->
                                 <div class="d-flex align-items-center">
-                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
-                                    </span>
-                                    <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                        · 02 ·
-                                    </span>
-                                </div>
-
-                                <!-- Low Badge -->
-                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
-                                    LOW
-                                </span>
-
-                                <!-- Yellow Flag Badge -->
-                                <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14" height="14" />
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="mt-3 mt-md-0" style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
-                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Ticket meta info -->
-
-                <!-- 4rth -->
-                <hr>
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap" style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
-
-                    <!-- Left Side: Title + Badges -->
-                    <div style="flex-grow: 1;">
-                        <!-- Task Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
-
-                            <!-- Badges -->
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                                <!-- Red Lightning + Count -->
-                                <div class="d-flex align-items-center">
-                                    <span style="background: #f4f4f4; padding: 6px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                    <span style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
                                         <img src="{{ asset('build/img/tera.svg') }}" width="14" height="14" />
                                     </span>
                                     <span style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
@@ -2327,10 +2487,10 @@
             <!-- /project tickets -->
 
             <!-- footer section -->
-            <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
+            <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 8px; border-radius: 10px;" class="mt-3">
 
                 <!-- Edit the Project -->
-                <div style="text-align: center; flex: 1;cursor:pointer;">
+                <div style="text-align: center; flex: 1;cursor:pointer;"onclick="openEditModal()">
                     <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                         <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
                     </div>
@@ -2358,9 +2518,9 @@
 </div>
 
 
+<!-- add project -->
 
-
-<div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+<div class="modal fade" id="add_project" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
         <div class="modal-content" style="background-color: #fff; border-radius: 12px; font-family: 'Poppins', sans-serif;">
@@ -2614,57 +2774,404 @@
                 </div>
 
                 <!-- description -->
-                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 10px;padding-bottom:0px;">
                     <!-- Ticket Priority -->
                     <div class="col-12">
                         <label class="fw-semibold" style="font-size: 14px;">Project Description</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Describe the Project well</div>
-                        <input type="text" placeholder="Use the currect Editor in the old design" class="form-control mt-2" style="border-radius: 8px;" />
+                        <div style="font-size: 12px; color: #7d7f85;margin-bottom:4px;">Describe the Project well</div>
+                        <div class="card">
+
+                            <div class="card-body">
+                                <textarea id="policyEditor"></textarea>
+                                <!-- <div class="d-flex justify-content-between align-items-center mt-3">
+                                    
+                                    <div class="btn-group">
+                                        <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
+                                        <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="policyRequireAccept">
+                                    <label class="form-check-label" for="policyRequireAccept">Require users to accept next time</label>
+                                </div> -->
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Task Priority -->
                 </div>
                 <!-- add project section -->
-                <div class=" row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px;padding: 15px;">
+                <div class="row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Heading -->
                     <div class="mb-3">
                         <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
                         <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
                     </div>
 
-                    <!-- Section Row 1 -->
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <input type="text" class="form-control" placeholder="Section Name"
-                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
-                        <input type="text" class="form-control" placeholder="Section Description"
-                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
-
+                    <!-- Section Wrapper -->
+                    <div id="sections-wrapper" class="w-100">
+                        <div class="row mb-2 section-row">
+                            <div class="col-4">
+                                <input type="text" class="form-control" placeholder="Section Name"
+                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control" placeholder="Section Description"
+                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            </div>
+                            <div class="col-1 d-flex align-items-center">
+                                <img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="addSection(this)">
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Section Row 2 -->
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <input type="text" class="form-control" placeholder="Section Name"
-                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
-                        <input type="text" class="form-control" placeholder="Section Description"
-                            style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
 
-                    </div>
 
-                    <!-- Footer Buttons -->
-                    <div class="d-flex justify-content-center gap-2 mt-3">
+                <!-- Footer Buttons -->
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <div style="background-color:#f1f1f1; border-radius:3px; padding:6px 12px; display:flex; gap:38px;">
                         <button class="btn"
-                            style="background-color: #f1f1f1; color: #7d7f85; border-radius: 8px; padding: 6px 20px; font-weight: 500;" data-bs-dismiss="modal">
-
+                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
+                            data-bs-dismiss="modal">
                             Close
                         </button>
+
                         <button class="btn"
-                            style="background-color: #f1f1f1; color: #7d7f85; border-radius: 8px; padding: 6px 20px; font-weight: 500;"
+                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
                             data-bs-dismiss="modal">
                             Save & Close
                         </button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- edit project -->
+<div class="modal fade" id="edit_project" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content" style="background-color: #fff; border-radius: 12px; font-family: 'Poppins', sans-serif;">
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                ×
+            </button>
+            <div class="modal-body px-4 py-4">
+                <h5>Edit Project</h5>
+                <small>Project ID</small>
+
+                <!-- Upload and File Row -->
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Upload Logo -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0">
+                        <label for="uploadLogo"
+                            class="d-flex flex-column justify-content-center align-items-center text-center"
+                            style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
+                            <img id="logoPreview" src="" style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
+                            <div id="uploadIconText">
+                                <div style="font-size: 28px; color: #a0a4ab;">+</div>
+                                <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
+                            </div>
+                            <input type="file" id="uploadLogo" accept="image/*" hidden
+                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
+                        </label>
+                    </div>
+
+                    <!-- File Upload Section -->
+                    <div class="col-12 col-sm-6 col-md-8 col-lg-9">
+                        <div style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px; background:#f7f9fc">
+                            <div class="row g-2">
+                                <!-- File Box 1 -->
+                                <div class="col-12 col-md-6">
+                                    <div class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label for="fileUpload1" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload1" hidden
+                                            onchange=" if (this.files.length > 0) { var file = this.files[0];  var name = file.name;  var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName1').innerText = name; document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
+                                    </label>
+                                </div>
+
+                                <!-- File Box 2 -->
+                                <div class="col-12 col-md-6">
+                                    <div class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="pdf" style="width: 25px; height: 25px;" class="me-2" />
+                                            <div>
+                                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
+                                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label for="fileUpload2" class="d-flex justify-content-center align-items-center mt-2"
+                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
+                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
+                                        <input type="file" id="fileUpload2" hidden
+                                            onchange=" if (this.files.length > 0) { var file = this.files[0]; var name = file.name; var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName2').innerText = name; document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Priority Section -->
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Ticket Priority -->
+                    <div class="col-12 col-md-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
+                        <input type="text" placeholder="Project Title" class="form-control mt-2" style="border-radius: 8px;" />
+                    </div>
+
+                    <!-- Task Priority -->
+                    <div class="col-12 col-md-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
+
+                        <!-- Priority Button Group -->
+                        <div class="d-flex justify-content-between mt-2 px-2 py-1"
+                            style="background-color: #fff; border-radius: 12px;">
+
+                            <button class="btn"
+                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">Low</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">Middle</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">High</button>
+                        </div>
 
                     </div>
 
+                </div>
+                <!-- duration -->
+
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 20px;">
+                    <!-- Project Duration -->
+                    <div class="col-12 col-md-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Project duration</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the duration of the Project</div>
+
+                        <!-- Start Date -->
+                        <div class="d-flex gap-2 mt-2">
+                            <div style="position: relative; width: 100%;">
+                                <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+
+                                    <!-- Label -->
+                                    <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+
+                                    <!-- Selected Date -->
+                                    <div id="displayDate" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+
+                                    <!-- Calendar Icon & Input -->
+                                    <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                        <!-- Icon -->
+                                        <img
+                                            src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                            onclick="document.getElementById('dateInput').showPicker()"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+
+                                        <!-- Hidden Input (works with showPicker) -->
+                                        <input
+                                            type="date"
+                                            id="dateInput"
+                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                            style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deliver Date -->
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0;height: 45px; display: flex; flex-direction: column; justify-content: center;">
+
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Deliver Date</div>
+
+                                <!-- Display selected date -->
+                                <div id="deliverDateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+
+                                <!-- Calendar Icon + Hidden Input container -->
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <!-- Calendar Icon -->
+                                    <img
+                                        src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('deliverDateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+
+                                    <!-- Hidden Date Input -->
+                                    <input
+                                        type="date"
+                                        id="deliverDateInput"
+                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Expired Reminder -->
+                    <div class="col-12 col-md-6">
+                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
+
+                        <!-- Reminder Buttons -->
+                        <div class="d-flex justify-content-between mt-2 px-1 py-1" style="background-color: #fff; border-radius: 12px;">
+
+                            <button class="btn"
+                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">7 Days</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">15 Days</button>
+
+                            <button class="btn"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                onclick="
+            var btns = this.parentElement.querySelectorAll('button');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = 'transparent';
+                btns[i].style.color = '#6c757d';
+            }
+            this.style.backgroundColor = '#1cc375';
+            this.style.color = 'white';
+        ">30 Days</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- description -->
+                <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 10px;padding-bottom:0px;">
+                    <!-- Ticket Priority -->
+                    <div class="col-12">
+                        <label class="fw-semibold" style="font-size: 14px;">Project Description</label>
+                        <div style="font-size: 12px; color: #7d7f85;margin-bottom:4px;">Describe the Project well</div>
+                        <div class="card">
+
+                            <div class="card-body">
+                                <textarea id="policyEditor"></textarea>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    
+                                    <div class="btn-group">
+                                        <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
+                                        <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task Priority -->
+                </div>
+                <!-- add project section -->
+                <div class="row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px; padding: 15px;">
+                    <!-- Heading -->
+                    <div class="mb-3">
+                        <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                    </div>
+
+                    <!-- Section Wrapper -->
+                    <div id="sections-wrapper1" class="w-100">
+                        <div class="row mb-2 section-row1">
+                            <div class="col-4">
+                                <input type="text" class="form-control" placeholder="Section Name"
+                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control" placeholder="Section Description"
+                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            </div>
+                            <div class="col-1 d-flex align-items-center">
+                                <img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="editSection(this)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Footer Buttons -->
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <div style="background-color:#f1f1f1; border-radius:3px; padding:6px 12px; display:flex; gap:38px;">
+                        <button class="btn"
+                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
+                            data-bs-dismiss="modal">
+                            Close
+                        </button>
+
+                        <button class="btn"
+                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
+                            data-bs-dismiss="modal">
+                            Save & Close
+                        </button>
+                    </div>
                 </div>
 
 
@@ -2773,105 +3280,8 @@
         }, 150);
     });
 </script>
-<script>
-    function format(command) {
-        document.execCommand(command, false, null);
-    }
 
-    function setFontSize(value) {
-        document.execCommand("fontSize", false, value);
-    }
 
-    function removeFormatting() {
-        document.execCommand('removeFormat', false, null);
-    }
-
-    function addSection() {
-        const container = document.getElementById('section-container');
-
-        const wrapper = document.createElement('div');
-        wrapper.style.position = 'relative';
-        wrapper.style.width = '100%';
-        wrapper.style.marginBottom = '10px';
-
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'Enter title';
-        input.style.width = '100%';
-        input.style.paddingRight = '80px';
-        input.style.paddingLeft = '12px';
-        input.style.height = '38px';
-        input.style.border = '1px solid #ced4da';
-        input.style.borderRadius = '4px';
-        input.style.fontSize = '14px';
-        input.style.boxSizing = 'border-box';
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.textContent = 'Remove';
-        removeBtn.onclick = () => wrapper.remove();
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.right = '0';
-        removeBtn.style.top = '0';
-        removeBtn.style.height = '100%';
-        removeBtn.style.backgroundColor = '#dc3545';
-        removeBtn.style.color = 'white';
-        removeBtn.style.border = 'none';
-        removeBtn.style.borderTopRightRadius = '4px';
-        removeBtn.style.borderBottomRightRadius = '4px';
-        removeBtn.style.padding = '0 12px';
-        removeBtn.style.fontSize = '14px';
-        removeBtn.style.cursor = 'pointer';
-
-        wrapper.appendChild(input);
-        wrapper.appendChild(removeBtn);
-        container.appendChild(wrapper);
-    }
-
-    // Add initial section on page load
-    window.onload = () => addSection();
-</script>
-<script>
-    function selectItem(elem, containerId) {
-        const value = elem.getAttribute("data-value");
-        const label = elem.getAttribute("data-label");
-        const img = elem.getAttribute("data-img");
-
-        const tagContainer = document.getElementById(containerId);
-
-        // Check if already selected
-        if (tagContainer.querySelector(`[data-tag="${value}"]`)) return;
-
-        const tag = document.createElement("div");
-        tag.setAttribute("data-tag", value);
-        tag.setAttribute("style", `
-      display: flex;
-      align-items: center;
-      padding: 4px 8px;
-      background: #f0f0f0;
-      border-radius: 4px;
-      font-size: 14px;
-      white-space: nowrap;
-    `);
-
-        const image = document.createElement("img");
-        image.src = img;
-        image.setAttribute("style", "width: 20px; height: 20px; border-radius: 50%; margin-right: 6px;");
-
-        const span = document.createTextNode(label);
-
-        const close = document.createElement("span");
-        close.innerHTML = "&times;";
-        close.setAttribute("style", "margin-left: 8px; cursor: pointer; font-weight: bold; color: #333;");
-        close.onclick = () => tag.remove();
-
-        tag.appendChild(image);
-        tag.appendChild(span);
-        tag.appendChild(close);
-
-        tagContainer.appendChild(tag);
-    }
-</script>
 <!-- pause model pop-up -->
 <script>
     function openPauseModal() {
@@ -2889,7 +3299,23 @@
         }, 400);
     }
 </script>
+<!-- edit model pop-up -->
+<script>
+    function openEditModal() {
+        var offcanvasElement = document.getElementById('offcanvasRight');
+        if (offcanvasElement) {
+            var offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+            if (offcanvasInstance) {
+                offcanvasInstance.hide();
+            }
+        }
 
+        setTimeout(function() {
+            var pauseModal = new bootstrap.Modal(document.getElementById('edit_project'));
+            pauseModal.show();
+        }, 400);
+    }
+</script>
 <!-- remove project pop-up -->
 <script>
     function opendeleteModel() {
@@ -2930,6 +3356,158 @@
     });
 </script>
 
+<script>
+    // Load Summernote CSS/JS after jQuery is available, then initialize editors
+    window.addEventListener('load', function() {
+        var summernoteCss = document.createElement('link');
+        summernoteCss.rel = 'stylesheet';
+        summernoteCss.href = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css';
+        document.head.appendChild(summernoteCss);
+
+        var summernoteJs = document.createElement('script');
+        summernoteJs.src = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js';
+        summernoteJs.onload = function() {
+            var $editors = $('#policyEditor, #agreementEditor');
+            $editors.summernote({
+                placeholder: 'Start typing...',
+                tabsize: 2,
+                height: 220,
+                toolbar: [
+                    ['style', ['fontsize']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    // remove image and url buttons
+                    // ['insert', ['picture', 'link']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['view', ['codeview']]
+                ],
+                fontSizes: ['12', '14', '16', '18', '20', '24', '28']
+            });
+
+            // wire up edit/save controls
+            function setEditorDisabled(selector, disabled) {
+                var $el = $(selector);
+                if (disabled) {
+                    $el.summernote('disable');
+                } else {
+                    $el.summernote('enable');
+                }
+            }
+
+            // Load any previously saved values from localStorage as a placeholder for backend API
+            var savedPolicy = localStorage.getItem('policy_html') || '';
+            var savedAgreement = localStorage.getItem('agreement_html') || '';
+            var policyVersion = parseInt(localStorage.getItem('policy_version') || '0', 10);
+            var agreementVersion = parseInt(localStorage.getItem('agreement_version') || '0', 10);
+            $('#policyEditor').summernote('code', savedPolicy);
+            $('#agreementEditor').summernote('code', savedAgreement);
+            $('#policyVersion').text(policyVersion);
+            $('#agreementVersion').text(agreementVersion);
+
+            // default to enabled so you can type immediately
+            setEditorDisabled('#policyEditor', false);
+            setEditorDisabled('#agreementEditor', false);
+
+            $('#policyEditBtn').on('click', function() {
+                setEditorDisabled('#policyEditor', false);
+            });
+            $('#agreementEditBtn').on('click', function() {
+                setEditorDisabled('#agreementEditor', false);
+            });
+
+            function postJson(url, data) {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(data)
+                }).then(function(r) {
+                    return r.json();
+                });
+            }
+
+            $('#policySaveBtn').on('click', function() {
+                var html = $('#policyEditor').summernote('code');
+                var increment = $('#policyRequireAccept').is(':checked');
+                postJson('' + window.location.origin + '/settings/policy/save', {
+                        html: html,
+                        increment_version: increment
+                    })
+                    .then(function(resp) {
+                        if (resp && resp.ok) {
+                            if (resp.version !== undefined) $('#policyVersion').text(resp.version);
+                            setEditorDisabled('#policyEditor', true);
+                        }
+                    });
+            });
+
+            $('#agreementSaveBtn').on('click', function() {
+                var html = $('#agreementEditor').summernote('code');
+                var increment = $('#agreementRequireAccept').is(':checked');
+                postJson('' + window.location.origin + '/settings/agreement/save', {
+                        html: html,
+                        increment_version: increment
+                    })
+                    .then(function(resp) {
+                        if (resp && resp.ok) {
+                            if (resp.version !== undefined) $('#agreementVersion').text(resp.version);
+                            setEditorDisabled('#agreementEditor', true);
+                        }
+                    });
+            });
+        };
+        document.body.appendChild(summernoteJs);
+    });
+</script>
+<!-- add filed -->
+<script>
+    function addSection(el) {
+        let wrapper = document.getElementById("sections-wrapper");
+
+        // Clone the row
+        let newRow = el.closest(".section-row").cloneNode(true);
+
+        // Clear input values
+        newRow.querySelectorAll("input").forEach(inp => inp.value = "");
+
+        // Change icon to remove
+        let img = newRow.querySelector("img");
+        img.src = "{{ asset('build/img/removefiled.svg') }}";
+        img.alt = "Remove";
+        img.setAttribute("onclick", "removeSection(this)");
+
+        wrapper.appendChild(newRow);
+    }
+
+    function removeSection(el) {
+        el.closest(".section-row").remove();
+    }
+</script>
+<script>
+    function editSection(el) {
+        let wrapper = document.getElementById("sections-wrapper1");
+
+        // Clone the row
+        let newRow = el.closest(".section-row1").cloneNode(true);
+
+        // Clear input values
+        newRow.querySelectorAll("input").forEach(inp => inp.value = "");
+
+        // Change icon to remove
+        let img = newRow.querySelector("img");
+        img.src = "{{ asset('build/img/removefiled.svg') }}";
+        img.alt = "Remove";
+        img.setAttribute("onclick", "removeSection1(this)");
+
+        wrapper.appendChild(newRow);
+    }
+
+    function removeSection1(el) {
+        el.closest(".section-row1").remove();
+    }
+</script>
+<!-- filed durng edit -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 @component('components.model-popup')
 @endcomponent
