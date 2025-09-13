@@ -176,139 +176,32 @@
                         <!-- /Left Chat Title -->
 
                         <div class="chat-users-wrap">
-
-
-
-                            <!-- A -->
-                            <div class="mb-2">
-                                <h6 class="mb-1" style="font-size: 14px;">A</h6>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
+                            @if(isset($groupedKeywords) && !empty($groupedKeywords))
+                                @foreach($groupedKeywords as $letter => $words)
+                                    <div class="mb-2">
+                                        <h6 class="mb-1" style="font-size: 14px;">{{ $letter }}</h6>
+                                        @foreach($words as $word)
+                                            <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
+                                                <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
+                                                    <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">{{ $word }}</p>
+                                                </a>
+                                                <div style="margin-left: auto; display: flex; align-items: center;">
+                                                    <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
+                                                        <i class="bi bi-three-dots" style="font-size: 16px;"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
+                                                        <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
+                                                        <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
+                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                </div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- C -->
-                            <div class="mb-2">
-                                <h6 class="mb-1" style="font-size: 14px;">C</h6>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                    <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                </a>
-                                <div style="margin-left: auto; display: flex; align-items: center;">
-                                    <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                        <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                        <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                        <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- D -->
-                            <div class="mb-2">
-                                <h6 class="mb-1" style="font-size: 14px;">D</h6>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- E -->
-                            <div class="mb-2">
-                                <h6 class="mb-1" style="font-size: 14px;">E</h6>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- F -->
-                            <div class="mb-2">
-                                <h6 class="mb-1" style="font-size: 14px;">F</h6>
-                                <div style="display: flex; align-items: center; justify-content: space-between; background-color: transparent; border: none; border-radius: 14px; padding: 4px 8px; min-height: 36px;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <a href="#" style="flex-grow: 1; text-decoration: none; background-color: transparent;">
-                                        <p style="font-size: 14px; color:black; margin: 0; line-height: 1.2;">Clyde Smith PW Website</p>
-                                    </a>
-                                    <div style="margin-left: auto; display: flex; align-items: center;">
-                                        <a href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-                                            <i class="bi bi-three-dots" style="font-size: 16px;"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="background-color: transparent !important; border: none !important; box-shadow: none !important; margin: 0;">
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Subjects.svg') }}" width="12" height="12" class="me-2">Play</a></li>
-                                            <li><a class="dropdown-item" href="#" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Edit.svg') }}" width="12" height="12" class="me-2">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat" style="background-color: transparent;" onmouseover="this.style.backgroundColor='transparent'" onmouseout="this.style.backgroundColor='transparent'"><img src="{{ asset('/build/img/Remove.svg') }}" width="16" height="16" class="me-2">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
+                                @endforeach
+                            @else
+                                <p>No keywords available.</p>
+                            @endif
                         </div>
 
                     </div>

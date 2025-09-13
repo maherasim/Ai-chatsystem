@@ -22,5 +22,9 @@ class DatabaseSeeder extends Seeder
         'email' => 'admin@gmail.com',
         'password' => Hash::make('123456'), // Hash the password
     ]);
+
+        $this->call([
+            KurdishKeywordsSeeder::class,
+        ]);
     }
 }
