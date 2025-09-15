@@ -11,8 +11,8 @@ class UsersController extends Controller
 {
   public function index()
     {
-     $users = User::where('email', '!=', 'admin@gmail.com')->get();
 
+     $users = User::where('email', '!=', 'admin@gmail.com')->get();
 
         $totalUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
@@ -45,31 +45,35 @@ class UsersController extends Controller
         return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday', 'users'));
     }
 
+
+
   public function store(Request $request)
 {
     //
     // 
-    //  Step 1: Validation
+    
     $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required',
-        'remail' => 'nullable',
-        'passw' => 'nullable',
-        'rpassw' => 'nullable',
-        'cpassw' => 'nullable',
-        'phone' => 'nullable',
-        'department' => 'nullable|string',
-                 'image' => 'nullable',
-         ]);
+        'name'      => 'required|string|max:255',
+        'email'     => 'required|email|unique:users,email|same:confirm_email',
+        'confirm_email' => 'required',
+        'passw'     => 'required|min:6|same:rpassw',  // password must match confirm
+        'rpassw'    => 'required',
+        'gender'    => 'nullable|string',
+        'type'      => 'required',
+      //  'phone'     => 'nullable|string',
+       // 'department'=> 'nullable|string',
+        'image'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
     // Step 2: Handle Image Upload
     $imagePath = null;
+    $banPath = null;
 
     // ensure active defaults true, restrict role to non-admin if provided
     $request->merge(['active' => true]);
 
     if ($request->hasFile('image')) {
         $file = $request->file('image');
-        $fileName = $file->getClientOriginalName();
+        $fileName =  'profile_' . uniqid() . '.' . $file->getClientOriginalName();
         $destinationPath = public_path('upload/users');
         $fullPath = $destinationPath . '/' . $fileName;
 
@@ -80,14 +84,23 @@ class UsersController extends Controller
         $imagePath = 'upload/users/' . $fileName;
     }
 
-    // Step 3: Extract Permissions
-    $permissions = $request->input('permissions', []); // default is empty array if nothing checked
-    // It will look like: ['clients' => ['read' => 'on', 'write' => 'on'], 'projects' => ['read' => 'on'], ...]
+    if ($request->hasFile('banner')) {
+        $file = $request->file('banner');
+        $fileName = 'banner_' . uniqid() . '.' . $file->getClientOriginalName();
+        $destinationPath = public_path('upload/users/banner');
+        $fullPath = $destinationPath . '/' . $fileName;
 
-    // Optional: Convert "on" to true
+        if (!file_exists($fullPath)) {
+            $file->move($destinationPath, $fileName);
+        }
+
+        $banPath = 'upload/users/banner/' . $fileName;
+    }
+
+    $permissions = $request->input('permissions', []);
     foreach ($permissions as $module => &$actions) {
         foreach ($actions as $action => $value) {
-            $actions[$action] = true;
+            $actions[$action] = true; // turn "on" into true
         }
     }
        
@@ -99,8 +112,11 @@ class UsersController extends Controller
         'phone' => $validated['phone'] ?? null,
         'department' => $validated['department'] ?? null,
         'image' => $imagePath,
+        'banner' => $banPath,
+        'gender' => $validated['gender'] ?? null,
+        'type'   => $validated['type'] ?? null,
         'active' => true,
-        'permissions' => json_encode($permissions),
+        'permissions' => $permissions,
     ]);
     if($user){
       
@@ -111,6 +127,8 @@ class UsersController extends Controller
     }
 
 }
+
+
 public function destroy($id){
      $user=User::find($id);
      if($user){

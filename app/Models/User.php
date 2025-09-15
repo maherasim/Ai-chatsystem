@@ -37,12 +37,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'phone',
         'image',
+        'banner',
+        'gender',
+        'type',
+        'description',
         'permissions',
         'active',
         'dob',
         'screen_lock',
         'two_factor_auth', 
     ];
+
+protected $casts = [
+    'permissions' => 'array',
+];
 
  
 }
