@@ -57,31 +57,29 @@ public function showSettingsForm()
 
 public function uploadNotificationSounds(Request $request)
 {
-    
-    // dd($request->all(), $request->file());
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'notification_sounds.*' => 'nullable|file|mimes:mp3,wav,ogg|max:20480',
+    ]);
 
     $userId = $request->input('user_id');
-    $files = $request->file('notification_sounds'); // this will be an associative array: ['0' => file, '1' => file, ...]
+    $files = $request->file('notification_sounds', []);
 
-    $storedPaths = [];
-
-    if (is_array($files)) {
-        foreach ($files as $index => $file) {
-            if ($file && $file->isValid()) {
-                $filename = 'notif_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/notification_sounds', $filename);
-                $storedPaths[$index] = str_replace('public/', 'storage/', $path);
-            }
-        }
-    }
-
-    // Update setting
+    // Fetch existing setting and sounds
     $setting = \App\Models\Setting::firstOrNew(['user_id' => $userId]);
     $existing = json_decode($setting->notification_sounds ?? '[]', true);
+    if (!is_array($existing)) {
+        $existing = [];
+    }
 
-    // Merge new uploads into existing sounds
-    foreach ($storedPaths as $index => $soundPath) {
-        $existing[$index] = $soundPath;
+    // Preserve index association for 4 slots
+    for ($index = 0; $index < 4; $index++) {
+        if (isset($files[$index]) && $files[$index] && $files[$index]->isValid()) {
+            $file = $files[$index];
+            $filename = 'notif_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/notification_sounds', $filename);
+            $existing[$index] = str_replace('public/', 'storage/', $path);
+        }
     }
 
     $setting->notification_sounds = json_encode($existing);

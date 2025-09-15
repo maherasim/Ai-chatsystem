@@ -1048,12 +1048,11 @@
 
                                                                                             {{-- Upload Input --}}
                                                                                             <input type="file"
-                                                                                                name="notification_sounds[]"
+                                                                                                name="notification_sounds[{{ $i }}]"
                                                                                                 id="audioUpload{{ $i }}"
-                                                                                                multiple
                                                                                                 accept=".mp3,.wav,.ogg"
                                                                                                 style="display: none;"
-                                                                                                onchange="handleAudioSelected({{ $i }})">
+                                                                                                onchange="handleAudioSelected(event, {{ $i }})">
 
 
                                                                                             {{-- Upload Button --}}
