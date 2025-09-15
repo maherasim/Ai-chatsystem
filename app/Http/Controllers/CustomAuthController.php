@@ -30,6 +30,7 @@ public function customLogin(Request $request)
     ]);
 
     
+    //update to login only admin
     $user = User::where('email', $request->email)->first();
 
     if ($user && Hash::check($request->password, $user->password)) {
