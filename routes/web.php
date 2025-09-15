@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
 use App\Models\User;
+use App\Http\Controllers\KeywordController;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
@@ -128,3 +129,4 @@ Route::get('/forgot-password', function () {
 })->name('forgot-password');
 
 Route::post('/chatuser/store', [App\Http\Controllers\SettingController::class, 'store'])->name('chatuser.store');
+Route::post('/upload-words', [KeywordController::class, 'upload'])->name('upload.words');

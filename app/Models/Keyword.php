@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use MongoDB\Laravel\Eloquent\Model;
 
-class Keyword extends Eloquent
+class Keyword extends Model
 {
     protected $connection = 'mongodb';
     protected $collection = 'keywords';
 
     protected $fillable = [
-        'name',
-        'language',
+        'letter',
+        'word'
     ];
-}
+    protected $hidden = [
+        // any fields to hide from API
+    ];
 
+    
+}
