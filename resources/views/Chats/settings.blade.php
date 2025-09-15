@@ -1000,7 +1000,7 @@
                                                                     <div id="notification-sound-collapse"
                                                                         class="accordion-collapse border-0 collapse"
                                                                         data-bs-parent="#chat-setting">
-                                                                        <div class="accordion-body border-0 pb-0">
+                                                                        <div class="accordion-body border-0   pb-0">
                                                                             <div class="row">
                                                                                 @for ($i = 0; $i < 4; $i++)
                                                                                     @php
@@ -1028,10 +1028,10 @@
                                                                                             <div id="play-{{ $i + 1 }}"
                                                                                                 onclick="playSound({{ $i + 1 }})"
                                                                                                 style="
-                                        width: 50px; height: 50px; border-radius: 50%;
-                                        background-color: #28a745; display: flex; align-items: center;
-                                        justify-content: center; color: white; font-size: 24px;
-                                        margin: auto; cursor: pointer;">
+                                                                                                  width: 50px; height: 50px; border-radius: 50%;
+                                                                                                  background-color: #28a745; display: flex; align-items: center;
+                                                                                                  justify-content: center; color: white; font-size: 24px;
+                                                                                                  margin: auto; cursor: pointer;">
                                                                                                 ▶
                                                                                             </div>
 
@@ -1039,27 +1039,35 @@
                                                                                             <div id="stop-{{ $i + 1 }}"
                                                                                                 onclick="stopSound({{ $i + 1 }})"
                                                                                                 style="
-                                        width: 50px; height: 50px; border-radius: 50%;
-                                        background-color: #dc3545; display: none; align-items: center;
-                                        justify-content: center; color: white; font-size: 20px;
-                                        margin: auto; cursor: pointer;">
+                                                                                                 width: 50px; height: 50px; border-radius: 50%;
+                                                                                                 background-color: #dc3545; display: none; align-items: center;
+                                                                                                 justify-content: center; color: white; font-size: 20px;
+                                                                                                 margin: auto; cursor: pointer;">
                                                                                                 ⏹
                                                                                             </div>
 
                                                                                             {{-- Upload Input --}}
                                                                                             <input type="file"
-                                                                                                name="notification_sounds[]"
-                                                                                                id="audioUpload{{ $i }}"
-                                                                                                multiple
-                                                                                                accept=".mp3,.wav,.ogg"
-                                                                                                style="display: none;"
-                                                                                                onchange="handleAudioSelected({{ $i }})">
+                                                                                       name="notification_sounds[{{ $i }}]"
+                                                                                          id="audioUploads{{ $i }}"
+                                                                                            accept=".mp3,.wav,.ogg"
+                                                                                    style="display: none;"
+                                                                                    onchange="handleAudioSelected(event, {{ $i }})">
+                                                                                         <script>
+                                                                                      function handleAudioSelected(event, index) {
+                                                                                  const files = event.target.files;
+                                                                                     if (files.length > 0) {
+                                                                                        const firstFile = files[0];
+                                                                                      const audioElement = document.getElementById(`audio-${index+1}`);
+                                                                                      const audioURL = URL.createObjectURL(firstFile);
+                                                                                   audioElement.src = audioURL;
+                                                                                      }} </script>
 
 
                                                                                             {{-- Upload Button --}}
                                                                                             <button type="button"
                                                                                                 class="btn btn-outline-primary btn-sm mt-2"
-                                                                                                onclick="document.getElementById('audioUpload{{ $i }}').click();">
+                                                                                                onclick="document.getElementById('audioUploads{{ $i }}').click();">
                                                                                                 <i class="ti ti-plus"></i>
                                                                                             </button>
                                                                                         </div>
@@ -1081,24 +1089,7 @@
                                                             </div>
                                                         </form>
 
-                                                        <script>
-                                                            function handleAudioSelected(event, index) {
-                                                                const files = event.target.files;
-                                                                if (files.length > 0) {
-                                                                    // You can preview the first file if needed
-                                                                    const firstFile = files[0];
-                                                                    const audioElement = document.getElementById(`audio-${index+1}`);
-
-                                                                    // Create a URL for the first file and set it as audio source
-                                                                    const audioURL = URL.createObjectURL(firstFile);
-                                                                    audioElement.src = audioURL;
-
-                                                                    // You might want to store all files in a data attribute
-                                                                    // for later processing when form is submitted
-                                                                    event.target.setAttribute('data-files', JSON.stringify(Array.from(files)));
-                                                                }
-                                                            }
-                                                        </script>
+                                                      
 
 
 
