@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 use Session;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class CustomAuthController extends Controller
@@ -15,6 +16,41 @@ class CustomAuthController extends Controller
         return view('signin');
     }  
       
+
+
+// public function customLogin(Request $request)
+// {
+//     // ✅ Validate input
+//     $request->validate([
+//         'email' => 'required|email',
+//         'password' => 'required',
+//     ], [
+//         'email.required' => 'Email is required',
+//         'email.email' => 'Please enter a valid email address',
+//         'password.required' => 'Password is required',
+//     ]);
+
+    
+//     //update to login only admin
+//     $user = User::where('email', $request->email)->first();
+
+//     if ($user && Hash::check($request->password, $user->password)) {
+//         // ✅ Check admin condition (is_admin OR type=admin)
+//         if ($user->is_admin || $user->type === 'admin') {
+//             Auth::login($user); // log user in
+//             $request->session()->regenerate();
+
+//             return redirect()->intended('home')->with('success', 'Signed in');
+//         }
+//     }
+
+
+//     // ❌ Authentication failed
+//     return redirect()->back()
+//         ->withInput($request->only('email'))
+//         ->withErrors(['email' => 'These credentials do not match our records.']);
+// }
+
 
 
 public function customLogin(Request $request)
@@ -29,26 +65,27 @@ public function customLogin(Request $request)
         'password.required' => 'Password is required',
     ]);
 
-    
-    //update to login only admin
-    $user = User::where('email', $request->email)->first();
+    // ✅ Attempt to log in with credentials
+    $credentials = $request->only('email', 'password');
 
-    if ($user && Hash::check($request->password, $user->password)) {
-        // ✅ Check admin condition (is_admin OR type=admin)
-        if ($user->is_admin || $user->type === 'admin') {
-            Auth::login($user); // log user in
-            $request->session()->regenerate();
-
-            return redirect()->intended('home')->with('success', 'Signed in');
-        }
+    if (Auth::attempt($credentials)) {
+        // ✅ Authentication passed
+        $request->session()->regenerate(); // Prevent session fixation
+        return redirect()->intended('home')->with('success', 'Signed in');
     }
-
 
     // ❌ Authentication failed
     return redirect()->back()
         ->withInput($request->only('email'))
         ->withErrors(['email' => 'These credentials do not match our records.']);
 }
+
+
+
+
+
+
+
 
     public function registration()
     {
