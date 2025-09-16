@@ -26,6 +26,9 @@ public function showSettingsForm()
 
     return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds','chat_sounds'));
 }
+
+
+
  public function uploadChatSounds(Request $request) 
 {
     //dd($request->all());
@@ -306,35 +309,74 @@ public function toggleReactionNotification(Request $request)
     return back()->with('success', 'Chat background images updated successfully.');
 }
 
-public function savePolicy(Request $request)
+ 
+public function savePolicy(Request $request) 
 {
-    $request->validate([
-        'html' => 'required|string',
+    dd($request->all());
+    $validated = $request->validate([
+        'policy_term' => 'required|string',
         'increment_version' => 'boolean',
+        'require_accept' => 'nullable|boolean',
     ]);
+
     $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
-    $setting->policy_html = $request->html;
-    if ($request->boolean('increment_version')) {
+    $setting->policy_term = $validated['policy_term'];
+    $setting->require_accept = $validated['require_accept'] ?? false;
+
+    if ($validated['increment_version']) {
         $setting->policy_version = (int)($setting->policy_version ?? 0) + 1;
-        $setting->require_accept_on_next_login = true;
+        $setting->require_accept = true; // force accept if version changed
     }
+
     $setting->save();
-    return response()->json(['ok' => true, 'version' => (int)($setting->policy_version ?? 0)]);
+
+    return redirect()->back()->with('success', 'Policy updated successfully.');
 }
+
+
 public function saveAgreement(Request $request)
 {
-    $request->validate([
-        'html' => 'required|string',
-        'increment_version' => 'boolean',
+    //dd($request->all());
+    $validated = $request->validate([
+        'agreement_text' => 'required|string',
+        'agreement_increment_version' => 'boolean',
+        'agreement_require_accept' => 'nullable|boolean',
     ]);
+
     $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
-    $setting->agreement_html = $request->html;
-    if ($request->boolean('increment_version')) {
+    $setting->agreement_text = $validated['agreement_text'];
+    $setting->agreement_require_accept = $validated['agreement_require_accept'] ?? false;
+
+    if ($validated['agreement_increment_version']) {
         $setting->agreement_version = (int)($setting->agreement_version ?? 0) + 1;
-        $setting->require_accept_on_next_login = true;
+        $setting->agreement_require_accept = true;
     }
+
     $setting->save();
-    return response()->json(['ok' => true, 'version' => (int)($setting->agreement_version ?? 0)]);
+
+    return redirect()->back()->with('success', 'Agreement updated successfully.');
+}
+public function getPolicy(Request $request)
+{
+    $setting = Setting::first(); // fetch first record, no condition
+
+    return response()->json([
+        'policy_term' => $setting->policy_term ?? '',
+        'require_accept' => (bool)($setting->require_accept ?? false),
+        'policy_version' => (int)($setting->policy_version ?? 0),
+    ]);
+}
+
+// GET /api/settings/agreement
+public function getAgreement(Request $request)
+{
+    $setting = Setting::first(); // fetch first record, no condition
+
+    return response()->json([
+        'agreement_text' => $setting->agreement_text ?? '',
+        'agreement_require_accept' => (bool)($setting->agreement_require_accept ?? false),
+        'agreement_version' => (int)($setting->agreement_version ?? 0),
+    ]);
 }
 
 

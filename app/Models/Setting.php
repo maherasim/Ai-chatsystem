@@ -22,13 +22,21 @@ class Setting extends Model
         'chat_backgrounds',
         'user_id',
         'chat_sounds',
+        'policy_term',
+        'agreement_text',
+        'increment_version',
+        'require_accept',
+        'agreement_term',
+        'agreement_version',
+        'agreement_require_accept',
         'notification_sounds',        
         'app_logo',
         'policy_html',
         'policy_version',
         'agreement_html',
         'agreement_version',
-        'require_accept_on_next_login',
+        'agreement_require_accept',
+        
     ];
 
     

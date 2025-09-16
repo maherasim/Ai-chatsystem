@@ -90,7 +90,7 @@
                 <!-- Profile sidebar -->
                 <div class="sidebar-content active slimscroll">
                     <div class="slimscroll">
-                      
+
 
                         <div class="sidebar-body chat-body">
 
@@ -389,7 +389,8 @@
                                 <h5 class="sub-title">App Setting</h5>
                                 <div class="chat-file">
                                     <div class="file-item ">
-                                        <div class="accordion accordion-flush chat-accordion" id="privacy-setting" style="padding-bottom: 0px;">
+                                        <div class="accordion accordion-flush chat-accordion" id="privacy-setting"
+                                            style="padding-bottom: 0px;">
                                             <div class="mb-3">
                                                 <!-- chat bg -->
                                                 <form action="{{ route('upload.login.backgrounds') }}" method="POST"
@@ -653,7 +654,7 @@
                                                 <!-- URL Favicon -->
                                                 <div class="border-0 profile-list">
                                                     <div class="accordion-item border-0 ">
-                                                       
+
                                                         <form action="{{ route('settings.uploadFavicon') }}"
                                                             method="POST" enctype="multipart/form-data">
                                                             @csrf
@@ -984,7 +985,8 @@
 
                                                             <div class="border-0 profile-list">
                                                                 <div class="accordion-item border-0">
-                                                                    <h2 class="accordion-header border-0" style="margin-bottom: 0px;">
+                                                                    <h2 class="accordion-header border-0"
+                                                                        style="margin-bottom: 0px;">
                                                                         <button
                                                                             class="accordion-button border-0 collapsed px-0"
                                                                             type="button" data-bs-toggle="collapse"
@@ -1048,20 +1050,22 @@
 
                                                                                             {{-- Upload Input --}}
                                                                                             <input type="file"
-                                                                                       name="notification_sounds[{{ $i }}]"
-                                                                                          id="audioUploads{{ $i }}"
-                                                                                            accept=".mp3,.wav,.ogg"
-                                                                                    style="display: none;"
-                                                                                    onchange="handleAudioSelected(event, {{ $i }})">
-                                                                                         <script>
-                                                                                      function handleAudioSelected(event, index) {
-                                                                                  const files = event.target.files;
-                                                                                     if (files.length > 0) {
-                                                                                        const firstFile = files[0];
-                                                                                      const audioElement = document.getElementById(`audio-${index+1}`);
-                                                                                      const audioURL = URL.createObjectURL(firstFile);
-                                                                                   audioElement.src = audioURL;
-                                                                                      }} </script>
+                                                                                                name="notification_sounds[{{ $i }}]"
+                                                                                                id="audioUploads{{ $i }}"
+                                                                                                accept=".mp3,.wav,.ogg"
+                                                                                                style="display: none;"
+                                                                                                onchange="handleAudioSelected(event, {{ $i }})">
+                                                                                            <script>
+                                                                                                function handleAudioSelected(event, index) {
+                                                                                                    const files = event.target.files;
+                                                                                                    if (files.length > 0) {
+                                                                                                        const firstFile = files[0];
+                                                                                                        const audioElement = document.getElementById(`audio-${index+1}`);
+                                                                                                        const audioURL = URL.createObjectURL(firstFile);
+                                                                                                        audioElement.src = audioURL;
+                                                                                                    }
+                                                                                                }
+                                                                                            </script>
 
 
                                                                                             {{-- Upload Button --}}
@@ -1089,7 +1093,7 @@
                                                             </div>
                                                         </form>
 
-                                                      
+
 
 
 
@@ -1123,6 +1127,20 @@
             </div>
         </div>
         <!-- /Sidebar group -->
+        @php
+            use App\Models\Setting;
+
+            $setting = Setting::where('user_id', auth()->id())->first();
+            $policy_term = old('policy_term', $setting->policy_term ?? '');
+            $require_accept = old('require_accept', $setting->require_accept ?? false);
+            $policy_version = $setting->policy_version ?? 0;
+
+            $setting = Setting::where('user_id', auth()->id())->first();
+            $agreement_text = $setting->agreement_text ?? '';
+            $agreement_require_accept = $setting->agreement_require_accept ?? false;
+            $agreement_version = $setting->agreement_version ?? 0;
+        @endphp
+
 
         <!-- Chat -->
         <div class="chat chat-messages show" id="middle" style="overflow-y: auto;">
@@ -1135,50 +1153,126 @@
                                 <p class="text-muted small m-0">System policy</p>
                             </div>
                             <div class="card-body">
-                                <textarea id="policyEditor"></textarea>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    {{-- <span class="badge bg-light text-dark">Version: <span id="policyVersion">0</span></span> --}}
-                                    <div class="btn-group">
-                                        <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
-                                        <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
+                                <form id="agreementForm" method="POST" action="{{ route('settings.policy.save') }}">
+                                    @csrf
+                                    <textarea id="agreementEditor" name="policy_term">{{ $policy_term }}</textarea>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="btn-group">
+                                            <button type="button" id="agreementEditBtn"
+                                                class="btn btn-outline-secondary btn-sm">Edit</button>
+                                            <button type="submit" id="agreementSaveBtn"
+                                                class="btn btn-primary btn-sm">Save</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="checkbox" id="policyRequireAccept">
-                                    <label class="form-check-label" for="policyRequireAccept">Require users to accept next time</label>
-                                </div>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="agreementRequireAccept"
+                                            name="require_accept" value="1" {{ $require_accept ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="agreementRequireAccept">Require users to
+                                            accept next time</label>
+                                    </div>
+                                    <input type="hidden" name="increment_version" id="agreementIncrementVersion"
+                                        value="0">
+                                </form>
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header pb-0">
                                 <h6 class="mb-1">Agreements</h6>
                                 <p class="text-muted small m-0">System Agreements</p>
                             </div>
-                            <div class="card-body">
-                                <textarea id="agreementEditor"></textarea>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    {{-- <span class="badge bg-light text-dark">Version: <span id="agreementVersion">0</span></span> --}}
-                                    <div class="btn-group">
-                                        <button type="button" id="agreementEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
-                                        <button type="button" id="agreementSaveBtn" class="btn btn-primary btn-sm">Save</button>
+                            <form id="agreementForm" method="POST" action="{{ route('settings.agreement.save') }}">
+                                @csrf
+                                <div class="card-body">
+                                    <textarea id="agreementEditor" name="agreement_text">{{ old('agreement_text', $agreement_text ?? '') }}</textarea>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        {{-- <span class="badge bg-light text-dark">Version: <span id="agreementVersion">0</span></span> --}}
+                                        <div class="btn-group">
+                                            <button type="button" id="agreementEditBtn"
+                                                class="btn btn-outline-secondary btn-sm">Edit</button>
+                                            <button type="submit" id="agreementSaveBtn"
+                                                class="btn btn-primary btn-sm">Save</button>
+                                        </div>
                                     </div>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="agreementRequireAccept"
+                                            name="agreement_require_accept" value="1"
+                                            {{ old('agreement_require_accept', $agreement_require_accept ?? false) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="agreementRequireAccept">Require users to
+                                            accept
+                                            next time</label>
+                                    </div>
+                                    <input type="hidden" name="agreement_increment_version"
+                                        id="agreementIncrementVersion" value="0">
                                 </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="checkbox" id="agreementRequireAccept">
-                                    <label class="form-check-label" for="agreementRequireAccept">Require users to accept next time</label>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Summernote
+                $('#agreementEditor').summernote({
+                    placeholder: 'Start typing...',
+                    tabsize: 2,
+                    height: 220,
+                    toolbar: [
+                        ['style', ['fontsize']],
+                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['view', ['codeview']]
+                    ],
+                    fontSizes: ['12', '14', '16', '18', '20', '24', '28']
+                });
 
+                // Enable editing
+                $('#agreementEditBtn').on('click', function() {
+                    $('#agreementEditor').summernote('enable');
+                });
+
+                // Increment version checkbox
+                $('#agreementRequireAccept').on('change', function() {
+                    $('#agreementIncrementVersion').val(this.checked ? 1 : 0);
+                });
+
+                // Optional: disable editor on load
+                $('#agreementEditor').summernote('disable');
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#agreementEditor').summernote({
+                    placeholder: 'Type the agreement...',
+                    tabsize: 2,
+                    height: 220,
+                    toolbar: [
+                        ['style', ['fontsize']],
+                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['view', ['codeview']]
+                    ],
+                    fontSizes: ['12', '14', '16', '18', '20', '24', '28']
+                });
+
+                $('#agreementEditor').summernote('disable');
+
+                $('#agreementEditBtn').on('click', function() {
+                    $('#agreementEditor').summernote('enable');
+                });
+
+                $('#agreementRequireAccept').on('change', function() {
+                    $('#agreementIncrementVersion').val(this.checked ? 1 : 0);
+                });
+            });
+        </script>
         <script>
             // Load Summernote CSS/JS after jQuery is available, then initialize editors
-            window.addEventListener('load', function () {
+            window.addEventListener('load', function() {
                 var summernoteCss = document.createElement('link');
                 summernoteCss.rel = 'stylesheet';
                 summernoteCss.href = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css';
@@ -1186,7 +1280,7 @@
 
                 var summernoteJs = document.createElement('script');
                 summernoteJs.src = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js';
-                summernoteJs.onload = function () {
+                summernoteJs.onload = function() {
                     var $editors = $('#policyEditor, #agreementEditor');
                     $editors.summernote({
                         placeholder: 'Start typing...',
@@ -1219,7 +1313,7 @@
                     var policyVersion = parseInt(localStorage.getItem('policy_version') || '0', 10);
                     var agreementVersion = parseInt(localStorage.getItem('agreement_version') || '0', 10);
                     $('#policyEditor').summernote('code', savedPolicy);
-                    $('#agreementEditor').summernote('code', savedAgreement);
+
                     $('#policyVersion').text(policyVersion);
                     $('#agreementVersion').text(agreementVersion);
 
@@ -1227,39 +1321,54 @@
                     setEditorDisabled('#policyEditor', false);
                     setEditorDisabled('#agreementEditor', false);
 
-                    $('#policyEditBtn').on('click', function(){ setEditorDisabled('#policyEditor', false); });
-                    $('#agreementEditBtn').on('click', function(){ setEditorDisabled('#agreementEditor', false); });
+                    $('#policyEditBtn').on('click', function() {
+                        setEditorDisabled('#policyEditor', false);
+                    });
+                    $('#agreementEditBtn').on('click', function() {
+                        setEditorDisabled('#agreementEditor', false);
+                    });
 
                     function postJson(url, data) {
                         return fetch(url, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content')
                             },
                             body: JSON.stringify(data)
-                        }).then(function(r){ return r.json(); });
+                        }).then(function(r) {
+                            return r.json();
+                        });
                     }
 
-                    $('#policySaveBtn').on('click', function(){
+                    $('#policySaveBtn').on('click', function() {
                         var html = $('#policyEditor').summernote('code');
                         var increment = $('#policyRequireAccept').is(':checked');
-                        postJson(''+window.location.origin + '/settings/policy/save', { html: html, increment_version: increment })
-                            .then(function(resp){
+                        postJson('' + window.location.origin + '/settings/policy/save', {
+                                html: html,
+                                increment_version: increment
+                            })
+                            .then(function(resp) {
                                 if (resp && resp.ok) {
-                                    if (resp.version !== undefined) $('#policyVersion').text(resp.version);
+                                    if (resp.version !== undefined) $('#policyVersion').text(resp
+                                        .version);
                                     setEditorDisabled('#policyEditor', true);
                                 }
                             });
                     });
 
-                    $('#agreementSaveBtn').on('click', function(){
+                    $('#agreementSaveBtn').on('click', function() {
                         var html = $('#agreementEditor').summernote('code');
                         var increment = $('#agreementRequireAccept').is(':checked');
-                        postJson(''+window.location.origin + '/settings/agreement/save', { html: html, increment_version: increment })
-                            .then(function(resp){
+                        postJson('' + window.location.origin + '/settings/agreement/save', {
+                                html: html,
+                                increment_version: increment
+                            })
+                            .then(function(resp) {
                                 if (resp && resp.ok) {
-                                    if (resp.version !== undefined) $('#agreementVersion').text(resp.version);
+                                    if (resp.version !== undefined) $('#agreementVersion').text(resp
+                                        .version);
                                     setEditorDisabled('#agreementEditor', true);
                                 }
                             });

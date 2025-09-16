@@ -90,8 +90,11 @@ Route::post('/upload-chat-sounds', [App\Http\Controllers\SettingController::clas
 Route::post('/upload-notification-sounds', [App\Http\Controllers\SettingController::class, 'uploadNotificationSounds'])->name('upload.notification.sounds');
 // new editor save endpoints
 Route::post('/settings/policy/save', [App\Http\Controllers\SettingController::class, 'savePolicy'])->name('settings.policy.save');
-Route::post('/settings/agreement/save', [App\Http\Controllers\SettingController::class, 'saveAgreement'])->name('settings.agreement.save');
 
+
+Route::post('/settings/agreement/save', [App\Http\Controllers\SettingController::class, 'saveAgreement'])->name('settings.agreement.save');
+Route::get('settings/policy', [App\Http\Controllers\SettingController::class, 'getPolicy']);
+Route::post('settings/policy/save/ap', [App\Http\Controllers\SettingController::class, 'savePolicyas']);
 
 Route::get('/all-calls', function () {
     return view('all-calls');
