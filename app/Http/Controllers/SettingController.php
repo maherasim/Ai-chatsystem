@@ -57,6 +57,7 @@ public function showSettingsForm()
 
 public function uploadNotificationSounds(Request $request)
 {
+    //dd($request->all());
     $request->validate([
         'user_id' => 'required|exists:users,id',
         'notification_sounds.*' => 'nullable|file|mimes:mp3,wav,ogg|max:20480',
