@@ -495,7 +495,7 @@
                             <!-- Profile Image (Overlapping) -->
                             <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-                                <h5 class="mt-2 mb-1">{{$user->name}}</h5>
+                                <h5 class="mt-2 mb-1">Name LastName</h5>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
                             </div>
