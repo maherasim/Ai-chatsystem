@@ -312,7 +312,7 @@ public function toggleReactionNotification(Request $request)
  
 public function savePolicy(Request $request) 
 {
-    dd($request->all());
+  //  dd($request->all());
     $validated = $request->validate([
         'policy_term' => 'required|string',
         'increment_version' => 'boolean',
