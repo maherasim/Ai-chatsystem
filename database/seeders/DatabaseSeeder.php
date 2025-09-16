@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         'password' => Hash::make('123456'), // Hash the password
     ]);
 
-        $this->call([
-            KurdishKeywordsSeeder::class,
-        ]);
-    }
+    //     $this->call([
+    //         KurdishKeywordsSeeder::class,
+    //     ]);
+    // }
 }
