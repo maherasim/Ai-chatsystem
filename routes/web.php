@@ -75,7 +75,7 @@ Route::get('/library', [App\Http\Controllers\LibraryController::class, 'index'])
 
 
 
-Route::get('/settings', [App\Http\Controllers\SettingController::class, 'showSettingsForm'])->name('settings');
+Route::get('/settings', [App\Http\Controllers\SettingController::class, 'showSettingsForm'])->middleware('auth')->name('settings');
 Route::post('/update-email', [App\Http\Controllers\SettingController::class, 'updateEmail'])->name('chatuser.updateEmail');
 Route::post('/update-password', [App\Http\Controllers\SettingController::class, 'updatePassword'])->name('user.updatePassword');
 Route::post('/toggle-screen-lock', [App\Http\Controllers\SettingController::class, 'toggleScreenLock'])->name('user.toggleScreenLock');
