@@ -1126,7 +1126,7 @@
 
         <!-- Chat -->
         <div class="chat chat-messages show" id="middle" style="overflow-y: auto;">
-            <div class="p-4">
+            <div class="p-4" style="padding: 3.5rem !important; pt-4">
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
