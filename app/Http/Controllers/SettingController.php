@@ -358,7 +358,12 @@ public function saveAgreement(Request $request)
 }
 public function getPolicy(Request $request)
 {
-    $setting = Setting::first(); // fetch first record, no condition
+    // Fetch the latest record with relevant fields
+    $setting = \App\Models\Setting::select([
+        'policy_term',
+        'require_accept',
+        'policy_version'
+    ])->latest('id')->first();
 
     return response()->json([
         'policy_term' => $setting->policy_term ?? '',
@@ -366,6 +371,7 @@ public function getPolicy(Request $request)
         'policy_version' => (int)($setting->policy_version ?? 0),
     ]);
 }
+
 
 // GET /api/settings/agreement
 public function getAgreement(Request $request)
