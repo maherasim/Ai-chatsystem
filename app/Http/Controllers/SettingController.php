@@ -376,7 +376,12 @@ public function getPolicy(Request $request)
 // GET /api/settings/agreement
 public function getAgreement(Request $request)
 {
-    $setting = Setting::first(); // fetch first record, no condition
+    // Get latest setting record with only the necessary fields
+    $setting = \App\Models\Setting::select([
+        'agreement_text',
+        'agreement_require_accept',
+        'agreement_version'
+    ])->latest('id')->first();
 
     return response()->json([
         'agreement_text' => $setting->agreement_text ?? '',
