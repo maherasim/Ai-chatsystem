@@ -264,7 +264,7 @@
                         <!-- Left Side -->
                         <div>
                             <h3 style="margin: 0;">Members's Overview</h3>
-                            <strong>Total members: 10</strong>
+                            <strong>Total members: {{$totalUsers}}</strong>
                         </div>
 
                         <!-- Right Side -->
@@ -300,386 +300,15 @@
                     </div>
                     <!-- users cards -->
                     <div class="row g-2">
-                        <!-- Card 1 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
-
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-
-                                    <!-- Profile Image (overlapping) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
-                                        </span>
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Description
-                                        </span>
-                                    </div>
-
-
-
-                                </div>
-                                <div class="d-flex justify-content-between" style="padding: 10px;">
-                                    <!-- Stars -->
-                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        ★★★☆☆
-                                    </div>
-
-                                    <!-- Date with icon -->
-                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                        10.09.2025
-                                    </div>
-                                </div>
-
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
-
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-                                    </div>
-
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 1px 5px;border-radius: 5px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                        </div>
-
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 1px 5px; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- card 2 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
-
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-
-                                    <!-- Profile Image (overlapping) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
-                                        </span>
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Description
-                                        </span>
-                                    </div>
-
-
-                                </div>
-                                <div class="d-flex justify-content-between" style="padding: 10px;">
-                                    <!-- Stars -->
-                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        ★★★☆☆
-                                    </div>
-
-                                    <!-- Date with icon -->
-                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                        10.09.2025
-                                    </div>
-                                </div>
-
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
-
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-                                    </div>
-
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 1px 5px;border-radius: 5px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                        </div>
-
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 1px 5px; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- card 3 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
-
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-
-                                    <!-- Profile Image (overlapping) -->
-                                    <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                    </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
-                                        </span>
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Description
-                                        </span>
-                                    </div>
-
-
-                                </div>
-                                <div class="d-flex justify-content-between" style="padding: 10px;">
-                                    <!-- Stars -->
-                                    <div style="font-size: 18px; color: #fbc02d; margin-top: -2px;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        ★★★☆☆
-                                    </div>
-
-                                    <!-- Date with icon -->
-                                    <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
-                                        <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                        10.09.2025
-                                    </div>
-                                </div>
-
-                                <!-- Assigned Projects -->
-                                <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
-
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-                                    </div>
-
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 1px 5px;border-radius: 5px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                        </div>
-
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 1px 5px; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        
+                        @foreach($users as $user)
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{URL::asset('/build/img/bgblack.svg')}}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; max-height:80px; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
                                     <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
@@ -706,18 +335,18 @@
 
                                     <!-- Profile Image (overlapping) -->
                                     <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        <img src="{{ $user->image ? asset($user->image) : asset('build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> Name Lastname</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> {{$user->name}}</div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Developer
+                                            {{$user->type}}
                                         </span>
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             Description
@@ -735,7 +364,7 @@
                                     <!-- Date with icon -->
                                     <div style="font-size: 12px; color:green; display: flex; align-items: center; justify-content: center;margin-top: -6px;color: green;background-color: #f8f9fb;border-radius:9px;padding:3px">
                                         <img src="{{ asset('build/img/member.svg') }}" alt="icon" style="width: 14px; margin-right: 4px;">
-                                        10.09.2025
+                                        {{ $user->created_at->format('d.m.Y') }}
                                     </div>
                                 </div>
 
@@ -797,6 +426,8 @@
 
                             </div>
                         </div>
+
+                        @endforeach
 
                     </div>
 
@@ -864,7 +495,7 @@
                             <!-- Profile Image (Overlapping) -->
                             <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-                                <h5 class="mt-2 mb-1">Name Lastname</h5>
+                                <h5 class="mt-2 mb-1">{{$user->name}}</h5>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
                             </div>
@@ -2968,7 +2599,8 @@
                     aria-label="Close"
                     style="position: absolute; top: 0; right: 0; font-size: 22px; color: #999;"></button>
             </div>
-
+<form method="post" action="{{ route('user.store') }}" enctype="multipart/form-data" >
+    @csrf
             <!-- Upload Banner -->
             <div
                 onclick="document.getElementById('bannerInput').click();"
@@ -2987,7 +2619,7 @@
                     <div style="font-size: 12px;">JPG or PNG</div>
                 </div>
 
-                <input
+                <input name="banner"
                     type="file"
                     id="bannerInput"
                     accept="image/*"
@@ -3000,7 +2632,7 @@
             <div
                 style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; display: flex; gap: 16px; flex-wrap: wrap; position: relative;">
                 <!-- User Type (Top-right) -->
-                <select
+                <select name="type"
                     style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>User type</option>
                     <option value="admin">Admin</option>
@@ -3024,7 +2656,7 @@
                         style="text-align: center; color: #9ca3af; font-size: 24px;">
                         +
                     </div>
-                    <input
+                    <input name="image"
                         type="file"
                         id="userImgInput"
                         accept="image/*"
@@ -3044,19 +2676,17 @@
                     </div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <select
+                        <select name="gender"
                             style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;">
-                            <option selected>Select Gender</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                            <option value="" selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
                         </select>
-                        <input
-                            type="text"
-                            placeholder="Username and Lastname"
+                        <input type="text" placeholder="Username and Lastname" required name="name"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
                         <input
-                            type="text"
+                            type="text" name="user_description"
                             placeholder="Describe User"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
 
@@ -3079,7 +2709,7 @@
                         <span style="color: #9ca3af; margin-right: 8px;">
                             <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
-                        <input type="email" placeholder="Type User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
+                        <input name="email" required="required" type="email" placeholder="Type User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
 
                     <!-- Confirm Email Input -->
@@ -3087,7 +2717,7 @@
                         <span style="color: #9ca3af; margin-right: 8px;">
                             <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
-                        <input type="email" placeholder="Repeat User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
+                        <input type="email" name="confirm_email" required="required" placeholder="Repeat User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
 
                 </div>
@@ -3103,19 +2733,20 @@
                     <!-- Password Field -->
                     <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
                         <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input type="password" placeholder="Type User Password" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input name="passw" required="required" type="password" placeholder="Type User Password" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                         <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password1')">
                     </div>
 
                     <!-- Confirm Password Field -->
                     <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
                         <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input type="password" placeholder="Repeat User Password" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input name="rpassw" required="required" type="password" placeholder="Repeat User Password" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                         <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password2')">
                     </div>
                 </div>
 
             </div>
+
             <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 10px; font-family: sans-serif;">
                 <!-- Section Title -->
                 <div style="font-weight: 600; font-size: 14px; color: #2a2b4c; margin-bottom: 12px;">User Permission</div>
@@ -3126,7 +2757,7 @@
                     <!-- Left: AI - Bot -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[ai_bot][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3139,7 +2770,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[ai_bot][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3149,7 +2780,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[ai_bot][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3159,7 +2790,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[ai_bot][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3171,10 +2802,10 @@
                 <!-- chat -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Chat -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[chat][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3187,7 +2818,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[chat][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3197,7 +2828,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[chat][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3207,7 +2838,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[chat][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3219,10 +2850,10 @@
                 <!-- meeting -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Meeting -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[meeting][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3235,7 +2866,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[meeting][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3245,7 +2876,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[meeting][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3255,7 +2886,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[meeting][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3267,14 +2898,14 @@
                 <!-- Todo -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: ToDO -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[todo][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
-                        <span style="font-weight: 600; font-size: 14px; color: #7a7a7a;">ToDO</span>
+                        <span style="font-weight: 600; font-size: 14px; color: #7a7a7a;">ToDo</span>
                     </div>
 
                     <!-- Right: Write / Read / Delete -->
@@ -3283,7 +2914,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[todo][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3293,7 +2924,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[todo][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3303,7 +2934,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[todo][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3315,10 +2946,10 @@
                 <!-- Project -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Project -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[project][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3331,7 +2962,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[project][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3341,7 +2972,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[project][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3351,7 +2982,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[project][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3363,10 +2994,10 @@
                 <!-- Tickets -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Tickets -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[tickets][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3379,7 +3010,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tickets][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3389,7 +3020,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tickets][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3399,7 +3030,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tickets][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3411,10 +3042,10 @@
                 <!-- Task -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Tasks -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[tasks][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3427,7 +3058,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tasks][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3437,7 +3068,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tasks][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3447,7 +3078,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[tasks][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3459,10 +3090,10 @@
                 <!-- Team -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Team -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[team][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3475,7 +3106,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[team][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3485,7 +3116,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[team][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3495,7 +3126,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[team][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3508,10 +3139,10 @@
                 <!-- AI -APi -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: AI - API -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[AI-API][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3524,7 +3155,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[AI-API][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3534,7 +3165,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[AI-API][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3544,7 +3175,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[AI-API][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3556,10 +3187,10 @@
                 <!-- Library -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
-                    <!-- Left: AI - Bot -->
+                    <!-- Left: Library -->
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                            <input type="checkbox" name="permissions[library][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                 style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                         </label>
@@ -3572,7 +3203,7 @@
                         <!-- Write -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[library][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3582,7 +3213,7 @@
                         <!-- Read -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[library][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3592,7 +3223,7 @@
                         <!-- Delete -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
+                                <input type="checkbox" name="permissions[library][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
                                     style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
                             </label>
@@ -3612,9 +3243,9 @@
                         Close
                     </button>
 
-                    <button class="btn" data-bs-dismiss="modal"
+                    <button class="btn" type="submit"
                         style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Save & Close
+                        Save 
                     </button>
 
 
@@ -3636,6 +3267,7 @@
 
                 </ul> -->
             <!-- </div> -->
+                </form>
         </div>
     </div>
 </div>

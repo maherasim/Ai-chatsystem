@@ -29,14 +29,20 @@ public function customLogin(Request $request)
         'password.required' => 'Password is required',
     ]);
 
-    // ✅ Attempt to log in with credentials
-    $credentials = $request->only('email', 'password');
+    
+    //update to login only admin
+    $user = User::where('email', $request->email)->first();
 
-    if (Auth::attempt($credentials)) {
-        // ✅ Authentication passed
-        $request->session()->regenerate(); // Prevent session fixation
-        return redirect()->intended('home')->with('success', 'Signed in');
+    if ($user && Hash::check($request->password, $user->password)) {
+        // ✅ Check admin condition (is_admin OR type=admin)
+        if ($user->is_admin || $user->type === 'admin') {
+            Auth::login($user); // log user in
+            $request->session()->regenerate();
+
+            return redirect()->intended('home')->with('success', 'Signed in');
+        }
     }
+
 
     // ❌ Authentication failed
     return redirect()->back()
