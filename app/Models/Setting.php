@@ -29,6 +29,8 @@ class Setting extends Model
         'agreement_html',
         'agreement_version',
         'require_accept_on_next_login',
+        'screen_lock',
+        'screen_lock_minutes',
     ];
 
     

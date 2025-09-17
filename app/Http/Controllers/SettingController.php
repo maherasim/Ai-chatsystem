@@ -158,9 +158,9 @@ public function updatePassword(Request $request)
 }
 public function toggleScreenLock(Request $request)
 {
-    $user = auth()->user();
-    $user->screen_lock = $request->has('screen_lock');
-    $user->save();
+    $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
+    $setting->screen_lock = $request->has('screen_lock');
+    $setting->save();
 
     return back()->with('success', 'Screen lock setting updated.');
 }
@@ -171,9 +171,9 @@ public function updateScreenLockMinutes(Request $request)
         'screen_lock_minutes' => 'required|integer|min:1|max:1440',
     ]);
 
-    $user = auth()->user();
-    $user->screen_lock_minutes = (int) $request->screen_lock_minutes;
-    $user->save();
+    $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
+    $setting->screen_lock_minutes = (int) $request->screen_lock_minutes;
+    $setting->save();
 
     return back()->with('success', 'Screen lock timeout updated.');
 }

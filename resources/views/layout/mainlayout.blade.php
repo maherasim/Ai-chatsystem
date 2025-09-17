@@ -48,8 +48,8 @@
 <script>
     (function() {
         try {
-            var screenLockEnabled = {{ auth()->check() && auth()->user()->screen_lock ? 'true' : 'false' }};
-            var minutes = {{ auth()->check() && auth()->user()->screen_lock_minutes ? (int)auth()->user()->screen_lock_minutes : 0 }};
+            var screenLockEnabled = {{ auth()->check() ? ((App\Models\Setting::where('user_id', auth()->id())->first()->screen_lock ?? false) ? 'true' : 'false') : 'false' }};
+            var minutes = {{ auth()->check() ? (int)(App\Models\Setting::where('user_id', auth()->id())->first()->screen_lock_minutes ?? 0) : 0 }};
             if (!screenLockEnabled || !minutes) { return; }
 
             var ms = minutes * 60 * 1000;

@@ -316,14 +316,14 @@
                                                         <input class="form-check-input" type="checkbox"
                                                             name="screen_lock"
                                                             onchange="document.getElementById('screen-lock-form').submit();"
-                                                            {{ auth()->user()->screen_lock ? 'checked' : '' }}>
+                                                            {{ ($setting && ($setting->screen_lock ?? false)) ? 'checked' : '' }}>
                                                     </div>
                                                 </div>
-                                                <div id="screen-lock-minutes" class="mt-2" style="display: {{ auth()->user()->screen_lock ? 'block' : 'none' }};">
+                                                <div id="screen-lock-minutes" class="mt-2" style="display: {{ ($setting && ($setting->screen_lock ?? false)) ? 'block' : 'none' }};">
                                                     <form action="{{ route('user.updateScreenLockMinutes') }}" method="POST" class="d-flex align-items-center gap-2">
                                                         @csrf
                                                         <label for="screen_lock_minutes" class="me-2">Auto-lock after (minutes)</label>
-                                                        <input type="number" min="1" max="1440" step="1" name="screen_lock_minutes" id="screen_lock_minutes" class="form-control" style="max-width: 140px;" value="{{ auth()->user()->screen_lock_minutes ?? 15 }}">
+                                                        <input type="number" min="1" max="1440" step="1" name="screen_lock_minutes" id="screen_lock_minutes" class="form-control" style="max-width: 140px;" value="{{ $setting->screen_lock_minutes ?? 15 }}">
                                                         <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
                                                     </form>
                                                 </div>
