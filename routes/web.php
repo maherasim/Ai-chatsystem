@@ -28,9 +28,9 @@ Route::get('/', function () {
 
 
 Route::get('/home', function () {
-    $headers = Setting::all();
+    $header = Setting::all();
     $setting = Setting::first();
-    return view('index', compact('headers','setting'));
+    return view('index', compact('header','setting'));
 })->middleware('auth')->name('home');
 
 Route::get('/login', function () {
