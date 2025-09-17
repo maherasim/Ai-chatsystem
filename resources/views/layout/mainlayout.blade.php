@@ -24,6 +24,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
         $setting = App\Models\Setting::first();
+        $userSetting = auth()->check() ? App\Models\Setting::where('user_id', auth()->id())->first() : null;
     @endphp
     <title>{{ $setting->app_name ?? '' }}</title>
      
@@ -48,8 +49,8 @@
 <script>
     (function() {
         try {
-            var screenLockEnabled = {{ auth()->check() ? ((App\Models\Setting::where('user_id', auth()->id())->first()->screen_lock ?? false) ? 'true' : 'false') : 'false' }};
-            var minutes = {{ auth()->check() ? (int)(App\Models\Setting::where('user_id', auth()->id())->first()->screen_lock_minutes ?? 0) : 0 }};
+            var screenLockEnabled = {{ auth()->check() ? (($userSetting && ($userSetting->screen_lock ?? false)) ? 'true' : 'false') : 'false' }};
+            var minutes = {{ auth()->check() ? (int)($userSetting->screen_lock_minutes ?? 0) : 0 }};
             if (!screenLockEnabled || !minutes) { return; }
 
             var ms = minutes * 60 * 1000;
