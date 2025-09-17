@@ -14,12 +14,11 @@ $setting = App\Models\Setting::first();
 
 @endphp
  <div class="sidebar-menu">
-    <div class="logo"> 
-        <a href="{{ url('/home') }}" class="logo-normal">
-            <img src="{{ url('storage/' . $setting->image) ?? URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
-        </a>
-    </div>
-    
+       <div class="logo"> 
+           <a href="{{ url('/home') }}" class="logo-normal">
+               <img src="{{ $setting->app_logo ?? URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
+           </a>
+       </div>
        <div class="menu-wrap">
            <div class="main-menu">
                <ul class="nav">
