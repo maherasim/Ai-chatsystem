@@ -90,8 +90,7 @@ Route::get('/library', [App\Http\Controllers\LibraryController::class, 'index'])
 Route::get('/settings', [App\Http\Controllers\SettingController::class, 'showSettingsForm'])->name('settings');
 Route::post('/update-email', [App\Http\Controllers\SettingController::class, 'updateEmail'])->name('chatuser.updateEmail');
 Route::post('/update-password', [App\Http\Controllers\SettingController::class, 'updatePassword'])->name('user.updatePassword');
-Route::post('/toggle-screen-lock', [App\Http\Controllers\SettingController::class, 'toggleScreenLock'])->name('user.toggleScreenLock');
-Route::post('/update-screen-lock-minutes', [App\Http\Controllers\SettingController::class, 'updateScreenLockMinutes'])->name('user.updateScreenLockMinutes');
+Route::post('/screen-lock/save', [App\Http\Controllers\SettingController::class, 'saveScreenLock'])->name('user.saveScreenLock');
 Route::post('/toggle-two-factor', [App\Http\Controllers\SettingController::class, 'toggleTwoFactor'])->name('user.toggleTwoFactor');
 Route::post('/settings/app-logo', [App\Http\Controllers\SettingController::class, 'uploadAppLogo'])->name('settings.uploadAppLogo');
 Route::post('/settings/upload-favicon', [App\Http\Controllers\SettingController::class, 'uploadFavIcon'])->name('settings.uploadFavicon');

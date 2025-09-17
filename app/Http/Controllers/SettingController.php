@@ -156,26 +156,25 @@ public function updatePassword(Request $request)
 
     return back()->with('success', 'Password updated successfully.');
 }
-public function toggleScreenLock(Request $request)
-{
-    $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
-    $setting->screen_lock = $request->has('screen_lock');
-    $setting->save();
-
-    return back()->with('success', 'Screen lock setting updated.');
-}
-
-public function updateScreenLockMinutes(Request $request)
+public function saveScreenLock(Request $request)
 {
     $request->validate([
-        'screen_lock_minutes' => 'required|integer|min:1|max:1440',
+        'screen_lock' => 'nullable|in:on,1,true',
+        'screen_lock_minutes' => 'nullable|integer|min:1|max:1440',
     ]);
 
     $setting = Setting::firstOrNew(['user_id' => auth()->id()]);
-    $setting->screen_lock_minutes = (int) $request->screen_lock_minutes;
+    $enabled = $request->has('screen_lock');
+    $setting->screen_lock = $enabled;
+    if ($enabled) {
+        $minutes = $request->input('screen_lock_minutes');
+        if ($minutes !== null) {
+            $setting->screen_lock_minutes = (int) $minutes;
+        }
+    }
     $setting->save();
 
-    return back()->with('success', 'Screen lock timeout updated.');
+    return back()->with('success', 'Screen lock preferences saved.');
 }
 
 public function toggleTwoFactor(Request $request)
