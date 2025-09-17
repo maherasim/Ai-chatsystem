@@ -11,7 +11,9 @@
 </style>
 @php
 $setting = App\Models\Setting::first();
+
 @endphp
+@dd($setting->app_logo,$setting)
 <div class="sidebar-menu">
        <div class="logo"> 
            <a href="{{ url('/home') }}" class="logo-normal">
