@@ -111,7 +111,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <!-- Image -->
-                          @foreach($headers as $header)
+                          @foreach($header as $header)
                         <img src="{{ $header->image ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
                          @endforeach
                         <!-- Username and Status -->
