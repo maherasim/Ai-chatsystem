@@ -23,7 +23,7 @@
     <meta property="og:image:height" content="600">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $setting = App\Models\Setting::first();
+        $setting = App\Models\Setting::get();
         $userSetting = auth()->check() ? App\Models\Setting::where('user_id', auth()->id())->first() : null;
     @endphp
     <title>{{ $setting->app_name ?? '' }}</title>
