@@ -177,6 +177,20 @@ public function saveScreenLock(Request $request)
     return back()->with('success', 'Screen lock preferences saved.');
 }
 
+public function unlockScreen(Request $request)
+{
+    $request->validate([
+        'password' => 'required|string',
+    ]);
+
+    $user = auth()->user();
+    if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        return response()->json(['ok' => false, 'message' => 'Invalid password'], 422);
+    }
+
+    return response()->json(['ok' => true]);
+}
+
 public function toggleTwoFactor(Request $request)
 {
     $user = auth()->user();

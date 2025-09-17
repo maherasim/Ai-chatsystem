@@ -91,6 +91,7 @@ Route::get('/settings', [App\Http\Controllers\SettingController::class, 'showSet
 Route::post('/update-email', [App\Http\Controllers\SettingController::class, 'updateEmail'])->name('chatuser.updateEmail');
 Route::post('/update-password', [App\Http\Controllers\SettingController::class, 'updatePassword'])->name('user.updatePassword');
 Route::post('/screen-lock/save', [App\Http\Controllers\SettingController::class, 'saveScreenLock'])->name('user.saveScreenLock');
+Route::post('/unlock', [App\Http\Controllers\SettingController::class, 'unlockScreen'])->name('user.unlockScreen');
 Route::post('/toggle-two-factor', [App\Http\Controllers\SettingController::class, 'toggleTwoFactor'])->name('user.toggleTwoFactor');
 Route::post('/settings/app-logo', [App\Http\Controllers\SettingController::class, 'uploadAppLogo'])->name('settings.uploadAppLogo');
 Route::post('/settings/upload-favicon', [App\Http\Controllers\SettingController::class, 'uploadFavIcon'])->name('settings.uploadFavicon');
