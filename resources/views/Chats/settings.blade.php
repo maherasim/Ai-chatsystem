@@ -319,6 +319,14 @@
                                                             {{ auth()->user()->screen_lock ? 'checked' : '' }}>
                                                     </div>
                                                 </div>
+                                                <div id="screen-lock-minutes" class="mt-2" style="display: {{ auth()->user()->screen_lock ? 'block' : 'none' }};">
+                                                    <form action="{{ route('user.updateScreenLockMinutes') }}" method="POST" class="d-flex align-items-center gap-2">
+                                                        @csrf
+                                                        <label for="screen_lock_minutes" class="me-2">Auto-lock after (minutes)</label>
+                                                        <input type="number" min="1" max="1440" step="1" name="screen_lock_minutes" id="screen_lock_minutes" class="form-control" style="max-width: 140px;" value="{{ auth()->user()->screen_lock_minutes ?? 15 }}">
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                                                    </form>
+                                                </div>
                                             </form>
 
                                             <!-- Divider after Screen Lock -->

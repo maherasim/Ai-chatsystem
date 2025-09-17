@@ -165,6 +165,19 @@ public function toggleScreenLock(Request $request)
     return back()->with('success', 'Screen lock setting updated.');
 }
 
+public function updateScreenLockMinutes(Request $request)
+{
+    $request->validate([
+        'screen_lock_minutes' => 'required|integer|min:1|max:1440',
+    ]);
+
+    $user = auth()->user();
+    $user->screen_lock_minutes = (int) $request->screen_lock_minutes;
+    $user->save();
+
+    return back()->with('success', 'Screen lock timeout updated.');
+}
+
 public function toggleTwoFactor(Request $request)
 {
     $user = auth()->user();

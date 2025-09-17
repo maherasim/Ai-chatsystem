@@ -45,4 +45,52 @@
     <!-- /Main Wrapper -->
     @include('layout.partials.footer-scripts')
 </body>
+<script>
+    (function() {
+        try {
+            var screenLockEnabled = {{ auth()->check() && auth()->user()->screen_lock ? 'true' : 'false' }};
+            var minutes = {{ auth()->check() && auth()->user()->screen_lock_minutes ? (int)auth()->user()->screen_lock_minutes : 0 }};
+            if (!screenLockEnabled || !minutes) { return; }
+
+            var ms = minutes * 60 * 1000;
+            var timerId;
+
+            function resetTimer() {
+                if (timerId) clearTimeout(timerId);
+                timerId = setTimeout(function() {
+                    try {
+                        var form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '{{ route('logout') }}';
+                        var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        var input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = '_token';
+                        input.value = token;
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    } catch (e) {
+                        window.location.href = '{{ url('/login') }}';
+                    }
+                }, ms);
+            }
+
+            ['click','mousemove','keydown','scroll','touchstart','touchmove','visibilitychange'].forEach(function(evt) {
+                window.addEventListener(evt, resetTimer, { passive: true });
+            });
+            resetTimer();
+        } catch (_) {}
+    })();
+    // Toggle minutes field visibility live on change
+    (function(){
+        var checkbox = document.querySelector('#screen-lock-form input[name="screen_lock"]');
+        var panel = document.getElementById('screen-lock-minutes');
+        if (checkbox && panel) {
+            checkbox.addEventListener('change', function(){
+                panel.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+    })();
+</script>
 </html>
