@@ -145,3 +145,6 @@ Route::get('/headers', [App\Http\Controllers\SettingController::class, 'header']
 
 Route::post('/chatuser/store', [App\Http\Controllers\SettingController::class, 'store'])->name('chatuser.store');
 Route::post('/upload-words', [KeywordController::class, 'upload'])->name('upload.words');
+ 
+Route::post('/keywords/{id}', [KeywordController::class, 'update'])->name('keywords.update');
+Route::delete('/keywords/{id}', [KeywordController::class, 'destroy'])->name('keywords.destroy');

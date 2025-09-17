@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\Keyword;
-
 use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
     public function upload(Request $request)
     {
-       // dd($request->all());
         $request->validate([
             'file' => 'required|mimes:txt,doc,docx'
         ]);
@@ -24,13 +22,11 @@ class KeywordController extends Controller
             $line = trim($line);
             if (!$line) continue;
 
-            // Detect alphabet header (single letter)
             if (preg_match('/^[a-zA-Z]$/', $line)) {
                 $currentLetter = strtolower($line);
                 continue;
             }
 
-            // Otherwise add as a word
             $wordsToInsert[] = [
                 'letter' => $currentLetter ?? '',
                 'word'   => $line,
@@ -42,5 +38,35 @@ class KeywordController extends Controller
         Keyword::insert($wordsToInsert);
 
         return back()->with('success', count($wordsToInsert).' words uploaded successfully!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'word' => 'required|string|max:255',
+        ]);
+
+        $keyword = Keyword::find($id);
+        if (!$keyword) {
+            return back()->with('error', 'Word not found.');
+        }
+
+        $newWord = trim($request->input('word'));
+        $keyword->word = $newWord;
+        $keyword->letter = strtolower(substr($newWord, 0, 1) ?: '');
+        $keyword->save();
+
+        return back()->with('success', 'Word updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $keyword = Keyword::find($id);
+        if (!$keyword) {
+            return back()->with('error', 'Word not found.');
+        }
+
+        $keyword->delete();
+        return back()->with('success', 'Word removed successfully.');
     }
 }
