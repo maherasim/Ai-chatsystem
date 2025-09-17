@@ -252,26 +252,34 @@ public function toggleReactionNotification(Request $request)
         'images.*' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048',
     ]);
 
-    $userId = auth()->id(); // Ensure the user is authenticated
-    $storedImages = [];
+    $userId = auth()->id();
 
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $file) {
-            if ($file) {
-                $filename = 'login_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/login_backgrounds', $filename);
-                $storedImages[] = 'storage/login_backgrounds/' . $filename;
-            } else {
-                $storedImages[] = null;
+    // Fetch existing settings to allow partial updates and replacements by index
+    $setting = Setting::firstOrNew(['user_id' => $userId]);
+    $existing = json_decode($setting->login_backgrounds ?? '[]', true);
+    if (!is_array($existing)) {
+        $existing = [];
+    }
+
+    $files = $request->file('images'); // expected associative array keyed by slot index
+    $changes = 0;
+    if (is_array($files)) {
+        foreach ($files as $index => $file) {
+            if ($file && $file->isValid()) {
+                $filename = 'login_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/login_backgrounds', $filename);
+                $existing[(int)$index] = 'storage/login_backgrounds/' . $filename;
+                $changes++;
             }
         }
     }
 
-    // Save to settings table for this user
-    Setting::updateOrCreate(
-        ['user_id' => $userId],
-        ['login_backgrounds' => json_encode($storedImages)]
-    );
+    if ($changes === 0) {
+        return back()->with('info', 'No new login background images selected.');
+    }
+
+    $setting->login_backgrounds = json_encode($existing);
+    $setting->save();
 
     return back()->with('success', 'Login background images updated successfully.');
 }
@@ -282,27 +290,32 @@ public function toggleReactionNotification(Request $request)
     ]);
 
     $userId = auth()->id();
-    $storedImages = [];
 
-    if ($request->hasFile('chat_images')) {
-        foreach ($request->file('chat_images') as $file) {
-            if ($file) {
-                $filename = 'chat_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/chat_backgrounds', $filename);
-                $storedImages[] = 'storage/chat_backgrounds/' . $filename;
+    $setting = Setting::firstOrNew(['user_id' => $userId]);
+    $existing = json_decode($setting->chat_backgrounds ?? '[]', true);
+    if (!is_array($existing)) {
+        $existing = [];
+    }
+
+    $files = $request->file('chat_images'); // expected associative array keyed by slot index
+    $changes = 0;
+    if (is_array($files)) {
+        foreach ($files as $index => $file) {
+            if ($file && $file->isValid()) {
+                $filename = 'chat_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/chat_backgrounds', $filename);
+                $existing[(int)$index] = 'storage/chat_backgrounds/' . $filename;
+                $changes++;
             }
         }
     }
 
-    // Optional: if no new images, don’t overwrite
-    if (empty($storedImages)) {
+    if ($changes === 0) {
         return back()->with('warning', 'No chat background images were selected.');
     }
 
-    Setting::updateOrCreate(
-        ['user_id' => $userId],
-        ['chat_backgrounds' => json_encode($storedImages)]
-    );
+    $setting->chat_backgrounds = json_encode($existing);
+    $setting->save();
 
     return back()->with('success', 'Chat background images updated successfully.');
 }

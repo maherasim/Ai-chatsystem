@@ -436,7 +436,7 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                            <input type="file" name="images[]"
+                                                                            <input type="file" name="images[{{ $i - 1 }}]"
                                                                                 id="imageUpload{{ $i }}"
                                                                                 accept=".jpg,.jpeg,.svg,.png"
                                                                                 style="display: none;">
@@ -512,7 +512,7 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                            <input type="file" name="chat_images[]"
+                                                                            <input type="file" name="chat_images[{{ $i - 1 }}]"
                                                                                 id="imageUploadChat{{ $i }}"
                                                                                 accept=".jpg,.jpeg,.svg,.png"
                                                                                 onchange="handleChatImageUpload(event, 'previewImagechat{{ $i }}')"
@@ -535,7 +535,7 @@
 
                                                 <script>
                                                     document.addEventListener("DOMContentLoaded", function() {
-                                                        const fileInputs = document.querySelectorAll('input[type="file"][name="images[]"]');
+                                                        const fileInputs = document.querySelectorAll('input[type="file"][id^="imageUpload"]');
 
                                                         fileInputs.forEach((input, index) => {
                                                             input.addEventListener("change", function(event) {
@@ -555,7 +555,7 @@
 
                                                 <script>
                                                     document.addEventListener("DOMContentLoaded", function() {
-                                                        const fileInputs = document.querySelectorAll('input[type="file"][name="chat_images[]"]');
+                                                        const fileInputs = document.querySelectorAll('input[type="file"][id^="imageUploadChat"]');
 
                                                         fileInputs.forEach((input, index) => {
                                                             input.addEventListener("change", function(event) {
