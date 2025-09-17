@@ -23,11 +23,12 @@
     <meta property="og:image:height" content="600">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $setting = App\Models\Setting::get();
+        $setting = App\Models\Setting::first();
         $userSetting = auth()->check() ? App\Models\Setting::where('user_id', auth()->id())->first() : null;
     @endphp
-    <title>{{ $setting->app_name ?? '' }}</title>
+    
      @dd($setting->favicon);
+     <title>{{ $setting->app_name ?? '' }}</title>
     <!-- Favicon -->
     <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}" class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
