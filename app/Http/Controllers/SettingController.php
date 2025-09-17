@@ -340,4 +340,11 @@ public function uploadNotificationSounds(Request $request)
         $setting->save();
         return response()->json(['ok' => true, 'version' => (int)($setting->agreement_version ?? 0)]);
     }
+
+  public function header()
+{
+    $headers = Setting::all(); // saare records le raha hai
+    return view('Chats.header', compact('headers')); 
 }
+}
+

@@ -6,11 +6,12 @@
     body {
         overflow-x: hidden;
     }
+
     #meetingModal .modal-content {
-    border-radius: 10px !important;
-    border: none;
-    box-shadow: 0 0 20px rgba(0,0,0,0.05);
-}
+        border-radius: 10px !important;
+        border: none;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
 
 
     .dropdown-menu {
@@ -111,51 +112,7 @@
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
         <div>
-            <div class="chat-header">
-                <div class="user-details">
-                    <div class="d-xl-none">
-                        <a class="text-muted chat-close me-2" href="#">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
-                    </div>
-                    <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
-                    </div>
-                    <div class="ms-2 overflow-hidden">
-                        <h6>Username</h6>
-                        <p class="last-seen text-truncate"> Online</p>
-                    </div>
-                </div>
-
-                <!-- Right Side Icons -->
-                <div class="left-icons d-flex align-items-center gap-5">
-
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
-
-                    <li style="list-style: none;">
-                        <!-- Moon Icon -->
-                        <a href="#" id="dark-mode-toggle" style="display: inline;">
-                            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-                        </a>
-
-                        <!-- Sun Icon -->
-                        <a href="#" id="light-mode-toggle" style="display: none;">
-                            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-                        </button>
-                    </form>
-                </div>
-            </div>
+              @include('Chats.header')
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group">
@@ -359,7 +316,7 @@
 
                                             <!-- Green bar with current time -->
                                             <div style=" background-color: #4CAF50; height: 33px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; letter-spacing: 1px;" id="clock">
-                                            <script>
+                                                <script>
                                                     // set countdown duration (in seconds)
                                                     let duration = 10; // example: 10 seconds
 
@@ -1045,912 +1002,912 @@
 <!-- meeting Modal -->
 <div class="modal fade" id="meetingModal" tabindex="-1">
 
-    <div class="modal-dialog modal-dialog-centered modal-md"style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+    <div class="modal-dialog modal-dialog-centered modal-md" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
         <div class="modal-content" style="border-radius: 10px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
 
-        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
-            <!-- Close Button -->
-            <button type="button"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
-                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
-                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
-                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                ×
-            </button>
+            <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+                <!-- Close Button -->
+                <button type="button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                    onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
+                    style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                    ×
+                </button>
 
 
 
-            <div class="modal-body p-4" style="background-color: white;border-radius:10px;">
-                <!-- Header -->
-                <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
-                <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
+                <div class="modal-body p-4" style="background-color: white;border-radius:10px;">
+                    <!-- Header -->
+                    <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
+                    <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
 
-                <!-- Meeting Details -->
-                <div class="p-3 mb-3" style="background-color: #f9f9fb;">
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Meeting Details</p>
+                    <!-- Meeting Details -->
+                    <div class="p-3 mb-3" style="background-color: #f9f9fb;">
+                        <p style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Meeting Details</p>
 
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Select Project" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Meeting Title" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Describe the meeting" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Select Members" style="font-size: 13px;">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Select Project" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Meeting Title" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Describe the meeting" style="font-size: 13px;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Select Members" style="font-size: 13px;">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Schedule Type Toggle -->
-                <div style="background-color: #f9f9fb;">
-                    <!-- Toggle Buttons -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-                            <button id="btnToday"
-                                onclick="
+                    <!-- Schedule Type Toggle -->
+                    <div style="background-color: #f9f9fb;">
+                        <!-- Toggle Buttons -->
+                        <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
+                            <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                                <button id="btnToday"
+                                    onclick="
                                 this.style.backgroundColor='#22c55e';
                                 this.style.color='white';
                                 document.getElementById('btnScheduled').style.backgroundColor='transparent';
                                 document.getElementById('btnScheduled').style.color='#64748b';
                                 document.getElementById('startDateField').style.display='none';
                                 document.getElementById('timeRow').classList.add('justify-content-center');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Meeting Today
-                            </button>
+                                    style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                    Meeting Today
+                                </button>
 
-                            <button id="btnScheduled"
-                                onclick="
+                                <button id="btnScheduled"
+                                    onclick="
                                 this.style.backgroundColor='#22c55e';
                                 this.style.color='white';
                                 document.getElementById('btnToday').style.backgroundColor='transparent';
                                 document.getElementById('btnToday').style.color='#64748b';
                                 document.getElementById('startDateField').style.display='block';
                                 document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled Meeting
-                            </button>
+                                    style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                    Scheduled Meeting
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Date & Time Fields -->
+                        <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
+
+                            <!-- Start Date (hidden by default) -->
+                            <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
+                                <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+                                    <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                    <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                        <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                            onclick="document.getElementById('dateInput').showPicker()"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+                                        <input type="date" id="dateInput"
+                                            onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                            style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Start Time -->
+                            <div class="col-md-4" style="position: relative;">
+                                <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
+                                    <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                    <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                        <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                            onclick="document.getElementById('startTimeInput').showPicker()"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+                                        <input type="time" id="startTimeInput"
+                                            onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
+                                            style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- End Time -->
+                            <div class="col-md-4" style="position: relative;">
+                                <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">End Time</div>
+                                    <div id="endTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
+                                    <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                        <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                            onclick="document.getElementById('endTimeInput').showPicker()"
+                                            style="width: 20px; height: 20px; cursor: pointer;" />
+                                        <input type="time" id="endTimeInput"
+                                            onchange="if(this.value)document.getElementById('endTimeDisplay').innerText=this.value;"
+                                            style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Date & Time Fields -->
-                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
 
-                        <!-- Start Date (hidden by default) -->
-                        <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
-                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('dateInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="date" id="dateInput"
-                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Meeting Links -->
+                    <!-- Link Toggle Section -->
+                    <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%;  margin: auto;margin-bottom: 12px;">
 
-                        <!-- Start Time -->
-                        <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
-                                <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('startTimeInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="time" id="startTimeInput"
-                                        onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- End Time -->
-                        <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">End Time</div>
-                                <div id="endTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('endTimeInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="time" id="endTimeInput"
-                                        onchange="if(this.value)document.getElementById('endTimeDisplay').innerText=this.value;"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- Meeting Links -->
-                <!-- Link Toggle Section -->
-                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%;  margin: auto;margin-bottom: 12px;">
-
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
-                        <button id="btnMeet"
-                            onclick="
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
+                            <button id="btnMeet"
+                                onclick="
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
       document.getElementById('btnZoom').style.backgroundColor='white';
       document.getElementById('btnZoom').style.color='#64748b';
     "
-                            style="border: none; background-color: #22c55e; color: white; padding: 6px 16px;
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 16px;
            border-radius: 6px; font-size: 13px; font-weight: 500;">
-                            Meet Link
-                        </button>
+                                Meet Link
+                            </button>
 
-                        <button id="btnZoom"
-                            onclick="
+                            <button id="btnZoom"
+                                onclick="
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
       document.getElementById('btnMeet').style.backgroundColor='white';
       document.getElementById('btnMeet').style.color='#64748b';
     "
-                            style="border: none; background-color: white; color: #64748b; padding: 6px 16px;
+                                style="border: none; background-color: white; color: #64748b; padding: 6px 16px;
            border-radius: 6px; font-size: 13px; font-weight: 500;">
-                            Zoom Link
-                        </button>
-                    </div>
+                                Zoom Link
+                            </button>
+                        </div>
 
 
-                    <input type="text"
-                        placeholder="Past link"
-                        style="width: 100%; background-color: white; color: #64748b; border: none;
+                        <input type="text"
+                            placeholder="Past link"
+                            style="width: 100%; background-color: white; color: #64748b; border: none;
            border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
-                </div>
+                    </div>
 
 
-                <!-- ✅ Priority & Reminder Section Styled Box -->
-                <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb;">
-                    <div class="row g-3">
-                        <!-- Meeting Priority -->
-                        <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
-                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the Priority of the Meeting</p>
-                            <div class="d-flex gap-2">
-                                <button id="priorityLow" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    Low
-                                </button>
+                    <!-- ✅ Priority & Reminder Section Styled Box -->
+                    <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb;">
+                        <div class="row g-3">
+                            <!-- Meeting Priority -->
+                            <div class="col-md-6">
+                                <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
+                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the Priority of the Meeting</p>
+                                <div class="d-flex gap-2">
+                                    <button id="priorityLow" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        Low
+                                    </button>
 
-                                <button id="priorityMiddle" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px ;font-size: 12px;">
-                                    Middle
-                                </button>
+                                    <button id="priorityMiddle" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px ;font-size: 12px;">
+                                        Middle
+                                    </button>
 
-                                <button id="priorityHigh" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    High
-                                </button>
+                                    <button id="priorityHigh" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        High
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Expired Reminder -->
-                        <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Expired Reminder</p>
-                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set a reminder before expired</p>
-                            <div class="d-flex gap-2">
-                                <button id="reminder6" onclick="this.style.backgroundColor='#22c55e';this.style.color='white';document.getElementById('reminder12').style.backgroundColor='white';document.getElementById('reminder12').style.color='#64748b';document.getElementById('reminder24').style.backgroundColor='white';document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px;font-size: 12px;">
-                                    6 Hr
-                                </button>
+                            <!-- Expired Reminder -->
+                            <div class="col-md-6">
+                                <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Expired Reminder</p>
+                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set a reminder before expired</p>
+                                <div class="d-flex gap-2">
+                                    <button id="reminder6" onclick="this.style.backgroundColor='#22c55e';this.style.color='white';document.getElementById('reminder12').style.backgroundColor='white';document.getElementById('reminder12').style.color='#64748b';document.getElementById('reminder24').style.backgroundColor='white';document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px;font-size: 12px;">
+                                        6 Hr
+                                    </button>
 
-                                <button id="reminder12" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    12 Hr
-                                </button>
+                                    <button id="reminder12" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        12 Hr
+                                    </button>
 
-                                <button id="reminder24" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    24 Hr
-                                </button>
+                                    <button id="reminder24" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        24 Hr
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
-                <!-- Submit Button -->
-                <div class="d-flex justify-content-center">
-                    <div class="d-flex px-3 py-2"
-                        style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-center">
+                        <div class="d-flex px-3 py-2"
+                            style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
 
-                        <button class="btn" data-bs-dismiss="modal"
-                            style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                            Close
-                        </button>
+                            <button class="btn" data-bs-dismiss="modal"
+                                style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                                Close
+                            </button>
 
-                        <button class="btn" data-bs-dismiss="modal"
-                            style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                            Save & Close
-                        </button>
+                            <button class="btn" data-bs-dismiss="modal"
+                                style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                                Save & Close
+                            </button>
 
 
+                        </div>
                     </div>
+
+
                 </div>
-
-
             </div>
         </div>
     </div>
-</div>
 
 
 
-<!-- add user -->
-<div class="modal fade" id="add_user" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
+    <!-- add user -->
+    <div class="modal fade" id="add_user" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header border-0 pb-0">
-                <div>
-                    <h4 class="modal-title fw-bold">Add New User</h4>
-                    <small class="text-muted">User ID : <strong>user -0024</strong></small>
+                <!-- Modal Header -->
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h4 class="modal-title fw-bold">Add New User</h4>
+                        <small class="text-muted">User ID : <strong>user -0024</strong></small>
+                    </div>
+                    <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
                 </div>
-                <button type="button" class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close">
-                    &times;
-                </button>
-            </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body pt-0">
+                <!-- Modal Body -->
+                <div class="modal-body pt-0">
 
-                <!-- Tabs -->
-                <ul class="nav nav-tabs mb-3 border-bottom-0">
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold"
-                            data-bs-toggle="tab"
-                            href="#basicInfo"
-                            style="border: none; color: #f65b0f; border-bottom: 2px solid #f65b0f; background-color: transparent;">
-                            Basic Information
-                        </a>
-                    </li>
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3 border-bottom-0">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-semibold"
+                                data-bs-toggle="tab"
+                                href="#basicInfo"
+                                style="border: none; color: #f65b0f; border-bottom: 2px solid #f65b0f; background-color: transparent;">
+                                Basic Information
+                            </a>
+                        </li>
 
-                </ul>
+                    </ul>
 
 
-                <!-- Tab Content -->
-                <div class="tab-content">
-                    <!-- Basic Information Tab -->
-                    <div class="tab-pane fade show active" id="basicInfo">
-                        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-                            @csrf
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Basic Information Tab -->
+                        <div class="tab-pane fade show active" id="basicInfo">
+                            <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                @csrf
 
-                            <!-- Profile Upload -->
-                            <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
-                                <!-- Profile Image -->
-                                <div class="position-relative d-inline-block" style="width: 80px; height: 80px;">
-                                    <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
-                                        class="rounded-circle"
-                                        alt="Profile Image"
-                                        style="width: 80px; height: 80px; object-fit: cover;">
+                                <!-- Profile Upload -->
+                                <div class="bg-light rounded py-3 px-3 mb-4 d-flex align-items-center">
+                                    <!-- Profile Image -->
+                                    <div class="position-relative d-inline-block" style="width: 80px; height: 80px;">
+                                        <img src="{{ URL::asset('/build/img/profiles/avatar-01.jpg') }}"
+                                            class="rounded-circle"
+                                            alt="Profile Image"
+                                            style="width: 80px; height: 80px; object-fit: cover;">
 
-                                    <!-- Hidden File Input -->
-                                    <input type="file" name="image" accept="image/*" id="profileImageInput" style="display: none;" onchange="previewImage(event)">
+                                        <!-- Hidden File Input -->
+                                        <input type="file" name="image" accept="image/*" id="profileImageInput" style="display: none;" onchange="previewImage(event)">
 
-                                    <!-- Overlay + Icon -->
-                                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
-                                        style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"
-                                        onclick="document.getElementById('profileImageInput').click();">
-                                        <span class="text-white fs-3">+</span>
+                                        <!-- Overlay + Icon -->
+                                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
+                                            style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: 0.3s; cursor: pointer;"
+                                            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"
+                                            onclick="document.getElementById('profileImageInput').click();">
+                                            <span class="text-white fs-3">+</span>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Upload Text + Buttons -->
+                                    <div style="margin-left: 20px;">
+                                        <p class="mb-1 fw-medium">Upload Profile Image</p>
+                                        <small class="text-muted d-block mb-2">Image should be below 4 mb</small>
+                                        <button class="btn btn-warning me-2" style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
+                                        <button class="btn btn-outline">Cancel</button>
                                     </div>
                                 </div>
 
 
-                                <!-- Upload Text + Buttons -->
-                                <div style="margin-left: 20px;">
-                                    <p class="mb-1 fw-medium">Upload Profile Image</p>
-                                    <small class="text-muted d-block mb-2">Image should be below 4 mb</small>
-                                    <button class="btn btn-warning me-2" style="background-color: #f65b0f; border-color: #f65b0f;">Upload</button>
-                                    <button class="btn btn-outline">Cancel</button>
-                                </div>
-                            </div>
+                                <!-- Form Fields -->
 
+                                <div class="row g-3">
 
-                            <!-- Form Fields -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">First & last Name</label>
 
-                            <div class="row g-3">
-
-                                <div class="col-md-6">
-                                    <label class="form-label">First & last Name</label>
-
-                                    <input type="text" name="name" class="form-control" required>
-                                    @error('name')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                        <input type="text" name="name" class="form-control" required>
+                                        @error('name')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
 
-                                <div class="col-md-3">
-                                    <label class="form-label">Projects</label>
-                                    <select class="form-select" name="department" required>
-                                        <option selected>Select</option>
-                                        <option>All Department</option>
-                                        <option>Finance</option>
-                                        <option>Developer</option>
-                                        <option>Executive</option>
-                                    </select>
-                                    @error('department')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-3">
+                                        <label class="form-label">Projects</label>
+                                        <select class="form-select" name="department" required>
+                                            <option selected>Select</option>
+                                            <option>All Department</option>
+                                            <option>Finance</option>
+                                            <option>Developer</option>
+                                            <option>Executive</option>
+                                        </select>
+                                        @error('department')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Position</label>
-                                    <select class="form-select" name="position" required>
-                                        <option selected>Select</option>
-                                        <option>All Department</option>
-                                        <option>Finance</option>
-                                        <option>Developer</option>
-                                        <option>Executive</option>
-                                    </select>
-                                    @error('position')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-3">
+                                        <label class="form-label">Position</label>
+                                        <select class="form-select" name="position" required>
+                                            <option selected>Select</option>
+                                            <option>All Department</option>
+                                            <option>Finance</option>
+                                            <option>Developer</option>
+                                            <option>Executive</option>
+                                        </select>
+                                        @error('position')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
 
 
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                                    @error('email')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                        @error('email')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label"> Repeat Email</label>
-                                    <input type="email" class="form-control" name="remail" required>
-                                    @error('remail')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-6">
+                                        <label class="form-label"> Repeat Email</label>
+                                        <input type="email" class="form-control" name="remail" required>
+                                        @error('remail')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="passw" required autocomplete="new-password">
-                                    @error('passw')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="passw" required autocomplete="new-password">
+                                        @error('passw')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Repeat Password</label>
-                                    <input type="password" class="form-control" name="rpassw" required autocomplete="new-password">
-                                    @error('rpassw')
-                                    <div class="alert alert-danger mt-2">
-                                        {{$message}}
+                                    <div class="col-md-6">
+                                        <label class="form-label">Repeat Password</label>
+                                        <input type="password" class="form-control" name="rpassw" required autocomplete="new-password">
+                                        @error('rpassw')
+                                        <div class="alert alert-danger mt-2">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    @enderror
-                                </div>
-                                {{-- <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label">Confirm Password</label>
                                         <input type="password" name="cpassw" class="form-control" required>
                                         @error('cpassw')
                                         <div class="alert alert-danger mt-2">
                                             {{$message}}
+                                </div>
+                                @enderror
+                        </div> --}}
+
+
+                    </div>
+                    <div style="max-width: 950px; margin: 30px auto; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+
+                        <!-- Enable Options Header -->
+                        <div style="background-color: #f5f6fa; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-weight: 600; color: #0b0b0b;">Enable Options</span>
+                            <div style="display: flex; gap: 20px; align-items: center;">
+                                <!-- Enable All Module Toggle -->
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="color: #6c757d;">Enable all Module</span>
+                                </label>
+
+                                <!-- Select All -->
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px; cursor: pointer;" checked>
+                                    <span style="color: #ff6600; font-weight: 500;">Select All</span>
+                                </label>
                             </div>
-                            @enderror
-                    </div> --}}
+                        </div>
+
+                        <!-- Permissions Table -->
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: center;">
+
+                                <tbody>
+                                    <!-- clients -->
+                                    <tr style="background: #fff;">
+                                        <!-- Module Enable Switch -->
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[clients][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Clients
+                                        </td>
+
+                                        <!-- Read -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[clients][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Write -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[clients][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Delete -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[clients][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Import -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[clients][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Export -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[clients][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
 
 
-                </div>
-                <div style="max-width: 950px; margin: 30px auto; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+                                    <tr style="background: #fff;">
+                                        <!-- Module Enable Switch -->
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[leaves][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Leaves
+                                        </td>
 
-                    <!-- Enable Options Header -->
-                    <div style="background-color: #f5f6fa; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span style="font-weight: 600; color: #0b0b0b;">Enable Options</span>
-                        <div style="display: flex; gap: 20px; align-items: center;">
-                            <!-- Enable All Module Toggle -->
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
-                                <span style="color: #6c757d;">Enable all Module</span>
-                            </label>
+                                        <!-- Read -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[leaves][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
 
-                            <!-- Select All -->
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" style="accent-color: #ff6600; width: 16px; height: 16px; cursor: pointer;" checked>
-                                <span style="color: #ff6600; font-weight: 500;">Select All</span>
-                            </label>
+                                        <!-- Write -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[leaves][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Delete -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[leaves][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Import -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[leaves][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Export -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[leaves][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr style="background: #fff;">
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <!-- Enabled Switch -->
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[holidays][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Holidays
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[holidays][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[holidays][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[holidays][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[holidays][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[holidays][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+
+                                    <!-- projects -->
+                                    <tr style="background: #fff;">
+                                        <!-- Module Enable Switch -->
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[projects][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Projects
+                                        </td>
+
+                                        <!-- Read -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[projects][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Write -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[projects][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Delete -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[projects][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Import -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[projects][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <!-- Export -->
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[projects][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+
+                                    <!-- Tasks -->
+                                    <tr style="background: #fff;">
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[tasks][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Tasks
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[tasks][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[tasks][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[tasks][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[tasks][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[tasks][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Chats -->
+                                    <tr style="background: #fff;">
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[chats][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Chats
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[chats][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[chats][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[chats][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[chats][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[chats][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Assets -->
+                                    <tr style="background: #fff;">
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[assets][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Assets
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[assets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[assets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[assets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[assets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[assets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Timming sheets -->
+                                    <tr style="background: #fff;">
+                                        <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                            <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][enabled]" checked
+                                                    style="opacity: 0; width: 0; height: 0;"
+                                                    onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
+                                                    <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
+                                                </span>
+                                            </label>
+                                            Timming Sheets
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Read</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Write</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Delete</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Import</span>
+                                            </label>
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <label style="display: flex; align-items: center; gap: 4px;">
+                                                <input type="checkbox" name="permissions[timming_sheets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
+                                                <span style="font-size: 14px;">Export</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+
+
+
+
+
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer border-top-0 pt-0">
+                        <div class="d-flex ms-auto gap-2">
+                            <button type="button" class="btn btn-outline" style="min-width: 100px;" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn text-white" style="background-color: #f65b0f; border-color: #f65b0f; min-width: 100px;">Save</button>
                         </div>
                     </div>
-
-                    <!-- Permissions Table -->
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: center;">
-
-                            <tbody>
-                                <!-- clients -->
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[clients][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Clients
-                                    </td>
-
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[clients][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[leaves][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Leaves
-                                    </td>
-
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[leaves][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <!-- Enabled Switch -->
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[holidays][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Holidays
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[holidays][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <!-- projects -->
-                                <tr style="background: #fff;">
-                                    <!-- Module Enable Switch -->
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[projects][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Projects
-                                    </td>
-
-                                    <!-- Read -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Write -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Delete -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Import -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <!-- Export -->
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[projects][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-                                <!-- Tasks -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[tasks][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Tasks
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[tasks][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Chats -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[chats][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Chats
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[chats][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Assets -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[assets][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Assets
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[assets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-                                <!-- Timming sheets -->
-                                <tr style="background: #fff;">
-                                    <td style="padding: 10px; text-align: left; display: flex; align-items: center; gap: 10px;">
-                                        <label style="position: relative; display: inline-block; width: 36px; height: 18px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][enabled]" checked
-                                                style="opacity: 0; width: 0; height: 0;"
-                                                onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff6600' : '#ccc'; this.nextElementSibling.firstElementChild.style.transform = this.checked ? 'translateX(18px)' : 'translateX(0)';">
-                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ff6600; border-radius: 20px; transition: .3s;">
-                                                <span style="position: absolute; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .3s; transform: translateX(18px);"></span>
-                                            </span>
-                                        </label>
-                                        Timming Sheets
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][read]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Read</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][write]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Write</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][delete]" checked style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Delete</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][import]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Import</span>
-                                        </label>
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <label style="display: flex; align-items: center; gap: 4px;">
-                                            <input type="checkbox" name="permissions[timming_sheets][export]" style="accent-color: #ff6600; width: 16px; height: 16px;">
-                                            <span style="font-size: 14px;">Export</span>
-                                        </label>
-                                    </td>
-                                </tr>
-
-
-
-
-
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
-
+                    </form>
                 </div>
-                <!-- Modal Footer -->
-                <div class="modal-footer border-top-0 pt-0">
-                    <div class="d-flex ms-auto gap-2">
-                        <button type="button" class="btn btn-outline" style="min-width: 100px;" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn text-white" style="background-color: #f65b0f; border-color: #f65b0f; min-width: 100px;">Save</button>
-                    </div>
-                </div>
-                </form>
             </div>
-        </div>
 
-        <!-- creaTE meting MODEL POPIP -->
+            <!-- creaTE meting MODEL POPIP -->
 
-        <script>
-            const toggleIcon = document.getElementById("toggleIcon");
-            const chevron = document.getElementById("chevronIcon");
+            <script>
+                const toggleIcon = document.getElementById("toggleIcon");
+                const chevron = document.getElementById("chevronIcon");
 
-            toggleIcon.addEventListener("click", () => {
-                setTimeout(() => {
-                    chevron.classList.toggle("ti-chevron-down");
-                    chevron.classList.toggle("ti-chevron-up");
-                }, 150);
-            });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const body = document.body;
-                const darkBtn = document.getElementById('dark-mode-toggle');
-                const lightBtn = document.getElementById('light-mode-toggle');
-
-                darkBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    body.classList.add('dark-mode');
-                    darkBtn.style.display = 'none';
-                    lightBtn.style.display = 'inline';
+                toggleIcon.addEventListener("click", () => {
+                    setTimeout(() => {
+                        chevron.classList.toggle("ti-chevron-down");
+                        chevron.classList.toggle("ti-chevron-up");
+                    }, 150);
                 });
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const body = document.body;
+                    const darkBtn = document.getElementById('dark-mode-toggle');
+                    const lightBtn = document.getElementById('light-mode-toggle');
 
-                lightBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    body.classList.remove('dark-mode');
-                    lightBtn.style.display = 'none';
-                    darkBtn.style.display = 'inline';
+                    darkBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        body.classList.add('dark-mode');
+                        darkBtn.style.display = 'none';
+                        lightBtn.style.display = 'inline';
+                    });
+
+                    lightBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        body.classList.remove('dark-mode');
+                        lightBtn.style.display = 'none';
+                        darkBtn.style.display = 'inline';
+                    });
                 });
-            });
-        </script>
-        @endsection
+            </script>
+            @endsection

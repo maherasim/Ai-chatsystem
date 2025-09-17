@@ -22,9 +22,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="600">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>LogiConn</title>
+    <title>{{ $setting->app_name ?? '' }}</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{URL::asset('/build/img/AI-Logo.svg')}}">
+    <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}" class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     @include('layout.partials.head')
 </head>

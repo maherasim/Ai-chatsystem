@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
 use App\Models\User;
 use App\Http\Controllers\KeywordController;
+use App\Models\Setting;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
@@ -27,7 +28,9 @@ Route::get('/', function () {
 
 
 Route::get('/home', function () {
-    return view('index');
+    $headers = Setting::all();
+    $setting = Setting::first();
+    return view('index', compact('headers','setting'));
 })->middleware('auth')->name('home');
 
 Route::get('/login', function () {
@@ -37,39 +40,48 @@ Route::get('/login', function () {
 
 
 Route::get('/chat', function () {
-    return view('Chats.chat');
+    $headers = Setting::all();
+    $setting = Setting::first();
+    return view('Chats.chat', compact('headers','setting'));
 })->middleware('auth')->name('chat.index');
 
 // Route::get('/chat', function () {
 //     return view('index');
 // })->name('chat');
 Route::get('/Ai', function () {
-    return view('Chats.Ai');
+    $headers = Setting::all();
+    return view('Chats.Ai', compact('headers'));
 })->middleware('auth')->name('chat-ai');
 Route::get('/tasks', function () {
-    return view('Chats.task');
+    $headers = Setting::all();
+    return view('Chats.task', compact('headers'));
 })->middleware('auth')->name('chat-task');
 
 Route::get('/ticket', function () {
-    return view('Chats.ticket');
+    $headers = Setting::all();
+    return view('Chats.ticket', compact('headers'));
 })->middleware('auth')->name('chat-ticket');
 Route::get('/teams', function () {
-    return view('Chats.teams');
+    $headers = Setting::all();
+    return view('Chats.teams', compact('headers'));
 })->middleware('auth')->name('chat-team');
 Route::get('/meetings', function () {
-    return view('Chats.meetings');
+    $headers = Setting::all();
+    return view('Chats.meetings', compact('headers'));
 })->middleware('auth')->name('chat-meetings');
 
 Route::get('/todo', function () {
-      return view('Chats.groups');
-    
+    $headers = Setting::all();
+    return view('Chats.groups', compact('headers'));
 })->middleware('auth')->name('chat-groups');
 Route::get('/project', function () {
-    return view('Chats.project');
+    $headers = Setting::all();
+    return view('Chats.project', compact('headers'));
 })->name('chat-project');
 
 Route::get('/Apis', function () {
-    return view('Chats.Api');
+    $headers = Setting::all();
+    return view('Chats.Api', compact('headers'));
 })->name('chat-api');
 Route::get('/library', [App\Http\Controllers\LibraryController::class, 'index'])->name('chat-library');
 
@@ -127,6 +139,8 @@ Route::get('/otp', function () {
 Route::get('/forgot-password', function () {
     return view('forgot-password');
 })->name('forgot-password');
+Route::get('/headers', [App\Http\Controllers\SettingController::class, 'header'])->name('header');
+
 
 Route::post('/chatuser/store', [App\Http\Controllers\SettingController::class, 'store'])->name('chatuser.store');
 Route::post('/upload-words', [KeywordController::class, 'upload'])->name('upload.words');
