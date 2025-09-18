@@ -437,11 +437,8 @@
                                                                                     onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
                                                                                     <button type="button" class="btn btn-sm btn-light"
                                                                                         onclick="document.getElementById('imageUpload{{ $i }}').click();">Upload</button>
-                                                                                    <form action="{{ route('select.login.background') }}" method="POST" class="m-0">
-                                                                                        @csrf
-                                                                                        <input type="hidden" name="index" value="{{ $i - 1 }}">
-                                                                                        <button type="submit" class="btn btn-sm {{ (isset($selected_login_background) && $selected_login_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}">Select</button>
-                                                                                    </form>
+                                                                                    <button type="button" class="btn btn-sm {{ (isset($selected_login_background) && $selected_login_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}"
+                                                                                        onclick="submitLoginBgSelect({{ $i - 1 }})">Select</button>
                                                                                 </div>
                                                                             </div>
 
@@ -464,6 +461,19 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <form id="selectLoginBgForm" action="{{ route('select.login.background') }}" method="POST" style="display:none;">
+                                                    @csrf
+                                                    <input type="hidden" name="index" id="selectLoginBgIndex" value="">
+                                                </form>
+                                                <script>
+                                                    function submitLoginBgSelect(idx){
+                                                        try{
+                                                            var input = document.getElementById('selectLoginBgIndex');
+                                                            var form = document.getElementById('selectLoginBgForm');
+                                                            if(input && form){ input.value = String(idx); form.submit(); }
+                                                        }catch(e){}
+                                                    }
+                                                </script>
                                                 {{-- chat background --}}
                                                 <form action="{{ route('upload.chat.backgrounds') }}" method="POST"
                                                     enctype="multipart/form-data">
