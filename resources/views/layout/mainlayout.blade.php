@@ -91,9 +91,22 @@
         }
     })();
 </script>
+@php
+  $overlaySetting = App\Models\Setting::first();
+  $ovImages = $overlaySetting && $overlaySetting->login_backgrounds ? json_decode($overlaySetting->login_backgrounds, true) : [];
+  $ovIdx = $overlaySetting->selected_login_background ?? null;
+  $ovCandidate = ($ovIdx !== null && array_key_exists($ovIdx, $ovImages)) ? $ovImages[$ovIdx] : null;
+  if (!$ovCandidate || !is_string($ovCandidate) || $ovCandidate === '') {
+      foreach ($ovImages as $img) { if ($img) { $ovCandidate = $img; break; } }
+  }
+  $overlayBgSrc = $ovCandidate ? asset($ovCandidate) : URL::asset('/build/img/bg/chatlogo.jpg');
+@endphp
 <style>
   #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
   #lockCard { background: transparent; border-radius: 16px; padding: 24px; width: 100%; max-width: 460px; text-align: center; }
+  #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+  #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
+  #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
   .lock-info { display: flex; align-items: flex-end; justify-content: center; gap: 14px; margin-bottom: 12px; }
   .lock-info .time { color: #f5f7fb; font-size: 72px; line-height: 1; text-shadow: 2px 2px 2px rgba(0,0,0,.15); }
   .lock-info .weather { display: inline-flex; align-items: center; gap: 6px; height: 24px; margin-bottom: 8px; }
@@ -112,9 +125,15 @@
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
   #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
+  #signInButtonWrapper { display: flex; justify-content: center; margin: 16px 0 6px; }
+  #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; padding: 12px 28px; font-size: 16px; }
+  #pinSection { display: none; }
+  #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
+  #lockOverlay[data-step="pin"] #pinSection { display: block; }
   @keyframes blink { 0%,25%,100%{opacity:1} 50%{opacity:0} }
 </style>
-<div id="lockOverlay">
+<div id="lockOverlay" data-step="out">
+  <div id="lockBackground"><div id="lockBackgroundImage" class="background-image"></div></div>
   <div id="lockCard">
     <div class="lock-info">
       <span id="lockTime" class="time">12:34</span>
@@ -123,21 +142,26 @@
         <span id="lockTemp">75</span><span>°F</span>
       </span>
     </div>
-    <div id="app-pin">
-      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
-      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
-      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
-      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+    <div id="signInButtonWrapper">
+      <button id="lockGoBtn" type="button">Go</button>
     </div>
-    <h3 id="app-pin-label">Enter PIN</h3>
-    <div id="lockError">Incorrect PIN. Try again.</div>
-    <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
-    <div class="lock-actions">
-      <button id="clearPinBtn" class="btn btn-outline-secondary btn-sm">Clear</button>
-      <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
-      </form>
+    <div id="pinSection">
+      <div id="app-pin">
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+      </div>
+      <h3 id="app-pin-label">Enter PIN</h3>
+      <div id="lockError">Incorrect PIN. Try again.</div>
+      <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
+      <div class="lock-actions">
+        <button id="clearPinBtn" class="btn btn-outline-secondary btn-sm">Clear</button>
+        <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
+        </form>
+      </div>
     </div>
   </div>
   </div>
@@ -147,6 +171,7 @@
     var pinInput = document.getElementById('pinHiddenInput');
     var errorBox = document.getElementById('lockError');
     var clearBtn = document.getElementById('clearPinBtn');
+    var goBtn = document.getElementById('lockGoBtn');
     var timeEl = document.getElementById('lockTime');
     var tempEl = document.getElementById('lockTemp');
     var digitBoxes = Array.from(document.querySelectorAll('#app-pin .app-pin-digit'));
@@ -186,10 +211,10 @@
     overlay.addEventListener('click', function(e){ if(e.target===overlay){ pinInput.focus(); }});
     clearBtn.addEventListener('click', function(){ resetUI(); pinInput.focus(); });
 
-    window.showLockOverlay = function(){ overlay.style.display='flex'; setTemp(); resetUI(); setTimeout(function(){ pinInput.focus(); }, 50); };
+    window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
-
-    var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ resetUI(); setTimeout(function(){ pinInput.focus(); },50); }});
+    if (goBtn) { goBtn.addEventListener('click', function(){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
+    var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ overlay.setAttribute('data-step','out'); resetUI(); }});
     obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
   })();
 </script>
