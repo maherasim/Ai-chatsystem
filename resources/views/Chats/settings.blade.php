@@ -350,34 +350,7 @@
                                                 </div>
                                             </form>
 
-                                            <!-- Divider after Two-Factor -->
-                                            <div class="border-top mt-3"></div>
-
-
-                                            <!-- Profile Info -->
-
-                                            <h2 class="accordion-header others">
-                                                <a href="#" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse" data-bs-target="#chatuser-collapse3"
-                                                    aria-expanded="false" aria-controls="chatuser-collapse3">
-                                                    <i class="ti ti-mood-smile me-2"></i>Profile Info
-                                                </a>
-                                            </h2>
-                                            <div id="chatuser-collapse3" class="accordion-collapse collapse"
-                                                data-bs-parent="#pwd-setting">
-                                                <div class="accordion-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <select class="form-select">
-                                                                <option>Everyone</option>
-                                                                <option>Except</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- /Profile Info -->
+                                           
 
 
 
@@ -385,7 +358,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /Security setting -->
+                          
 
 
 
