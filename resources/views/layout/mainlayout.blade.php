@@ -107,7 +107,7 @@
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
   #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
-  .lock-info { display: flex; align-items: flex-end; justify-content: center; gap: 14px; margin-bottom: 12px; }
+  .lock-info { display: flex; align-items: flex-end; justify-content: flex-start; gap: 14px; margin-bottom: 12px; position: relative; z-index: 1; width: 100%; max-width: 960px; }
   .lock-info .time { color: #f5f7fb; font-size: 72px; line-height: 1; text-shadow: 2px 2px 2px rgba(0,0,0,.15); }
   .lock-info .weather { display: inline-flex; align-items: center; gap: 6px; height: 24px; margin-bottom: 8px; }
   .lock-info .weather i { color: #ffd54f; font-size: 14px; }
@@ -125,8 +125,8 @@
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
   #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
-  #signInButtonWrapper { display: flex; justify-content: center; margin: 16px 0 6px; }
-  #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; padding: 12px 28px; font-size: 16px; }
+  #signInButtonWrapper { display: flex; justify-content: center; align-items: center; margin: 24px 0 6px; position: relative; z-index: 1; }
+  #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
   #pinSection { display: none; }
   #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
   #lockOverlay[data-step="pin"] #pinSection { display: block; }
@@ -143,7 +143,7 @@
       </span>
     </div>
     <div id="signInButtonWrapper">
-      <button id="lockGoBtn" type="button">Go</button>
+      <button id="lockGoBtn" type="button"><i class="fa-solid fa-arrow-right-to-arc"></i></button>
     </div>
     <div id="pinSection">
       <div id="app-pin">
