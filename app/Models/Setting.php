@@ -19,6 +19,7 @@ class Setting extends Model
         'first_name',
         'dob',
         'login_backgrounds',
+        'selected_login_background',
         'chat_backgrounds',
         'user_id',
         'chat_sounds',

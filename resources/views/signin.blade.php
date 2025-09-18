@@ -73,7 +73,15 @@
             </div>
            <div class="col-lg-6 p-0">
     <div class="w-100 h-100">
-        <img src="{{ URL::asset('/build/img/bg/chatlogo.jpg') }}" class="w-100 h-100 object-fit-cover" alt="Chat Logo">
+        @php
+            $userSetting = App\Models\Setting::first();
+            $loginImages = $userSetting && $userSetting->login_backgrounds ? json_decode($userSetting->login_backgrounds, true) : [];
+            $selectedIdx = $userSetting->selected_login_background ?? null;
+            $bgSrc = ($selectedIdx !== null && isset($loginImages[$selectedIdx]) && $loginImages[$selectedIdx])
+                ? asset($loginImages[$selectedIdx])
+                : URL::asset('/build/img/bg/chatlogo.jpg');
+        @endphp
+        <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
     </div>
 </div>
 

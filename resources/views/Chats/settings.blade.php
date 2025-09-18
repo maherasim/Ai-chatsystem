@@ -432,14 +432,16 @@
                                                                                     src="{{ isset($images[$i - 1]) ? asset($images[$i - 1]) : asset('/build/img/gallery/gallery-01.jpg') }}"
                                                                                     alt="Login Background {{ $i }}"
                                                                                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
-
-                                                                                <div class="img-overlay-1 position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                                                                    style="background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                                    onmouseover="this.style.opacity='1'"
-                                                                                    onmouseout="this.style.opacity='0'">
-                                                                                    <a href="javascript:void(0);"
-                                                                                        onclick="document.getElementById('imageUpload{{ $i }}').click();"
-                                                                                        style="text-decoration: none; font-size: 40px; color: #fff;">+</a>
+                                                                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2"
+                                                                                    style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 10px;"
+                                                                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                    <button type="button" class="btn btn-sm btn-light"
+                                                                                        onclick="document.getElementById('imageUpload{{ $i }}').click();">Upload</button>
+                                                                                    <form action="{{ route('select.login.background') }}" method="POST" class="m-0">
+                                                                                        @csrf
+                                                                                        <input type="hidden" name="index" value="{{ $i - 1 }}">
+                                                                                        <button type="submit" class="btn btn-sm {{ (isset($selected_login_background) && $selected_login_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}">Select</button>
+                                                                                    </form>
                                                                                 </div>
                                                                             </div>
 
