@@ -31,7 +31,15 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}" class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+  integrity="sha512-…(your integrity hash)…"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+    
     @include('layout.partials.head')
 </head>
 <body>
@@ -144,7 +152,7 @@
       </span>
     </div>
     <div id="signInButtonWrapper">
-      <button id="lockGoBtn" type="button"><i class="fa-light fa-right-to-bracket"></i></button>
+      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i>  </button>
     </div>
     <div id="pinSection">
       <div id="app-pin">
