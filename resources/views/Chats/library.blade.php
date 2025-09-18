@@ -97,16 +97,7 @@
                                         class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2">
                                         <i class="ti ti-plus"></i>
                                     </a>
-                                    <div class="dropdown">
-                                        <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default">
-                                            <i class="ti ti-dots-vertical"></i>
-                                        </a>
-                                        <ul class="dropdown-menu p-3">
-                                            <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                    data-bs-target="#invite"><i class="ti ti-send me-2"></i>Invite
-                                                    Others</a></li>
-                                        </ul>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <form id="autoUploadForm" action="{{ route('upload.words') }}" method="POST"
@@ -211,7 +202,27 @@
 
                             <!-- Left Chat Title -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5>Kurd Library</h5>
+                                <h5 class="m-0">Kurd Library</h5>
+                            
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Sort by: {{ isset($selectedLetter) && $selectedLetter ? strtoupper($selectedLetter) : 'All' }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item {{ empty($selectedLetter) ? 'active' : '' }}"
+                                               href="{{ route('chat-library') }}">All</a>
+                                        </li>
+                                        @php $letters = range('A', 'Z'); @endphp
+                                        @foreach($letters as $L)
+                                            @php $l = strtolower($L); @endphp
+                                            <li>
+                                                <a class="dropdown-item {{ isset($selectedLetter) && $selectedLetter === $l ? 'active' : '' }}"
+                                                   href="{{ route('chat-library', ['letter' => $l]) }}">{{ $L }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
                             <!-- /Left Chat Title -->
 

@@ -9,14 +9,22 @@ use App\Models\Setting;
 class LibraryController extends Controller
 {
 
-    public function index()
+    
+    public function index(Request $request)
     {
-        $words = \App\Models\Keyword::orderBy('letter')->orderBy('word')->get();
-
-        // Group by letter
-        $grouped = $words->groupBy('letter');
+        $selectedLetter = strtolower($request->query('letter', ''));
+        if (!preg_match('/^[a-z]$/', $selectedLetter)) {
+            $selectedLetter = null;
+        }
         $headers = Setting::all();
+        $words = Keyword::query()
+            ->when($selectedLetter, fn ($q) => $q->where('letter', $selectedLetter))
+            ->orderBy('letter')
+            ->orderBy('word')
+            ->get();
 
-        return view('Chats.library', compact('grouped', 'headers'));
+        $grouped = $words->groupBy('letter');
+
+        return view('Chats.library', compact('grouped', 'selectedLetter','headers'));
     }
 }
