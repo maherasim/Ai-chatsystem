@@ -161,7 +161,7 @@
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
       </div>
-      <h3 id="app-pin-label">Enter PIN</h3>
+      <h3 id="app-pin-label">Enter PIN (1234) <span id="app-pin-cancel-text" style="cursor:pointer; text-decoration: underline; opacity:.9;">Cancel</span></h3>
       <div id="lockError">Incorrect PIN. Try again.</div>
       <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
       <div class="lock-actions">
@@ -180,6 +180,7 @@
     var pinInput = document.getElementById('pinHiddenInput');
     var errorBox = document.getElementById('lockError');
     var clearBtn = document.getElementById('clearPinBtn');
+    var cancelText = document.getElementById('app-pin-cancel-text');
     var goBtn = document.getElementById('lockGoBtn');
     var timeEl = document.getElementById('lockTime');
     var tempEl = document.getElementById('lockTemp');
@@ -223,6 +224,7 @@
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
     if (goBtn) { goBtn.addEventListener('click', function(){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
+    if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); }); }
     var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ overlay.setAttribute('data-step','out'); resetUI(); }});
     obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
   })();
