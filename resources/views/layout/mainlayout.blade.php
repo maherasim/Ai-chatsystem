@@ -31,7 +31,7 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}" class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" integrity="sha512-5BqXhQnq9K0Jm0oZ4tq7a0m+DW7vJH5Qk9dXhV0dQO7Qn4VbG8x3j8Y4Q0a2Ck1pO8V3D6jv7o5Rz8jYtJfS3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @include('layout.partials.head')
 </head>
 <body>
@@ -108,7 +108,7 @@
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
   #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
-  .lock-info { position: absolute; left: 40px; bottom: 40px; display: flex; align-items: flex-end; gap: 14px; z-index: 1; }
+  .lock-info { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); display: flex; align-items: flex-end; gap: 14px; z-index: 1; }
   .lock-info .time { color: #f5f7fb; font-size: 72px; line-height: 1; text-shadow: 2px 2px 2px rgba(0,0,0,.15); }
   .lock-info .weather { display: inline-flex; align-items: center; gap: 6px; height: 24px; margin-bottom: 8px; }
   .lock-info .weather i { color: #ffd54f; font-size: 14px; }
@@ -144,7 +144,7 @@
       </span>
     </div>
     <div id="signInButtonWrapper">
-      <button id="lockGoBtn" type="button"><i class="fa-solid fa-arrow-right-to-arc"></i></button>
+      <button id="lockGoBtn" type="button"><i class="fa-light fa-right-to-bracket"></i></button>
     </div>
     <div id="pinSection">
       <div id="app-pin">
