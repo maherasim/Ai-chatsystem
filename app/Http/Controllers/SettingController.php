@@ -181,15 +181,25 @@ public function saveScreenLock(Request $request)
 public function unlockScreen(Request $request)
 {
     $request->validate([
-        'password' => 'required|string',
+        'password' => 'nullable|string',
+        'pin' => 'nullable|digits:4',
     ]);
 
-    $user = auth()->user();
-    if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
-        return response()->json(['ok' => false, 'message' => 'Invalid password'], 422);
+    // If PIN provided and matches 1234, unlock immediately
+    if ($request->filled('pin')) {
+        if ($request->pin === '1234') {
+            return response()->json(['ok' => true]);
+        }
+        return response()->json(['ok' => false, 'message' => 'Invalid PIN'], 422);
     }
 
-    return response()->json(['ok' => true]);
+    // Fallback: allow password unlock
+    $user = auth()->user();
+    if ($request->filled('password') && $user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        return response()->json(['ok' => true]);
+    }
+
+    return response()->json(['ok' => false, 'message' => 'Invalid credentials'], 422);
 }
 
 public function toggleTwoFactor(Request $request)

@@ -130,6 +130,7 @@
   .app-pin-digit-value { transition: opacity 250ms, transform 250ms; }
 
   #app-pin-label { color: #e8edf7; font-size: 14px; margin: 6px 0 12px; opacity: .85; }
+  #app-pin-cancel-text { color: #111; background: rgba(255,255,255,0.85); border-radius: 6px; padding: 2px 8px; }
   #lockError { color: #ef5350; display: none; margin-bottom: 8px; font-size: 14px; }
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
@@ -165,7 +166,7 @@
       <div id="lockError">Incorrect PIN. Try again.</div>
       <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
       <div class="lock-actions">
-        <button id="clearPinBtn" class="btn btn-outline-secondary btn-sm">Clear</button>
+        <button id="clearPinBtn" class="btn btn-dark btn-sm">Clear</button>
         <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
           @csrf
           <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
