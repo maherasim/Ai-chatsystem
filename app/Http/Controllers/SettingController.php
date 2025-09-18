@@ -324,11 +324,7 @@ public function selectLoginBackground(Request $request)
     ]);
     $userId = auth()->id();
     $setting = Setting::firstOrNew(['user_id' => $userId]);
-    $images = json_decode($setting->login_backgrounds ?? '[]', true) ?: [];
     $idx = (int)$request->input('index');
-    if (!array_key_exists($idx, $images) || empty($images[$idx])) {
-        return back()->with('error', 'Please upload an image for the chosen slot first.');
-    }
     $setting->selected_login_background = $idx;
     $setting->save();
     return back()->with('success', 'Login background selected.');

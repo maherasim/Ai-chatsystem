@@ -77,9 +77,12 @@
             $userSetting = App\Models\Setting::first();
             $loginImages = $userSetting && $userSetting->login_backgrounds ? json_decode($userSetting->login_backgrounds, true) : [];
             $selectedIdx = $userSetting->selected_login_background ?? null;
-            $bgSrc = ($selectedIdx !== null && isset($loginImages[$selectedIdx]) && $loginImages[$selectedIdx])
-                ? asset($loginImages[$selectedIdx])
-                : URL::asset('/build/img/bg/chatlogo.jpg');
+            $candidate = ($selectedIdx !== null && array_key_exists($selectedIdx, $loginImages)) ? $loginImages[$selectedIdx] : null;
+            if (!$candidate || !is_string($candidate) || $candidate === '') {
+                // if selected slot empty, fallback to first non-empty image
+                foreach ($loginImages as $img) { if ($img) { $candidate = $img; break; } }
+            }
+            $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/chatlogo.jpg');
         @endphp
         <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
     </div>
