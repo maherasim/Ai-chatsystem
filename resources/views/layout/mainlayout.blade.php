@@ -130,7 +130,7 @@
   .app-pin-digit-value { transition: opacity 250ms, transform 250ms; }
 
   #app-pin-label { color: #e8edf7; font-size: 14px; margin: 6px 0 12px; opacity: .85; }
-  #app-pin-cancel-text { color: #111; background: rgba(255,255,255,0.85); border-radius: 6px; padding: 2px 8px; }
+  #app-pin-cancel-text { color: #111;   border-radius: 6px; padding: 2px 8px; }
   #lockError { color: #ef5350; display: none; margin-bottom: 8px; font-size: 14px; }
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
