@@ -92,75 +92,105 @@
     })();
 </script>
 <style>
-    #lockOverlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 27, 61, 0.9);
-        backdrop-filter: blur(6px);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
-    #lockCard {
-        background: #fff;
-        border-radius: 12px;
-        padding: 24px;
-        width: 100%;
-        max-width: 380px;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.15);
-        text-align: center;
-    }
-    #lockCard h3 { margin-bottom: 8px; color: #0f1b3d; }
-    #lockCard p { margin-bottom: 16px; color: #4a5568; }
-    #lockCard input[type="password"] { width: 100%; margin-bottom: 12px; }
-    #lockError { color: #e53935; display: none; margin-bottom: 8px; font-size: 14px; }
-    .lock-actions { display: flex; gap: 8px; justify-content: center; }
-    .lock-actions .btn { min-width: 110px; }
-    .lock-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px; background: #eef2f7; display:flex; align-items:center; justify-content:center; font-size:28px; color:#0f1b3d; }
-  </style>
-  <div id="lockOverlay">
-    <div id="lockCard">
-      <div class="lock-avatar"><i class="bi bi-lock"></i></div>
-      <h3>Screen Locked</h3>
-      <p>Enter your password to continue</p>
-      <div id="lockError">Incorrect password. Try again.</div>
-      <input id="unlockPassword" type="password" class="form-control" placeholder="Password" autocomplete="current-password">
-      <div class="lock-actions">
-        <button id="unlockBtn" class="btn btn-primary">Unlock</button>
-        <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="btn btn-outline-secondary">Logout</button>
-        </form>
-      </div>
+  #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
+  #lockCard { background: transparent; border-radius: 16px; padding: 24px; width: 100%; max-width: 460px; text-align: center; }
+  .lock-info { display: flex; align-items: flex-end; justify-content: center; gap: 14px; margin-bottom: 12px; }
+  .lock-info .time { color: #f5f7fb; font-size: 72px; line-height: 1; text-shadow: 2px 2px 2px rgba(0,0,0,.15); }
+  .lock-info .weather { display: inline-flex; align-items: center; gap: 6px; height: 24px; margin-bottom: 8px; }
+  .lock-info .weather i { color: #ffd54f; font-size: 14px; }
+  .lock-info .weather span { color: #fff; font-size: 16px; opacity: .9; }
+
+  #app-pin { display: flex; gap: 12px; justify-content: center; margin: 18px 0 6px; }
+  .app-pin-digit { align-items: center; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 2px 2px 2px rgba(0,0,0,0.06); color: #f5f7fb; display: inline-flex; font-size: 28px; height: 68px; width: 60px; justify-content: center; position: relative; transition: background-color 250ms, border-color 250ms; }
+  .app-pin-digit.focused:before { content: ""; position: absolute; bottom: 10px; left: 15%; width: 70%; height: 3px; background: #f5f7fb; border-radius: 10px; opacity: 1; animation: blink 2s ease-in-out infinite; }
+  .app-pin-digit.hidden .app-pin-digit-value { opacity: 0; transform: scale(0.25); }
+  .app-pin-digit.hidden:after { content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #f5f7fb; opacity: 1; transform: scale(1); }
+  .app-pin-digit-value { transition: opacity 250ms, transform 250ms; }
+
+  #app-pin-label { color: #e8edf7; font-size: 14px; margin: 6px 0 12px; opacity: .85; }
+  #lockError { color: #ef5350; display: none; margin-bottom: 8px; font-size: 14px; }
+  .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+  .lock-actions .btn { min-width: 120px; }
+  #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
+  @keyframes blink { 0%,25%,100%{opacity:1} 50%{opacity:0} }
+</style>
+<div id="lockOverlay">
+  <div id="lockCard">
+    <div class="lock-info">
+      <span id="lockTime" class="time">12:34</span>
+      <span class="weather">
+        <i class="ti ti-sun"></i>
+        <span id="lockTemp">75</span><span>°F</span>
+      </span>
+    </div>
+    <div id="app-pin">
+      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+      <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+    </div>
+    <h3 id="app-pin-label">Enter PIN</h3>
+    <div id="lockError">Incorrect PIN. Try again.</div>
+    <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
+    <div class="lock-actions">
+      <button id="clearPinBtn" class="btn btn-outline-secondary btn-sm">Clear</button>
+      <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
+      </form>
     </div>
   </div>
+  </div>
 <script>
-  (function() {
+  (function(){
     var overlay = document.getElementById('lockOverlay');
-    var unlockBtn = document.getElementById('unlockBtn');
-    var pwd = document.getElementById('unlockPassword');
-    var err = document.getElementById('lockError');
-    function submitUnlock() {
-      if (!pwd.value) return;
+    var pinInput = document.getElementById('pinHiddenInput');
+    var errorBox = document.getElementById('lockError');
+    var clearBtn = document.getElementById('clearPinBtn');
+    var timeEl = document.getElementById('lockTime');
+    var tempEl = document.getElementById('lockTemp');
+    var digitBoxes = Array.from(document.querySelectorAll('#app-pin .app-pin-digit'));
+    var digitVals  = Array.from(document.querySelectorAll('#app-pin .app-pin-digit-value'));
+
+    function seg(n){ return n < 10 ? ('0'+n) : (''+n); }
+    function hr(h){ var x = h % 12; return x === 0 ? 12 : x; }
+    function tick(){ try { var d=new Date(); timeEl.textContent = hr(d.getHours())+':'+seg(d.getMinutes()); }catch(e){} }
+    setInterval(tick,1000); tick();
+    function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+    function setTemp(){ try{ tempEl.textContent = String(rnd(65,85)); }catch(e){} }
+    setTemp();
+
+    function resetUI(){ pinInput.value=''; digitVals.forEach(function(s){s.textContent='';}); digitBoxes.forEach(function(b){b.classList.remove('hidden','focused');}); if(digitBoxes[0]) digitBoxes[0].classList.add('focused'); errorBox.style.display='none'; }
+    function focusRing(len){ digitBoxes.forEach(function(b){b.classList.remove('focused');}); if(len>=0 && len<digitBoxes.length){ digitBoxes[len].classList.add('focused'); } }
+    function maskLater(i){ setTimeout(function(){ digitBoxes[i].classList.add('hidden'); }, 500); }
+
+    function submitPin(pin){
       fetch('{{ route('user.unlockScreen') }}', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
-        body: JSON.stringify({ password: pwd.value })
-      }).then(function(r){ return r.json(); }).then(function(res){
-        if (res && res.ok) {
-          err.style.display = 'none';
-          pwd.value = '';
-          overlay.style.display = 'none';
-          // restart idle timer after unlock
-          document.dispatchEvent(new Event('mousemove'));
-        } else {
-          err.style.display = 'block';
-        }
-      }).catch(function(){ err.style.display = 'block'; });
+        method:'POST', headers:{ 'Content-Type':'application/json', 'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+        body: JSON.stringify({ pin: pin })
+      }).then(function(r){return r.json();}).then(function(res){
+        if(res && res.ok){ overlay.style.display='none'; resetUI(); document.dispatchEvent(new Event('mousemove')); }
+        else{ errorBox.style.display='block'; resetUI(); pinInput.focus(); }
+      }).catch(function(){ errorBox.style.display='block'; resetUI(); pinInput.focus(); });
     }
-    if (unlockBtn) unlockBtn.addEventListener('click', submitUnlock);
-    if (pwd) pwd.addEventListener('keydown', function(e){ if (e.key === 'Enter') submitUnlock(); });
+
+    pinInput.addEventListener('input', function(){
+      var raw = pinInput.value.replace(/\D+/g,'').slice(0,4); pinInput.value = raw;
+      digitVals.forEach(function(s,i){ s.textContent = raw[i] ? raw[i] : ''; });
+      focusRing(Math.min(raw.length,3));
+      for(var i=0;i<raw.length;i++){ if(!digitBoxes[i].classList.contains('hidden')){ maskLater(i); } }
+      for(var j=raw.length;j<digitBoxes.length;j++){ digitBoxes[j].classList.remove('hidden'); }
+      if(raw.length===4){ submitPin(raw); }
+    });
+
+    overlay.addEventListener('click', function(e){ if(e.target===overlay){ pinInput.focus(); }});
+    clearBtn.addEventListener('click', function(){ resetUI(); pinInput.focus(); });
+
+    window.showLockOverlay = function(){ overlay.style.display='flex'; setTemp(); resetUI(); setTimeout(function(){ pinInput.focus(); }, 50); };
+    window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
+
+    var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ resetUI(); setTimeout(function(){ pinInput.focus(); },50); }});
+    obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
   })();
 </script>
 </html>
