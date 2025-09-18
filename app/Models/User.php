@@ -42,6 +42,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'dob',
         'screen_lock',
         'two_factor_auth', 
+        'policy_accepted',
+        'agreement_accepted',
+        'country',
+        'card_image'
     ];
 
  

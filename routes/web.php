@@ -8,6 +8,7 @@ use App\Models\User;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
+Route::post('profile-completion', [CustomAuthController::class, 'completeprofile'])->name('profile.complete');
 Route::get('register', [CustomAuthController::class, 'register'])->name('register-user');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
@@ -20,7 +21,33 @@ Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
 
 Route::get('/', function () {
-    return view('signin');
+
+
+ $response = Http::withOptions([
+        'verify' => false, // ✅ disable SSL verification (local only)
+    ])->get('https://admin.onlinesystems.info/api/settings/policy');
+
+    if ($response->successful()) {
+        $policy = $response->json(); // Decode JSON response
+        $policyTerm = $policy['policy_term'] ?? 'No policy found';
+    } else {
+        $policyTerm = 'Failed to load policy';
+    }
+
+$response = Http::withOptions([
+        'verify' => false, // ✅ disable SSL verification (local only)
+    ])->get('https://admin.onlinesystems.info/api/settings/agreement');
+
+    if ($response->successful()) {
+        $agreement = $response->json(); // Decode JSON response
+        $agreement_text = $agreement['agreement_text'] ?? 'No agreement found';
+    } else {
+        $agreement_text = 'Failed to load agreement';
+    }
+
+    return view('signin', compact('policyTerm', 'agreement_text'));
+
+
 });
 
 

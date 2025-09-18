@@ -15,9 +15,64 @@ class CustomAuthController extends Controller
         return view('signin');
     }  
       
-
-
 public function customLogin(Request $request)
+{
+    $credentials = $request->only('_id', 'email', 'password');
+
+    
+    if (!Auth::attempt($credentials)) {
+        return response()->json(['success' => false, 'message' => 'Invalid credentials']);
+    }
+
+    $user = Auth::user();
+
+    //Check if user already completed profile & accepted policy
+    if ($user->policy_accepted && $user->phone && $user->image && $user->card_image) {
+        return response()->json(['success' => true, 'redirect' => route('home')]);
+    }
+
+
+    
+    return response()->json([
+        'success' => false,
+        'require_info' => true,
+        'user' => $user
+    ]);
+}
+
+public function completeprofile(Request $request)
+{
+    $user = Auth::user();
+
+    $request->validate([
+        'phone' => 'required',
+        'image' => 'required|image',
+        'cardImgInput' => 'required|image',
+    ]);
+
+    if ($request->hasFile('image')) {
+        $user->profile_image = $request->file('image')->store('profiles', 'public');
+    }
+
+    if ($request->hasFile('cardImgInput')) {
+        $user->card_image = $request->file('cardImgInput')->store('cards', 'public');
+    }
+
+    $user->phone = $request->phone;
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->country = $request->country;
+    $user->policy_accepted = true;
+    $user->agreement_accepted = true;
+    $user->save();
+
+    return redirect("home")->withSuccess('You have signed-in');
+
+    //return response()->json(['success' => true, 'redirect' => route('home')]);
+}
+
+
+public function customLogin_old(Request $request)
 {
     // ✅ Validate input
     $request->validate([
