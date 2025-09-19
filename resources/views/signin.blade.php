@@ -3,20 +3,20 @@
 @section('content')
 
 <style>
-.img-fluid {
-    max-width: 50%;
-    height: auto;
-}
+    .img-fluid {
+        max-width: 50%;
+        height: auto;
+    }
 </style>
 <div class="container-fuild">
     <div class=" w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
         <div class="row">
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap login-bg1 ">
                     <div class="col-md-9 mx-auto p-4">
-                        <form action="{{ url('custom-login') }}" method="POST" class="flex-fill"> 
+                        <form action="{{ url('custom-login') }}" method="POST" class="flex-fill">
                             @csrf
-                                                  <div>
+                            <div>
                                 <div class=" mx-auto mb-5  text-center">
                                     <img src="{{URL::asset('/build/img/welogo.svg')}}"
                                         class="img-fluid " alt="Logo">
@@ -37,10 +37,10 @@
                                             </div>
                                             <div class="text-danger pt-2">
                                                 @error('0')
-                                                    {{ $message }}
+                                                {{ $message }}
                                                 @enderror
                                                 @error('email')
-                                                    {{ $message }}
+                                                {{ $message }}
                                                 @enderror
                                             </div>
                                             <label class="form-label">Password</label>
@@ -50,43 +50,43 @@
                                             </div>
                                             <div class="text-danger pt-2">
                                                 @error('0')
-                                                    {{ $message }}
+                                                {{ $message }}
                                                 @enderror
                                                 @error('password')
-                                                    {{ $message }}
+                                                {{ $message }}
                                                 @enderror
                                             </div>
                                         </div>
-                                        
+
                                         <div class="mb-4">
                                             <button type="submit" class="btn btn-primary w-100 justify-content-center">Sign In</button>
                                         </div>
-                                         
+
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </form>
                     </div>
 
                 </div>
             </div>
-           <div class="col-lg-6 p-0">
-    <div class="w-100 h-100">
-        @php
-            $userSetting = App\Models\Setting::first();
-            $loginImages = $userSetting && $userSetting->login_backgrounds ? json_decode($userSetting->login_backgrounds, true) : [];
-            $selectedIdx = $userSetting->selected_login_background ?? null;
-            $candidate = ($selectedIdx !== null && array_key_exists($selectedIdx, $loginImages)) ? $loginImages[$selectedIdx] : null;
-            if (!$candidate || !is_string($candidate) || $candidate === '') {
-                // if selected slot empty, fallback to first non-empty image
-                foreach ($loginImages as $img) { if ($img) { $candidate = $img; break; } }
-            }
-            $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/chatlogo.jpg');
-        @endphp
-        <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
-    </div>
-</div>
+            <div class="col-lg-8 col-md-12 col-sm-12 p-0">
+                <div class="w-100 h-100">
+                    @php
+                    $userSetting = App\Models\Setting::first();
+                    $loginImages = $userSetting && $userSetting->login_backgrounds ? json_decode($userSetting->login_backgrounds, true) : [];
+                    $selectedIdx = $userSetting->selected_login_background ?? null;
+                    $candidate = ($selectedIdx !== null && array_key_exists($selectedIdx, $loginImages)) ? $loginImages[$selectedIdx] : null;
+                    if (!$candidate || !is_string($candidate) || $candidate === '') {
+                    // if selected slot empty, fallback to first non-empty image
+                    foreach ($loginImages as $img) { if ($img) { $candidate = $img; break; } }
+                    }
+                    $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/homepage.jpg');
+                    @endphp
+                    <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
+                </div>
+            </div>
 
 
         </div>
