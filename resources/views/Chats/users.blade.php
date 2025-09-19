@@ -2635,7 +2635,7 @@
                 <select name="type"
                     style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>User type</option>
-                    <option value="admin">Admin</option>
+                   
                     <option value="subadmin">Subadmin</option>
                     <option value="employee">Employee</option>
                     <option value="developer">Developer</option>
@@ -2681,7 +2681,7 @@
                             <option value="" selected>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            
                         </select>
                         <input type="text" placeholder="Username and Lastname" required name="name"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
