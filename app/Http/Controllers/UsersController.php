@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -104,30 +105,103 @@ class UsersController extends Controller
             $actions[$action] = true; // turn "on" into true
         }
     }
-       
+    
+    // Step 3: Generate role-based user_id (sub_1000/dev_1000/emp_1000 ...)
+    $type = $validated['type'];
+    $userId = $this->generateRoleBasedUserId($type);
+
     // Step 4: Store in database
+    $rawPassword = $validated['passw'] ?? '';
     $user=User::create([
         'name' => $validated['name'],
         'email' => $validated['email'],
-        'password' => Hash::make($validated['passw'] ?? ''),
+        'password' => Hash::make($rawPassword),
         'phone' => $validated['phone'] ?? null,
         'department' => $validated['department'] ?? null,
         'image' => $imagePath,
         'banner' => $banPath,
         'gender' => $validated['gender'] ?? null,
-        'type'   => $validated['type'] ?? null,
+        'type'   => $type ?? null,
+        'user_id' => $userId,
         'active' => true,
         'permissions' => $permissions,
     ]);
     if($user){
-      
-    return redirect()->back()->with('success', 'User registered successfully!');
+      // Step 5: Send role-specific welcome email
+      try {
+        $this->sendWelcomeEmail($user, $rawPassword);
+      } catch (\Throwable $e) {
+        // Silently ignore email errors to not block user creation
+      }
+
+      return redirect()->back()->with('success', 'User registered successfully!');
     }
     else{
         return redirect()->back()->with('error', 'User registered failed!!'); 
     }
 
 }
+
+  /**
+   * Generate the next role-based user_id.
+   * subadmin => sub_1000+n, developer => dev_1000+n, employee => emp_1000+n
+   */
+  private function generateRoleBasedUserId($type)
+  {
+    $map = [
+      'subadmin' => 'sub',
+      'developer' => 'dev',
+      'employee' => 'emp',
+    ];
+    $prefix = $map[$type] ?? 'emp';
+
+    $existingIds = User::where('type', $type)
+      ->whereNotNull('user_id')
+      ->pluck('user_id')
+      ->toArray();
+
+    $maxNumber = 999; // so first becomes 1000
+    foreach ($existingIds as $eid) {
+      if (is_string($eid) && strpos($eid, $prefix . '_') === 0) {
+        $numPart = substr($eid, strlen($prefix) + 1);
+        if (ctype_digit($numPart)) {
+          $num = (int) $numPart;
+          if ($num > $maxNumber) {
+            $maxNumber = $num;
+          }
+        }
+      }
+    }
+
+    $next = $maxNumber + 1;
+    return $prefix . '_' . $next;
+  }
+
+  /**
+   * Send role-specific welcome email to the newly created user.
+   */
+  private function sendWelcomeEmail(User $user, string $rawPassword)
+  {
+    $email = $user->email;
+    $type = $user->type;
+
+    if ($type === 'subadmin') {
+      $subject = 'Your Subadmin Account Details';
+      $body = "username(email): {$email}\n" .
+              "password: {$rawPassword}\n" .
+              "login link will be https://admin.onlinesystems.info/\n";
+    } else { // developer or employee
+      $subject = 'Your Account Details';
+      $body = "user_id: {$user->user_id}\n" .
+              "username(email): {$email}\n" .
+              "password: {$rawPassword}\n" .
+              "login link will be https://team.onlinesystems.info/\n";
+    }
+
+    Mail::raw($body, function ($message) use ($email, $subject) {
+      $message->to($email)->subject($subject);
+    });
+  }
 
 
 public function destroy($id){

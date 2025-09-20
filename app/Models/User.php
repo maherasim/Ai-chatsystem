@@ -43,6 +43,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'screen_lock',
         'screen_lock_minutes',
         'two_factor_auth', 
+        'type',
+        'user_id',
     ];
 
  
