@@ -6,7 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Models\User;
 use App\Http\Controllers\KeywordController;
 use App\Models\Setting;
-
+use Illuminate\Support\Facades\Mail;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -23,6 +23,20 @@ Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->nam
 
 Route::get('/', function () {
     return view('signin');
+});
+
+// routes/web.php
+
+
+Route::get('/test-email', function () {
+    $toEmail = 'asimriazasim107@gmail.com';
+    $subject = 'Test Email from Laravel';
+
+    $data = Mail::raw('This is a test email from Laravel.', function ($message) use ($toEmail, $subject) {
+        $message->to($toEmail)->subject($subject);
+    });
+
+    dd($data); // Dump the result
 });
 
 

@@ -57,9 +57,9 @@ class UsersController extends Controller
     $validated = $request->validate([
         'name'      => 'required|string|max:255',
         'email'     => 'required|email|unique:users,email|same:confirm_email',
-        'confirm_email' => 'required',
+        'confirm_email' => 'nullable',
         'passw'     => 'required|min:6|same:rpassw',  // password must match confirm
-        'rpassw'    => 'required',
+        'rpassw'    => 'nullable',
         'gender'    => 'nullable|string',
         'type'      => 'required',
       //  'phone'     => 'nullable|string',
