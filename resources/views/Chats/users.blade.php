@@ -3332,4 +3332,27 @@
         input.type = input.type === "password" ? "text" : "password";
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var parentToggles = document.querySelectorAll('input[type="checkbox"][name^="permissions["][name$="[enabled]"]');
+        parentToggles.forEach(function(parentInput) {
+            parentInput.addEventListener('change', function() {
+                if (parentInput.checked) return;
+                var match = parentInput.name.match(/^permissions\[(.+?)\]\[enabled\]$/);
+                if (!match) return;
+                var moduleKey = match[1];
+                ['write', 'read', 'delete'].forEach(function(action) {
+                    var childList = document.getElementsByName('permissions[' + moduleKey + '][' + action + ']');
+                    if (childList && childList.length > 0) {
+                        var childInput = childList[0];
+                        if (childInput.checked) {
+                            childInput.checked = false;
+                            childInput.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endsection
