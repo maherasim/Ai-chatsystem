@@ -82,7 +82,7 @@
                     // if selected slot empty, fallback to first non-empty image
                     foreach ($loginImages as $img) { if ($img) { $candidate = $img; break; } }
                     }
-                    $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/homepage.jpg');
+                    $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/chatlogo.jpg');
                     @endphp
                     <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
                 </div>
