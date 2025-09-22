@@ -289,11 +289,18 @@
       fetch(url).then(function(r){return r.json();}).then(renderForecast).catch(function(){});
     }
 
-    try{
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(pos){ fetchForecast(pos.coords.latitude, pos.coords.longitude); }, function(){ fetchForecast(36.19,44.01); }, { timeout: 4000 });
-      } else { fetchForecast(36.19,44.01); }
-    }catch(e){}
+    function loadForecastIfNeeded(){
+      try{
+        if(!overlay) return;
+        if(overlay.style.display === 'none') return; // overlay not visible
+        if(overlay.getAttribute('data-step') !== 'out') return; // skip when PIN step is open
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(function(pos){ fetchForecast(pos.coords.latitude, pos.coords.longitude); }, function(){ fetchForecast(36.19,44.01); }, { timeout: 4000 });
+        } else {
+          fetchForecast(36.19,44.01);
+        }
+      }catch(e){}
+    }
 
     function resetUI(){ pinInput.value=''; digitVals.forEach(function(s){s.textContent='';}); digitBoxes.forEach(function(b){b.classList.remove('hidden','focused');}); if(digitBoxes[0]) digitBoxes[0].classList.add('focused'); errorBox.style.display='none'; }
     function focusRing(len){ digitBoxes.forEach(function(b){b.classList.remove('focused');}); if(len>=0 && len<digitBoxes.length){ digitBoxes[len].classList.add('focused'); } }
@@ -329,8 +336,15 @@
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
     if (goBtn) { goBtn.addEventListener('click', function(e){ e.stopPropagation(); overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
-    if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); }); }
-    var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ overlay.setAttribute('data-step','out'); resetUI(); }});
+    if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); loadForecastIfNeeded(); }); }
+    var obs = new MutationObserver(function(){
+      if(overlay.style.display!=='none'){
+        // When overlay is shown, default to OUT screen and load activity
+        overlay.setAttribute('data-step','out');
+        resetUI();
+        loadForecastIfNeeded();
+      }
+    });
     obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
   })();
 </script>
