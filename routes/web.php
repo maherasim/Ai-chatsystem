@@ -27,24 +27,6 @@ Route::get('/', function () {
 
 // routes/web.php
 
-
-<<<<<<< HEAD
-Route::get('/test-email', function () {
-    $toEmail = 'asimriazasim107@gmail.com';
-    $subject = 'Test Email from Laravel';
-
-    $data = Mail::raw('This is a test email from Laravel.', function ($message) use ($toEmail, $subject) {
-        $message->to($toEmail)->subject($subject);
-    });
-
-    return "Test email has been sent successfully!";
-
-});
-
-
-=======
->>>>>>> fix/screen-lock
-
 Route::get('/home', function () {
     $header = Setting::all();
     $setting = Setting::first();

@@ -182,13 +182,13 @@ public function unlockScreen(Request $request)
 {
     $request->validate([
         'password' => 'nullable|string',
-        'pin' => 'nullable|string|max:4',
+        'pin' => 'nullable|string|max:8',
     ]);
 
-    // If PIN provided and matches 1234, unlock immediately
+    // If PIN provided and matches 12345678, unlock immediately
     if ($request->filled('pin')) {
         $pin = preg_replace('/\D+/', '', (string) $request->pin);
-        if ($pin === '1234') {
+        if ($pin === '12345678') {
             return response()->json(['ok' => true]);
         }
         return response()->json(['ok' => false, 'message' => 'Invalid PIN'], 422);
