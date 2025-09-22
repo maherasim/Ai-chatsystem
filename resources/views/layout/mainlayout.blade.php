@@ -143,7 +143,7 @@
   .section-title { display: inline-flex; align-items: center; gap: 8px; color: #e8edf7; font-weight: 600; font-size: 18px; margin-left: 6px; }
   .section-title i { color: #ffd54f; }
   #forecastRow { display: flex; gap: 12px; margin-top: 12px; overflow-x: auto; padding-bottom: 6px; }
-  .forecast-card { flex: 0 0 150px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 12px; color: #fff; text-align: center; backdrop-filter: blur(2px); }
+  .forecast-card { flex: 0 0 150px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 12px; color: #fff; text-align: center; backdrop-filter: blur(2px); min-height: 180px; }
   .forecast-day { font-weight: 700; margin-bottom: 4px; opacity: .95; letter-spacing: .4px; }
   .forecast-icon { font-size: 28px; margin: 6px 0; }
   .day-weather-icon { --fa-primary-color:#ffd54f; --fa-secondary-color:#ffffff; --fa-secondary-opacity:.35; }
