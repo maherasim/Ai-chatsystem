@@ -174,7 +174,7 @@ body, html {
             <form id="loginForm" action="{{ url('custom-login') }}" method="POST">
                 @csrf
                 <div class="input-icon">
-                    <input type="text" name="_id" placeholder="User ID" style="background-color:#ECECEC">
+                    <input type="text" name="user_id" placeholder="User ID" style="background-color:#ECECEC">
                     <img src="{{URL::asset('/build/img/User Circle.svg')}}" alt="">
                 </div>
                 <div class="input-icon">
