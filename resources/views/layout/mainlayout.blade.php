@@ -146,6 +146,7 @@
   .forecast-card { flex: 0 0 150px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 12px; color: #fff; text-align: center; backdrop-filter: blur(2px); }
   .forecast-day { font-weight: 700; margin-bottom: 4px; opacity: .95; letter-spacing: .4px; }
   .forecast-icon { font-size: 28px; margin: 6px 0; }
+  .day-weather-icon { --fa-primary-color:#ffd54f; --fa-secondary-color:#ffffff; --fa-secondary-opacity:.35; }
   .forecast-temp { font-size: 15px; opacity: .95; }
 
   #app-pin { display: flex; gap: 12px; justify-content: center; margin: 18px 0 6px; }
@@ -257,13 +258,13 @@
 
     function iconForCode(code){
       code = Number(code);
-      // Map to distinct visuals like in the mock: sun, cloud-sun, cloud, rain, thunder
-      if(code === 0) return 'ti-sun'; // clear
-      if([1,2,3].indexOf(code) !== -1) return 'ti-cloud-sun'; // mainly clear
-      if([45,48].indexOf(code) !== -1) return 'ti-cloud'; // fog
-      if((code>=51 && code<=57) || (code>=61 && code<=67) || (code>=80 && code<=82)) return 'ti-cloud-rain'; // drizzle/rain
-      if(code===95 || code===96 || code===99) return 'ti-cloud-storm'; // thunder
-      return 'ti-cloud';
+      // Return FA duotone with solid fallback so it renders even without Pro
+      if(code === 0) return 'fa-duotone fa-sun fa-solid';
+      if([1,2,3].indexOf(code) !== -1) return 'fa-duotone fa-cloud-sun fa-solid';
+      if([45,48].indexOf(code) !== -1) return 'fa-duotone fa-cloud fa-solid';
+      if((code>=51 && code<=57) || (code>=61 && code<=67) || (code>=80 && code<=82)) return 'fa-duotone fa-cloud-rain fa-solid';
+      if(code===95 || code===96 || code===99) return 'fa-duotone fa-cloud-bolt fa-solid';
+      return 'fa-duotone fa-cloud fa-solid';
     }
 
     function renderForecast(data){
@@ -279,7 +280,7 @@
           var card = document.createElement('div');
           card.className = 'forecast-card';
           card.innerHTML = '<div class="forecast-day">'+dayName(d.getDay())+'</div>'+
-                           '<div class="forecast-icon"><i class="ti '+iconForCode(wCodes[i])+'"></i></div>'+
+                           '<div class="forecast-icon"><i class="'+iconForCode(wCodes[i])+' day-weather-icon"></i></div>'+
                            '<div class="forecast-temp">'+Math.round(tMax[i])+'°F / '+Math.round(tMin[i])+'°F</div>';
           forecastRow.appendChild(card);
         }
