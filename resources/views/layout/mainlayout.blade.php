@@ -293,17 +293,50 @@
     }
 
     #lockGoBtn {
-        backdrop-filter: blur(3px);
-        background-color: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #f5f7fb;
-        border-radius: 999px;
-        width: 64px;
-        height: 64px;
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        padding: 0 22px;
+        height: 44px;
+        min-width: 96px;
+        border-radius: 999px;
+        color: #f5f7fb;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.12));
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 6px 12px rgba(18, 28, 45, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+        outline: none;
+        transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+        overflow: hidden;
+    }
+
+    #lockGoBtn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.18) 25%, rgba(255, 255, 255, 0) 55%);
+        pointer-events: none;
+        mix-blend-mode: overlay;
+    }
+
+    #lockGoBtn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 16px rgba(18, 28, 45, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    #lockGoBtn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(18, 28, 45, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    #lockGoBtn i {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
     }
 
     .lock-bottom {
