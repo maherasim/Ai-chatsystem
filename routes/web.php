@@ -45,6 +45,7 @@ $response = Http::withOptions([
         $agreement_text = 'Failed to load agreement';
     }
 
+
     return view('signin', compact('policyTerm', 'agreement_text'));
 
 
