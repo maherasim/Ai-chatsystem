@@ -178,16 +178,9 @@
         <div class="lock-left">
           <div class="lock-info">
             <span id="lockTime" class="time">12:34</span>
-            <span class="weather">
-              <i class="ti ti-sun"></i>
-              <span id="lockTemp">75</span><span>°F</span>
-            </span>
+           
           </div>
-          <div id="lockEvent" class="lock-event">
-            <i class="ti ti-bell"></i>
-            <span id="lockEventText">No upcoming events</span>
-            <span id="lockEventTime" class="time-badge"></span>
-          </div>
+          
           <div id="lockDateText" class="lock-date">Date: </div>
           <div class="quick-cards">
             <div class="quick-card"><i class="ti ti-sun"></i><span>Weather</span></div>
