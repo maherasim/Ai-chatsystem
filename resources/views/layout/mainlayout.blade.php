@@ -472,7 +472,7 @@
 }
 
 .lock-date {
-  font-size: 32px;     /* ✅ bigger date text */
+  font-size: 26px;     /* slightly smaller */
   font-weight: 600;
   line-height: 1.2;
   color: #f5f7fb;
