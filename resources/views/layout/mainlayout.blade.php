@@ -112,7 +112,7 @@
 @endphp
 <style>
   #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
-  #lockCard { background: transparent; border-radius: 16px; padding: 24px; width: 100%; max-width: 460px; text-align: center; z-index: 1; }
+  #lockCard { background: transparent; border-radius: 16px; padding: 16px; width: 100%; max-width: 1280px; text-align: left; position: relative; }
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
   #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; pointer-events: none; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
@@ -162,7 +162,7 @@
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
   #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
-  #signInButtonWrapper { display: flex; justify-content: center; align-items: center; margin: 24px 0 6px; position: relative; z-index: 2; cursor: pointer; }
+  #signInButtonWrapper { position: absolute; top: 12px; right: 12px; display: flex; justify-content: center; align-items: center; z-index: 2; cursor: pointer; }
   #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
   #pinSection { display: none; }
   #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
@@ -185,11 +185,6 @@
     <div class="lock-main">
       <div class="lock-top">
         <div class="lock-left">
-          <div class="lock-info">
-            <span id="lockTime" class="time">12:34</span>
-           
-          </div>
-          
           <div id="lockDateText" class="lock-date">Date: </div>
           <div class="quick-cards">
             <div class="quick-card"><i class="ti ti-sun"></i><span>Weather</span></div>
@@ -202,7 +197,7 @@
       </div>
 
       <div class="lock-bottom">
-        <div class="section-title"><i class="ti ti-sun"></i><span>Current Activity</span></div>
+        <div class="section-title"><i class="ti 	i-sun"></i><span>Current Activity</span></div>
         <div id="forecastRow"></div>
       </div>
     </div>
