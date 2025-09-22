@@ -190,7 +190,7 @@
       </div>
 
       <div class="lock-bottom">
-        <div class="section-title"><i class="ti ti-sun"></i><span>How's it look out there?</span></div>
+        <div class="section-title"><i class="ti ti-sun"></i><span>Current Activity</span></div>
         <div id="forecastRow"></div>
       </div>
     </div>
