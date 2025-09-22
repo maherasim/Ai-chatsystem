@@ -556,15 +556,19 @@
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
+        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
       </div>
       <h3 id="app-pin-label">
-        Enter PIN (1234)
+        Enter PIN (12345678)
         <span id="app-pin-cancel-text" style="cursor:pointer; text-decoration: underline; opacity:.9;">
           Cancel
         </span>
       </h3>
       <div id="lockError">Incorrect PIN. Try again.</div>
-      <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
+      <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="8" autocomplete="one-time-code" />
     </div>
     <!-- /pinSection -->
   </div>
@@ -586,6 +590,7 @@
         var forecastRow = document.getElementById('forecastRow');
         var digitBoxes = Array.from(document.querySelectorAll('#app-pin .app-pin-digit'));
         var digitVals = Array.from(document.querySelectorAll('#app-pin .app-pin-digit-value'));
+        var PIN_LEN = digitBoxes.length;
 
         function seg(n) {
             return n < 10 ? ('0' + n) : ('' + n);
@@ -747,12 +752,12 @@
         }
 
         pinInput.addEventListener('input', function() {
-            var raw = pinInput.value.replace(/\D+/g, '').slice(0, 4);
+            var raw = pinInput.value.replace(/\D+/g, '').slice(0, PIN_LEN);
             pinInput.value = raw;
             digitVals.forEach(function(s, i) {
                 s.textContent = raw[i] ? raw[i] : '';
             });
-            focusRing(Math.min(raw.length, 3));
+            focusRing(Math.min(raw.length, PIN_LEN - 1));
             for (var i = 0; i < raw.length; i++) {
                 if (!digitBoxes[i].classList.contains('hidden')) {
                     maskLater(i);
@@ -761,7 +766,7 @@
             for (var j = raw.length; j < digitBoxes.length; j++) {
                 digitBoxes[j].classList.remove('hidden');
             }
-            if (raw.length === 4) {
+            if (raw.length === PIN_LEN) {
                 submitPin(raw);
             }
         });
