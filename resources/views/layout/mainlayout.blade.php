@@ -33,8 +33,7 @@
     <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}"
         class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-…(your integrity hash)…" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
     @include('layout.partials.head')
@@ -70,8 +69,9 @@
                 var overlay = document.getElementById('lockOverlay');
                 if (overlay) {
                     overlay.style.display = 'flex';
-                    var input = document.getElementById('unlockPassword');
-                    if (input) input.focus();
+                    overlay.setAttribute('data-step', 'out');
+                    var btn = document.getElementById('lockGoBtn');
+                    if (btn) btn.focus();
                 }
             }
 
@@ -289,7 +289,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1;
+        z-index: 10001;
     }
 
     #lockGoBtn {
@@ -416,7 +416,9 @@
         border-radius: 50%;
         background: #f5f7fb;
         opacity: 1;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
+        top: 50%;
+        left: 50%;
     }
 
     .app-pin-digit-value {
@@ -529,7 +531,7 @@
 
       <div class="lock-bottom">
         <div class="section-title">
-          <i class="ti ti-sun"></i><span>Current Activity</span>
+          <i class="fa-solid fa-sun"></i><span>Current Activity</span>
         </div>
         <div id="forecastRow"></div>
       </div>
@@ -758,10 +760,12 @@
                 pinInput.focus();
             }
         });
-        clearBtn.addEventListener('click', function() {
-            resetUI();
-            pinInput.focus();
-        });
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                resetUI();
+                pinInput.focus();
+            });
+        }
 
         window.showLockOverlay = function() {
             overlay.style.display = 'flex';
