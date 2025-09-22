@@ -112,12 +112,12 @@
 @endphp
 <style>
   #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
-  #lockCard { background: transparent; border-radius: 16px; padding: 24px; width: 100%; max-width: 1280px; text-align: left; position: relative; }
+  #lockCard { background: transparent; border-radius: 16px; padding: 16px; width: 100%; max-width: 1280px; text-align: left; position: relative; }
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
   #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
 
-  .lock-main { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 70vh; gap: 24px; }
+  .lock-main { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 70vh; gap: 24px; padding: 0 8px; }
   .lock-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
   .lock-left { display: flex; flex-direction: column; gap: 10px; }
   .lock-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
@@ -136,17 +136,17 @@
   .quick-card { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 20px; color: #e8edf7; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); font-weight: 600; font-size: 14px; }
   .quick-card i { font-size: 16px; }
 
-  #signInButtonWrapper { position: absolute; top: 20px; right: 20px; display: flex; justify-content: center; align-items: center; z-index: 1; }
+  #signInButtonWrapper { position: absolute; top: 12px; right: 12px; display: flex; justify-content: center; align-items: center; z-index: 1; }
   #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
 
   .lock-bottom { margin-top: 12px; }
   .section-title { display: inline-flex; align-items: center; gap: 8px; color: #e8edf7; font-weight: 600; font-size: 18px; margin-left: 6px; }
   .section-title i { color: #ffd54f; }
   #forecastRow { display: flex; gap: 12px; margin-top: 12px; overflow-x: auto; padding-bottom: 6px; }
-  .forecast-card { flex: 0 0 160px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px; color: #fff; text-align: center; backdrop-filter: blur(2px); }
-  .forecast-day { font-weight: 600; margin-bottom: 6px; opacity: .95; }
-  .forecast-icon { font-size: 26px; margin: 6px 0; }
-  .forecast-temp { font-size: 16px; opacity: .95; }
+  .forecast-card { flex: 0 0 150px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 12px; color: #fff; text-align: center; backdrop-filter: blur(2px); }
+  .forecast-day { font-weight: 700; margin-bottom: 4px; opacity: .95; letter-spacing: .4px; }
+  .forecast-icon { font-size: 28px; margin: 6px 0; }
+  .forecast-temp { font-size: 15px; opacity: .95; }
 
   #app-pin { display: flex; gap: 12px; justify-content: center; margin: 18px 0 6px; }
   .app-pin-digit { align-items: center; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 2px 2px 2px rgba(0,0,0,0.06); color: #f5f7fb; display: inline-flex; font-size: 28px; height: 68px; width: 60px; justify-content: center; position: relative; transition: background-color 250ms, border-color 250ms; }
@@ -257,12 +257,12 @@
 
     function iconForCode(code){
       code = Number(code);
-      if(code === 0) return 'ti-sun';
-      if([1,2,3].indexOf(code) !== -1) return 'ti-cloud-sun';
-      if([45,48].indexOf(code) !== -1) return 'ti-cloud';
-      if((code>=51 && code<=57) || (code>=61 && code<=67) || (code>=80 && code<=82)) return 'ti-cloud-rain';
-      if((code>=71 && code<=77) || code===85 || code===86) return 'ti-snowflake';
-      if(code===95 || code===96 || code===99) return 'ti-cloud-storm';
+      // Map to distinct visuals like in the mock: sun, cloud-sun, cloud, rain, thunder
+      if(code === 0) return 'ti-sun'; // clear
+      if([1,2,3].indexOf(code) !== -1) return 'ti-cloud-sun'; // mainly clear
+      if([45,48].indexOf(code) !== -1) return 'ti-cloud'; // fog
+      if((code>=51 && code<=57) || (code>=61 && code<=67) || (code>=80 && code<=82)) return 'ti-cloud-rain'; // drizzle/rain
+      if(code===95 || code===96 || code===99) return 'ti-cloud-storm'; // thunder
       return 'ti-cloud';
     }
 
