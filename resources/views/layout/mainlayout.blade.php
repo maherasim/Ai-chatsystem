@@ -114,7 +114,7 @@
   #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
   #lockCard { background: transparent; border-radius: 16px; padding: 16px; width: 100%; max-width: 1280px; text-align: left; position: relative; }
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
-  #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; pointer-events: none; }
+  #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
 
   .lock-main { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 70vh; gap: 24px; padding: 0 8px; }
@@ -136,7 +136,7 @@
   .quick-card { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 20px; color: #e8edf7; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); font-weight: 600; font-size: 14px; }
   .quick-card i { font-size: 16px; }
 
-  #signInButtonWrapper { position: absolute; top: 12px; right: 12px; display: flex; justify-content: center; align-items: center; z-index: 1; }
+  #signInButtonWrapper { position: absolute; top: 18px; right: 12px; display: flex; justify-content: center; align-items: center; z-index: 1; }
   #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
 
   .lock-bottom { margin-top: 12px; }
@@ -162,44 +162,33 @@
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
   #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
-  #signInButtonWrapper { position: absolute; top: 12px; right: 12px; display: flex; justify-content: center; align-items: center; z-index: 2; cursor: pointer; }
-  #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
   #pinSection { display: none; }
   #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
   #lockOverlay[data-step="pin"] #pinSection { display: block; }
-  #lockOverlay[data-step="pin"] .lock-main { display: flex; }
-  #lockOverlay[data-step="pin"] .lock-info { display: flex; }
   @keyframes blink { 0%,25%,100%{opacity:1} 50%{opacity:0} }
 </style>
 <div id="lockOverlay" data-step="out">
   <div id="lockBackground"><div id="lockBackgroundImage" class="background-image"></div></div>
   <div id="lockCard">
-    <div class="lock-info">
-      <span id="lockTime" class="time">12:34</span>
-      <span class="weather">
-        <i class="ti ti-sun"></i>
-        <span id="lockTemp">75</span><span>°F</span>
-      </span>
-    </div>
-    <div id="signInButtonWrapper" onclick="(function(){var overlay=document.getElementById('lockOverlay'); if(overlay){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ var i=document.getElementById('pinHiddenInput'); if(i){i.focus();}},50);}})();">
-      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i>  </button>
+    <div id="signInButtonWrapper">
+      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i></button>
     </div>
     <div class="lock-main">
       <div class="lock-top">
         <div class="lock-left">
-          <div id="lockDateText" class="lock-date">Date: </div>
-          <div class="quick-cards">
-            <div class="quick-card"><i class="ti ti-sun"></i><span>Weather</span></div>
-            <div class="quick-card"><i class="ti ti-pizza"></i><span>Food</span></div>
-            <div class="quick-card"><i class="ti ti-apps"></i><span>Apps</span></div>
-            <div class="quick-card"><i class="ti ti-device-mobile"></i><span>Mobile</span></div>
+          <div class="lock-info">
+            <span id="lockTime" class="time">12:34</span>
+           
           </div>
+          
+          <div id="lockDateText" class="lock-date">Date: </div>
+           
         </div>
         <div class="lock-right"></div>
       </div>
 
       <div class="lock-bottom">
-        <div class="section-title"><i class="ti 	i-sun"></i><span>Current Activity</span></div>
+        <div class="section-title"><i class="ti ti-sun"></i><span>Current Activity</span></div>
         <div id="forecastRow"></div>
       </div>
     </div>
@@ -214,7 +203,13 @@
       <h3 id="app-pin-label">Enter PIN (1234) <span id="app-pin-cancel-text" style="cursor:pointer; text-decoration: underline; opacity:.9;">Cancel</span></h3>
       <div id="lockError">Incorrect PIN. Try again.</div>
       <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
-       
+      <div class="lock-actions">
+        <button id="clearPinBtn" class="btn btn-dark btn-sm">Clear</button>
+        <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
+        </form>
+      </div>
     </div>
   </div>
   </div>
@@ -285,18 +280,11 @@
       fetch(url).then(function(r){return r.json();}).then(renderForecast).catch(function(){});
     }
 
-    function loadForecastIfNeeded(){
-      try{
-        if(!overlay) return;
-        if(overlay.style.display === 'none') return; // overlay not visible
-        if(overlay.getAttribute('data-step') !== 'out') return; // skip when PIN step is open
-        if(navigator.geolocation){
-          navigator.geolocation.getCurrentPosition(function(pos){ fetchForecast(pos.coords.latitude, pos.coords.longitude); }, function(){ fetchForecast(36.19,44.01); }, { timeout: 4000 });
-        } else {
-          fetchForecast(36.19,44.01);
-        }
-      }catch(e){}
-    }
+    try{
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(pos){ fetchForecast(pos.coords.latitude, pos.coords.longitude); }, function(){ fetchForecast(36.19,44.01); }, { timeout: 4000 });
+      } else { fetchForecast(36.19,44.01); }
+    }catch(e){}
 
     function resetUI(){ pinInput.value=''; digitVals.forEach(function(s){s.textContent='';}); digitBoxes.forEach(function(b){b.classList.remove('hidden','focused');}); if(digitBoxes[0]) digitBoxes[0].classList.add('focused'); errorBox.style.display='none'; }
     function focusRing(len){ digitBoxes.forEach(function(b){b.classList.remove('focused');}); if(len>=0 && len<digitBoxes.length){ digitBoxes[len].classList.add('focused'); } }
@@ -321,26 +309,14 @@
       if(raw.length===4){ submitPin(raw); }
     });
 
-    overlay.addEventListener('click', function(e){
-      if (e.target === overlay) {
-        overlay.setAttribute('data-step','pin');
-        setTimeout(function(){ pinInput.focus(); },50);
-      }
-    });
+    overlay.addEventListener('click', function(e){ if(e.target===overlay){ pinInput.focus(); }});
     clearBtn.addEventListener('click', function(){ resetUI(); pinInput.focus(); });
 
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
-    if (goBtn) { goBtn.addEventListener('click', function(e){ e.stopPropagation(); overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
-    if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); loadForecastIfNeeded(); }); }
-    var obs = new MutationObserver(function(){
-      if(overlay.style.display!=='none'){
-        // When overlay is shown, default to OUT screen and load activity
-        overlay.setAttribute('data-step','out');
-        resetUI();
-        loadForecastIfNeeded();
-      }
-    });
+    if (goBtn) { goBtn.addEventListener('click', function(){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
+    if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); }); }
+    var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ overlay.setAttribute('data-step','out'); resetUI(); }});
     obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
   })();
 </script>
