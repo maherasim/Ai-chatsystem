@@ -36,7 +36,7 @@ Route::get('/test-email', function () {
         $message->to($toEmail)->subject($subject);
     });
 
-    dd($data); // Dump the result
+     // Dump the result
 });
 
 
