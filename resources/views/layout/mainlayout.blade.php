@@ -203,13 +203,7 @@
       <h3 id="app-pin-label">Enter PIN (1234) <span id="app-pin-cancel-text" style="cursor:pointer; text-decoration: underline; opacity:.9;">Cancel</span></h3>
       <div id="lockError">Incorrect PIN. Try again.</div>
       <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" />
-      <div class="lock-actions">
-        <button id="clearPinBtn" class="btn btn-dark btn-sm">Clear</button>
-        <form id="forceLogoutForm" method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
-        </form>
-      </div>
+       
     </div>
   </div>
   </div>
