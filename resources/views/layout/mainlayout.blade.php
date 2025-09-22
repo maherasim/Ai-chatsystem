@@ -491,6 +491,17 @@
         display: block;
     }
 
+    /* Hide activity content and center PIN UI when in PIN step */
+    #lockOverlay[data-step="pin"] .lock-main {
+        display: none;
+    }
+    #lockOverlay[data-step="pin"] #lockCard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+    }
+
     @keyframes blink {
 
         0%,
