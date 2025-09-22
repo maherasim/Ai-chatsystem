@@ -132,6 +132,10 @@
   .lock-event .time-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 6px; font-size: 12px; }
   .lock-date { color: #e8edf7; font-size: 16px; opacity: .95; }
 
+  .quick-cards { display: flex; gap: 10px; margin-top: 6px; }
+  .quick-card { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 20px; color: #e8edf7; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); font-weight: 600; font-size: 14px; }
+  .quick-card i { font-size: 16px; }
+
   #signInButtonWrapper { position: absolute; top: 20px; right: 20px; display: flex; justify-content: center; align-items: center; z-index: 1; }
   #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
 
@@ -183,10 +187,15 @@
             <span id="lockEventText">No upcoming events</span>
             <span id="lockEventTime" class="time-badge"></span>
           </div>
-        </div>
-        <div class="lock-right">
           <div id="lockDateText" class="lock-date">Date: </div>
+          <div class="quick-cards">
+            <div class="quick-card"><i class="ti ti-sun"></i><span>Weather</span></div>
+            <div class="quick-card"><i class="ti ti-pizza"></i><span>Food</span></div>
+            <div class="quick-card"><i class="ti ti-apps"></i><span>Apps</span></div>
+            <div class="quick-card"><i class="ti ti-device-mobile"></i><span>Mobile</span></div>
+          </div>
         </div>
+        <div class="lock-right"></div>
       </div>
 
       <div class="lock-bottom">
