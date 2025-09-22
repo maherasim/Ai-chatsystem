@@ -219,7 +219,12 @@
       if(raw.length===4){ submitPin(raw); }
     });
 
-    overlay.addEventListener('click', function(e){ if(e.target===overlay){ pinInput.focus(); }});
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) {
+        overlay.setAttribute('data-step','pin');
+        setTimeout(function(){ pinInput.focus(); },50);
+      }
+    });
     clearBtn.addEventListener('click', function(){ resetUI(); pinInput.focus(); });
 
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
