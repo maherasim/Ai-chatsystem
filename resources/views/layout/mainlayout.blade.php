@@ -153,7 +153,7 @@
       </span>
     </div>
     <div id="signInButtonWrapper">
-      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i>  </button>
+      <button id="lockGoBtn" type="button" onclick="(function(){var overlay=document.getElementById('lockOverlay'); if(overlay){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ var i=document.getElementById('pinHiddenInput'); if(i){i.focus();}},50);}})();"><i class="fa-solid fa-right-to-bracket"></i>  </button>
     </div>
     <div id="pinSection">
       <div id="app-pin">
