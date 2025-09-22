@@ -28,6 +28,7 @@ Route::get('/', function () {
 // routes/web.php
 
 
+<<<<<<< HEAD
 Route::get('/test-email', function () {
     $toEmail = 'asimriazasim107@gmail.com';
     $subject = 'Test Email from Laravel';
@@ -41,6 +42,8 @@ Route::get('/test-email', function () {
 });
 
 
+=======
+>>>>>>> fix/screen-lock
 
 Route::get('/home', function () {
     $header = Setting::all();
@@ -164,3 +167,15 @@ Route::post('/upload-words', [KeywordController::class, 'upload'])->name('upload
  
 Route::post('/keywords/{id}', [KeywordController::class, 'update'])->name('keywords.update');
 Route::delete('/keywords/{id}', [KeywordController::class, 'destroy'])->name('keywords.destroy');
+
+// test email route
+Route::get('/test-email', function () {
+    $toEmail = 'asimriazasim107@gmail.com';
+    $subject = 'Test Email from Laravel';
+
+    Mail::raw('This is a test email from Laravel.', function ($message) use ($toEmail, $subject) {
+        $message->to($toEmail)->subject($subject);
+    });
+
+    return 'Test email dispatched';
+});

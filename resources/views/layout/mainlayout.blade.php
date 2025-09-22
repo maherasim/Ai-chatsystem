@@ -112,9 +112,9 @@
 @endphp
 <style>
   #lockOverlay { position: fixed; inset: 0; background: rgba(15, 27, 61, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; }
-  #lockCard { background: transparent; border-radius: 16px; padding: 16px; width: 100%; max-width: 1280px; text-align: left; position: relative; }
+  #lockCard { background: transparent; border-radius: 16px; padding: 24px; width: 100%; max-width: 460px; text-align: center; z-index: 1; }
   #lockBackground { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
-  #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; }
+  #lockBackgroundImage { position: absolute; inset: 0; background-image: url('{{ $overlayBgSrc }}'); background-position: center; background-size: cover; transition: filter 250ms, transform 250ms; pointer-events: none; }
   #lockOverlay[data-step="pin"] #lockBackgroundImage { filter: blur(8px); transform: scale(1.2); }
 
   .lock-main { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 70vh; gap: 24px; padding: 0 8px; }
@@ -162,6 +162,8 @@
   .lock-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
   .lock-actions .btn { min-width: 120px; }
   #pinHiddenInput { position: absolute; opacity: 0; pointer-events: none; }
+  #signInButtonWrapper { display: flex; justify-content: center; align-items: center; margin: 24px 0 6px; position: relative; z-index: 2; cursor: pointer; }
+  #lockGoBtn { backdrop-filter: blur(3px); background-color: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f5f7fb; border-radius: 999px; width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
   #pinSection { display: none; }
   #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
   #lockOverlay[data-step="pin"] #pinSection { display: block; }
@@ -170,8 +172,15 @@
 <div id="lockOverlay" data-step="out">
   <div id="lockBackground"><div id="lockBackgroundImage" class="background-image"></div></div>
   <div id="lockCard">
-    <div id="signInButtonWrapper">
-      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i></button>
+    <div class="lock-info">
+      <span id="lockTime" class="time">12:34</span>
+      <span class="weather">
+        <i class="ti ti-sun"></i>
+        <span id="lockTemp">75</span><span>°F</span>
+      </span>
+    </div>
+    <div id="signInButtonWrapper" onclick="(function(){var overlay=document.getElementById('lockOverlay'); if(overlay){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ var i=document.getElementById('pinHiddenInput'); if(i){i.focus();}},50);}})();">
+      <button id="lockGoBtn" type="button"><i class="fa-solid fa-right-to-bracket"></i>  </button>
     </div>
     <div class="lock-main">
       <div class="lock-top">
@@ -314,12 +323,17 @@
       if(raw.length===4){ submitPin(raw); }
     });
 
-    overlay.addEventListener('click', function(e){ if(e.target===overlay){ pinInput.focus(); }});
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) {
+        overlay.setAttribute('data-step','pin');
+        setTimeout(function(){ pinInput.focus(); },50);
+      }
+    });
     clearBtn.addEventListener('click', function(){ resetUI(); pinInput.focus(); });
 
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
-    if (goBtn) { goBtn.addEventListener('click', function(){ overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
+    if (goBtn) { goBtn.addEventListener('click', function(e){ e.stopPropagation(); overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
     if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); }); }
     var obs = new MutationObserver(function(){ if(overlay.style.display!=='none'){ overlay.setAttribute('data-step','out'); resetUI(); }});
     obs.observe(overlay,{ attributes:true, attributeFilter:['style'] });
