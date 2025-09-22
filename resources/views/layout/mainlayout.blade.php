@@ -167,8 +167,8 @@
   #pinSection { display: none; }
   #lockOverlay[data-step="pin"] #signInButtonWrapper { display: none; }
   #lockOverlay[data-step="pin"] #pinSection { display: block; }
-  #lockOverlay[data-step="pin"] .lock-main { display: none; }
-  #lockOverlay[data-step="pin"] .lock-info { display: none; }
+  #lockOverlay[data-step="pin"] .lock-main { display: flex; }
+  #lockOverlay[data-step="pin"] .lock-info { display: flex; }
   @keyframes blink { 0%,25%,100%{opacity:1} 50%{opacity:0} }
 </style>
 <div id="lockOverlay" data-step="out">
@@ -331,7 +331,7 @@
 
     window.showLockOverlay = function(){ overlay.style.display='flex'; overlay.setAttribute('data-step','out'); setTemp(); resetUI(); };
     window.hideLockOverlay = function(){ overlay.style.display='none'; resetUI(); };
-    if (goBtn) { goBtn.addEventListener('click', function(e){ e.stopPropagation(); overlay.setAttribute('data-step','pin'); try{ forecastRow.innerHTML=''; }catch(_){} setTimeout(function(){ pinInput.focus(); },50); }); }
+    if (goBtn) { goBtn.addEventListener('click', function(e){ e.stopPropagation(); overlay.setAttribute('data-step','pin'); setTimeout(function(){ pinInput.focus(); },50); }); }
     if (cancelText) { cancelText.addEventListener('click', function(){ overlay.setAttribute('data-step','out'); resetUI(); loadForecastIfNeeded(); }); }
     var obs = new MutationObserver(function(){
       if(overlay.style.display!=='none'){
