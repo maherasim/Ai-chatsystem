@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserWelcomeMail;
+use Illuminate\Support\Facades\File;
 
 class UsersController extends Controller
 {
@@ -66,6 +67,7 @@ class UsersController extends Controller
       //  'phone'     => 'nullable|string',
        // 'department'=> 'nullable|string',
         'image'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'banner'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4096',
     ]);
     // Step 2: Handle Image Upload
     $imagePath = null;
@@ -80,6 +82,9 @@ class UsersController extends Controller
         $destinationPath = public_path('upload/users');
         $fullPath = $destinationPath . '/' . $fileName;
 
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
         if (!file_exists($fullPath)) {
             $file->move($destinationPath, $fileName);
         }
@@ -93,6 +98,9 @@ class UsersController extends Controller
         $destinationPath = public_path('upload/users/banner');
         $fullPath = $destinationPath . '/' . $fileName;
 
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
         if (!file_exists($fullPath)) {
             $file->move($destinationPath, $fileName);
         }
