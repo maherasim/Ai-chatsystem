@@ -55,6 +55,7 @@
 <script>
     (function() {
         try {
+            var LOCK_KEY = 'appLocked';
             var screenLockEnabled =
                 {{ auth()->check() ? ($userSetting && ($userSetting->screen_lock ?? false) ? 'true' : 'false') : 'false' }};
             var minutes = {{ auth()->check() ? (int) ($userSetting->screen_lock_minutes ?? 0) : 0 }};
@@ -70,6 +71,7 @@
                 if (overlay) {
                     overlay.style.display = 'flex';
                     overlay.setAttribute('data-step', 'out');
+                    try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
                     var btn = document.getElementById('lockGoBtn');
                     if (btn) btn.focus();
                 }
@@ -83,7 +85,15 @@
             function resetTimer() {
                 if (timerId) clearTimeout(timerId);
                 var overlay = document.getElementById('lockOverlay');
-                if (overlay && overlay.style.display === 'flex') return; // don't reset when locked
+                // If already locked, ensure overlay is visible and do not reset timer
+                try {
+                    if (localStorage.getItem(LOCK_KEY) === '1') {
+                        if (overlay) {
+                            overlay.style.display = 'flex';
+                        }
+                        return;
+                    }
+                } catch(e) {}
                 timerId = setTimeout(showLock, ms);
             }
 
@@ -94,6 +104,17 @@
                     });
                 });
             resetTimer();
+            // On history navigation or refresh, if locked, ensure overlay is shown
+            function ensureLockedOnShow() {
+                try {
+                    if (localStorage.getItem(LOCK_KEY) === '1') {
+                        var overlay = document.getElementById('lockOverlay');
+                        if (overlay) overlay.style.display = 'flex';
+                    }
+                } catch(e) {}
+            }
+            window.addEventListener('pageshow', ensureLockedOnShow);
+            window.addEventListener('popstate', ensureLockedOnShow);
         } catch (_) {}
     })();
     // Toggle minutes field visibility live on change
@@ -612,6 +633,7 @@
 <script>
     (function() {
         var overlay = document.getElementById('lockOverlay');
+        var LOCK_KEY = 'appLocked';
         var pinInput = document.getElementById('pinHiddenInput');
         var errorBox = document.getElementById('lockError');
         var clearBtn = document.getElementById('clearPinBtn');
@@ -772,6 +794,7 @@
                     overlay.style.display = 'none';
                     resetUI();
                     document.dispatchEvent(new Event('mousemove'));
+                    try { localStorage.removeItem('appLocked'); } catch(e) {}
                 } else {
                     errorBox.style.display = 'block';
                     resetUI();
@@ -821,10 +844,12 @@
             overlay.setAttribute('data-step', 'out');
             setTemp();
             resetUI();
+            try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
         };
         window.hideLockOverlay = function() {
             overlay.style.display = 'none';
             resetUI();
+            try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
         };
         if (goBtn) {
             goBtn.addEventListener('click', function() {
@@ -838,18 +863,17 @@
             cancelText.addEventListener('click', function() {
                 overlay.setAttribute('data-step', 'out');
                 resetUI();
+                try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
             });
         }
-        var obs = new MutationObserver(function() {
-            if (overlay.style.display !== 'none') {
+        // Ensure if locked flag is set on load, show overlay immediately
+        try {
+            if (localStorage.getItem(LOCK_KEY) === '1') {
+                overlay.style.display = 'flex';
                 overlay.setAttribute('data-step', 'out');
                 resetUI();
             }
-        });
-        obs.observe(overlay, {
-            attributes: true,
-            attributeFilter: ['style']
-        });
+        } catch(e) {}
     })();
 </script>
 
