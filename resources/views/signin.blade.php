@@ -7,8 +7,15 @@
         max-width: 50%;
         height: auto;
     }
+    .bg-cover {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+    }
 </style>
-<div class="container-fuild">
+<div class="container-fluid">
     <div class=" w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
         <div class="row">
             <div class="col-lg-4 col-md-12 col-sm-12">
@@ -84,7 +91,7 @@
                     }
                     $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/chatlogo.jpg');
                     @endphp
-                    <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
+                    <div class="w-100 h-100 bg-cover" style="background-image: url('{{ $bgSrc }}');"></div>
                 </div>
             </div>
 
