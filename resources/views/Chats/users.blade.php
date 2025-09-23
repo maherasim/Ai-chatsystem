@@ -3240,9 +3240,9 @@
 
                     
 
-                    <button id="saveBtn" class="btn" type="submit" disabled
-                        style="color: #6c757d; background-color: green; border: none; font-weight: 500;">
-                        Save 
+                    
+                    <button  id="saveBtn" type="submit" class="btn" disabled  style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">
+                        Save
                     </button>
 
 
