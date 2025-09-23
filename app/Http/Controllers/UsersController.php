@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\UserWelcomeMail;
 
 class UsersController extends Controller
 {
@@ -182,25 +183,7 @@ class UsersController extends Controller
    */
   private function sendWelcomeEmail(User $user, string $rawPassword)
   {
-    $email = $user->email;
-    $type = $user->type;
-
-    if ($type === 'subadmin') {
-      $subject = 'Your Subadmin Account Details';
-      $body = "username(email): {$email}\n" .
-              "password: {$rawPassword}\n" .
-              "login link will be https://admin.onlinesystems.info/\n";
-    } else { // developer or employee
-      $subject = 'Your Account Details';
-      $body = "user_id: {$user->user_id}\n" .
-              "username(email): {$email}\n" .
-              "password: {$rawPassword}\n" .
-              "login link will be https://team.onlinesystems.info/\n";
-    }
-
-    Mail::raw($body, function ($message) use ($email, $subject) {
-      $message->to($email)->subject($subject);
-    });
+    Mail::to($user->email)->send(new UserWelcomeMail($user, $rawPassword));
   }
 
 
