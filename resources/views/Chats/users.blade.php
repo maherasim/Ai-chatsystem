@@ -312,25 +312,40 @@
 
                                     <!-- Top-right overlay group -->
                                     <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
-                                        <!-- Circular progress -->
+                                        <div class="d-flex flex-column align-items-end gap-2" style="z-index: 2;">
+                                            <!-- Trigger Button (Styled) -->
+                                            <div
+                                                style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+                                                onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                                <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                    <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                </div>
+                                            </div>
 
-                                        <div style="position: relative; width: 45px; height: 45px;margin-left:30px">
-                                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                                <path
-                                                    style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path
-                                                    style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                    stroke-dasharray="70, 100"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                75%
+                                            <!-- Popup Menu -->
+                                            <div
+                                                class="menu-box"
+                                                style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
+                                                onclick="event.stopPropagation();">
+                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                                <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
+
+                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+
+                                                    <!-- Vertical Divider -->
+                                                    <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_user_{{ $user->id }}">
+
+                                                    <!-- Vertical Divider -->
+                                                    <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+                                                    <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
+
+                                                </div>
+
                                             </div>
                                         </div>
-
-
-
                                     </div>
 
                                     <!-- Profile Image (overlapping) -->
@@ -338,6 +353,10 @@
                                         <img src="{{ $user->image ? asset($user->image) : asset('build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
+
+                                <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
+
+                                <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
