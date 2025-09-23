@@ -431,10 +431,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 3px; margin: 6px; font-size: 14px; font-family: sans-serif;">
+                                <!-- Productivity (fixed 75%) -->
+                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 2px auto; background-color: #e6e6e6; border-radius: 5px;">
+                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
