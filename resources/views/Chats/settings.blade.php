@@ -1144,25 +1144,25 @@
                                 <p class="text-muted small m-0">System policy</p>
                             </div>
                             <div class="card-body">
-                                <form id="agreementForm" method="POST" action="{{ route('settings.policy.save') }}">
+                                <form id="policyForm" method="POST" action="{{ route('settings.policy.save') }}">
                                     @csrf
-                                    <textarea id="agreementEditor" name="policy_term">{{ $policy_term }}</textarea>
+                                    <textarea id="policyEditor" name="policy_term">{{ $policy_term }}</textarea>
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="btn-group">
-                                            <button type="button" id="agreementEditBtn"
+                                            <button type="button" id="policyEditBtn"
                                                 class="btn btn-outline-secondary btn-sm">Edit</button>
-                                            <button type="submit" id="agreementSaveBtn"
-                                                class="btn btn-primary btn-sm">Save</button>
+                                            <button type="submit" id="policySaveBtn"
+                                                class="btn btn-primary btn-sm" disabled>Save</button>
                                         </div>
                                     </div>
                                     <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="agreementRequireAccept"
+                                        <input class="form-check-input" type="checkbox" id="policyRequireAccept"
                                             name="require_accept" value="1" {{ $require_accept ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="agreementRequireAccept">Require users to
+                                        <label class="form-check-label" for="policyRequireAccept">Require users to
                                             accept next time</label>
                                     </div>
-                                    <input type="hidden" name="increment_version" id="agreementIncrementVersion"
+                                    <input type="hidden" name="increment_version" id="policyIncrementVersion"
                                         value="0">
                                 </form>
                             </div>
@@ -1187,7 +1187,7 @@
                                             <button type="button" id="agreementEditBtn"
                                                 class="btn btn-outline-secondary btn-sm">Edit</button>
                                             <button type="submit" id="agreementSaveBtn"
-                                                class="btn btn-primary btn-sm">Save</button>
+                                                class="btn btn-primary btn-sm" disabled>Save</button>
                                         </div>
                                     </div>
                                     <div class="form-check mt-2">
@@ -1208,60 +1208,6 @@
             </div>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Initialize Summernote
-                $('#agreementEditor').summernote({
-                    placeholder: 'Start typing...',
-                    tabsize: 2,
-                    height: 220,
-                    toolbar: [
-                        ['style', ['fontsize']],
-                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['view', ['codeview']]
-                    ],
-                    fontSizes: ['12', '14', '16', '18', '20', '24', '28']
-                });
-
-                // Enable editing
-                $('#agreementEditBtn').on('click', function() {
-                    $('#agreementEditor').summernote('enable');
-                });
-
-                // Increment version checkbox
-                $('#agreementRequireAccept').on('change', function() {
-                    $('#agreementIncrementVersion').val(this.checked ? 1 : 0);
-                });
-
-                // Optional: disable editor on load
-                $('#agreementEditor').summernote('disable');
-            });
-            document.addEventListener('DOMContentLoaded', function() {
-                $('#agreementEditor').summernote({
-                    placeholder: 'Type the agreement...',
-                    tabsize: 2,
-                    height: 220,
-                    toolbar: [
-                        ['style', ['fontsize']],
-                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['view', ['codeview']]
-                    ],
-                    fontSizes: ['12', '14', '16', '18', '20', '24', '28']
-                });
-
-                $('#agreementEditor').summernote('disable');
-
-                $('#agreementEditBtn').on('click', function() {
-                    $('#agreementEditor').summernote('enable');
-                });
-
-                $('#agreementRequireAccept').on('change', function() {
-                    $('#agreementIncrementVersion').val(this.checked ? 1 : 0);
-                });
-            });
-        </script>
-        <script>
             // Load Summernote CSS/JS after jQuery is available, then initialize editors
             window.addEventListener('load', function() {
                 var summernoteCss = document.createElement('link');
@@ -1272,97 +1218,58 @@
                 var summernoteJs = document.createElement('script');
                 summernoteJs.src = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js';
                 summernoteJs.onload = function() {
-                    var $editors = $('#policyEditor, #agreementEditor');
-                    $editors.summernote({
+                    var commonOptions = {
                         placeholder: 'Start typing...',
                         tabsize: 2,
                         height: 220,
                         toolbar: [
                             ['style', ['fontsize']],
                             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                            // remove image and url buttons
-                            // ['insert', ['picture', 'link']],
                             ['para', ['ul', 'ol', 'paragraph']],
                             ['view', ['codeview']]
                         ],
                         fontSizes: ['12', '14', '16', '18', '20', '24', '28']
-                    });
+                    };
 
-                    // wire up edit/save controls
-                    function setEditorDisabled(selector, disabled) {
-                        var $el = $(selector);
-                        if (disabled) {
-                            $el.summernote('disable');
-                        } else {
-                            $el.summernote('enable');
-                        }
-                    }
+                    $('#policyEditor').summernote(commonOptions);
+                    $('#agreementEditor').summernote(commonOptions);
 
-                    // Load any previously saved values from localStorage as a placeholder for backend API
-                    var savedPolicy = localStorage.getItem('policy_html') || '';
-                    var savedAgreement = localStorage.getItem('agreement_html') || '';
-                    var policyVersion = parseInt(localStorage.getItem('policy_version') || '0', 10);
-                    var agreementVersion = parseInt(localStorage.getItem('agreement_version') || '0', 10);
-                    $('#policyEditor').summernote('code', savedPolicy);
+                    // Initially disable editors and save buttons
+                    $('#policyEditor').summernote('disable');
+                    $('#agreementEditor').summernote('disable');
+                    $('#policySaveBtn').prop('disabled', true);
+                    $('#agreementSaveBtn').prop('disabled', true);
 
-                    $('#policyVersion').text(policyVersion);
-                    $('#agreementVersion').text(agreementVersion);
-
-                    // default to enabled so you can type immediately
-                    setEditorDisabled('#policyEditor', false);
-                    setEditorDisabled('#agreementEditor', false);
-
+                    // Edit buttons enable respective editor and save button
                     $('#policyEditBtn').on('click', function() {
-                        setEditorDisabled('#policyEditor', false);
+                        $('#policyEditor').summernote('enable');
+                        $('#policySaveBtn').prop('disabled', false);
                     });
                     $('#agreementEditBtn').on('click', function() {
-                        setEditorDisabled('#agreementEditor', false);
+                        $('#agreementEditor').summernote('enable');
+                        $('#agreementSaveBtn').prop('disabled', false);
                     });
 
-                    function postJson(url, data) {
-                        return fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                    .getAttribute('content')
-                            },
-                            body: JSON.stringify(data)
-                        }).then(function(r) {
-                            return r.json();
-                        });
-                    }
+                    // Version increment toggles bound to accept checkboxes
+                    $('#policyRequireAccept').on('change', function() {
+                        $('#policyIncrementVersion').val(this.checked ? 1 : 0);
+                    });
+                    $('#agreementRequireAccept').on('change', function() {
+                        $('#agreementIncrementVersion').val(this.checked ? 1 : 0);
+                    });
 
-                    $('#policySaveBtn').on('click', function() {
+                    // Ensure textarea gets current HTML on submit; disable back after submit
+                    $('#policyForm').on('submit', function() {
                         var html = $('#policyEditor').summernote('code');
-                        var increment = $('#policyRequireAccept').is(':checked');
-                        postJson('' + window.location.origin + '/settings/policy/save', {
-                                html: html,
-                                increment_version: increment
-                            })
-                            .then(function(resp) {
-                                if (resp && resp.ok) {
-                                    if (resp.version !== undefined) $('#policyVersion').text(resp
-                                        .version);
-                                    setEditorDisabled('#policyEditor', true);
-                                }
-                            });
+                        $('#policyEditor').val(html);
+                        $('#policySaveBtn').prop('disabled', true);
+                        $('#policyEditor').summernote('disable');
                     });
-
-                    $('#agreementSaveBtn').on('click', function() {
+                    $('#agreementForm').on('submit', function() {
                         var html = $('#agreementEditor').summernote('code');
-                        var increment = $('#agreementRequireAccept').is(':checked');
-                        postJson('' + window.location.origin + '/settings/agreement/save', {
-                                html: html,
-                                increment_version: increment
-                            })
-                            .then(function(resp) {
-                                if (resp && resp.ok) {
-                                    if (resp.version !== undefined) $('#agreementVersion').text(resp
-                                        .version);
-                                    setEditorDisabled('#agreementEditor', true);
-                                }
-                            });
+                        $('#agreementEditor').val(html);
+                        $('#agreementSaveBtn').prop('disabled', true);
+                        $('#agreementEditor').summernote('disable');
                     });
                 };
                 document.body.appendChild(summernoteJs);
