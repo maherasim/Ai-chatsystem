@@ -2709,7 +2709,7 @@
                         <span style="color: #9ca3af; margin-right: 8px;">
                             <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
-                        <input name="email" required="required" type="email" placeholder="Type User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
+                        <input id="emailInput" name="email" required="required" type="email" placeholder="Type User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
 
                     <!-- Confirm Email Input -->
@@ -2717,7 +2717,7 @@
                         <span style="color: #9ca3af; margin-right: 8px;">
                             <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
-                        <input type="email" name="confirm_email" required="required" placeholder="Repeat User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
+                        <input id="confirmEmailInput" type="email" name="confirm_email" required="required" placeholder="Repeat User mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;" />
                     </div>
 
                 </div>
@@ -3356,13 +3356,52 @@
     document.addEventListener('DOMContentLoaded', function() {
         var form = document.getElementById('userCreateForm');
         var saveBtn = document.getElementById('saveBtn');
+        var emailInput = document.getElementById('emailInput');
+        var confirmEmailInput = document.getElementById('confirmEmailInput');
+        var emailExists = false;
         if (!form || !saveBtn) return;
 
         function updateSaveButton() {
-            var isValid = form.checkValidity();
+            var isValid = form.checkValidity() && !emailExists;
             saveBtn.disabled = !isValid;
             saveBtn.style.opacity = isValid ? '1' : '0.6';
             saveBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        }
+
+        function showEmailError(show, message) {
+            if (!emailInput) return;
+            emailInput.setCustomValidity(show ? (message || 'Email already exists') : '');
+            emailInput.reportValidity();
+        }
+
+        var debounceTimer = null;
+        function checkEmailUniqueness() {
+            if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
+            var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    emailExists = !!(data && data.exists);
+                    showEmailError(emailExists, 'This email is already registered.');
+                    updateSaveButton();
+                })
+                .catch(function(){ emailExists = false; showEmailError(false); updateSaveButton(); });
+        }
+
+        if (emailInput) {
+            emailInput.addEventListener('input', function(){
+                clearTimeout(debounceTimer); debounceTimer = setTimeout(checkEmailUniqueness, 350);
+            });
+            emailInput.addEventListener('blur', checkEmailUniqueness);
+        }
+        if (confirmEmailInput) {
+            confirmEmailInput.addEventListener('input', function(){
+                if (emailInput && confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
+                    confirmEmailInput.setCustomValidity('Emails do not match');
+                } else {
+                    confirmEmailInput.setCustomValidity('');
+                }
+            });
         }
 
         form.addEventListener('input', updateSaveButton, true);

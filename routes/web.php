@@ -21,6 +21,7 @@ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout')
 Route::post('/store', [UsersController::class, 'store'])->name('user.store');
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
+Route::get('/users/check-email', [UsersController::class, 'checkEmail'])->name('users.checkEmail');
 
 Route::get('/', function () {
     return view('signin');

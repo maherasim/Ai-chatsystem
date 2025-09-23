@@ -143,6 +143,19 @@ class UsersController extends Controller
 
 }
 
+    /**
+     * Check if email exists (AJAX).
+     */
+    public function checkEmail(Request $request)
+    {
+        $email = (string) $request->query('email', '');
+        $exists = false;
+        if ($email !== '') {
+            $exists = User::where('email', $email)->exists();
+        }
+        return response()->json(['exists' => $exists]);
+    }
+
   /**
    * Generate the next role-based user_id.
    * subadmin => sub_1000+n, developer => dev_1000+n, employee => emp_1000+n
