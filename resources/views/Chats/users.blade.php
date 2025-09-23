@@ -338,9 +338,9 @@
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_user_{{ $user->id }}">
 
                                                     <!-- Vertical Divider -->
-                                                    <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+                                                    {{-- <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                    <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
+                                                    <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"> --}}
 
                                                 </div>
 
