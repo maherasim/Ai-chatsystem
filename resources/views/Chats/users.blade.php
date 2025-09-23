@@ -311,7 +311,7 @@
                                     <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; max-height:80px; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 7px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 7px; right: 10px; z-index: 5;">
                                         <div class="d-flex flex-column align-items-end gap-2" style="z-index: 2;">
                                             <!-- Trigger Button (Styled) -->
                                             <div
