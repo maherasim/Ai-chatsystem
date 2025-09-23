@@ -7,6 +7,25 @@
         max-width: 50%;
         height: auto;
     }
+    /* Right side login background must always cover the full 8-column area */
+    .login-bg-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+    .login-bg-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        -o-object-position: center;
+        object-position: center;
+        display: block;
+    }
 </style>
 <div class="container-fuild">
     <div class=" w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
@@ -72,7 +91,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-md-12 col-sm-12 p-0">
-                <div class="w-100 h-100">
+                <div class="login-bg-wrapper">
                     @php
                     $userSetting = App\Models\Setting::first();
                     $loginImages = $userSetting && $userSetting->login_backgrounds ? json_decode($userSetting->login_backgrounds, true) : [];
@@ -84,7 +103,7 @@
                     }
                     $bgSrc = $candidate ? asset($candidate) : URL::asset('/build/img/bg/chatlogo.jpg');
                     @endphp
-                    <img src="{{ $bgSrc }}" class="w-100 h-100 object-fit-cover" alt="Login Background">
+                    <img src="{{ $bgSrc }}" class="login-bg-image" alt="Login Background">
                 </div>
             </div>
 
