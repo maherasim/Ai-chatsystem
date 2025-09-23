@@ -308,7 +308,7 @@
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; max-height:80px; height: auto;" alt="BG Image">
+                                    <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: 80px; object-fit: cover;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
                                     <div style="position: absolute; top: 7px; right: 10px; z-index: 5;">
