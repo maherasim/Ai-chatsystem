@@ -3238,13 +3238,10 @@
                 <div class="d-flex px-3 py-2"
                     style="background-color: #f8f9fa; border-radius: 8px; gap: 12px;">
 
-                    <button class="btn" data-bs-dismiss="modal"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
-                        Close
-                    </button>
+                    
 
                     <button class="btn" type="submit"
-                        style="color: #6c757d; background-color: transparent; border: none; font-weight: 500;">
+                        style="color: #6c757d; background-color: green; border: none; font-weight: 500;">
                         Save 
                     </button>
 
