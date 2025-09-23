@@ -2599,7 +2599,7 @@
                     aria-label="Close"
                     style="position: absolute; top: 0; right: 0; font-size: 22px; color: #999;"></button>
             </div>
-<form method="post" action="{{ route('user.store') }}" enctype="multipart/form-data" >
+<form id="userCreateForm" method="post" action="{{ route('user.store') }}" enctype="multipart/form-data" >
     @csrf
             <!-- Upload Banner -->
             <div
@@ -2622,7 +2622,7 @@
                 <input name="banner"
                     type="file"
                     id="bannerInput"
-                    accept="image/*"
+                    accept="image/*" required="required"
                     style="display: none;"
                     onchange="(function(event) { const input = event.target; const preview = document.getElementById('bannerPreview'); const placeholder = document.getElementById('bannerPlaceholder'); if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; placeholder.style.display = 'none'; }
                     reader.readAsDataURL(input.files[0]); }
@@ -2632,7 +2632,7 @@
             <div
                 style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; display: flex; gap: 16px; flex-wrap: wrap; position: relative;">
                 <!-- User Type (Top-right) -->
-                <select name="type"
+                <select name="type" required="required"
                     style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>User type</option>
                    
@@ -2659,7 +2659,7 @@
                     <input name="image"
                         type="file"
                         id="userImgInput"
-                        accept="image/*"
+                        accept="image/*" required="required"
                         style="display: none;"
                         onchange="(function(event){ const input = event.target; const preview = document.getElementById('userImgPreview'); const placeholder = document.getElementById('userImgPlaceholder'); if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function (e) { preview.src = e.target.result;  preview.style.display = 'block';  placeholder.style.display = 'none'; }; reader.readAsDataURL(input.files[0]); } })(event)" />
                 </div>
@@ -2676,9 +2676,9 @@
                     </div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <select name="gender"
+                        <select name="gender" required="required"
                             style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;">
-                            <option value="" selected>Select Gender</option>
+                            <option value="" disabled selected>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             
@@ -2686,7 +2686,7 @@
                         <input type="text" placeholder="Username and Lastname" required name="name"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
                         <input
-                            type="text" name="user_description"
+                            type="text" name="user_description" required="required"
                             placeholder="Describe User"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
 
@@ -3240,7 +3240,7 @@
 
                     
 
-                    <button class="btn" type="submit"
+                    <button id="saveBtn" class="btn" type="submit" disabled
                         style="color: #6c757d; background-color: green; border: none; font-weight: 500;">
                         Save 
                     </button>
@@ -3352,4 +3352,23 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('userCreateForm');
+        var saveBtn = document.getElementById('saveBtn');
+        if (!form || !saveBtn) return;
+
+        function updateSaveButton() {
+            var isValid = form.checkValidity();
+            saveBtn.disabled = !isValid;
+            saveBtn.style.opacity = isValid ? '1' : '0.6';
+            saveBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        }
+
+        form.addEventListener('input', updateSaveButton, true);
+        form.addEventListener('change', updateSaveButton, true);
+
+        updateSaveButton();
+    });
+    </script>
 @endsection
