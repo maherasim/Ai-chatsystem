@@ -72,6 +72,10 @@
                     overlay.style.display = 'flex';
                     overlay.setAttribute('data-step', 'out');
                     try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
+                    // Inform server that session is locked
+                    try {
+                        fetch('{{ route('user.lockScreen') }}', { method:'POST', headers:{ 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } });
+                    } catch(e) {}
                     var btn = document.getElementById('lockGoBtn');
                     if (btn) btn.focus();
                 }

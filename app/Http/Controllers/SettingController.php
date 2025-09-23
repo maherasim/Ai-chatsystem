@@ -178,6 +178,18 @@ public function saveScreenLock(Request $request)
     return back()->with('success', 'Screen lock preferences saved.');
 }
 
+/**
+ * Set server-side lock flag (called when client auto-locks).
+ */
+public function lockScreen(Request $request)
+{
+    if (!auth()->check()) {
+        return response()->json(['ok' => false], 401);
+    }
+    $request->session()->put('screen_locked', true);
+    return response()->json(['ok' => true]);
+}
+
 public function unlockScreen(Request $request)
 {
     $request->validate([
@@ -189,6 +201,8 @@ public function unlockScreen(Request $request)
     if ($request->filled('pin')) {
         $pin = preg_replace('/\D+/', '', (string) $request->pin);
         if ($pin === '12345678') {
+            // clear server lock flag
+            $request->session()->forget('screen_locked');
             return response()->json(['ok' => true]);
         }
         return response()->json(['ok' => false, 'message' => 'Invalid PIN'], 422);
@@ -197,6 +211,7 @@ public function unlockScreen(Request $request)
     // Fallback: allow password unlock
     $user = auth()->user();
     if ($request->filled('password') && $user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        $request->session()->forget('screen_locked');
         return response()->json(['ok' => true]);
     }
 

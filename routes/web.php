@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\KeywordController;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route as RouteFacade;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -92,6 +93,7 @@ Route::post('/update-email', [App\Http\Controllers\SettingController::class, 'up
 Route::post('/update-password', [App\Http\Controllers\SettingController::class, 'updatePassword'])->name('user.updatePassword');
 Route::post('/screen-lock/save', [App\Http\Controllers\SettingController::class, 'saveScreenLock'])->name('user.saveScreenLock');
 Route::post('/unlock', [App\Http\Controllers\SettingController::class, 'unlockScreen'])->name('user.unlockScreen');
+Route::post('/lock', [App\Http\Controllers\SettingController::class, 'lockScreen'])->name('user.lockScreen');
 Route::post('/toggle-two-factor', [App\Http\Controllers\SettingController::class, 'toggleTwoFactor'])->name('user.toggleTwoFactor');
 Route::post('/settings/app-logo', [App\Http\Controllers\SettingController::class, 'uploadAppLogo'])->name('settings.uploadAppLogo');
 Route::post('/settings/upload-favicon', [App\Http\Controllers\SettingController::class, 'uploadFavIcon'])->name('settings.uploadFavicon');
@@ -127,6 +129,11 @@ Route::get('/success', function () {
 Route::get('/user-status', function () {
     return view('user-status');
 })->name('user-status');
+
+// Locked screen page
+Route::get('/locked', function(){
+    return view('locked');
+})->name('locked.page');
 
 
 Route::get('/signup', function () {
