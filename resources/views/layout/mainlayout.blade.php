@@ -56,6 +56,8 @@
     (function() {
         try {
             var LOCK_KEY = 'appLocked';
+            var PREV_URL_KEY = 'prev_url_before_lock';
+            var LOCKED_URL = '{{ url('/locked') }}';
             var screenLockEnabled =
                 {{ auth()->check() ? ($userSetting && ($userSetting->screen_lock ?? false) ? 'true' : 'false') : 'false' }};
             var minutes = {{ auth()->check() ? (int) ($userSetting->screen_lock_minutes ?? 0) : 0 }};
@@ -66,11 +68,33 @@
             var ms = minutes * 60 * 1000;
             var timerId;
 
+            function setLockedUrl() {
+                try {
+                    var currentHref = window.location.href;
+                    var alreadyLocked = currentHref === LOCKED_URL;
+                    if (!alreadyLocked) {
+                        sessionStorage.setItem(PREV_URL_KEY, currentHref);
+                        history.replaceState({ locked: true }, document.title, LOCKED_URL);
+                    }
+                } catch(e) {}
+            }
+
+            function restoreUrl() {
+                try {
+                    var prev = sessionStorage.getItem(PREV_URL_KEY);
+                    if (prev && window.location.href === LOCKED_URL) {
+                        history.replaceState({}, document.title, prev);
+                    }
+                    sessionStorage.removeItem(PREV_URL_KEY);
+                } catch(e) {}
+            }
+
             function showLock() {
                 var overlay = document.getElementById('lockOverlay');
                 if (overlay) {
                     overlay.style.display = 'flex';
                     overlay.setAttribute('data-step', 'out');
+                    setLockedUrl();
                     try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
                     // Inform server that session is locked
                     try {
@@ -84,6 +108,8 @@
             function hideLock() {
                 var overlay = document.getElementById('lockOverlay');
                 if (overlay) overlay.style.display = 'none';
+                restoreUrl();
+                try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
             }
 
             function resetTimer() {
@@ -95,6 +121,7 @@
                         if (overlay) {
                             overlay.style.display = 'flex';
                         }
+                        setLockedUrl();
                         return;
                     }
                 } catch(e) {}
@@ -114,11 +141,18 @@
                     if (localStorage.getItem(LOCK_KEY) === '1') {
                         var overlay = document.getElementById('lockOverlay');
                         if (overlay) overlay.style.display = 'flex';
+                        setLockedUrl();
+                    } else {
+                        restoreUrl();
                     }
                 } catch(e) {}
             }
             window.addEventListener('pageshow', ensureLockedOnShow);
             window.addEventListener('popstate', ensureLockedOnShow);
+
+            // Expose helpers for other scripts
+            window.__lockSetUrl = setLockedUrl;
+            window.__lockRestoreUrl = restoreUrl;
         } catch (_) {}
     })();
     // Toggle minutes field visibility live on change
@@ -799,6 +833,7 @@
                     resetUI();
                     document.dispatchEvent(new Event('mousemove'));
                     try { localStorage.removeItem('appLocked'); } catch(e) {}
+                    try { if (window.__lockRestoreUrl) window.__lockRestoreUrl(); } catch(e) {}
                 } else {
                     errorBox.style.display = 'block';
                     resetUI();
@@ -849,11 +884,13 @@
             setTemp();
             resetUI();
             try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
+            try { if (window.__lockSetUrl) window.__lockSetUrl(); } catch(e) {}
         };
         window.hideLockOverlay = function() {
             overlay.style.display = 'none';
             resetUI();
             try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
+            try { if (window.__lockRestoreUrl) window.__lockRestoreUrl(); } catch(e) {}
         };
         if (goBtn) {
             goBtn.addEventListener('click', function() {
