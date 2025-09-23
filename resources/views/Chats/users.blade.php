@@ -311,7 +311,7 @@
                                     <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; max-height:80px; height: auto;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
-                                    <div style="position: absolute; top: 28px; right: 10px; text-align: center; color: #fff;">
+                                    <div style="position: absolute; top: 7px; right: 10px; text-align: center; color: #fff;">
                                         <div class="d-flex flex-column align-items-end gap-2" style="z-index: 2;">
                                             <!-- Trigger Button (Styled) -->
                                             <div
@@ -353,10 +353,6 @@
                                         <img src="{{ $user->image ? asset($user->image) : asset('build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
                                     </div>
                                 </div>
-
-                                <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
-
-                                <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
@@ -3306,6 +3302,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;
+        body.addEventListener('click', function(){
+            document.querySelectorAll('.menu-box').forEach(function(el){ el.style.display = 'none'; });
+        });
         const darkBtn = document.getElementById('dark-mode-toggle');
         const lightBtn = document.getElementById('light-mode-toggle');
 
