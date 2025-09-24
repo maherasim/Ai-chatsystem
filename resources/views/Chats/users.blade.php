@@ -3420,6 +3420,8 @@
 
         var debounceTimer = null;
         function checkEmailUniqueness() {
+            // Skip uniqueness checks while editing existing users
+            if (editingUserIdInput && editingUserIdInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             if (window.originalEmail && emailInput.value === window.originalEmail) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
@@ -3488,12 +3490,14 @@
         document.getElementById('userModalSubtitle').innerText = 'Add new User to Team';
         document.getElementById('userCreateForm').action = '{{ route('user.store') }}';
         document.getElementById('userFormMethod').value = 'POST';
+        document.getElementById('userFormMethod').value = 'POST';
         document.getElementById('editingUserId').value = '';
         window.originalEmail = null;
 
         document.getElementById('nameInput').value = '';
         document.getElementById('emailInput').value = '';
         document.getElementById('confirmEmailInput').value = '';
+        document.getElementById('confirmEmailInput').required = true;
         document.getElementById('password1').required = true;
         document.getElementById('password2').required = true;
         document.getElementById('password1').value = '';
@@ -3517,6 +3521,9 @@
         bannerPreview.src = '';
         bannerPlaceholder.style.display = 'block';
         if (bannerInput) bannerInput.required = true;
+
+        // Refresh form validity/UI state
+        document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     function openCreateUser() {
@@ -3570,6 +3577,9 @@
             bannerPreview.src = '';
             bannerPlaceholder.style.display = 'block';
         }
+
+        // Refresh form validity/UI state
+        document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
     }
 </script>
 @endsection
