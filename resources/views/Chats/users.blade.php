@@ -2,9 +2,65 @@
 @extends('layout.mainlayout')
 @section('content')
 
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Delete Confirmation Function -->
+<script>
+function confirmDelete(deleteUrl, userName) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to delete.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        customClass: {
+            popup: 'swal2-popup-custom',
+            confirmButton: 'swal2-confirm-custom',
+            cancelButton: 'swal2-cancel-custom'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Deleting...',
+                text: 'Please wait while we delete the user.',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'swal2-popup-custom'
+                },
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Redirect to delete URL
+            window.location.href = deleteUrl;
+        }
+    });
+}
+</script>
+
 <style>
     body {
         overflow-x: hidden;
+    }
+
+    /* SweetAlert Custom Styles */
+    .swal2-popup-custom {
+        border-radius: 12px !important;
+    }
+    
+    .swal2-confirm-custom {
+        border-radius: 8px !important;
+    }
+    
+    .swal2-cancel-custom {
+        border-radius: 8px !important;
     }
 
     .dropdown-menu {
@@ -338,7 +394,7 @@
                                                 <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                                 <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
 
-                                                    <a href="{{ route('user.destroy', $user->id) }}" onclick="return confirm('Delete this user?');">
+                                                    <a href="#" onclick="confirmDelete('{{ route('user.destroy', $user->id) }}', '{{ $user->name }}'); return false;">
                                                         <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
                                                     </a>
 
