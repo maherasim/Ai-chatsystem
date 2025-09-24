@@ -3424,6 +3424,14 @@
 
         function showEmailError(show, message) {
             if (!emailInput) return;
+            
+            // Don't show email errors during editing
+            if (editingUserIdInput && editingUserIdInput.value) {
+                emailInput.setCustomValidity('');
+                emailInput.reportValidity();
+                return;
+            }
+            
             emailInput.setCustomValidity(show ? (message || 'Email already exists') : '');
             emailInput.reportValidity();
         }
@@ -3481,6 +3489,12 @@
         }
         if (confirmEmailInput) {
             confirmEmailInput.addEventListener('input', function(){
+                // Skip confirm email validation during editing
+                if (editingUserIdInput && editingUserIdInput.value) {
+                    confirmEmailInput.setCustomValidity('');
+                    return;
+                }
+                
                 if (emailInput && confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
                     confirmEmailInput.setCustomValidity('Emails do not match');
                 } else {
@@ -3578,6 +3592,11 @@
         }
         if (typeof updateSaveButton === 'function') {
             updateSaveButton();
+        }
+        
+        // Clear any existing email validation errors
+        if (typeof showEmailError === 'function') {
+            showEmailError(false);
         }
 
         document.getElementById('nameInput').value = user.name || '';
