@@ -3406,7 +3406,17 @@
         if (!form || !saveBtn) return;
 
         function updateSaveButton() {
-            var isValid = form.checkValidity() && !emailExists;
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            var isValid = false;
+            
+            if (isEditing) {
+                // During editing, only check email uniqueness, not full form validity
+                isValid = !emailExists;
+            } else {
+                // During creation, check full form validity
+                isValid = form.checkValidity() && !emailExists;
+            }
+            
             saveBtn.disabled = !isValid;
             saveBtn.style.opacity = isValid ? '1' : '0.6';
             saveBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
@@ -3561,6 +3571,14 @@
         document.getElementById('userCreateForm').action = '{{ route('user.update', '__ID__') }}'.replace('__ID__', user.id);
         document.getElementById('userFormMethod').value = 'PUT';
         document.getElementById('editingUserId').value = user.id;
+
+        // Immediately enable save button for editing
+        if (typeof emailExists !== 'undefined') {
+            emailExists = false;
+        }
+        if (typeof updateSaveButton === 'function') {
+            updateSaveButton();
+        }
 
         document.getElementById('nameInput').value = user.name || '';
         document.getElementById('emailInput').value = user.email || '';
