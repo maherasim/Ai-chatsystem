@@ -3410,10 +3410,10 @@
             var isValid = false;
             
             if (isEditing) {
-                // During editing, only check email uniqueness, not full form validity
-                isValid = !emailExists;
+                // During editing, always enable save button (no validation checks)
+                isValid = true;
             } else {
-                // During creation, check full form validity
+                // During creation, check full form validity and email uniqueness
                 isValid = form.checkValidity() && !emailExists;
             }
             
@@ -3430,7 +3430,7 @@
 
         var debounceTimer = null;
         function checkEmailUniqueness() {
-            // Skip uniqueness checks while editing existing users
+            // Skip ALL email validation while editing existing users
             if (editingUserIdInput && editingUserIdInput.value) { 
                 emailExists = false; 
                 showEmailError(false); 
