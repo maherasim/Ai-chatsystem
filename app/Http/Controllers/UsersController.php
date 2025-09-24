@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserWelcomeMail;
 use Illuminate\Support\Facades\File;
+use MongoDB\BSON\ObjectId;
 
 class UsersController extends Controller
 {
@@ -175,9 +176,37 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
+        // Custom email validation for MongoDB
+        $emailRules = [
+            'required',
+            'email',
+            function ($attribute, $value, $fail) use ($id) {
+                try {
+                    // Convert string ID to ObjectId for proper MongoDB comparison
+                    $objectId = new ObjectId($id);
+                    $existingUser = User::where('email', $value)
+                        ->where('_id', '!=', $objectId)
+                        ->first();
+                    
+                    if ($existingUser) {
+                        $fail('The email has already been taken.');
+                    }
+                } catch (\Exception $e) {
+                    // If ObjectId conversion fails, fall back to string comparison
+                    $existingUser = User::where('email', $value)
+                        ->where('_id', '!=', $id)
+                        ->first();
+                    
+                    if ($existingUser) {
+                        $fail('The email has already been taken.');
+                    }
+                }
+            }
+        ];
+
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $id . ',_id',
+            'email'     => $emailRules,
             'user_description' => 'nullable|string',
             'gender'    => 'nullable|string',
             'type'      => 'required',
