@@ -315,10 +315,10 @@ public function destroy($id){
      $user=User::find($id);
      if($user){
          $user->delete();
-        return redirect()->back()->with('success','User deleted Successfull');
+        return redirect()->back()->with('success','User deleted Successfully');
      }
      else{
-        return redirect()->back()->with('error','User deleted Successfull');
+        return redirect()->back()->with('error','User deleted Successfully');
      }
 }
 
