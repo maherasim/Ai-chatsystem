@@ -3409,13 +3409,13 @@
             var isEditing = editingUserIdInput && editingUserIdInput.value;
             var isValid = false;
             
-            if (isEditing) {
-                // During editing, only check email uniqueness, not full form validity
-                isValid = !emailExists;
-            } else {
-                // During creation, check full form validity
-                isValid = form.checkValidity() && !emailExists;
-            }
+            // if (isEditing) {
+            //     // During editing, only check email uniqueness, not full form validity
+            //     isValid = !emailExists;
+            // } else {
+            //     // During creation, check full form validity
+            //     isValid = form.checkValidity() && !emailExists;
+            // }
             
             saveBtn.disabled = !isValid;
             saveBtn.style.opacity = isValid ? '1' : '0.6';
