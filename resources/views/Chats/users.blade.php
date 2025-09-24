@@ -3544,6 +3544,7 @@
         var desc = document.getElementById('descriptionInput'); if (desc) desc.value = user.user_description || '';
         document.getElementById('password1').required = false;
         document.getElementById('password2').required = false;
+        document.getElementById('confirmEmailInput').required = false;
         document.getElementById('password1').value = '';
         document.getElementById('password2').value = '';
 
