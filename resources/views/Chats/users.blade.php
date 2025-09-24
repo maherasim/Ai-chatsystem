@@ -3409,6 +3409,8 @@
 
         var debounceTimer = null;
         function checkEmailUniqueness() {
+            // Skip uniqueness checks while editing existing users
+            if (editingUserIdInput && editingUserIdInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
             if (editingUserIdInput && editingUserIdInput.value) {
@@ -3451,12 +3453,13 @@
         document.getElementById('userModalTitle').innerText = 'Add new Member';
         document.getElementById('userModalSubtitle').innerText = 'Add new User to Team';
         document.getElementById('userCreateForm').action = '{{ route('user.store') }}';
-        document.getElementById('userFormMethod').value = 'post';
+        document.getElementById('userFormMethod').value = 'POST';
         document.getElementById('editingUserId').value = '';
 
         document.getElementById('nameInput').value = '';
         document.getElementById('emailInput').value = '';
         document.getElementById('confirmEmailInput').value = '';
+        document.getElementById('confirmEmailInput').required = true;
         document.getElementById('password1').required = true;
         document.getElementById('password2').required = true;
         document.getElementById('password1').value = '';
@@ -3479,6 +3482,9 @@
         bannerPreview.src = '';
         bannerPlaceholder.style.display = 'block';
         if (bannerInput) bannerInput.required = true;
+
+        // Refresh form validity/UI state
+        document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     function openCreateUser() {
@@ -3489,12 +3495,13 @@
         document.getElementById('userModalTitle').innerText = 'Edit Member';
         document.getElementById('userModalSubtitle').innerText = 'Update user details';
         document.getElementById('userCreateForm').action = '{{ url('/user') }}/' + user.id;
-        document.getElementById('userFormMethod').value = 'put';
+        document.getElementById('userFormMethod').value = 'PUT';
         document.getElementById('editingUserId').value = user.id;
 
         document.getElementById('nameInput').value = user.name || '';
         document.getElementById('emailInput').value = user.email || '';
         document.getElementById('confirmEmailInput').value = user.email || '';
+        document.getElementById('confirmEmailInput').required = false;
         document.getElementById('password1').required = false;
         document.getElementById('password2').required = false;
         document.getElementById('password1').value = '';
@@ -3530,6 +3537,9 @@
             bannerPreview.src = '';
             bannerPlaceholder.style.display = 'block';
         }
+
+        // Refresh form validity/UI state
+        document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
     }
 </script>
 @endsection
