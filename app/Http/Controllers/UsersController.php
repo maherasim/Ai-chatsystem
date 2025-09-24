@@ -177,7 +177,7 @@ class UsersController extends Controller
 
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $user->id . ',_id',
+            'email'     => 'required|email|unique:users,email,' . $id . ',_id',
             'user_description' => 'nullable|string',
             'gender'    => 'nullable|string',
             'type'      => 'required',
