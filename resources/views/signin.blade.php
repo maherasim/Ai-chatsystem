@@ -7,12 +7,16 @@
         max-width: 50%;
         height: auto;
     }
+    .w-100 {
+         width: 101% !important;
+         }
     .bg-cover {
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        width: 100%;
+        width: 101%;
         height: 100%;
+        
     }
 </style>
 <div class="container-fluid">
