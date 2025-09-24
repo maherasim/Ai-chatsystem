@@ -337,7 +337,7 @@
                                                     <!-- Vertical Divider -->
                                                     <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-user='@json([
+                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-user='{{ json_encode([
                                                         "id" => $user->id,
                                                         "name" => $user->name,
                                                         "email" => $user->email,
@@ -346,7 +346,7 @@
                                                         "image_url" => $user->image ? asset($user->image) : "",
                                                         "banner_url" => $user->banner ? asset($user->banner) : "",
                                                         "permissions" => $user->permissions,
-                                                    ])' onclick="openEditUser(JSON.parse(this.getAttribute('data-user')))" data-bs-toggle="modal" data-bs-target="#add_user">
+                                                    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openEditUser(JSON.parse(this.getAttribute('data-user')))" data-bs-toggle="modal" data-bs-target="#add_user">
 
                                                     <!-- Vertical Divider -->
                                                     {{-- <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
