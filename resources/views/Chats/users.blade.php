@@ -3421,13 +3421,34 @@
         var debounceTimer = null;
         function checkEmailUniqueness() {
             // Skip uniqueness checks while editing existing users
-            if (editingUserIdInput && editingUserIdInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
-            if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
-            if (window.originalEmail && emailInput.value === window.originalEmail) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
+            if (editingUserIdInput && editingUserIdInput.value) { 
+                emailExists = false; 
+                showEmailError(false); 
+                updateSaveButton(); 
+                return; 
+            }
+            
+            if (!emailInput || !emailInput.value) { 
+                emailExists = false; 
+                showEmailError(false); 
+                updateSaveButton(); 
+                return; 
+            }
+            
+            // If email matches original email during editing, allow it
+            if (window.originalEmail && emailInput.value === window.originalEmail) { 
+                emailExists = false; 
+                showEmailError(false); 
+                updateSaveButton(); 
+                return; 
+            }
+            
+            // Only check uniqueness for new emails or when not editing
             var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
             if (editingUserIdInput && editingUserIdInput.value) {
                 url += '&ignore_id=' + encodeURIComponent(editingUserIdInput.value);
             }
+            
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(function(r){ return r.json(); })
                 .then(function(data){
@@ -3435,7 +3456,11 @@
                     showEmailError(emailExists, 'This email is already registered.');
                     updateSaveButton();
                 })
-                .catch(function(){ emailExists = false; showEmailError(false); updateSaveButton(); });
+                .catch(function(){ 
+                    emailExists = false; 
+                    showEmailError(false); 
+                    updateSaveButton(); 
+                });
         }
 
         if (emailInput) {
@@ -3581,6 +3606,11 @@
 
         // Refresh form validity/UI state
         document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
+        
+        // Validate email state for editing
+        if (typeof checkEmailUniqueness === 'function') {
+            checkEmailUniqueness();
+        }
     }
 </script>
 @endsection
