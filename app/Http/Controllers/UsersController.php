@@ -157,11 +157,81 @@ class UsersController extends Controller
     public function checkEmail(Request $request)
     {
         $email = (string) $request->query('email', '');
+        $ignoreId = $request->query('ignore_id');
         $exists = false;
         if ($email !== '') {
-            $exists = User::where('email', $email)->exists();
+            $query = User::where('email', $email);
+            if (!empty($ignoreId)) {
+                $query->where('id', '!=', $ignoreId);
+            }
+            $exists = $query->exists();
         }
         return response()->json(['exists' => $exists]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email,' . $user->id,
+            'gender'    => 'nullable|string',
+            'type'      => 'required',
+            'passw'     => 'nullable|min:6|same:rpassw',
+            'rpassw'    => 'nullable',
+            'image'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'banner'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4096',
+        ]);
+
+        // Images
+        $imagePath = $user->image;
+        $banPath = $user->banner;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = 'profile_' . uniqid() . '.' . $file->getClientOriginalName();
+            $destinationPath = public_path('upload/users');
+            if (!\Illuminate\Support\Facades\File::exists($destinationPath)) {
+                \Illuminate\Support\Facades\File::makeDirectory($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $fileName);
+            $imagePath = 'upload/users/' . $fileName;
+        }
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = 'banner_' . uniqid() . '.' . $file->getClientOriginalName();
+            $destinationPath = public_path('upload/users/banner');
+            if (!\Illuminate\Support\Facades\File::exists($destinationPath)) {
+                \Illuminate\Support\Facades\File::makeDirectory($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $fileName);
+            $banPath = 'upload/users/banner/' . $fileName;
+        }
+
+        $permissions = $request->input('permissions', []);
+        foreach ($permissions as $module => &$actions) {
+            foreach ($actions as $action => $value) {
+                $actions[$action] = true;
+            }
+        }
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->gender = $validated['gender'] ?? $user->gender;
+        $user->type = $validated['type'] ?? $user->type;
+        $user->image = $imagePath;
+        $user->banner = $banPath;
+        if (!empty($validated['passw'])) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($validated['passw']);
+        }
+        if (!empty($permissions)) {
+            $user->permissions = $permissions;
+        }
+        $user->save();
+
+        return redirect()->back()->with('success', 'User updated successfully!');
     }
 
   /**

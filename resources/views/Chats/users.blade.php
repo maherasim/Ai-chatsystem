@@ -269,7 +269,7 @@
 
                         <!-- Right Side -->
                         <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
-                            <button
+                            <button id="addUserButton" onclick="openCreateUser()"
                                 type="button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#add_user"
@@ -330,12 +330,23 @@
                                                 <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                                 <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
 
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    <a href="{{ route('user.destroy', $user->id) }}" onclick="return confirm('Delete this user?');">
+                                                        <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                    </a>
 
                                                     <!-- Vertical Divider -->
                                                     <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_user_{{ $user->id }}">
+                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" onclick='openEditUser(@json([
+                                                        "id" => $user->id,
+                                                        "name" => $user->name,
+                                                        "email" => $user->email,
+                                                        "gender" => $user->gender,
+                                                        "type" => $user->type,
+                                                        "image_url" => $user->image ? asset($user->image) : "",
+                                                        "banner_url" => $user->banner ? asset($user->banner) : "",
+                                                        "permissions" => $user->permissions,
+                                                    ]))' data-bs-toggle="modal" data-bs-target="#add_user">
 
                                                     <!-- Vertical Divider -->
                                                     {{-- <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
@@ -2599,11 +2610,11 @@
         <div class="modal-content" style="border-radius: 16px; background-color: #ffffff; padding: 24px;">
             <!-- Header -->
             <div style="margin-bottom: 16px; position: relative;">
-                <h5
+                <h5 id="userModalTitle"
                     style="font-weight: 700; font-size: 18px; color: #2a2b4c; margin: 0;">
                     Add new Member
                 </h5>
-                <p style="font-size: 13px; color: #7c7e9b; margin: 0;">
+                <p id="userModalSubtitle" style="font-size: 13px; color: #7c7e9b; margin: 0;">
                     Add new User to Team
                 </p>
                 <!-- Bootstrap close button -->
@@ -2616,6 +2627,8 @@
             </div>
 <form id="userCreateForm" method="post" action="{{ route('user.store') }}" enctype="multipart/form-data" >
     @csrf
+    <input type="hidden" name="_method" id="userFormMethod" value="post">
+    <input type="hidden" id="editingUserId" value="">
             <!-- Upload Banner -->
             <div
                 onclick="document.getElementById('bannerInput').click();"
@@ -2647,7 +2660,7 @@
             <div
                 style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; display: flex; gap: 16px; flex-wrap: wrap; position: relative;">
                 <!-- User Type (Top-right) -->
-                <select name="type" required="required"
+                <select name="type" id="typeSelect" required="required"
                     style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>User type</option>
                    
@@ -2691,17 +2704,17 @@
                     </div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <select name="gender" required="required"
+                        <select name="gender" id="genderSelect" required="required"
                             style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;">
                             <option value="" disabled selected>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             
                         </select>
-                        <input type="text" placeholder="Username and Lastname" required name="name"
+                        <input type="text" placeholder="Username and Lastname" required name="name" id="nameInput"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
                         <input
-                            type="text" name="user_description" required="required"
+                            type="text" name="user_description" id="descriptionInput" required="required"
                             placeholder="Describe User"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
 
@@ -3376,6 +3389,8 @@
         var saveBtn = document.getElementById('saveBtn');
         var emailInput = document.getElementById('emailInput');
         var confirmEmailInput = document.getElementById('confirmEmailInput');
+        var editingUserIdInput = document.getElementById('editingUserId');
+        var userFormMethod = document.getElementById('userFormMethod');
         var emailExists = false;
         if (!form || !saveBtn) return;
 
@@ -3396,6 +3411,9 @@
         function checkEmailUniqueness() {
             if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
+            if (editingUserIdInput && editingUserIdInput.value) {
+                url += '&ignore_id=' + encodeURIComponent(editingUserIdInput.value);
+            }
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(function(r){ return r.json(); })
                 .then(function(data){
@@ -3428,4 +3446,90 @@
         updateSaveButton();
     });
     </script>
+<script>
+    function resetUserFormForCreate() {
+        document.getElementById('userModalTitle').innerText = 'Add new Member';
+        document.getElementById('userModalSubtitle').innerText = 'Add new User to Team';
+        document.getElementById('userCreateForm').action = '{{ route('user.store') }}';
+        document.getElementById('userFormMethod').value = 'post';
+        document.getElementById('editingUserId').value = '';
+
+        document.getElementById('nameInput').value = '';
+        document.getElementById('emailInput').value = '';
+        document.getElementById('confirmEmailInput').value = '';
+        document.getElementById('password1').required = true;
+        document.getElementById('password2').required = true;
+        document.getElementById('password1').value = '';
+        document.getElementById('password2').value = '';
+        document.getElementById('genderSelect').value = '';
+        document.getElementById('typeSelect').value = '';
+
+        var userImgPreview = document.getElementById('userImgPreview');
+        var userImgPlaceholder = document.getElementById('userImgPlaceholder');
+        var userImgInput = document.getElementById('userImgInput');
+        userImgPreview.style.display = 'none';
+        userImgPreview.src = '';
+        userImgPlaceholder.style.display = 'block';
+        if (userImgInput) userImgInput.required = true;
+
+        var bannerPreview = document.getElementById('bannerPreview');
+        var bannerPlaceholder = document.getElementById('bannerPlaceholder');
+        var bannerInput = document.getElementById('bannerInput');
+        bannerPreview.style.display = 'none';
+        bannerPreview.src = '';
+        bannerPlaceholder.style.display = 'block';
+        if (bannerInput) bannerInput.required = true;
+    }
+
+    function openCreateUser() {
+        resetUserFormForCreate();
+    }
+
+    function openEditUser(user) {
+        document.getElementById('userModalTitle').innerText = 'Edit Member';
+        document.getElementById('userModalSubtitle').innerText = 'Update user details';
+        document.getElementById('userCreateForm').action = '{{ url('/user') }}/' + user.id;
+        document.getElementById('userFormMethod').value = 'put';
+        document.getElementById('editingUserId').value = user.id;
+
+        document.getElementById('nameInput').value = user.name || '';
+        document.getElementById('emailInput').value = user.email || '';
+        document.getElementById('confirmEmailInput').value = user.email || '';
+        document.getElementById('password1').required = false;
+        document.getElementById('password2').required = false;
+        document.getElementById('password1').value = '';
+        document.getElementById('password2').value = '';
+
+        if (user.gender) document.getElementById('genderSelect').value = user.gender;
+        if (user.type) document.getElementById('typeSelect').value = user.type;
+
+        var userImgPreview = document.getElementById('userImgPreview');
+        var userImgPlaceholder = document.getElementById('userImgPlaceholder');
+        var userImgInput = document.getElementById('userImgInput');
+        if (userImgInput) userImgInput.required = false;
+        if (user.image_url) {
+            userImgPreview.src = user.image_url;
+            userImgPreview.style.display = 'block';
+            userImgPlaceholder.style.display = 'none';
+        } else {
+            userImgPreview.style.display = 'none';
+            userImgPreview.src = '';
+            userImgPlaceholder.style.display = 'block';
+        }
+
+        var bannerPreview = document.getElementById('bannerPreview');
+        var bannerPlaceholder = document.getElementById('bannerPlaceholder');
+        var bannerInput = document.getElementById('bannerInput');
+        if (bannerInput) bannerInput.required = false;
+        if (user.banner_url) {
+            bannerPreview.src = user.banner_url;
+            bannerPreview.style.display = 'block';
+            bannerPlaceholder.style.display = 'none';
+        } else {
+            bannerPreview.style.display = 'none';
+            bannerPreview.src = '';
+            bannerPlaceholder.style.display = 'block';
+        }
+    }
+</script>
 @endsection
