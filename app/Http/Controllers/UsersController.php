@@ -62,6 +62,7 @@ class UsersController extends Controller
         'confirm_email' => 'nullable',
         'passw'     => 'required|min:6|same:rpassw',  // password must match confirm
         'rpassw'    => 'nullable',
+        'user_description' => 'nullable|string',
         'gender'    => 'nullable|string',
         'type'      => 'required',
       //  'phone'     => 'nullable|string',
@@ -129,6 +130,7 @@ class UsersController extends Controller
         'department' => $validated['department'] ?? null,
         'image' => $imagePath,
         'banner' => $banPath,
+        'user_description' => $validated['user_description'] ?? null,
         'gender' => $validated['gender'] ?? null,
         'type'   => $type ?? null,
         'user_id' => $userId,
@@ -162,7 +164,7 @@ class UsersController extends Controller
         if ($email !== '') {
             $query = User::where('email', $email);
             if (!empty($ignoreId)) {
-                $query->where('id', '!=', $ignoreId);
+                $query->where('_id', '!=', $ignoreId);
             }
             $exists = $query->exists();
         }
@@ -175,7 +177,8 @@ class UsersController extends Controller
 
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $user->id,
+            'email'     => 'required|email|unique:users,email,' . $user->id . ',_id',
+            'user_description' => 'nullable|string',
             'gender'    => 'nullable|string',
             'type'      => 'required',
             'passw'     => 'nullable|min:6|same:rpassw',
@@ -219,6 +222,7 @@ class UsersController extends Controller
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->user_description = $validated['user_description'] ?? $user->user_description;
         $user->gender = $validated['gender'] ?? $user->gender;
         $user->type = $validated['type'] ?? $user->type;
         $user->image = $imagePath;

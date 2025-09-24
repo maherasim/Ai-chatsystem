@@ -150,6 +150,14 @@
                     </form>
                 </div>
             </div>
+            <!-- Flash Messages -->
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
+
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group ">
@@ -341,6 +349,7 @@
                                                         "id" => $user->id,
                                                         "name" => $user->name,
                                                         "email" => $user->email,
+                                                        "user_description" => $user->user_description ?? "",
                                                         "gender" => $user->gender,
                                                         "type" => $user->type,
                                                         "image_url" => $user->image ? asset($user->image) : "",
@@ -375,7 +384,7 @@
                                             {{$user->type}}
                                         </span>
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Description
+                                            {{$user->user_description}}
                                         </span>
                                     </div>
 
@@ -430,23 +439,23 @@
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
+                                        <div>0</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
+                                        <div>0</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
+                                        <div>0</div>
                                     </div>
                                 </div>
 
-                                <!-- Productivity (fixed 75%) -->
+                                <!-- Productivity (now 0%) -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 0%</div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
+                                        <div style="width: 0%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
                                 </div>
 
@@ -2761,14 +2770,14 @@
                     <!-- Password Field -->
                     <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
                         <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input name="passw" required="required" type="password" placeholder="Type User Password" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input name="passw" required="required" type="password" placeholder="Type User Password (leave blank to keep)" id="password1" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                         <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password1')">
                     </div>
 
                     <!-- Confirm Password Field -->
                     <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
                         <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
-                        <input name="rpassw" required="required" type="password" placeholder="Repeat User Password" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input name="rpassw" required="required" type="password" placeholder="Repeat User Password (leave blank to keep)" id="password2" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                         <img src="{{URL::asset('/build/img/eye.svg')}}" alt="" style="width: 20px; cursor: pointer;" onclick="togglePassword('password2')">
                     </div>
                 </div>
@@ -3391,6 +3400,8 @@
         var confirmEmailInput = document.getElementById('confirmEmailInput');
         var editingUserIdInput = document.getElementById('editingUserId');
         var userFormMethod = document.getElementById('userFormMethod');
+        var pw1 = document.getElementById('password1');
+        var pw2 = document.getElementById('password2');
         var emailExists = false;
         if (!form || !saveBtn) return;
 
@@ -3410,6 +3421,7 @@
         var debounceTimer = null;
         function checkEmailUniqueness() {
             if (!emailInput || !emailInput.value) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
+            if (window.originalEmail && emailInput.value === window.originalEmail) { emailExists = false; showEmailError(false); updateSaveButton(); return; }
             var url = '{{ route('users.checkEmail') }}' + '?email=' + encodeURIComponent(emailInput.value);
             if (editingUserIdInput && editingUserIdInput.value) {
                 url += '&ignore_id=' + encodeURIComponent(editingUserIdInput.value);
@@ -3440,9 +3452,33 @@
             });
         }
 
+        function syncPasswordRequirements() {
+            var isEdit = userFormMethod && (userFormMethod.value || '').toUpperCase() === 'PUT';
+            if (isEdit) {
+                var anyValue = (pw1 && pw1.value) || (pw2 && pw2.value);
+                if (pw1) pw1.required = !!anyValue;
+                if (pw2) pw2.required = !!anyValue;
+            } else {
+                if (pw1) pw1.required = true;
+                if (pw2) pw2.required = true;
+            }
+            if (pw1 && pw2) {
+                if (pw1.value && pw2.value && pw1.value !== pw2.value) {
+                    pw2.setCustomValidity('Passwords do not match');
+                } else {
+                    pw2.setCustomValidity('');
+                }
+            }
+            updateSaveButton();
+        }
+
+        if (pw1) pw1.addEventListener('input', syncPasswordRequirements);
+        if (pw2) pw2.addEventListener('input', syncPasswordRequirements);
+
         form.addEventListener('input', updateSaveButton, true);
         form.addEventListener('change', updateSaveButton, true);
 
+        syncPasswordRequirements();
         updateSaveButton();
     });
     </script>
@@ -3451,8 +3487,9 @@
         document.getElementById('userModalTitle').innerText = 'Add new Member';
         document.getElementById('userModalSubtitle').innerText = 'Add new User to Team';
         document.getElementById('userCreateForm').action = '{{ route('user.store') }}';
-        document.getElementById('userFormMethod').value = 'post';
+        document.getElementById('userFormMethod').value = 'POST';
         document.getElementById('editingUserId').value = '';
+        window.originalEmail = null;
 
         document.getElementById('nameInput').value = '';
         document.getElementById('emailInput').value = '';
@@ -3463,6 +3500,7 @@
         document.getElementById('password2').value = '';
         document.getElementById('genderSelect').value = '';
         document.getElementById('typeSelect').value = '';
+        var desc = document.getElementById('descriptionInput'); if (desc) desc.value = '';
 
         var userImgPreview = document.getElementById('userImgPreview');
         var userImgPlaceholder = document.getElementById('userImgPlaceholder');
@@ -3488,13 +3526,15 @@
     function openEditUser(user) {
         document.getElementById('userModalTitle').innerText = 'Edit Member';
         document.getElementById('userModalSubtitle').innerText = 'Update user details';
-        document.getElementById('userCreateForm').action = '{{ url('/user') }}/' + user.id;
-        document.getElementById('userFormMethod').value = 'put';
+        document.getElementById('userCreateForm').action = '{{ route('user.update', '__ID__') }}'.replace('__ID__', user.id);
+        document.getElementById('userFormMethod').value = 'PUT';
         document.getElementById('editingUserId').value = user.id;
 
         document.getElementById('nameInput').value = user.name || '';
         document.getElementById('emailInput').value = user.email || '';
         document.getElementById('confirmEmailInput').value = user.email || '';
+        window.originalEmail = user.email || '';
+        var desc = document.getElementById('descriptionInput'); if (desc) desc.value = user.user_description || '';
         document.getElementById('password1').required = false;
         document.getElementById('password2').required = false;
         document.getElementById('password1').value = '';

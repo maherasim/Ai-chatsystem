@@ -34,8 +34,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'department',
         'email',
+        'user_description',
         'password',
-        'phone',
+        'gender',
+        'type',
         'image',
         'banner',
         'permissions',
@@ -44,7 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'screen_lock',
         'screen_lock_minutes',
         'two_factor_auth', 
-        'type',
         'user_id',
     ];
 
