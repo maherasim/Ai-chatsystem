@@ -129,13 +129,38 @@ public function store(Request $request)
 }
 public function updateEmail(Request $request)
 {
-    $request->validate([
-        'new_email' => 'required|email|unique:users,email',
-    ]);
+        $user = auth()->user();
 
-    $user = auth()->user();
-    $user->email = $request->new_email;
-    $user->save();
+        $request->validate([
+            'new_email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) use ($user) {
+                    // Allow keeping the same email
+                    if ($user && $user->email === $value) {
+                        return;
+                    }
+
+                    try {
+                        $objectId = new \MongoDB\BSON\ObjectId($user->_id ?? $user->id);
+                        $exists = \App\Models\User::where('email', $value)
+                            ->where('_id', '!=', $objectId)
+                            ->exists();
+                    } catch (\Throwable $e) {
+                        $exists = \App\Models\User::where('email', $value)
+                            ->where('_id', '!=', ($user->_id ?? $user->id))
+                            ->exists();
+                    }
+
+                    if ($exists) {
+                        $fail('The email has already been taken.');
+                    }
+                },
+            ],
+        ]);
+
+        $user->email = $request->new_email;
+        $user->save();
 
     return back()->with('success', 'Email updated successfully.');
 }
