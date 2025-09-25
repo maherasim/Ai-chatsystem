@@ -2791,11 +2791,13 @@ function confirmDelete(deleteUrl, userName) {
             <!-- Email Section -->
             <div class="mt-3" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px">
                 <!-- Title -->
-                <div style="font-weight: 600; font-size: 15px; color: #2a2b4c;">User E-Mail</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; font-weight: 600; font-size: 15px; color: #2a2b4c;">User E-Mail
+                    <button type="button" id="editEmailBtn" style="background: transparent; border: none; color: #2563eb; font-weight: 600; font-size: 12px; display: none;">Edit</button>
+                </div>
                 <div style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Type the User Mail here</div>
 
                 <!-- Input Row -->
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div id="emailFieldsRow" style="display: flex; gap: 12px; flex-wrap: wrap;">
 
                     <!-- Email Input -->
                     <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
@@ -2806,7 +2808,7 @@ function confirmDelete(deleteUrl, userName) {
                     </div>
 
                     <!-- Confirm Email Input -->
-                    <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
+                    <div id="confirmEmailWrapper" style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
                         <span style="color: #9ca3af; margin-right: 8px;">
                             <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;">
                         </span>
@@ -2818,11 +2820,13 @@ function confirmDelete(deleteUrl, userName) {
             <!-- Password Section -->
             <div class="mt-2" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
                 <!-- Header -->
-                <div style="font-weight: 600; font-size: 15px; color: #2a2b4c;">User Password</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; font-weight: 600; font-size: 15px; color: #2a2b4c;">User Password
+                    <button type="button" id="editPasswordBtn" style="background: transparent; border: none; color: #2563eb; font-weight: 600; font-size: 12px; display: none;">Edit</button>
+                </div>
                 <div style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Set a Password for the User</div>
 
                 <!-- Input Fields Row -->
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div id="passwordFieldsRow" style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <!-- Password Field -->
                     <div style="flex: 1 1 250px; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; min-width: 240px;">
                         <img src="{{URL::asset('/build/img/password.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
@@ -3458,6 +3462,11 @@ function confirmDelete(deleteUrl, userName) {
         var userFormMethod = document.getElementById('userFormMethod');
         var pw1 = document.getElementById('password1');
         var pw2 = document.getElementById('password2');
+        var editEmailBtn = document.getElementById('editEmailBtn');
+        var editPasswordBtn = document.getElementById('editPasswordBtn');
+        var emailFieldsRow = document.getElementById('emailFieldsRow');
+        var passwordFieldsRow = document.getElementById('passwordFieldsRow');
+        var confirmEmailWrapper = document.getElementById('confirmEmailWrapper');
         var emailExists = false;
         if (!form || !saveBtn) return;
 
@@ -3585,6 +3594,42 @@ function confirmDelete(deleteUrl, userName) {
         form.addEventListener('input', updateSaveButton, true);
         form.addEventListener('change', updateSaveButton, true);
 
+        function applyEditViewToggles() {
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            if (editEmailBtn) editEmailBtn.style.display = isEditing ? 'inline' : 'none';
+            if (editPasswordBtn) editPasswordBtn.style.display = isEditing ? 'inline' : 'none';
+
+            if (isEditing) {
+                // Hide confirm email by default until user clicks Edit
+                if (confirmEmailWrapper) confirmEmailWrapper.style.display = 'none';
+                if (confirmEmailInput) confirmEmailInput.required = false;
+                if (pw1) pw1.placeholder = 'Leave blank to keep current password';
+                if (pw2) pw2.placeholder = 'Leave blank to keep current password';
+            } else {
+                if (confirmEmailWrapper) confirmEmailWrapper.style.display = '';
+                if (confirmEmailInput) confirmEmailInput.required = true;
+                if (pw1) pw1.placeholder = 'Type User Password (leave blank to keep)';
+                if (pw2) pw2.placeholder = 'Repeat User Password (leave blank to keep)';
+            }
+        }
+
+        if (editEmailBtn) {
+            editEmailBtn.addEventListener('click', function(){
+                if (confirmEmailWrapper) {
+                    var currentlyHidden = confirmEmailWrapper.style.display === 'none';
+                    confirmEmailWrapper.style.display = currentlyHidden ? '' : 'none';
+                    if (confirmEmailInput) confirmEmailInput.required = currentlyHidden;
+                }
+            });
+        }
+
+        if (editPasswordBtn) {
+            editPasswordBtn.addEventListener('click', function(){
+                if (pw1) pw1.focus();
+            });
+        }
+
+        applyEditViewToggles();
         syncPasswordRequirements();
         updateSaveButton();
     });
@@ -3703,6 +3748,11 @@ function confirmDelete(deleteUrl, userName) {
         // Validate email state for editing
         if (typeof checkEmailUniqueness === 'function') {
             checkEmailUniqueness();
+        }
+
+        // Apply edit view toggles if available
+        if (typeof applyEditViewToggles === 'function') {
+            applyEditViewToggles();
         }
     }
 </script>
