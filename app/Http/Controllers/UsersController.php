@@ -163,11 +163,20 @@ class UsersController extends Controller
         $ignoreId = $request->query('ignore_id');
         $exists = false;
         if ($email !== '') {
-            $query = User::where('email', $email);
             if (!empty($ignoreId)) {
-                $query->where('_id', '!=', $ignoreId);
+                try {
+                    $objectId = new ObjectId($ignoreId);
+                    $exists = User::where('email', $email)
+                        ->where('_id', '!=', $objectId)
+                        ->exists();
+                } catch (\Throwable $e) {
+                    $exists = User::where('email', $email)
+                        ->where('_id', '!=', $ignoreId)
+                        ->exists();
+                }
+            } else {
+                $exists = User::where('email', $email)->exists();
             }
-            $exists = $query->exists();
         }
         return response()->json(['exists' => $exists]);
     }
