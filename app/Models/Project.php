@@ -14,6 +14,9 @@ class Project extends Model
     protected $connection = 'mongodb';
     protected $collection = 'projects';
 
+    protected $connection = 'mongodb';
+    protected $collection = 'projects';
+
     protected $fillable = [
         'title',
         'code',
