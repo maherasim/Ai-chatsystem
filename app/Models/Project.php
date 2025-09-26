@@ -21,5 +21,10 @@ class Project extends Model
         'progress_percent',
         'logo_path',
     ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
 }
 
