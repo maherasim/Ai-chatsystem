@@ -176,7 +176,7 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">{{ $totalProjects ?? 0 }}</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
@@ -199,7 +199,7 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">{{ $inProgressCount ?? 0 }}</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
@@ -222,7 +222,7 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">{{ $inHoldCount ?? 0 }}</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e">
@@ -247,7 +247,7 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">{{ $delayedCount ?? 0 }}</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e;">
@@ -264,7 +264,7 @@
                     <div class="project-succes pt-4 pb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
                         <div>
                             <h3 style="margin: 0;">Project overview</h3>
-                            <strong>Total projects: 10</strong>
+                            <strong>Total projects: {{ $totalProjects ?? 0 }}</strong>
                         </div>
 
                         <div class="d-flex flex-wrap justify-content-start" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
@@ -294,6 +294,8 @@
                     <!-- box project section -->
                     <div class=" mb-1">
                         <div class="row g-1">
+@php($projectList = isset($projects) ? $projects : collect())
+@foreach($projectList as $project)
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
@@ -327,7 +329,7 @@
 
                                         <!-- Logo Image -->
                                         <div>
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                            <img src="{{ $project->logo_path ? asset('storage/'.$project->logo_path) : URL::asset('/build/img/yekbon.svg') }}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
                                         </div>
 
                                         <!-- Progress Status Badge -->
@@ -347,13 +349,13 @@
                                             data-bs-toggle="offcanvas"
                                             data-bs-target="#offcanvasRight"
                                             aria-controls="offcanvasRight">
-                                            Project Title
+                                            {{ $project->title }}
                                         </h6>
 
                                         <!-- Project ID styled exactly like screenshot -->
                                         <div class="d-inline-block px-3 py-1 mb-2 mt-2"
                                             style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
-                                            Project ID
+                                            {{ $project->code ?? ('PRJ-'.$project->id) }}
                                         </div>
                                     </div>
                                     <div class="row mb-2 mt-2 m-0 w-100" style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
@@ -362,7 +364,7 @@
                                             <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 12px;margin-right:13px;">
                                                 Start Date
                                             </strong>
-                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">DD:MM:YY</div>
+                                            <div style="color: #1e60a1; font-weight: 600; font-size: 12px;">{{ optional($project->start_date)->format('d:m:Y') }}</div>
                                         </div>
 
                                         <!-- Work Days -->
@@ -386,8 +388,8 @@
                                             <div class="progress" style="height: 6px; background-color: #f1f1f1; border-radius: 10px; overflow: hidden;">
                                                 <div class="progress-bar"
                                                     role="progressbar"
-                                                    style="width: 60%; background-color: #4dc3ff; border-radius: 10px;"
-                                                    aria-valuenow="60"
+                                                    style="width: {{ (int)($project->progress_percent ?? 0) }}%; background-color: #4dc3ff; border-radius: 10px;"
+                                                    aria-valuenow="{{ (int)($project->progress_percent ?? 0) }}"
                                                     aria-valuemin="0"
                                                     aria-valuemax="100">
                                                 </div>
@@ -434,11 +436,11 @@
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;"><img src="{{URL::asset('/build/img/bluesigma.svg')}}" class="rounded-circle" style="height: 15px;" alt="Project Logo"> Tasks</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">10 tasks </div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">{{ (int)($project->tasks_count ?? 0) }} tasks </div>
                                             </div>
                                             <div class="col">
                                                 <strong style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:black ;font-size: 15px;">Progress</strong>
-                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">25%</div>
+                                                <div class="mt-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 30px; width: fit-content; padding: 3px;">{{ (int)($project->progress_percent ?? 0) }}%</div>
                                             </div>
                                         </div>
                                         <!-- Ticket Colors -->
@@ -533,6 +535,37 @@
                                     </div>
                                 </div>
                             </div>
+@endforeach
+@if($projectList->isEmpty())
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div style="width: 60px; height: 60px; position: relative;">
+                                            <svg width="60" height="60">
+                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                            </svg>
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                0%
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 65px; width: 65px; object-fit: cover;" alt="Project Logo">
+                                        </div>
+                                        <div>
+                                            <div style="background: #e1effe;padding: 5px;">
+                                                <img src="{{URL::asset('/build/img/blueflag.svg')}}" style="height: 20px; width: 20px; " alt="flag" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center" style="cursor: pointer;">
+                                        <h6 style="cursor: pointer;">No projects yet</h6>
+                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2" style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
+                                            PRJ-000
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+@endif
                             <!-- 2nd -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
@@ -2490,7 +2523,8 @@
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
                 ×
             </button>
-            <div class="modal-body px-4 py-4">
+            <form class="modal-body px-4 py-4" method="POST" action="{{ route('project.store') }}" enctype="multipart/form-data">
+                @csrf
                 <h5>Add new Projects</h5>
                 <small>Project ID</small>
 
@@ -2506,7 +2540,7 @@
                                 <div style="font-size: 28px; color: #a0a4ab;">+</div>
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
                             </div>
-                            <input type="file" id="uploadLogo" accept="image/*" hidden
+                            <input type="file" id="uploadLogo" name="logo" accept="image/*" hidden
                                 onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
                     </div>
@@ -2562,21 +2596,22 @@
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Ticket Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
-                        <input type="text" placeholder="Project Title" class="form-control mt-2" style="border-radius: 8px;" />
+                        <label class="fw-semibold" style="font-size: 14px;">Project Title</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Enter the title</div>
+                        <input type="text" name="title" placeholder="Project Title" class="form-control mt-2" style="border-radius: 8px;" required />
                     </div>
 
                     <!-- Task Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <label class="fw-semibold" style="font-size: 14px;">Priority</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
                         <!-- Priority Button Group -->
                         <div class="d-flex justify-content-between mt-2 px-2 py-1"
                             style="background-color: #fff; border-radius: 12px;">
 
-                            <button class="btn"
+                            <input type="hidden" name="priority" id="priorityInput" value="low" />
+                            <button type="button" class="btn" onclick="document.getElementById('priorityInput').value='low';"
                                 style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2588,7 +2623,7 @@
             this.style.color = 'white';
         ">Low</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn" onclick="document.getElementById('priorityInput').value='medium';"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2600,7 +2635,7 @@
             this.style.color = 'white';
         ">Middle</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn" onclick="document.getElementById('priorityInput').value='high';"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2647,6 +2682,7 @@
                                         <input
                                             type="date"
                                             id="dateInput"
+                                            name="start_date"
                                             onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
@@ -2673,6 +2709,7 @@
                                     <input
                                         type="date"
                                         id="deliverDateInput"
+                                        name="end_date"
                                         onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
@@ -2689,7 +2726,8 @@
                         <!-- Reminder Buttons -->
                         <div class="d-flex justify-content-between mt-2 px-1 py-1" style="background-color: #fff; border-radius: 12px;">
 
-                            <button class="btn"
+                            <input type="hidden" name="reminder_days" id="reminderDaysInput" value="7" />
+                            <button type="button" class="btn" onclick="document.getElementById('reminderDaysInput').value='7';"
                                 style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2701,7 +2739,7 @@
             this.style.color = 'white';
         ">7 Days</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn" onclick="document.getElementById('reminderDaysInput').value='15';"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2713,7 +2751,7 @@
             this.style.color = 'white';
         ">15 Days</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn" onclick="document.getElementById('reminderDaysInput').value='30';"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2738,7 +2776,7 @@
                         <div class="card">
 
                             <div class="card-body">
-                                <textarea id="policyEditor"></textarea>
+                                <textarea id="policyEditor" name="description"></textarea>
                                 <!-- <div class="d-flex justify-content-between align-items-center mt-3">
                                     
                                     <div class="btn-group">
@@ -2793,17 +2831,13 @@
                             Close
                         </button>
 
-                        <button class="btn"
-                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
-                            data-bs-dismiss="modal">
+                        <button class="btn" type="submit"
+                            style="background:transparent; color:#7d7f85; border:none; font-weight:500;">
                             Save & Close
                         </button>
                     </div>
                 </div>
-
-
-
-            </div>
+            </form>
         </div>
     </div>
 </div>

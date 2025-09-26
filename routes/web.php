@@ -77,10 +77,8 @@ Route::get('/todo', function () {
     $headers = Setting::all();
     return view('Chats.groups', compact('headers'));
 })->middleware('auth')->name('chat-groups');
-Route::get('/project', function () {
-    $headers = Setting::all();
-    return view('Chats.project', compact('headers'));
-})->name('chat-project');
+Route::get('/project', [App\Http\Controllers\ProjectController::class, 'index'])->name('chat-project');
+Route::post('/project', [App\Http\Controllers\ProjectController::class, 'store'])->name('project.store');
 
 Route::get('/Apis', function () {
     $headers = Setting::all();
