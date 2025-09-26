@@ -11,8 +11,8 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mongodb';
-    protected $collection = 'projects';
+    //protected $connection = 'mongodb';
+    //protected $collection = 'projects';
 
     protected $connection = 'mongodb';
     protected $collection = 'projects';
