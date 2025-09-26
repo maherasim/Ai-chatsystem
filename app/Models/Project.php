@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Project extends Model
 {
     use HasFactory;
+
+    protected $connection = 'mongodb';
+    protected $collection = 'projects';
 
     protected $fillable = [
         'title',
@@ -23,8 +26,10 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'progress_percent' => 'integer',
+        'reminder_days' => 'integer',
     ];
 }
 
