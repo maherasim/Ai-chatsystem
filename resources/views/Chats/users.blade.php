@@ -1253,7 +1253,7 @@ function confirmDelete(deleteUrl, userName) {
                         <img src="{{ asset('build/img/bell.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Reminder</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{$membersCount ?? 0}} Member</div>
                         </div>
                     </div>
 
@@ -1586,7 +1586,7 @@ function confirmDelete(deleteUrl, userName) {
                         <img src="{{ asset('build/img/newtask.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">New Tasks</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{$membersCount ?? 0}} Member</div>
                         </div>
                     </div>
                     <!-- Ticket Title + Status and Metrics -->
@@ -1786,7 +1786,7 @@ function confirmDelete(deleteUrl, userName) {
                         <img src="{{ asset('build/img/inhold.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Task in Hold</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{$membersCount ?? 0}} Member</div>
                         </div>
                     </div>
                     <!-- Ticket Title + Status and Metrics -->
