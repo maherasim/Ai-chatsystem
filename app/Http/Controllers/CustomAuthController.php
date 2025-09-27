@@ -21,7 +21,7 @@ public function customLogin(Request $request)
    // $credentials = $request->only( 'email', 'password');
 
     if (!Auth::attempt($credentials)) {
-        return response()->json(['success' => false, 'message' => 'Invalid credentials']);
+        return response()->json(['success' => false, 'message' => 'Invalid credentials2']);
     }
 
     $user = Auth::user();

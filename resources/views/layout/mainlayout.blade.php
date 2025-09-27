@@ -40,5 +40,13 @@
     </div>
     <!-- /Main Wrapper -->
     @include('layout.partials.footer-scripts')
+<script>
+    $(document).ready(function() {
+        $('#members').select2({
+            placeholder: "Select Member",
+            allowClear: true
+        });
+    });
+    </script>
 </body>
 </html>

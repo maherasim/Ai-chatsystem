@@ -94,6 +94,10 @@ body, html {
     font-weight: 600;
 }
 
+.submitbtn{
+    opacity: 0.3;
+}
+
 .accept-btn {
     background: #28a745;
     color: #fff;
@@ -264,7 +268,7 @@ body, html {
                 </div>
             </div>
         </div>  
-        <form id="profileForm" action="{{ route('profile.complete') }}" method="POST" enctype="multipart/form-data">
+        <form onSubmit="return validt();" id="profileForm" action="{{ route('profile.complete') }}" method="POST" enctype="multipart/form-data">
         @csrf 
              <input type="hidden" name="policy" id="policy_accept_val" value="0" />
             <input type="hidden" name="agreement" id="agreement_accept_val" value="0" />
@@ -577,12 +581,7 @@ body, html {
                 </div>
 
                 <div class="foter ">
-                    <img src="{{URL::asset('/build/img/profile.png')}}" alt="Profile Icon" style="width:unset;">
-                    
-                    <button  id="outsideSubmitBtn" type="button" 
-                style="all: unset; cursor: pointer; display: block; text-align: center; width: 100%;">
-            <span>Update Profile</span>
-        </button>
+                    <button  id="outsideSubmitBtn" type="button"  class="btn btn-info submitbtn">Update Profile</button>
                     
                 </div>
 
@@ -616,6 +615,10 @@ document.addEventListener("DOMContentLoaded", function () {
     outsideSubmitBtn.addEventListener("click", function (event) {
         
         event.preventDefault();
+
+        if (policyVal.value !== "1" && agreementVal.value !== "1") {
+            return;
+        }
 
         if (policyVal.value !== "1" || agreementVal.value !== "1") {
             alert("Please accept both Policy and Agreement before submitting your profile.");
@@ -717,6 +720,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+    function validt(){
+        return false;
+    }
 
    document.addEventListener('DOMContentLoaded', function () {
     function showDiv(divId) {
@@ -724,6 +730,16 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('policy_div').style.display = 'none';
         document.getElementById('agreement_div').style.display = 'none';
         document.getElementById('profile_div').style.display = 'none';
+
+        const policyVal_c = document.getElementById("policy_accept_val");
+        const agreementVal_c = document.getElementById("agreement_accept_val");
+
+
+        if (policyVal_c.value == "1" && agreementVal_c.value == "1") {
+            let box = document.getElementById("outsideSubmitBtn");
+            box.classList.remove("submitbtn")
+           
+        }
 
         // show the requested one
         document.getElementById(divId).style.display = 'block';
