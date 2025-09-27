@@ -35,7 +35,7 @@ class TodoController extends Controller
         
         $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')->get();
 
-        return view('todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos'));
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos'));
     }
 
 
