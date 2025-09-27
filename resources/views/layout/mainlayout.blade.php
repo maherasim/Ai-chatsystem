@@ -52,6 +52,7 @@
     <!-- /Main Wrapper -->
     @include('layout.partials.footer-scripts')
 </body>
+@auth
 <script>
     (function() {
         try {
@@ -917,5 +918,9 @@
         } catch(e) {}
     })();
 </script>
+@endauth
+@guest
+<script>(function(){try{localStorage.removeItem('appLocked');sessionStorage.removeItem('prev_url_before_lock');}catch(e){}})();</script>
+@endguest
 
 </html>
