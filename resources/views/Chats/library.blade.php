@@ -77,6 +77,18 @@
                 min-width: 0;
             }
         }
+
+        /* Increase spacing around the library section */
+        .sidebar-group {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        @media (min-width: 1400px) {
+            .sidebar-group {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        }
     </style>
 
 
