@@ -59,6 +59,24 @@
         .task-icon-link.active .icon-white {
             opacity: 1;
         }
+
+        /* Library page: widen sidebar to fit filters */
+        .sidebar-group .sidebar-content#chats {
+            width: 420px;
+            min-width: 420px;
+        }
+        @media (max-width: 1200px) {
+            .sidebar-group .sidebar-content#chats {
+                width: 360px;
+                min-width: 360px;
+            }
+        }
+        @media (max-width: 992px) {
+            .sidebar-group .sidebar-content#chats {
+                width: 100%;
+                min-width: 0;
+            }
+        }
     </style>
 
 
@@ -201,7 +219,7 @@
                         <div class="sidebar-body chat-body">
 
                             <!-- Left Chat Title -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3" style="flex-wrap: wrap; gap: 10px;">
                                 <h5 class="m-0">Kurd Library</h5>
                                 <div class="d-flex align-items-center" style="gap:10px;">
                                     <form method="GET" action="{{ route('chat-library') }}" class="d-flex align-items-center">
