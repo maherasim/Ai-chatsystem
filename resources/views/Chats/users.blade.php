@@ -238,7 +238,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Text section -->
                                     <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
+                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">{{$membersCount ?? 0}}</div>
                                         <div style="color: #8c94a3; font-weight: 500;">Members</div>
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Text section -->
                                     <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
+                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">{{$adminsCount ?? 0}}</div>
                                         <div style="color: #8c94a3; font-weight: 500;">Admins</div>
                                     </div>
                                 </div>
@@ -289,7 +289,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Text section -->
                                     <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
+                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">{{$developersCount ?? 0}}</div>
                                         <div style="color: #8c94a3; font-weight: 500;">Developer</div>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Text section -->
                                     <div style="margin-left: 15px;">
-                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">20</div>
+                                        <div style="font-size: 24px; font-weight: 600; color: #2e3a59;">{{$employeesCount ?? 0}}</div>
                                         <div style="color: #8c94a3; font-weight: 500;">Employee</div>
                                     </div>
                                 </div>

@@ -47,7 +47,25 @@ class UsersController extends Controller
             ->where('active', true)
             ->count();
 
-        return view('Chats.users', compact('totalUsers', 'activeUsers', 'inactiveUsers', 'newJoinersToday', 'users'));
+        // Dynamic counts for dashboard cards
+        $membersCount = $totalUsers; // non-admin users as defined above
+        $developersCount = User::where('type', 'developer')->count();
+        $employeesCount = User::where('type', 'employee')->count();
+        $adminsCount = User::where(function($q){
+            $q->where('is_admin', true)->orWhere('type', 'subadmin');
+        })->count();
+
+        return view('Chats.users', compact(
+            'totalUsers',
+            'activeUsers',
+            'inactiveUsers',
+            'newJoinersToday',
+            'users',
+            'membersCount',
+            'developersCount',
+            'employeesCount',
+            'adminsCount'
+        ));
     }
 
 
