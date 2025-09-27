@@ -324,18 +324,7 @@
                                 @endforeach
 
                                 @if(isset($words) && $words instanceof \Illuminate\Contracts\Pagination\Paginator)
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div style="font-size: 12px; color: #6b7280;">
-                                        @php
-                                            $from = ($words->currentPage() - 1) * $words->perPage() + 1;
-                                            $to = min($words->currentPage() * $words->perPage(), $words->total());
-                                        @endphp
-                                        Showing {{ $from }} to {{ $to }} of {{ $words->total() }} keywords
-                                    </div>
-                                    <div>
-                                        {{ $words->appends(['page_size' => $pageSize, 'letter' => $selectedLetter])->links() }}
-                                    </div>
-                                </div>
+                                <div class="mt-3"></div>
                                 @endif
 
 
@@ -348,6 +337,21 @@
 
                 </div>
                 <!-- / Chats sidebar -->
+
+                @if(isset($words) && $words instanceof \Illuminate\Contracts\Pagination\Paginator)
+                <div class="d-flex justify-content-between align-items-center mt-3 px-3">
+                    <div style="font-size: 12px; color: #6b7280;">
+                        @php
+                            $from = ($words->currentPage() - 1) * $words->perPage() + 1;
+                            $to = min($words->currentPage() * $words->perPage(), $words->total());
+                        @endphp
+                        Showing {{ $from }} to {{ $to }} of {{ $words->total() }} keywords
+                    </div>
+                    <div>
+                        {{ $words->appends(['page_size' => $pageSize, 'letter' => $selectedLetter])->links() }}
+                    </div>
+                </div>
+                @endif
 
 
                 <form id="keywordEditForm" method="POST" style="display:none;">
