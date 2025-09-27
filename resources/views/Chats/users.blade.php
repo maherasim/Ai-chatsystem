@@ -405,6 +405,7 @@ function confirmDelete(deleteUrl, userName) {
                                                         "id" => $user->id,
                                                         "name" => $user->name,
                                                         "email" => $user->email,
+                                                        "title" => $user->title ?? "",
                                                         "user_description" => $user->user_description ?? "",
                                                         "gender" => $user->gender,
                                                         "type" => $user->type,
@@ -433,6 +434,9 @@ function confirmDelete(deleteUrl, userName) {
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
                                     <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> {{$user->name}}</div>
+                                    @if(!empty($user->title))
+                                    <div style="font-size: 13px; color: #6b7280;">{{$user->title}}</div>
+                                    @endif
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
@@ -2778,6 +2782,8 @@ function confirmDelete(deleteUrl, userName) {
                         </select>
                         <input type="text" placeholder="Username and Lastname" required name="name" id="nameInput"
                             style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
+                        <input type="text" placeholder="User Title (e.g., Senior Developer)" name="title" id="titleInput"
+                            style="flex: 2; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; background-color: white;" />
                         <input
                             type="text" name="user_description" id="descriptionInput" required="required"
                             placeholder="Describe User"
@@ -3705,6 +3711,7 @@ function confirmDelete(deleteUrl, userName) {
         document.getElementById('confirmEmailInput').value = user.email || '';
         window.originalEmail = user.email || '';
         var desc = document.getElementById('descriptionInput'); if (desc) desc.value = user.user_description || '';
+        var title = document.getElementById('titleInput'); if (title) title.value = user.title || '';
         document.getElementById('password1').required = false;
         document.getElementById('password2').required = false;
         document.getElementById('confirmEmailInput').required = false;

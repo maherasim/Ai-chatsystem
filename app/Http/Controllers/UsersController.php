@@ -59,6 +59,7 @@ class UsersController extends Controller
     
     $validated = $request->validate([
         'name'      => 'required|string|max:255',
+        'title'     => 'nullable|string|max:255',
         'email'     => 'required|email|unique:users,email|same:confirm_email',
         'confirm_email' => 'nullable',
         'passw'     => 'required|min:6|same:rpassw',  // password must match confirm
@@ -125,6 +126,7 @@ class UsersController extends Controller
     $rawPassword = $validated['passw'] ?? '';
     $user=User::create([
         'name' => $validated['name'],
+        'title' => $validated['title'] ?? null,
         'email' => $validated['email'],
         'password' => Hash::make($rawPassword),
         'phone' => $validated['phone'] ?? null,
@@ -215,6 +217,7 @@ class UsersController extends Controller
 
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
+            'title'     => 'nullable|string|max:255',
             'email'     => $emailRules,
             'user_description' => 'nullable|string',
             'gender'    => 'nullable|string',
@@ -260,6 +263,7 @@ class UsersController extends Controller
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->title = $validated['title'] ?? $user->title;
         $user->user_description = $validated['user_description'] ?? $user->user_description;
         $user->gender = $validated['gender'] ?? $user->gender;
         $user->type = $validated['type'] ?? $user->type;
