@@ -131,11 +131,7 @@
                 <!-- Right Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
 
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
+                    
 
                     <li style="list-style: none;">
                         <!-- Moon Icon -->
@@ -192,6 +188,9 @@
                                 <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
                                     Middle
                                 </button>
+                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    High
+                                </button>
                             </div>
 
                         </div>
@@ -205,7 +204,7 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{$todo->created_at}}</small>
@@ -229,7 +228,7 @@
                                                         </small>
                                                     @else
                                                         <small class="text-muted">
-                                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                         </small>
                                                     @endif
                                                 </div>
@@ -302,6 +301,9 @@
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
                                     Middle
                                 </button>
+                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    High
+                                </button>
 
                             </div>
 
@@ -315,7 +317,7 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{$todo->created_at}}</small>
@@ -333,7 +335,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                                     <small class="text-muted">
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                        <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
@@ -394,6 +396,9 @@
                                     style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                     Middle
                                 </button>
+                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                    High
+                                </button>
 
                             </div>
 
@@ -407,7 +412,7 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{$todo->created_at}}</small>

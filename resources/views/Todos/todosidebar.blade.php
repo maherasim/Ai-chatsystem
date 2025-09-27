@@ -12,7 +12,9 @@
 <div class="sidebar-menu">
        <div class="logo">
            <a href="{{ url('/home') }}" class="logo-normal">
-               <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
+               <img src="{{ $setting && $setting->app_logo 
+                ? asset($setting->app_logo) 
+                : asset('build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
            </a>
        </div>
        <div class="menu-wrap">
@@ -125,12 +127,7 @@
   </a>
 </li> -->
 
-<!-- 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-11.jpg')}}" alt="Image" class="rounded-circle">
-                       </a>
-                   </li> -->
+
                </ul>
            </div>
        </div>

@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Setting;
 use Carbon\Carbon;
 
 class UsersController extends Controller
 {
 
     public function home(){
+        $setting = Setting::first();
         $user = Auth::user();
-        return view('index', compact('user'));
+        return view('index', compact('user', 'setting'));
     }
 
   public function index()

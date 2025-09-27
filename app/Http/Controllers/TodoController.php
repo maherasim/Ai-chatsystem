@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Setting;
 use App\Models\Todo;
 use Carbon\Carbon;
 
@@ -15,6 +16,8 @@ class TodoController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        $setting = Setting::first();
 
         
         $users = User::whereIn('type', ['employee', 'developer'])
@@ -35,7 +38,7 @@ class TodoController extends Controller
         
         $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')->get();
 
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos'));
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting'));
     }
 
 
