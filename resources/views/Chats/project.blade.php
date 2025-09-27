@@ -2024,7 +2024,7 @@
                                 style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px; background:#f7f9fc">
                                 <div class="row g-2">
                                     <!-- File Box 1 -->
-                                    <div class="col-12 col-md-6">
+                                    {{-- <div class="col-12 col-md-6">
                                         <div
                                             class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
                                             <div class="d-flex align-items-center">
@@ -2044,7 +2044,7 @@
                                             <input type="file" id="fileUpload1" hidden
                                                 onchange=" if (this.files.length > 0) { var file = this.files[0];  var name = file.name;  var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName1').innerText = name; document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
                                         </label>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- File Box 2 -->
                                     <div class="col-12 col-md-6">
