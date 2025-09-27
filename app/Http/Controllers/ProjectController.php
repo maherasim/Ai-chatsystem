@@ -41,12 +41,29 @@ class ProjectController extends Controller
             'reminder_days' => 'nullable|integer|min:0|max:365',
             'progress_percent' => 'nullable|integer|min:0|max:100',
             'logo' => 'nullable|image|max:2048',
+            'sections' => 'nullable|array',
+            'sections.*.name' => 'nullable|string|max:255',
+            'sections.*.description' => 'nullable|string|max:1000',
         ]);
 
         $logoPath = null;
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('projects', 'public');
         }
+
+        // Normalize sections (remove empty rows)
+        $sections = collect($request->input('sections', []))
+            ->map(function ($row) {
+                return [
+                    'name' => isset($row['name']) ? trim($row['name']) : null,
+                    'description' => isset($row['description']) ? trim($row['description']) : null,
+                ];
+            })
+            ->filter(function ($row) {
+                return ($row['name'] !== null && $row['name'] !== '') || ($row['description'] !== null && $row['description'] !== '');
+            })
+            ->values()
+            ->all();
 
         $project = Project::create([
             'title' => $validated['title'],
@@ -59,6 +76,7 @@ class ProjectController extends Controller
             'reminder_days' => $validated['reminder_days'] ?? null,
             'progress_percent' => $validated['progress_percent'] ?? 0,
             'logo_path' => $logoPath,
+            'sections' => $sections,
         ]);
 
         return redirect()->route('chat-project')->with('success', 'Project created successfully.');

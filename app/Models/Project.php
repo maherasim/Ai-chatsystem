@@ -29,10 +29,12 @@ class Project extends Model
         'progress_percent',
         'logo_path',
         'user_id',
+        'sections',
     ];    
     protected $casts = [
         'start_date' => 'datetime',
         'end_date'   => 'datetime',
+        'sections'   => 'array',
     ];
     
 }

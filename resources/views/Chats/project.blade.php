@@ -1990,7 +1990,7 @@
                     style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
                     ×
                 </button>
-                <form class="modal-body px-4 py-4" method="POST" action="{{ route('project.store') }}"
+                <form id="projectCreateForm" class="modal-body px-4 py-4" method="POST" action="{{ route('project.store') }}"
                     enctype="multipart/form-data">
                     @csrf
                     <h5>Add new Projects</h5>
@@ -2090,44 +2090,14 @@
                                 style="background-color: #fff; border-radius: 12px;">
 
                                 <input type="hidden" name="priority" id="priorityInput" value="low" />
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('priorityInput').value='low';"
-                                    style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">Low</button>
+                                <button type="button" class="btn priority-btn active" data-priority="low"
+                                    style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
 
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('priorityInput').value='medium';"
-                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">Middle</button>
+                                <button type="button" class="btn priority-btn" data-priority="medium"
+                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
 
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('priorityInput').value='high';"
-                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">High</button>
+                                <button type="button" class="btn priority-btn" data-priority="high"
+                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
                             </div>
 
                         </div>
@@ -2206,46 +2176,16 @@
                                 style="background-color: #fff; border-radius: 12px;">
 
                                 <input type="hidden" name="reminder_days" id="reminderDaysInput" value="7" />
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('reminderDaysInput').value='7';"
-                                    style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">7
+                                <button type="button" class="btn reminder-btn active" data-days="7"
+                                    style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">7
                                     Days</button>
 
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('reminderDaysInput').value='15';"
-                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">15
+                                <button type="button" class="btn reminder-btn" data-days="15"
+                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">15
                                     Days</button>
 
-                                <button type="button" class="btn"
-                                    onclick="document.getElementById('reminderDaysInput').value='30';"
-                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                    onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">30
+                                <button type="button" class="btn reminder-btn" data-days="30"
+                                    style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">30
                                     Days</button>
                             </div>
 
@@ -2293,11 +2233,11 @@
                         <div id="sections-wrapper" class="w-100">
                             <div class="row mb-2 section-row">
                                 <div class="col-4">
-                                    <input type="text" class="form-control" placeholder="Section Name"
+                                    <input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name"
                                         style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                                 </div>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" placeholder="Section Description"
+                                    <input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description"
                                         style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                                 </div>
                                 <div class="col-1 d-flex align-items-center">
@@ -2996,6 +2936,14 @@
             // Clear input values
             newRow.querySelectorAll("input").forEach(inp => inp.value = "");
 
+            // Re-index names to be sequential
+            let rows = wrapper.querySelectorAll('.section-row');
+            let nextIndex = rows.length;
+            let nameInput = newRow.querySelector('input[placeholder="Section Name"]');
+            let descInput = newRow.querySelector('input[placeholder="Section Description"]');
+            if (nameInput) nameInput.setAttribute('name', 'sections[' + nextIndex + '][name]');
+            if (descInput) descInput.setAttribute('name', 'sections[' + nextIndex + '][description]');
+
             // Change icon to remove
             let img = newRow.querySelector("img");
             img.src = "{{ asset('build/img/removefiled.svg') }}";
@@ -3008,6 +2956,56 @@
         function removeSection(el) {
             el.closest(".section-row").remove();
         }
+    </script>
+    <script>
+        (function(){
+            // Priority buttons
+            function updatePriorityUI(activeBtn){
+                var container = activeBtn.parentElement;
+                var hidden = document.getElementById('priorityInput');
+                var all = container.querySelectorAll('.priority-btn');
+                all.forEach(function(b){ b.classList.remove('active'); b.style.backgroundColor='transparent'; b.style.color='#6c757d'; });
+                activeBtn.classList.add('active');
+                activeBtn.style.backgroundColor = '#1cc375';
+                activeBtn.style.color = 'white';
+                hidden.value = activeBtn.getAttribute('data-priority');
+            }
+            document.querySelectorAll('.priority-btn').forEach(function(btn){
+                btn.addEventListener('click', function(){ updatePriorityUI(this); });
+            });
+
+            // Reminder buttons
+            function updateReminderUI(activeBtn){
+                var container = activeBtn.parentElement;
+                var hidden = document.getElementById('reminderDaysInput');
+                var all = container.querySelectorAll('.reminder-btn');
+                all.forEach(function(b){ b.classList.remove('active'); b.style.backgroundColor='transparent'; b.style.color='#6c757d'; });
+                activeBtn.classList.add('active');
+                activeBtn.style.backgroundColor = '#1cc375';
+                activeBtn.style.color = 'white';
+                hidden.value = activeBtn.getAttribute('data-days');
+            }
+            document.querySelectorAll('.reminder-btn').forEach(function(btn){
+                btn.addEventListener('click', function(){ updateReminderUI(this); });
+            });
+
+            // Ensure sections have names before submit
+            var form = document.getElementById('projectCreateForm');
+            if (form){
+                form.addEventListener('submit', function(){
+                    var rows = document.querySelectorAll('#sections-wrapper .section-row');
+                    var index = 0;
+                    rows.forEach(function(row){
+                        var inputs = row.querySelectorAll('input');
+                        if (inputs.length >= 2){
+                            inputs[0].setAttribute('name', 'sections['+index+'][name]');
+                            inputs[1].setAttribute('name', 'sections['+index+'][description]');
+                            index++;
+                        }
+                    });
+                });
+            }
+        })();
     </script>
     <script>
         function editSection(el) {
