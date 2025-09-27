@@ -366,10 +366,11 @@
 
 
                                             <!-- Project Title -->
-                                            <div class="text-center" style="font-weight: 700; font-size: 16px; color: #2e3a59;">
+                                            <div class="text-center"  style="font-weight: bold; font-size: 16px; cursor: pointer;"">
                                                 {{ $project->title }}
                                             </div>
-                                           
+                                                             
+                                          
                                             <div class="row mb-2 mt-2 m-0 w-100"
                                                 style="background-color: #f9f9f9; border-radius: 12px; padding: 5px 2px;">
                                                 <!-- Start Date -->
