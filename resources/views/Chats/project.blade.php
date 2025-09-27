@@ -153,6 +153,12 @@
 
 
         <div class="chat chat-messages show" id="middle">
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
             <div>
                 @include('Chats.header')
                 <!-- body -->
