@@ -388,7 +388,7 @@
                                                     </strong>
                                                     <div
                                                         style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">
-                                                        5 Days</div>
+                                                        2 Days</div>
                                                 </div>
 
                                                 <!-- Days Left -->
@@ -399,7 +399,7 @@
                                                     </strong>
                                                     <div
                                                         style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">
-                                                        5 Days</div>
+                                                        {{ $project->reminder_days}} Days</div>
                                                 </div>
 
                                                 <!-- Blue Progress Bar (Full Width Below) -->
