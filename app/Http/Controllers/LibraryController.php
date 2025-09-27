@@ -13,6 +13,11 @@ class LibraryController extends Controller
     public function index(Request $request)
     {
         $selectedLetter = strtolower($request->query('letter', ''));
+        $pageSize = (int) $request->query('page_size', 25);
+        $allowedSizes = [25, 50, 100];
+        if (!in_array($pageSize, $allowedSizes, true)) {
+            $pageSize = 25;
+        }
         if (!preg_match('/^[a-z]$/', $selectedLetter)) {
             $selectedLetter = null;
         }
@@ -21,10 +26,12 @@ class LibraryController extends Controller
             ->when($selectedLetter, fn ($q) => $q->where('letter', $selectedLetter))
             ->orderBy('letter')
             ->orderBy('word')
-            ->get();
+            ->paginate($pageSize)
+            ->withQueryString();
 
-        $grouped = $words->groupBy('letter');
+        // Group only the current page items to keep the existing view structure
+        $grouped = collect($words->items())->groupBy('letter');
 
-        return view('Chats.library', compact('grouped', 'selectedLetter','headers'));
+        return view('Chats.library', compact('grouped', 'selectedLetter','headers', 'words', 'pageSize'));
     }
 }

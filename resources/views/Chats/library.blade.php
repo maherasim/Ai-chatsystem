@@ -203,25 +203,37 @@
                             <!-- Left Chat Title -->
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="m-0">Kurd Library</h5>
-                            
-                                <div class="dropdown">
-                                    <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Sort by: {{ isset($selectedLetter) && $selectedLetter ? strtoupper($selectedLetter) : 'All' }}
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <a class="dropdown-item {{ empty($selectedLetter) ? 'active' : '' }}"
-                                               href="{{ route('chat-library') }}">All</a>
-                                        </li>
-                                        @php $letters = range('A', 'Z'); @endphp
-                                        @foreach($letters as $L)
-                                            @php $l = strtolower($L); @endphp
+                                <div class="d-flex align-items-center" style="gap:10px;">
+                                    <form method="GET" action="{{ route('chat-library') }}" class="d-flex align-items-center">
+                                        @if(isset($selectedLetter) && $selectedLetter)
+                                            <input type="hidden" name="letter" value="{{ $selectedLetter }}">
+                                        @endif
+                                        <label for="page_size" class="me-2 mb-0" style="font-size:12px;color:#6b7280;">Show</label>
+                                        <select name="page_size" id="page_size" class="form-select form-select-sm" onchange="this.form.submit()">
+                                            <option value="25" {{ (isset($pageSize) && $pageSize==25) ? 'selected' : '' }}>25</option>
+                                            <option value="50" {{ (isset($pageSize) && $pageSize==50) ? 'selected' : '' }}>50</option>
+                                            <option value="100" {{ (isset($pageSize) && $pageSize==100) ? 'selected' : '' }}>100</option>
+                                        </select>
+                                    </form>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Sort by: {{ isset($selectedLetter) && $selectedLetter ? strtoupper($selectedLetter) : 'All' }}
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <a class="dropdown-item {{ isset($selectedLetter) && $selectedLetter === $l ? 'active' : '' }}"
-                                                   href="{{ route('chat-library', ['letter' => $l]) }}">{{ $L }}</a>
+                                                <a class="dropdown-item {{ empty($selectedLetter) ? 'active' : '' }}"
+                                                   href="{{ route('chat-library', array_filter(['page_size' => $pageSize])) }}">All</a>
                                             </li>
-                                        @endforeach
-                                    </ul>
+                                            @php $letters = range('A', 'Z'); @endphp
+                        @foreach($letters as $L)
+                            @php $l = strtolower($L); @endphp
+                            <li>
+                                <a class="dropdown-item {{ isset($selectedLetter) && $selectedLetter === $l ? 'active' : '' }}"
+                                   href="{{ route('chat-library', array_filter(['letter' => $l, 'page_size' => $pageSize])) }}">{{ $L }}</a>
+                            </li>
+                        @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /Left Chat Title -->
@@ -280,6 +292,21 @@
                                         @endforeach
                                     </div>
                                 @endforeach
+
+                                @if(isset($words) && $words instanceof \Illuminate\Contracts\Pagination\Paginator)
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div style="font-size: 12px; color: #6b7280;">
+                                        @php
+                                            $from = ($words->currentPage() - 1) * $words->perPage() + 1;
+                                            $to = min($words->currentPage() * $words->perPage(), $words->total());
+                                        @endphp
+                                        Showing {{ $from }} to {{ $to }} of {{ $words->total() }} keywords
+                                    </div>
+                                    <div>
+                                        {{ $words->appends(['page_size' => $pageSize, 'letter' => $selectedLetter])->links() }}
+                                    </div>
+                                </div>
+                                @endif
 
 
 
