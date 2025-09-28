@@ -430,7 +430,36 @@
                                             </strong>
                                             <div
                                                 style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">
-                                                {{ $project->reminder_days}} Days
+                                                @php
+                                                    $daysLeft = null;
+                                                    $isOverdue = false;
+                                                    
+                                                    if (!empty($project->end_date)) {
+                                                        try {
+                                                            $endDate = $project->end_date instanceof \Carbon\Carbon ? $project->end_date : \Carbon\Carbon::parse($project->end_date);
+                                                            $today = \Carbon\Carbon::today();
+                                                            
+                                                            // Calculate days left (positive) or days overdue (negative)
+                                                            $daysLeft = $today->diffInDays($endDate, false);
+                                                            
+                                                            // Check if project is overdue
+                                                            if ($endDate->isPast()) {
+                                                                $isOverdue = true;
+                                                            }
+                                                        } catch (\Throwable $e) {
+                                                            $daysLeft = null;
+                                                        }
+                                                    }
+                                                @endphp
+                                                @if($daysLeft !== null)
+                                                    @if($isOverdue)
+                                                        <span style="color: #dc3545;">{{ abs($daysLeft) }} Days Overdue</span>
+                                                    @else
+                                                        {{ $daysLeft }} Days Left
+                                                    @endif
+                                                @else
+                                                    -
+                                                @endif
                                             </div>
                                         </div>
 
@@ -579,11 +608,13 @@
                                         </div>
 
                                         <!-- Progress Bars -->
-                                        @php($barColors = [
-                                            ['track' => '#d3f4dc', 'bar' => '#28c76f'],
-                                            ['track' => '#fef3d3', 'bar' => '#ffc107'],
-                                            ['track' => '#fdd7d7', 'bar' => '#ea5455'],
-                                        ])
+                                        @php
+                                            $barColors = [
+                                                ['track' => '#d3f4dc', 'bar' => '#28c76f'],
+                                                ['track' => '#fef3d3', 'bar' => '#ffc107'],
+                                                ['track' => '#fdd7d7', 'bar' => '#ea5455'],
+                                            ];
+                                        @endphp
                                         <div
                                             class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
                                             @foreach ($sectionSlice as $index => $section)
