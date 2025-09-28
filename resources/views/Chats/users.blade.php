@@ -3384,13 +3384,14 @@ function confirmDelete(deleteUrl, userName) {
 <script>
     const toggleIcon = document.getElementById("toggleIcon");
     const chevron = document.getElementById("chevronIcon");
-
-    toggleIcon.addEventListener("click", () => {
-        setTimeout(() => {
-            chevron.classList.toggle("ti-chevron-down");
-            chevron.classList.toggle("ti-chevron-up");
-        }, 150);
-    });
+    if (toggleIcon && chevron) {
+        toggleIcon.addEventListener("click", () => {
+            setTimeout(() => {
+                chevron.classList.toggle("ti-chevron-down");
+                chevron.classList.toggle("ti-chevron-up");
+            }, 150);
+        });
+    }
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -3401,19 +3402,21 @@ function confirmDelete(deleteUrl, userName) {
         const darkBtn = document.getElementById('dark-mode-toggle');
         const lightBtn = document.getElementById('light-mode-toggle');
 
-        darkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.add('dark-mode');
-            darkBtn.style.display = 'none';
-            lightBtn.style.display = 'inline';
-        });
+        if (darkBtn && lightBtn) {
+            darkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.add('dark-mode');
+                darkBtn.style.display = 'none';
+                lightBtn.style.display = 'inline';
+            });
 
-        lightBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.remove('dark-mode');
-            lightBtn.style.display = 'none';
-            darkBtn.style.display = 'inline';
-        });
+            lightBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.remove('dark-mode');
+                lightBtn.style.display = 'none';
+                darkBtn.style.display = 'inline';
+            });
+        }
     });
 </script>
 <!-- JavaScript Function -->
@@ -3702,6 +3705,14 @@ function confirmDelete(deleteUrl, userName) {
 
         // Initialize section visibility on load
         updateSectionVisibility();
+
+        // Ensure sections update when modal is shown
+        var addUserModalEl = document.getElementById('add_user');
+        if (addUserModalEl) {
+            addUserModalEl.addEventListener('shown.bs.modal', function(){
+                if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
+            });
+        }
 
         function applyEditViewToggles() {
             var isEditing = editingUserIdInput && editingUserIdInput.value;
