@@ -403,7 +403,21 @@
                                             </strong>
                                             <div
                                                 style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left: 8px;">
-                                                2 Days</div>
+                                                @php
+                                                    $workDays = null;
+                                                    if (!empty($project->start_date) && !empty($project->end_date)) {
+                                                        try {
+                                                            $start = $project->start_date instanceof \Carbon\Carbon ? $project->start_date : \Carbon\Carbon::parse($project->start_date);
+                                                            $end = $project->end_date instanceof \Carbon\Carbon ? $project->end_date : \Carbon\Carbon::parse($project->end_date);
+                                                            if ($end->greaterThanOrEqualTo($start)) {
+                                                                $workDays = $start->diffInDays($end) + 1; // inclusive
+                                                            }
+                                                        } catch (\Throwable $e) {
+                                                            $workDays = null;
+                                                        }
+                                                    }
+                                                @endphp
+                                                {{ $workDays ? ($workDays . ' Days') : '-' }}</div>
                                         </div>
 
                                         <!-- Days Left -->
@@ -2061,7 +2075,7 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set the duration of the Project</div>
 
                         <!-- Start Date -->
-                        <div class="d-flex gap-2 mt-2">
+                        <div class="d-flex gap-2 mt-2" id="projectDurationSectionCreate">
                             <div style="position: relative; width: 100%;">
                                 <div
                                     style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
@@ -2082,7 +2096,7 @@
 
                                         <!-- Hidden Input (works with showPicker) -->
                                         <input type="date" id="dateInput" name="start_date"
-                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionCreate');"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
                                 </div>
@@ -2107,11 +2121,14 @@
 
                                     <!-- Hidden Date Input -->
                                     <input type="date" id="deliverDateInput" name="end_date"
-                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionCreate');"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
                             </div>
 
+                        </div>
+                        <div style="font-size: 12px; color: #1e60a1; font-weight: 600; margin-top: 6px;">
+                            Total Days: <span id="totalDaysDisplayCreate">-</span>
                         </div>
                     </div>
 
@@ -2380,7 +2397,7 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set the duration of the Project</div>
 
                         <!-- Start Date -->
-                        <div class="d-flex gap-2 mt-2">
+                        <div class="d-flex gap-2 mt-2" id="projectDurationSectionEdit">
                             <div style="position: relative; width: 100%;">
                                 <div
                                     style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; position: relative; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
@@ -2401,7 +2418,7 @@
 
                                         <!-- Hidden Input (works with showPicker) -->
                                         <input type="date" id="dateInput"
-                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
                                 </div>
@@ -2426,11 +2443,14 @@
 
                                     <!-- Hidden Date Input -->
                                     <input type="date" id="deliverDateInput"
-                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
                             </div>
 
+                        </div>
+                        <div style="font-size: 12px; color: #1e60a1; font-weight: 600; margin-top: 6px;">
+                            Total Days: <span id="totalDaysDisplayEdit">-</span>
                         </div>
                     </div>
 
@@ -2967,6 +2987,39 @@
             });
         }
     })();
+</script>
+<script>
+    function calculateTotalDays(sectionSelector) {
+        try {
+            var section = document.querySelector(sectionSelector);
+            if (!section) return;
+            var startInput = section.querySelector('#dateInput');
+            var endInput = section.querySelector('#deliverDateInput');
+            var display = section.id === 'projectDurationSectionEdit' ? document.getElementById('totalDaysDisplayEdit') : document.getElementById('totalDaysDisplayCreate');
+            if (!startInput || !endInput || !display) return;
+            var s = startInput.value ? new Date(startInput.value) : null;
+            var e = endInput.value ? new Date(endInput.value) : null;
+            if (!s || !e || isNaN(s.getTime()) || isNaN(e.getTime())) {
+                display.innerText = '-';
+                return;
+            }
+            // inclusive difference in days
+            var diffMs = e.setHours(0,0,0,0) - s.setHours(0,0,0,0);
+            var days = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+            if (days < 0) {
+                display.innerText = '-';
+            } else {
+                display.innerText = days + ' Days';
+            }
+        } catch (err) {
+            // no-op
+        }
+    }
+    // Initial compute when modal opens (if values are prefilled)
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateTotalDays('#projectDurationSectionCreate');
+        calculateTotalDays('#projectDurationSectionEdit');
+    });
 </script>
 <script>
     function editSection(el) {
