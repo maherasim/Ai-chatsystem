@@ -536,61 +536,46 @@
                                     <!-- Section Progress Block -->
                                     <div
                                         style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-                                        <!-- Section Tags styled exactly like screenshot -->
+                                        <!-- Section Tags -->
+                                        @php($sectionTags = array_slice(($project->sections ?? []), 0, 4))
+                                        @if (!empty($sectionTags))
                                         <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            @foreach ($sectionTags as $sectionTag)
                                             <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
+                                                {{ $sectionTag['name'] ?? 'Section' }}
                                             </div>
-
-                                            <div class="px-1 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-1 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
-                                            <div class="px-1 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                Section #1
-                                            </div>
+                                            @endforeach
                                         </div>
+                                        @endif
                                         <!-- Section Titles -->
+                                        @php($sectionSlice = array_slice(($project->sections ?? []), 0, 3))
+                                        @if (!empty($sectionSlice))
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                            <span>Section #1 75%</span>
-                                            <span>Section #1 75%</span>
-                                            <span>Section #1 75%</span>
+                                            @foreach ($sectionSlice as $section)
+                                            <span>{{ $section['name'] ?? 'Section' }} {{ (int) ($project->progress_percent ?? 0) }}%</span>
+                                            @endforeach
                                         </div>
 
                                         <!-- Progress Bars -->
+                                        @php($barColors = [
+                                            ['track' => '#d3f4dc', 'bar' => '#28c76f'],
+                                            ['track' => '#fef3d3', 'bar' => '#ffc107'],
+                                            ['track' => '#fdd7d7', 'bar' => '#ea5455'],
+                                        ])
                                         <div
                                             class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                            <!-- Green Progress -->
+                                            @foreach ($sectionSlice as $index => $section)
                                             <div class="progress"
-                                                style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
+                                                style="width: 32%; height: 8px; background-color: {{ $barColors[$index]['track'] }}; border-radius: 10px;">
                                                 <div class="progress-bar"
-                                                    style="width: 75%; background-color: #28c76f; border-radius: 10px;">
+                                                    style="width: {{ (int) ($project->progress_percent ?? 0) }}%; background-color: {{ $barColors[$index]['bar'] }}; border-radius: 10px;">
                                                 </div>
                                             </div>
-
-                                            <!-- Yellow Progress -->
-                                            <div class="progress"
-                                                style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                                <div class="progress-bar"
-                                                    style="width: 75%; background-color: #ffc107; border-radius: 10px;">
-                                                </div>
-                                            </div>
-
-                                            <!-- Red Progress -->
-                                            <div class="progress"
-                                                style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                                <div class="progress-bar"
-                                                    style="width: 75%; background-color: #ea5455; border-radius: 10px;">
-                                                </div>
-                                            </div>
+                                            @endforeach
                                         </div>
+                                        @endif
                                         <!-- Step Progress Bar -->
                                         <div class="d-flex justify-content-center gap-2 mt-3" id="stepBar">
                                             <div id="step1"
