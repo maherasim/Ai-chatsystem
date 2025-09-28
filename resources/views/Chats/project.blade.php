@@ -321,7 +321,7 @@
                     <div class=" mb-1">
                         <div class="row g-1">
                             @php($projectList = isset($projects) ? $projects : collect())
-                            @foreach ($projectList as $project)
+                            @forelse ($projectList as $project)
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2"
                                     style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
@@ -609,8 +609,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
-                            @if ($projectList->isEmpty())
+                            @empty
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2"
                                     style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
@@ -647,7 +646,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endif
+                            @endforelse
 
                         </div>
                     </div>
