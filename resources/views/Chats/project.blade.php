@@ -2031,59 +2031,7 @@
                         </label>
                     </div>
 
-                    <!-- File Upload Section -->
-                    <div class="col-12 col-sm-6 col-md-8 col-lg-9">
-                        <div
-                            style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px; background:#f7f9fc">
-                            <div class="row g-2">
-                                <!-- File Box 1 -->
-                                <div class="col-12 col-md-6">
-                                    <div
-                                        class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="pdf" style="width: 25px; height: 25px;"
-                                                class="me-2" />
-                                            <div>
-                                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="fileUpload1"
-                                        class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload1" hidden
-                                            onchange=" if (this.files.length > 0) { var file = this.files[0];  var name = file.name;  var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName1').innerText = name; document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
-                                    </label>
-                                </div>
-
-                                <!-- File Box 2 -->
-                                <div class="col-12 col-md-6">
-                                    <div
-                                        class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="pdf" style="width: 25px; height: 25px;"
-                                                class="me-2" />
-                                            <div>
-                                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="fileUpload2"
-                                        class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload2" hidden
-                                            onchange=" if (this.files.length > 0) { var file = this.files[0]; var name = file.name; var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName2').innerText = name; document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
                 </div>
 
 
