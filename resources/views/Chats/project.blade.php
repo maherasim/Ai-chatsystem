@@ -320,7 +320,9 @@
                     <!-- box project section -->
                     <div class=" mb-1">
                         <div class="row g-1">
-                            @php($projectList = isset($projects) ? $projects : collect())
+                            @php
+                                $projectList = isset($projects) ? $projects : collect();
+                            @endphp
                             @forelse ($projectList as $project)
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm  p-2"
@@ -551,7 +553,9 @@
                                     <div
                                         style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
                                         <!-- Section Tags -->
-                                        @php($sectionTags = array_slice(($project->sections ?? []), 0, 4))
+                                        @php
+                                            $sectionTags = array_slice(($project->sections ?? []), 0, 4);
+                                        @endphp
                                         @if (!empty($sectionTags))
                                         <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
                                             @foreach ($sectionTags as $sectionTag)
@@ -563,7 +567,9 @@
                                         </div>
                                         @endif
                                         <!-- Section Titles -->
-                                        @php($sectionSlice = array_slice(($project->sections ?? []), 0, 3))
+                                        @php
+                                            $sectionSlice = array_slice(($project->sections ?? []), 0, 3);
+                                        @endphp
                                         @if (!empty($sectionSlice))
                                         <div class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
