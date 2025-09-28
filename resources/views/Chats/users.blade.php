@@ -2699,6 +2699,7 @@ function confirmDelete(deleteUrl, userName) {
     <input type="hidden" name="_method" id="userFormMethod" value="post">
     <input type="hidden" id="editingUserId" value="">
             <!-- Upload Banner -->
+            <div id="sectionBanner">
             <div
                 onclick="document.getElementById('bannerInput').click();"
                 style="background-color: #f6f6f9; border-radius: 12px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden;">
@@ -2725,7 +2726,9 @@ function confirmDelete(deleteUrl, userName) {
                     reader.readAsDataURL(input.files[0]); }
                   })(event)" />
             </div>
+            </div>
             <!-- User Info Section -->
+            <div id="sectionUserInfo">
             <div
                 style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; display: flex; gap: 16px; flex-wrap: wrap; position: relative;">
                 <!-- User Type (Top-right) -->
@@ -2794,8 +2797,9 @@ function confirmDelete(deleteUrl, userName) {
 
 
             </div>
+            </div>
             <!-- Email Section -->
-            <div class="mt-3" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px">
+            <div id="sectionEmail" class="mt-3" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px">
                 <!-- Title -->
                 <div style="display:flex; align-items:center; justify-content:space-between; font-weight: 600; font-size: 15px; color: #2a2b4c;">User E-Mail
                     <button type="button" id="editEmailBtn" style="background: transparent; border: none; color: #2563eb; font-weight: 600; font-size: 12px; display: none;">Edit</button>
@@ -2824,7 +2828,7 @@ function confirmDelete(deleteUrl, userName) {
                 </div>
             </div>
             <!-- Password Section -->
-            <div class="mt-2" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div id="sectionPassword" class="mt-2" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
                 <!-- Header -->
                 <div style="display:flex; align-items:center; justify-content:space-between; font-weight: 600; font-size: 15px; color: #2a2b4c;">User Password
                     <button type="button" id="editPasswordBtn" style="background: transparent; border: none; color: #2563eb; font-weight: 600; font-size: 12px; display: none;">Edit</button>
@@ -2849,7 +2853,7 @@ function confirmDelete(deleteUrl, userName) {
                 </div>
 
             </div>
-
+            <div id="sectionPermissions">
             <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 10px; font-family: sans-serif;">
                 <!-- Section Title -->
                 <div style="font-weight: 600; font-size: 14px; color: #2a2b4c; margin-bottom: 12px;">User Permission</div>
@@ -3336,6 +3340,7 @@ function confirmDelete(deleteUrl, userName) {
                     </div>
                 </div>
             </div>
+            </div>
 
             <div class="d-flex justify-content-center">
                 <div class="d-flex px-3 py-2"
@@ -3473,6 +3478,18 @@ function confirmDelete(deleteUrl, userName) {
         var emailFieldsRow = document.getElementById('emailFieldsRow');
         var passwordFieldsRow = document.getElementById('passwordFieldsRow');
         var confirmEmailWrapper = document.getElementById('confirmEmailWrapper');
+        var bannerInput = document.getElementById('bannerInput');
+        var userImgInput = document.getElementById('userImgInput');
+        var userImgPreview = document.getElementById('userImgPreview');
+        var typeSelect = document.getElementById('typeSelect');
+        var genderSelect = document.getElementById('genderSelect');
+        var nameInput = document.getElementById('nameInput');
+        var descriptionInput = document.getElementById('descriptionInput');
+        var sectionBanner = document.getElementById('sectionBanner');
+        var sectionUserInfo = document.getElementById('sectionUserInfo');
+        var sectionEmail = document.getElementById('sectionEmail');
+        var sectionPassword = document.getElementById('sectionPassword');
+        var sectionPermissions = document.getElementById('sectionPermissions');
         var emailExists = false;
         if (!form || !saveBtn) return;
 
@@ -3544,11 +3561,13 @@ function confirmDelete(deleteUrl, userName) {
                     emailExists = !!(data && data.exists);
                     showEmailError(emailExists, 'This email is already registered.');
                     updateSaveButton();
+                    if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
                 })
                 .catch(function(){ 
                     emailExists = false; 
                     showEmailError(false); 
-                    updateSaveButton(); 
+                    updateSaveButton();
+                    if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
                 });
         }
 
@@ -3599,6 +3618,90 @@ function confirmDelete(deleteUrl, userName) {
 
         form.addEventListener('input', updateSaveButton, true);
         form.addEventListener('change', updateSaveButton, true);
+
+        // Progressive section visibility during CREATE
+        function validateSectionBanner() {
+            // In create mode, banner is required
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            if (isEditing) return true;
+            if (!bannerInput) return false;
+            return bannerInput.files && bannerInput.files.length > 0;
+        }
+
+        function validateSectionUserInfo() {
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            var hasType = !!(typeSelect && typeSelect.value);
+            var hasGender = !!(genderSelect && genderSelect.value);
+            var hasName = !!(nameInput && nameInput.value && nameInput.value.trim().length > 0);
+            var hasDesc = !!(descriptionInput && descriptionInput.value && descriptionInput.value.trim().length > 0);
+            var hasUserImage = false;
+            if (userImgInput && userImgInput.files && userImgInput.files.length > 0) {
+                hasUserImage = true;
+            } else if (userImgPreview && userImgPreview.style && userImgPreview.style.display === 'block') {
+                hasUserImage = true;
+            }
+            // In edit mode we do not block by image
+            if (isEditing) {
+                return hasType && hasGender && hasName && hasDesc;
+            }
+            return hasType && hasGender && hasName && hasDesc && hasUserImage;
+        }
+
+        function validateSectionEmail() {
+            if (!emailInput || !confirmEmailInput) return false;
+            // Skip uniqueness check here; rely on emailExists flag
+            var emailsEntered = emailInput.value && confirmEmailInput.value;
+            var emailsMatch = emailInput.value === confirmEmailInput.value;
+            return emailsEntered && emailsMatch && !emailExists;
+        }
+
+        function validateSectionPassword() {
+            // In edit mode, password may be optional; treat as valid to show permissions
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            if (isEditing) return true;
+            if (!pw1 || !pw2) return false;
+            var bothEntered = pw1.value && pw2.value;
+            var match = pw1.value === pw2.value;
+            return bothEntered && match;
+        }
+
+        function setSectionVisible(el, visible) {
+            if (!el) return;
+            el.style.display = visible ? '' : 'none';
+        }
+
+        function updateSectionVisibility() {
+            var isEditing = editingUserIdInput && editingUserIdInput.value;
+            if (isEditing) {
+                setSectionVisible(sectionBanner, true);
+                setSectionVisible(sectionUserInfo, true);
+                setSectionVisible(sectionEmail, true);
+                setSectionVisible(sectionPassword, true);
+                setSectionVisible(sectionPermissions, true);
+                return;
+            }
+            // Always show banner section first
+            setSectionVisible(sectionBanner, true);
+            var bannerOk = validateSectionBanner();
+            setSectionVisible(sectionUserInfo, bannerOk);
+            var userOk = bannerOk && validateSectionUserInfo();
+            setSectionVisible(sectionEmail, userOk);
+            var emailOk = userOk && validateSectionEmail();
+            setSectionVisible(sectionPassword, emailOk);
+            var passwordOk = emailOk && validateSectionPassword();
+            setSectionVisible(sectionPermissions, passwordOk);
+        }
+
+        // Expose globally for create/edit helpers
+        window.updateUserFormSections = updateSectionVisibility;
+
+        // Wire listeners to progressively reveal
+        [bannerInput, userImgInput, typeSelect, genderSelect, nameInput, descriptionInput,
+         emailInput, confirmEmailInput, pw1, pw2]
+        .forEach(function(el){ if (el) { el.addEventListener('input', updateSectionVisibility); el.addEventListener('change', updateSectionVisibility); } });
+
+        // Initialize section visibility on load
+        updateSectionVisibility();
 
         function applyEditViewToggles() {
             var isEditing = editingUserIdInput && editingUserIdInput.value;
@@ -3680,6 +3783,7 @@ function confirmDelete(deleteUrl, userName) {
 
         // Refresh form validity/UI state
         document.getElementById('userCreateForm').dispatchEvent(new Event('input', { bubbles: true }));
+        if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
     }
 
     function openCreateUser() {
@@ -3761,6 +3865,9 @@ function confirmDelete(deleteUrl, userName) {
         if (typeof applyEditViewToggles === 'function') {
             applyEditViewToggles();
         }
+
+        // Show all sections in edit mode
+        if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
     }
 </script>
 @endsection
