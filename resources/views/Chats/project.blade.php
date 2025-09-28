@@ -328,27 +328,28 @@
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <!-- Progress Circle -->
-                                        <div style="width: 60px; height: 60px; position: relative;">
-                                            <svg width="60" height="60">
-                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1"
-                                                    stroke-width="6" fill="none" />
-                                                <circle cx="30" cy="30" r="26" stroke="url(#grad)"
-                                                    stroke-width="6" fill="none" stroke-dasharray="163.36"
-                                                    stroke-dashoffset="122.52" stroke-linecap="round"
-                                                    transform="rotate(-90 30 30)" />
-                                                <defs>
-                                                    <linearGradient id="grad" x1="0%" y1="0%"
-                                                        x2="100%" y2="0%">
-                                                        <stop offset="0%" stop-color="#ff7f00" />
-                                                        <stop offset="100%" stop-color="#fcd34d" />
-                                                    </linearGradient>
-                                                </defs>
-                                            </svg>
-                                            <div
-                                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
-                                                25%
+                                        <div class="d-flex align-items-center" style="margin-top: 0px;">
+                                            <div style="width: 60px; height: 60px; position: relative;">
+                                                <svg width="60" height="60">
+                                                    <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6"
+                                                        fill="none" />
+                                                    <circle cx="30" cy="30" r="26" stroke="url(#grad)" stroke-width="6"
+                                                        fill="none" stroke-dasharray="163.36" stroke-dashoffset="163.36"
+                                                        stroke-linecap="round" transform="rotate(-90 30 30)" />
+                                                    <defs>
+                                                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                            <stop offset="0%" stop-color="#ff7f00" />
+                                                            <stop offset="100%" stop-color="#fcd34d" />
+                                                        </linearGradient>
+                                                    </defs>
+                                                </svg>
+                                                <div
+                                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
+                                                    0%
+                                                </div>
                                             </div>
                                         </div>
+                                        
 
                                         <!-- Logo Image -->
                                         <div>
@@ -474,7 +475,7 @@
                                                         alt="Project Logo"> Tickets</strong>
                                                 <div class="mt-2"
                                                     style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">
-                                                    5 tickets</div>
+                                                    0 tickets</div>
                                             </div>
                                             <div class="col">
                                                 <strong
@@ -508,12 +509,12 @@
                                                 <!-- Blue dot + number -->
                                                 <span
                                                     style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block;"></span>
-                                                <span style="font-size: 13px; color: #6c757d;">1</span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
 
                                                 <!-- Orange dot + number -->
                                                 <span
                                                     style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; display: inline-block;"></span>
-                                                <span style="font-size: 13px; color: #6c757d;">3</span>
+                                                <span style="font-size: 13px; color: #6c757d;">0</span>
 
                                                 <!-- Red dot + number -->
                                                 <span
@@ -691,17 +692,16 @@
         <div class="offcanvas-body pt-5" style="font-family: 'Segoe UI', sans-serif; background-color: #fff;">
 
             <!-- Project Title & ID -->
-            <div class="d-flex  align-items-center" style="margin-top: -25px;">
+            <div class="d-flex align-items-center" style="margin-top: 0px;">
                 <div style="width: 60px; height: 60px; position: relative;">
                     <svg width="60" height="60">
                         <circle cx="30" cy="30" r="26" stroke="#d1d1d1" stroke-width="6"
                             fill="none" />
                         <circle cx="30" cy="30" r="26" stroke="url(#grad)" stroke-width="6"
-                            fill="none" stroke-dasharray="163.36" stroke-dashoffset="122.52"
+                            fill="none" stroke-dasharray="163.36" stroke-dashoffset="163.36"
                             stroke-linecap="round" transform="rotate(-90 30 30)" />
                         <defs>
-                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%"
-                                y2="0%">
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%" stop-color="#ff7f00" />
                                 <stop offset="100%" stop-color="#fcd34d" />
                             </linearGradient>
@@ -709,12 +709,11 @@
                     </svg>
                     <div
                         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
-                        25%
+                        0%
                     </div>
                 </div>
-
-
             </div>
+            
             <div class="text-center mb-3" style="margin-top:-34px;margin-left:14px;">
                 <h5 style="font-weight: 600; color: #2e3a59;">Project Title</h5>
 
@@ -2016,7 +2015,7 @@
                 <!-- Upload and File Row -->
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0">
+                    
                         <label for="uploadLogo"
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
@@ -2029,7 +2028,7 @@
                             <input type="file" id="uploadLogo" name="logo" accept="image/*" hidden
                                 onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
-                    </div>
+                   
 
                   
                 </div>
