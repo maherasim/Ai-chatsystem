@@ -2005,7 +2005,7 @@
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
                             <img id="logoPreview" src=""
-                                style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
                             <div id="uploadIconText">
                                 <div style="font-size: 28px; color: #a0a4ab;">+</div>
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
@@ -2246,7 +2246,7 @@
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
                             <img id="logoPreview" src=""
-                                style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
                             <div id="uploadIconText">
                                 <div style="font-size: 28px; color: #a0a4ab;">+</div>
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
