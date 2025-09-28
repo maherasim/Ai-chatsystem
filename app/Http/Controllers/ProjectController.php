@@ -31,7 +31,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'code' => 'nullable|string|max:255',
             'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
             'priority' => 'nullable|in:low,medium,high',
