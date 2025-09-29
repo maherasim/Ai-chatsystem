@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\DB;
-
 use App\Http\Controllers\TodoController;
+
+
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
@@ -70,11 +71,12 @@ $response = Http::withOptions([
 
 
 
-
 Route::get('/test-db', function () {
     try {
         $client = DB::connection('mongodb')->getMongoClient();
-        $databases = $client->listDatabases()->toArray();
+        $databasesIterator = $client->listDatabases();
+        $databases = iterator_to_array($databasesIterator); // fix here
+
         return response()->json([
             'status' => 'success',
             'databases' => array_map(fn($db) => $db->getName(), $databases)
