@@ -4,11 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TodoController;
-
-
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
-
+use Illuminate\Support\Facades\DB;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -71,21 +68,29 @@ $response = Http::withOptions([
 
 
 
-Route::get('/test-db', function () {
-    try {
-        $client = DB::connection('mongodb')->getMongoClient();
-        $databasesIterator = $client->listDatabases();
-        $databases = iterator_to_array($databasesIterator); // fix here
 
-        return response()->json([
-            'status' => 'success',
-            'databases' => array_map(fn($db) => $db->getName(), $databases)
+
+Route::get('/test-db-data', function () {
+    try {
+        // Get the MongoDB connection
+        $db = DB::connection('mongodb')->getMongoDB();
+
+        // List all collections
+        $collections = $db->listCollections();
+        $collectionNames = [];
+        foreach ($collections as $collection) {
+            $collectionNames[] = $collection->getName();
+        }
+
+        // Optional: get first 5 documents from 'users' collection
+        $users = $db->selectCollection('users')->find([], ['limit' => 5])->toArray();
+
+        return view('test-db-data', [
+            'collections' => $collectionNames,
+            'users' => $users
         ]);
     } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ]);
+        return 'Error: ' . $e->getMessage();
     }
 });
 
