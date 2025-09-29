@@ -41,6 +41,50 @@ class TodoController extends Controller
         return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting'));
     }
 
+    public function destroy($id)
+    {
+        $todo = Todo::findOrFail($id);
+        $todo->delete();
+
+        return redirect()->back()->with('success', 'Todo deleted successfully.');
+    }
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'title'       => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'start_date'  => 'nullable|date',
+        'start_time'  => 'nullable',
+        'end_time'    => 'nullable',
+       // 'is_private'  => 'required|boolean',
+        'priority'    => 'nullable|string',
+        'reminder'    => 'nullable|integer',
+        'members'     => 'nullable|array'
+    ]);
+
+    $todo = Todo::findOrFail($id);
+
+    $todo->update([
+        'title'       => $request->title,
+        'description' => $request->description ?? $todo->description,
+        'start_date'  => $request->start_date ?? $todo->start_date ?? date('Y-m-d'),
+        'start_time'  => $request->start_time ?? $todo->start_time,
+        'end_time'    => $request->end_time ?? $todo->end_time,
+        'is_private'  => $request->is_private,
+        'project'     => $request->project ?? $todo->project,
+        'priority'    => $request->priority ?? $todo->priority,
+        'reminder'    => $request->reminder ?? $todo->reminder,
+        'completed'   => $todo->completed ?? 0,
+        'is_schduled' => $request->start_date ? 1 : ($todo->is_schduled ?? 0),
+        'members'     => $request->members ?? $todo->members ?? []
+    ]);
+
+    return redirect()->back()->with('success', 'ToDo updated successfully!');
+}
+
+
+
 
     public function store(Request $request)
     {

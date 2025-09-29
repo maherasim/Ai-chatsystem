@@ -92,6 +92,19 @@
     }
 }
 
+.reminder-btn {
+    border: none;
+    background-color: white;
+    color: #64748b;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+.reminder-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
 </style>
 
 
@@ -210,7 +223,72 @@
                                                 <small style="color: gray;">{{$todo->created_at}}</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
+                                        <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
+                                        <!-- edit delete starts -->
+
+                                        <div class="dropdown">
+    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
+        ⋮
+    </div>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
+        
+            <button type="submit" class="btn btn-sm btn-icon"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-danger" 
+               onclick="
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to delete this?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                confirmButton: 'btn btn-danger me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.getElementById('deleteForm');
+                form.action = '{{ route('todos.destroy', $todo->id) }}';
+                form.submit();
+            }
+        });
+    ">
+               <i class="fa fa-trash"></i> 
+                </a>
+                
+            </button>
+
+            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary" 
+               data-id="{{ $todo->_id }}"
+    data-title="{{ $todo->title }}"
+    data-description="{{ $todo->description }}"
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-project="{{ $todo->project }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-members='@json($todo->members)'
+    onclick="openEditModal(this)">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+
+
+            
+
+</div>
+</div>
+
+
+                                        <!-- edit delete ends -->
                                     </div>
 
                                     <!-- Card Body -->
@@ -228,7 +306,7 @@
                                                         </small>
                                                     @else
                                                         <small class="text-muted">
-                                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                         </small>
                                                     @endif
                                                 </div>
@@ -323,7 +401,75 @@
                                                 <small style="color: gray;">{{$todo->created_at}}</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
+                                        
+
+<!-- edit delete starts -->
+
+                                        <div class="dropdown">
+    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
+        ⋮
+    </div>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
+        
+            <button type="submit" class="btn btn-sm btn-icon"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-danger" 
+               onclick="
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to delete this?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                confirmButton: 'btn btn-danger me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.getElementById('deleteForm');
+                form.action = '{{ route('todos.destroy', $todo->id) }}';
+                form.submit();
+            }
+        });
+    ">
+               <i class="fa fa-trash"></i> 
+                </a>
+                
+            </button>
+
+            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary" 
+               data-id="{{ $todo->_id }}"
+    data-title="{{ $todo->title }}"
+    data-description="{{ $todo->description }}"
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-project="{{ $todo->project }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-members='@json($todo->members)'
+    onclick="openEditModal(this)">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+
+
+            
+
+</div>
+</div>
+
+
+                                        <!-- edit delete ends -->
+
+
                                     </div>
 
                                     <!-- Card Body -->
@@ -335,7 +481,7 @@
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                                     <small class="text-muted">
-                                                        <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
                                                     </small>
                                                 </div>
                                             </div>
@@ -487,6 +633,151 @@
     </div>
 
 </div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-body text-center">
+                <h6>Are you sure you want to delete this ToDo?</h6>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    
+                    <div class="mt-3 d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;">
+
+            <!-- Close Button -->
+            <button type="button"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
+                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
+                ×
+            </button>
+
+            <form id="editForm" method="POST">
+                @csrf
+
+                <!-- Hidden defaults -->
+                <input type="hidden" name="start_date" id="editStartDateHidden">
+                <input type="hidden" name="start_time" id="editStartTimeHidden">
+                <input type="hidden" name="end_time" id="editEndTimeHidden">
+                <input type="hidden" name="is_private" id="editIsPrivateHidden" value="0">
+                <input type="hidden" name="priority" id="editPriorityHidden" value="low">
+                <input type="hidden" name="reminder" id="editReminderHidden" value="30">
+
+                <div class="modal-body p-4" style="background-color: white;">
+                    <!-- Header -->
+                    <h5 style="font-weight: 600; color: #1e293b;">Edit ToDo</h5>
+                    <p style="color: #64748b; font-size: 14px;">Update your task</p>
+
+                    <!-- ToDo Details -->
+                    <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input name="title" id="editTitle" type="text" class="form-control"
+                                    placeholder="ToDo Title" style="font-size: 13px; border-radius: 8px;">
+                            </div>
+                            
+                        </div>
+                        <div class="row g-2">
+
+                            <div class="col-md-12">
+                                <input name="description" id="editDescription" type="text"
+                                    class="form-control" placeholder="Describe the ToDo's"
+                                    style="font-size: 13px; border-radius: 8px;">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Date & Time -->
+                    <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <input type="date" id="editDateInput" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <select id="editStartTimeSelect" class="form-control">
+                                    <option value="">Select Start</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="editEndTimeSelect" class="form-control">
+                                    <option value="">Select End</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project & Members -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <input type="text" name="project" id="editProject" class="form-control" placeholder="Project">
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" id="editMembers" multiple name="members[]">
+                                @foreach($users as $cuser)
+                                    <option value="{{ $cuser->_id }}">{{ $cuser->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Priority & Reminder (toggle buttons like add form) -->
+                    <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <p style="font-size: 12px; font-weight: 600; color: #334155;">Priority</p>
+                                <div class="d-flex gap-2">
+                                    <button type="button" id="editPriorityLow" class="btn btn-sm">Low</button>
+                                    <button type="button" id="editPriorityMiddle" class="btn btn-sm">Middle</button>
+                                    <button type="button" id="editPriorityHigh" class="btn btn-sm">High</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="font-size: 12px; font-weight: 600; color: #334155;">Reminder</p>
+                                <div class="d-flex gap-2">
+                                    <button type="button" id="editReminder6" class="btn btn-sm">6 Hr</button>
+                                    <button type="button" id="editReminder12" class="btn btn-sm">12 Hr</button>
+                                    <button type="button" id="editReminder24" class="btn btn-sm">24 Hr</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="todomodel" tabindex="-1">
@@ -523,9 +814,17 @@
                 <!-- ToDo Details Section -->
                 <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
                     <!-- Heading and Subtext -->
-                    <div style="margin-bottom: 12px;">
-                        <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">ToDo Details</p>
-                        <p style="font-size: 12px; color: #64748b; margin: 0;">Manage your time</p>
+                    <div class="row">
+                        <div style="margin-bottom: 12px;" class="col-md-6">
+                            <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">ToDo Details</p>
+                            <p style="font-size: 12px; color: #64748b; margin: 0;">Manage your time</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Todo Priority</p>
+                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the priority of the Todo</p>
+                                
+
+                        </div>
                     </div>
 
                     <!-- Inputs -->
@@ -535,9 +834,20 @@
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
                         <div class="col-md-6">
-                            <input name="description" type="text" class="form-control" placeholder="Describe the ToDo's"
+                            <div class="d-flex gap-2">
+                                <button type="button" id="priorityLow" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Low</button>
+                                <button type="button" id="priorityMiddle" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Middle</button>
+                                <button type="button" id="priorityHigh" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">High</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-12">
+                            <input name="description" type="text" class="form-control" placeholder="Section Description"
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
+
                     </div>
                 </div>
 
@@ -680,24 +990,25 @@
                 <div class="p-3 mb-3 rounded" style="background-color: #f9f9fb; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
                     <div class="row g-3">
                         <!-- Priority -->
-                        <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
-                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the priority of the meeting</p>
-                            <div class="d-flex gap-2">
-                                <button type="button" id="priorityLow" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Low</button>
-                                <button type="button" id="priorityMiddle" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Middle</button>
-                                <button type="button" id="priorityHigh" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">High</button>
-                            </div>
-                        </div>
+                        
 
                         <!-- Reminder -->
                         <div class="col-md-6">
                             <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Expired Reminder</p>
                             <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set a reminder before expired</p>
                             <div class="d-flex gap-2">
-                                <button type="button" id="reminder6" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">6 Hr</button>
-                                <button type="button" id="reminder12" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">12 Hr</button>
-                                <button type="button" id="reminder24" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">24 Hr</button>
+                               <!-- <button type="button" id="reminder6" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">30 Min</button>
+                                <button type="button" id="reminder12" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">60 Min</button>
+                                <button type="button" id="reminder24" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">2 Hour</button>
+                                <button type="button" id="reminder3" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">3 Hour</button>
+                                <button type="button" id="reminder4" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">4 Hour</button>-->
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="reminder-btn active" data-value="30">30 Min</button>
+                                    <button type="button" class="reminder-btn" data-value="60">60 Min</button>
+                                    <button type="button" class="reminder-btn" data-value="120">2 Hour</button>
+                                    <button type="button" class="reminder-btn" data-value="180">3 Hour</button>
+                                    <button type="button" class="reminder-btn" data-value="240">4 Hour</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1649,6 +1960,7 @@
 
         <!-- creaTE meting MODEL POPIP -->
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             const toggleIcon = document.getElementById("toggleIcon");
             const chevron = document.getElementById("chevronIcon");
@@ -1715,7 +2027,10 @@ document.getElementById('priorityHigh').addEventListener('click', function (e) {
     document.getElementById('priorityHidden').value = 'high';
 });
 
+
+
 // Reminder
+/*
 document.getElementById('reminder6').addEventListener('click', function (e) {
     e.preventDefault();
     document.getElementById('reminderHidden').value = 6;
@@ -1728,9 +2043,83 @@ document.getElementById('reminder24').addEventListener('click', function (e) {
     e.preventDefault();
     document.getElementById('reminderHidden').value = 24;
 });
+document.getElementById('reminder3').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.getElementById('reminderHidden').value = 3;
+});
+document.getElementById('reminder4').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.getElementById('reminderHidden').value = 4;
+});
+*/
+
+
+// Date picker
+document.getElementById('editDateInput').addEventListener('change', function () {
+    document.getElementById('editStartDateHidden').value = this.value;
+});
+
+// Time selectors
+document.getElementById('editStartTimeSelect').addEventListener('change', function () {
+    document.getElementById('editStartTimeHidden').value = this.value;
+});
+document.getElementById('editEndTimeSelect').addEventListener('change', function () {
+    document.getElementById('editEndTimeHidden').value = this.value;
+});
+
+// Priority
+['Low','Middle','High'].forEach(p => {
+    document.getElementById('editPriority' + p).addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('editPriorityHidden').value = p.toLowerCase();
+    });
+});
+
+// Reminder
+[6,12,24].forEach(r => {
+    document.getElementById('editReminder' + r).addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('editReminderHidden').value = r;
+    });
+});
 
 
 
 
+
+function openEditModal(button) {
+    let id = button.getAttribute('data-id');
+    document.getElementById('editForm').action = "/todosupdate/" + id;
+
+    document.getElementById('editTitle').value = button.getAttribute('data-title');
+    document.getElementById('editDescription').value = button.getAttribute('data-description');
+    document.getElementById('editStartDateHidden').value = button.getAttribute('data-start_date');
+    document.getElementById('editStartTimeHidden').value = button.getAttribute('data-start_time');
+    document.getElementById('editEndTimeHidden').value = button.getAttribute('data-end_time');
+    document.getElementById('editIsPrivateHidden').value = button.getAttribute('data-project');
+    document.getElementById('editPriorityHidden').value = button.getAttribute('data-priority');
+    document.getElementById('editReminderHidden').value = button.getAttribute('data-reminder');
+
+    // Members (multi-select)
+    let members = JSON.parse(button.getAttribute('data-members') || '[]');
+    let membersSelect = document.getElementById('editMembers');
+    for (let option of membersSelect.options) {
+        option.selected = members.includes(option.value);
+    }
+
+    new bootstrap.Modal(document.getElementById('editModal')).show();
+}
+
+
+document.querySelectorAll('.reminder-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // reset all
+        document.querySelectorAll('.reminder-btn').forEach(b => b.classList.remove('active'));
+        // activate clicked
+        this.classList.add('active');
+        // update hidden input
+        document.getElementById('reminderHidden').value = this.dataset.value;
+    });
+});
         </script>
         @endsection
