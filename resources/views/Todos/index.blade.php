@@ -807,7 +807,21 @@
 
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
-                <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo</h5>
+                <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo
+                    <!-- Toggle Buttons -->
+                        <div style="background-color: white; background-color: #f9f9fb; border-radius: 12px; padding:8px; float:right; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                            <button type="button" id="btnShared"
+                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
+                                style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Shared ToDo's
+                            </button>
+                            <button type="button" id="btnPrivate"
+                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
+                                style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Private ToDo's
+                            </button>
+                        </div>
+                </h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
 
                 <!-- ToDo Details -->
@@ -853,10 +867,10 @@
 
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
-                <div style="background-color: #f9f9fb;">
+                <div style="background-color: #f9f9fb; border-radius:10px;">
                     <!-- Toggle Today/Scheduled -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                    <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
+                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px;">
                             <button id="btnToday" type="button"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
@@ -864,7 +878,7 @@
                     document.getElementById('btnScheduled').style.backgroundColor='transparent';
                     document.getElementById('btnScheduled').style.color='#64748b';
                     document.getElementById('startDateField').style.display='none';
-                    document.getElementById('timeRow').classList.add('justify-content-center');"
+                    document.getElementById('timeRow').classList.add('justify-content-center1');"
                                 style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Today ToDo's
                             </button>
@@ -884,7 +898,7 @@
                     </div>
 
                     <!-- Date & Time Inputs -->
-                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
+                    <div class="row g-2 align-items-center1 mb-3 justify-content-center1" id="timeRow" style="padding: 8px; display: flex;">
 
                         <!-- Start Date (hidden by default) -->
                         <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
@@ -947,21 +961,7 @@
                 <!-- Shared / Private ToDo Section -->
                 <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
 
-                    <!-- Toggle Buttons -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                        <div style="background-color: white; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-                            <button type="button" id="btnShared"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
-                                style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Shared ToDo's
-                            </button>
-                            <button type="button" id="btnPrivate"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Private ToDo's
-                            </button>
-                        </div>
-                    </div>
+                    
 
                     <!-- Project & Members Inputs -->
                     <div class="row g-2 mb-0 justify-content-center">
