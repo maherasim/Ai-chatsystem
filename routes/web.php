@@ -8,6 +8,7 @@ use App\Http\Controllers\KeywordController;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route as RouteFacade;
+use App\Http\Controllers\TicketController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -60,10 +61,16 @@ Route::get('/tasks', function () {
     return view('Chats.task', compact('headers'));
 })->middleware('auth')->name('chat-task');
 
-Route::get('/ticket', function () {
-    $headers = Setting::all();
-    return view('Chats.ticket', compact('headers'));
-})->middleware('auth')->name('chat-ticket');
+Route::get('/ticket', [TicketController::class, 'index'])->middleware('auth')->name('chat-ticket');
+
+// Ticket APIs
+Route::middleware('auth')->group(function () {
+    Route::get('/api/tickets/projects', [TicketController::class, 'projects'])->name('tickets.projects');
+    Route::get('/api/tickets/projects/{projectId}/sections', [TicketController::class, 'projectSections'])->name('tickets.project.sections');
+    Route::post('/api/tickets/projects/{projectId}/sections', [TicketController::class, 'addSection'])->name('tickets.project.sections.add');
+    Route::post('/api/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/api/tickets', [TicketController::class, 'list'])->name('tickets.list');
+});
 Route::get('/teams', function () {
     $headers = Setting::all();
     return view('Chats.teams', compact('headers'));

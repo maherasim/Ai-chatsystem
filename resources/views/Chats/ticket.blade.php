@@ -135,6 +135,8 @@
 <!-- content -->
 <div class="content main_content">
 
+    
+
     <!-- Left Sidebar Menu -->
     <div style="visibility:visible;">
         @include('Chats.chatsidebar')
@@ -159,9 +161,15 @@
             @include('Chats.header')
             <!-- body -->
             <div style="overflow-y: auto;flex:1;height: 92vh;">
+                @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+                </div>
+                @endif
                 <div class="chat-body chat-page-group">
                     <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
-
+                       
                         <!-- Left Side -->
                         <div>
                             <h3 style="margin: 0;">Ticket Overview</h3>
@@ -287,24 +295,22 @@
                         </div>
                     </div>
 
-                    <!--  -->
-                    <!-- cards -->
                     <div class="mb-2">
                         <div class="row g-3">
-                            <!-- 1-->
+                            @foreach ($tickets as $ticket)
+                            <!-- card -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <div>
-                                            <div style="color: #7ED957; font-weight: 600; font-size: 16px;">Ticket In Progress</div>
-                                            <div style="font-size: 13px; color: #7ED957;">Total Tasks: 10</div>
+                                            <div style="color: #7ED957; font-weight: 600; font-size: 16px;">{{ $ticket->status }}</div>
+                                            <div style="font-size: 13px; color: #7ED957;">Total Tasks:34</div>
                                         </div>
                                         <div>
                                             <select class="form-select form-select-sm" style=" font-size: 13px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option selected>{{ $ticket->project_title }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -316,9 +322,9 @@
                                             <div>
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $ticket->id }}</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $ticket->section_name }}</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $ticket->title }}</div>
                                         </div>
 
                                         <!-- Task Line -->
@@ -522,708 +528,11 @@
                                         <!-- tasks -->
                                     </div>
                                 </div>
-
                             </div>
-                            <!-- 2 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                    <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <div style="color: #F5A623; font-weight: 600; font-size: 16px;"> Ticket In Hold</div>
-                                            <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
-                                        </div>
-                                        <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
-                                                <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- 3 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                    <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <div style="color: #ED1C24; font-weight: 600; font-size: 16px;"> Ticket In Delayed</div>
-                                            <div style="font-size: 13px; color: #ED1C24;">Total Tasks: 10</div>
-                                        </div>
-                                        <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
-                                                <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                    <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <div style="color: #00C853; font-weight: 600; font-size: 16px;"> Ticket In Done</div>
-                                            <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
-                                        </div>
-                                        <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
-                                                <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                       <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 3 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
-
-                                            <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
-
-                                            <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                            </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                </div>
-
-                            </div>
+                            @endforeach
                         </div>
                     </div>
-
+ 
                     <!--  current task -->
                     <div class="project-succes pt-3 pb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
 
@@ -2368,16 +1677,23 @@
                     <h6 style="font-weight: 600;">Ticket Details</h6>
                     <div class="row g-2 mt-2">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Select the Project" style="background-color: white;">
+                            <select id="ticketProjectSelect" class="form-control" style="background-color: white;">
+                                <option value="">Select the Project</option>
+                            </select>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Select the Section" style="background-color: white;">
+                            <div>
+                                <select id="ticketSectionSelect" class="form-control" style="background-color: white;">
+                                    <option value="">Select the Section</option>
+                                </select>
+                                
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Ticket Title" style="background-color: white;">
+                            <input type="text" id="ticketTitle" class="form-control" placeholder="Ticket Title" style="background-color: white;">
                         </div>
                         <div class="col-12 mt-2">
-                            <textarea class="form-control" rows="2" placeholder="Ticket Description" style="background-color: white;"></textarea>
+                            <textarea id="ticketDescription" class="form-control" rows="2" placeholder="Ticket Description" style="background-color: white;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -2429,17 +1745,10 @@
                             <h6 style="font-weight: 600;">Ticket Priority</h6>
                             <p style="color: #888;">Set the Priority of the Ticket</p>
                             <div class="d-flex gap-2">
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.style.color='black'; this.nextElementSibling.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.nextElementSibling.style.color='black';"
-                                    style="background-color: #00C853; color: white;">Low</button>
-
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.style.color='black'; this.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.style.color='black';"
-                                    style="background-color: #f0f0f0;">Middle</button>
-
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.style.color='black'; this.previousElementSibling.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.previousElementSibling.style.color='black';"
-                                    style="background-color: #f0f0f0;">High</button>
+                                <input type="hidden" id="ticketPriority" value="low">
+                                <button type="button" class="btn" data-priority="low" style="background-color: #00C853; color: white;">Low</button>
+                                <button type="button" class="btn" data-priority="medium" style="background-color: #f0f0f0;">Middle</button>
+                                <button type="button" class="btn" data-priority="high" style="background-color: #f0f0f0;">High</button>
                             </div>
                         </div>
 
@@ -2447,17 +1756,10 @@
                             <h6 style="font-weight: 600;">Expired Reminder</h6>
                             <p style="color: #888;">Set a reminder before expired</p>
                             <div class="d-flex  gap-2">
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.style.color='black'; this.nextElementSibling.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.nextElementSibling.style.color='black';"
-                                    style="background-color: #00C853; color: white;">6 Hr</button>
-
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.style.color='black'; this.nextElementSibling.style.backgroundColor='#f0f0f0'; this.nextElementSibling.style.color='black';"
-                                    style="background-color: #f0f0f0;">12 Hr</button>
-
-                                <button class="btn"
-                                    onclick="this.style.backgroundColor='#00C853'; this.style.color='white'; this.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.style.color='black'; this.previousElementSibling.previousElementSibling.style.backgroundColor='#f0f0f0'; this.previousElementSibling.previousElementSibling.style.color='black';"
-                                    style="background-color: #f0f0f0;">24 Hr</button>
+                                <input type="hidden" id="ticketReminderHours" value="6">
+                                <button type="button" class="btn" data-reminder="6" style="background-color: #00C853; color: white;">6 Hr</button>
+                                <button type="button" class="btn" data-reminder="12" style="background-color: #f0f0f0;">12 Hr</button>
+                                <button type="button" class="btn" data-reminder="24" style="background-color: #f0f0f0;">24 Hr</button>
                             </div>
                         </div>
 
@@ -2466,10 +1768,10 @@
 
                 <!-- Buttons -->
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
-                    <button class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;" data-bs-dismiss="modal">
+                    <button id="saveCloseTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">
                         Save and Close
                     </button>
-                    <button class="btn" style="background-color: #F5A623; color: white; min-width: 160px;" data-bs-dismiss="modal">
+                    <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #F5A623; color: white; min-width: 160px;">
                         Save & add Ticket
                     </button>
                 </div>
@@ -2521,6 +1823,149 @@
             lightBtn.style.display = 'none';
             darkBtn.style.display = 'inline';
         });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const projectSelect = document.getElementById('ticketProjectSelect');
+        const sectionSelect = document.getElementById('ticketSectionSelect');
+        
+
+        const priorityHidden = document.getElementById('ticketPriority');
+        const reminderHidden = document.getElementById('ticketReminderHours');
+
+        const saveCloseBtn = document.getElementById('saveCloseTicketBtn');
+        const saveAddAnotherBtn = document.getElementById('saveAddAnotherTicketBtn');
+
+        // Helper to set active button style for grouped buttons
+        function setActive(groupSelector, activeAttribute, value) {
+            const buttons = document.querySelectorAll(groupSelector);
+            buttons.forEach(btn => {
+                if (btn.getAttribute(activeAttribute) == value) {
+                    btn.style.backgroundColor = '#00C853';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.backgroundColor = '#f0f0f0';
+                    btn.style.color = 'black';
+                }
+            });
+        }
+
+        // Priority buttons
+        document.querySelectorAll('[data-priority]')?.forEach(btn => {
+            btn.addEventListener('click', () => {
+                priorityHidden.value = btn.getAttribute('data-priority');
+                setActive('[data-priority]', 'data-priority', priorityHidden.value);
+            });
+        });
+
+        // Reminder buttons
+        document.querySelectorAll('[data-reminder]')?.forEach(btn => {
+            btn.addEventListener('click', () => {
+                reminderHidden.value = btn.getAttribute('data-reminder');
+                setActive('[data-reminder]', 'data-reminder', reminderHidden.value);
+            });
+        });
+
+        // Fetch projects into dropdown
+        async function loadProjects() {
+            try {
+                const resp = await fetch('/api/tickets/projects', { credentials: 'same-origin' });
+                const data = await resp.json();
+                projectSelect.innerHTML = '<option value="">Select the Project</option>' +
+                    data.map(p => `<option value="${p.id}">${p.title ?? 'Untitled'}</option>`).join('');
+            } catch (e) {
+                console.error('Failed to load projects', e);
+            }
+        }
+
+        // Fetch sections when project changes
+        async function loadSections(projectId) {
+            sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+            if (!projectId) return;
+            try {
+                const resp = await fetch(`/api/tickets/projects/${projectId}/sections`, { credentials: 'same-origin' });
+                const data = await resp.json();
+                sectionSelect.innerHTML = '<option value="">Select the Section</option>' +
+                    (Array.isArray(data) ? data.map(s => `<option value="${s.name}">${s.name}</option>`).join('') : '');
+            } catch (e) {
+                console.error('Failed to load sections', e);
+            }
+        }
+
+        projectSelect?.addEventListener('change', function () {
+            loadSections(this.value);
+        });
+
+        
+
+        // Submit ticket helper
+        async function submitTicket(closeAfter) {
+            const payload = {
+                project_id: projectSelect.value || '',
+                section_name: sectionSelect.value || '',
+                title: document.getElementById('ticketTitle')?.value || '',
+                description: document.getElementById('ticketDescription')?.value || '',
+                status: 'in_progress',
+                priority: priorityHidden.value || 'low',
+                start_date: document.getElementById('startDateInput')?.value || null,
+                end_date: document.getElementById('expiredDateInput')?.value || null,
+                reminder_hours: parseInt(reminderHidden.value || '6', 10),
+            };
+
+            try {
+                const resp = await fetch('/api/tickets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload)
+                });
+
+                if (resp.ok) {
+                    // Close modal if needed
+                    if (closeAfter) {
+                        const modalEl = document.getElementById('ticketModal');
+                        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                        modal.hide();
+                        // Reload to show session success alert
+                        window.location.reload();
+                    } else {
+                        // Inline success alert when staying in modal
+                        const banner = document.createElement('div');
+                        banner.className = 'alert alert-success alert-dismissible fade show';
+                        banner.style.borderRadius = '8px';
+                        banner.role = 'alert';
+                        banner.innerHTML = 'Ticket created successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                        document.querySelector('.content.main_content')?.prepend(banner);
+                    }
+                    // Reset minimal fields
+                    document.getElementById('ticketTitle').value = '';
+                    document.getElementById('ticketDescription').value = '';
+                } else {
+                    const err = await resp.json();
+                    alert(err?.message || 'Failed to create ticket');
+                }
+            } catch (e) {
+                console.error('Failed to create ticket', e);
+            }
+        }
+
+        saveCloseBtn?.addEventListener('click', function (e) {
+            e.preventDefault();
+            submitTicket(true);
+        });
+        saveAddAnotherBtn?.addEventListener('click', function (e) {
+            e.preventDefault();
+            submitTicket(false);
+        });
+
+        // Initial load
+        loadProjects();
     });
 </script>
 
