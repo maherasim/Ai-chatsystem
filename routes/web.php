@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\TodoController;
 use App\Models\User;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
@@ -20,7 +21,20 @@ Route::post('/store', [UsersController::class, 'store'])->name('user.store');
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
 
-Route::get('/', function () {
+Route::get('/home', [UsersController::class, 'home'])->middleware('auth')->name('home');
+Route::get('/', [UsersController::class, 'home'])->middleware('auth')->name('home');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+    Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+    Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
+    Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');
+
+});
+
+
+Route::get('/login', function () {
 
 
  $response = Http::withOptions([
@@ -45,20 +59,17 @@ $response = Http::withOptions([
         $agreement_text = 'Failed to load agreement';
     }
 
+
     return view('signin', compact('policyTerm', 'agreement_text'));
 
 
-});
+})->name("login");
 
 
 
-Route::get('/home', function () {
-    return view('index');
-})->middleware('auth')->name('home');
 
-Route::get('/login', function () {
-    return view('signin');
-})->name('login');
+
+
 
 
 
@@ -86,10 +97,7 @@ Route::get('/meetings', function () {
     return view('Chats.meetings');
 })->middleware('auth')->name('chat-meetings');
 
-Route::get('/todo', function () {
-      return view('Chats.groups');
-    
-})->middleware('auth')->name('chat-groups');
+
 Route::get('/project', function () {
     return view('Chats.project');
 })->name('chat-project');
@@ -103,7 +111,6 @@ Route::get('/library', function () {
 
 
 
-Route::get('/settings', [App\Http\Controllers\SettingController::class, 'showSettingsForm'])->name('settings');
 Route::post('/update-email', [App\Http\Controllers\SettingController::class, 'updateEmail'])->name('chatuser.updateEmail');
 Route::post('/update-password', [App\Http\Controllers\SettingController::class, 'updatePassword'])->name('user.updatePassword');
 Route::post('/toggle-screen-lock', [App\Http\Controllers\SettingController::class, 'toggleScreenLock'])->name('user.toggleScreenLock');

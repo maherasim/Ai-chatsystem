@@ -43,6 +43,8 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+       
+
         'mongodb' => [
             'driver' => 'mongodb',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -54,6 +56,7 @@ return [
                 'database' => 'chatsystem_online'  
             ]
         ],
+
 /*
         'mongodb' => [
 			'driver' => 'mongodb',

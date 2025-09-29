@@ -110,12 +110,12 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <!-- Image -->
-                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
+                        <img src="{{ asset('storage/' . $user->profile_image) }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
 
                         <!-- Username and Status -->
                         <div class="overflow-hidden">
-                            <h6 class="mb-0">Username</h6>
-                            <p class="last-seen text-truncate mb-0">Online</p>
+                            <h6 class="mb-0">{{$user->name}}</h6>
+                            <p class="last-seen text-truncate mb-0">{{$user->type}}</p>
                         </div>
                     </div>
 
@@ -124,11 +124,7 @@
                 <!-- Right Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
 
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
+                    
 
                     <li style="list-style: none;">
                         <!-- Moon Icon -->
@@ -163,11 +159,11 @@
                                     <div class="row align-items-center">
                                         <!-- Welcome Section -->
                                         <div class="col-12 col-md-8 d-flex align-items-start mb-3 mb-md-0">
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
+                                            <img src="{{ asset('storage/' . $user->profile_image) }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
                                             <div>
-                                                <h6 class="mb-1">Welcome Back, <b>Admin Name</b></h6>
+                                                <h6 class="mb-1">Welcome Back, <b>{{$user->name}}</b></h6>
                                                 <small>
-                                                    Dear <b>"Admin name"</b> you have for today
+                                                    Dear <b>"{{$user->name}}"</b> you have for today
                                                     <span style="color:red; font-weight:600;">12 Messages</span>,
                                                     <span style="color:#e75480; font-weight:600;">5 Meetings</span>,
                                                     <span style="color:#e75480; font-weight:600;">3 ToDo’s</span>,

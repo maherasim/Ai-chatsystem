@@ -19,6 +19,7 @@ class Setting extends Model
         'first_name',
         'dob',
         'login_backgrounds',
+        'selected_login_background',
         'chat_backgrounds',
         'user_id',
         'chat_sounds',
@@ -29,6 +30,8 @@ class Setting extends Model
         'agreement_html',
         'agreement_version',
         'require_accept_on_next_login',
+        'screen_lock',
+        'screen_lock_minutes',
     ];
 
     

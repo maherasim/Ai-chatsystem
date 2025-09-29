@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Setting;
 use Carbon\Carbon;
 
 class UsersController extends Controller
 {
+
+    public function home(){
+        $setting = Setting::first();
+        $user = Auth::user();
+        return view('index', compact('user', 'setting'));
+    }
+
   public function index()
     {
      $users = User::where('email', '!=', 'admin@gmail.com')->get();
@@ -59,7 +68,7 @@ class UsersController extends Controller
         'cpassw' => 'nullable',
         'phone' => 'nullable',
         'department' => 'nullable|string',
-                 'image' => 'nullable',
+        'image' => 'nullable',
          ]);
     // Step 2: Handle Image Upload
     $imagePath = null;
