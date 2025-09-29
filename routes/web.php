@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
+use Illuminate\Support\Facades\DB;
+
 use App\Http\Controllers\TodoController;
 use App\Models\User;
 
@@ -68,6 +70,22 @@ $response = Http::withOptions([
 
 
 
+
+Route::get('/test-db', function () {
+    try {
+        $client = DB::connection('mongodb')->getMongoClient();
+        $databases = $client->listDatabases()->toArray();
+        return response()->json([
+            'status' => 'success',
+            'databases' => array_map(fn($db) => $db->getName(), $databases)
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+});
 
 
 
