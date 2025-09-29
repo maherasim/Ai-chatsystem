@@ -805,6 +805,7 @@
                 <input type="hidden" name="priority" id="priorityHidden" value="low">
                 <input type="hidden" name="reminder" id="reminderHidden" value="6">
 
+                <!-- new changes -->
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo
@@ -959,7 +960,7 @@
 
 
                 <!-- Shared / Private ToDo Section -->
-                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                <div style="background-color: #f9f9fb; display:none; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
 
                     
 
