@@ -86,6 +86,8 @@ Route::get('/todo', function () {
 })->middleware('auth')->name('chat-groups');
 Route::get('/project', [App\Http\Controllers\ProjectController::class, 'index'])->name('chat-project');
 Route::post('/project', [App\Http\Controllers\ProjectController::class, 'store'])->name('project.store');
+Route::delete('/project/{id}', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('project.destroy');
+Route::put('/project/{id}', [App\Http\Controllers\ProjectController::class, 'update'])->name('project.update');
 
 Route::get('/Apis', function () {
     $headers = Setting::all();

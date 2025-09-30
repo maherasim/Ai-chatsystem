@@ -64,6 +64,7 @@
     .sidebar-group .sidebar-content#chats {
         width: 420px;
         min-width: 420px;
+        margin-right: 0;
     }
 
     @media (max-width: 1200px) {
@@ -80,16 +81,16 @@
         }
     }
 
-    /* Increase spacing around the library section */
+    /* Increase spacing around the library section (remove right gap) */
     .sidebar-group {
         padding-left: 16px;
-        padding-right: 16px;
+        padding-right: 0;
     }
 
     @media (min-width: 1400px) {
         .sidebar-group {
             padding-left: 24px;
-            padding-right: 24px;
+            padding-right: 0;
         }
     }
 </style>
@@ -120,8 +121,8 @@
             <!-- Chats sidebar -->
 
             <div class="tab-pane fade active show " id="chat-menu">
-                <div class="slimScrollDiv" style="position:static; width: 100%;    height: 500px !important;">
-                    <div class="slimscroll">
+                <div class="slimScrollDiv" style="position:static; width: 100%;    height: 500px !important; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;">
+                    <div class="slimscroll" style="max-height: 100%; overflow-y: auto; overflow-x: hidden;">
                         <div class="chat-search-header" style="padding: 10px 0px;">
                             <div class="header-title d-flex align-items-center justify-content-between">
                                 <h4 class="mb-3">Library</h4>
@@ -1217,7 +1218,7 @@
     <!-- /Sidebar group -->
 
     <!-- Chat -->
-    <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
+    <div class="chat chat-messages show" id="middle" style="overflow-y: auto;">
         <div>
             @include('Chats.header')
         </div>

@@ -153,14 +153,22 @@
 
 
     <div class="chat chat-messages show" id="middle">
-        @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
-        </div>
-        @endif
+       
         <div>
             @include('Chats.header')
+            <!-- flash messages -->
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 10px;">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
             <!-- body -->
             <div style="overflow-y: auto;flex:1;height: 100vh;">
                 <div class="chat-body chat-page-group">
@@ -377,7 +385,9 @@
                                         <h6 style="cursor: pointer;"
                                             data-bs-toggle="offcanvas"
                                             data-bs-target="#offcanvasRight"
-                                            aria-controls="offcanvasRight">
+                                            aria-controls="offcanvasRight"
+                                            data-project-id="{{ (string) ($project->_id ?? $project->id) }}"
+                                            onclick="setCurrentProjectId(this.getAttribute('data-project-id'))">
                                             {{ $project->title }}
                                         </h6>
                                     </div>
@@ -2051,17 +2061,17 @@
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
                     
-                        <label for="uploadLogo"
+                        <label for="createUploadLogo"
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
-                            <img id="logoPreview" src=""
+                            <img id="createLogoPreview" src=""
                                 style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
-                            <div id="uploadIconText">
+                            <div id="createUploadIconText">
                                 <div style="font-size: 28px; color: #a0a4ab;">+</div>
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
                             </div>
-                            <input type="file" id="uploadLogo" name="logo" accept="image/*" hidden
-                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
+                            <input type="file" id="createUploadLogo" name="logo" accept="image/*" hidden
+                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('createLogoPreview').src = e.target.result; document.getElementById('createLogoPreview').style.display = 'block'; var t=document.getElementById('createUploadIconText'); if(t) t.style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
                    
 
@@ -2288,80 +2298,33 @@
                 ×
             </button>
             <div class="modal-body px-4 py-4">
+                <form id="projectEditForm" method="POST" action="{{ route('project.update', $project->id) }}" enctype="multipart/form-data">
+
+                
+                    @csrf
+                    <input type="hidden" name="_method" value="PUT">
                 <h5>Edit Project</h5>
                 <small>Project ID</small>
 
                 <!-- Upload and File Row -->
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0">
-                        <label for="uploadLogo"
+                    
+                        <label for="editUploadLogo"
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
-                            <img id="logoPreview" src=""
+                            <img id="editLogoPreview" src=""
                                 style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
-                            <div id="uploadIconText">
+                            <div id="editUploadIconText">
                                 <div style="font-size: 28px; color: #a0a4ab;">+</div>
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
                             </div>
-                            <input type="file" id="uploadLogo" accept="image/*" hidden
-                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('uploadIconText').style.display = 'none'; }; reader.readAsDataURL(file); }" />
+                            <input type="file" id="editUploadLogo" name="logo" accept="image/*" hidden
+                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ var img=document.getElementById('editLogoPreview'); if(img){ img.src = e.target.result; img.style.display = 'block'; } var t=document.getElementById('editUploadIconText'); if(t) t.style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
-                    </div>
+                   
 
-                    <!-- File Upload Section -->
-                    <div class="col-12 col-sm-6 col-md-8 col-lg-9">
-                        <div
-                            style="border: 2px dashed #cfd3d9; border-radius: 10px; padding: 15px; background:#f7f9fc">
-                            <div class="row g-2">
-                                <!-- File Box 1 -->
-                                <div class="col-12 col-md-6">
-                                    <div
-                                        class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="pdf" style="width: 25px; height: 25px;"
-                                                class="me-2" />
-                                            <div>
-                                                <div id="pdfName1" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small id="pdfSize1" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="fileUpload1"
-                                        class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload1" hidden
-                                            onchange=" if (this.files.length > 0) { var file = this.files[0];  var name = file.name;  var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName1').innerText = name; document.getElementById('pdfSize1').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
-                                    </label>
-                                </div>
-
-                                <!-- File Box 2 -->
-                                <div class="col-12 col-md-6">
-                                    <div
-                                        class="bg-white p-2 rounded d-flex align-items-start justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="pdf" style="width: 25px; height: 25px;"
-                                                class="me-2" />
-                                            <div>
-                                                <div id="pdfName2" style="font-size: 0.85rem;">File Title.pdf</div>
-                                                <small id="pdfSize2" style="color: #a0a4ab;">94 KB of 94 KB</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="fileUpload2"
-                                        class="d-flex justify-content-center align-items-center mt-2"
-                                        style="height: 40px; background-color: #f0f0f0; border-radius: 6px; cursor: pointer;">
-                                        <span style="font-size: 20px; color: #a0a4ab;">+</span>
-                                        <input type="file" id="fileUpload2" hidden
-                                            onchange=" if (this.files.length > 0) { var file = this.files[0]; var name = file.name; var sizeKB = (file.size / 1024).toFixed(1); document.getElementById('pdfName2').innerText = name; document.getElementById('pdfSize2').innerText = sizeKB + ' KB of ' + sizeKB + ' KB'; } " />
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
                 </div>
 
 
@@ -2369,22 +2332,23 @@
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Ticket Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
-                        <input type="text" placeholder="Project Title" class="form-control mt-2"
-                            style="border-radius: 8px;" />
+                        <label class="fw-semibold" style="font-size: 14px;">Project Title</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Enter the title</div>
+                        <input type="text" name="title" id="editTitle" placeholder="Project Title" class="form-control mt-2"
+                            style="border-radius: 8px;" required />
                     </div>
 
                     <!-- Task Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <label class="fw-semibold" style="font-size: 14px;">Priority</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
                         <!-- Priority Button Group -->
                         <div class="d-flex justify-content-between mt-2 px-2 py-1"
                             style="background-color: #fff; border-radius: 12px;">
 
-                            <button class="btn"
+                            <input type="hidden" name="priority" id="priorityInputEdit" value="low" />
+                            <button type="button" class="btn priority-btn-edit" data-priority="low"
                                 style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2394,9 +2358,10 @@
             }
             this.style.backgroundColor = '#1cc375';
             this.style.color = 'white';
+            document.getElementById('priorityInputEdit').value='low';
         ">Low</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn priority-btn-edit" data-priority="medium"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2406,19 +2371,21 @@
             }
             this.style.backgroundColor = '#1cc375';
             this.style.color = 'white';
+            document.getElementById('priorityInputEdit').value='medium';
         ">Middle</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn priority-btn-edit" data-priority="high"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-        ">High</button>
+                                                onclick="
+                            var btns = this.parentElement.querySelectorAll('button');
+                            for (var i = 0; i < btns.length; i++) {
+                                btns[i].style.backgroundColor = 'transparent';
+                                btns[i].style.color = '#6c757d';
+                            }
+                            this.style.backgroundColor = '#1cc375';
+                            this.style.color = 'white';
+                            document.getElementById('priorityInputEdit').value='high';
+                        ">High</button>
                         </div>
 
                     </div>
@@ -2442,19 +2409,19 @@
                                     <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
 
                                     <!-- Selected Date -->
-                                    <div id="displayDate" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                    <div id="editStartDateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
 
                                     <!-- Calendar Icon & Input -->
                                     <div
                                         style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
                                         <!-- Icon -->
                                         <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                            onclick="document.getElementById('dateInput').showPicker()"
+                                            onclick="document.getElementById('editStartDateInput').showPicker()"
                                             style="width: 20px; height: 20px; cursor: pointer;" />
 
                                         <!-- Hidden Input (works with showPicker) -->
-                                        <input type="date" id="dateInput"
-                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
+                                        <input type="date" id="editStartDateInput" name="start_date"
+                                            onchange="var d=new Date(this.value); if(this.value)document.getElementById('editStartDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
                                 </div>
@@ -2467,39 +2434,37 @@
                                 <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Deliver Date</div>
 
                                 <!-- Display selected date -->
-                                <div id="deliverDateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY
+                                <div id="editEndDateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY
                                 </div>
 
                                 <!-- Calendar Icon + Hidden Input container -->
                                 <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
                                     <!-- Calendar Icon -->
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('deliverDateInput').showPicker()"
+                                        onclick="document.getElementById('editEndDateInput').showPicker()"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
 
                                     <!-- Hidden Date Input -->
-                                    <input type="date" id="deliverDateInput"
-                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
+                                    <input type="date" id="editEndDateInput" name="end_date"
+                                        onchange="var d=new Date(this.value); if(this.value)document.getElementById('editEndDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
                             </div>
 
                         </div>
-                        <div style="font-size: 12px; color: #1e60a1; font-weight: 600; margin-top: 6px;">
-                            Total Days: <span id="totalDaysDisplayEdit">-</span>
-                        </div>
+                      
                     </div>
 
                     <!-- Expired Reminder -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder</label>
+                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder  </label>
                         <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
 
                         <!-- Reminder Buttons -->
                         <div class="d-flex justify-content-between mt-2 px-1 py-1"
                             style="background-color: #fff; border-radius: 12px;">
-
-                            <button class="btn"
+                            <input type="hidden" name="reminder_days" id="reminderDaysInputEdit" value="7" />
+                            <button type="button" class="btn"
                                 style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2509,10 +2474,11 @@
             }
             this.style.backgroundColor = '#1cc375';
             this.style.color = 'white';
+            document.getElementById('reminderDaysInputEdit').value = '7';
         ">7
                                 Days</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2522,10 +2488,11 @@
             }
             this.style.backgroundColor = '#1cc375';
             this.style.color = 'white';
+            document.getElementById('reminderDaysInputEdit').value = '15';
         ">15
                                 Days</button>
 
-                            <button class="btn"
+                            <button type="button" class="btn"
                                 style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
@@ -2535,6 +2502,7 @@
             }
             this.style.backgroundColor = '#1cc375';
             this.style.color = 'white';
+            document.getElementById('reminderDaysInputEdit').value = '30';
         ">30
                                 Days</button>
                         </div>
@@ -2553,7 +2521,7 @@
                         <div class="card">
 
                             <div class="card-body">
-                                <textarea id="policyEditor"></textarea>
+                                <textarea id="editDescription" name="description"></textarea>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
 
                                     <div class="btn-group">
@@ -2582,11 +2550,11 @@
                     <div id="sections-wrapper1" class="w-100">
                         <div class="row mb-2 section-row1">
                             <div class="col-4">
-                                <input type="text" class="form-control" placeholder="Section Name"
+                                <input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name"
                                     style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                             </div>
                             <div class="col-7">
-                                <input type="text" class="form-control" placeholder="Section Description"
+                                <input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description"
                                     style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
                             </div>
                             <div class="col-1 d-flex align-items-center">
@@ -2609,16 +2577,14 @@
                             Close
                         </button>
 
-                        <button class="btn"
+                        <button class="btn" type="submit"
                             style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
-                            data-bs-dismiss="modal">
+                            >
                             Save & Close
                         </button>
                     </div>
                 </div>
-
-
-
+                </form>
             </div>
         </div>
     </div>
@@ -2723,9 +2689,8 @@
                 style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
                 <button type="button" class="btn" data-bs-dismiss="modal"
                     style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 100px;">Close</button>
-                <button type="button" class="btn" data-bs-dismiss="modal"
-                    style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 150px;">Save &
-                    Close</button>
+                <button type="button" class="btn" onclick="confirmDeleteProject(this)"
+                    style="background-color: #f44336; color: #ffffff; border: none; width: 150px;">Delete Project</button>
             </div>
 
         </div>
@@ -2766,6 +2731,142 @@
         }, 400);
     }
 </script>
+<script>
+    // Build a lightweight map of projects rendered on this page for quick prefill
+    window.projectMap = window.projectMap || {};
+    @foreach (($projects ?? []) as $p)
+        window.projectMap["{{ (string) ($p->_id ?? $p->id) }}"] = {
+            id: "{{ (string) ($p->_id ?? $p->id) }}",
+            title: @json($p->title),
+            priority: @json($p->priority),
+            start_date: "{{ $p->start_date ? ( ($p->start_date instanceof \Carbon\Carbon ? $p->start_date : \Carbon\Carbon::parse($p->start_date))->format('Y-m-d') ) : '' }}",
+            end_date: "{{ $p->end_date ? ( ($p->end_date instanceof \Carbon\Carbon ? $p->end_date : \Carbon\Carbon::parse($p->end_date))->format('Y-m-d') ) : '' }}",
+            description: @json($p->description),
+            reminder_days: {!! $p->reminder_days === null ? 'null' : (int) $p->reminder_days !!},
+            progress_percent: {!! (int) ($p->progress_percent ?? 0) !!},
+            status: @json($p->status),
+            logo_url: "{{ $p->logo_path ? asset('storage/' . $p->logo_path) : '' }}",
+            sections: @json($p->sections ?? [])
+        };
+    @endforeach
+
+    function prefillEditForm(project) {
+        try {
+            if (!project) return;
+
+            var titleEl = document.getElementById('editTitle');
+            if (titleEl) titleEl.value = project.title || '';
+
+            // Priority
+            var hiddenPriority = document.getElementById('priorityInputEdit');
+            var priorityValue = project.priority || 'low';
+            if (hiddenPriority) hiddenPriority.value = priorityValue;
+            var pBtns = document.querySelectorAll('.priority-btn-edit');
+            pBtns.forEach(function(btn){
+                var isActive = btn.getAttribute('data-priority') === priorityValue;
+                btn.style.backgroundColor = isActive ? '#1cc375' : 'transparent';
+                btn.style.color = isActive ? 'white' : '#6c757d';
+            });
+
+            // Dates
+            var s = document.getElementById('editStartDateInput');
+            var e = document.getElementById('editEndDateInput');
+            if (s) s.value = project.start_date || '';
+            if (e) e.value = project.end_date || '';
+            function fmt(d){
+                if(!d) return 'DD:MM:YYYY';
+                var dt = new Date(d);
+                if (isNaN(dt.getTime())) return 'DD:MM:YYYY';
+                return ('0'+dt.getDate()).slice(-2)+':' + ('0'+(dt.getMonth()+1)).slice(-2)+':'+dt.getFullYear();
+            }
+            var sd = document.getElementById('editStartDateDisplay');
+            var ed = document.getElementById('editEndDateDisplay');
+            if (sd) sd.innerText = fmt(project.start_date);
+            if (ed) ed.innerText = fmt(project.end_date);
+
+            // Reminder days
+            var remHidden = document.getElementById('reminderDaysInputEdit');
+            var remVal = (project.reminder_days === null || project.reminder_days === undefined) ? '7' : String(project.reminder_days);
+            if (remHidden) remHidden.value = remVal;
+            if (remHidden && remHidden.parentElement) {
+                var remBtns = remHidden.parentElement.querySelectorAll('button');
+                remBtns.forEach(function(b){
+                    b.style.backgroundColor = 'transparent';
+                    b.style.color = '#6c757d';
+                    var label = (b.textContent || '').trim();
+                    if (label.startsWith(remVal)) {
+                        b.style.backgroundColor = '#1cc375';
+                        b.style.color = 'white';
+                    }
+                });
+            }
+
+            // Description
+            var desc = document.getElementById('editDescription');
+            if (desc) {
+                if (typeof $ !== 'undefined' && $.fn && $.fn.summernote) {
+                    if (!$(desc).data('summernote')) {
+                        $(desc).summernote({
+                            placeholder: 'Describe the project...',
+                            tabsize: 2,
+                            height: 220
+                        });
+                    }
+                    $(desc).summernote('code', project.description || '');
+                } else {
+                    desc.value = project.description || '';
+                }
+            }
+
+            // Logo preview (edit modal)
+            var logoImg = document.getElementById('editLogoPreview');
+            var uploadIconText = document.getElementById('editUploadIconText');
+            var fileInput = document.getElementById('editUploadLogo');
+            if (logoImg) {
+                if (project.logo_url) {
+                    logoImg.src = project.logo_url;
+                    logoImg.style.display = 'block';
+                    if (uploadIconText) uploadIconText.style.display = 'none';
+                } else {
+                    logoImg.style.display = 'none';
+                    if (uploadIconText) uploadIconText.style.display = 'block';
+                }
+                // reset file input so selecting same file re-triggers change
+                if (fileInput) fileInput.value = '';
+            }
+
+            // Sections
+            try {
+                var wrapper = document.getElementById('sections-wrapper1');
+                if (wrapper) {
+                    wrapper.innerHTML = '';
+                    var sections = Array.isArray(project.sections) ? project.sections : [];
+                    if (sections.length === 0) {
+                        var row = document.createElement('div');
+                        row.className = 'row mb-2 section-row1';
+                        row.innerHTML = '<div class="col-4"><input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-7"><input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-1 d-flex align-items-center"><img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="editSection(this)"></div>';
+                        wrapper.appendChild(row);
+                    } else {
+                        sections.forEach(function(sec, idx){
+                            var row = document.createElement('div');
+                            row.className = 'row mb-2 section-row1';
+                            row.innerHTML = '<div class="col-4"><input type="text" name="sections['+idx+'][name]" class="form-control" placeholder="Section Name" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-7"><input type="text" name="sections['+idx+'][description]" class="form-control" placeholder="Section Description" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-1 d-flex align-items-center"><img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="editSection(this)"></div>';
+                            wrapper.appendChild(row);
+                            var inputs = row.querySelectorAll('input');
+                            if (inputs[0]) inputs[0].value = (sec && sec.name) ? sec.name : '';
+                            if (inputs[1]) inputs[1].value = (sec && sec.description) ? sec.description : '';
+                        });
+                    }
+                }
+            } catch (ignored) {}
+
+            // Recompute total days for edit section
+            calculateTotalDays('#projectDurationSectionEdit');
+        } catch (e) {
+            // no-op
+        }
+    }
+</script>
 <!-- edit model pop-up -->
 <script>
     function openEditModal() {
@@ -2779,12 +2880,35 @@
 
         setTimeout(function() {
             var pauseModal = new bootstrap.Modal(document.getElementById('edit_project'));
+            // Prefill form from last selected project id
+            try {
+                if (!currentProjectId) {
+                    console.warn('No currentProjectId set');
+                }
+                document.getElementById('projectEditForm').setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
+                // Prefill by fetching current project JSON (fallback when projectMap missing or stale)
+                fetch('/api/tickets/projects', { credentials: 'same-origin' })
+                    .then(r => r.json())
+                    .then(list => {
+                        var found = Array.isArray(list) ? list.find(p => String(p.id) === String(currentProjectId)) : null;
+                        // list from tickets.projects only has id/title; so we still need a detailed endpoint.
+                    })
+                    .catch(() => {});
+                if (window.projectMap && window.projectMap[currentProjectId]) {
+                    prefillEditForm(window.projectMap[currentProjectId]);
+                }
+            } catch (e) { console.error(e); }
             pauseModal.show();
         }, 400);
     }
 </script>
-<!-- remove project pop-up -->
+<!-- remove project pop-up and delete logic -->
 <script>
+    var currentProjectId = null;
+    function setCurrentProjectId(id) {
+        currentProjectId = id;
+    }
+
     function opendeleteModel() {
         var offcanvasElement = document.getElementById('offcanvasRight');
         if (offcanvasElement) {
@@ -2795,9 +2919,39 @@
         }
 
         setTimeout(function() {
-            var pauseModal = new bootstrap.Modal(document.getElementById('removeproject'));
-            pauseModal.show();
+            var modalEl = document.getElementById('removeproject');
+            var modal = new bootstrap.Modal(modalEl);
+            modal.show();
         }, 400);
+    }
+
+    async function confirmDeleteProject(buttonEl) {
+        if (!currentProjectId) {
+            alert('No project selected. Open a project first.');
+            return;
+        }
+
+        try {
+            const resp = await fetch('/project/' + encodeURIComponent(currentProjectId), {
+                method: 'DELETE',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (resp.redirected) {
+                window.location.href = resp.url;
+                return;
+            }
+
+            // Regardless of status, navigate to project page to display any flash messages
+            window.location.href = '/project';
+        } catch (e) {
+            console.error('Delete failed', e);
+            alert('Failed to delete project');
+        }
     }
 </script>
 <!-- dark and light mode -->
@@ -2834,7 +2988,7 @@
         var summernoteJs = document.createElement('script');
         summernoteJs.src = 'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js';
         summernoteJs.onload = function() {
-            var $editors = $('#policyEditor, #agreementEditor');
+            var $editors = $('#policyEditor, #agreementEditor, #editDescription');
             $editors.summernote({
                 placeholder: 'Start typing...',
                 tabsize: 2,
@@ -2867,6 +3021,10 @@
             var agreementVersion = parseInt(localStorage.getItem('agreement_version') || '0', 10);
             $('#policyEditor').summernote('code', savedPolicy);
             $('#agreementEditor').summernote('code', savedAgreement);
+            // ensure editDescription is empty by default until prefill runs
+            if ($('#editDescription').length) {
+                $('#editDescription').summernote('code', '');
+            }
             $('#policyVersion').text(policyVersion);
             $('#agreementVersion').text(agreementVersion);
 
@@ -3029,9 +3187,10 @@
         try {
             var section = document.querySelector(sectionSelector);
             if (!section) return;
-            var startInput = section.querySelector('#dateInput');
-            var endInput = section.querySelector('#deliverDateInput');
-            var display = section.id === 'projectDurationSectionEdit' ? document.getElementById('totalDaysDisplayEdit') : document.getElementById('totalDaysDisplayCreate');
+            var isEdit = section.id === 'projectDurationSectionEdit';
+            var startInput = isEdit ? document.getElementById('editStartDateInput') : document.getElementById('dateInput');
+            var endInput = isEdit ? document.getElementById('editEndDateInput') : document.getElementById('deliverDateInput');
+            var display = isEdit ? document.getElementById('totalDaysDisplayEdit') : document.getElementById('totalDaysDisplayCreate');
             if (!startInput || !endInput || !display) return;
             var s = startInput.value ? new Date(startInput.value) : null;
             var e = endInput.value ? new Date(endInput.value) : null;
