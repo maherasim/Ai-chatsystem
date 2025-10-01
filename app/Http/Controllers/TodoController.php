@@ -25,12 +25,55 @@ class TodoController extends Controller
                  ->get();
 
         // Today = start_date is today OR no start_date
-        $todayTodos = Todo::where('user_id', $user->id)->where('start_date', date('Y-m-d'))->get();
+      //  $todayTodos = Todo::where('user_id', $user->id)->where('start_date', date('Y-m-d'))->get();
 
         // Private
-        $privateTodos = Todo::where('user_id', $user->id)
-            ->where('is_private', "1")->where('completed', '!=', '1')
-            ->get();
+      //  $privateTodos = Todo::where('user_id', $user->id)
+       //     ->where('is_private', "1")->where('completed', '!=', '1')
+       //     ->get();
+
+        $todayTodos = Todo::where('user_id', $user->id)
+            ->where('start_date', date('Y-m-d'))
+            ->get()
+            ->map(function ($todo) {
+                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+
+                $todo->members_data = $members->map(function ($u) {
+                    return [
+                        'id'    => $u->_id,
+                        'name'  => $u->name,
+                        'image' => $u->profile_image
+                            ? asset("storage/" . $u->profile_image)
+                            : asset("build/img/default.png"),
+                    ];
+                });
+
+                return $todo;
+            });
+
+            $privateTodos = Todo::where('user_id', $user->id)
+            ->where('is_private', "1")
+    ->where('completed', '!=', '1')
+            ->get()
+            ->map(function ($todo) {
+                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+
+                $todo->members_data = $members->map(function ($u) {
+                    return [
+                        'id'    => $u->_id,
+                        'name'  => $u->name,
+                        'image' => $u->profile_image
+                            ? asset("storage/" . $u->profile_image)
+                            : asset("build/img/default.png"),
+                    ];
+                });
+
+                return $todo;
+            });
+
+    
+
+
 
 
         // Shared
@@ -90,19 +133,21 @@ class TodoController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+           // 'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'start_time' => 'nullable',
             'end_time' => 'nullable',
             'is_private' => 'required|boolean',
             'priority' => 'nullable|string',
             'reminder' => 'nullable|integer',
+            'sections'    => 'nullable|array',
+            'sections.*'  => 'nullable|string',
             'members' => 'nullable|array'
         ]);
 
         $todo = Todo::create([
             'title'       => $request->title,
-            'description' => $request->description,
+           // 'description' => $request->description,
             'start_date'  => $request->start_date ?? date('Y-m-d'),
             'start_time'  => $request->start_time,
             'end_time'    => $request->end_time,
@@ -110,6 +155,7 @@ class TodoController extends Controller
             'project'     => $request->project,
             'priority'    => $request->priority,
             'reminder'    => $request->reminder,
+            'description' => $request->sections ?? [], 
             'user_id'     => Auth::id(),
             'completed'   => 0,
             'is_schduled' => $request->start_date ? 1 : 0,

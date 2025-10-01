@@ -414,7 +414,7 @@
 
                             <!-- Description -->
                             <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                {{$todo->description}}
+                                
                             </p>
 
                             <!-- Date & Priority Row -->

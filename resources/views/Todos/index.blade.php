@@ -86,6 +86,32 @@
         opacity: 1;
     }
 
+    .timers{
+        border-bottom:solid 1px;
+        max-width:50px;
+        margin:auto;
+    }
+    .todo-type{
+        background:#fff;
+        padding:5px;
+        border-radius:5px;
+    }
+    .invit-box{
+        background: #fff;
+        padding: 5px;
+        border-radius: 10px;
+        margin:5px;
+        width:22%;
+    }
+    .user_div{
+        cursor:pointer;
+    }
+    .user_active{
+        border:solid 1px #62c728ff;
+
+    }
+    
+
 @media screen and (max-width: 767px) {
     .project-succes{
         display:block !important;
@@ -105,6 +131,67 @@
     color: white;
 }
 
+#countdown{
+    padding-bottom:10px;
+}
+.circle-timer {
+  position: relative;
+  width: 60px;   /* reduced */
+  height: 60px;  /* reduced */
+  margin: auto;
+}
+
+.circle-timer svg {
+  width: 60px;   /* reduced */
+  height: 60px;  /* reduced */
+  transform: rotate(-90deg);
+}
+
+.circle-timer circle {
+  fill: none;
+  stroke-width: 6;   /* thinner */
+  cx: 50%;
+  cy: 50%;
+  r: 25;             /* reduced radius */
+  stroke: #e6e6e6;
+}
+
+.circle-timer circle:nth-child(2) {
+  stroke: #22c55e;
+  stroke-dasharray: 157; /* 2 * PI * 25 */
+  stroke-dashoffset: 157;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.todohead{
+    background: linear-gradient(to right, #e53935, #f48fb1); 
+    color: white; 
+    padding: 25px 20px; 
+    position: relative;
+}
+.todohead.shared{
+    background: linear-gradient(to right, #3eaee7, #94d2f1);; 
+    
+}
+
+.time-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 14px;  /* smaller font */
+  font-weight: bold;
+  color: #1c2233;
+}
+
+.timer-text {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px; /* smaller label */
+  color: #666;
+}
 </style>
 
 
@@ -261,12 +348,32 @@
                 
             </button>
 
+            <button type="button" class="btn btn-sm btn-icon "   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary viewTodo" 
+               data-id="{{ $todo->id }}"
+   data-title="{{ $todo->title }}"
+   data-description=""
+   data-start_date="{{ $todo->start_date }}"
+   data-start_time="{{ $todo->start_time }}"
+   data-end_time="{{ $todo->end_time }}"
+   data-is_private="{{ $todo->is_private }}"
+   data-priority="{{ $todo->priority }}"
+   data-reminder="{{ $todo->reminder }}"
+   data-sections='@json($todo->description)'
+   data-members='@json($todo->members_data)'
+    data-bs-toggle="modal" data-bs-target="#inreject">
+               <i class="fa fa-eye"></i>  
+            </a>
+
+            </button>
+
             <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
                 <a href="javascript:void(0);" 
                class="dropdown-item text-primary" 
                data-id="{{ $todo->_id }}"
     data-title="{{ $todo->title }}"
-    data-description="{{ $todo->description }}"
+    data-description=""
     data-start_date="{{ $todo->start_date }}"
     data-start_time="{{ $todo->start_time }}"
     data-end_time="{{ $todo->end_time }}"
@@ -324,7 +431,7 @@
 
                                         <!-- Description -->
                                         <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                            {{$todo->description}}
+                                            
                                         </p>
 
                                         <!-- Date & Priority Row -->
@@ -439,13 +546,32 @@
                 </a>
                 
             </button>
+            <button type="button" class="btn btn-sm btn-icon "    >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary viewTodo" 
+               data-id="{{ $todo->id }}"
+   data-title="{{ $todo->title }}"
+   data-description=""
+   data-start_date="{{ $todo->start_date }}"
+   data-start_time="{{ $todo->start_time }}"
+   data-end_time="{{ $todo->end_time }}"
+   data-is_private="{{ $todo->is_private }}"
+   data-priority="{{ $todo->priority }}"
+   data-reminder="{{ $todo->reminder }}"
+   data-sections='@json($todo->description)'
+   data-members='@json($todo->members_data)'
+    data-bs-toggle="modal" data-bs-target="#inreject">
+               <i class="fa fa-eye"></i>  
+            </a>
+
+            </button>
 
             <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
                 <a href="javascript:void(0);" 
                class="dropdown-item text-primary" 
                data-id="{{ $todo->_id }}"
     data-title="{{ $todo->title }}"
-    data-description="{{ $todo->description }}"
+    data-description=""
     data-start_date="{{ $todo->start_date }}"
     data-start_time="{{ $todo->start_time }}"
     data-end_time="{{ $todo->end_time }}"
@@ -490,7 +616,7 @@
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            {{$todo->description}}
+                                            
                                         </p>
 
                                         <!-- Date & Priority Row -->
@@ -560,11 +686,68 @@
                                         <div class="d-flex">
                                             <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{$todo->created_at}}</small>
                                             </div>
                                         </div>
-                                        <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
+                                        <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
+                                        <!-- edit delete starts -->
+
+                                        <div class="dropdown">
+    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
+        ⋮
+    </div>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
+        
+
+            <button type="button" class="btn btn-sm btn-icon "   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary viewTodo" 
+               data-id="{{ $todo->id }}"
+   data-title="{{ $todo->title }}"
+   data-description=""
+   data-start_date="{{ $todo->start_date }}"
+   data-start_time="{{ $todo->start_time }}"
+   data-end_time="{{ $todo->end_time }}"
+   data-is_private="{{ $todo->is_private }}"
+   data-priority="{{ $todo->priority }}"
+   data-reminder="{{ $todo->reminder }}"
+   data-sections='@json($todo->description)'
+   data-members='@json($todo->members_data)'
+    data-bs-toggle="modal" data-bs-target="#inreject">
+               <i class="fa fa-eye"></i>  
+            </a>
+
+            </button>
+
+            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary" 
+               data-id="{{ $todo->_id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-project="{{ $todo->project }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-members='@json($todo->members)'
+    onclick="openEditModal(this)">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+
+
+            
+
+</div>
+</div>
+
+
+                                        <!-- edit delete ends -->
                                     </div>
 
                                     <!-- Card Body -->
@@ -593,7 +776,7 @@
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            {{$todo->description}}
+                                            
                                         </p>
                                         </div>
                                         <!-- Date & Priority Row -->
@@ -822,6 +1005,10 @@
                                 Private ToDo's
                             </button>
                         </div>
+
+
+
+
                 </h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
 
@@ -857,15 +1044,48 @@
                         </div>
                         
                     </div>
+                    <!--
                     <div class="row g-2 mt-2">
                         <div class="col-md-12">
                             <input name="description" type="text" class="form-control" placeholder="Section Description"
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
 
+                    </div>-->
+
+                    <div class="row g-2 mt-2" id="sectionsWrapper">
+                        <div class="col-md-12 d-flex align-items-center section-item">
+                            <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                            <button type="button" class="btn btn-success btn-sm ms-2 add-btn">+</button>
+                        </div>
                     </div>
+
+
                 </div>
 
+                <div class="mb-3" id="selectUsersBox" style="background-color: #f9f9fb; border-radius:10px; padding:16px;">
+                    <h5>Select Users</h5>
+                    <p>Project - Team</p>
+
+                    <div class="row">
+                        @foreach($users as $cuser)
+                            <div class="col-md-3 user_div invit-box text-center" 
+                                id="user_{{$cuser->_id}}" 
+                                data-user-id="{{$cuser->_id}}">
+                                <div class="invit-img">
+                                    <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                </div>
+                                <div class="invit-txt">{{$cuser->name}}</div>
+                            </div>
+                        @endforeach
+                    </div>
+
+
+                </div>
+
+
+                 
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
                 <div style="background-color: #f9f9fb; border-radius:10px;">
@@ -1024,6 +1244,186 @@
             </div>
 </form>
         </div>
+    </div>
+</div>
+
+<!-- View Model -->
+<div class="modal fade" id="inreject" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
+
+            <!-- Modal Body -->
+            <div class="modal-body p-0">
+                <!-- Header -->
+                <div class="todohead " >
+
+                    <!-- Text Left-Aligned -->
+                    <div style="text-align: left;">
+                        <h5 style="margin: 0;">&nbsp;</h5>
+                        <small>&nbsp;</small>
+                    </div>
+
+                    <!-- Logo Centered, Half Outside -->
+                    <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
+                    </div>
+
+                </div>
+
+                <!-- Task Card -->
+                <div class="p-2">
+
+                    <div class="mt-2 mb-3" style="background-color: #f8f9fa; padding:10px; border-radius:10px;">
+    <h5 class="text-center fw-bold mb-3" style="color: #1c2233; margin-bottom:10px !important;">Timer</h5>
+    <div class="row text-center justify-content-center" id="countdown">
+    <!-- Days -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="days-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="days">0</div>
+            <div class="timer-text">Days</div>
+        </div>
+    </div>
+
+    <!-- Hours -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="hours-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="hours">0</div>
+            <div class="timer-text">Hours</div>
+        </div>
+    </div>
+
+    <!-- Minutes -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="minutes-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="minutes">0</div>
+            <div class="timer-text">Minutes</div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
+
+                    <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
+                        <h5 class="text-center fw-bold mb-3 modal-title todo-title" style="color: #1c2233;">Task Title</h5>
+                        <p class="text-center">
+                            <span class="todo-type  badge bg-secondary">Priviatess Todo's</span>
+                            <span class="todo-type badge rounded-pill todo-priority" style="color: #22c55e; font-size: 13px; padding: 8px 12px;">
+                                <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
+                            </span>
+                        </p>
+
+                        
+                    </div>
+
+                    <div class="mt-2 mb-3 " style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+                        <!-- Title -->
+                        <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Todo Start & Deliver Time</h5>
+
+                        <!-- Info Row -->
+                        <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 13px;">
+                            
+                            <div class="right-border">
+                                <div class="text-muted"><b>Scheduled</b></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Start Date:</span> <span class="todo-start-date">--</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Start Time:</span> <span class="todo-deliver-date">--</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Deliver Time:</span> <span class="todo-deliver-time">--</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Invited User -->
+                    <div class="mt-2 mb-3 invited-users-block" style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+                        
+                        <h5 class=" fw-bold" style="color: #1c2233;">Invited Users</h5>
+                        <p>Shared Todo with </p>
+
+                        <!-- Info Row -->
+                        <div class="row text-center invited-users-list todo-members" style="font-size: 14px; margin:auto;">
+                            
+                            <div class="col-md-3 invit-box">
+                                <div class="invit-img">
+                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                </div>
+                                <div class="invit-txt">User name</div>
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                    
+                    <!-- Notes -->
+                    <!-- Notes Section (Exact Match) -->
+                    <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px;">
+                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Description •</div>
+                        <div class="sections-list"></div>
+                        
+                    </div>
+                    
+
+
+                    <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
+
+                        <!-- Edit the Project -->
+                        <div style="text-align: center; flex: 1;cursor:pointer; display:none;">
+                            <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
+                            </div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit The Project</div>
+                        </div>
+
+
+                        <!-- Remove the Project -->
+                        <div style="text-align: center; flex: 1; cursor: pointer;"
+                            data-bs-toggle="modal" data-bs-target="#removeproject">
+
+                            <div style="background: #f44336; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/deletep.svg') }}" alt="Delete" width="30" height="30">
+                            </div>
+
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
+                                Remove The Todo
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+            </div> <!-- End .p-3 -->
+
+        </div> <!-- End .modal-body -->
+
     </div>
 </div>
 
@@ -2122,5 +2522,217 @@ document.querySelectorAll('.reminder-btn').forEach(btn => {
         document.getElementById('reminderHidden').value = this.dataset.value;
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const membersSelect = document.getElementById("members");
+
+    document.querySelectorAll(".user_div").forEach(div => {
+        div.addEventListener("click", function () {
+            let userId = this.getAttribute("data-user-id");
+
+            // toggle active class
+            this.classList.toggle("user_active");
+
+            // check if selected
+            let option = membersSelect.querySelector(`option[value="${userId}"]`);
+            if (this.classList.contains("user_active")) {
+                option.selected = true;
+            } else {
+                option.selected = false;
+            }
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnShared = document.getElementById("btnShared");
+    const btnPrivate = document.getElementById("btnPrivate");
+    const selectUsersBox = document.getElementById("selectUsersBox");
+
+    btnShared.addEventListener("click", function () {
+        btnShared.classList.add("active");
+        btnPrivate.classList.remove("active");
+        selectUsersBox.style.display = "block"; // show
+    });
+
+    btnPrivate.addEventListener("click", function () {
+        btnPrivate.classList.add("active");
+        btnShared.classList.remove("active");
+        selectUsersBox.style.display = "none"; // hide
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const wrapper = document.getElementById("sectionsWrapper");
+
+    wrapper.addEventListener("click", function (e) {
+        if (e.target.classList.contains("add-btn")) {
+            // create new section row
+            const div = document.createElement("div");
+            div.className = "col-md-12 d-flex align-items-center section-item mt-2";
+            div.innerHTML = `
+                <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
+                       style="font-size: 13px; background-color: white; border-radius: 8px;">
+                <button type="button" class="btn btn-danger btn-sm ms-2 remove-btn">-</button>
+            `;
+            wrapper.appendChild(div);
+        }
+
+        if (e.target.classList.contains("remove-btn")) {
+            e.target.closest(".section-item").remove();
+        }
+    });
+});
+
+let timerInterval;
+
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("inreject");
+
+    document.querySelectorAll(".viewTodo").forEach(btn => {
+        btn.addEventListener("click", function () {
+            // Get attributes
+            let title       = this.dataset.title;
+            let description = this.dataset.description;
+            let priority    = this.dataset.priority || "Normal";
+            let isPrivate   = this.dataset.is_private;
+            
+            let sections    = JSON.parse(this.dataset.sections || "[]");
+
+            let startDate   = this.dataset.start_date || "";
+            let startTime   = this.dataset.start_time || "";
+            let endTime     = this.dataset.end_time || "";
+
+            let endDateTime = new Date(`${startDate} ${endTime}`).getTime();
+            const CIRC = 157; 
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            function updateTimer() {
+        const now = new Date().getTime();
+        const distance = endDateTime - now;
+
+        if (distance <= 0) {
+            document.getElementById("days").innerText = 0;
+            document.getElementById("hours").innerText = 0;
+            document.getElementById("minutes").innerText = 0;
+
+            document.getElementById("days-circle").style.strokeDashoffset = CIRC;
+            document.getElementById("hours-circle").style.strokeDashoffset = CIRC;
+            document.getElementById("minutes-circle").style.strokeDashoffset = CIRC;
+
+            clearInterval(timerInterval);
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+
+        // Animate circle progress
+        document.getElementById("days-circle").style.strokeDashoffset = CIRC - (days % 365) / 365 * CIRC;
+        document.getElementById("hours-circle").style.strokeDashoffset = CIRC - (hours / 24) * CIRC;
+        document.getElementById("minutes-circle").style.strokeDashoffset = CIRC - (minutes / 60) * CIRC;
+
+
+        const hoursRemaining = distance / (1000 * 60 * 60);
+
+        const hoursCircle = document.getElementById("hours-circle");
+        const minutesCircle = document.getElementById("minutes-circle");
+
+        if (hoursRemaining < 1) {
+            hoursCircle.style.stroke = "#dc2626";   // red (<1h)
+            minutesCircle.style.stroke = "#dc2626";
+        } else if (hoursRemaining < 3) {
+            hoursCircle.style.stroke = "#f97316";   // orange (<3h)
+            minutesCircle.style.stroke = "#f97316";
+        } else {
+            hoursCircle.style.stroke = "#22c55e";   // green (default)
+            minutesCircle.style.stroke = "#22c55e";
+        }
+
+    }
+
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 60000);
+
+            modal.querySelector(".todo-start-date").innerText = formatDate(startDate);
+            // Deliver → start_time
+            modal.querySelector(".todo-deliver-date").innerText = startTime || "--";
+            // Deliver Time → end_time
+            modal.querySelector(".todo-deliver-time").innerText = endTime || "--";
+
+            // Set title & description
+            modal.querySelector(".todo-title").innerText = title;
+           // modal.querySelector(".todo-description").innerText = description || "No description.";
+
+            // Priority
+            let priorityBadge = modal.querySelector(".todo-priority");
+            priorityBadge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> ${priority}`;
+
+            // Private vs Shared
+            let typeBadge = modal.querySelector(".todo-type");
+            let sharedBlock = modal.querySelector(".invited-users-block");
+            
+            if (isPrivate == "1") {
+                typeBadge.innerText = "Private Todo";
+                sharedBlock.style.display = "none";
+                modal.querySelector(".todohead").classList.remove("shared");
+            } else {
+                typeBadge.innerText = "Shared Todo";
+                sharedBlock.style.display = "block";
+                modal.querySelector(".todohead").classList.add("shared");
+            }
+
+
+            let members = JSON.parse(this.dataset.members || "[]");
+            let membersContainer = modal.querySelector(".todo-members");
+            membersContainer.innerHTML = ""; // clear old ones
+
+            if (members.length) {
+                members.forEach(m => {
+                    let div = document.createElement("div");
+                    div.classList.add("col-md-3", "invit-box");
+                    div.innerHTML = `
+                        <div class="invit-img">
+                            <img src="${m.image}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
+                        </div>
+                        <div class="invit-txt">${m.name}</div>
+                    `;
+                    membersContainer.appendChild(div);
+                });
+            } else {
+                membersContainer.innerHTML = `<p class="text-muted">No invited users.</p>`;
+            }
+
+
+
+            // Sections
+            let sectionContainer = modal.querySelector(".sections-list");
+            sectionContainer.innerHTML = "";
+            sections.forEach(section => {
+                sectionContainer.innerHTML += `
+                    <div style="background:#fff;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                        <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                        <span style="color:#667085;font-size:13.5px;">${section}</span>
+                    </div>
+                `;
+            });
+        });
+    });
+});
+
+function formatDate(dateStr) {
+    if (!dateStr) return "--";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr; // fallback if invalid
+    return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+}
+
         </script>
         @endsection
