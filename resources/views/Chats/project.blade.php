@@ -2081,9 +2081,9 @@
                             </div>
 
                         </div>
-                        <div style="font-size: 12px; color: #1e60a1; font-weight: 600; margin-top: 6px;">
+                        {{-- <div style="font-size: 12px; color: #1e60a1; font-weight: 600; margin-top: 6px;">
                             Total Days: <span id="totalDaysDisplayCreate">-</span>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <!-- Expired Reminder -->
