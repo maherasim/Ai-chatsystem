@@ -3,6 +3,34 @@
 @section('content')
 <style>
     /* Ensure base styles don't interfere */
+    @import url('https://fonts.googleapis.com/css2?family=Genos:wght@100;200;300;400;500;600;700&display=swap');
+
+    /* Force Genos font across this page */
+    .content.main_content, .content.main_content * {
+        font-family: 'Genos', sans-serif !important;
+    }
+
+    /* Slightly larger, more readable base sizes */
+    .content.main_content {
+        font-size: 15.5px;
+        line-height: 1.45;
+    }
+    .content.main_content h1 { font-size: 32px !important; }
+    .content.main_content h2 { font-size: 28px !important; }
+    .content.main_content h3 { font-size: 24px !important; }
+    .content.main_content h4 { font-size: 21px !important; }
+    .content.main_content h5 { font-size: 19px !important; }
+    .content.main_content h6 { font-size: 17px !important; }
+    .content.main_content label,
+    .content.main_content .form-control,
+    .content.main_content .form-select,
+    .content.main_content .modal-title,
+    .content.main_content .nav-link,
+    .content.main_content .badge,
+    .content.main_content .btn {
+        font-size: 16px !important;
+    }
+    .content.main_content small { font-size: 14px !important; }
 
     .task-icon-link {
         position: relative;
@@ -363,7 +391,7 @@
 
                                         <!-- Logo Image -->
                                         <div>
-                                            <img src="{{ $project->logo_path ? asset('storage/' . $project->logo_path) : URL::asset('/build/img/yekbon.svg') }}"
+                                            <img src="{{ $project->logo_path ? asset('storage/' . $project->logo_path) . '?v=' . (optional($project->updated_at)->timestamp ?? time()) : URL::asset('/build/img/yekbon.svg') }}"
                                                 class="rounded-circle"
                                                 style="height: 65px; width: 65px; object-fit: cover;"
                                                 alt="Project Logo">
@@ -387,7 +415,7 @@
                                             data-bs-target="#offcanvasRight"
                                             aria-controls="offcanvasRight"
                                             data-project-id="{{ (string) ($project->_id ?? $project->id) }}"
-                                            onclick="setCurrentProjectId(this.getAttribute('data-project-id'))">
+                                            onclick="openProjectOffcanvasFromId(this.getAttribute('data-project-id'))">
                                             {{ $project->title }}
                                         </h6>
                                     </div>
@@ -728,7 +756,7 @@
                 </button>
 
                 <!-- Profile Logo -->
-                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" class="rounded-circle" alt="Profile"
+                <img id="offcanvasProjectLogo" src="{{ URL::asset('/build/img/yekbon.svg') }}" class="rounded-circle" alt="Profile"
                     style="width: 80px; height: 80px; border: 3px solid #fff; position: absolute; left: 50%; transform: translateX(-50%) translateY(19%); background: #fff; object-fit: cover; z-index: 10;">
             </div>
         </div>
@@ -752,7 +780,7 @@
                             </linearGradient>
                         </defs>
                     </svg>
-                    <div
+                    <div id="offcanvasProgressPercent"
                         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
                         0%
                     </div>
@@ -760,9 +788,9 @@
             </div>
             
             <div class="text-center mb-3" style="margin-top:-34px;margin-left:14px;">
-                <h5 style="font-weight: 600; color: #2e3a59;">Project Title</h5>
+                <h5 id="offcanvasProjectTitle" style="font-weight: 600; color: #2e3a59;">Ticket Priority</h5>
 
-                <div
+                <div id="offcanvasProjectId"
                     style="display: inline-block;background:#f5f5f5;color: #e53935; font-size: 12px;
                 font-weight: 600;padding: 4px 14px;border-radius: 999px;margin-top: 5px">
                     Project ID
@@ -778,12 +806,12 @@
                     <!-- Start and Deliver Dates -->
                     <div class="d-flex align-items-center">
                         <div style="color: #34d399;">
-                            Start: <span style="color: #2e3a59;">22.10.2024</span>
+                            Start: <span id="offcanvasStartDate" style="color: #2e3a59;">22.10.2024</span>
                         </div>
                         <!-- Divider -->
                         <div style="width: 1px; height: 18px; background-color: #d1d5db; margin: 0 10px;"></div>
                         <div style="color: #34d399;">
-                            Deliver: <span style="color: #2e3a59;">22.10.2024</span>
+                            Deliver: <span id="offcanvasEndDate" style="color: #2e3a59;">22.10.2024</span>
                         </div>
                     </div>
 
@@ -810,6 +838,9 @@
                 </div>
             </div>
 
+
+            <!-- Project Description -->
+          
 
             <!-- Project Progress Card -->
             <div class="card p-3 shadow-sm mb-3"
@@ -892,152 +923,19 @@
             </div>
 
             <!-- Project Description Section -->
-            <div class="card p-3 mb-3"
-                style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
-                <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
-                <p style="font-size: 13px; color: #4b5563; line-height: 1.7; margin-bottom: 0;">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                    labore
-                    et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-                    rebum.
-                    Stet clita kasd gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet. Lorem ipsum dolor
-                    sit amet,
-                    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                    aliquyam erat,
-                    sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-                    gubergren,
-                    no sea takimata sanctus est lorem ipsum dolor sit amet.
-                </p>
-            </div>
+            <div class="card p-3 shadow-sm mb-3"
+            style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
+            <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
+            <div id="offcanvasProjectDescription" style="font-size: 13px; color: #6c757d; white-space: pre-wrap;">-</div>
+        </div>
 
 
             <!-- Project Sections Card -->
             <div class="p-3 mb-3" style="border-radius: 12px; background-color: #f8f9fa;">
                 <!-- Title -->
                 <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">· Project Sections ·</h6>
-
-                <!-- Responsive Grid Layout -->
-                <div class="row g-3">
-                    <!-- Card Start -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div
-                            style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                            <!-- Options Icon -->
-                            <div class="rounded-circle"
-                                style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
-                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                    <circle cx="5" cy="12" r="2" />
-                                    <circle cx="12" cy="12" r="2" />
-                                    <circle cx="19" cy="12" r="2" />
-                                </svg>
-                            </div>
-                            <!-- Image -->
-                            <img src="{{ URL::asset('/build/img/project.svg') }}"
-                                style="height: 40px; margin-bottom: 10px;" alt="icon">
-                            <!-- Title -->
-                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin
-                                Dashboard</div>
-                            <!-- Tags -->
-                            <div class="d-flex flex-wrap justify-content-center gap-1">
-                                <span class="badge-tag">Laravel</span>
-                                <span class="badge-tag">Bootstrap</span>
-                                <span class="badge-tag">MongoDB</span>
-                                <span class="badge-tag">RestFul API</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card End -->
-                    <!-- Card Start -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div
-                            style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                            <!-- Options Icon -->
-                            <div class="rounded-circle"
-                                style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
-                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                    <circle cx="5" cy="12" r="2" />
-                                    <circle cx="12" cy="12" r="2" />
-                                    <circle cx="19" cy="12" r="2" />
-                                </svg>
-                            </div>
-                            <!-- Image -->
-                            <img src="{{ URL::asset('/build/img/project.svg') }}"
-                                style="height: 40px; margin-bottom: 10px;" alt="icon">
-                            <!-- Title -->
-                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin
-                                Dashboard</div>
-                            <!-- Tags -->
-                            <div class="d-flex flex-wrap justify-content-center gap-1">
-                                <span class="badge-tag">Laravel</span>
-                                <span class="badge-tag">Bootstrap</span>
-                                <span class="badge-tag">MongoDB</span>
-                                <span class="badge-tag">RestFul API</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card End -->
-                    <!-- Card Start -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div
-                            style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                            <!-- Options Icon -->
-                            <div class="rounded-circle"
-                                style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
-                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                    <circle cx="5" cy="12" r="2" />
-                                    <circle cx="12" cy="12" r="2" />
-                                    <circle cx="19" cy="12" r="2" />
-                                </svg>
-                            </div>
-                            <!-- Image -->
-                            <img src="{{ URL::asset('/build/img/project.svg') }}"
-                                style="height: 40px; margin-bottom: 10px;" alt="icon">
-                            <!-- Title -->
-                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin
-                                Dashboard</div>
-                            <!-- Tags -->
-                            <div class="d-flex flex-wrap justify-content-center gap-1">
-                                <span class="badge-tag">Laravel</span>
-                                <span class="badge-tag">Bootstrap</span>
-                                <span class="badge-tag">MongoDB</span>
-                                <span class="badge-tag">RestFul API</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card End -->
-                    <!-- Card Start -->
-
-                    <!-- Card End -->
-                    <!-- Card Start -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div
-                            style="background: white; padding: 16px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
-                            <!-- Options Icon -->
-                            <div class="rounded-circle"
-                                style="position: absolute; top: 10px; right: 10px; cursor: pointer; background:#f8f9fa;">
-                                <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">
-                                    <circle cx="5" cy="12" r="2" />
-                                    <circle cx="12" cy="12" r="2" />
-                                    <circle cx="19" cy="12" r="2" />
-                                </svg>
-                            </div>
-                            <!-- Image -->
-                            <img src="{{ URL::asset('/build/img/project.svg') }}"
-                                style="height: 40px; margin-bottom: 10px;" alt="icon">
-                            <!-- Title -->
-                            <div style="font-size: 14px; font-weight: 600; color: #2e3a59; margin-bottom: 10px;">Admin
-                                Dashboard</div>
-                            <!-- Tags -->
-                            <div class="d-flex flex-wrap justify-content-center gap-1">
-                                <span class="badge-tag">Laravel</span>
-                                <span class="badge-tag">Bootstrap</span>
-                                <span class="badge-tag">MongoDB</span>
-                                <span class="badge-tag">RestFul API</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                <!-- Dynamic Grid -->
+                <div id="offcanvasProjectSections" class="row g-3"></div>
             </div>
 
 
@@ -2060,7 +1958,7 @@
                 <!-- Upload and File Row -->
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
-                    
+                    <div class="col-12 col-md-3 mb-2 mb-md-0">
                         <label for="createUploadLogo"
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
@@ -2073,9 +1971,19 @@
                             <input type="file" id="createUploadLogo" name="logo" accept="image/*" hidden
                                 onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ document.getElementById('createLogoPreview').src = e.target.result; document.getElementById('createLogoPreview').style.display = 'block'; var t=document.getElementById('createUploadIconText'); if(t) t.style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
-                   
-
-                  
+                    </div>
+                    <!-- PDF attachments -->
+                    <div class="col-12 col-md-9">
+                        <div id="createPdfList" class="d-flex gap-2 flex-wrap">
+                            <!-- Tiles will be appended here -->
+                            <div class="pdf-add-tile d-flex align-items-center justify-content-center text-center"
+                                style="width: 160px; height: 60px; border: 1px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#fff;"
+                                onclick="createAddPdfFile()">
+                                <div style="font-size: 22px; color: #a0a4ab; line-height: 1;">+</div>
+                            </div>
+                        </div>
+                        <div id="createPdfInputs" style="display:none;"></div>
+                    </div>
                 </div>
 
 
@@ -2083,15 +1991,15 @@
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Ticket Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Project Title</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Enter the title</div>
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
                         <input type="text" name="title" placeholder="Project Title"
                             class="form-control mt-2" style="border-radius: 8px;" required />
                     </div>
 
                     <!-- Task Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Priority</label>
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
                         <!-- Priority Button Group -->
@@ -2216,17 +2124,7 @@
 
                             <div class="card-body">
                                 <textarea id="policyEditor" name="description"></textarea>
-                                <!-- <div class="d-flex justify-content-between align-items-center mt-3">
-                                        
-                                        <div class="btn-group">
-                                            <button type="button" id="policyEditBtn" class="btn btn-outline-secondary btn-sm">Edit</button>
-                                            <button type="button" id="policySaveBtn" class="btn btn-primary btn-sm">Save</button>
-                                        </div>
-                                    </div> -->
-                                <!-- <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="policyRequireAccept">
-                                        <label class="form-check-label" for="policyRequireAccept">Require users to accept next time</label>
-                                    </div> -->
+                               
                             </div>
                         </div>
                     </div>
@@ -2309,7 +2207,7 @@
                 <!-- Upload and File Row -->
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Upload Logo -->
-                    
+                    <div class="col-12 col-md-3 mb-2 mb-md-0">
                         <label for="editUploadLogo"
                             class="d-flex flex-column justify-content-center align-items-center text-center"
                             style="width: 100%; height: 138px; border: 2px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#f7f9fc; position: relative; overflow: hidden;">
@@ -2320,11 +2218,21 @@
                                 <small style="font-size: 12px; color: #a0a4ab;">Upload Logo</small>
                             </div>
                             <input type="file" id="editUploadLogo" name="logo" accept="image/*" hidden
-                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ var img=document.getElementById('editLogoPreview'); if(img){ img.src = e.target.result; img.style.display = 'block'; } var t=document.getElementById('editUploadIconText'); if(t) t.style.display = 'none'; }; reader.readAsDataURL(file); }" />
+                                onchange="var file = this.files[0]; if(file){ var reader = new FileReader(); reader.onload = function(e){ var img=document.getElementById('editLogoPreview'); if(img){ img.src = e.target.result; img.style.display = 'block'; img.setAttribute('data-dirty', '1'); } var t=document.getElementById('editUploadIconText'); if(t) t.style.display = 'none'; }; reader.readAsDataURL(file); }" />
                         </label>
-                   
-
-                  
+                    </div>
+                    <!-- PDF attachments -->
+                    <div class="col-12 col-md-9">
+                        <div id="editPdfList" class="d-flex gap-2 flex-wrap"></div>
+                        <div class="d-flex mt-2">
+                            <div class="pdf-add-tile d-flex align-items-center justify-content-center text-center"
+                                style="width: 160px; height: 60px; border: 1px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#fff;"
+                                onclick="editAddPdfFile()">
+                                <div style="font-size: 22px; color: #a0a4ab; line-height: 1;">+</div>
+                            </div>
+                        </div>
+                        <div id="editPdfInputs" style="display:none;"></div>
+                    </div>
                 </div>
 
 
@@ -2332,8 +2240,8 @@
                 <div class="row mt-2" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px;">
                     <!-- Ticket Priority -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Project Title</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Enter the title</div>
+                        <label class="fw-semibold" style="font-size: 14px;">Ticket Priority </label>
+                        <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Ticket</div>
                         <input type="text" name="title" id="editTitle" placeholder="Project Title" class="form-control mt-2"
                             style="border-radius: 8px;" required />
                     </div>
@@ -2524,12 +2432,7 @@
                                 <textarea id="editDescription" name="description"></textarea>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
 
-                                    <div class="btn-group">
-                                        <button type="button" id="policyEditBtn"
-                                            class="btn btn-outline-secondary btn-sm">Edit</button>
-                                        <button type="button" id="policySaveBtn"
-                                            class="btn btn-primary btn-sm">Save</button>
-                                    </div>
+                                   
                                 </div>
 
                             </div>
@@ -2699,6 +2602,82 @@
 
 
 </div>
+<script>
+    function setTextById(id, text) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = (text == null || String(text).trim() === '') ? '-' : text;
+    }
+    function setImgById(id, src, fallback) {
+        var el = document.getElementById(id);
+        if (el) el.src = (src && String(src).trim().length) ? src : fallback;
+    }
+    function fmtDateYmdToDmy(dateStr) {
+        if (!dateStr) return 'DD.MM.YYYY';
+        var dt = new Date(dateStr);
+        if (isNaN(dt.getTime())) return 'DD.MM.YYYY';
+        var d = ('0' + dt.getDate()).slice(-2);
+        var m = ('0' + (dt.getMonth() + 1)).slice(-2);
+        var y = dt.getFullYear();
+        return d + '.' + m + '.' + y;
+    }
+
+    function populateProjectOffcanvas(project) {
+        if (!project) return;
+        setImgById('offcanvasProjectLogo', project.logo_url, "{{ URL::asset('/build/img/yekbon.svg') }}");
+        setTextById('offcanvasProjectTitle', project.title || 'Project Title');
+        setTextById('offcanvasProjectId', project.id ? String(project.id) : 'Project ID');
+        setTextById('offcanvasStartDate', fmtDateYmdToDmy(project.start_date));
+        setTextById('offcanvasEndDate', fmtDateYmdToDmy(project.end_date));
+        setTextById('offcanvasProgressPercent', ((project.progress_percent || 0) + '%'));
+        // If you add a description container later, set it here as well
+        var descEl = document.getElementById('offcanvasProjectDescription');
+        if (descEl) {
+            descEl.textContent = (project.description && String(project.description).trim().length) ? project.description : '-';
+        }
+
+        // Render dynamic project sections
+        try {
+            var container = document.getElementById('offcanvasProjectSections');
+            if (container) {
+                container.innerHTML = '';
+                var sections = Array.isArray(project.sections) ? project.sections : [];
+                if (sections.length === 0) {
+                    var empty = document.createElement('div');
+                    empty.className = 'col-12';
+                    empty.innerHTML = '<div style="background:#fff;border-radius:12px;padding:14px;text-align:center;color:#6c757d;">No sections added</div>';
+                    container.appendChild(empty);
+                } else {
+                    sections.forEach(function(sec) {
+                        var col = document.createElement('div');
+                        col.className = 'col-6 col-md-4 col-lg-3';
+                        col.innerHTML = '\
+                            <div style="background:#fff;padding:16px;border-radius:12px;text-align:center;position:relative;box-shadow:0 2px 5px rgba(0,0,0,0.03);">\
+                                <div class="rounded-circle" style="position:absolute;top:10px;right:10px;cursor:pointer;background:#f8f9fa;">\
+                                    <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">\
+                                        <circle cx="5" cy="12" r="2" />\
+                                        <circle cx="12" cy="12" r="2" />\
+                                        <circle cx="19" cy="12" r="2" />\
+                                    </svg>\
+                                </div>\
+                                <img src="{{ URL::asset('/build/img/project.svg') }}" style="height:40px;margin-bottom:10px;" alt="icon">\
+                                <div style="font-size:14px;font-weight:600;color:#2e3a59;margin-bottom:10px;">' + (sec && sec.name ? sec.name : 'Section') + '</div>\
+                                <div style="font-size:12px;color:#6c757d;">' + (sec && sec.description ? sec.description : '') + '</div>\
+                            </div>';
+                        container.appendChild(col);
+                    });
+                }
+            }
+        } catch (e) {}
+    }
+
+    function openProjectOffcanvasFromId(id) {
+        try {
+            setCurrentProjectId(id);
+            var p = (window.projectMap && window.projectMap[id]) ? window.projectMap[id] : null;
+            if (p) populateProjectOffcanvas(p);
+        } catch (e) { console.error(e); }
+    }
+</script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 <script>
@@ -2745,8 +2724,9 @@
             reminder_days: {!! $p->reminder_days === null ? 'null' : (int) $p->reminder_days !!},
             progress_percent: {!! (int) ($p->progress_percent ?? 0) !!},
             status: @json($p->status),
-            logo_url: "{{ $p->logo_path ? asset('storage/' . $p->logo_path) : '' }}",
-            sections: @json($p->sections ?? [])
+            logo_url: "{{ $p->logo_path ? asset('storage/' . $p->logo_path) . '?v=' . (optional($p->updated_at)->timestamp ?? time()) : '' }}",
+            sections: @json($p->sections ?? []),
+            attachments: @json($p->attachments ?? [])
         };
     @endforeach
 
@@ -2823,8 +2803,15 @@
             var uploadIconText = document.getElementById('editUploadIconText');
             var fileInput = document.getElementById('editUploadLogo');
             if (logoImg) {
-                if (project.logo_url) {
-                    logoImg.src = project.logo_url;
+                if (logoImg.getAttribute('data-dirty') === '1') {
+                    // keep user-chosen preview if already set during this session
+                    logoImg.style.display = 'block';
+                    if (uploadIconText) uploadIconText.style.display = 'none';
+                } else if (project.logo_url) {
+                    // bust cache so latest uploaded image shows
+                    var bust = 'v=' + Date.now();
+                    var base = project.logo_url.split('?')[0];
+                    logoImg.src = base + '?' + bust;
                     logoImg.style.display = 'block';
                     if (uploadIconText) uploadIconText.style.display = 'none';
                 } else {
@@ -2834,6 +2821,12 @@
                 // reset file input so selecting same file re-triggers change
                 if (fileInput) fileInput.value = '';
             }
+
+            // Attachments render (edit modal)
+            try {
+                var attachments = Array.isArray(project.attachments) ? project.attachments : [];
+                renderEditAttachments(attachments);
+            } catch (e) { }
 
             // Sections
             try {
@@ -3180,6 +3173,47 @@
                 });
             });
         }
+
+        // --- PDF attachments (create) ---
+        window.createAddPdfFile = function() {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/pdf';
+            input.name = 'attachments[]';
+            input.style.display = 'none';
+            input.addEventListener('change', function() { handlePdfSelected(this, 'create'); });
+            document.getElementById('createPdfInputs').appendChild(input);
+            input.click();
+        };
+
+        window.handlePdfSelected = function(fileInput, mode) {
+            if (!fileInput.files || !fileInput.files[0]) return;
+            var file = fileInput.files[0];
+            var list = mode === 'edit' ? document.getElementById('editPdfList') : document.getElementById('createPdfList');
+            var addTile = list.querySelector('.pdf-add-tile');
+            var tile = document.createElement('div');
+            tile.className = 'd-flex align-items-center gap-2 px-2';
+            tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+            tile.innerHTML = '<img src="{{ URL::asset('/build/img/pdf-icon.svg') }}" alt="PDF" style="width:20px;height:20px;">'
+                + '<div class="d-flex flex-column" style="min-width:100px;">'
+                +   '<small style="font-weight:600;">' + (file.name || 'PDF') + '</small>'
+                +   '<small style="color:#6b7280;">' + Math.round(file.size/1024) + ' KB</small>'
+                + '</div>'
+                + '<button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)"><i class="ti ti-trash"></i></button>';
+            if (addTile) {
+                list.insertBefore(tile, addTile);
+            } else {
+                list.appendChild(tile);
+            }
+            tile._fileInput = fileInput;
+        };
+
+        window.removePdfTile = function(btn) {
+            var tile = btn.closest('div');
+            if (!tile) return;
+            if (tile._fileInput) { tile._fileInput.remove(); }
+            tile.remove();
+        };
     })();
 </script>
 <script>
@@ -3217,6 +3251,21 @@
     });
 </script>
 <script>
+    function reindexEditSections() {
+        try {
+            var rows = document.querySelectorAll('#sections-wrapper1 .section-row1');
+            var index = 0;
+            rows.forEach(function(row) {
+                var inputs = row.querySelectorAll('input');
+                if (inputs.length >= 2) {
+                    inputs[0].setAttribute('name', 'sections[' + index + '][name]');
+                    inputs[1].setAttribute('name', 'sections[' + index + '][description]');
+                    index++;
+                }
+            });
+        } catch (e) { /* no-op */ }
+    }
+
     function editSection(el) {
         let wrapper = document.getElementById("sections-wrapper1");
 
@@ -3233,10 +3282,24 @@
         img.setAttribute("onclick", "removeSection1(this)");
 
         wrapper.appendChild(newRow);
+
+        // Ensure unique sequential names after adding
+        reindexEditSections();
     }
 
     function removeSection1(el) {
         el.closest(".section-row1").remove();
+
+        // Ensure unique sequential names after removing
+        reindexEditSections();
+    }
+
+    // Ensure proper indexing before submitting the edit form
+    var editForm = document.getElementById('projectEditForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function() {
+            reindexEditSections();
+        });
     }
 </script>
 <!-- filed durng edit -->

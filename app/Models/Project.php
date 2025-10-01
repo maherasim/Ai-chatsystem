@@ -30,11 +30,13 @@ class Project extends Model
         'logo_path',
         'user_id',
         'sections',
+        'attachments',
     ];    
     protected $casts = [
         'start_date' => 'datetime',
         'end_date'   => 'datetime',
         'sections'   => 'array',
+        'attachments'=> 'array',
     ];
     
 }

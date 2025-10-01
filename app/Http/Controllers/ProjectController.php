@@ -46,6 +46,8 @@ class ProjectController extends Controller
             'sections' => 'nullable|array',
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string|max:1000',
+            'attachments' => 'nullable',
+            'attachments.*' => 'file|mimes:pdf|max:10240',
         ]);
 
         $logoPath = null;
@@ -67,6 +69,21 @@ class ProjectController extends Controller
             ->values()
             ->all();
 
+        // Save attachments
+        $attachments = [];
+        if ($request->hasFile('attachments')) {
+            foreach ((array) $request->file('attachments') as $file) {
+                if (!$file) continue;
+                $path = $file->store('project_attachments', 'public');
+                $attachments[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'url'  => asset('storage/' . $path),
+                    'size_kb' => round($file->getSize() / 1024),
+                ];
+            }
+        }
+
         $project = Project::create([
             'title' => $validated['title'],
             'code' => $validated['code'] ?? null,
@@ -79,6 +96,7 @@ class ProjectController extends Controller
             'progress_percent' => $validated['progress_percent'] ?? 0,
             'logo_path' => $logoPath,
             'sections' => $sections,
+            'attachments' => $attachments,
         ]);
 
         return redirect()->route('chat-project')->with('success', 'Project created successfully.');
@@ -105,6 +123,10 @@ class ProjectController extends Controller
             'sections' => 'nullable|array',
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string|max:1000',
+            'attachments' => 'nullable',
+            'attachments.*' => 'file|mimes:pdf|max:10240',
+            'delete_attachments' => 'nullable|array',
+            'delete_attachments.*' => 'integer',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -143,6 +165,37 @@ class ProjectController extends Controller
         if ($request->has('sections')) {
             $project->sections = $sections;
         }
+
+        // Handle attachment deletions by index
+        $current = collect($project->attachments ?? []);
+        $toDeleteIdx = collect($request->input('delete_attachments', []))->map(function($v){ return (int) $v; })->all();
+        if (!empty($toDeleteIdx)) {
+            $keep = [];
+            foreach ($current as $idx => $att) {
+                if (in_array($idx, $toDeleteIdx, true)) {
+                    try { if (!empty($att['path'])) Storage::disk('public')->delete($att['path']); } catch (\Throwable $e) {}
+                    continue;
+                }
+                $keep[] = $att;
+            }
+            $current = collect($keep);
+        }
+
+        // Handle new attachments
+        if ($request->hasFile('attachments')) {
+            foreach ((array) $request->file('attachments') as $file) {
+                if (!$file) continue;
+                $path = $file->store('project_attachments', 'public');
+                $current->push([
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'url'  => asset('storage/' . $path),
+                    'size_kb' => round($file->getSize() / 1024),
+                ]);
+            }
+        }
+
+        $project->attachments = $current->values()->all();
 
         $project->save();
 

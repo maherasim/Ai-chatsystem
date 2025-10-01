@@ -647,7 +647,14 @@ function confirmDelete(deleteUrl, userName) {
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/teamicon.svg')}}" alt="" style="width: 20px;"> Team</div>
-                                    <div id="offcanvasTeam" class="fw-bold">-</div>
+                                   
+
+
+                                        
+                                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" /></span>
+
+                                        
+                                   
                                 </div>
                             </div>
 
