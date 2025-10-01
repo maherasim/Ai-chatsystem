@@ -3214,6 +3214,53 @@
             if (tile._fileInput) { tile._fileInput.remove(); }
             tile.remove();
         };
+
+        // --- PDF attachments (edit) ---
+        window.editAddPdfFile = function() {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/pdf';
+            input.name = 'attachments[]';
+            input.style.display = 'none';
+            input.addEventListener('change', function() { handlePdfSelected(this, 'edit'); });
+            var holder = document.getElementById('editPdfInputs');
+            if (holder) holder.appendChild(input);
+            input.click();
+        };
+
+        window.renderEditAttachments = function(existing) {
+            try {
+                var list = document.getElementById('editPdfList');
+                if (!list) return;
+                list.innerHTML = '';
+                (existing || []).forEach(function(att, idx) {
+                    var tile = document.createElement('div');
+                    tile.className = 'd-flex align-items-center gap-2 px-2';
+                    tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+                    var url = (att && att.url) ? att.url : '#';
+                    var name = (att && att.name) ? att.name : ('File ' + (idx+1));
+                    var size = (att && att.size_kb) ? (att.size_kb + ' KB') : '';
+                    tile.innerHTML = '<img src="{{ URL::asset('/build/img/pdf-icon.svg') }}" alt="PDF" style="width:20px;height:20px;">'
+                        + '<div class="d-flex flex-column" style="min-width:100px;">'
+                        +   '<a href="' + url + '" target="_blank" style="font-size:12px;font-weight:600;text-decoration:none;color:#1e293b;">' + name + '</a>'
+                        +   '<small style="color:#6b7280;">' + size + '</small>'
+                        + '</div>'
+                        + '<button type="button" class="btn" style="color:#ef4444;" onclick="removeExistingAttachment(this,' + idx + ')"><i class="ti ti-trash"></i></button>';
+                    list.appendChild(tile);
+                });
+            } catch (_) {}
+        };
+
+        window.removeExistingAttachment = function(btn, idx) {
+            var del = document.createElement('input');
+            del.type = 'hidden';
+            del.name = 'delete_attachments[]';
+            del.value = String(idx);
+            var form = document.getElementById('projectEditForm');
+            if (form) form.appendChild(del);
+            var tile = btn.closest('div');
+            if (tile) tile.remove();
+        };
     })();
 </script>
 <script>
