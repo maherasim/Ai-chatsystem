@@ -13,6 +13,30 @@ use Carbon\Carbon;
 class TodoController extends Controller
 {
 
+
+    public function remove(Request $request){
+        $user = Auth::user();
+        $remid = $request->remid;
+
+        $reason = $request->reason;
+
+        $todo = Todo::where('id', $remid)
+                ->where('user_id', $user->id)
+                ->first();
+
+        if($todo){
+            $todo->is_removed = 1;
+                if ($reason) {
+                    $todo->reason = $reason;
+                }
+            $todo->save();
+
+            return redirect()->back()->with('success', 'Todo removed successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Todo not belonged to user');
+        
+    }
     public function index()
     {
         $user = Auth::user();
@@ -34,6 +58,10 @@ class TodoController extends Controller
 
         $todayTodos = Todo::where('user_id', $user->id)
             ->where('start_date', date('Y-m-d'))
+            ->where(function($q) {
+                $q->where('is_removed', 0)
+                ->orWhereNull('is_removed');
+            })
             ->get()
             ->map(function ($todo) {
                 $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
@@ -54,6 +82,10 @@ class TodoController extends Controller
             $privateTodos = Todo::where('user_id', $user->id)
             ->where('is_private', "1")
     ->where('completed', '!=', '1')
+    ->where(function($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })
             ->get()
             ->map(function ($todo) {
                 $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
@@ -71,15 +103,16 @@ class TodoController extends Controller
                 return $todo;
             });
 
-    
-
-
-
 
         // Shared
        // $sharedTodos = Todo::where('user_id', $user->id)->where('is_private', "0")->get();
         
-        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')->get();
+        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)
+        ->where('completed', '!=', '1')
+        ->where(function($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })->get();
 
         return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting'));
     }

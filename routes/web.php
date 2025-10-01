@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
     Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
     Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');
-
+    Route::post('/todosremove', [TodoController::class, 'remove'])->name('todos.remove');
 });
 
 

@@ -27,7 +27,9 @@ class Todo extends Model
         'priority',
         'reminder',
         'completed',
-        'members'
+        'members',
+        'is_removed',
+        'reason'
     ];
 
     public function user()

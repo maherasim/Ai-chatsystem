@@ -1247,6 +1247,57 @@
     </div>
 </div>
 
+<!-- remove model -->
+ <div class="modal fade" id="removeModel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; padding: 15px;">
+
+            <!-- Modal Header -->
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
+                Delete Todo
+            </div>
+            <div style="font-size: 13px; color:black">
+                Tell us why ?!
+            </div>
+            <hr style="background-color: #777; height: 1px; border: none; margin: 10px 0;">
+
+
+            <form action="{{ route('todos.remove') }}" method="POST">
+                @csrf
+                <input type="hidden" name="remid" id="remid" />
+            <!-- Denied Section -->
+            <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
+
+                <!-- Icon + Text left aligned -->
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+                    <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="38px" height="38px">
+                    <div>
+                        <div style="font-size: 18px; font-weight: 600;color:black">Delete</div>
+                        <div style="color: #777; font-size: 13px;">Select reason why to remove</div>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <input type="text" name="reason" required placeholder="Type the Reason"
+                    style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
+
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center" style="margin-top: 15px;">
+                <button type="submit" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save & Close
+                </button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
 <!-- View Model -->
 <div class="modal fade" id="inreject" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
@@ -1398,7 +1449,7 @@
 
                         <!-- Remove the Project -->
                         <div style="text-align: center; flex: 1; cursor: pointer;"
-                            data-bs-toggle="modal" data-bs-target="#removeproject">
+                            data-bs-toggle="modal" data-bs-target="#removeModel">
 
                             <div style="background: #f44336; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/deletep.svg') }}" alt="Delete" width="30" height="30">
@@ -2593,6 +2644,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".viewTodo").forEach(btn => {
         btn.addEventListener("click", function () {
             // Get attributes
+            let dataid      = this.dataset.id;
+
+            document.getElementById("remid").value = dataid;
+            
+
             let title       = this.dataset.title;
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
