@@ -433,7 +433,20 @@ function confirmDelete(deleteUrl, userName) {
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> {{$user->name}}</div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" data-user='{{ json_encode([
+                                                      "id" => $user->user_id,
+                                                        "name" => $user->name,
+                                                        "email" => $user->email,
+                                                        "title" => $user->title ?? "",
+                                                        "user_description" => $user->user_description ?? "",
+                                                        "gender" => $user->gender ?? "",
+                                                        "type" => $user->type ?? "",
+                                                        "country" => $user->country ?? "",
+                                                        "team" => $user->team ?? "",
+                                                        "phone" => $user->phone ?? "",
+                                                        "image_url" => $user->image ? asset($user->image) : "",
+                                                        "join_date" => optional($user->created_at)->format('d.m.Y')
+                                                    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openUserOffcanvas(JSON.parse(this.getAttribute('data-user')))"> {{$user->name}}</div>
                                     @if(!empty($user->title))
                                     <div style="font-size: 13px; color: #6b7280;">{{$user->title}}</div>
                                     @endif
@@ -535,6 +548,40 @@ function confirmDelete(deleteUrl, userName) {
 
 </div>
 
+<script>
+    function setText(id, value) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = (value && String(value).trim().length) ? value : '-';
+    }
+
+    function setImage(id, src, fallback) {
+        var img = document.getElementById(id);
+        if (!img) return;
+        img.src = (src && String(src).trim().length) ? src : fallback;
+    }
+
+    function openUserOffcanvas(user) {
+        try {
+            setImage('offcanvasProfileImageTop', user.image_url, '{{URL::asset('/build/img/profileuser.svg')}}');
+            setImage('offcanvasProfileImageMain', user.image_url, '{{URL::asset('/build/img/profileuser.svg')}}');
+
+            setText('offcanvasRealName', user.name);
+            setText('offcanvasType', user.type);
+            setText('offcanvasDescription', user.user_description);
+            setText('offcanvasGender', user.gender);
+            setText('offcanvasUserId', user.id);
+            setText('offcanvasCountry', user.country);
+            setText('offcanvasTeam', user.team);
+            setText('offcanvasJoinDate', user.join_date);
+            setText('offcanvasPhone', user.phone);
+            setText('offcanvasEmail', user.email);
+        } catch (e) {
+            console.error('Failed to populate user offcanvas', e);
+        }
+    }
+</script>
+
 <!-- user pop-up -->
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
@@ -547,7 +594,7 @@ function confirmDelete(deleteUrl, userName) {
             style="width: 100%; height: 100%; object-fit: cover;">
 
         <!-- Profile Image (top-right, overlapping) -->
-        <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile"
+        <img id="offcanvasProfileImageTop" src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile"
             style="position: absolute; top: 20px; right: 50px; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 10;">
         <div style="font-size: 18px; color: #fbc02d;border-radius:9px;padding:3px;position: absolute; top: 107px; right: 50px;">
             ★★★☆☆
@@ -589,58 +636,58 @@ function confirmDelete(deleteUrl, userName) {
                         <div style="background-color: #fafcfc; padding: 20px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                             <!-- Profile Image (Overlapping) -->
                             <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
-                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-                                <h5 class="mt-2 mb-1">Name LastName</h5>
-                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
-                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
+                                <img id="offcanvasProfileImageMain" src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
+                                <h5 id="offcanvasRealName" class="mt-2 mb-1">&nbsp;</h5>
+                                <span id="offcanvasType" class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;"></span>
+                                <span id="offcanvasDescription" class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;"></span>
                             </div>
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="" style="width: 20px;"> Gender</div>
-                                    <div class="fw-bold">Female</div>
+                                    <div id="offcanvasGender" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> User ID</div>
-                                    <div class="fw-bold">Ticket ID</div>
+                                    <div id="offcanvasUserId" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/Globus.svg')}}" alt="" style="width: 20px;"> Country</div>
-                                    <div class="fw-bold">Pakistan</div>
+                                    <div id="offcanvasCountry" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/teamicon.svg')}}" alt="" style="width: 20px;"> Team</div>
-                                    <div class="fw-bold">Ticket ID</div>
+                                    <div id="offcanvasTeam" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="" style="width: 20px;"> Join Date</div>
-                                    <div class="fw-bold">Ticket ID</div>
+                                    <div id="offcanvasJoinDate" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div><img src="{{URL::asset('/build/img/calling.svg')}}" alt="" style="width: 20px;"> Phone</div>
-                                    <div class="fw-bold">Ticket ID</div>
+                                    <div id="offcanvasPhone" class="fw-bold">-</div>
                                 </div>
                             </div>
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div> <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
-                                    <div class="fw-bold">Ticket ID</div>
+                                    <div id="offcanvasEmail" class="fw-bold">-</div>
                                 </div>
                             </div>
 
