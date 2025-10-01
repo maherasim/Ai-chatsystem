@@ -209,14 +209,17 @@ class UsersController extends Controller
         $emailRules = [
             'required',
             'email',
-            function ($attribute, $value, $fail) use ($id) {
+            function ($attribute, $value, $fail) use ($id, $user) {
+                // Allow keeping the same email while editing
+                if ($user && $user->email === $value) {
+                    return;
+                }
                 try {
                     // Convert string ID to ObjectId for proper MongoDB comparison
                     $objectId = new ObjectId($id);
                     $existingUser = User::where('email', $value)
                         ->where('_id', '!=', $objectId)
                         ->first();
-                    
                     if ($existingUser) {
                         $fail('The email has already been taken.');
                     }
@@ -225,7 +228,6 @@ class UsersController extends Controller
                     $existingUser = User::where('email', $value)
                         ->where('_id', '!=', $id)
                         ->first();
-                    
                     if ($existingUser) {
                         $fail('The email has already been taken.');
                     }

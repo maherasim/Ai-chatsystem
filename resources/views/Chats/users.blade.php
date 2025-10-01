@@ -3668,6 +3668,18 @@ function confirmDelete(deleteUrl, userName) {
 
         form.addEventListener('input', updateSaveButton, true);
         form.addEventListener('change', updateSaveButton, true);
+        // Clear any lingering email validity on submit during edit
+        form.addEventListener('submit', function(){
+            if (editingUserIdInput && editingUserIdInput.value) {
+                if (emailInput) emailInput.setCustomValidity('');
+                if (confirmEmailInput) confirmEmailInput.setCustomValidity('');
+            }
+        }, true);
+
+        // Expose helpers for global access (used by openEditUser/openCreateUser)
+        window.updateSaveButton = updateSaveButton;
+        window.showEmailError = showEmailError;
+        window.checkEmailUniqueness = checkEmailUniqueness;
 
         // Progressive section visibility during CREATE
         function validateSectionBanner() {
