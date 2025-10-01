@@ -479,31 +479,9 @@ function confirmDelete(deleteUrl, userName) {
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
                                     <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
-
-                                    <!-- Logos Row -->
-                                    <div class="d-flex justify-content-center gap-4 mt-1">
-                                        <!-- Project 1 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-
-                                        <!-- Project 2 -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 50px;" alt="Project Logo">
-                                        </div>
-                                    </div>
-
-                                    <!-- Flags Row -->
-                                    <div class="d-flex justify-content-center gap-5 mt-1">
-                                        <!-- Flag 1 -->
-                                        <div style="background: #c8ede0;  /* Slightly darker than #d4edda */padding: 1px 5px;border-radius: 5px;display: flex;justify-content: center;align-items: center;">
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                        </div>
-
-                                        <!-- Flag 2 -->
-                                        <div style=" background: #fce8b2;  /* Slightly darker than #fff3cd */ padding: 1px 5px; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
-                                            <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Yellow Flag" width="14" height="14">
-                                        </div>
+                                    <div class="text-center mt-1">
+                                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                                     </div>
                                 </div>
 
@@ -512,21 +490,24 @@ function confirmDelete(deleteUrl, userName) {
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
-                                        <div>0</div>
+                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>0</div>
+                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>0</div>
+                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
                                     </div>
                                 </div>
 
-                                <!-- Productivity (now 0%) -->
+                                <!-- Productivity (loader since value is 0%) -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 0%</div>
+                                    <div style="font-weight: 600; color: #4a90e2; display:flex; align-items:center; justify-content:center; gap:8px;">
+                                        Productivity
+                                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 18px; height: 18px;" />
+                                    </div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 0%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
