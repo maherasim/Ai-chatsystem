@@ -788,9 +788,9 @@
                     <!-- Priority -->
                     <div
                         style="background: #ffffff; border-radius: 999px; padding: 2px 10px; display: flex; align-items: center; gap: 6px;">
-                        <span
+                        <span id="offcanvasPriorityDot"
                             style="width: 8px; height: 8px; background-color: #34d399; border-radius: 50%; display: inline-block;"></span>
-                        <span style="color: #6b7280;">Low</span>
+                        <span id="offcanvasPriorityText" style="color: #6b7280;">Low</span>
                     </div>
                 </div>
             </div>
@@ -799,13 +799,17 @@
             <div class="text-center mb-3">
                 <div
                     style="background: #fff7da; /* soft yellow */color: #2e3a59;       /* dark slate for text */border-radius: 999px;display: inline-flex;align-items: center;padding: 4px 18px;font-weight: 600;font-size: 13px">
-                    <img src="{{ URL::asset('/build/img/yelow.svg') }}"
-                        style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
-                    Project is in Hold
+                  
+                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px; margin-left: 8px;" />
                 </div>
             </div>
 
-
+            {{-- <div
+            style="background: #fff7da; /* soft yellow */color: #2e3a59;       /* dark slate for text */border-radius: 999px;display: inline-flex;align-items: center;padding: 4px 18px;font-weight: 600;font-size: 13px">
+            <img src="{{ URL::asset('/build/img/yelow.svg') }}"
+                style="height: 14px; width: 14px; margin-right: 8px;" alt="flag" />
+            Project is in Hold
+        </div> --}}
             <!-- Project Description -->
           
 
@@ -915,103 +919,10 @@
 
                 <!-- Grid Row -->
                 <div class="row g-3">
-                    <!-- TEAM CARD (Repeat as needed) -->
-                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card text-center"
-                            style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-
-                            <!-- Background Image using IMG tag -->
-                            <div style="position: relative; height: 80px;">
-                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-
-                                <!-- Profile Image -->
-                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                    class="rounded-circle border border-white border-3"
-                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">
-                                    Name Lastname</h6>
-                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                            </div>
-                        </div>
+                    <div class="w-100 d-flex justify-content-center align-items-center" style="min-height: 80px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                     </div>
-                    <!-- 2 -->
-                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card text-center"
-                            style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-
-                            <!-- Background Image using IMG tag -->
-                            <div style="position: relative; height: 80px;">
-                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-
-                                <!-- Profile Image -->
-                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                    class="rounded-circle border border-white border-3"
-                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">
-                                    Name Lastname</h6>
-                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 3 -->
-                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card text-center"
-                            style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-
-                            <!-- Background Image using IMG tag -->
-                            <div style="position: relative; height: 80px;">
-                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-
-                                <!-- Profile Image -->
-                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                    class="rounded-circle border border-white border-3"
-                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">
-                                    Name Lastname</h6>
-                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 4 -->
-                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card text-center"
-                            style="border-radius: 18px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-
-                            <!-- Background Image using IMG tag -->
-                            <div style="position: relative; height: 80px;">
-                                <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-
-                                <!-- Profile Image -->
-                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                    class="rounded-circle border border-white border-3"
-                                    style="width: 60px; height: 60px; object-fit: cover; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);">
-                            </div>
-
-                            <!-- Card Body -->
-                            <div class="card-body" style="margin-top: 35px; padding: 16px 10px;">
-                                <h6 class="card-title mb-1" style="font-weight: 600; font-size: 15px; color: #000;">
-                                    Name Lastname</h6>
-                                <p class="mb-0" style="color: #7f8ea3; font-size: 13px;">Project Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Duplicate above <div class="col-6 ..."> block for more team members -->
                 </div>
             </div>
 
@@ -1022,336 +933,13 @@
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
-                    style="background: #fff; border-radius: 10px;">
-
-                    <!-- Left Side: Title + Badges + Meta Info -->
-                    <div class="flex-grow-1">
-                        <!-- Title & Badges -->
-                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Ticket Title
-                            </div>
-
-                            <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        fill="#28c76f" viewBox="0 0 16 16">
-                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                    </svg>
-                                    in Progress
-                                </span>
-
-                                <!-- LOW Priority -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                    LOW
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div
-                            style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
-                            <div class="d-flex gap-3 justify-content-between mb-2">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                            </div>
-
-                            <!-- Progress Bar -->
-                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                70%</div>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-center align-items-center mb-2 p-3"
+                    style="background: #fff; border-radius: 10px; min-height: 100px;">
+                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                    <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                 </div>
 
-                <!-- 2 -->
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
-                    style="background: #fff; border-radius: 10px;">
-
-                    <!-- Left Side: Title + Badges + Meta Info -->
-                    <div class="flex-grow-1">
-                        <!-- Title & Badges -->
-                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Ticket Title
-                            </div>
-
-                            <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        fill="#28c76f" viewBox="0 0 16 16">
-                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                    </svg>
-                                    in Progress
-                                </span>
-
-                                <!-- LOW Priority -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                    LOW
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div
-                            style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
-                            <div class="d-flex gap-3 justify-content-between mb-2">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                            </div>
-
-                            <!-- Progress Bar -->
-                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                70%</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 3rd -->
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-2 gap-2 p-3"
-                    style="background: #fff; border-radius: 10px;">
-
-                    <!-- Left Side: Title + Badges + Meta Info -->
-                    <div class="flex-grow-1">
-                        <!-- Title & Badges -->
-                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Ticket Title
-                            </div>
-
-                            <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        fill="#28c76f" viewBox="0 0 16 16">
-                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                    </svg>
-                                    in Progress
-                                </span>
-
-                                <!-- LOW Priority -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                    LOW
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div
-                            style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
-                            <div class="d-flex gap-3 justify-content-between mb-2">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                            </div>
-
-                            <!-- Progress Bar -->
-                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                70%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2 p-3"
-                    style="background: #fff; border-radius: 10px;">
-
-                    <!-- Left Side: Title + Badges + Meta Info -->
-                    <div class="flex-grow-1">
-                        <!-- Title & Badges -->
-                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                            <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                Ticket Title
-                            </div>
-
-                            <div class="d-flex align-items-center gap-2">
-                                <!-- In Progress -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #d2f4e8; color: #28c76f; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 10px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        fill="#28c76f" viewBox="0 0 16 16">
-                                        <path d="M14 1.5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h1v-5h9a1 1 0 0 0 1-1v-6z" />
-                                    </svg>
-                                    in Progress
-                                </span>
-
-                                <!-- LOW Priority -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                    LOW
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div
-                            style="font-size: 12px; color: #6c757d; background: #f8f9fa; border-radius: 7px; padding: 4px 8px; display: flex; flex-wrap: wrap; gap: 8px;margin-top: 20px;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="d-flex align-items-center gap-3 mt-3 mt-md-0">
-                        <!-- Metrics Box -->
-                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px;">
-                            <div class="d-flex gap-3 justify-content-between mb-2">
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                                <div class="text-center">
-                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                </div>
-                            </div>
-
-                            <!-- Progress Bar -->
-                            <div style="height: 6px; background: #e0e0e0; border-radius: 5px;">
-                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Circular Progress -->
-                        <div style="position: relative; width: 45px; height: 45px;">
-                            <svg viewBox="0 0 36 36" width="45" height="45">
-                                <path style="fill: none; stroke:#e0e0e0; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                    stroke-dasharray="70, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                70%</div>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
             <!-- /project tickts -->
@@ -1359,190 +947,11 @@
             <div class="mt-3" style="background-color: #f8f9fa; padding: 20px;border-radius:10px;">
                 <h6 class="mb-2" style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Files ·
                 </h6>
-                <div class="row">
-                    <!-- Document Card -->
-                    <div class="col-12 col-md-6 mb-2">
-                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                            <div class="d-flex align-items-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                    alt="PDF Icon"
-                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...
-                                    </div>
-                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                </div>
-                            </div>
-                            <!-- Trigger Button -->
-                            <div style="position: relative; display: inline-block;">
-                                <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                </div>
-
-                                <!-- Popup Menu -->
-                                <div class="menu-box"
-                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                    onclick="event.stopPropagation();">
-
-                                    <!-- Title -->
-                                    <div
-                                        style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">
-                                        Options</div>
-
-                                    <!-- Icons -->
-                                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                                        <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete"
-                                            style="width: 22px; cursor: pointer;">
-                                        <img src="{{ URL::asset('/build/img/download.svg') }}" alt="Edit"
-                                            style="width: 22px; cursor: pointer;">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Close on outside click -->
-                            <script>
-                                document.addEventListener("click", function() {
-                                    document.querySelectorAll(".menu-box").forEach(el => el.style.display = "none");
-                                });
-                            </script>
-
-                        </div>
+                <div id="offcanvasProjectFiles" class="row">
+                    <div class="w-100 d-flex justify-content-center align-items-center" style="min-height: 60px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                     </div>
-
-                    <div class="col-12 col-md-6 mb-2">
-                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                            <div class="d-flex align-items-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                    alt="PDF Icon"
-                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...
-                                    </div>
-                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                </div>
-                            </div>
-                            <!-- Trigger Button -->
-                            <div style="position: relative; display: inline-block;">
-                                <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                </div>
-
-                                <!-- Popup Menu -->
-                                <div class="menu-box"
-                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                    onclick="event.stopPropagation();">
-
-                                    <!-- Title -->
-                                    <div
-                                        style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">
-                                        Options</div>
-
-                                    <!-- Icons -->
-                                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                                        <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete"
-                                            style="width: 22px; cursor: pointer;">
-                                        <img src="{{ URL::asset('/build/img/download.svg') }}" alt="Edit"
-                                            style="width: 22px; cursor: pointer;">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 mb-0">
-                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                            <div class="d-flex align-items-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                    alt="PDF Icon"
-                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...
-                                    </div>
-                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                </div>
-                            </div>
-                            <!-- Trigger Button -->
-                            <div style="position: relative; display: inline-block;">
-                                <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                </div>
-
-                                <!-- Popup Menu -->
-                                <div class="menu-box"
-                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                    onclick="event.stopPropagation();">
-
-                                    <!-- Title -->
-                                    <div
-                                        style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">
-                                        Options</div>
-
-                                    <!-- Icons -->
-                                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                                        <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete"
-                                            style="width: 22px; cursor: pointer;">
-                                        <img src="{{ URL::asset('/build/img/download.svg') }}" alt="Edit"
-                                            style="width: 22px; cursor: pointer;">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 mb-0">
-                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                            style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                            <div class="d-flex align-items-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                    alt="PDF Icon"
-                                    style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...
-                                    </div>
-                                    <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                </div>
-                            </div>
-                            <!-- Trigger Button -->
-                            <div style="position: relative; display: inline-block;">
-                                <div style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                    onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                    <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                </div>
-
-                                <!-- Popup Menu -->
-                                <div class="menu-box"
-                                    style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                    onclick="event.stopPropagation();">
-
-                                    <!-- Title -->
-                                    <div
-                                        style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">
-                                        Options</div>
-
-                                    <!-- Icons -->
-                                    <div style="display:flex; justify-content: space-between; align-items:center;">
-                                        <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete"
-                                            style="width: 22px; cursor: pointer;">
-                                        <img src="{{ URL::asset('/build/img/download.svg') }}" alt="Edit"
-                                            style="width: 22px; cursor: pointer;">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <!-- documents -->
@@ -1553,312 +962,95 @@
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
 
                 <!-- Ticket Title + Status and Metrics -->
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2"
-                    style="background:#fff; padding: 12px; border-radius: 10px;">
-
-                    <!-- Left Side: Title + Badges -->
-                    <div style="flex-grow: 1;">
-                        <!-- Task Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
-
-                            <!-- Badges -->
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                                <!-- Red Lightning + Count -->
-                                <div class="d-flex align-items-center">
-                                    <span
-                                        style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" width="14"
-                                            height="14" />
-                                    </span>
-                                    <span
-                                        style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                        · 02 ·
-                                    </span>
-                                </div>
-
-                                <!-- Low Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
-                                    LOW
-                                </span>
-
-                                <!-- Yellow Flag Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14"
-                                        height="14" />
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="mt-3 mt-md-0"
-                        style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
-                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-center align-items-center mb-2 p-3" style="background: #fff; border-radius: 10px; min-height: 100px;">
+                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                    <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                 </div>
 
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2"
-                    style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
-
-                    <!-- Left Side: Title + Badges -->
-                    <div style="flex-grow: 1;">
-                        <!-- Task Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
-
-                            <!-- Badges -->
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                                <!-- Red Lightning + Count -->
-                                <div class="d-flex align-items-center">
-                                    <span
-                                        style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" width="14"
-                                            height="14" />
-                                    </span>
-                                    <span
-                                        style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                        · 02 ·
-                                    </span>
-                                </div>
-
-                                <!-- Low Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
-                                    LOW
-                                </span>
-
-                                <!-- Yellow Flag Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14"
-                                        height="14" />
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="mt-3 mt-md-0"
-                        style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
-                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap mb-2"
-                    style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
-
-                    <!-- Left Side: Title + Badges -->
-                    <div style="flex-grow: 1;">
-                        <!-- Task Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
-
-                            <!-- Badges -->
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                                <!-- Red Lightning + Count -->
-                                <div class="d-flex align-items-center">
-                                    <span
-                                        style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" width="14"
-                                            height="14" />
-                                    </span>
-                                    <span
-                                        style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                        · 02 ·
-                                    </span>
-                                </div>
-
-                                <!-- Low Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
-                                    LOW
-                                </span>
-
-                                <!-- Yellow Flag Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14"
-                                        height="14" />
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="mt-3 mt-md-0"
-                        style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
-                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 flex-wrap"
-                    style="background:#fff; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
-
-                    <!-- Left Side: Title + Badges -->
-                    <div style="flex-grow: 1;">
-                        <!-- Task Title -->
-                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
-
-                            <!-- Badges -->
-                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
-
-                                <!-- Red Lightning + Count -->
-                                <div class="d-flex align-items-center">
-                                    <span
-                                        style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
-                                        <img src="{{ asset('build/img/tera.svg') }}" width="14"
-                                            height="14" />
-                                    </span>
-                                    <span
-                                        style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                        · 02 ·
-                                    </span>
-                                </div>
-
-                                <!-- Low Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                    <span
-                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
-                                    LOW
-                                </span>
-
-                                <!-- Yellow Flag Badge -->
-                                <span
-                                    style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14"
-                                        height="14" />
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Meta Info -->
-                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Stats -->
-                    <div class="mt-3 mt-md-0"
-                        style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
-                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                            <div class="text-center" style="min-width: 65px;">
-                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
-                                <div style="color: #649bc3; font-size: 11px;">#05</div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
-            <!-- /project tickets -->
+           
 
-            <!-- footer section -->
+            {{-- kam ayega --}}
+
+
+
+              {{-- <!-- Left Side: Title + Badges -->
+                    <div style="flex-grow: 1;">
+                        <!-- Task Title -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title</div>
+
+                            <!-- Badges -->
+                            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+
+                                <!-- Red Lightning + Count -->
+                                <div class="d-flex align-items-center">
+                                    <span
+                                        style="background: #f4f4f4; padding: 3px 8px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;">
+                                        <img src="{{ asset('build/img/tera.svg') }}" width="14"
+                                            height="14" />
+                                    </span>
+                                    <span
+                                        style="background: #f44336; color: white; font-size: 12px; font-weight: 600; padding: 6px 10px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                                        · 02 ·
+                                    </span>
+                                </div>
+
+                                <!-- Low Badge -->
+                                <span
+                                    style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
+                                    <span
+                                        style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f;"></span>
+                                    LOW
+                                </span>
+
+                                <!-- Yellow Flag Badge -->
+                                <span
+                                    style="display: inline-flex; align-items: center; background: #fff3cd; padding: 6px; border-radius: 8px;">
+                                    <img src="{{ asset('build/img/yelowflag.svg') }}" width="14"
+                                        height="14" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Meta Info -->
+                        <div style="font-size: 12px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
+                            <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
+                            <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Stats -->
+                    <div class="mt-3 mt-md-0"
+                        style="background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-width: 240px; flex-grow: 1;">
+                        <div class="d-flex justify-content-between flex-wrap gap-3">
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Tickets</div>
+                                <div style="color: #649bc3; font-size: 11px;">#1 of #05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Total Tasks</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                            <div class="text-center" style="min-width: 65px;">
+                                <div style="color: #1d6fa5; font-weight: 600; font-size: 13px;">Days Left</div>
+                                <div style="color: #649bc3; font-size: 11px;">#05</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div style="height: 6px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                            <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                        </div>
+                    </div> --}}
+
+
+
+                    {{-- waqww --}}
+            
             <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 8px; border-radius: 10px;"
                 class="mt-3">
 
@@ -2596,10 +1788,29 @@
         setTextById('offcanvasStartDate', fmtDateYmdToDmy(project.start_date));
         setTextById('offcanvasEndDate', fmtDateYmdToDmy(project.end_date));
         setTextById('offcanvasProgressPercent', ((project.progress_percent || 0) + '%'));
+        // Priority pill
+        try {
+            var priority = (project.priority || '').toString().toLowerCase();
+            var color = '#6b7280';
+            var label = 'Unknown';
+            if (priority === 'low') { color = '#34d399'; label = 'Low'; }
+            else if (priority === 'medium' || priority === 'middle') { color = '#f59e0b'; label = 'Medium'; }
+            else if (priority === 'high') { color = '#ef4444'; label = 'High'; }
+            var dot = document.getElementById('offcanvasPriorityDot');
+            var txt = document.getElementById('offcanvasPriorityText');
+            if (dot) dot.style.backgroundColor = color;
+            if (txt) txt.textContent = label;
+        } catch (e) {}
         // If you add a description container later, set it here as well
         var descEl = document.getElementById('offcanvasProjectDescription');
         if (descEl) {
-            descEl.textContent = (project.description && String(project.description).trim().length) ? project.description : '-';
+            var desc = project.description || '';
+            var hasHtml = /<\s*\w+[^>]*>/i.test(desc);
+            if (hasHtml) {
+                descEl.innerHTML = desc;
+            } else {
+                descEl.textContent = desc.trim().length ? desc : '-';
+            }
         }
 
         // Render dynamic project sections
@@ -2619,18 +1830,49 @@
                         col.className = 'col-6 col-md-4 col-lg-3';
                         col.innerHTML = '\
                             <div style="background:#fff;padding:16px;border-radius:12px;text-align:center;position:relative;box-shadow:0 2px 5px rgba(0,0,0,0.03);">\
-                                <div class="rounded-circle" style="position:absolute;top:10px;right:10px;cursor:pointer;background:#f8f9fa;">\
-                                    <svg width="16" height="16" fill="#ccc" viewBox="0 0 24 24">\
-                                        <circle cx="5" cy="12" r="2" />\
-                                        <circle cx="12" cy="12" r="2" />\
-                                        <circle cx="19" cy="12" r="2" />\
-                                    </svg>\
-                                </div>\
                                 <img src="{{ URL::asset('/build/img/project.svg') }}" style="height:40px;margin-bottom:10px;" alt="icon">\
                                 <div style="font-size:14px;font-weight:600;color:#2e3a59;margin-bottom:10px;">' + (sec && sec.name ? sec.name : 'Section') + '</div>\
                                 <div style="font-size:12px;color:#6c757d;">' + (sec && sec.description ? sec.description : '') + '</div>\
                             </div>';
                         container.appendChild(col);
+                    });
+                }
+            }
+        } catch (e) {}
+
+        // Render attachments
+        try {
+            var filesWrap = document.getElementById('offcanvasProjectFiles');
+            if (filesWrap) {
+                filesWrap.innerHTML = '';
+                var atts = Array.isArray(project.attachments) ? project.attachments : [];
+                if (atts.length === 0) {
+                    var empty = document.createElement('div');
+                    empty.className = 'w-100 d-flex justify-content-center align-items-center';
+                    empty.style.minHeight = '60px';
+                    empty.innerHTML = '<div style="font-size:12px;color:#6c757d;">No files uploaded</div>';
+                    filesWrap.appendChild(empty);
+                } else {
+                    atts.forEach(function(att){
+                        var col = document.createElement('div');
+                        col.className = 'col-12 col-md-6 mb-2';
+                        var name = (att && att.name) ? att.name : 'File.pdf';
+                        var size = (att && att.size_kb != null) ? (att.size_kb + ' KB') : '';
+                        var url = (att && att.url) ? att.url : '#';
+                        col.innerHTML = '\
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">\
+                                <a href="' + url + '" target="_blank" rel="noopener" class="d-flex align-items-center" style="text-decoration:none;">\
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" alt="PDF Icon" style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">\
+                                    <div>\
+                                        <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">' + name + '</div>\
+                                        <div style="font-size: 12px; color: #8c94a3;">' + size + '</div>\
+                                    </div>\
+                                </a>\
+                                <a href="' + url + '" download style="display:inline-flex;align-items:center;gap:6px;">\
+                                    <img src="{{ URL::asset('/build/img/download.svg') }}" alt="Download" style="width: 20px; height: 20px;">\
+                                </a>\
+                            </div>';
+                        filesWrap.appendChild(col);
                     });
                 }
             }
