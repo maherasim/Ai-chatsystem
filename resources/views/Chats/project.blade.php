@@ -1092,18 +1092,17 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
                         <!-- Priority Button Group -->
-                        <div class="d-flex justify-content-between mt-2 px-2 py-1"
-                            style="background-color: #fff; border-radius: 12px;">
+                        <div class="d-flex justify-content-between mt-2 px-2 py-1" style="">
 
                             <input type="hidden" name="priority" id="priorityInput" value="low" />
                             <button type="button" class="btn priority-btn active" data-priority="low"
-                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
+                                style="background-color: #34d399; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
 
                             <button type="button" class="btn priority-btn" data-priority="medium"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
+                                style="background-color: #f59e0b; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
 
                             <button type="button" class="btn priority-btn" data-priority="high"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
+                                style="background-color: #ef4444; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
                         </div>
 
                     </div>
@@ -1138,7 +1137,7 @@
                                             style="width: 20px; height: 20px; cursor: pointer;" />
 
                                         <!-- Hidden Input (works with showPicker) -->
-                                        <input type="date" id="dateInput" name="start_date"
+                                        <input type="date" id="dateInput" name="start_date" min="{{ date('Y-m-d') }}"
                                             onchange="var d=new Date(this.value); if(this.value)document.getElementById('displayDate').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionCreate');"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
@@ -1163,7 +1162,7 @@
                                         style="width: 20px; height: 20px; cursor: pointer;" />
 
                                     <!-- Hidden Date Input -->
-                                    <input type="date" id="deliverDateInput" name="end_date"
+                                    <input type="date" id="deliverDateInput" name="end_date" min="{{ date('Y-m-d') }}"
                                         onchange="var d=new Date(this.value); if(this.value)document.getElementById('deliverDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionCreate');"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
@@ -1341,45 +1340,44 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set the Priority of the Project</div>
 
                         <!-- Priority Button Group -->
-                        <div class="d-flex justify-content-between mt-2 px-2 py-1"
-                            style="background-color: #fff; border-radius: 12px;">
+                        <div class="d-flex justify-content-between mt-2 px-2 py-1" style="">
 
                             <input type="hidden" name="priority" id="priorityInputEdit" value="low" />
                             <button type="button" class="btn priority-btn-edit" data-priority="low"
-                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                style="background-color: #34d399; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.backgroundColor = 'transparent';
                 btns[i].style.color = '#6c757d';
             }
-            this.style.backgroundColor = '#1cc375';
+            this.style.backgroundColor = '#34d399';
             this.style.color = 'white';
             document.getElementById('priorityInputEdit').value='low';
         ">Low</button>
 
                             <button type="button" class="btn priority-btn-edit" data-priority="medium"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                style="background-color: #f59e0b; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                 onclick="
             var btns = this.parentElement.querySelectorAll('button');
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.backgroundColor = 'transparent';
                 btns[i].style.color = '#6c757d';
             }
-            this.style.backgroundColor = '#1cc375';
+            this.style.backgroundColor = '#f59e0b';
             this.style.color = 'white';
             document.getElementById('priorityInputEdit').value='medium';
         ">Middle</button>
 
                             <button type="button" class="btn priority-btn-edit" data-priority="high"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
+                                style="background-color: #ef4444; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
                                                 onclick="
                             var btns = this.parentElement.querySelectorAll('button');
                             for (var i = 0; i < btns.length; i++) {
                                 btns[i].style.backgroundColor = 'transparent';
                                 btns[i].style.color = '#6c757d';
                             }
-                            this.style.backgroundColor = '#1cc375';
+                            this.style.backgroundColor = '#ef4444';
                             this.style.color = 'white';
                             document.getElementById('priorityInputEdit').value='high';
                         ">High</button>
@@ -1417,7 +1415,7 @@
                                             style="width: 20px; height: 20px; cursor: pointer;" />
 
                                         <!-- Hidden Input (works with showPicker) -->
-                                        <input type="date" id="editStartDateInput" name="start_date"
+                                        <input type="date" id="editStartDateInput" name="start_date" min="{{ date('Y-m-d') }}"
                                             onchange="var d=new Date(this.value); if(this.value)document.getElementById('editStartDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                             style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                     </div>
@@ -1442,7 +1440,7 @@
                                         style="width: 20px; height: 20px; cursor: pointer;" />
 
                                     <!-- Hidden Date Input -->
-                                    <input type="date" id="editEndDateInput" name="end_date"
+                                    <input type="date" id="editEndDateInput" name="end_date" min="{{ date('Y-m-d') }}"
                                         onchange="var d=new Date(this.value); if(this.value)document.getElementById('editEndDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear(); calculateTotalDays('#projectDurationSectionEdit');"
                                         style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
@@ -1886,7 +1884,9 @@
             var pBtns = document.querySelectorAll('.priority-btn-edit');
             pBtns.forEach(function(btn){
                 var isActive = btn.getAttribute('data-priority') === priorityValue;
-                btn.style.backgroundColor = isActive ? '#1cc375' : 'transparent';
+                var colorMap = { low: '#34d399', medium: '#f59e0b', high: '#ef4444' };
+                var pri = btn.getAttribute('data-priority');
+                btn.style.backgroundColor = isActive ? (colorMap[pri] || '#34d399') : 'transparent';
                 btn.style.color = isActive ? 'white' : '#6c757d';
             });
 
@@ -2268,7 +2268,9 @@
                 b.style.color = '#6c757d';
             });
             activeBtn.classList.add('active');
-            activeBtn.style.backgroundColor = '#1cc375';
+            var pri = activeBtn.getAttribute('data-priority');
+            var colorMap = { low: '#34d399', medium: '#f59e0b', high: '#ef4444' };
+            activeBtn.style.backgroundColor = colorMap[pri] || '#34d399';
             activeBtn.style.color = 'white';
             hidden.value = activeBtn.getAttribute('data-priority');
         }

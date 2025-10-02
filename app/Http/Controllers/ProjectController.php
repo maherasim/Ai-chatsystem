@@ -37,7 +37,7 @@ class ProjectController extends Controller
             'code' => 'nullable|string|max:255',
             'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
             'priority' => 'nullable|in:low,medium,high',
-            'start_date' => 'nullable|date',
+            'start_date' => 'nullable|date|after_or_equal:today',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'description' => 'nullable|string',
             'reminder_days' => 'nullable|integer|min:0|max:365',
@@ -122,13 +122,13 @@ class ProjectController extends Controller
                 }
             }
             $nextNumber = ($maxNum === null) ? $base : ($maxNum + 1);
-            // Use space separator as requested: e.g., "LM 1001"
-            $candidate = $prefix . ' ' . (string) $nextNumber;
+            // Use dash separator as requested: e.g., "LM-1001"
+            $candidate = $prefix . '-' . (string) $nextNumber;
             // Ensure uniqueness guard
             $guard = 0;
             while (Project::where('code', $candidate)->exists() && $guard < 1000) {
                 $nextNumber++;
-                $candidate = $prefix . ' ' . (string) $nextNumber;
+                $candidate = $prefix . '-' . (string) $nextNumber;
                 $guard++;
             }
             $generatedCode = $candidate;
@@ -164,7 +164,7 @@ class ProjectController extends Controller
             'title' => 'nullable|string|max:255',
             'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
             'priority' => 'nullable|in:low,medium,high',
-            'start_date' => 'nullable|date',
+            'start_date' => 'nullable|date|after_or_equal:today',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'description' => 'nullable|string',
             'reminder_days' => 'nullable|integer|min:0|max:365',
