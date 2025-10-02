@@ -30,3 +30,26 @@
 
   <!-- Style CSS -->
    <link rel="stylesheet" href="{{ url('/build/css/style.css') }}">
+   <style>
+     /* Global focus/active border override */
+     .btn,
+     .btn:focus,
+     .btn:active,
+     .btn:focus-visible,
+     .btn.active,
+     .btn.show,
+     .btn:focus:not(:focus-visible),
+     .btn-check:focus + .btn,
+     .btn-check:checked + .btn,
+     .btn-check:active + .btn,
+     .form-control:focus,
+     .form-select:focus,
+     button:focus,
+     button:active,
+     a.btn:focus,
+     a.btn:active {
+       outline: none !important;
+       box-shadow: none !important;
+       border-color: transparent !important;
+     }
+   </style>

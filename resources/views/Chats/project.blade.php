@@ -29,6 +29,43 @@
     .content.main_content .badge,
     .content.main_content .btn {
         font-size: 16px !important;
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+    }
+    .content.main_content .btn:focus,
+    .content.main_content .btn:active,
+    .content.main_content .btn:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+    }
+
+    /* Remove borders/outlines for active priority and reminder buttons */
+    .content.main_content .priority-btn,
+    .content.main_content .priority-btn.active,
+    .content.main_content .priority-btn:focus,
+    .content.main_content .priority-btn:active,
+    .content.main_content .priority-btn:focus-visible,
+    .content.main_content .priority-btn-edit,
+    .content.main_content .priority-btn-edit.active,
+    .content.main_content .priority-btn-edit:focus,
+    .content.main_content .priority-btn-edit:active,
+    .content.main_content .priority-btn-edit:focus-visible,
+    .content.main_content .reminder-btn,
+    .content.main_content .reminder-btn.active,
+    .content.main_content .reminder-btn:focus,
+    .content.main_content .reminder-btn:active,
+    .content.main_content .reminder-btn:focus-visible,
+    .content.main_content .reminder-btn-edit,
+    .content.main_content .reminder-btn-edit.active,
+    .content.main_content .reminder-btn-edit:focus,
+    .content.main_content .reminder-btn-edit:active,
+    .content.main_content .reminder-btn-edit:focus-visible {
+        border: 0 !important;
+        border-color: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
     .content.main_content small { font-size: 14px !important; }
 
@@ -1094,15 +1131,15 @@
                         <!-- Priority Button Group -->
                         <div class="d-flex justify-content-between mt-2 px-2 py-1" style="">
 
-                            <input type="hidden" name="priority" id="priorityInput" value="low" />
-                            <button type="button" class="btn priority-btn active" data-priority="low"
-                                style="background-color: #34d399; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
+                            <input type="hidden" name="priority" id="priorityInput" value="medium" />
+                            <button type="button" class="btn priority-btn" data-priority="low"
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Low</button>
 
-                            <button type="button" class="btn priority-btn" data-priority="medium"
+                            <button type="button" class="btn priority-btn active" data-priority="medium"
                                 style="background-color: #f59e0b; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">Middle</button>
 
                             <button type="button" class="btn priority-btn" data-priority="high"
-                                style="background-color: #ef4444; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
+                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">High</button>
                         </div>
 
                     </div>
@@ -1180,21 +1217,14 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
 
                         <!-- Reminder Buttons -->
-                        <div class="d-flex justify-content-between mt-2 px-1 py-1"
-                            style="background-color: #fff; border-radius: 12px;">
-
+                        <div class="d-flex flex-wrap gap-2 mt-2 px-1 py-1" style="">
                             <input type="hidden" name="reminder_days" id="reminderDaysInput" value="7" />
-                            <button type="button" class="btn reminder-btn active" data-days="7"
-                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;">7
-                                Days</button>
-
-                            <button type="button" class="btn reminder-btn" data-days="15"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">15
-                                Days</button>
-
-                            <button type="button" class="btn reminder-btn" data-days="30"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;">30
-                                Days</button>
+                            <button type="button" class="btn reminder-btn" data-days="2" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">2 Days</button>
+                            <button type="button" class="btn reminder-btn" data-days="3" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">3 Days</button>
+                            <button type="button" class="btn reminder-btn" data-days="5" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">5 Days</button>
+                            <button type="button" class="btn reminder-btn active" data-days="7" style="background-color: #34d399; color: white; border-radius: 8px; padding: 6px 14px; font-size: 13px; outline:none; box-shadow:none;">7 Days</button>
+                            <button type="button" class="btn reminder-btn" data-days="10" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">10 Days</button>
+                            <button type="button" class="btn reminder-btn" data-days="15" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">15 Days</button>
                         </div>
 
                     </div>
@@ -1456,50 +1486,15 @@
                         <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
 
                         <!-- Reminder Buttons -->
-                        <div class="d-flex justify-content-between mt-2 px-1 py-1"
+                        <div class="d-flex flex-wrap gap-2 mt-2 px-1 py-1"
                             style="background-color: #fff; border-radius: 12px;">
                             <input type="hidden" name="reminder_days" id="reminderDaysInputEdit" value="7" />
-                            <button type="button" class="btn"
-                                style="background-color: #1cc375; color: white; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-            document.getElementById('reminderDaysInputEdit').value = '7';
-        ">7
-                                Days</button>
-
-                            <button type="button" class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-            document.getElementById('reminderDaysInputEdit').value = '15';
-        ">15
-                                Days</button>
-
-                            <button type="button" class="btn"
-                                style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 18px; font-size: 14px;"
-                                onclick="
-            var btns = this.parentElement.querySelectorAll('button');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = 'transparent';
-                btns[i].style.color = '#6c757d';
-            }
-            this.style.backgroundColor = '#1cc375';
-            this.style.color = 'white';
-            document.getElementById('reminderDaysInputEdit').value = '30';
-        ">30
-                                Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="2" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">2 Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="3" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">3 Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="5" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">5 Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="7" style="background-color: #34d399; color: white; border-radius: 8px; padding: 6px 14px; font-size: 13px; outline:none; box-shadow:none;">7 Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="10" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">10 Days</button>
+                            <button type="button" class="btn reminder-btn-edit" data-days="15" style="background-color: transparent; color: #6c757d; border-radius: 8px; padding: 6px 14px; font-size: 13px;">15 Days</button>
                         </div>
 
                     </div>
@@ -2272,6 +2267,8 @@
             var colorMap = { low: '#34d399', medium: '#f59e0b', high: '#ef4444' };
             activeBtn.style.backgroundColor = colorMap[pri] || '#34d399';
             activeBtn.style.color = 'white';
+            activeBtn.style.outline = 'none';
+            activeBtn.style.boxShadow = 'none';
             hidden.value = activeBtn.getAttribute('data-priority');
         }
         document.querySelectorAll('.priority-btn').forEach(function(btn) {
@@ -2291,13 +2288,38 @@
                 b.style.color = '#6c757d';
             });
             activeBtn.classList.add('active');
-            activeBtn.style.backgroundColor = '#1cc375';
+            activeBtn.style.backgroundColor = '#34d399';
             activeBtn.style.color = 'white';
+            activeBtn.style.outline = 'none';
+            activeBtn.style.boxShadow = 'none';
             hidden.value = activeBtn.getAttribute('data-days');
         }
         document.querySelectorAll('.reminder-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 updateReminderUI(this);
+            });
+        });
+
+        // Reminder buttons (edit)
+        function updateReminderUIEdit(activeBtn) {
+            var container = activeBtn.parentElement;
+            var hidden = document.getElementById('reminderDaysInputEdit');
+            var all = container.querySelectorAll('.reminder-btn-edit');
+            all.forEach(function(b) {
+                b.classList.remove('active');
+                b.style.backgroundColor = 'transparent';
+                b.style.color = '#6c757d';
+            });
+            activeBtn.classList.add('active');
+            activeBtn.style.backgroundColor = '#34d399';
+            activeBtn.style.color = 'white';
+            activeBtn.style.outline = 'none';
+            activeBtn.style.boxShadow = 'none';
+            hidden.value = activeBtn.getAttribute('data-days');
+        }
+        document.querySelectorAll('.reminder-btn-edit').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                updateReminderUIEdit(this);
             });
         });
 
