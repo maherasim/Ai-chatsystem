@@ -239,9 +239,9 @@
                 <div class="chat-body chat-page-group">
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
-                        <div class="row g-3 py-2">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 py-2">
                             <!-- Card 1: Total Projects -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <div class="px-3 py-2"
                                     style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
@@ -267,7 +267,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <div class="px-3 py-2"
                                     style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
@@ -295,7 +295,7 @@
                             </div>
 
                             <!-- card-2 -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <div class="px-3 py-2"
                                     style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
@@ -323,7 +323,7 @@
                             </div>
                             <!-- card 3 -->
 
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <div class="px-3 py-2"
                                     style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
@@ -353,7 +353,7 @@
 
                             <!-- card 4 -->
 
-                            <div class="col-md-3 mb-3">
+                            <div class="col mb-3">
                                 <div class="px-3 py-2"
                                     style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
