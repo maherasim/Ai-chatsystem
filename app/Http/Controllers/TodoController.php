@@ -193,7 +193,32 @@ class TodoController extends Controller
             $total_time = $request->todaytime;
         }
 
+        $todoid = $request->todo_id;
 
+       
+
+        $todo = Todo::updateOrCreate(
+    ['_id' => $todoid], // condition to match
+    [
+        'title'       => $request->title,
+        'start_date'  => $request->start_date ?? date('Y-m-d'),
+        'start_time'  => $startTime,
+        'end_time'    => $endTime,
+        'is_private'  => $request->is_private,
+        'project'     => $request->project,
+        'priority'    => $request->priority,
+        'reminder'    => $request->reminder,
+        'description' => $request->sections ?? [], 
+        'user_id'     => Auth::id(),
+        'total_time'  => $total_time,
+        'completed'   => 0,
+        'is_schduled' => $request->start_date ? 1 : 0,
+        'members'     => $request->members ?? []
+    ]
+);
+
+
+/*
         $todo = Todo::create([
             'title'       => $request->title,
            // 'description' => $request->description,
@@ -211,7 +236,7 @@ class TodoController extends Controller
             'is_schduled' => $request->start_date ? 1 : 0,
             'members'     => $request->members ?? []
         ]);
-
+*/
         return redirect()->back()->with('success', 'ToDo created successfully!');
     }
 

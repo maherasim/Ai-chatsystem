@@ -2774,6 +2774,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Get attributes
             let dataid      = this.dataset.id;
 
+            document.getElementById('todo_id').value = dataid;
+
             document.getElementById("todo_heading").innerText = "Update Todo";
 
             let e_title       = this.dataset.title;
@@ -2871,7 +2873,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("remid").value = dataid;
 
-            
+            //todo_id
             
             let title       = this.dataset.title;
             let description = this.dataset.description;
@@ -3029,7 +3031,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.querySelectorAll(".addtodo").forEach(btn => {
     btn.addEventListener("click", function() {
-        //
+    document.getElementById('todo_id').value = "";
     document.getElementById("btnShared").click();
     document.getElementById("todo_heading").innerText = "Create new ToDo";
     });
