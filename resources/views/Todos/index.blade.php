@@ -3033,6 +3033,9 @@ document.querySelectorAll(".addtodo").forEach(btn => {
     btn.addEventListener("click", function() {
     document.getElementById('todo_id').value = "";
     document.getElementById("btnShared").click();
+    document.getElementById("btnToday").click();
+    document.querySelector(".time-btn-2").click();
+
     document.getElementById("todo_heading").innerText = "Create new ToDo";
     });
 });
