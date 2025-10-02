@@ -686,40 +686,7 @@
                             </div>
                             @empty
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card shadow-sm  p-2"
-                                    style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div style="width: 60px; height: 60px; position: relative;">
-                                            <svg width="60" height="60">
-                                                <circle cx="30" cy="30" r="26" stroke="#d1d1d1"
-                                                    stroke-width="6" fill="none" />
-                                            </svg>
-                                            <div
-                                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #333;">
-                                                0%
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                                class="rounded-circle"
-                                                style="height: 65px; width: 65px; object-fit: cover;"
-                                                alt="Project Logo">
-                                        </div>
-                                        <div>
-                                            <div style="background: #e1effe;padding: 5px;">
-                                                <img src="{{ URL::asset('/build/img/blueflag.svg') }}"
-                                                    style="height: 20px; width: 20px; " alt="flag" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- <div class="text-center" style="cursor: pointer;">
-                                        <h6 style="cursor: pointer;">No projects yet</h6>
-                                        <div class="d-inline-block px-3 py-1 mb-2 mt-2"
-                                            style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
-                                            PRJ-000
-                                        </div>
-                                    </div> --}}
-                                </div>
+                                 
                             </div>
                             @endforelse
 
