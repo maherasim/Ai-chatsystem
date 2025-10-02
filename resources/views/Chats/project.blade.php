@@ -398,7 +398,7 @@
                             @endphp
                             @forelse ($projectList as $project)
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="card shadow-sm  p-2"
+                                <div class="card shadow-sm  p-2" data-project-card="{{ (string) ($project->_id ?? $project->id) }}"
                                     style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
                                     <!-- Top Row: Circle, Center Image, 3 Dots -->
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -652,13 +652,15 @@
                                     <!-- Section Progress Block -->
                                     <div
                                         style="background-color: #f9f9f9; border-radius: 12px; padding: 15px 10px;">
-                                        <!-- Section Tags -->
+                                        <!-- Section Tags + Titles/Bars (paged via step bar) -->
                                         @php
-                                            $sectionTags = array_slice(($project->sections ?? []), 0, 4);
+                                            $pid = (string) ($project->_id ?? $project->id);
+                                            $sectionAll = (array) ($project->sections ?? []);
+                                            $sectionSlice = array_slice($sectionAll, 0, 3);
                                         @endphp
-                                        @if (!empty($sectionTags))
-                                        <div class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
-                                            @foreach ($sectionTags as $sectionTag)
+                                        @if (!empty($sectionSlice))
+                                        <div id="sec-tags-{{$pid}}" class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
+                                            @foreach ($sectionSlice as $sectionTag)
                                             <div class="px-1 py-1"
                                                 style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
                                                 {{ $sectionTag['name'] ?? 'Section' }}
@@ -667,11 +669,8 @@
                                         </div>
                                         @endif
                                         <!-- Section Titles -->
-                                        @php
-                                            $sectionSlice = array_slice(($project->sections ?? []), 0, 3);
-                                        @endphp
                                         @if (!empty($sectionSlice))
-                                        <div class="d-flex justify-content-between px-1"
+                                        <div id="sec-titles-{{$pid}}" class="d-flex justify-content-between px-1"
                                             style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
                                             @foreach ($sectionSlice as $section)
                                             <span>{{ $section['name'] ?? 'Section' }} {{ (int) ($project->progress_percent ?? 0) }}%</span>
@@ -686,7 +685,7 @@
                                                 ['track' => '#fdd7d7', 'bar' => '#ea5455'],
                                             ];
                                         @endphp
-                                        <div
+                                        <div id="sec-bars-{{$pid}}"
                                             class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
                                             @foreach ($sectionSlice as $index => $section)
                                             <div class="progress"
@@ -699,18 +698,18 @@
                                         </div>
                                         @endif
                                         <!-- Step Progress Bar -->
-                                        <div class="d-flex justify-content-center gap-2 mt-3" id="stepBar">
-                                            <div id="step1"
-                                                onclick=" document.getElementById('step1').style.backgroundColor = '#1cc375'; document.getElementById('step2').style.backgroundColor = '#ffffff'; document.getElementById('step3').style.backgroundColor = '#ffffff';"
+                                        <div class="d-flex justify-content-center gap-2 mt-3" id="stepBar-{{$pid}}">
+                                            <div id="step1-{{$pid}}"
+                                                onclick="changeSectionPage('{{$pid}}', 0)"
                                                 style="width: 60px; height: 5px; background-color: #1cc375; border-radius: 10px; cursor: pointer;">
                                             </div>
-                                            <div id="step2"
-                                                onclick=" document.getElementById('step1').style.backgroundColor = '#ffffff'; document.getElementById('step2').style.backgroundColor = '#1cc375'; document.getElementById('step3').style.backgroundColor = '#ffffff'; "
+                                            <div id="step2-{{$pid}}"
+                                                onclick="changeSectionPage('{{$pid}}', 1)"
                                                 style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px; cursor: pointer;">
                                             </div>
 
-                                            <div id="step3"
-                                                onclick=" document.getElementById('step1').style.backgroundColor = '#ffffff'; document.getElementById('step2').style.backgroundColor = '#ffffff'; document.getElementById('step3').style.backgroundColor = '#1cc375'; "
+                                            <div id="step3-{{$pid}}"
+                                                onclick="changeSectionPage('{{$pid}}', 2)"
                                                 style="width: 60px; height: 5px; background-color: #ffffff; border-radius: 10px; cursor: pointer;">
                                             </div>
                                         </div>
@@ -1702,6 +1701,67 @@
         var y = dt.getFullYear();
         return d + '.' + m + '.' + y;
     }
+
+        // Switch visible section bars/titles by page index using existing 3 slots
+        function changeSectionPage(pid, pageIndex) {
+            try {
+                var slots = 3; // we render 3 items per page
+                var card = document.querySelector('[data-project-card="' + pid + '"]');
+                var titles = document.getElementById('sec-titles-' + pid);
+                var bars = document.getElementById('sec-bars-' + pid);
+                if (!titles || !bars) return;
+                var all = (window.projectMap && window.projectMap[pid] && Array.isArray(window.projectMap[pid].sections)) ? window.projectMap[pid].sections : [];
+                var start = pageIndex * slots;
+                var slice = all.slice(start, start + slots);
+                if (slice.length === 0) return;
+                var barColors = [
+                    { track: '#d3f4dc', bar: '#28c76f' },
+                    { track: '#fef3d3', bar: '#ffc107' },
+                    { track: '#fdd7d7', bar: '#ea5455' }
+                ];
+                // update tags (top row)
+                var tags = document.getElementById('sec-tags-' + pid);
+                if (tags) {
+                    tags.innerHTML = '';
+                    slice.forEach(function(sec){
+                        var tag = document.createElement('div');
+                        tag.className = '';
+                        tag.style.cssText = 'background:#f4f4f4;border-radius:999px;font-size:11px;color:#e53935;font-weight:500;white-space:nowrap;padding:2px 4px;';
+                        tag.textContent = (sec && sec.name) ? sec.name : 'Section';
+                        tags.appendChild(tag);
+                    });
+                }
+                // update titles
+                titles.innerHTML = '';
+                slice.forEach(function(sec){
+                    var span = document.createElement('span');
+                    span.textContent = (sec && sec.name ? sec.name : 'Section') + ' ' + String(window.projectMap[pid].progress_percent || 0) + '%';
+                    titles.appendChild(span);
+                });
+                // update bars
+                bars.innerHTML = '';
+                slice.forEach(function(sec, i){
+                    var wrap = document.createElement('div');
+                    wrap.className = 'progress';
+                    wrap.style.width = '32%';
+                    wrap.style.height = '8px';
+                    wrap.style.backgroundColor = barColors[i % barColors.length].track;
+                    wrap.style.borderRadius = '10px';
+                    var inner = document.createElement('div');
+                    inner.className = 'progress-bar';
+                    inner.style.width = String(window.projectMap[pid].progress_percent || 0) + '%';
+                    inner.style.backgroundColor = barColors[i % barColors.length].bar;
+                    inner.style.borderRadius = '10px';
+                    wrap.appendChild(inner);
+                    bars.appendChild(wrap);
+                });
+                // update step indicator colors
+                ['step1-','step2-','step3-'].forEach(function(prefix, idx){
+                    var el = document.getElementById(prefix + pid);
+                    if (el) el.style.backgroundColor = (idx === pageIndex) ? '#1cc375' : '#ffffff';
+                });
+            } catch (e) {}
+        }
 
     function populateProjectOffcanvas(project) {
         if (!project) return;
