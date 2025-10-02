@@ -453,10 +453,11 @@
                                         
 
                                         <!-- Logo Image -->
-                                        <div>
+                                        <div style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;">
                                             <img src="{{ $project->logo_path ? asset('storage/' . $project->logo_path) . '?v=' . (optional($project->updated_at)->timestamp ?? time()) : URL::asset('/build/img/yekbon.svg') }}"
                                                 class="rounded-circle"
-                                                style="height: 65px; width: 65px; object-fit: cover;"
+                                                width="70" height="70"
+                                                style="width: 100%; height: 100%; object-fit: cover;"
                                                 alt="Project Logo">
                                         </div>
 
@@ -588,7 +589,7 @@
                                             </strong>
                                             <div class="d-flex justify-content-center mt-1">
                                                 <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px; margin-left: 8px;" />
-asim riaz
+
                                             </div>
                                         </div>
 

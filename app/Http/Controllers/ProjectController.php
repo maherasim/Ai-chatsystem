@@ -15,6 +15,7 @@ class ProjectController extends Controller
         $projects = Project::orderByDesc('created_at')->paginate(12);
 
         $totalProjects = Project::count();
+        $newProjectCount = Project::where('status', 'new')->count();
         $inProgressCount = Project::where('status', 'in_progress')->count();
         $inHoldCount = Project::where('status', 'in_hold')->count();
         $delayedCount = Project::where('status', 'delayed')->count();
@@ -23,6 +24,7 @@ class ProjectController extends Controller
             'headers',
             'projects',
             'totalProjects',
+            'newProjectCount',
             'inProgressCount',
             'inHoldCount',
             'delayedCount'
@@ -35,7 +37,7 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'code' => 'nullable|string|max:255',
-            'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
+            'status' => 'nullable|in:new,in_progress,in_hold,delayed,completed',
             'priority' => 'nullable|in:low,medium,high',
             'start_date' => 'nullable|date|after_or_equal:today',
             'end_date' => 'nullable|date|after_or_equal:start_date',
@@ -137,7 +139,7 @@ class ProjectController extends Controller
         $project = Project::create([
             'title' => $validated['title'],
             'code' => $generatedCode,
-            'status' => $validated['status'] ?? 'in_progress',
+            'status' => $validated['status'] ?? 'new',
             'priority' => $validated['priority'] ?? 'low',
             'start_date' => $validated['start_date'] ?? null,
             'end_date' => $validated['end_date'] ?? null,
@@ -162,7 +164,7 @@ class ProjectController extends Controller
 
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
-            'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
+            'status' => 'nullable|in:new,in_progress,in_hold,delayed,completed',
             'priority' => 'nullable|in:low,medium,high',
             'start_date' => 'nullable|date|after_or_equal:today',
             'end_date' => 'nullable|date|after_or_equal:start_date',
