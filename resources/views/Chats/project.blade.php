@@ -712,13 +712,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="text-center" style="cursor: pointer;">
+                                    {{-- <div class="text-center" style="cursor: pointer;">
                                         <h6 style="cursor: pointer;">No projects yet</h6>
                                         <div class="d-inline-block px-3 py-1 mb-2 mt-2"
                                             style="background: #f4f4f4; border-radius: 999px; font-size: 12px; color: #e53935; font-weight: 500;">
                                             PRJ-000
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             @endforelse
