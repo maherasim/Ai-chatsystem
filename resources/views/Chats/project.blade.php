@@ -1788,6 +1788,46 @@
         setTextById('offcanvasStartDate', fmtDateYmdToDmy(project.start_date));
         setTextById('offcanvasEndDate', fmtDateYmdToDmy(project.end_date));
         setTextById('offcanvasProgressPercent', ((project.progress_percent || 0) + '%'));
+        // Status tag (default to New)
+        try {
+            var statusRaw = (project.status || 'new').toString().toLowerCase().trim();
+            var status = 'new';
+            if (['new', 'in progress', 'in_progress', 'progress', 'in hold', 'on hold', 'hold', 'delayed', 'delay', 'done', 'completed', 'complete'].includes(statusRaw)) {
+                status = statusRaw;
+            }
+            var bg = '#eae8fd';
+            var text = '#1e2b4d';
+            var icon = "{{ URL::asset('/build/img/blueflag.svg') }}";
+            var label = 'Project is New';
+            if (status === 'in progress' || status === 'in_progress' || status === 'progress') {
+                bg = '#e9f8dd';
+                text = '#1e2b4d';
+                icon = "{{ URL::asset('/build/img/greenflag.svg') }}";
+                label = 'Project is In Progress';
+            } else if (status === 'in hold' || status === 'on hold' || status === 'hold') {
+                bg = '#fff3cd';
+                text = '#2e3a59';
+                icon = "{{ URL::asset('/build/img/yelowflag.svg') }}";
+                label = 'Project is in Hold';
+            } else if (status === 'delayed' || status === 'delay') {
+                bg = '#fddede';
+                text = '#2e3a59';
+                icon = "{{ URL::asset('/build/img/redflag.svg') }}";
+                label = 'Project is in Delayed';
+            } else if (status === 'done' || status === 'completed' || status === 'complete') {
+                bg = '#e3f2fd';
+                text = '#1e2b4d';
+                icon = "{{ URL::asset('/build/img/greenflag.svg') }}";
+                label = 'Project is Done';
+            }
+            var tag = document.getElementById('offcanvasStatusTag');
+            var iconEl = document.getElementById('offcanvasStatusIcon');
+            var textEl = document.getElementById('offcanvasStatusText');
+            if (tag) tag.style.background = bg;
+            if (tag) tag.style.color = text;
+            if (iconEl) iconEl.src = icon;
+            if (textEl) textEl.textContent = label;
+        } catch (e) {}
         // Priority pill
         try {
             var priority = (project.priority || '').toString().toLowerCase();
