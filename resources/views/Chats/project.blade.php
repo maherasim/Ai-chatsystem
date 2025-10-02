@@ -247,7 +247,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
+                                        <div style="font-size: 23px; color: #1e2b4d;">Total Projects</div>
                                         <div style="background-color: #eae8fd; padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/sigma.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -267,6 +267,32 @@
 
                                 </div>
                             </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="px-3 py-2"
+                                    style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
+
+                                    <!-- Top Row -->
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div style="font-size: 23px; color: #1e2b4d;">New Project </div>
+                                        <div style="background-color: #eae8fd; padding: 5px;">
+                                            <img src="{{ URL::asset('/build/img/blueflag.svg') }}" alt="icon"
+                                                style="width: 20px; height: 20px;" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Number -->
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">
+                                        {{ $newProjectCount ?? 0 }}
+                                    </div>
+
+                                    <!-- Percentage Change (Bottom Right) -->
+                                    <div
+                                        style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
+                                        <i class="bi bi-arrow-up-right"></i> 8.5%
+                                    </div>
+
+                                </div>
+                            </div>
 
                             <!-- card-2 -->
                             <div class="col-md-3 mb-3">
@@ -275,7 +301,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
+                                        <div style="font-size: 23px; color: #1e2b4d;">In Progress</div>
                                         <div style="background-color: #e9f8dd;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -303,7 +329,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
+                                        <div style="font-size: 23px; color: #1e2b4d;">In Hold</div>
                                         <div style="background-color: #fff3cd;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -333,7 +359,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
+                                        <div style="font-size: 23px; color: #1e2b4d;">In Delayed</div>
                                         <div style="background-color: #fddede;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/redflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
