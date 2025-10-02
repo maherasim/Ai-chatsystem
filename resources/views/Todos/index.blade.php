@@ -38,6 +38,19 @@
         visibility: visible !important;
     }
 
+    .priority{
+        border: medium;
+        background-color: white;
+        color: rgb(100, 116, 139);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+    .priority.active{
+        background-color: rgb(34, 197, 94);
+        color: white;
+    }
+
 
     .task-icon-link img {
         width: 25px !important;
@@ -232,7 +245,7 @@
   font-size: 12px; /* smaller label */
   color: #666;
 }
-.dropdown .fa-eye{
+.dropdown .fa-eye, .dropdown .fa-edit{
     border:dashed 2px;
     padding:3px;
 }
@@ -311,7 +324,7 @@
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
+                                <button class="btn btn-danger addtodo" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
                                     Add TODO
                                 </button>
                                 <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
@@ -394,6 +407,27 @@
 
             <button type="button" class="btn btn-sm btn-icon "   >
                 <a href="javascript:void(0);" 
+               class="dropdown-item text-primary editTodo" 
+               data-id="{{ $todo->id }}"
+                data-title="{{ $todo->title }}"
+                data-description=""
+                data-start_date="{{ $todo->start_date }}"
+                data-start_time="{{ $todo->start_time }}"
+                data-end_time="{{ $todo->end_time }}"
+                data-is_private="{{ $todo->is_private }}"
+                data-priority="{{ $todo->priority }}"
+                data-reminder="{{ $todo->reminder }}"
+                data-total="{{ $todo->total_time }}"
+                data-sections='@json($todo->description)'
+                data-members='@json($todo->members_data)'
+                    data-bs-toggle="modal" data-bs-target="#todomodel">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+
+            <button type="button" class="btn btn-sm btn-icon "   >
+                <a href="javascript:void(0);" 
                class="dropdown-item text-primary viewTodo" 
                data-id="{{ $todo->id }}"
    data-title="{{ $todo->title }}"
@@ -412,27 +446,6 @@
             </a>
 
             </button>
-
-            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
-                <a href="javascript:void(0);" 
-               class="dropdown-item text-primary" 
-               data-id="{{ $todo->_id }}"
-    data-title="{{ $todo->title }}"
-    data-description=""
-    data-start_date="{{ $todo->start_date }}"
-    data-start_time="{{ $todo->start_time }}"
-    data-end_time="{{ $todo->end_time }}"
-    data-is_private="{{ $todo->is_private }}"
-    data-project="{{ $todo->project }}"
-    data-priority="{{ $todo->priority }}"
-    data-reminder="{{ $todo->reminder }}"
-    data-members='@json($todo->members)'
-    onclick="openEditModal(this)">
-               <i class="fa fa-edit"></i>  
-            </a>
-
-            </button>
-
 
             
 
@@ -591,6 +604,28 @@
                 </a>
                 
             </button>
+
+             <button type="button" class="btn btn-sm btn-icon "   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary editTodo" 
+               data-id="{{ $todo->id }}"
+                data-title="{{ $todo->title }}"
+                data-description=""
+                data-start_date="{{ $todo->start_date }}"
+                data-start_time="{{ $todo->start_time }}"
+                data-end_time="{{ $todo->end_time }}"
+                data-is_private="{{ $todo->is_private }}"
+                data-priority="{{ $todo->priority }}"
+                data-reminder="{{ $todo->reminder }}"
+                data-total="{{ $todo->total_time }}"
+                data-sections='@json($todo->description)'
+                data-members='@json($todo->members_data)'
+                    data-bs-toggle="modal" data-bs-target="#todomodel">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+            
             <button type="button" class="btn btn-sm btn-icon "    >
                 <a href="javascript:void(0);" 
                class="dropdown-item text-primary viewTodo" 
@@ -612,28 +647,8 @@
 
             </button>
 
-            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
-                <a href="javascript:void(0);" 
-               class="dropdown-item text-primary" 
-               data-id="{{ $todo->_id }}"
-    data-title="{{ $todo->title }}"
-    data-description=""
-    data-start_date="{{ $todo->start_date }}"
-    data-start_time="{{ $todo->start_time }}"
-    data-end_time="{{ $todo->end_time }}"
-    data-is_private="{{ $todo->is_private }}"
-    data-project="{{ $todo->project }}"
-    data-priority="{{ $todo->priority }}"
-    data-reminder="{{ $todo->reminder }}"
-    data-members='@json($todo->members)'
-    onclick="openEditModal(this)">
-               <i class="fa fa-edit"></i>  
-            </a>
+           
 
-            </button>
-
-
-            
 
 </div>
 </div>
@@ -1027,19 +1042,19 @@
 
             <form action="{{ route('todos.store') }}" method="POST">
                 @csrf
-
+                <input type="hidden" name="todo_id" id="todo_id">
                 <input type="hidden" name="start_date" id="startDateHidden">
                 <input type="hidden" name="start_time" id="startTimeHidden">
                 <input type="hidden" name="end_time" id="endTimeHidden">
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
                 <input type="hidden" name="priority" id="priorityHidden" value="low">
-                <input type="hidden" name="reminder" id="reminderHidden" value="6">
+                <input type="hidden" name="reminder" id="reminderHidden" value="60">
                 <input type="hidden" name="todaytime" id="timeHidden" value="2">
 
                 <!-- new changes -->
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
-                <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo
+                <h5  style="font-weight: 600; color: #1e293b;"><span id="todo_heading">Create new ToDo</span>
                     <!-- Toggle Buttons -->
                         <div style="background-color: white; background-color: #F2F2F2; border-radius: 12px; padding:8px; float:right; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button type="button" id="btnShared"
@@ -1138,11 +1153,11 @@
 
                     <!-- selection of tody section -->
                     <div class="d-flex1 gap-2 mb-3" id="timeToday" style="padding: 8px;";>
-                        <button type="button" class="time-btn active" data-value="2">2 Hour</button>
-                        <button type="button" class="time-btn" data-value="3">3 Hour</button>
-                        <button type="button" class="time-btn" data-value="6">6 Hour</button>
-                        <button type="button" class="time-btn" data-value="9">9 Hour</button>
-                        <button type="button" class="time-btn" data-value="12">12 Hour</button>
+                        <button type="button" class="time-btn time-btn-2 active" data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
+                        <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
+                        <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
+                        <button type="button" class="time-btn time-btn-12" data-value="12">12 Hour</button>
                     </div>
                      
                      <!-- selection of tody end -->
@@ -1225,14 +1240,14 @@
                     <!-- Inputs -->
                     <div class="row g-2">
                         <div class="col-md-6">
-                            <input name="title" type="text" class="form-control" placeholder="ToDo Title"
+                            <input id="todo_name" name="title" type="text" class="form-control" placeholder="ToDo Title"
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
-                                <button type="button" id="priorityLow" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Low</button>
-                                <button type="button" id="priorityMiddle" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Middle</button>
-                                <button type="button" id="priorityHigh" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">High</button>
+                                <button class="priority" type="button" id="priorityLow" >Low</button>
+                                <button class="priority" type="button" id="priorityMiddle" >Middle</button>
+                                <button class="priority" type="button" id="priorityHigh" >High</button>
                             </div>
                         </div>
                         
@@ -1306,11 +1321,11 @@
                                 <button type="button" id="reminder3" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">3 Hour</button>
                                 <button type="button" id="reminder4" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">4 Hour</button>-->
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="reminder-btn active" data-value="30">30 Min</button>
-                                    <button type="button" class="reminder-btn" data-value="60">60 Min</button>
-                                    <button type="button" class="reminder-btn" data-value="120">2 Hour</button>
-                                    <button type="button" class="reminder-btn" data-value="180">3 Hour</button>
-                                    <button type="button" class="reminder-btn" data-value="240">4 Hour</button>
+                                    <button type="button" class="reminder-btn rem-30 active" data-value="30">30 Min</button>
+                                    <button type="button" class="reminder-btn rem-60" data-value="60">60 Min</button>
+                                    <button type="button" class="reminder-btn rem-120" data-value="120">2 Hour</button>
+                                    <button type="button" class="reminder-btn rem-180" data-value="180">3 Hour</button>
+                                    <button type="button" class="reminder-btn rem-240" data-value="240">4 Hour</button>
                                 </div>
                             </div>
                         </div>
@@ -1775,7 +1790,7 @@
                             <p style="font-size: 12px; font-weight: 600; color: #334155;">Meeting Priority</p>
                             <p style="font-size: 11px; color: #6b7280;">Set the Priority of the Meeting</p>
                             <div class="d-flex gap-2">
-                                <button id="priorityLow" onclick="
+                                <button  id="priorityLow" onclick="
           this.style.backgroundColor='#22c55e';
           this.style.color='white';
           document.getElementById('priorityMiddle').style.backgroundColor='white';
@@ -1786,18 +1801,11 @@
                                     Low
                                 </button>
 
-                                <button id="priorityMiddle" onclick="
-          this.style.backgroundColor='#22c55e';
-          this.style.color='white';
-          document.getElementById('priorityLow').style.backgroundColor='white';
-          document.getElementById('priorityLow').style.color='#64748b';
-          document.getElementById('priorityHigh').style.backgroundColor='white';
-          document.getElementById('priorityHigh').style.color='#64748b';
-        " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                <button  id="priorityMiddle"  style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
                                     Middle
                                 </button>
 
-                                <button id="priorityHigh" onclick="
+                                <button  id="priorityHigh" onclick="
           this.style.backgroundColor='#22c55e';
           this.style.color='white';
           document.getElementById('priorityLow').style.backgroundColor='white';
@@ -2565,14 +2573,24 @@ document.getElementById('btnPrivate').addEventListener('click', function (e) {
 document.getElementById('priorityLow').addEventListener('click', function (e) {
     e.preventDefault();
     document.getElementById('priorityHidden').value = 'low';
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityLow').classList.add('active');
 });
 document.getElementById('priorityMiddle').addEventListener('click', function (e) {
     e.preventDefault();
     document.getElementById('priorityHidden').value = 'middle';
+    document.querySelector('#priorityHigh').classList.remove('active');
+    document.querySelector('#priorityLow').classList.remove('active');
+    document.querySelector('#priorityMiddle').classList.add('active');
 });
 document.getElementById('priorityHigh').addEventListener('click', function (e) {
     e.preventDefault();
+    
     document.getElementById('priorityHidden').value = 'high';
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityLow').classList.remove('active');
+    document.querySelector('#priorityHigh').classList.add('active');
 });
 
 
@@ -2748,6 +2766,102 @@ document.addEventListener("DOMContentLoaded", function () {
 let timerInterval;
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    //todomodel
+
+    document.querySelectorAll(".editTodo").forEach(btn => {
+        btn.addEventListener("click", function () {
+            // Get attributes
+            let dataid      = this.dataset.id;
+
+            document.getElementById("todo_heading").innerText = "Update Todo";
+
+            let e_title       = this.dataset.title;
+            let e_description = this.dataset.description;
+            let e_isPrivate   = this.dataset.is_private;
+            
+            let e_sections    = JSON.parse(this.dataset.sections || "[]");
+
+            let e_startDate   = this.dataset.start_date || "";
+            let e_startTime   = this.dataset.start_time || "";
+            let e_endTime     = this.dataset.end_time || "";
+            let e_reminder    = this.dataset.reminder;
+            let e_priority    = this.dataset.priority 
+            let e_total    = this.dataset.total 
+
+           // time-btn-3
+            document.getElementById('timeHidden').value = e_total;
+            
+            document.querySelector('.time-btn').classList.remove('active');
+
+            if(e_total != "0"){
+                document.getElementById("btnToday").click();
+            }
+
+           if(e_total == "0"){
+                document.getElementById("btnScheduled").click();
+                document.querySelector('.time-btn-2').classList.add('active');
+           }else if(e_total == "2"){
+                document.querySelector('.time-btn-2').classList.add('active');
+           }else if(e_total == "3"){
+                document.querySelector('.time-btn-3').classList.add('active');
+           }else if(e_total == "6"){
+                document.querySelector('.time-btn-6').classList.add('active');
+           }else if(e_total == "9"){
+                document.querySelector('.time-btn-9').classList.add('active');
+           }else if(e_total == "12"){
+                document.querySelector('.time-btn-12').classList.add('active');
+           }
+
+            
+            document.getElementById('todo_name').value = e_title;
+            document.getElementById('reminderHidden').value = e_reminder;
+
+            document.querySelector('.reminder-btn').classList.remove('active');
+
+            if(e_reminder == "30"){
+                document.querySelector('.rem-30').classList.add('active');
+            }else if(e_reminder == "60"){
+                document.querySelector('.rem-60').classList.add('active');
+            }else if(e_reminder == "90"){
+                document.querySelector('.rem-90').classList.add('active');
+            }if(e_reminder == "120"){
+                document.querySelector('.rem-120').classList.add('active');
+            }
+
+            document.querySelector('.priority').classList.remove('active');
+
+            document.getElementById('priorityHidden').value = e_priority;
+
+            if(e_priority == "low"){
+                document.querySelector('#priorityLow').classList.add('active');
+            }else if(e_priority == "middle"){
+                document.querySelector('#priorityMiddle').classList.add('active');
+            }else if(e_priority == "high"){
+                document.querySelector('#priorityHigh').classList.add('active');
+            }
+
+
+            let e_members = JSON.parse(this.dataset.members || "[]");
+            
+            if (e_members.length) {
+                e_members.forEach(m => {
+                    let e_m_id = m.id;
+                    let userid = "user_" + e_m_id;
+
+                    document.getElementById(userid).click();
+                    
+                });
+            } 
+            
+            //reminder
+
+
+        });
+    });
+
+
+
     const modal = document.getElementById("inreject");
 
     document.querySelectorAll(".viewTodo").forEach(btn => {
@@ -2756,6 +2870,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let dataid      = this.dataset.id;
 
             document.getElementById("remid").value = dataid;
+
+            
             
             let title       = this.dataset.title;
             let description = this.dataset.description;
@@ -2911,6 +3027,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.querySelectorAll(".addtodo").forEach(btn => {
+    btn.addEventListener("click", function() {
+        //
+    document.getElementById("btnShared").click();
+    document.getElementById("todo_heading").innerText = "Create new ToDo";
+    });
+});
+
 document.querySelectorAll(".btnScheduled").forEach(btn => {
     btn.addEventListener("click", function() {
         document.getElementById("timeRow").style.display = "flex";
@@ -2924,6 +3048,7 @@ document.querySelectorAll(".btnToday").forEach(btn => {
         document.getElementById("timeToday").style.display = "flex";
     });
 });
+
 
 function formatDate(dateStr) {
     if (!dateStr) return "--";
