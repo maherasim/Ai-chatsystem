@@ -84,9 +84,12 @@ class ProjectController extends Controller
             }
         }
 
+        // Generate a unique human-readable project code if not provided, e.g., PRJ-20241002-ABCDE
+        $generatedCode = $validated['code'] ?? ('PRJ-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 5)));
+
         $project = Project::create([
             'title' => $validated['title'],
-            'code' => $validated['code'] ?? null,
+            'code' => $generatedCode,
             'status' => $validated['status'] ?? 'in_progress',
             'priority' => $validated['priority'] ?? 'low',
             'start_date' => $validated['start_date'] ?? null,

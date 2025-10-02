@@ -1784,7 +1784,7 @@
         if (!project) return;
         setImgById('offcanvasProjectLogo', project.logo_url, "{{ URL::asset('/build/img/yekbon.svg') }}");
         setTextById('offcanvasProjectTitle', project.title || 'Project Title');
-        setTextById('offcanvasProjectId', project.id ? String(project.id) : 'Project ID');
+        setTextById('offcanvasProjectId', (project.code && String(project.code).trim()) ? project.code : (project.id ? String(project.id) : 'Project ID'));
         setTextById('offcanvasStartDate', fmtDateYmdToDmy(project.start_date));
         setTextById('offcanvasEndDate', fmtDateYmdToDmy(project.end_date));
         setTextById('offcanvasProgressPercent', ((project.progress_percent || 0) + '%'));
@@ -1807,9 +1807,11 @@
             var desc = project.description || '';
             var hasHtml = /<\s*\w+[^>]*>/i.test(desc);
             if (hasHtml) {
-                descEl.innerHTML = desc;
+                descEl.style.whiteSpace = 'normal';
+                descEl.innerHTML = desc.trim();
             } else {
-                descEl.textContent = desc.trim().length ? desc : '-';
+                descEl.style.whiteSpace = 'pre-wrap';
+                descEl.textContent = desc.trim().length ? desc.replace(/\s{2,}/g, ' ') : '-';
             }
         }
 
@@ -1925,6 +1927,7 @@
     @foreach (($projects ?? []) as $p)
         window.projectMap["{{ (string) ($p->_id ?? $p->id) }}"] = {
             id: "{{ (string) ($p->_id ?? $p->id) }}",
+            code: @json($p->code),
             title: @json($p->title),
             priority: @json($p->priority),
             start_date: "{{ $p->start_date ? ( ($p->start_date instanceof \Carbon\Carbon ? $p->start_date : \Carbon\Carbon::parse($p->start_date))->format('Y-m-d') ) : '' }}",
