@@ -2196,7 +2196,7 @@
                 ×
             </button>
             <div class="modal-body px-4 py-4">
-                <form id="projectEditForm" method="POST" action="{{ route('project.update', $project->id) }}" enctype="multipart/form-data">
+                <form id="projectEditForm" method="POST" action="/project/__ID__" enctype="multipart/form-data">
 
                 
                     @csrf
