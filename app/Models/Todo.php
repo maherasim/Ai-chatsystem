@@ -29,7 +29,8 @@ class Todo extends Model
         'completed',
         'members',
         'is_removed',
-        'reason'
+        'reason',
+        'total_time'
     ];
 
     public function user()

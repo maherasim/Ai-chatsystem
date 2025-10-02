@@ -159,7 +159,10 @@ class TodoController extends Controller
     return redirect()->back()->with('success', 'ToDo updated successfully!');
 }
 
-
+    public function deltodo(){
+        Todo::query()->delete(); //
+        die("done");
+    }
 
 
     public function store(Request $request)
@@ -178,18 +181,32 @@ class TodoController extends Controller
             'members' => 'nullable|array'
         ]);
 
+        $startTime = $request->start_time;
+        $endTime = $request->end_time;
+        $total_time = 0;
+
+        if ($request->start_date === null) {
+            // If today, calculate based on todaytime input
+            $hoursToAdd = (int) $request->todaytime; // e.g. 2,3,6
+            $startTime = now()->format('H:i');
+            $endTime = now()->addHours($hoursToAdd)->format('H:i');
+            $total_time = $request->todaytime;
+        }
+
+
         $todo = Todo::create([
             'title'       => $request->title,
            // 'description' => $request->description,
             'start_date'  => $request->start_date ?? date('Y-m-d'),
-            'start_time'  => $request->start_time,
-            'end_time'    => $request->end_time,
+            'start_time'  => $startTime,
+            'end_time'    => $endTime,
             'is_private'  => $request->is_private,
             'project'     => $request->project,
             'priority'    => $request->priority,
             'reminder'    => $request->reminder,
             'description' => $request->sections ?? [], 
             'user_id'     => Auth::id(),
+            'total_time'  => $total_time,
             'completed'   => 0,
             'is_schduled' => $request->start_date ? 1 : 0,
             'members'     => $request->members ?? []

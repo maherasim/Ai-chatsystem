@@ -3,6 +3,9 @@
 @section('content')
 
 <style>
+    #timeToday{
+        display:flex;
+    }
     body {
         overflow-x: hidden;
     }
@@ -46,7 +49,7 @@
         transition: opacity 0.2s ease-in-out;
     }
 
-
+    
     /* Stack both icons centered */
     .task-icon-link img {
         position: absolute;
@@ -110,6 +113,10 @@
         border:solid 1px #62c728ff;
 
     }
+
+    .selection{
+        color:#64748b;
+    }
     
 
 @media screen and (max-width: 767px) {
@@ -118,18 +125,51 @@
     }
 }
 
-.reminder-btn {
+.btn-plus{
+    background-color: #22c55e;
+  border: 1px solid #22c55e;
+  color: #FFF;
+}
+.btn-plus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.btn-minus{
+    background-color: #FD3A55;
+  border: 1px solid #FD3A55;
+  color: #FFF;
+
+}
+.btn-minus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.reminder-btn, .time-btn {
     border: none;
     background-color: white;
     color: #64748b;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 12px;
+    width: 80px;;
 }
 .reminder-btn.active {
     background-color: #22c55e;
     color: white;
 }
+
+.time-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
 
 #countdown{
     padding-bottom:10px;
@@ -191,6 +231,10 @@
   transform: translateX(-50%);
   font-size: 12px; /* smaller label */
   color: #666;
+}
+.dropdown .fa-eye{
+    border:dashed 2px;
+    padding:3px;
 }
 </style>
 
@@ -360,6 +404,7 @@
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
+   data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
@@ -558,6 +603,7 @@
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
+   data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
@@ -712,6 +758,7 @@
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
+   data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
@@ -869,7 +916,7 @@
                     <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <input name="title" id="editTitle" type="text" class="form-control"
+                                <input name="title" required id="editTitle" type="text" class="form-control"
                                     placeholder="ToDo Title" style="font-size: 13px; border-radius: 8px;">
                             </div>
                             
@@ -987,13 +1034,14 @@
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
                 <input type="hidden" name="priority" id="priorityHidden" value="low">
                 <input type="hidden" name="reminder" id="reminderHidden" value="6">
+                <input type="hidden" name="todaytime" id="timeHidden" value="2">
 
                 <!-- new changes -->
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Create new ToDo
                     <!-- Toggle Buttons -->
-                        <div style="background-color: white; background-color: #f9f9fb; border-radius: 12px; padding:8px; float:right; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                        <div style="background-color: white; background-color: #F2F2F2; border-radius: 12px; padding:8px; float:right; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
                             <button type="button" id="btnShared"
                                 onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
                                 style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
@@ -1011,6 +1059,151 @@
 
                 </h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
+
+                <!-- shared section starts -->
+                <div class="mb-3" id="selectUsersBox" style="background-color: #f9f9fb; border-radius:10px; padding:16px;">
+                    
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <select class="form-control selection">
+                                <option value="">Select Project</option>
+                                <option value="1">Project1</option>
+                                <option value="2">Project2</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control selection">
+                                <option value="">Select Team</option>
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <h5>Select Users</h5>
+                    <p>Project - Team</p>
+
+                    <div class="row">
+                        @foreach($users as $cuser)
+                            <div class="col-md-3 user_div invit-box text-center" 
+                                id="user_{{$cuser->_id}}" 
+                                data-user-id="{{$cuser->_id}}">
+                                <div class="invit-img">
+                                    <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                </div>
+                                <div class="invit-txt">{{$cuser->name}}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- shared section ends -->
+
+                <!-- Today/Scheduled Toggle + Date/Time Section -->
+                 <!-- schdule section ends -->
+                <div style="background-color: #f9f9fb; border-radius:10px;">
+                    <!-- Toggle Today/Scheduled -->
+                    <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
+                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px;">
+                            <button class="btnToday" id="btnToday" type="button"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                    document.getElementById('btnScheduled').style.color='#64748b';
+                    document.getElementById('timeRow').classList.add('justify-content-center1');"
+                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Today ToDo's
+                            </button>
+
+                            <button class="btnScheduled" id="btnScheduled" type="button"
+                                onclick="
+                    this.style.backgroundColor='#22c55e';
+                    this.style.color='white';
+                    document.getElementById('btnToday').style.backgroundColor='transparent';
+                    document.getElementById('btnToday').style.color='#64748b';
+                    document.getElementById('timeRow').classList.remove('justify-content-center');"
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                Scheduled ToDo's
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="gap-2 " style="padding:8px;">
+                            <div><b>Delivery Time</b></div>
+                            <p>Time to deliver the work</p>
+                    </div>
+                   
+
+                    
+
+                    <!-- selection of tody section -->
+                    <div class="d-flex1 gap-2 mb-3" id="timeToday" style="padding: 8px;";>
+                        <button type="button" class="time-btn active" data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn" data-value="3">3 Hour</button>
+                        <button type="button" class="time-btn" data-value="6">6 Hour</button>
+                        <button type="button" class="time-btn" data-value="9">9 Hour</button>
+                        <button type="button" class="time-btn" data-value="12">12 Hour</button>
+                    </div>
+                     
+                     <!-- selection of tody end -->
+                    <!-- Date & Time Inputs -->
+                    <div class="row g-2 align-items-center1 mb-3 justify-content-center1" id="timeRow" style="padding: 8px; display: none;">
+
+                        <!-- Start Date (hidden by default) -->
+                        <div class="col-md-4" id="startDateField" style="position: relative; ">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('dateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="date" id="dateInput"
+                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Start Time -->
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                
+                                <select name="start_time" id="startTimeSelect" 
+                                    style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
+                                    <option value="">Select Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                                
+                            </div>
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                
+                                <select name="end_time" id="endTimeSelect" 
+                                    style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
+                                    <option value="">Select Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- schdule section ends -->
 
                 <!-- ToDo Details -->
                 <!-- ToDo Details Section -->
@@ -1057,125 +1250,14 @@
                         <div class="col-md-12 d-flex align-items-center section-item">
                             <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
-                            <button type="button" class="btn btn-success btn-sm ms-2 add-btn">+</button>
+                            <button type="button" class="btn btn-plus btn-sm ms-2 add-btn"><span>+</span></button>
                         </div>
                     </div>
 
 
                 </div>
 
-                <div class="mb-3" id="selectUsersBox" style="background-color: #f9f9fb; border-radius:10px; padding:16px;">
-                    <h5>Select Users</h5>
-                    <p>Project - Team</p>
 
-                    <div class="row">
-                        @foreach($users as $cuser)
-                            <div class="col-md-3 user_div invit-box text-center" 
-                                id="user_{{$cuser->_id}}" 
-                                data-user-id="{{$cuser->_id}}">
-                                <div class="invit-img">
-                                    <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
-                                </div>
-                                <div class="invit-txt">{{$cuser->name}}</div>
-                            </div>
-                        @endforeach
-                    </div>
-
-
-                </div>
-
-
-                 
-
-                <!-- Today/Scheduled Toggle + Date/Time Section -->
-                <div style="background-color: #f9f9fb; border-radius:10px;">
-                    <!-- Toggle Today/Scheduled -->
-                    <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px;">
-                            <button id="btnToday" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='none';
-                    document.getElementById('timeRow').classList.add('justify-content-center1');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Today ToDo's
-                            </button>
-
-                            <button id="btnScheduled" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnToday').style.backgroundColor='transparent';
-                    document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='block';
-                    document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled ToDo's
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Date & Time Inputs -->
-                    <div class="row g-2 align-items-center1 mb-3 justify-content-center1" id="timeRow" style="padding: 8px; display: flex;">
-
-                        <!-- Start Date (hidden by default) -->
-                        <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
-                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('dateInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="date" id="dateInput"
-                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Start Time -->
-                        <div class="col-md-4" style="position: relative;">
-    <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-        
-        <select name="start_time" id="startTimeSelect" 
-            style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
-            <option value="">Select Time</option>
-            @for ($h = 0; $h < 24; $h++)
-                @php $time = sprintf("%02d:00", $h); @endphp
-                <option value="{{ $time }}">{{ $time }}</option>
-                @php $time = sprintf("%02d:30", $h); @endphp
-                <option value="{{ $time }}">{{ $time }}</option>
-            @endfor
-        </select>
-        
-    </div>
-</div>
-
-<!-- End Time -->
-<div class="col-md-4" style="position: relative;">
-    <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-        
-        <select name="end_time" id="endTimeSelect" 
-            style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
-            <option value="">Select Time</option>
-            @for ($h = 0; $h < 24; $h++)
-                @php $time = sprintf("%02d:00", $h); @endphp
-                <option value="{{ $time }}">{{ $time }}</option>
-                @php $time = sprintf("%02d:30", $h); @endphp
-                <option value="{{ $time }}">{{ $time }}</option>
-            @endfor
-        </select>
-    </div>
-</div>
-
-
-
-                    </div>
-                </div>
 
 
 
@@ -1387,7 +1469,7 @@
                         <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Todo Start & Deliver Time</h5>
 
                         <!-- Info Row -->
-                        <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 13px;">
+                        <div id="times_sch" class="d-flex1 flex-wrap justify-content-around text-center" style="font-size: 13px;">
                             
                             <div class="right-border">
                                 <div class="text-muted"><b>Scheduled</b></div>
@@ -1400,6 +1482,20 @@
                             </div>&nbsp;|&nbsp;
                             <div class="right-border">
                                 <div><span class="text-success">Deliver Time:</span> <span class="todo-deliver-time">--</span></div>
+                            </div>
+                        </div>
+                        <!-- Info Row -->
+                        <div id="times_today" class=" flex-wrap justify-content-around text-center" style="font-size: 13px;">
+                            
+                            <div class="right-border">
+                                <div class="text-muted"><b>Todays</b></div>
+                            </div>&nbsp;|&nbsp;
+                            
+                            <div class="right-border">
+                                <div><span class="text-success">Start & Delivery Date:</span> <span class="todo-deliver-date">{{ now()->toDateString() }}</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Total Time:</span> <span class="todo-total_time">2 hour</span></div>
                             </div>
                         </div>
 
@@ -1439,7 +1535,7 @@
                     <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
 
                         <!-- Edit the Project -->
-                        <div style="text-align: center; flex: 1;cursor:pointer; display:none;">
+                        <div style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
                             </div>
@@ -2574,6 +2670,19 @@ document.querySelectorAll('.reminder-btn').forEach(btn => {
     });
 });
 
+document.querySelectorAll('.time-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // reset all
+        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+        // activate clicked
+        this.classList.add('active');
+        // update hidden input
+        document.getElementById('timeHidden').value = this.dataset.value;
+    });
+});
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const membersSelect = document.getElementById("members");
@@ -2625,7 +2734,7 @@ document.addEventListener("DOMContentLoaded", function () {
             div.innerHTML = `
                 <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
                        style="font-size: 13px; background-color: white; border-radius: 8px;">
-                <button type="button" class="btn btn-danger btn-sm ms-2 remove-btn">-</button>
+                <button type="button" class="btn btn-minus btn-sm ms-2 remove-btn"><span>-</span></button>
             `;
             wrapper.appendChild(div);
         }
@@ -2648,7 +2757,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("remid").value = dataid;
             
-
             let title       = this.dataset.title;
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
@@ -2666,8 +2774,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (timerInterval) clearInterval(timerInterval);
 
             function updateTimer() {
-        const now = new Date().getTime();
-        const distance = endDateTime - now;
+            const now = new Date().getTime();
+            const distance = endDateTime - now;
 
         if (distance <= 0) {
             document.getElementById("days").innerText = 0;
@@ -2717,11 +2825,31 @@ document.addEventListener("DOMContentLoaded", function () {
     updateTimer();
     timerInterval = setInterval(updateTimer, 60000);
 
-            modal.querySelector(".todo-start-date").innerText = formatDate(startDate);
-            // Deliver → start_time
-            modal.querySelector(".todo-deliver-date").innerText = startTime || "--";
-            // Deliver Time → end_time
-            modal.querySelector(".todo-deliver-time").innerText = endTime || "--";
+            let today = new Date().toISOString().split("T")[0];
+
+            if (startDate === today) {
+               
+                //show times_today
+                document.getElementById("times_today").style.display = "flex";
+                document.getElementById("times_sch").style.display = "none";
+
+                let tottime       = this.dataset.total;
+                    
+                modal.querySelector(".todo-total_time").innerText = tottime + " Hours";
+
+            }else{
+                
+                document.getElementById("times_sch").style.display = "flex";
+                document.getElementById("times_today").style.display = "none";
+                
+                // show times_sch
+                modal.querySelector(".todo-start-date").innerText = formatDate(startDate);
+                // Deliver → start_time
+                modal.querySelector(".todo-deliver-date").innerText = startTime || "--";
+                // Deliver Time → end_time
+                modal.querySelector(".todo-deliver-time").innerText = endTime || "--";
+
+            }
 
             // Set title & description
             modal.querySelector(".todo-title").innerText = title;
@@ -2780,6 +2908,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             });
         });
+    });
+});
+
+document.querySelectorAll(".btnScheduled").forEach(btn => {
+    btn.addEventListener("click", function() {
+        document.getElementById("timeRow").style.display = "flex";
+        document.getElementById("timeToday").style.display = "none";
+    });
+});
+
+document.querySelectorAll(".btnToday").forEach(btn => {
+    btn.addEventListener("click", function() {
+        document.getElementById("timeRow").style.display = "none";
+        document.getElementById("timeToday").style.display = "flex";
     });
 });
 
