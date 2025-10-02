@@ -524,8 +524,8 @@
                                                 Project Manager
                                             </strong>
                                             <div class="d-flex justify-content-center mt-1">
-                                                <img src="{{ URL::asset('/build/img/groups/group-01.jpg') }}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; border-radius: 50%;" />
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px; margin-left: 8px;" />
+
                                             </div>
                                         </div>
 
@@ -537,12 +537,8 @@
                                             </strong>
                                             <div class="d-flex justify-content-center mt-1"
                                                 style="margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/groups/group-01.jpg') }}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{ URL::asset('/build/img/groups/group-01.jpg') }}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                <img src="{{ URL::asset('/build/img/groups/group-01.jpg') }}"
-                                                    style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px; margin-left: 8px;" />
+
                                             </div>
                                         </div>
                                     </div>
@@ -897,7 +893,7 @@
             <div class="card p-3 shadow-sm mb-3"
             style="border-radius: 12px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif;">
             <h6 class="mb-2" style="font-weight: 600; color: #2e3a59;">Project Description :</h6>
-            <div id="offcanvasProjectDescription" style="font-size: 13px; color: #6c757d; white-space: pre-wrap;">-</div>
+            <div id="offcanvasProjectDescription" style="font-size: 16px; color: #6c757d; white-space: pre-wrap;">-</div>
         </div>
 
 
