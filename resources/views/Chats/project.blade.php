@@ -816,77 +816,11 @@
                 <h6 class="mb-3" style="font-weight: 600; color: #2e3a59;">Project Progress :</h6>
 
                 <!-- Responsive Row -->
-                <div class="row g-3">
-                    <!-- Left Half -->
-                    <div class="col-12 col-md-6">
-                        <div style="border-radius:10px;background-color:white;" class="p-2">
-                            <!-- Stats -->
-                            <div class="d-flex justify-content-between text-center mb-2 flex-wrap">
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Tickets</div>
-                                    <div style="font-size: 12px; color: #6c757d;">#1 of #05</div>
-                                </div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Total Tasks</div>
-                                    <div style="font-size: 12px; color: #6c757d;">#05</div>
-                                </div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Days Left</div>
-                                    <div style="font-size: 12px; color: #6c757d;">#05</div>
-                                </div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600; font-size: 13px; color: #2e3a59;">Status</div>
-                                    <div style="font-size: 12px; color: #6c757d;">75%</div>
-                                </div>
-                            </div>
-
-                            <!-- Progress Bar -->
-                            <div class="progress mx-2"
-                                style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                <div class="progress-bar"
-                                    style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Half -->
-                    <div class="col-12 col-md-6">
-                        <div style="border-radius:10px;background-color:white;" class="p-2">
-                            <!-- Section Labels -->
-                            <div class="d-flex justify-content-between flex-wrap mb-2 px-2"
-                                style="font-size: 13px; font-weight: 600; color: #2e3a59;">
-                                <span>Section#1 75%</span>
-                                <span>Section#2 75%</span>
-                                <span>Section#3 75%</span>
-
-                            </div>
-
-                            <!-- Section Progress Bars -->
-                            <div class="d-flex justify-content-between align-items-center gap-2 px-2 mb-2 flex-wrap">
-                                <div class="progress"
-                                    style="flex: 1; min-width: 70px; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                    <div class="progress-bar"
-                                        style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                </div>
-                                <div class="progress"
-                                    style="flex: 1; min-width: 70px; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                    <div class="progress-bar"
-                                        style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                </div>
-                                <div class="progress"
-                                    style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                    <div class="progress-bar"
-                                        style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                </div>
-                                <div class="progress"
-                                    style="flex: 1; min-width: 70px; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                    <div class="progress-bar"
-                                        style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-center align-items-center" style="min-height: 120px; background: #fff; border-radius: 10px;">
+                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
+                    <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                 </div>
+
             </div>
 
             <!-- Project Description Section -->
@@ -918,7 +852,7 @@
                     <div class="w-100 d-flex justify-content-center align-items-center" style="min-height: 80px;">
                         <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
                         <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
-                    </div>
+                            </div>
                 </div>
             </div>
 
@@ -933,7 +867,7 @@
                     style="background: #fff; border-radius: 10px; min-height: 100px;">
                     <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
                     <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
-                </div>
+                            </div>
 
                 
 
@@ -947,7 +881,7 @@
                     <div class="w-100 d-flex justify-content-center align-items-center" style="min-height: 60px;">
                         <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
                         <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
-                    </div>
+                                    </div>
                 </div>
             </div>
             <!-- documents -->
@@ -961,12 +895,12 @@
                 <div class="d-flex justify-content-center align-items-center mb-2 p-3" style="background: #fff; border-radius: 10px; min-height: 100px;">
                     <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
                     <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
-                </div>
+                                </div>
 
                 
 
-            </div>
-           
+                    </div>
+
 
             {{-- kam ayega --}}
 

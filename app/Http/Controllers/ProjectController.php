@@ -84,8 +84,55 @@ class ProjectController extends Controller
             }
         }
 
-        // Generate a unique human-readable project code if not provided, e.g., PRJ-20241002-ABCDE
-        $generatedCode = $validated['code'] ?? ('PRJ-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 5)));
+        // Generate a unique code like XY-1000 where XY are first & last letters of title
+        $generatedCode = $validated['code'] ?? null;
+        if ($generatedCode === null || trim($generatedCode) === '') {
+            $title = (string) ($validated['title'] ?? 'Project');
+            // Extract first and last alphabetic letters; fallback to first/last char if no letters
+            $firstLetter = null;
+            if (preg_match('/[A-Za-z]/', $title, $m, 0, 0)) {
+                // find first alpha
+                preg_match('/[A-Za-z]/', $title, $m);
+                $firstLetter = $m[0];
+            }
+            $lastLetter = null;
+            if (preg_match('/[A-Za-z](?!.*[A-Za-z])/', $title, $m)) {
+                $lastLetter = $m[0];
+            }
+            if ($firstLetter === null) {
+                $firstLetter = mb_substr($title, 0, 1) ?: 'P';
+            }
+            if ($lastLetter === null) {
+                $lastLetter = mb_substr($title, -1) ?: 'R';
+            }
+            $prefix = strtoupper($firstLetter . $lastLetter);
+
+            // Determine next incremental number per prefix, starting at 1001
+            $base = 1001;
+            // Match any separator after prefix (space or dash), digits are extracted below
+            $existingCodes = Project::where('code', 'like', $prefix . '%')->pluck('code')->all();
+            $maxNum = null;
+            foreach ($existingCodes as $codeVal) {
+                if (!is_string($codeVal)) continue;
+                if (stripos($codeVal, $prefix . '-') !== 0) continue;
+                $numPart = preg_replace('/[^0-9]/', '', substr($codeVal, strlen($prefix) + 1) ?: '');
+                if ($numPart !== '' && ctype_digit($numPart)) {
+                    $n = (int) $numPart;
+                    if ($maxNum === null || $n > $maxNum) $maxNum = $n;
+                }
+            }
+            $nextNumber = ($maxNum === null) ? $base : ($maxNum + 1);
+            // Use space separator as requested: e.g., "LM 1001"
+            $candidate = $prefix . ' ' . (string) $nextNumber;
+            // Ensure uniqueness guard
+            $guard = 0;
+            while (Project::where('code', $candidate)->exists() && $guard < 1000) {
+                $nextNumber++;
+                $candidate = $prefix . ' ' . (string) $nextNumber;
+                $guard++;
+            }
+            $generatedCode = $candidate;
+        }
 
         $project = Project::create([
             'title' => $validated['title'],
