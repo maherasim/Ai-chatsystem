@@ -366,6 +366,9 @@ function confirmDelete(deleteUrl, userName) {
                     <div class="row g-2">
                         
                         @foreach($users as $user)
+                        @if((strtolower($user->type ?? '') === 'member') && (strtolower($user->email ?? '') === 'admin@gmail.com'))
+                        @continue
+                        @endif
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
