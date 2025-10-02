@@ -658,16 +658,7 @@
                                             $sectionAll = (array) ($project->sections ?? []);
                                             $sectionSlice = array_slice($sectionAll, 0, 3);
                                         @endphp
-                                        @if (!empty($sectionSlice))
-                                        <div id="sec-tags-{{$pid}}" class="d-flex justify-content-center gap-1 mb-3 flex-nowrap">
-                                            @foreach ($sectionSlice as $sectionTag)
-                                            <div class="px-1 py-1"
-                                                style="background: #f4f4f4; border-radius: 999px; font-size: 11px; color: #e53935; font-weight: 500; white-space: nowrap;">
-                                                {{ $sectionTag['name'] ?? 'Section' }}
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                        @endif
+                                       
                                         <!-- Section Titles -->
                                         @if (!empty($sectionSlice))
                                         <div id="sec-titles-{{$pid}}" class="d-flex justify-content-between px-1"
