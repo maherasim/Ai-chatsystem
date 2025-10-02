@@ -688,10 +688,10 @@
                                        
                                         <!-- Section Titles -->
                                         @if (!empty($sectionSlice))
-                                        <div id="sec-titles-{{$pid}}" class="d-flex justify-content-between px-1"
-                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+                                        <div id="sec-titles-{{$pid}}" class="d-flex px-1"
+                                            style="font-size: 13px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif; gap: 8px; white-space: nowrap;">
                                             @foreach ($sectionSlice as $section)
-                                            <span>{{ $section['name'] ?? 'Section' }} {{ (int) ($project->progress_percent ?? 0) }}%</span>
+                                            <span style="flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: center; white-space: nowrap;">{{ $section['name'] ?? 'Section' }} {{ (int) ($project->progress_percent ?? 0) }}%</span>
                                             @endforeach
                                         </div>
 
