@@ -206,7 +206,7 @@ class TodoController extends Controller
         'end_time'    => $endTime,
         'is_private'  => $request->is_private,
         'project'     => $request->project,
-        'priority'    => $request->priority,
+        'priority'    => $request->priority ?? "low",
         'reminder'    => $request->reminder,
         'description' => $request->sections ?? [], 
         'user_id'     => Auth::id(),

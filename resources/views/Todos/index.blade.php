@@ -10,6 +10,15 @@
         overflow-x: hidden;
     }
 
+    .bg-white{
+        background:#fff;
+        padding: 5px;
+  text-align: center;
+  margin: auto;
+  display: block !important;
+  border-radius: 5px;
+    }
+
     .dropdown-menu {
         max-height: 300px;
         /* or adjust */
@@ -902,14 +911,14 @@
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;">
 
-            <!-- Close Button -->
+            <!-- Close Button 
             <button type="button"
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                ×
-            </button>
+                × removed close
+            </button>-->
 
             <form id="editForm" method="POST">
                 @csrf
@@ -1029,7 +1038,7 @@
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative;">
 
-            <!-- Close Button -->
+            <!-- Close Button 
             <button type="button"
                 data-bs-dismiss="modal"
                 aria-label="Close"
@@ -1037,8 +1046,8 @@
                 onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                ×
-            </button>
+                × removed closed
+            </button>-->
 
             <form action="{{ route('todos.store') }}" method="POST">
                 @csrf
@@ -1056,7 +1065,7 @@
                 <!-- Header -->
                 <h5  style="font-weight: 600; color: #1e293b;"><span id="todo_heading">Create new ToDo</span>
                     <!-- Toggle Buttons -->
-                        <div style="background-color: white; background-color: #F2F2F2; border-radius: 12px; padding:8px; float:right; border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
+                        <div style="padding:8px 5px; background-color: white; background-color: #F2F2F2; border-radius: 12px; float:right; border-radius: 10px; display: flex; gap: 8px;">
                             <button type="button" id="btnShared"
                                 onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
                                 style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
@@ -1115,10 +1124,10 @@
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
                  <!-- schdule section ends -->
-                <div style="background-color: #f9f9fb; border-radius:10px;">
+                <div style="background-color: #f9f9fb; border-radius:10px; padding:8px; margin-bottom:10px;">
                     <!-- Toggle Today/Scheduled -->
                     <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px;">
+                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px; background:#fff;">
                             <button class="btnToday" id="btnToday" type="button"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
@@ -1152,7 +1161,7 @@
                     
 
                     <!-- selection of tody section -->
-                    <div class="d-flex1 gap-2 mb-3" id="timeToday" style="padding: 8px;";>
+                    <div class="d-flex1 gap-2 mb-3 bg-white" id="timeToday" style="padding: 8px;";>
                         <button type="button" class="time-btn time-btn-2 active" data-value="2">2 Hour</button>
                         <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
                         <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
@@ -1240,12 +1249,12 @@
                     <!-- Inputs -->
                     <div class="row g-2">
                         <div class="col-md-6">
-                            <input id="todo_name" name="title" type="text" class="form-control" placeholder="ToDo Title"
+                            <input id="todo_name" name="title" required type="text" class="form-control" placeholder="ToDo Title"
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex gap-2">
-                                <button class="priority" type="button" id="priorityLow" >Low</button>
+                            <div class="d-flex1 gap-2 bg-white">
+                                <button class="priority active" type="button" id="priorityLow" >Low</button>
                                 <button class="priority" type="button" id="priorityMiddle" >Middle</button>
                                 <button class="priority" type="button" id="priorityHigh" >High</button>
                             </div>
@@ -1320,7 +1329,7 @@
                                 <button type="button" id="reminder24" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">2 Hour</button>
                                 <button type="button" id="reminder3" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">3 Hour</button>
                                 <button type="button" id="reminder4" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">4 Hour</button>-->
-                                <div class="d-flex gap-2">
+                                <div class="d-flex " style="background:#fff; border-radius: 5px; gap: 3px; padding: 5px;">
                                     <button type="button" class="reminder-btn rem-30 active" data-value="30">30 Min</button>
                                     <button type="button" class="reminder-btn rem-60" data-value="60">60 Min</button>
                                     <button type="button" class="reminder-btn rem-120" data-value="120">2 Hour</button>
@@ -1332,12 +1341,22 @@
                     </div>
                 </div>
 
-                <!-- Create Button -->
-                <div class="text-center">
-                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
-                        Create
+              
+
+                <div class="text-center" style="margin-top: 15px;">
+                    <button class="btn" type="button" data-bs-dismiss="modal"
+                        style="background-color: #f7f7f7; color:#64748b; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                        Close
+                    </button>
+                    <button class="btn" 
+                        style="background-color: #f7f7f7; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                        Save & Close
                     </button>
                 </div>
+
+
+
+
             </div>
 </form>
         </div>
