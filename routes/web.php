@@ -70,6 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/tickets/projects/{projectId}/sections', [TicketController::class, 'addSection'])->name('tickets.project.sections.add');
     Route::post('/api/tickets', [TicketController::class, 'store'])->name('tickets.store');
     Route::get('/api/tickets', [TicketController::class, 'list'])->name('tickets.list');
+    Route::get('/api/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::put('/api/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();

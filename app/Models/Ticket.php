@@ -13,6 +13,7 @@ class Ticket extends Model
     protected $collection = 'tickets';
 
     protected $fillable = [
+        'code',              // human-friendly ticket code like TK-1001
         'project_id',        // reference to Project _id
         'project_title',     // denormalized for quick display
         'section_name',      // section within project
@@ -32,6 +33,10 @@ class Ticket extends Model
         'end_date'   => 'datetime',
         'assignees'  => 'array',
     ];
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 }
 
 

@@ -13,7 +13,7 @@ class TicketController extends Controller
     public function index()
     {
         $headers = \App\Models\Setting::all();
-        $tickets = Ticket::orderByDesc('created_at')->paginate(12);
+        $tickets = Ticket::with('project')->orderByDesc('created_at')->paginate(12);
         return view('Chats.ticket', compact('headers', 'tickets'));
     }
 
@@ -69,9 +69,11 @@ class TicketController extends Controller
         $data = $tickets->map(function ($t) {
             return [
                 'id' => (string) ($t->_id ?? $t->id),
+                'code' => $t->code,
                 'project_title' => $t->project_title,
                 'section_name' => $t->section_name,
                 'title' => $t->title,
+                'description' => $t->description,
                 'status' => $t->status,
                 'start_date' => optional($t->start_date)?->toDateString(),
                 'end_date' => optional($t->end_date)?->toDateString(),
@@ -135,7 +137,33 @@ class TicketController extends Controller
             return response()->json(['message' => 'Project not found'], 404);
         }
 
+        // Generate next ticket code TK-1001, TK-1002, ...
+        $base = 1001;
+        $prefix = 'TK-';
+        $maxNum = 0;
+        try {
+            // Only read codes starting with TK-
+            $existing = Ticket::where('code', 'like', $prefix . '%')->pluck('code')->all();
+            foreach ($existing as $c) {
+                if (!is_string($c)) continue;
+                if (stripos($c, $prefix) !== 0) continue;
+                $num = (int) preg_replace('/[^0-9]/', '', substr($c, strlen($prefix)) ?: '0');
+                if ($num > $maxNum) $maxNum = $num;
+            }
+        } catch (\Throwable $e) {
+            $maxNum = 0;
+        }
+        $nextNumber = $maxNum > 0 ? ($maxNum + 1) : $base;
+        $codeCandidate = $prefix . (string) $nextNumber;
+        $guard = 0;
+        while (Ticket::where('code', $codeCandidate)->exists() && $guard < 1000) {
+            $nextNumber++;
+            $codeCandidate = $prefix . (string) $nextNumber;
+            $guard++;
+        }
+
         $ticket = Ticket::create([
+            'code' => $codeCandidate,
             'project_id' => (string) ($project->_id ?? $project->id),
             'project_title' => $project->title,
             'section_name' => $validated['section_name'] ?? null,
@@ -157,6 +185,71 @@ class TicketController extends Controller
             'message' => 'Ticket created successfully',
             'ticket' => $ticket,
         ], 201);
+    }
+
+    public function show(string $id)
+    {
+        $ticket = Ticket::with('project')->find($id);
+        if (!$ticket) {
+            return response()->json(['message' => 'Ticket not found'], 404);
+        }
+        return response()->json([
+            'id' => (string) ($ticket->_id ?? $ticket->id),
+            'code' => $ticket->code,
+            'project_id' => (string) $ticket->project_id,
+            'project_title' => $ticket->project_title,
+            'section_name' => $ticket->section_name,
+            'title' => $ticket->title,
+            'description' => $ticket->description,
+            'status' => $ticket->status,
+            'priority' => $ticket->priority,
+            'start_date' => optional($ticket->start_date)?->toDateString(),
+            'end_date' => optional($ticket->end_date)?->toDateString(),
+            'reminder_hours' => $ticket->reminder_hours,
+            'assignees' => $ticket->assignees,
+        ]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $ticket = Ticket::find($id);
+        if (!$ticket) {
+            return response()->json(['message' => 'Ticket not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'project_id' => 'required|string',
+            'section_name' => 'nullable|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'nullable|in:in_progress,in_hold,delayed,completed',
+            'priority' => 'nullable|in:low,medium,high',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'reminder_hours' => 'nullable|integer|min:0|max:720',
+            'assignees' => 'nullable|array',
+            'assignees.*' => 'string',
+        ]);
+
+        $project = Project::find($validated['project_id']);
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+
+        $ticket->project_id = (string) ($project->_id ?? $project->id);
+        $ticket->project_title = $project->title;
+        $ticket->section_name = $validated['section_name'] ?? null;
+        $ticket->title = $validated['title'];
+        $ticket->description = $validated['description'] ?? null;
+        $ticket->status = $validated['status'] ?? $ticket->status;
+        $ticket->priority = $validated['priority'] ?? $ticket->priority;
+        $ticket->start_date = $validated['start_date'] ?? null;
+        $ticket->end_date = $validated['end_date'] ?? null;
+        $ticket->reminder_hours = $validated['reminder_hours'] ?? null;
+        $ticket->assignees = $validated['assignees'] ?? $ticket->assignees;
+        $ticket->save();
+
+        return response()->json(['message' => 'Ticket updated successfully']);
     }
 }
 
