@@ -2655,7 +2655,7 @@
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
                                         onclick="document.getElementById('startDateInput').showPicker()"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="date" id="startDateInput"
+                                    <input type="date" id="startDateInput" min="{{ date('Y-m-d') }}"
                                         onchange="let d=new Date(this.value); if(this.value)document.getElementById('startDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
                                         style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
@@ -2671,7 +2671,7 @@
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
                                         onclick="document.getElementById('expiredDateInput').showPicker()"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="date" id="expiredDateInput"
+                                    <input type="date" id="expiredDateInput" min="{{ date('Y-m-d') }}"
                                         onchange="let d=new Date(this.value); if(this.value)document.getElementById('expiredDateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
                                         style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
@@ -2781,7 +2781,7 @@
         const saveCloseBtn = document.getElementById('saveCloseTicketBtn');
         const saveAddAnotherBtn = document.getElementById('saveAddAnotherTicketBtn');
 
-        // Helper to set active button style for grouped buttons
+        // Helper to set active button style for grouped buttons (generic, used for reminders)
         function setActive(groupSelector, activeAttribute, value) {
             const buttons = document.querySelectorAll(groupSelector);
             buttons.forEach(btn => {
@@ -2795,11 +2795,35 @@
             });
         }
 
+        // Priority-specific styling: Low (green), Medium (orange), High (red)
+        function setPriorityStyles() {
+            const buttons = document.querySelectorAll('[data-priority]');
+            buttons.forEach(btn => {
+                const level = btn.getAttribute('data-priority');
+                const isActive = (priorityHidden.value === level);
+                if (isActive) {
+                    if (level === 'low') {
+                        btn.style.backgroundColor = '#00C853';
+                        btn.style.color = 'white';
+                    } else if (level === 'medium') {
+                        btn.style.backgroundColor = '#F5A623';
+                        btn.style.color = 'white';
+                    } else if (level === 'high') {
+                        btn.style.backgroundColor = '#ED1C24';
+                        btn.style.color = 'white';
+                    }
+                } else {
+                    btn.style.backgroundColor = '#f0f0f0';
+                    btn.style.color = 'black';
+                }
+            });
+        }
+
         // Priority buttons
         document.querySelectorAll('[data-priority]')?.forEach(btn => {
             btn.addEventListener('click', () => {
                 priorityHidden.value = btn.getAttribute('data-priority');
-                setActive('[data-priority]', 'data-priority', priorityHidden.value);
+                setPriorityStyles();
             });
         });
 
@@ -2858,6 +2882,9 @@
             };
 
             try {
+                // Prevent double submit
+                saveCloseBtn?.setAttribute('disabled', 'disabled');
+                saveAddAnotherBtn?.setAttribute('disabled', 'disabled');
                 const resp = await fetch('/api/tickets', {
                     method: 'POST',
                     headers: {
@@ -2878,23 +2905,53 @@
                         // Reload to show session success alert
                         window.location.reload();
                     } else {
-                        // Inline success alert when staying in modal
-                        const banner = document.createElement('div');
-                        banner.className = 'alert alert-success alert-dismissible fade show';
-                        banner.style.borderRadius = '8px';
-                        banner.role = 'alert';
-                        banner.innerHTML = 'Ticket created successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                        document.querySelector('.content.main_content')?.prepend(banner);
+                        // Inline success alert inside modal (not closing)
+                        const modalBody = document.querySelector('#ticketModal .modal-body');
+                        if (modalBody) {
+                            const old = modalBody.querySelector('.ticket-success-banner');
+                            if (old) old.remove();
+                            const banner = document.createElement('div');
+                            banner.className = 'alert alert-success alert-dismissible fade show ticket-success-banner';
+                            banner.style.borderRadius = '8px';
+                            banner.role = 'alert';
+                            banner.innerHTML = 'Ticket created successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                            modalBody.prepend(banner);
+                            setTimeout(() => { try { banner.classList.remove('show'); banner.remove(); } catch(e) {} }, 3000);
+                        }
+                        // Reset form to create another
+                        projectSelect.value = '';
+                        sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+                        const titleEl = document.getElementById('ticketTitle');
+                        const descEl = document.getElementById('ticketDescription');
+                        if (titleEl) titleEl.value = '';
+                        if (descEl) descEl.value = '';
+                        const sd = document.getElementById('startDateInput');
+                        const ed = document.getElementById('expiredDateInput');
+                        const sdDisp = document.getElementById('startDateDisplay');
+                        const edDisp = document.getElementById('expiredDateDisplay');
+                        if (sd) sd.value = '';
+                        if (ed) ed.value = '';
+                        if (sdDisp) sdDisp.innerText = 'DD:MM:YYYY';
+                        if (edDisp) edDisp.innerText = 'DD:MM:YYYY';
+                        // Reset priority and reminder to defaults and styles
+                        priorityHidden.value = 'low';
+                        reminderHidden.value = '6';
+                        setPriorityStyles();
+                        setActive('[data-reminder]', 'data-reminder', reminderHidden.value);
+                        // Focus first field
+                        titleEl?.focus();
                     }
                     // Reset minimal fields
-                    document.getElementById('ticketTitle').value = '';
-                    document.getElementById('ticketDescription').value = '';
+                    // (already reset above when staying open)
                 } else {
                     const err = await resp.json();
                     alert(err?.message || 'Failed to create ticket');
                 }
             } catch (e) {
                 console.error('Failed to create ticket', e);
+            } finally {
+                saveCloseBtn?.removeAttribute('disabled');
+                saveAddAnotherBtn?.removeAttribute('disabled');
             }
         }
 
@@ -2909,6 +2966,8 @@
 
         // Initial load
         loadProjects();
+        // Initialize priority visual styles on first paint
+        setPriorityStyles();
     });
 </script>
 
