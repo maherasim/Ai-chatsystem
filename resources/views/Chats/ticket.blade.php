@@ -1583,9 +1583,9 @@
                             <p style="color: #888;">Set a reminder before expired</p>
                             <div class="d-flex  gap-2">
                                 <input type="hidden" id="ticketReminderHours" value="6">
-                                <button type="button" class="btn" data-reminder="6" style="background-color: #00C853; color: white;">6 Hr</button>
-                                <button type="button" class="btn" data-reminder="12" style="background-color: #f0f0f0;">12 Hr</button>
-                                <button type="button" class="btn" data-reminder="24" style="background-color: #f0f0f0;">24 Hr</button>
+                                <button type="button" class="btn" data-reminder="6" style="background-color: #00C853; color: white; white-space: nowrap;">6&nbsp;Hr</button>
+                                <button type="button" class="btn" data-reminder="12" style="background-color: #f0f0f0; white-space: nowrap;">12&nbsp;Hr</button>
+                                <button type="button" class="btn" data-reminder="24" style="background-color: #f0f0f0; white-space: nowrap;">24&nbsp;Hr</button>
                             </div>
                         </div>
 
