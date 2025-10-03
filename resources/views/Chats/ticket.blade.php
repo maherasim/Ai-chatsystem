@@ -1452,7 +1452,7 @@
                                                             <span style="color: #4CAF50;">● 0</span>
                                                         </div>
                     
-                                                        <div class="d-flex align-items-center gap-2">
+                                                        {{-- <div class="d-flex align-items-center gap-2">
                                                             <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
                                                             <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
                                                                 data-bs-toggle="modal" data-bs-target="#ticketModal"
@@ -1460,7 +1460,7 @@
                                                                 data-project-id="{{ $pt->project_id }}"
                                                                 @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
                                                             >Edit</button>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             @endforeach
