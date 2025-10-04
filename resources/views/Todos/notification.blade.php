@@ -378,7 +378,7 @@
                                 <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                 <div>
                                     <div style="font-weight: bold;">{{$todo->user->name}}</div>
-                                    <small style="color: gray;">{{$todo->created_at}}</small>
+                                    <small style="color: gray;">{{ $todo->created_at->format('d:m:y - H:i') }}</small>
                                 </div>
                             </div>
                             <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>

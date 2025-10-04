@@ -107,12 +107,25 @@ class TodoController extends Controller
         // Shared
        // $sharedTodos = Todo::where('user_id', $user->id)->where('is_private', "0")->get();
         
-        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)
-        ->where('completed', '!=', '1')
+        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')
         ->where(function($q) {
         $q->where('is_removed', 0)
           ->orWhereNull('is_removed');
-    })->get();
+    })->get()->map(function ($todo) {
+                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+
+                $todo->members_data = $members->map(function ($u) {
+                    return [
+                        'id'    => $u->_id,
+                        'name'  => $u->name,
+                        'image' => $u->profile_image
+                            ? asset("storage/" . $u->profile_image)
+                            : asset("build/img/default.png"),
+                    ];
+                });
+
+                return $todo;
+            });
 
         return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting'));
     }
@@ -182,20 +195,20 @@ class TodoController extends Controller
         ]);
 
         $startTime = $request->start_time;
+        $endDate = $request->start_date ?? date('Y-m-d');
         $endTime = $request->end_time;
         $total_time = 0;
 
         if ($request->start_date === null) {
             // If today, calculate based on todaytime input
-            $hoursToAdd = (int) $request->todaytime; // e.g. 2,3,6
+            $hoursToAdd =  (int) $request->todaytime; // e.g. 2,3,6
             $startTime = now()->format('H:i');
             $endTime = now()->addHours($hoursToAdd)->format('H:i');
+            $endDate = now()->addHours($hoursToAdd)->format('Y-m-d');
             $total_time = $request->todaytime;
         }
 
         $todoid = $request->todo_id;
-
-       
 
         $todo = Todo::updateOrCreate(
     ['_id' => $todoid], // condition to match
@@ -203,6 +216,7 @@ class TodoController extends Controller
         'title'       => $request->title,
         'start_date'  => $request->start_date ?? date('Y-m-d'),
         'start_time'  => $startTime,
+        'end_date'    => $endDate,
         'end_time'    => $endTime,
         'is_private'  => $request->is_private,
         'project'     => $request->project,

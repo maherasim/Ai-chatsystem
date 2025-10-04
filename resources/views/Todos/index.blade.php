@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Str;
+@endphp
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
 @section('content')
@@ -13,10 +16,64 @@
     .bg-white{
         background:#fff;
         padding: 5px;
-  text-align: center;
-  margin: auto;
-  display: block !important;
-  border-radius: 5px;
+        text-align: center;
+        margin: auto;
+       /* display: block !important;*/
+        border-radius: 5px;
+    }
+
+    .priority-txt{
+        color: #4caf50; 
+        font-weight: 500; 
+        background:#fff; 
+        padding:2px 5px; 
+        border-radius:5px;
+    }
+    .priority-txt.middle{
+        color: #fbbc05;
+    }
+    .priority-txt.high{
+        color: #e64241;
+    }
+    .priority-icon{
+        width: 8px; 
+        height: 8px; 
+        background-color: #4caf50; 
+        border-radius: 50%; 
+        display:inline-block;
+    }
+
+    .priority-txt.middle .priority-icon{
+        background-color: #fbbc05;
+    }
+    .priority-txt.high .priority-icon{
+        background-color: #e64241;
+    }
+
+    .drop-menu{
+        width: 35px; 
+        height: 35px; 
+        background-color: #dddddd; 
+        border-radius: 10px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        cursor: pointer;
+    }
+    .drop-icon{
+        width: 24px; 
+        height: 24px; 
+        border: 1.8px solid #7a7a9d; 
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+    }
+    .dorp-btns{
+        gap: 5px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
     }
 
     .dropdown-menu {
@@ -58,6 +115,10 @@
     .priority.active{
         background-color: rgb(34, 197, 94);
         color: white;
+    }
+
+    .card .card-body{
+        padding:0.8rem;
     }
 
 
@@ -254,10 +315,7 @@
   font-size: 12px; /* smaller label */
   color: #666;
 }
-.dropdown .fa-eye, .dropdown .fa-edit{
-    border:dashed 2px;
-    padding:3px;
-}
+
 </style>
 
 
@@ -370,23 +428,34 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
-                                                <small style="color: gray;">{{$todo->created_at}}</small>
+                                                <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
+
+                                         <span class="priority-txt {{$todo->priority}}">
+                                            <span class="priority-icon" ></span>
+                                            {{$todo->priority}}
+                                        </span>
                                         <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
                                         <!-- edit delete starts -->
 
                                         <div class="dropdown">
-    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
-        ⋮
-    </div>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
-        
-            <button type="submit" class="btn btn-sm btn-icon"   >
-                <a href="javascript:void(0);" 
+    
+<div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                                <div class="drop-icon">
+                                                    <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                </div>
+                                            </div>
+
+
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:80px; padding-top: 10px; overflow:hidden; text-align:center; position:absolute; right:0;">
+        <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+        <div class="dorp-btns">
+            <button type="submit" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+                <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;" 
                class="dropdown-item text-danger" 
                onclick="
         Swal.fire({
@@ -409,19 +478,23 @@
             }
         });
     ">
-               <i class="fa fa-trash"></i> 
+               <!--<i class="fa fa-trash"></i> -->
+               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 22px; cursor: pointer;">
                 </a>
                 
             </button>
 
-            <button type="button" class="btn btn-sm btn-icon "   >
-                <a href="javascript:void(0);" 
+            <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+                <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;"  
                class="dropdown-item text-primary editTodo" 
                data-id="{{ $todo->id }}"
                 data-title="{{ $todo->title }}"
                 data-description=""
                 data-start_date="{{ $todo->start_date }}"
                 data-start_time="{{ $todo->start_time }}"
+                data-end_date="{{ $todo->end_date }}"
                 data-end_time="{{ $todo->end_time }}"
                 data-is_private="{{ $todo->is_private }}"
                 data-priority="{{ $todo->priority }}"
@@ -430,19 +503,23 @@
                 data-sections='@json($todo->description)'
                 data-members='@json($todo->members_data)'
                     data-bs-toggle="modal" data-bs-target="#todomodel">
-               <i class="fa fa-edit"></i>  
+               
+               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 22px; cursor: pointer;" />
             </a>
 
             </button>
 
-            <button type="button" class="btn btn-sm btn-icon "   >
-                <a href="javascript:void(0);" 
+            <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-13px;"   >
+                <a href="javascript:void(0);"  style="padding-top:0px; "
                class="dropdown-item text-primary viewTodo" 
                data-id="{{ $todo->id }}"
    data-title="{{ $todo->title }}"
    data-description=""
    data-start_date="{{ $todo->start_date }}"
    data-start_time="{{ $todo->start_time }}"
+   data-end_date="{{ $todo->end_date }}"
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
@@ -451,13 +528,13 @@
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
-               <i class="fa fa-eye"></i>  
+               
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
             </a>
 
             </button>
-
+</div>
             
-
 </div>
 </div>
 
@@ -495,33 +572,42 @@
                                             </div>
                                         </div>
 
-
                                         <!-- Description -->
                                         <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
+
+                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
                                             
                                         </p>
 
                                         <!-- Date & Priority Row -->
-                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="text-success fw-semibold">Start: {{$todo->start_time}}</span>
+                                        <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                 <span></span>
                                                 <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:</span>
-                                                <span style="color: #f44336;">Today</span>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                                <span style="color: #4caf50; font-weight: 500;">{{$todo->priority}}</span>
+                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                
+                                                <span></span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                            Need Counte
-                                        </button>
+                                        
+                                        @php
+                                            // Combine date and time
+                                            $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time);
+                                        @endphp
+
+                                        @if ($endDateTime->isPast())
+                                            <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
+                                                Need Counter
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -569,24 +655,33 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
-                                                <small style="color: gray;">{{$todo->created_at}}</small>
+                                                <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
+
+                                        <span class="priority-txt">
+                                            <span class="priority-icon" ></span>
+                                            {{$todo->priority}}
+                                        </span>
                                         
 
 <!-- edit delete starts -->
 
                                         <div class="dropdown">
-    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
-        ⋮
-    </div>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
-        
-            <button type="submit" class="btn btn-sm btn-icon"   >
-                <a href="javascript:void(0);" 
+    <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                                <div class="drop-icon">
+                                                    <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                </div>
+                                            </div>
+
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:80px; padding-top: 10px; overflow:hidden; text-align:center; position:absolute; right:0;">
+        <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>    
+            <div class="dorp-btns">
+            <button type="submit" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+                <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;" 
                class="dropdown-item text-danger" 
                onclick="
         Swal.fire({
@@ -609,19 +704,23 @@
             }
         });
     ">
-               <i class="fa fa-trash"></i> 
+               <!--<i class="fa fa-trash"></i> -->
+               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 22px; cursor: pointer;">
                 </a>
                 
             </button>
 
-             <button type="button" class="btn btn-sm btn-icon "   >
-                <a href="javascript:void(0);" 
+            <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+                <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;"  
                class="dropdown-item text-primary editTodo" 
                data-id="{{ $todo->id }}"
                 data-title="{{ $todo->title }}"
                 data-description=""
                 data-start_date="{{ $todo->start_date }}"
                 data-start_time="{{ $todo->start_time }}"
+                data-end_date="{{ $todo->end_date }}"
                 data-end_time="{{ $todo->end_time }}"
                 data-is_private="{{ $todo->is_private }}"
                 data-priority="{{ $todo->priority }}"
@@ -630,19 +729,23 @@
                 data-sections='@json($todo->description)'
                 data-members='@json($todo->members_data)'
                     data-bs-toggle="modal" data-bs-target="#todomodel">
-               <i class="fa fa-edit"></i>  
+               
+               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 22px; cursor: pointer;" />
             </a>
 
             </button>
-            
-            <button type="button" class="btn btn-sm btn-icon "    >
-                <a href="javascript:void(0);" 
+
+            <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-13px;"   >
+                <a href="javascript:void(0);"  style="padding-top:0px; "
                class="dropdown-item text-primary viewTodo" 
                data-id="{{ $todo->id }}"
    data-title="{{ $todo->title }}"
    data-description=""
    data-start_date="{{ $todo->start_date }}"
    data-start_time="{{ $todo->start_time }}"
+   data-end_date="{{ $todo->end_date }}"
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
@@ -651,10 +754,15 @@
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
-               <i class="fa fa-eye"></i>  
+               
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
             </a>
 
             </button>
+</div>
+             
+            
+            
 
            
 
@@ -686,24 +794,24 @@
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            
+                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
                                         </p>
 
                                         <!-- Date & Priority Row -->
                                         
                                     </div>
 
-                                    <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 9px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="text-success fw-semibold">Start:</span>
-                                                <span>{{$todo->start_date}}</span>
+                                    <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                <span></span>
                                                 <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:</span>
-                                                <span>{{$todo->end_time}}</span>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                                <span style="color: #4caf50; font-weight: 500;">{{$todo->priority}}</span>
+                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                
+                                                <span></span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
                                             </div>
                                         </div>
                                     <!-- Footer Button -->
@@ -754,30 +862,39 @@
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
-                                                <small style="color: gray;">{{$todo->created_at}}</small>
+                                                <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
                                         <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
                                         <!-- edit delete starts -->
 
-                                        <div class="dropdown">
-    <div class="dropdown-toggle1" id="todoMenu{{$todo->id}}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px; cursor: pointer; margin-right:12px; ">
-        ⋮
-    </div>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:40px; overflow:hidden; text-align:center;">
-        
+                                        <span class="priority-txt">
+                                            <span class="priority-icon" ></span>
+                                            {{$todo->priority}}
+                                        </span>
 
-            <button type="button" class="btn btn-sm btn-icon "   >
-                <a href="javascript:void(0);" 
+                                        <div class="dropdown">
+        <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                                <div class="drop-icon">
+                                                    <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                </div>
+                                            </div>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:80px; padding-top: 10px; overflow:hidden; text-align:center; position:absolute; right:0;">
+        <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+        <div class="dorp-btns">  
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; "   >
+                <a href="javascript:void(0);"  style="padding-top:0px; "
                class="dropdown-item text-primary viewTodo" 
                data-id="{{ $todo->id }}"
    data-title="{{ $todo->title }}"
    data-description=""
    data-start_date="{{ $todo->start_date }}"
    data-start_time="{{ $todo->start_time }}"
+   data-end_date="{{ $todo->end_date }}"
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
@@ -786,7 +903,8 @@
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
-               <i class="fa fa-eye"></i>  
+               
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
             </a>
 
             </button>
@@ -799,6 +917,7 @@
     data-description=""
     data-start_date="{{ $todo->start_date }}"
     data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
     data-end_time="{{ $todo->end_time }}"
     data-is_private="{{ $todo->is_private }}"
     data-project="{{ $todo->project }}"
@@ -811,7 +930,7 @@
 
             </button>
 
-
+</div>
             
 
 </div>
@@ -847,21 +966,21 @@
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            
+                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
                                         </p>
                                         </div>
                                         <!-- Date & Priority Row -->
-                                        <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 9px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="text-success fw-semibold">Start:</span>
-                                                <span>{{$todo->start_date}}</span>
+                                        <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
+                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                <span></span>
                                                 <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:</span>
-                                                <span>{{$todo->end_time}}</span>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                                <span style="color: #4caf50; font-weight: 500;">{{$todo->priority}}</span>
+                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                
+                                                <span></span>
+                                                <span class="text-muted">|</span>
+                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
                                             </div>
                                         </div>
                                     
@@ -1547,7 +1666,7 @@
                             
                             <div class="col-md-3 invit-box">
                                 <div class="invit-img">
-                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 40px; height: 40px;">
+                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                 </div>
                                 <div class="invit-txt">User name</div>
                             </div>
@@ -2892,8 +3011,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("remid").value = dataid;
 
-            //todo_id
-            
             let title       = this.dataset.title;
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
@@ -2902,16 +3019,20 @@ document.addEventListener("DOMContentLoaded", function () {
             let sections    = JSON.parse(this.dataset.sections || "[]");
 
             let startDate   = this.dataset.start_date || "";
+            let endDate   = this.dataset.end_date || "";
             let startTime   = this.dataset.start_time || "";
             let endTime     = this.dataset.end_time || "";
 
-            let endDateTime = new Date(`${startDate} ${endTime}`).getTime();
+            let endDateTime = new Date(`${endDate} ${endTime}`).getTime();
             const CIRC = 157; 
 
             if (timerInterval) clearInterval(timerInterval);
 
             function updateTimer() {
-            const now = new Date().getTime();
+
+                const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
+                const serverDate = new Date(serverTimestamp);
+            const now = serverDate; // new Date().getTime();
             const distance = endDateTime - now;
 
         if (distance <= 0) {
@@ -2993,8 +3114,22 @@ document.addEventListener("DOMContentLoaded", function () {
            // modal.querySelector(".todo-description").innerText = description || "No description.";
 
             // Priority
+           // let priorityBadge = modal.querySelector(".todo-priority");
+          //  priorityBadge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> ${priority}`;
+
             let priorityBadge = modal.querySelector(".todo-priority");
-            priorityBadge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> ${priority}`;
+
+            let color = "green"; // default
+            if (priority.toLowerCase() === "middle") {
+                color = "orange";
+            } else if (priority.toLowerCase() === "high") {
+                color = "red";
+            }
+
+            priorityBadge.innerHTML = `
+            <i class="bi bi-circle-fill me-1" style="font-size: 8px; color: ${color};"></i> 
+            <span style="color: ${color}; font-weight: 600;">${priority}</span>
+            `;
 
             // Private vs Shared
             let typeBadge = modal.querySelector(".todo-type");
@@ -3012,10 +3147,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             let members = JSON.parse(this.dataset.members || "[]");
+            
             let membersContainer = modal.querySelector(".todo-members");
             membersContainer.innerHTML = ""; // clear old ones
 
-            if (members.length) {
+            if (members && members.length) {
                 members.forEach(m => {
                     let div = document.createElement("div");
                     div.classList.add("col-md-3", "invit-box");
@@ -3080,6 +3216,15 @@ function formatDate(dateStr) {
     if (isNaN(d)) return dateStr; // fallback if invalid
     return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
 }
+
+document.addEventListener("click", function (event) {
+    // close all open dropdowns if click is outside
+    document.querySelectorAll(".dropdown-menu").forEach(menu => {
+        if (!menu.previousElementSibling.contains(event.target) && !menu.contains(event.target)) {
+            menu.style.display = "none";
+        }
+    });
+});
 
         </script>
         @endsection

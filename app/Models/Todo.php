@@ -21,6 +21,7 @@ class Todo extends Model
         'is_schduled',
         'start_date',
         'start_time',
+        'end_date',
         'end_time',
         'is_private',
         'project',        
