@@ -389,7 +389,6 @@
                             <!-- Title & Avatars -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
                                     <div>
                                         <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                         @if($todo->is_private == 0)

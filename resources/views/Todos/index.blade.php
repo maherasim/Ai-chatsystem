@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
     body {
         overflow-x: hidden;
     }
+    .font-12{
+        font-size:12px;
+    }
 
     .bg-white{
         background:#fff;
@@ -20,6 +23,21 @@ use Illuminate\Support\Str;
         margin: auto;
        /* display: block !important;*/
         border-radius: 5px;
+    }
+
+    .selection-btn{
+        background: #f8fafc;
+        color: #566a7f;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 6px 18px;
+        white-space: nowrap;
+    }
+    .selection-btn.active{
+        background: #32b768;
+        border: 1px solid #32b768;
+        color: white;
     }
 
     .priority-txt{
@@ -53,12 +71,15 @@ use Illuminate\Support\Str;
     .drop-menu{
         width: 35px; 
         height: 35px; 
-        background-color: #dddddd; 
+        /*background-color: #dddddd; */
         border-radius: 10px; 
         display: flex; 
         align-items: center; 
         justify-content: center; 
         cursor: pointer;
+    }
+    .dropdown-item:hover{
+        background:unset !important;
     }
     .drop-icon{
         width: 24px; 
@@ -387,43 +408,52 @@ use Illuminate\Support\Str;
 
                             <div>
                                 <h3 style="margin: 0;">TOday ToDo's</h3>
-                                <strong>Total ToDo's: {{count($todayTodos)}}</strong>
+                                <strong>Total ToDo's: <span id="today_count" class="today_count">{{count($todayTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
                                 <button class="btn btn-danger addtodo" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
                                     Add TODO
                                 </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                
+                                <button type="button" cid="all" class="btn selection-btn active typ_btn" >
                                     All
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="private" class="btn selection-btn  typ_btn" >
                                     Private
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="shared" class="btn selection-btn  typ_btn" >
                                     Shared
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                
+                                <button type="button" cid="all" class="btn selection-btn active todo_btn" >
                                     All
                                 </button>
-                                <button type="button" class="btn" style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="low" class="btn selection-btn todo_btn" >
                                     Low
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="middle" class="btn selection-btn todo_btn" >
                                     Middle
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="high" class="btn selection-btn todo_btn" >
                                     High
                                 </button>
+
                             </div>
 
                         </div>
 
                         <!-- CARD CONTAINER -->
-                        <div class="row g-3">
+                        <div class="row g-3 todo_div">
 
                             @forelse($todayTodos as $todo)
-                            <div class="col-12 col-sm-6 col-lg-3">
+                            @php
+                                $todotyp = "shared";
+                                if($todo->is_private == "1"){
+                                    $todotyp = "private";
+                                }
+                            @endphp
+                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
@@ -479,7 +509,7 @@ use Illuminate\Support\Str;
         });
     ">
                <!--<i class="fa fa-trash"></i> -->
-               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 22px; cursor: pointer;">
+               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 25px; cursor: pointer;">
                 </a>
                 
             </button>
@@ -504,7 +534,7 @@ use Illuminate\Support\Str;
                 data-members='@json($todo->members_data)'
                     data-bs-toggle="modal" data-bs-target="#todomodel">
                
-               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 22px; cursor: pointer;" />
+               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 25px; cursor: pointer;" />
             </a>
 
             </button>
@@ -529,7 +559,7 @@ use Illuminate\Support\Str;
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
                
-               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 25px; cursor: pointer;" />
             </a>
 
             </button>
@@ -547,7 +577,7 @@ use Illuminate\Support\Str;
                                         <!-- Title & Avatars -->
                                         <div class="d-flex justify-content-between align-items-center mb-4">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
+                                                
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                                     
@@ -581,7 +611,7 @@ use Illuminate\Support\Str;
 
                                         <!-- Date & Priority Row -->
                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                            <div class="d-flex align-items-center gap-1 text-center font-12" >
                                                 <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                 <span></span>
                                                 <span class="text-muted">|</span>
@@ -621,36 +651,34 @@ use Illuminate\Support\Str;
                         <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
                             <div>
                                 <h3 style="margin: 0;">Private ToDo's</h3>
-                                <strong>Total private ToDo's: {{count($privateTodos)}}</strong>
+                                <strong>Total private ToDo's: <span id="private_count">{{count($privateTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
 
 
-                                <button type="button" class="btn"
-                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                               <button type="button" cid="all" class="btn selection-btn active private_btn" >
                                     All
                                 </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                <button type="button" cid="low" class="btn selection-btn private_btn" >
                                     Low
                                 </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; mar">
+                                <button type="button" cid="middle" class="btn selection-btn private_btn" >
                                     Middle
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="high" class="btn selection-btn private_btn" >
                                     High
                                 </button>
+                                
 
                             </div>
 
                         </div>
                         <!-- CARD CONTAINER -->
-                        <div class="row g-3">
+                        <div class="row g-3 private_div">
                             <!-- Start of Card 1 -->
                              @forelse($privateTodos as $todo)
-                            <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
@@ -705,7 +733,7 @@ use Illuminate\Support\Str;
         });
     ">
                <!--<i class="fa fa-trash"></i> -->
-               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 22px; cursor: pointer;">
+               <img src="https://admin.onlinesystems.info/build/img/delete1.svg" alt="Delete" style="width: 25px; cursor: pointer;">
                 </a>
                 
             </button>
@@ -730,7 +758,7 @@ use Illuminate\Support\Str;
                 data-members='@json($todo->members_data)'
                     data-bs-toggle="modal" data-bs-target="#todomodel">
                
-               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 22px; cursor: pointer;" />
+               <img src="https://admin.onlinesystems.info/build/img/Edit1.svg" alt="Edit" style="width: 25px; cursor: pointer;" />
             </a>
 
             </button>
@@ -755,7 +783,7 @@ use Illuminate\Support\Str;
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
                
-               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 25px; cursor: pointer;" />
             </a>
 
             </button>
@@ -781,8 +809,7 @@ use Illuminate\Support\Str;
                                         <!-- Title & Avatars -->
                                         <div class="d-flex justify-content-between align-items-center mb-4">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                                <div>
+                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                                     <small class="text-muted">
                                                         <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
@@ -802,7 +829,7 @@ use Illuminate\Support\Str;
                                     </div>
 
                                     <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                            <div class="d-flex align-items-center gap-1 text-center  font-12" >
                                                 <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                 <span></span>
                                                 <span class="text-muted">|</span>
@@ -828,25 +855,22 @@ use Illuminate\Support\Str;
                         <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
                             <div>
                                 <h3 style="margin: 0;">Shared ToDo's</h3>
-                                <strong>Total private ToDo's: {{count($sharedTodos)}}</strong>
+                                <strong>Total Shared ToDo's: <span id="shared_count">{{count($sharedTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
 
 
-                                <button type="button" class="btn"
-                                    style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                <button type="button" cid="all" class="btn selection-btn active shared_btn" >
                                     All
                                 </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                <button type="button" cid="low" class="btn selection-btn shared_btn" >
                                     Low
                                 </button>
-                                <button type="button" class="btn"
-                                    style="background: #f8fafc;  color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
+                                <button type="button" cid="middle" class="btn selection-btn shared_btn" >
                                     Middle
                                 </button>
-                                <button type="button" class="btn" style="background: #f8fafc; color: #566a7f; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
+                                <button type="button" cid="high" class="btn selection-btn shared_btn" >
                                     High
                                 </button>
 
@@ -854,10 +878,10 @@ use Illuminate\Support\Str;
 
                         </div>
                         <!-- CARD CONTAINER -->
-                        <div class="row g-3">
+                        <div class="row g-3 shared_div">
                             @forelse($sharedTodos as $todo)
                             <!-- Start of Card 1 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
@@ -904,7 +928,7 @@ use Illuminate\Support\Str;
    data-members='@json($todo->members_data)'
     data-bs-toggle="modal" data-bs-target="#inreject">
                
-               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 22px; cursor: pointer;" />
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 25px; cursor: pointer;" />
             </a>
 
             </button>
@@ -945,7 +969,6 @@ use Illuminate\Support\Str;
                                         <!-- Title & Avatars -->
                                         <div class="d-flex justify-content-between align-items-center mb-4">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
                                                 <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                                     <small class="text-muted">
@@ -971,7 +994,7 @@ use Illuminate\Support\Str;
                                         </div>
                                         <!-- Date & Priority Row -->
                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center" >
+                                            <div class="d-flex align-items-center gap-1 text-center  font-12" >
                                                 <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                 <span></span>
                                                 <span class="text-muted">|</span>
@@ -3225,6 +3248,167 @@ document.addEventListener("click", function (event) {
         }
     });
 });
+
+
+
+document.querySelectorAll(".private_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        // remove active class from all buttons
+        document.querySelectorAll(".private_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        let cid = this.getAttribute("cid");
+        let items = document.querySelectorAll(".private_div .col-12");
+
+        items.forEach(item => {
+            if (cid === "all" || item.classList.contains(cid)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+        updateCount("private_div", "#private_count");
+    });
+});
+
+document.querySelectorAll(".shared_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        // remove active class from all buttons
+        document.querySelectorAll(".shared_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        let cid = this.getAttribute("cid");
+        let items = document.querySelectorAll(".shared_div .col-12");
+
+        items.forEach(item => {
+            if (cid === "all" || item.classList.contains(cid)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        
+        updateCount("shared_div", "#shared_count");
+    });
+});
+
+
+/*
+function updateCount(containerClass, countSelector) {
+   
+    let visibleItems = document.querySelectorAll(
+        `.${containerClass} .col-12:not([style*='display: none'])`
+    );
+
+    document.querySelector(countSelector).innerHTML = visibleItems.length;
+   
+}
+
+function updateCountTyp(containerClass, countSelector) {
+   
+    let visibleItems = document.querySelectorAll(
+        `.${containerClass} .col-12:not([style*='display: none'])`
+    );
+
+    document.querySelector(countSelector).innerHTML = visibleItems.length;
+   
+}
+document.querySelectorAll(".todo_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        // remove active class from all buttons
+        document.querySelectorAll(".todo_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        let cid = this.getAttribute("cid");
+        let items = document.querySelectorAll(".todo_div .col-12");
+
+        items.forEach(item => {
+            if (cid === "all" || item.classList.contains(cid)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        updateCount("todo_div", "#today_count");
+    });
+});
+
+document.querySelectorAll(".typ_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        let filter = this.getAttribute("cid"); // all, private, shared
+
+        // reset active button
+        document.querySelectorAll(".typ_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        // filter items
+        document.querySelectorAll(".todo_div .col-12").forEach(item => {
+            if (filter === "all") {
+                item.style.display = "";
+            } else if (item.classList.contains(filter)) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        updateCountTyp("todo_div", "#today_count");
+
+    });
+});
+*/
+
+let activePriority = "all";
+let activeType = "all";
+
+function applyFilters() {
+    let items = document.querySelectorAll(".todo_div .col-12");
+    let visibleCount = 0;
+
+    items.forEach(item => {
+        let matchPriority = (activePriority === "all" || item.classList.contains(activePriority));
+        let matchType = (activeType === "all" || item.classList.contains(activeType));
+
+        if (matchPriority && matchType) {
+            item.style.display = "";
+            visibleCount++;
+        } else {
+            item.style.display = "none";
+        }
+    });
+
+    document.querySelector("#today_count").innerHTML = visibleCount;
+}
+
+// Priority filter buttons
+document.querySelectorAll(".todo_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        document.querySelectorAll(".todo_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        activePriority = this.getAttribute("cid"); // low/middle/high/all
+        applyFilters();
+    });
+});
+
+// Type filter buttons
+document.querySelectorAll(".typ_btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        document.querySelectorAll(".typ_btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        activeType = this.getAttribute("cid"); // private/shared/all
+        applyFilters();
+    });
+});
+
+// Run once at page load
+applyFilters();
+
+
+
 
         </script>
         @endsection
