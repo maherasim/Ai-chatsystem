@@ -12,9 +12,7 @@
 <div class="sidebar-menu">
        <div class="logo">
            <a href="{{ url('/home') }}" class="logo-normal">
-               <img src="{{ $setting && $setting->app_logo 
-                ? asset($setting->app_logo) 
-                : asset('build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
+               <img src="https://admin.onlinesystems.info/storage/uploads/settings/app_logo_1758731350.png" alt="Logo" style="max-width: 70% !important;">
            </a>
        </div>
        <div class="menu-wrap">
