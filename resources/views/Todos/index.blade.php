@@ -475,7 +475,21 @@ use Illuminate\Support\Str;
                                 }
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
-                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                <div class="card viewTodo" data-id="{{ $todo->id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-total="{{ $todo->total_time }}"
+    data-sections='@json($todo->description)'
+    data-members='@json($todo->members_data)'
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
@@ -501,7 +515,7 @@ use Illuminate\Support\Str;
                                         <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
                                         <!-- edit delete starts -->
 
-                                        <div class="dropdown">
+                                        <div class="dropdown" style="display:none;">
     
 <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                                 <div class="drop-icon">
@@ -672,7 +686,7 @@ use Illuminate\Support\Str;
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="justify-content: center;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -741,7 +755,21 @@ use Illuminate\Support\Str;
                             <!-- Start of Card 1 -->
                              @forelse($privateTodos as $todo)
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
-                                <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                <div class="card viewTodo" data-id="{{ $todo->id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-total="{{ $todo->total_time }}"
+    data-sections='@json($todo->description)'
+    data-members='@json($todo->members_data)'
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex align-items-center">
@@ -929,7 +957,7 @@ use Illuminate\Support\Str;
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                <div class="d-flex align-items-center gap-1 text-center font-12"  style="justify-content: center;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -984,7 +1012,21 @@ use Illuminate\Support\Str;
                             @forelse($sharedTodos as $todo)
                             <!-- Start of Card 1 -->
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
-                                <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                <div class="card viewTodo" data-id="{{ $todo->id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-total="{{ $todo->total_time }}"
+    data-sections='@json($todo->description)'
+    data-members='@json($todo->members_data)'
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
                                         <div class="d-flex">
@@ -1130,7 +1172,7 @@ use Illuminate\Support\Str;
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                <div class="d-flex align-items-center gap-1 text-center font-12"  style="justify-content: center;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
