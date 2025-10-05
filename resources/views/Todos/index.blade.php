@@ -242,7 +242,7 @@ use Illuminate\Support\Str;
         border-radius: 50%;   /* Make circular */
         border: 2px solid #fff;
         object-fit: cover;
-        margin-left: -10px;   /* Creates the overlap */
+        margin-left: -14px;   /* Creates the overlap */
         box-shadow: 0 0 2px rgba(0,0,0,0.3);
     }
 
