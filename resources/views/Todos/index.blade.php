@@ -53,6 +53,9 @@ use Illuminate\Support\Str;
     .priority-txt.high{
         color: #e64241;
     }
+    .priority-txt.schduled{
+        color: #1b75bc;
+    }
     .priority-icon{
         width: 8px; 
         height: 8px; 
@@ -228,6 +231,24 @@ use Illuminate\Support\Str;
         display:block !important;
     }
 }
+
+.overlap-container {
+        display: flex;
+    }
+
+    .overlap-container img {
+        width: 30px;          /* Adjust size */
+        height: 30px;
+        border-radius: 50%;   /* Make circular */
+        border: 2px solid #fff;
+        object-fit: cover;
+        margin-left: -10px;   /* Creates the overlap */
+        box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    }
+
+    .overlap-container img:first-child {
+        margin-left: 0;
+    }
 
 .btn-plus{
     background-color: #22c55e;
@@ -469,6 +490,14 @@ use Illuminate\Support\Str;
                                             <span class="priority-icon" ></span>
                                             {{$todo->priority}}
                                         </span>
+
+                                        @if ($todo->end_date == date('Y-m-d'))
+                                            <span class="priority-txt high">Today</span>
+                                        @elseif ($todo->end_date > date('Y-m-d'))
+                                            <span class="priority-txt schduled">Scheduled</span>
+                                        @endif
+
+                                        
                                         <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
                                         <!-- edit delete starts -->
 
@@ -585,6 +614,8 @@ use Illuminate\Support\Str;
                                                         <small class="text-muted">
                                                             <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
                                                         </small>
+                            
+
                                                     @else
                                                         <small class="text-muted">
                                                             <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
@@ -595,9 +626,13 @@ use Illuminate\Support\Str;
                                             <!-- Avatars -->
                                             <div class="d-flex" style="margin-left: auto;">
                                                 <div style="position: relative; width: 60px; height: 30px;">
-                                                   <!-- <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />-->
+                                                    @if($todo->is_private == 0)
+                                                        <div class="overlap-container">
+                                                            @foreach($todo->members_data as $mem)
+                                                            <img src="{{ $mem['image']}}">
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -605,22 +640,49 @@ use Illuminate\Support\Str;
                                         <!-- Description -->
                                         <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
 
-                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
+
+                                            @foreach($todo->description as $des)
+
+                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
+                                                </div>
+                                            @endforeach
+
+                                            
                                             
                                         </p>
+    
 
                                         <!-- Date & Priority Row -->
-                                        <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center font-12" >
-                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                        <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
+                                            
                                                 
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
+                                                        Today</span></span>
+                                                    <span></span>
+                                                    
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br>
+                                                        <span style="color: #1c274c;">
+                                                            {{$todo->total_time}} Hours
+                                                        </span>
+                                                    </span>
                                                 
+                                                @else
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                    
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -650,8 +712,8 @@ use Illuminate\Support\Str;
                         <!-- private todo -->
                         <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
                             <div>
-                                <h3 style="margin: 0;">Private ToDo's</h3>
-                                <strong>Total private ToDo's: <span id="private_count">{{count($privateTodos)}}</span></strong>
+                                <h3 style="margin: 0;">Private & Shared ToDo's</h3>
+                                <strong>Own Private & Shared ToDo's: <span id="private_count">{{count($privateTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
@@ -694,6 +756,11 @@ use Illuminate\Support\Str;
                                             <span class="priority-icon" ></span>
                                             {{$todo->priority}}
                                         </span>
+                                        @if ($todo->end_date == date('Y-m-d'))
+                                            <span class="priority-txt high">Today</span>
+                                        @elseif ($todo->end_date > date('Y-m-d'))
+                                            <span class="priority-txt schduled">Scheduled</span>
+                                        @endif
                                         
 
 <!-- edit delete starts -->
@@ -789,11 +856,7 @@ use Illuminate\Support\Str;
             </button>
 </div>
              
-            
-            
-
-           
-
+   
 
 </div>
 </div>
@@ -817,29 +880,68 @@ use Illuminate\Support\Str;
                                                 </div>
                                             </div>
 
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <div style="position: relative; width: 60px; height: 30px;">
+                                                        @if($todo->is_private == 0)
+                                                            <div class="overlap-container">
+                                                                @foreach($todo->members_data as $mem)
+                                                                <img src="{{ $mem['image']}}">
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
+                                            @foreach($todo->description as $des)
+
+                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
+                                                </div>
+
+                                            @endforeach
                                         </p>
 
                                         <!-- Date & Priority Row -->
                                         
-                                    </div>
+                                    
 
-                                    <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center  font-12" >
-                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
+                                            
                                                 
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
+                                                        Today</span></span>
+                                                    <span></span>
+                                                    
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br>
+                                                        <span style="color: #1c274c;">
+                                                            {{$todo->total_time}} Hours
+                                                        </span>
+                                                    </span>
                                                 
+                                                @else
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                    
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
+                                                @endif
                                             </div>
+                                        </div>
                                         </div>
                                     <!-- Footer Button -->
 
@@ -854,8 +956,8 @@ use Illuminate\Support\Str;
                         <!-- shared todo -->
                         <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
                             <div>
-                                <h3 style="margin: 0;">Shared ToDo's</h3>
-                                <strong>Total Shared ToDo's: <span id="shared_count">{{count($sharedTodos)}}</span></strong>
+                                <h3 style="margin: 0;">Received ToDo's</h3>
+                                <strong>Received Shared ToDo's: <span id="shared_count">{{count($sharedTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
@@ -899,6 +1001,11 @@ use Illuminate\Support\Str;
                                             <span class="priority-icon" ></span>
                                             {{$todo->priority}}
                                         </span>
+                                        @if ($todo->end_date == date('Y-m-d'))
+                                            <span class="priority-txt high">Today</span>
+                                        @elseif ($todo->end_date > date('Y-m-d'))
+                                            <span class="priority-txt schduled">Scheduled</span>
+                                        @endif
 
                                         <div class="dropdown">
         <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
@@ -979,9 +1086,15 @@ use Illuminate\Support\Str;
                                             <!-- Avatars -->
                                             <div class="d-flex" style="margin-left: auto;">
                                                 <div style="position: relative; width: 60px; height: 30px;">
-                                                    <!--<img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                                    <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />-->
+                                                    <div style="position: relative; width: 60px; height: 30px;">
+                                                        @if($todo->is_private == 0)
+                                                            <div class="overlap-container">
+                                                                @foreach($todo->members_data as $mem)
+                                                                <img src="{{ $mem['image']}}">
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -989,24 +1102,48 @@ use Illuminate\Support\Str;
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            {{ Str::limit(implode(' ', (array) $todo->description), 70) }}
+                                           @foreach($todo->description as $des)
+
+                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
+                                                </div>
+
+                                            @endforeach
                                         </p>
-                                        </div>
+                                        
                                         <!-- Date & Priority Row -->
-                                        <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                            <div class="d-flex align-items-center gap-1 text-center  font-12" >
-                                                <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                             <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
+                                            
                                                 
-                                                <span></span>
-                                                <span class="text-muted">|</span>
-                                                <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
+                                                        Today</span></span>
+                                                    <span></span>
+                                                    
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br>
+                                                        <span style="color: #1c274c;">
+                                                            {{$todo->total_time}} Hours
+                                                        </span>
+                                                    </span>
                                                 
+                                                @else
+                                                <div class="d-flex align-items-center gap-1 text-center font-12" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                    
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
+                                                @endif
                                             </div>
                                         </div>
-                                    
+                                    </div>
 
                                     <!-- Footer Button -->
 
