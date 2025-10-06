@@ -5,6 +5,20 @@
 
 <style>
     /* Ensure base styles don't interfere */
+    .project-details {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.7s ease, opacity 0.6s ease;
+    }
+
+    .project-details.show {
+        opacity: 1;
+    }
+
+    .toggle-icon {
+        transition: transform 0.6s ease;
+    }
 
     .task-icon-link {
         position: relative;
@@ -135,7 +149,7 @@
 <!-- content -->
 <div class="content main_content">
 
-    
+
 
     <!-- Left Sidebar Menu -->
     <div style="visibility:visible;">
@@ -169,7 +183,7 @@
                 @endif
                 <div class="chat-body chat-page-group">
                     <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
-                       
+
                         <!-- Left Side -->
                         <div>
                             <h3 style="margin: 0;">Ticket Overview</h3>
@@ -303,9 +317,9 @@
                             <strong>Total Shared ToDO's: 10</strong>
                         </div>
                     </div>
-                   
-                   
- 
+
+
+
                     <div class="mb-2">
                         <div class="row g-3">
                             <!-- 1-->
@@ -410,7 +424,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                       <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -481,7 +495,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -572,7 +586,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -643,7 +657,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -714,7 +728,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -805,7 +819,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -876,7 +890,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -1037,7 +1051,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -1108,7 +1122,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                       <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -1179,7 +1193,7 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                          <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
@@ -1240,7 +1254,7 @@
                             </div>
                         </div>
                     </div>
- 
+
                     <!--  current task -->
                     <div class="project-succes pt-3 pb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
 
@@ -1285,202 +1299,247 @@
                         </script>
 
                     </div>
-                   
+
                     <div class="mb-2">
                         <div class="row g-3">
                             @php
-                                $ticketsByProject = ($tickets instanceof \Illuminate\Pagination\LengthAwarePaginator || $tickets instanceof \Illuminate\Pagination\Paginator)
-                                    ? $tickets->getCollection()->groupBy('project_id')
-                                    : collect($tickets)->groupBy('project_id');
+                            $ticketsByProject = ($tickets instanceof \Illuminate\Pagination\LengthAwarePaginator || $tickets instanceof \Illuminate\Pagination\Paginator)
+                            ? $tickets->getCollection()->groupBy('project_id')
+                            : collect($tickets)->groupBy('project_id');
                             @endphp
-                    
+
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
-                                @php $ticket = $projectTickets->first(); @endphp
-                    
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                    
-                                        <!-- Top Section -->
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <!-- Progress Circle -->
-                                            <div style="width: 50px; height: 50px; position: relative;">
-                                                <svg width="50" height="50">
-                                                    <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                            <stop offset="0%" stop-color="#ff7f00" />
-                                                            <stop offset="100%" stop-color="#fcd34d" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <circle cx="25" cy="25" r="21" stroke="#d1d1d1" stroke-width="6" fill="none" />
-                                                    <circle
-                                                        cx="25"
-                                                        cy="25"
-                                                        r="21"
-                                                        stroke="url(#grad)"
-                                                        stroke-width="6"
-                                                        fill="none"
-                                                        stroke-dasharray="131.88"
-                                                        stroke-dashoffset="131.88"
-                                                        stroke-linecap="round"
-                                                        transform="rotate(-90 25 25)" />
-                                                </svg>
-                                            </div>
-                    
-                                            <!-- Logo -->
-                                            <div class="text-center" style="flex-grow: 1;">
-                                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" class="rounded-circle mb-1"
-                                                    style="height: 55px; width: 55px; object-fit: cover;" alt="Project Logo">
-                                            </div>
-                    
-                                            <!-- Ticket Icon -->
-                                            <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
-                                                style="height: 25px; width: 25px; cursor:pointer"
-                                                alt="ticket"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#ticketModal"
-                                                data-project-id="{{ $ticket->project_id }}"
-                                                @if(!empty($ticket->section_name)) data-section-name="{{ $ticket->section_name }}" @endif>
+                            @php $ticket = $projectTickets->first(); @endphp
+
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
+                                    <!-- Top Section -->
+                                    <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
+
+                                        <!-- Progress Circle -->
+                                        <div style="width: 50px; height: 50px; position: relative;">
+                                            <svg width="50" height="50">
+                                                <defs>
+                                                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" stop-color="#ff7f00" />
+                                                        <stop offset="100%" stop-color="#fcd34d" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <circle cx="25" cy="25" r="21" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle
+                                                    cx="25"
+                                                    cy="25"
+                                                    r="21"
+                                                    stroke="url(#grad)"
+                                                    stroke-width="6"
+                                                    fill="none"
+                                                    stroke-dasharray="131.88"
+                                                    stroke-dashoffset="39.56" <!-- 70% progress -->
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 25 25)" />
+                                            </svg>
+                                            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:11px; font-weight:600;">70%</span>
                                         </div>
-                    
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex align-items-center mb-2" style="flex: 1;">
+
+                                        <!-- Middle Card -->
+                                        <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
+
+                                            <!-- Green Flag -->
+                                            <div style="background-color: #D1FAE5; border-radius: 6px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="16" height="16">
+                                            </div>
+
+                                            <!-- Logo (center) -->
+                                            <div class="text-center" style="flex-grow: 1;">
+                                                <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
+                                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                </div>
+                                                <div>
+                                                    <h5 class="text-center"
+                                                        style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">
+                                                        {{ $ticket->project->title }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+
+                                            <!-- Priority -->
+                                            <div style="background: #ffffff; padding: 3px 8px; border-radius: 12px; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                                <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                <span style="color: #4caf50; font-size: 12px; font-weight: 500;">Low</span>
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- Ticket Icon -->
+                                        <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
+                                            style="height: 25px; width: 25px; cursor: pointer;"
+                                            alt="ticket"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#ticketModal"
+                                            data-project-id="{{ $ticket->project_id }}"
+                                            @if(!empty($ticket->section_name)) data-section-name="{{ $ticket->section_name }}" @endif>
+                                    </div>
+                                    <!-- Project Stats -->
+                                    <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
+                                        style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;">
+                                        <div style="color: #10b981;"><strong>Tickets:</strong>
+                                            <p>{{ $projectTickets->count() }}</p>
+                                        </div>
+                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                                        <div style="color: #10b981;"><strong>Tasks:</strong>
+                                            <p> <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></p>
+                                        </div>
+                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                                        <div style="color: #10b981;"><strong>Begining:</strong>
+                                            <p>{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y-m-d') }}</p>
+                                        </div>
+                                        <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                                        <div style="color: #10b981;"><strong>End:</strong>
+                                            <p> {{ \Carbon\Carbon::parse($ticket->end_date)->format('Y-m-d') }} </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <!-- <div class="d-flex align-items-center mb-2" style="flex: 1;">
                                             <div class="progress"
                                                 style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                 <div class="progress-bar" role="progressbar"
                                                     style="width: 0%; background-color: #4fc3f7;"></div>
                                             </div>
                                             <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
+                                        </div> -->
+
+                                    <!-- Title and Toggle -->
+                                    <div class="d-flex justify-content-between align-items-center toggle-btn"
+                                        style="cursor: pointer;">
+
+
+
+                                        <div style="display: flex; align-items: center; width: 100%; margin: 8px 0;">
+                                            <hr style="flex: 1; height: 2.5px; border: none; 
+                                             background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
+                                               margin: 0;">
+                                          <img src="{{ asset('build/img/up_arrow.svg') }}" 
+                                          alt="toggle-icon" width="18" height="18"
+                                          style="margin-left: 6px; transition: transform 0.3s;"
+                                          class="toggle-icon">
+                                     
                                         </div>
-                    
-                                        <!-- Title and Toggle -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2"
-                                            style="cursor: pointer;"
-                                            onclick="var details=this.nextElementSibling;
-                                                     var icon=this.querySelector('.toggle-icon');
-                                                     if(details.style.display==='block'||details.style.display===''){
-                                                         details.style.display='none';
-                                                         icon.src='{{ URL::asset('/build/img/top_arrow.svg') }}';
-                                                     }else{
-                                                         details.style.display='block';
-                                                         icon.src='{{ URL::asset('/build/img/below-arrow.svg') }}';
-                                                     }">
-                                            <div></div>
-                                            <div>
-                                                <h5 class="text-center"
-                                                    style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">
-                                                    {{ $ticket->project->title }}
-                                                </h5>
+
+                                    </div>
+
+                                    <!-- Expandable Project Details -->
+                                    <div class="project-details" style="display: block;">
+                                        <!-- Description Row -->
+                                        <!-- <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
+                                            style="background-color: #f1f5f9; border-radius: 10px;">
+                                            <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
+                                                <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16" height="16" alt="flag">
                                             </div>
                                             <div>
-                                                <img src="{{ URL::asset('/build/img/below-arrow.svg') }}" alt="toggle-icon"
-                                                    width="20" height="20" style="margin-left: auto;" class="toggle-icon">
+                                                <small style="color: #64748b; font-size: 14px;">{{ $ticket->description }}</small>
                                             </div>
-                                        </div>
-                    
-                                        <!-- Expandable Project Details -->
-                                        <div class="project-details" style="display: block;">
-                                            <!-- Description Row -->
-                                            <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                                style="background-color: #f1f5f9; border-radius: 10px;">
-                                                <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                    <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16" height="16" alt="flag">
-                                                </div>
-                                                <div>
-                                                    <small style="color: #64748b; font-size: 14px;">{{ $ticket->description }}</small>
-                                                </div>
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                    <small style="font-size: 12px; color: #22c55e;">{{ $ticket->priority }}</small>
+                                            <div class="d-flex align-items-center gap-1">
+                                                <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                <small style="font-size: 12px; color: #22c55e;">{{ $ticket->priority }}</small>
+                                            </div>
+                                        </div> -->
+
+
+
+                                        <!-- Ticket Items -->
+                                        @foreach ($projectTickets as $pt)
+                                        <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
+                                            <!-- Ticket Header -->
+                                            <div class="d-flex justify-content-between flex-wrap">
+                                                
+                                                <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
+                                                <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $pt->section_name }}</div>
+                                                <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $pt->title }}</div>
+                                                <div class="ticket-edit-trigger"
+                                                    data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                                    data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                                                    data-project-id="{{ $pt->project_id }}"
+                                                    @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
+                                                    title="Edit ticket" style="cursor: pointer;">
+                                                    <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;"
+                                                         data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                                         data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                                                         data-project-id="{{ $pt->project_id }}"
+                                                         @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif>
                                                 </div>
                                             </div>
-                    
-                                            <!-- Project Stats -->
-                                            <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
-                                                style="font-size: 10px; background-color: #f1f5f9; border-radius: 10px; gap: 3px; padding: 8px 10px;">
-                                                <div style="color: #1e293b;"><strong>Tickets:</strong> {{ $projectTickets->count() }}</div>
-                                                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                                <div style="color: #1e293b;"><strong>Tasks:</strong> <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></div>
-                                                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                                <div style="color: #10b981;"><strong>Start:</strong> {{ \Carbon\Carbon::parse($ticket->start_date)->format('Y-m-d') }}</div>
-                                                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                                <div style="color: #ef4444;"><strong>End:</strong> {{ \Carbon\Carbon::parse($ticket->end_date)->format('Y-m-d') }}</div>
+
+                                            <!-- Task Info -->
+                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                                                <span style="margin-right: 5px; font-weight: bold;"> Tasks <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></span>
+                                                <span style="margin-right: 5px; color: #ccc;">|</span>
+                                                <span style="margin-right: 5px; color: #28a745;">Start: {{ \Carbon\Carbon::parse($pt->start_date)->format('Y-m-d') }}</span>
+                                                <span style="margin-right: 5px; color: #ccc;">|</span>
+                                                <span style="margin-right: 5px; color: #28a745;">Deliver: {{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</span>
+                                                <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                                <!-- Avatars -->
+                                                <div style="display: flex; align-items: center; margin-left: 10px;">
+                                                    @for ($i = 0; $i < 3; $i++)
+                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
+                                                        @endfor
+                                                </div>
                                             </div>
-                    
-                                            <!-- Ticket Items -->
-                                            @foreach ($projectTickets as $pt)
-                                                <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
-                                                    <!-- Ticket Header -->
-                                                    <div class="d-flex justify-content-between flex-wrap">
-                                                        <div><img src="{{ asset('build/img/yekbon.svg') }}" style="width: 25px; height: 35px;" alt="logo"></div>
-                                                        <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
-                                                        <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $pt->section_name }}</div>
-                                                        <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $pt->title }}</div>
+
+                                            <!-- Task Progress & Status -->
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                    
-                                                    <!-- Task Info -->
-                                                    <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
-                                                        <span style="margin-right: 5px; font-weight: bold;"> Tasks <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></span>
-                                                        <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                        <span style="margin-right: 5px; color: #28a745;">Start: {{ \Carbon\Carbon::parse($pt->start_date)->format('Y-m-d') }}</span>
-                                                        <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                        <span style="margin-right: 5px; color: #28a745;">Deliver: {{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</span>
-                                                        <span style="margin-right: 5px; color: #ccc;">|</span>
-                    
-                                                        <!-- Avatars -->
-                                                        <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                            @for ($i = 0; $i < 3; $i++)
-                                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
-                                                            @endfor
-                                                        </div>
-                                                    </div>
-                    
-                                                    <!-- Task Progress & Status -->
-                                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                                        <div class="d-flex align-items-center" style="flex: 1;">
-                                                            <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                                <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
-                                                            </div>
-                                                            <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
-                                                        </div>
-                    
-                                                        <!-- Status Colors -->
-                                                        <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px; margin-right:4px;">
-                                                            <span style="color: #8BC34A;">● 1</span>
-                                                            <span style="color: #FF9800;">● 3</span>
-                                                            <span style="color: #F44336;">● 0</span>
-                                                            <span style="color: #9C27B0;">● 0</span>
-                                                            <span style="color: #4CAF50;">● 0</span>
-                                                        </div>
-                    
-                                                        {{-- <div class="d-flex align-items-center gap-2">
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
+                                                     <span style="margin-left: 8px; color: #ccc;">|</span>
+                                                </div>
+
+                                                <!-- Status Colors -->
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
+                                                    <span style="color: #8BC34A;">● 1</span>
+                                                    <span style="color: #FF9800;">● 3</span>
+                                                    <span style="color: #F44336;">● 0</span>
+                                                    <span style="color: #9C27B0;">● 0</span>
+                                                    <span style="color: #4CAF50;">● 0</span>
+                                                    <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                    <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                        <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                    </span>
+                                                </div>
+
+                                                {{-- <div class="d-flex align-items-center gap-2">
                                                             <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
-                                                            <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
-                                                                data-bs-toggle="modal" data-bs-target="#ticketModal"
-                                                                data-ticket-id="{{ $pt->_id ?? $pt->id }}"
-                                                                data-project-id="{{ $pt->project_id }}"
-                                                                @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
-                                                            >Edit</button>
-                                                        </div> --}}
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                                <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
+                                                    data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                                    data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                                                    data-project-id="{{ $pt->project_id }}"
+                                                    @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
+                                                    >Edit</button>
+                                            </div> --}}
                                         </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
+                        @endforeach
                     </div>
-                    
-                           
-
-                        </div>
-                    </div> 
-
                 </div>
-            </div>
 
+
+
+            </div>
         </div>
+
     </div>
+</div>
+
+</div>
+</div>
 
 
 </div>
@@ -1512,7 +1571,7 @@
                                 <select id="ticketSectionSelect" class="form-control" style="background-color: white;">
                                     <option value="">Select the Section</option>
                                 </select>
-                                
+
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1596,7 +1655,8 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <button id="saveCloseTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Save and Close</button>
                     <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #F5A623; color: white; min-width: 160px;">Save & add Ticket</button>
-                    <button id="updateTicketBtn" class="btn" style="background-color: #0069d9; color: white; min-width: 160px; display:none;">Update Ticket</button>
+                    <button id="updateTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Update and Close</button>
+ 
                 </div>
 
 
@@ -1650,10 +1710,10 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const projectSelect = document.getElementById('ticketProjectSelect');
         const sectionSelect = document.getElementById('ticketSectionSelect');
-        
+
 
         const priorityHidden = document.getElementById('ticketPriority');
         const reminderHidden = document.getElementById('ticketReminderHours');
@@ -1722,7 +1782,9 @@
         // Fetch projects into dropdown
         async function loadProjects(prefill) {
             try {
-                const resp = await fetch('/api/tickets/projects', { credentials: 'same-origin' });
+                const resp = await fetch('/api/tickets/projects', {
+                    credentials: 'same-origin'
+                });
                 const data = await resp.json();
                 projectSelect.innerHTML = '<option value="">Select the Project</option>' +
                     data.map(p => `<option value="${p.id}">${p.title ?? 'Untitled'}</option>`).join('');
@@ -1743,7 +1805,9 @@
             sectionSelect.innerHTML = '<option value="">Select the Section</option>';
             if (!projectId) return;
             try {
-                const resp = await fetch(`/api/tickets/projects/${projectId}/sections`, { credentials: 'same-origin' });
+                const resp = await fetch(`/api/tickets/projects/${projectId}/sections`, {
+                    credentials: 'same-origin'
+                });
                 const data = await resp.json();
                 sectionSelect.innerHTML = '<option value="">Select the Section</option>' +
                     (Array.isArray(data) ? data.map(s => `<option value="${s.name}">${s.name}</option>`).join('') : '');
@@ -1752,14 +1816,14 @@
             }
         }
 
-        projectSelect?.addEventListener('change', function () {
+        projectSelect?.addEventListener('change', function() {
             loadSections(this.value);
             try {
                 localStorage.setItem('ticket.lastProjectId', this.value || '');
             } catch (e) {}
         });
 
-        
+
 
         // Submit ticket helper
         async function submitTicket(closeAfter) {
@@ -1810,7 +1874,12 @@
                             banner.role = 'alert';
                             banner.innerHTML = 'Ticket created successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                             modalBody.prepend(banner);
-                            setTimeout(() => { try { banner.classList.remove('show'); banner.remove(); } catch(e) {} }, 3000);
+                            setTimeout(() => {
+                                try {
+                                    banner.classList.remove('show');
+                                    banner.remove();
+                                } catch (e) {}
+                            }, 3000);
                         }
                         // Keep project/section for quick multi-ticket creation
                         try {
@@ -1889,8 +1958,9 @@
                     modal.hide();
                     window.location.reload();
                 } else {
-                    const err = await resp.json();
-                    alert(err?.message || 'Failed to update ticket');
+                    let errMsg = 'Failed to update ticket';
+                    try { const err = await resp.json(); errMsg = err?.message || errMsg; } catch(_) {}
+                    alert(errMsg);
                 }
             } catch (e) {
                 console.error('Failed to update ticket', e);
@@ -1899,11 +1969,11 @@
             }
         }
 
-        saveCloseBtn?.addEventListener('click', function (e) {
+        saveCloseBtn?.addEventListener('click', function(e) {
             e.preventDefault();
             submitTicket(true);
         });
-        saveAddAnotherBtn?.addEventListener('click', function (e) {
+        saveAddAnotherBtn?.addEventListener('click', function(e) {
             e.preventDefault();
             submitTicket(false);
         });
@@ -1911,8 +1981,13 @@
         // Modal prefill on open from a ticket card or last used
         const ticketModalEl = document.getElementById('ticketModal');
         if (ticketModalEl) {
-            ticketModalEl.addEventListener('show.bs.modal', function (event) {
-                const trigger = event.relatedTarget;
+            ticketModalEl.addEventListener('show.bs.modal', function(event) {
+                // Accept triggers on child nodes and climb to wrapper if needed
+                let trigger = event.relatedTarget;
+                if (trigger && !trigger.getAttribute('data-ticket-id')) {
+                    const wrapper = trigger.closest?.('.ticket-edit-trigger');
+                    if (wrapper) trigger = wrapper;
+                }
                 let prefill = {};
                 if (trigger) {
                     const trigProjectId = trigger.getAttribute('data-project-id');
@@ -1920,7 +1995,7 @@
                     const trigTicketId = trigger.getAttribute('data-ticket-id');
                     if (trigProjectId) prefill.projectId = trigProjectId;
                     if (trigSectionName) prefill.sectionName = trigSectionName;
-                    if (trigTicketId) editingTicketId = trigTicketId; else editingTicketId = null;
+                    if (trigTicketId) editingTicketId = trigTicketId;
                 }
                 // Reset UI mode by default to create
                 modalTitle.textContent = editingTicketId ? 'Edit Ticket' : 'Create new Ticket';
@@ -1944,9 +2019,14 @@
                 if (editingTicketId) {
                     (async () => {
                         try {
-                            const resp = await fetch(`/api/tickets/${editingTicketId}`, { credentials: 'same-origin' });
+                            const resp = await fetch(`/api/tickets/${editingTicketId}`, {
+                                credentials: 'same-origin'
+                            });
                             const t = await resp.json();
-                            await loadProjects({ projectId: t.project_id, sectionName: t.section_name });
+                            await loadProjects({
+                                projectId: t.project_id,
+                                sectionName: t.section_name
+                            });
                             document.getElementById('ticketTitle').value = t.title || '';
                             document.getElementById('ticketDescription').value = t.description || '';
                             priorityHidden.value = t.priority || 'low';
@@ -1957,10 +2037,21 @@
                             const ed = document.getElementById('expiredDateInput');
                             const sdDisp = document.getElementById('startDateDisplay');
                             const edDisp = document.getElementById('expiredDateDisplay');
-                            if (sd) { sd.value = t.start_date || ''; sdDisp.innerText = t.start_date ? t.start_date.split('-').reverse().join(':') : 'DD:MM:YYYY'; }
-                            if (ed) { ed.value = t.end_date || ''; edDisp.innerText = t.end_date ? t.end_date.split('-').reverse().join(':') : 'DD:MM:YYYY'; }
+                            if (sd) {
+                                sd.value = t.start_date || '';
+                                sdDisp.innerText = t.start_date ? t.start_date.split('-').reverse().join(':') : 'DD:MM:YYYY';
+                            }
+                            if (ed) {
+                                ed.value = t.end_date || '';
+                                edDisp.innerText = t.end_date ? t.end_date.split('-').reverse().join(':') : 'DD:MM:YYYY';
+                            }
                         } catch (e) {
-                            console.error('Failed to prefill ticket', e);
+                            try {
+                                const txt = await (e?.response?.text?.() || Promise.resolve(''));
+                                console.error('Failed to prefill ticket', e, txt);
+                            } catch (_) {
+                                console.error('Failed to prefill ticket', e);
+                            }
                         }
                     })();
                 } else {
@@ -1968,7 +2059,7 @@
                 }
             });
 
-            ticketModalEl.addEventListener('hidden.bs.modal', function () {
+            ticketModalEl.addEventListener('hidden.bs.modal', function() {
                 // Reset mode back to create defaults
                 editingTicketId = null;
                 modalTitle.textContent = 'Create new Ticket';
@@ -1998,7 +2089,7 @@
         setPriorityStyles();
 
         // Delegate edit clicks
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             const btn = e.target.closest('.ticket-edit-trigger');
             if (btn) {
                 const id = btn.getAttribute('data-ticket-id');
@@ -2011,12 +2102,39 @@
             }
         });
 
-        updateBtn?.addEventListener('click', function (e) {
+        updateBtn?.addEventListener('click', function(e) {
             e.preventDefault();
             updateTicket();
         });
     });
 </script>
+
+<script>
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            let details = this.nextElementSibling;
+            let icon = this.querySelector('.toggle-icon');
+
+            if (details.classList.contains('show')) {
+                // Closing smoothly
+                details.style.maxHeight = details.scrollHeight + "px"; // pehle height set karo
+                setTimeout(() => {
+                    details.style.maxHeight = "0"; // phir 0 karo taake smooth collapse ho
+                    details.classList.remove('show');
+                }, 10);
+
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                // Opening smoothly
+                details.classList.add('show');
+                details.style.maxHeight = details.scrollHeight + "px";
+
+                icon.style.transform = "rotate(180deg)";
+            }
+        });
+    });
+</script>
+
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 @component('components.model-popup')
