@@ -37,6 +37,16 @@ class TodoController extends Controller
         return redirect()->back()->with('error', 'Todo not belonged to user');
         
     }
+
+    public function complete($id)
+    {
+        $todo = Todo::findOrFail($id);
+        $todo->completed = 1;
+        $todo->save();
+
+        return response()->json(['success' => true]);
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -58,6 +68,7 @@ class TodoController extends Controller
 
         $todayTodos = Todo::where('user_id', $user->id)
             ->where('start_date', date('Y-m-d'))
+            ->where('completed',  0)
             ->where(function($q) {
                 $q->where('is_removed', 0)
                 ->orWhereNull('is_removed');
@@ -81,7 +92,7 @@ class TodoController extends Controller
 
             $privateTodos = Todo::where('user_id', $user->id)
             ->where('is_private', "1")
-    ->where('completed', '!=', '1')
+    ->where('completed',  0)
     ->where(function($q) {
         $q->where('is_removed', 0)
           ->orWhereNull('is_removed');
@@ -110,6 +121,7 @@ class TodoController extends Controller
         $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')
         ->where(function($q) {
         $q->where('is_removed', 0)
+        ->where('completed',  0)
           ->orWhereNull('is_removed');
     })->get()->map(function ($todo) {
                 $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
@@ -195,9 +207,10 @@ class TodoController extends Controller
         ]);
 
         $startTime = $request->start_time;
-        $endDate = $request->start_date ?? date('Y-m-d');
+        $endDate = $request->end_date ?? date('Y-m-d');
         $endTime = $request->end_time;
         $total_time = 0;
+        $startDate = $request->start_date ?? date('Y-m-d');
 
         if ($request->start_date === null) {
             // If today, calculate based on todaytime input
@@ -206,6 +219,7 @@ class TodoController extends Controller
             $endTime = now()->addHours($hoursToAdd)->format('H:i');
             $endDate = now()->addHours($hoursToAdd)->format('Y-m-d');
             $total_time = $request->todaytime;
+            $startDate = date('Y-m-d');
         }
 
         $todoid = $request->todo_id;
@@ -214,7 +228,7 @@ class TodoController extends Controller
     ['_id' => $todoid], // condition to match
     [
         'title'       => $request->title,
-        'start_date'  => $request->start_date ?? date('Y-m-d'),
+        'start_date'  => $startDate,
         'start_time'  => $startTime,
         'end_date'    => $endDate,
         'end_time'    => $endTime,

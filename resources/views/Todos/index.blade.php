@@ -25,6 +25,24 @@ use Illuminate\Support\Str;
         border-radius: 5px;
     }
 
+    #endTimeSelect{
+        border: none;
+        font-size: 13px;
+        color: #333;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        padding-right: 25px; /* space for icon */
+        appearance: none; /* hide default arrow */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/2088/2088617.png'); /* clock icon */
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 15px;
+        cursor: pointer;
+    }
+
     .selection-btn{
         background: #f8fafc;
         color: #566a7f;
@@ -1376,6 +1394,7 @@ use Illuminate\Support\Str;
                 <input type="hidden" name="start_date" id="startDateHidden">
                 <input type="hidden" name="start_time" id="startTimeHidden">
                 <input type="hidden" name="end_time" id="endTimeHidden">
+                <input type="hidden" name="end_date" id="endDateHidden">
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
                 <input type="hidden" name="priority" id="priorityHidden" value="low">
                 <input type="hidden" name="reminder" id="reminderHidden" value="60">
@@ -1504,37 +1523,56 @@ use Illuminate\Support\Str;
                                         onclick="document.getElementById('dateInput').showPicker()"
                                         style="width: 20px; height: 20px; cursor: pointer;" />
                                     <input type="date" id="dateInput"
-                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
+                min="{{ date('Y-m-d') }}"  
+                onchange="
+                    let d = new Date(this.value);
+                    if (this.value) {
+                        document.getElementById('dateDisplay').innerText = ('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();
+                        // update end date min dynamically
+                        let endInput = document.getElementById('enddateInput');
+                        endInput.min = this.value;
+                        // if end date < start date, clear it
+                        if (endInput.value && new Date(endInput.value) < new Date(this.value)) {
+                            endInput.value = '';
+                            document.getElementById('enddateDisplay').innerText = 'DD:MM:YYYY';
+                        }
+                    }
+                "
+                style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+        
+                                    </div>
                             </div>
                         </div>
 
-                        <!-- Start Time -->
-                        <div class="col-md-4" style="position: relative;">
+                        <div class="col-md-4" id="endDateField" style="position: relative; ">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                
-                                <select name="start_time" id="startTimeSelect" 
-                                    style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
-                                    <option value="">Select Time</option>
-                                    @for ($h = 0; $h < 24; $h++)
-                                        @php $time = sprintf("%02d:00", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                        @php $time = sprintf("%02d:30", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                    @endfor
-                                </select>
-                                
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Deliver Date</div>
+                                <div id="enddateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('enddateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="date" id="enddateInput"
+                min="{{ date('Y-m-d') }}" 
+                onchange="
+                    let d = new Date(this.value);
+                    if (this.value) {
+                        document.getElementById('enddateDisplay').innerText = ('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();
+                    }
+                "
+                style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+        </div>
                             </div>
                         </div>
+
+                        
 
                         <!-- End Time -->
                         <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 10px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
                                 
-                                <select name="end_time" id="endTimeSelect" 
-                                    style="border: none; font-size: 13px; color: #333; background: transparent; width: 100%; outline: none;">
-                                    <option value="">Select Time</option>
+                                <select name="end_time" id="endTimeSelect" >
+                                    <option value="">Deliver Time</option>
                                     @for ($h = 0; $h < 24; $h++)
                                         @php $time = sprintf("%02d:00", $h); @endphp
                                         <option value="{{ $time }}">{{ $time }}</option>
@@ -1809,8 +1847,8 @@ use Illuminate\Support\Str;
                     <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                         <h5 class="text-center fw-bold mb-3 modal-title todo-title" style="color: #1c2233;">Task Title</h5>
                         <p class="text-center">
-                            <span class="todo-type  badge bg-secondary">Priviatess Todo's</span>
-                            <span class="todo-type badge rounded-pill todo-priority" style="color: #22c55e; font-size: 13px; padding: 8px 12px;">
+                            <span class="todo-type  badge bg-secondary" style="background: #fff !important; font-size: 13px; padding: 8px 12px; border-color: #fff !important; color: #1c274c;">Priviatess Todo's</span>
+                            <span class="todo-type badge rounded-pill1 todo-priority" style="color: #22c55e; font-size: 13px; padding: 8px 12px;">
                                 <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
                             </span>
                         </p>
@@ -1885,16 +1923,21 @@ use Illuminate\Support\Str;
                         
                     </div>
                     
-
-
                     <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
 
                         <!-- Edit the Project -->
-                        <div style="text-align: center; flex: 1;cursor:pointer;">
-                            <div style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                                <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30" height="30">
+                        <div id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
+                            <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
                             </div>
-                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit The Project</div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
+                        </div>
+                        <!-- Complete the Project -->
+                        <div id="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
+                            <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Complete" width="40" height="40">
+                            </div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Mark as Done</div>
                         </div>
 
 
@@ -1902,12 +1945,12 @@ use Illuminate\Support\Str;
                         <div style="text-align: center; flex: 1; cursor: pointer;"
                             data-bs-toggle="modal" data-bs-target="#removeModel">
 
-                            <div style="background: #f44336; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                                <img src="{{ asset('build/img/deletep.svg') }}" alt="Delete" width="30" height="30">
+                            <div style=" padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
                             </div>
 
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                Remove The Todo
+                                Remove
                             </div>
                         </div>
 
@@ -2896,6 +2939,10 @@ document.getElementById('dateInput').addEventListener('change', function () {
     document.getElementById('startDateHidden').value = this.value;
 });
 
+document.getElementById('enddateInput').addEventListener('change', function () {
+    document.getElementById('endDateHidden').value = this.value;
+});
+
 
 
 
@@ -3211,7 +3258,20 @@ document.addEventListener("DOMContentLoaded", function () {
             // Get attributes
             let dataid      = this.dataset.id;
 
+            const editBtnInModal = document.getElementById('openEditFromView');
+
+            for (let attr of this.attributes) {
+                if (attr.name.startsWith('data-')) {
+                    editBtnInModal.setAttribute(attr.name, attr.value);
+                }
+            }
+
             document.getElementById("remid").value = dataid;
+
+            const markDoneBtn = document.getElementById('markDoneBtn');
+            if (markDoneBtn) {
+                markDoneBtn.dataset.id = dataid; // set the data-id dynamically
+            }
 
             let title       = this.dataset.title;
             let description = this.dataset.description;
@@ -3587,7 +3647,106 @@ document.querySelectorAll(".typ_btn").forEach(btn => {
 applyFilters();
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    // When clicking "Edit" inside the view modal (#inreject)
+    const openEditBtn = document.getElementById('openEditFromView');
+    if (openEditBtn) {
+        openEditBtn.addEventListener('click', function () {
+            const todoId = this.dataset.id;
 
+            // Close the current view modal
+            const viewModal = bootstrap.Modal.getInstance(document.getElementById('inreject'));
+            if (viewModal) viewModal.hide();
+
+            // Wait for modal to close animation
+            setTimeout(() => {
+                // Trigger the original .editTodo click handler for this todo ID
+                const originalEditBtn = document.querySelector(`.editTodo[data-id="${todoId}"]`);
+                if (originalEditBtn) {
+                    originalEditBtn.click(); // triggers your existing JS to populate fields
+                } else {
+                    console.warn("No matching .editTodo button found for ID:", todoId);
+                }
+            }, 400);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const openEditFromView = document.getElementById('openEditFromView');
+
+    if (openEditFromView) {
+        openEditFromView.addEventListener('click', function () {
+            const todoId = this.dataset.id;
+
+            // Close the current modal
+            const viewModal = bootstrap.Modal.getInstance(document.getElementById('inreject'));
+            if (viewModal) viewModal.hide();
+
+            // Wait a bit for animation, then trigger .editTodo click
+            setTimeout(() => {
+                const editBtn = document.querySelector(`.editTodo[data-id="${todoId}"]`);
+                if (editBtn) {
+                    editBtn.click();
+                } else {
+                    console.warn("No matching .editTodo found for ID:", todoId);
+                }
+            }, 400);
+        });
+    }
+});
+
+
+
+document.getElementById('markDoneBtn').addEventListener('click', function () {
+    const todoId = this.dataset.id;
+    if (!todoId) return;
+
+    const url = `/todos/complete/${todoId}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: todoId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Marked as Done!',
+                text: 'Todo successfully marked as completed.'
+            });
+
+            // Optional: close modal & fade out card
+            const modalEl = document.querySelector('#inreject');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            setTimeout(() => location.reload(), 1000);
+
+            const card = document.querySelector(`.viewTodo[data-id="${todoId}"]`);
+            if (card) card.style.opacity = '0.5';
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message || 'Unable to mark as done.'
+            });
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Request Failed',
+            text: 'Could not reach the server.'
+        });
+    });
+});
 
         </script>
         @endsection
