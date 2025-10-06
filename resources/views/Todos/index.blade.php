@@ -798,7 +798,7 @@ use Illuminate\Support\Str;
                                             </div>
                                         </div>
 
-                                        <span class="priority-txt">
+                                        <span class="priority-txt  {{$todo->priority}}">
                                             <span class="priority-icon" ></span>
                                             {{$todo->priority}}
                                         </span>
@@ -1057,7 +1057,7 @@ use Illuminate\Support\Str;
                                         <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
                                         <!-- edit delete starts -->
 
-                                        <span class="priority-txt">
+                                        <span class="priority-txt  {{$todo->priority}}">
                                             <span class="priority-icon" ></span>
                                             {{$todo->priority}}
                                         </span>
