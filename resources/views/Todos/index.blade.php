@@ -512,9 +512,6 @@ use Illuminate\Support\Str;
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-
-
-
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -1127,8 +1124,8 @@ use Illuminate\Support\Str;
         @else
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                let container = document.getElementById('timer-{{ $index }}');
-                let display = document.getElementById('asimclic-{{ $index }}');
+                let container = document.getElementById('pvttimer-{{ $index }}');
+                let display = document.getElementById('pvtasimclic-{{ $index }}');
                 display.innerText = "00:00:00";
                 container.style.backgroundColor = "#e74c3c";
             });
@@ -1409,8 +1406,8 @@ use Illuminate\Support\Str;
         @else
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                let container = document.getElementById('timer-{{ $index }}');
-                let display = document.getElementById('asimclic-{{ $index }}');
+                let container = document.getElementById('shtimer-{{ $index }}');
+                let display = document.getElementById('shasimclic-{{ $index }}');
                 display.innerText = "00:00:00";
                 container.style.backgroundColor = "#e74c3c";
             });
