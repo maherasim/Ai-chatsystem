@@ -1355,8 +1355,7 @@
                                                     <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
                                                 </div>
                                                 <div>
-                                                    <h5 class="text-center"
-                                                        style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">
+                                                    <h5 class="text-center" title="{{ $ticket->project->title }}" style="font-size: 12px !important; margin: 0 auto; font-weight: bold; color: #2e2e5d; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
                                                         {{ $ticket->project->title }}
                                                     </h5>
                                                 </div>
