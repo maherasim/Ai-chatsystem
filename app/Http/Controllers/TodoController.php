@@ -90,6 +90,7 @@ class TodoController extends Controller
                 return $todo;
             });
 
+            
             $privateTodos = Todo::where('user_id', $user->id)
             ->where('is_private', "1")
     ->where('completed',  0)
@@ -118,10 +119,10 @@ class TodoController extends Controller
         // Shared
        // $sharedTodos = Todo::where('user_id', $user->id)->where('is_private', "0")->get();
         
-        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', '!=', '1')
+        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', 0)
+        
         ->where(function($q) {
-        $q->where('is_removed', 0)
-        ->where('completed',  0)
+        $q->where('completed',  0)
           ->orWhereNull('is_removed');
     })->get()->map(function ($todo) {
                 $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);

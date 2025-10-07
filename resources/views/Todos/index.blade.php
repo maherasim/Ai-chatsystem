@@ -25,6 +25,20 @@ use Illuminate\Support\Str;
         border-radius: 5px;
     }
 
+    .counter-div{
+        background-color: #4CAF50; height: 43px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 12px; 
+        font-weight: bold; 
+        color: white; 
+        letter-spacing: 1px;
+        border-radius:10px;
+        width: 150px; 
+        margin:auto;
+    }
+
     #endTimeSelect{
         border: none;
         font-size: 13px;
@@ -446,7 +460,7 @@ use Illuminate\Support\Str;
                         <div class="project-succes pt-2 pb-2 d-flex flex-wrap justify-content-between align-items-center" style="gap: 10px;">
 
                             <div>
-                                <h3 style="margin: 0;">TOday ToDo's</h3>
+                                <h3 style="margin: 0;">Today ToDo's</h3>
                                 <strong>Total ToDo's: <span id="today_count" class="today_count">{{count($todayTodos)}}</span></strong>
                             </div>
 
@@ -485,12 +499,22 @@ use Illuminate\Support\Str;
                         <!-- CARD CONTAINER -->
                         <div class="row g-3 todo_div">
 
-                            @forelse($todayTodos as $todo)
+                            @forelse($todayTodos as $index => $todo)
                             @php
                                 $todotyp = "shared";
                                 if($todo->is_private == "1"){
                                     $todotyp = "private";
                                 }
+                                $remaining = strtotime($todo->end_time) - time();
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $todo->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+
+
+
+
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -577,7 +601,7 @@ use Illuminate\Support\Str;
 
             <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+            <button type="button" class="btn btn-sm1 btn-icon1 edit_{{ $todo->id }}" style="padding:0px; margin-top:-5px;"   >
                 <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;"  
                class="dropdown-item text-primary editTodo" 
                data-id="{{ $todo->id }}"
@@ -717,7 +741,7 @@ use Illuminate\Support\Str;
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
+                                    
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
@@ -732,6 +756,63 @@ use Illuminate\Support\Str;
                                                 Need Counter
                                             </button>
                                         @endif
+    </div>
+
+                                        <div class="counter-div" id="timer-{{ $index }}">
+        <span id="asimclic-{{ $index }}"></span>
+    </div>
+                                    
+
+                                    @if($remaining > 0)
+        <script>
+            (function() {
+                let duration = {{ $remaining }};
+                let display = document.getElementById('asimclic-{{ $index }}');
+                let container = document.getElementById('timer-{{ $index }}');
+                let part = {{ $part }};
+
+                function updateClock() {
+                    let hours = Math.floor(duration / 3600);
+                    let minutes = Math.floor((duration % 3600) / 60);
+                    let seconds = duration % 60;
+
+                    let formatted =
+                        String(hours).padStart(2, '0') + ":" +
+                        String(minutes).padStart(2, '0') + ":" +
+                        String(seconds).padStart(2, '0');
+
+                    display.innerText = formatted;
+
+                    // change color gradually
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        clearInterval(timer);
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                    }
+
+                    duration--;
+                }
+
+                updateClock();
+                let timer = setInterval(updateClock, 1000);
+            })();
+        </script>
+        @else
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let container = document.getElementById('timer-{{ $index }}');
+                let display = document.getElementById('asimclic-{{ $index }}');
+                display.innerText = "00:00:00";
+                container.style.backgroundColor = "#e74c3c";
+            });
+        </script>
+    @endif
+                                                
                                     </div>
                                 </div>
                             </div>
@@ -771,7 +852,16 @@ use Illuminate\Support\Str;
                         <!-- CARD CONTAINER -->
                         <div class="row g-3 private_div">
                             <!-- Start of Card 1 -->
-                             @forelse($privateTodos as $todo)
+                             @forelse($privateTodos  as $index => $todo)
+                            
+                             @php
+                                $remaining = strtotime($todo->end_time) - time();
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $todo->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+                            @endphp    
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
     data-title="{{ $todo->title }}"
@@ -811,7 +901,7 @@ use Illuminate\Support\Str;
 
 <!-- edit delete starts -->
 
-                                        <div class="dropdown">
+                                        <div class="dropdown"  style="display:none;">
     <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                                 <div class="drop-icon">
                                                     <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
@@ -853,7 +943,7 @@ use Illuminate\Support\Str;
 
             <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; margin-top:-5px;"   >
+            <button type="button" class="btn btn-sm1 btn-icon1 edit_{{ $todo->id }}" style="padding:0px; margin-top:-5px;"   >
                 <a href="javascript:void(0);" style="height:40px; width:40px; padding:0px;"  
                class="dropdown-item text-primary editTodo" 
                data-id="{{ $todo->id }}"
@@ -988,6 +1078,64 @@ use Illuminate\Support\Str;
                                                 @endif
                                             </div>
                                         </div>
+
+<div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
+<div class="counter-div" id="pvttimer-{{ $index }}">
+        <span id="pvtasimclic-{{ $index }}"></span>
+    </div>
+                                    
+
+                                    @if($remaining > 0)
+        <script>
+            (function() {
+                let duration = {{ $remaining }};
+                let display = document.getElementById('pvtasimclic-{{ $index }}');
+                let container = document.getElementById('pvttimer-{{ $index }}');
+                let part = {{ $part }};
+
+                function pvtupdateClock() {
+                    let hours = Math.floor(duration / 3600);
+                    let minutes = Math.floor((duration % 3600) / 60);
+                    let seconds = duration % 60;
+
+                    let formatted =
+                        String(hours).padStart(2, '0') + ":" +
+                        String(minutes).padStart(2, '0') + ":" +
+                        String(seconds).padStart(2, '0');
+
+                    display.innerText = formatted;
+
+                    // change color gradually
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        clearInterval(timer);
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                    }
+
+                    duration--;
+                }
+
+                pvtupdateClock();
+                let timer = setInterval(pvtupdateClock, 1000);
+            })();
+        </script>
+        @else
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let container = document.getElementById('timer-{{ $index }}');
+                let display = document.getElementById('asimclic-{{ $index }}');
+                display.innerText = "00:00:00";
+                container.style.backgroundColor = "#e74c3c";
+            });
+        </script>
+    @endif
+
+
                                         </div>
                                     <!-- Footer Button -->
 
@@ -1027,7 +1175,16 @@ use Illuminate\Support\Str;
                         </div>
                         <!-- CARD CONTAINER -->
                         <div class="row g-3 shared_div">
-                            @forelse($sharedTodos as $todo)
+                            @forelse($sharedTodos  as $index => $todo)
+
+                            @php
+                                $remaining = strtotime($todo->end_time) - time();
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $todo->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+                            @endphp  
                             <!-- Start of Card 1 -->
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -1067,7 +1224,7 @@ use Illuminate\Support\Str;
                                             <span class="priority-txt schduled">Scheduled</span>
                                         @endif
 
-                                        <div class="dropdown">
+                                        <div class="dropdown" style="display:none;">
         <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                                 <div class="drop-icon">
                                                     <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
@@ -1203,6 +1360,63 @@ use Illuminate\Support\Str;
                                                 @endif
                                             </div>
                                         </div>
+
+<div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
+<div class="counter-div" id="shtimer-{{ $index }}">
+        <span id="shasimclic-{{ $index }}"></span>
+    </div>
+                                    
+
+                                    @if($remaining > 0)
+        <script>
+            (function() {
+                let duration = {{ $remaining }};
+                let display = document.getElementById('shasimclic-{{ $index }}');
+                let container = document.getElementById('shtimer-{{ $index }}');
+                let part = {{ $part }};
+
+                function shupdateClock() {
+                    let hours = Math.floor(duration / 3600);
+                    let minutes = Math.floor((duration % 3600) / 60);
+                    let seconds = duration % 60;
+
+                    let formatted =
+                        String(hours).padStart(2, '0') + ":" +
+                        String(minutes).padStart(2, '0') + ":" +
+                        String(seconds).padStart(2, '0');
+
+                    display.innerText = formatted;
+
+                    // change color gradually
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        clearInterval(shtimer);
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                    }
+
+                    duration--;
+                }
+
+                shupdateClock();
+                let shtimer = setInterval(shupdateClock, 1000);
+            })();
+        </script>
+        @else
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let container = document.getElementById('timer-{{ $index }}');
+                let display = document.getElementById('asimclic-{{ $index }}');
+                display.innerText = "00:00:00";
+                container.style.backgroundColor = "#e74c3c";
+            });
+        </script>
+    @endif
+
                                     </div>
 
                                     <!-- Footer Button -->
@@ -3153,9 +3367,7 @@ document.addEventListener("DOMContentLoaded", function () {
 let timerInterval;
 
 document.addEventListener("DOMContentLoaded", function () {
-
     //todomodel
-
     document.querySelectorAll(".editTodo").forEach(btn => {
         btn.addEventListener("click", function () {
             // Get attributes
@@ -3231,18 +3443,60 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            let e_members = this.dataset.members;
+
+// Handle both cases (string or array)
+if (typeof e_members === "string") {
+    try {
+        e_members = JSON.parse(e_members);
+    } catch (err) {
+        console.error("Invalid JSON:", err);
+        e_members = [];
+    }
+}
+
+// Now safely use it
+// Auto-select members by ID
+//let e_members = JSON.parse(this.dataset.members || "[]");
+
+if (Array.isArray(e_members) && e_members.length) {
+    console.log("Auto-selecting members:", e_members);
+
+    setTimeout(() => {
+        e_members.forEach(m => {
+            const userDiv = document.querySelector(`[data-user-id="${m.id}"]`);
+            if (userDiv) {
+                console.log("Activating:", m.id);
+                
+                // Add class manually
+                userDiv.classList.add("user_active");
+
+                // Select corresponding option
+                const membersSelect = document.getElementById("members");
+                const option = membersSelect?.querySelector(`option[value="${m.id}"]`);
+                if (option) option.selected = true;
+            } else {
+                console.warn("Not found:", m.id);
+            }
+        });
+    }, 500); // wait for DOM ready
+}
+
+/*
+
             let e_members = JSON.parse(this.dataset.members || "[]");
-            
+console.log("Raw members data:", e_members);
             if (e_members.length) {
+               
                 e_members.forEach(m => {
                     let e_m_id = m.id;
                     let userid = "user_" + e_m_id;
-
+                   // alert(userid);
                     document.getElementById(userid).click();
                     
                 });
             } 
-            
+   */         
             //reminder
 
 
@@ -3260,8 +3514,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const editBtnInModal = document.getElementById('openEditFromView');
 
+            let eidtdiv = ".edit_" + dataid;
+           
+
             for (let attr of this.attributes) {
-                if (attr.name.startsWith('data-')) {
+            if (attr.name.startsWith('data-')) {
                     editBtnInModal.setAttribute(attr.name, attr.value);
                 }
             }
@@ -3653,7 +3910,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (openEditBtn) {
         openEditBtn.addEventListener('click', function () {
             const todoId = this.dataset.id;
-
+            
             // Close the current view modal
             const viewModal = bootstrap.Modal.getInstance(document.getElementById('inreject'));
             if (viewModal) viewModal.hide();
@@ -3678,6 +3935,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (openEditFromView) {
         openEditFromView.addEventListener('click', function () {
             const todoId = this.dataset.id;
+
+            let ediv = ".edit_" + todoId;
+
 
             // Close the current modal
             const viewModal = bootstrap.Modal.getInstance(document.getElementById('inreject'));
