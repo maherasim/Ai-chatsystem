@@ -1568,17 +1568,39 @@
 
                     <style>
                         .tickets-slider { position: relative; }
-                        .tickets-slider.is-slider .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; }
+                        .tickets-slider.is-slider .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; }
+                        .tickets-slider.is-slider .row > * { scroll-snap-align: center; }
+                        .tickets-slider .row { perspective: 1100px; transform-style: preserve-3d; }
                         .tickets-slider.is-slider .row::-webkit-scrollbar { display: none; }
                         .tickets-slider .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; align-items: center; justify-content: center; }
                         .tickets-slider .slider-prev { left: -12px; }
                         .tickets-slider .slider-next { right: -12px; }
                         .tickets-slider.is-slider .slider-arrow { display: flex; }
+                        .tickets-slider.overlay .row { position: relative; overflow: hidden; flex-wrap: nowrap !important; }
+                        .tickets-slider.overlay .row > * { position: absolute; top: 0; left: 50%; transform: translateX(-50%); transition: left .45s cubic-bezier(.22,.61,.36,1), opacity .35s ease, z-index .2s; }
+                        /* Overlay positional classes for container items */
+                        .tickets-slider.overlay .pos-none { left: 50%; opacity: 0; z-index: 0; pointer-events: none; }
+                        .tickets-slider.overlay .pos-1 { left: 20%; opacity: 1; z-index: 1; }
+                        .tickets-slider.overlay .pos-2 { left: 35%; opacity: 1; z-index: 2; }
+                        .tickets-slider.overlay .pos-3 { left: 50%; opacity: 1; z-index: 4; }
+                        .tickets-slider.overlay .pos-4 { left: 65%; opacity: 1; z-index: 2; }
+                        .tickets-slider.overlay .pos-5 { left: 80%; opacity: 1; z-index: 1; }
 
                         /* Bloom/blur effect */
-                        .tickets-slider .card { position: relative; transition: transform .35s ease, filter .35s ease, opacity .35s ease, box-shadow .35s ease; filter: blur(4px); opacity: .6; }
-                        .tickets-slider .card.is-active { filter: none; opacity: 1; transform: scale(1.03); box-shadow: 0 10px 24px rgba(0,0,0,.12); z-index: 2; }
+                        .tickets-slider .card { position: relative; transition: transform .45s cubic-bezier(.22,.61,.36,1), filter .35s ease, opacity .35s ease, box-shadow .35s ease; filter: blur(4px); opacity: .6; transform-origin: center center; will-change: transform; transform: translateX(var(--cf-shift, 0px)) translateZ(-140px) rotateY(0) scale(.94); }
+                        .tickets-slider .card.is-active { filter: none; opacity: 1; transform: translateX(var(--cf-shift, 0px)) translateZ(0) rotateY(0) scale(1.03); box-shadow: 0 12px 30px rgba(0,0,0,.14); z-index: 2; }
+                        .tickets-slider .card::before { content: ""; position: absolute; inset: 0; border-radius: 20px; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); }
                         .tickets-slider .card.is-active::before { content: ""; position: absolute; inset: -6px; border-radius: 22px; box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 0 40px rgba(79,195,247,0.35); pointer-events: none; }
+
+                        /* Coverflow states via relative position attribute */
+                        .tickets-slider .card[data-pos="-3"],
+                        .tickets-slider .card[data-pos="3"] { opacity: .35; filter: blur(3px); }
+                        .tickets-slider .card[data-pos="-3"] { transform: translateX(calc(var(--cf-shift, 0px) - 220px)) rotateY(28deg) translateZ(-220px) scale(.82); z-index: 0; }
+                        .tickets-slider .card[data-pos="-2"] { transform: translateX(calc(var(--cf-shift, 0px) - 160px)) rotateY(24deg) translateZ(-170px) scale(.86); z-index: 0; }
+                        .tickets-slider .card[data-pos="-1"] { transform: translateX(calc(var(--cf-shift, 0px) - 100px)) rotateY(18deg) translateZ(-110px) scale(.9); z-index: 1; }
+                        .tickets-slider .card[data-pos="1"] { transform: translateX(calc(var(--cf-shift, 0px) + 100px)) rotateY(-18deg) translateZ(-110px) scale(.9); z-index: 1; }
+                        .tickets-slider .card[data-pos="2"] { transform: translateX(calc(var(--cf-shift, 0px) + 160px)) rotateY(-24deg) translateZ(-170px) scale(.86); z-index: 0; }
+                        .tickets-slider .card[data-pos="3"] { transform: translateX(calc(var(--cf-shift, 0px) + 220px)) rotateY(-28deg) translateZ(-220px) scale(.82); z-index: 0; }
 
                         @media (max-width: 576px) {
                             .tickets-slider .slider-prev { left: 4px; }
@@ -1597,21 +1619,52 @@
                                 var cards = items.map(function (el) { return el.querySelector('.card'); }).filter(Boolean);
                                 var activeIndex = 0;
 
+                                function applyCoverflow() {
+                                    var maxSide = 3;
+                                    var len = cards.length;
+                                    if (!len) return;
+                                    var half = len / 2;
+                                    cards.forEach(function (card, i) {
+                                        var raw = i - activeIndex;
+                                        if (raw > half) raw -= len;     // wrap right-to-left
+                                        if (raw < -half) raw += len;     // wrap left-to-right
+                                        var offset = Math.max(-maxSide, Math.min(maxSide, raw));
+                                        card.dataset.pos = String(offset);
+                                        card.classList.toggle('is-active', i === activeIndex);
+                                        card.setAttribute('aria-hidden', i === activeIndex ? 'false' : 'true');
+                                    });
+                                }
+
                                 function setActive(index) {
-                                    if (index < 0) index = 0;
-                                    if (index >= cards.length) index = cards.length - 1;
+                                    var len = cards.length;
+                                    if (!len) return;
+                                    // circular wrap
+                                    index = ((index % len) + len) % len;
                                     activeIndex = index;
-                                    cards.forEach(function (c) { c.classList.remove('is-active'); });
-                                    if (cards[activeIndex]) cards[activeIndex].classList.add('is-active');
+                                    applyCoverflow();
+                                    centerOnActive();
                                 }
 
                                 function centerOnActive() {
                                     var target = items[activeIndex];
                                     if (!target) return;
-                                    var rowRect = row.getBoundingClientRect();
-                                    var cardRect = target.getBoundingClientRect();
-                                    var delta = cardRect.left - (rowRect.left + (rowRect.width - cardRect.width) / 2);
-                                    row.scrollBy({ left: delta, behavior: 'smooth' });
+                                    var rowWidth = row.clientWidth;
+                                    var targetWidth = target.clientWidth;
+                                    var targetLeft = target.offsetLeft;
+                                    var overflows = row.scrollWidth > rowWidth + 1;
+
+                                    if (overflows) {
+                                        var desired = targetLeft - (rowWidth - targetWidth) / 2;
+                                        var maxScroll = Math.max(0, row.scrollWidth - rowWidth);
+                                        desired = Math.max(0, Math.min(desired, maxScroll));
+                                        row.scrollTo({ left: desired, behavior: 'smooth' });
+                                        cards.forEach(function (c) { c.style.removeProperty('--cf-shift'); });
+                                    } else {
+                                        var rowRect = row.getBoundingClientRect();
+                                        var cardRect = target.getBoundingClientRect();
+                                        var shift = -(cardRect.left - (rowRect.left + (rowRect.width - cardRect.width) / 2));
+                                        cards.forEach(function (c) { c.style.setProperty('--cf-shift', shift + 'px'); });
+                                    }
                                 }
 
                                 setActive(0);
@@ -1626,14 +1679,6 @@
 
                                 var prev = root.querySelector('.slider-prev');
                                 var next = root.querySelector('.slider-next');
-                                function getStep() {
-                                    var firstItem = items[0];
-                                    if (!firstItem) return 300;
-                                    var styles = window.getComputedStyle(firstItem);
-                                    var mr = parseFloat(styles.marginRight) || 0;
-                                    var ml = parseFloat(styles.marginLeft) || 0;
-                                    return firstItem.getBoundingClientRect().width + ml + mr;
-                                }
                                 if (prev) prev.addEventListener('click', function () {
                                     setActive(activeIndex - 1);
                                     centerOnActive();
@@ -1652,7 +1697,32 @@
                                     setActive(idx);
                                     centerOnActive();
                                 });
+                                // Keyboard navigation
+                                root.setAttribute('tabindex', '0');
+                                root.addEventListener('keydown', function (e) {
+                                    if (e.key === 'ArrowLeft') { e.preventDefault(); setActive(activeIndex - 1); centerOnActive(); }
+                                    if (e.key === 'ArrowRight') { e.preventDefault(); setActive(activeIndex + 1); centerOnActive(); }
+                                });
+
+                                // Wheel / trackpad navigation
+                                root.addEventListener('wheel', function (e) {
+                                    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                                        e.preventDefault();
+                                        if (e.deltaX > 0) { setActive(activeIndex + 1); } else { setActive(activeIndex - 1); }
+                                    } else {
+                                        e.preventDefault();
+                                        if (e.deltaY > 0) { setActive(activeIndex + 1); } else { setActive(activeIndex - 1); }
+                                    }
+                                    centerOnActive();
+                                }, { passive: false });
+
                                 window.addEventListener('resize', centerOnActive);
+                                if ('ResizeObserver' in window) {
+                                    var ro = new ResizeObserver(function () { centerOnActive(); });
+                                    ro.observe(row);
+                                }
+                                window.addEventListener('load', centerOnActive);
+                                applyCoverflow();
                             }
                             document.addEventListener('DOMContentLoaded', function () {
                                 document.querySelectorAll('.tickets-slider').forEach(initSlider);
