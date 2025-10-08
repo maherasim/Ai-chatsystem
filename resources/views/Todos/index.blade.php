@@ -1,5 +1,6 @@
 @php
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 @endphp
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
@@ -504,13 +505,23 @@ use Illuminate\Support\Str;
                                 $todotyp = "shared";
                                 if($todo->is_private == "1"){
                                     $todotyp = "private";
+                                    
                                 }
-                                $remaining = strtotime($todo->end_time) - time();
+
+                               // echo time();
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                ->diffInSeconds($endDateTime, false));
+
                                 if ($remaining < 0) $remaining = 0;
 
                                 $reminderMinutes = $todo->reminder ?? 60;
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
+
 
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
@@ -530,7 +541,7 @@ use Illuminate\Support\Str;
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
                                             <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
@@ -694,12 +705,13 @@ use Illuminate\Support\Str;
                                         <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
 
 
-                                            @foreach($todo->description as $des)
-
-                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
-                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
-                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
-                                                </div>
+                                            @foreach($todo->description as $idx => $des)
+                                                @if($loop->first)
+                                                    <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                        <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                        <span style="color:#667085;font-size:13.5px;">{{ Str::limit($des, 40) }}</span>
+                                                    </div>
+                                                @endif
                                             @endforeach
 
                                             
@@ -756,31 +768,41 @@ use Illuminate\Support\Str;
     </div>
 
                                         <div class="counter-div" id="timer-{{ $index }}">
-        <span id="asimclic-{{ $index }}"></span>
-    </div>
+                                            <span id="asimclic-{{ $index }}"></span>
+                                        </div>
                                     
 
                                     @if($remaining > 0)
-        <script>
-            (function() {
-                let duration = {{ $remaining }};
-                let display = document.getElementById('asimclic-{{ $index }}');
-                let container = document.getElementById('timer-{{ $index }}');
-                let part = {{ $part }};
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('asimclic-{{ $index }}');
+            let container = document.getElementById('timer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
 
-                function updateClock() {
-                    let hours = Math.floor(duration / 3600);
-                    let minutes = Math.floor((duration % 3600) / 60);
-                    let seconds = duration % 60;
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
 
-                    let formatted =
-                        String(hours).padStart(2, '0') + ":" +
-                        String(minutes).padStart(2, '0') + ":" +
-                        String(seconds).padStart(2, '0');
+            function updateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
 
-                    display.innerText = formatted;
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
 
-                    // change color gradually
+                display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+
+                    // color changes during reminder phase
                     if (duration <= 0) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
                         clearInterval(timer);
@@ -791,24 +813,25 @@ use Illuminate\Support\Str;
                     } else {
                         container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
                     }
-
-                    duration--;
                 }
 
-                updateClock();
-                let timer = setInterval(updateClock, 1000);
-            })();
-        </script>
-        @else
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let container = document.getElementById('timer-{{ $index }}');
-                let display = document.getElementById('asimclic-{{ $index }}');
-                display.innerText = "00:00:00";
-                container.style.backgroundColor = "#e74c3c";
-            });
-        </script>
-    @endif
+                duration--;
+            }
+
+            updateClock();
+            let timer = setInterval(updateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('timer-{{ $index }}');
+            let display = document.getElementById('asimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
                                                 
                                     </div>
                                 </div>
@@ -852,7 +875,17 @@ use Illuminate\Support\Str;
                              @forelse($privateTodos  as $index => $todo)
                             
                              @php
-                                $remaining = strtotime($todo->end_time) - time();
+                                //$remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+// echo time();
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                ->diffInSeconds($endDateTime, false));
+
+
                                 if ($remaining < 0) $remaining = 0;
 
                                 $reminderMinutes = $todo->reminder ?? 60;
@@ -876,7 +909,7 @@ use Illuminate\Support\Str;
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
                                             <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
@@ -1031,13 +1064,13 @@ use Illuminate\Support\Str;
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                            @foreach($todo->description as $des)
-
-                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
-                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
-                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
-                                                </div>
-
+                                            @foreach($todo->description as $idx => $des)
+                                                @if($loop->first)
+                                                    <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                        <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                        <span style="color:#667085;font-size:13.5px;">{{ Str::limit($des, 40) }}</span>
+                                                    </div>
+                                                @endif
                                             @endforeach
                                         </p>
 
@@ -1080,29 +1113,40 @@ use Illuminate\Support\Str;
 <div class="counter-div" id="pvttimer-{{ $index }}">
         <span id="pvtasimclic-{{ $index }}"></span>
     </div>
-                                    
-
+                                 
+    
+    
                                     @if($remaining > 0)
-        <script>
-            (function() {
-                let duration = {{ $remaining }};
-                let display = document.getElementById('pvtasimclic-{{ $index }}');
-                let container = document.getElementById('pvttimer-{{ $index }}');
-                let part = {{ $part }};
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('pvtasimclic-{{ $index }}');
+            let container = document.getElementById('pvttimer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
 
-                function pvtupdateClock() {
-                    let hours = Math.floor(duration / 3600);
-                    let minutes = Math.floor((duration % 3600) / 60);
-                    let seconds = duration % 60;
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
 
-                    let formatted =
-                        String(hours).padStart(2, '0') + ":" +
-                        String(minutes).padStart(2, '0') + ":" +
-                        String(seconds).padStart(2, '0');
+            function pvtupdateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
 
-                    display.innerText = formatted;
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
 
-                    // change color gradually
+                display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+
+                    // color changes during reminder phase
                     if (duration <= 0) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
                         clearInterval(timer);
@@ -1113,24 +1157,27 @@ use Illuminate\Support\Str;
                     } else {
                         container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
                     }
-
-                    duration--;
                 }
 
-                pvtupdateClock();
-                let timer = setInterval(pvtupdateClock, 1000);
-            })();
-        </script>
-        @else
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let container = document.getElementById('pvttimer-{{ $index }}');
-                let display = document.getElementById('pvtasimclic-{{ $index }}');
-                display.innerText = "00:00:00";
-                container.style.backgroundColor = "#e74c3c";
-            });
-        </script>
-    @endif
+                duration--;
+            }
+
+            pvtupdateClock();
+            let timer = setInterval(pvtupdateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('pvttimer-{{ $index }}');
+            let display = document.getElementById('pvtasimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+
+                                    
 
 
                                         </div>
@@ -1175,7 +1222,17 @@ use Illuminate\Support\Str;
                             @forelse($sharedTodos  as $index => $todo)
 
                             @php
-                                $remaining = strtotime($todo->end_time) - time();
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+// echo time();
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                ->diffInSeconds($endDateTime, false));
+
+
                                 if ($remaining < 0) $remaining = 0;
 
                                 $reminderMinutes = $todo->reminder ?? 60;
@@ -1200,7 +1257,7 @@ use Illuminate\Support\Str;
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
-                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
                                             <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                             <div>
@@ -1316,13 +1373,13 @@ use Illuminate\Support\Str;
 
                                         <!-- Description -->
                                         <p class=" mt-3" style="font-size: 13px; color: #333;">
-                                           @foreach($todo->description as $des)
-
-                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
-                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
-                                                    <span style="color:#667085;font-size:13.5px;">{{Str::limit($des,40)}}</span>
-                                                </div>
-
+                                           @foreach($todo->description as $idx => $des)
+                                                @if($loop->first)
+                                                    <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                        <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                        <span style="color:#667085;font-size:13.5px;">{{ Str::limit($des, 40) }}</span>
+                                                    </div>
+                                                @endif
                                             @endforeach
                                         </p>
                                         
@@ -1363,31 +1420,40 @@ use Illuminate\Support\Str;
         <span id="shasimclic-{{ $index }}"></span>
     </div>
                                     
+ @if($remaining > 0)
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
 
-                                    @if($remaining > 0)
-        <script>
-            (function() {
-                let duration = {{ $remaining }};
-                let display = document.getElementById('shasimclic-{{ $index }}');
-                let container = document.getElementById('shtimer-{{ $index }}');
-                let part = {{ $part }};
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
 
-                function shupdateClock() {
-                    let hours = Math.floor(duration / 3600);
-                    let minutes = Math.floor((duration % 3600) / 60);
-                    let seconds = duration % 60;
+            function shupdateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
 
-                    let formatted =
-                        String(hours).padStart(2, '0') + ":" +
-                        String(minutes).padStart(2, '0') + ":" +
-                        String(seconds).padStart(2, '0');
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
 
-                    display.innerText = formatted;
+                display.innerText = formatted;
 
-                    // change color gradually
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+
+                    // color changes during reminder phase
                     if (duration <= 0) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
-                        clearInterval(shtimer);
+                        clearInterval(timer);
                     } else if (duration <= part) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
                     } else if (duration <= part * 2) {
@@ -1395,25 +1461,26 @@ use Illuminate\Support\Str;
                     } else {
                         container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
                     }
-
-                    duration--;
                 }
 
-                shupdateClock();
-                let shtimer = setInterval(shupdateClock, 1000);
-            })();
-        </script>
-        @else
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let container = document.getElementById('shtimer-{{ $index }}');
-                let display = document.getElementById('shasimclic-{{ $index }}');
-                display.innerText = "00:00:00";
-                container.style.backgroundColor = "#e74c3c";
-            });
-        </script>
-    @endif
+                duration--;
+            }
 
+            shupdateClock();
+            let timer = setInterval(shupdateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+                                   
                                     </div>
 
                                     <!-- Footer Button -->
@@ -1842,7 +1909,7 @@ use Illuminate\Support\Str;
 
                     <div class="row g-2 mt-2" id="sectionsWrapper">
                         <div class="col-md-12 d-flex align-items-center section-item">
-                            <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
+                            <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                             <button type="button" class="btn btn-plus btn-sm ms-2 add-btn"><span>+</span></button>
                         </div>
@@ -3343,20 +3410,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const wrapper = document.getElementById("sectionsWrapper");
 
     wrapper.addEventListener("click", function (e) {
-        if (e.target.classList.contains("add-btn")) {
+        const addButton = e.target.closest(".add-btn");
+        const removeButton = e.target.closest(".remove-btn");
+
+        if (addButton) {
             // create new section row
             const div = document.createElement("div");
             div.className = "col-md-12 d-flex align-items-center section-item mt-2";
             div.innerHTML = `
-                <input name="sections[]" type="text" class="form-control" placeholder="Section Description" 
+                <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
                        style="font-size: 13px; background-color: white; border-radius: 8px;">
                 <button type="button" class="btn btn-minus btn-sm ms-2 remove-btn"><span>-</span></button>
             `;
             wrapper.appendChild(div);
         }
 
-        if (e.target.classList.contains("remove-btn")) {
-            e.target.closest(".section-item").remove();
+        if (removeButton) {
+            removeButton.closest(".section-item").remove();
         }
     });
 });
@@ -3500,7 +3570,11 @@ console.log("Raw members data:", e_members);
         });
     });
 
+    let customtimer = {{ $ctime }} * 1000;
 
+    setInterval(() => {
+        customtimer += 1000; // decrease by 1 second each tick
+    }, 1000);
 
     const modal = document.getElementById("inreject");
 
@@ -3539,17 +3613,32 @@ console.log("Raw members data:", e_members);
             let startTime   = this.dataset.start_time || "";
             let endTime     = this.dataset.end_time || "";
 
-            let endDateTime = new Date(`${endDate} ${endTime}`).getTime();
+            
+
+            let [year, month, day] = endDate.split('-').map(Number);
+            let [hour, minute] = endTime.split(':').map(Number);
+            let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+
+           // alert(endDate + " " + endTime);
+
+            //let endDateTime = new Date(`${endDate} ${endTime}`).getTime();
             const CIRC = 157; 
 
             if (timerInterval) clearInterval(timerInterval);
 
             function updateTimer() {
 
-                const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
-                const serverDate = new Date(serverTimestamp);
-            const now = serverDate; // new Date().getTime();
+            //    const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
+           //     const serverDate = new Date(serverTimestamp);
+           // const now = serverDate; // new Date().getTime();
+           // const distance = endDateTime - now;
+
+            const serverTimestamp = customtimer; // {{ $ctime }} * 1000; // already adjusted from controller
+            
+            const serverDate = new Date(serverTimestamp);
+            const now = serverDate; // your reference time from backend
             const distance = endDateTime - now;
+
 
         if (distance <= 0) {
             document.getElementById("days").innerText = 0;
@@ -3597,9 +3686,16 @@ console.log("Raw members data:", e_members);
     }
 
     updateTimer();
-    timerInterval = setInterval(updateTimer, 60000);
+    //timerInterval = setInterval(updateTimer, 60000);
+    timerInterval = setInterval(updateTimer, 1000);
 
-            let today = new Date().toISOString().split("T")[0];
+    //const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
+                //const serverDate = new Date(serverTimestamp);
+            //let today = new Date().toISOString().split("T")[0];
+
+            let today = "{{ now()->format('Y-m-d') }}";
+
+            
 
             if (startDate === today) {
                
@@ -3610,6 +3706,8 @@ console.log("Raw members data:", e_members);
                 let tottime       = this.dataset.total;
                     
                 modal.querySelector(".todo-total_time").innerText = tottime + " Hours";
+
+                
 
             }else{
                 

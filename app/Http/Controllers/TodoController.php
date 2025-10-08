@@ -140,7 +140,11 @@ class TodoController extends Controller
                 return $todo;
             });
 
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting'));
+
+            $ctime = strtotime(date("Y-m-d H:i:s"));
+            
+            
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime'));
     }
 
     public function destroy($id)
@@ -222,6 +226,9 @@ class TodoController extends Controller
             $total_time = $request->todaytime;
             $startDate = date('Y-m-d');
         }
+
+        //echo date("H:i");
+        //die("");
 
         $todoid = $request->todo_id;
 
