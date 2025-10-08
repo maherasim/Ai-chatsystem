@@ -1,0 +1,246 @@
+CIRCULAR CAROUSEL IMPLEMENTATION
+=================================
+
+Replace the <style> section (lines 1569-1587) with this:
+
+                    <style>
+                        .tickets-slider { 
+                            position: relative; 
+                            min-height: 600px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            perspective: 2000px;
+                            overflow: hidden;
+                            padding: 40px 0;
+                        }
+                        
+                        .tickets-slider .row { 
+                            position: relative;
+                            width: 100%;
+                            height: 500px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-wrap: nowrap !important;
+                        }
+                        
+                        .tickets-slider [class*="col-"] {
+                            position: absolute;
+                            width: 320px;
+                            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                            left: 50%;
+                            top: 50%;
+                            transform-style: preserve-3d;
+                        }
+                        
+                        .tickets-slider .slider-arrow { 
+                            position: absolute; 
+                            top: 50%; 
+                            transform: translateY(-50%); 
+                            z-index: 100; 
+                            width: 50px; 
+                            height: 50px; 
+                            border-radius: 50%; 
+                            background: rgba(255, 255, 255, 0.95); 
+                            border: 2px solid #e5e7eb; 
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        }
+                        
+                        .tickets-slider .slider-arrow:hover {
+                            background: #4fc3f7;
+                            border-color: #4fc3f7;
+                            transform: translateY(-50%) scale(1.1);
+                            box-shadow: 0 6px 25px rgba(79,195,247,0.5);
+                        }
+                        
+                        .tickets-slider .slider-arrow:hover i {
+                            color: white;
+                        }
+                        
+                        .tickets-slider .slider-prev { left: 40px; }
+                        .tickets-slider .slider-next { right: 40px; }
+
+                        /* 3D Coverflow effect */
+                        .tickets-slider .card { 
+                            position: relative; 
+                            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                            filter: blur(4px) brightness(0.7); 
+                            opacity: 0.5;
+                            transform: scale(0.75);
+                            pointer-events: auto;
+                            cursor: pointer;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                        }
+                        
+                        .tickets-slider .card.is-active { 
+                            filter: none !important; 
+                            opacity: 1 !important; 
+                            transform: scale(1.1) translateZ(100px) rotateY(0deg) !important;
+                            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+                            z-index: 50 !important;
+                            pointer-events: auto;
+                        }
+                        
+                        .tickets-slider .card.is-active::before { 
+                            content: ""; 
+                            position: absolute; 
+                            inset: -8px; 
+                            border-radius: 24px; 
+                            background: linear-gradient(135deg, rgba(79,195,247,0.3), rgba(79,195,247,0.1));
+                            box-shadow: 0 0 0 3px rgba(79,195,247,0.4), 0 0 60px rgba(79,195,247,0.3); 
+                            pointer-events: none;
+                            animation: pulse 3s ease-in-out infinite;
+                        }
+                        
+                        @keyframes pulse {
+                            0%, 100% { opacity: 1; }
+                            50% { opacity: 0.6; }
+                        }
+
+                        @media (max-width: 768px) {
+                            .tickets-slider { min-height: 500px; }
+                            .tickets-slider .row { height: 400px; }
+                            .tickets-slider [class*="col-"] { width: 260px; }
+                            .tickets-slider .slider-prev { left: 20px; }
+                            .tickets-slider .slider-next { right: 20px; }
+                        }
+                        
+                        @media (max-width: 576px) {
+                            .tickets-slider { min-height: 450px; }
+                            .tickets-slider .row { height: 350px; }
+                            .tickets-slider [class*="col-"] { width: 220px; }
+                            .tickets-slider .slider-prev { left: 10px; }
+                            .tickets-slider .slider-next { right: 10px; }
+                            .tickets-slider .slider-arrow { width: 40px; height: 40px; }
+                        }
+                    </style>
+
+=================================
+
+Replace the <script> section (lines 1589-1661) with this:
+
+                    <script>
+                        (function () {
+                            function initSlider(root) {
+                                var row = root.querySelector('.row');
+                                if (!row) return;
+                                var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
+                                var cards = items.map(function (el) { return el.querySelector('.card'); }).filter(Boolean);
+                                var activeIndex = 0;
+                                var totalItems = items.length;
+
+                                function positionCards() {
+                                    // 3D Coverflow effect - like the image
+                                    var spacing = 280; // Space between cards
+                                    var maxVisible = 2; // Max cards visible on each side
+                                    
+                                    items.forEach(function (item, i) {
+                                        var relativeIndex = (i - activeIndex + totalItems) % totalItems;
+                                        
+                                        // Normalize to -totalItems/2 to +totalItems/2
+                                        if (relativeIndex > totalItems / 2) {
+                                            relativeIndex = relativeIndex - totalItems;
+                                        }
+                                        
+                                        // Active card in center
+                                        if (relativeIndex === 0) {
+                                            item.style.transform = 'translate(-50%, -50%) translateX(0px) translateY(0px) translateZ(0px) rotateY(0deg) scale(1)';
+                                            item.style.zIndex = 50;
+                                            item.style.opacity = 1;
+                                        } else {
+                                            // Calculate position for side cards
+                                            var x = relativeIndex * spacing;
+                                            var z = -Math.abs(relativeIndex) * 150; // Push back based on distance
+                                            var rotateY = relativeIndex > 0 ? -35 : 35; // Rotate cards
+                                            var scale = 1 - Math.abs(relativeIndex) * 0.15; // Scale down
+                                            var opacity = Math.max(0.3, 1 - Math.abs(relativeIndex) * 0.2);
+                                            
+                                            // Hide cards beyond maxVisible
+                                            if (Math.abs(relativeIndex) > maxVisible) {
+                                                opacity = 0;
+                                                item.style.pointerEvents = 'none';
+                                            } else {
+                                                item.style.pointerEvents = 'auto';
+                                            }
+                                            
+                                            item.style.transform = 'translate(-50%, -50%) translateX(' + x + 'px) translateY(0px) translateZ(' + z + 'px) rotateY(' + rotateY + 'deg) scale(' + scale + ')';
+                                            item.style.zIndex = Math.round(50 - Math.abs(relativeIndex) * 10);
+                                            item.style.opacity = opacity;
+                                        }
+                                    });
+                                }
+
+                                function setActive(index) {
+                                    // Allow wrapping
+                                    if (index < 0) index = totalItems - 1;
+                                    if (index >= totalItems) index = 0;
+                                    activeIndex = index;
+                                    
+                                    cards.forEach(function (c) { c.classList.remove('is-active'); });
+                                    if (cards[activeIndex]) cards[activeIndex].classList.add('is-active');
+                                    
+                                    positionCards();
+                                }
+
+                                // Initialize
+                                setActive(0);
+
+                                var prev = root.querySelector('.slider-prev');
+                                var next = root.querySelector('.slider-next');
+                                
+                                if (prev) prev.addEventListener('click', function () {
+                                    setActive(activeIndex - 1);
+                                });
+                                
+                                if (next) next.addEventListener('click', function () {
+                                    setActive(activeIndex + 1);
+                                });
+
+                                // Click to focus
+                                row.addEventListener('click', function (e) {
+                                    var card = e.target && e.target.closest('.card');
+                                    if (!card) return;
+                                    var idx = cards.indexOf(card);
+                                    if (idx === -1) return;
+                                    setActive(idx);
+                                });
+                                
+                                // Keyboard navigation
+                                document.addEventListener('keydown', function(e) {
+                                    if (e.key === 'ArrowLeft') setActive(activeIndex - 1);
+                                    if (e.key === 'ArrowRight') setActive(activeIndex + 1);
+                                });
+                                
+                                window.addEventListener('resize', positionCards);
+                            }
+                            document.addEventListener('DOMContentLoaded', function () {
+                                document.querySelectorAll('.tickets-slider').forEach(initSlider);
+                            });
+                        })();
+                    </script>
+
+=================================
+
+INSTRUCTIONS:
+1. Open resources\views\Chats\ticket.blade.php
+2. Find the <style> section around line 1569
+3. Replace the entire <style>...</style> block with the CSS code above
+4. Find the <script> section around line 1589
+5. Replace the entire <script>...</script> block with the JavaScript code above
+6. Save the file and refresh your browser
+
+FEATURES:
+- Active card is centered and fully visible
+- Other cards are arranged in a circular pattern around the center
+- All non-active cards are blurred (blur(6px))
+- Smooth transitions when navigating
+- Click any card to make it active
+- Use arrow buttons or keyboard arrows to navigate
+- Cards wrap around (circular navigation)

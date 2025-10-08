@@ -320,10 +320,10 @@
 
 
 
-                    <div class="mb-2">
-                        <div class="row g-3" style="flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory;">
+                    <div id="ticketsSlider1" class="mb-2 tickets-slider">
+                        <div class="row g-3">
                             <!-- 1-->
-                            <div class="col-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                            <div class="col-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -401,7 +401,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -477,7 +477,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -553,7 +553,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -573,7 +573,7 @@
 
                             </div>
                             <!-- 2 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -649,7 +649,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -724,7 +724,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -800,7 +800,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -820,7 +820,7 @@
 
                             </div>
                             <!-- 3 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -895,7 +895,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -971,7 +971,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1047,7 +1047,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1067,7 +1067,7 @@
 
                             </div>
                             <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1142,7 +1142,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1218,7 +1218,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1293,7 +1293,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1312,7 +1312,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1387,7 +1387,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1463,7 +1463,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1538,7 +1538,7 @@
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
@@ -1557,9 +1557,108 @@
                                 </div>
 
                             </div>
-                            
                         </div>
+                        <button class="slider-arrow slider-prev" type="button" aria-label="Previous">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="slider-arrow slider-next" type="button" aria-label="Next">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
                     </div>
+
+                    <style>
+                        .tickets-slider { position: relative; }
+                        .tickets-slider.is-slider .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; }
+                        .tickets-slider.is-slider .row::-webkit-scrollbar { display: none; }
+                        .tickets-slider .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; align-items: center; justify-content: center; }
+                        .tickets-slider .slider-prev { left: -12px; }
+                        .tickets-slider .slider-next { right: -12px; }
+                        .tickets-slider.is-slider .slider-arrow { display: flex; }
+
+                        /* Bloom/blur effect */
+                        .tickets-slider .card { position: relative; transition: transform .35s ease, filter .35s ease, opacity .35s ease, box-shadow .35s ease; filter: blur(4px); opacity: .6; }
+                        .tickets-slider .card.is-active { filter: none; opacity: 1; transform: scale(1.03); box-shadow: 0 10px 24px rgba(0,0,0,.12); z-index: 2; }
+                        .tickets-slider .card.is-active::before { content: ""; position: absolute; inset: -6px; border-radius: 22px; box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 0 40px rgba(79,195,247,0.35); pointer-events: none; }
+
+                        @media (max-width: 576px) {
+                            .tickets-slider .slider-prev { left: 4px; }
+                            .tickets-slider .slider-next { right: 4px; }
+                        }
+                    </style>
+
+                    <script>
+                        (function () {
+                            function initSlider(root) {
+                                var row = root.querySelector('.row');
+                                if (!row) return;
+                                var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
+
+                                // Always apply bloom/blur effect; slider arrows appear only if items > 4
+                                var cards = items.map(function (el) { return el.querySelector('.card'); }).filter(Boolean);
+                                var activeIndex = 0;
+
+                                function setActive(index) {
+                                    if (index < 0) index = 0;
+                                    if (index >= cards.length) index = cards.length - 1;
+                                    activeIndex = index;
+                                    cards.forEach(function (c) { c.classList.remove('is-active'); });
+                                    if (cards[activeIndex]) cards[activeIndex].classList.add('is-active');
+                                }
+
+                                function centerOnActive() {
+                                    var target = items[activeIndex];
+                                    if (!target) return;
+                                    var rowRect = row.getBoundingClientRect();
+                                    var cardRect = target.getBoundingClientRect();
+                                    var delta = cardRect.left - (rowRect.left + (rowRect.width - cardRect.width) / 2);
+                                    row.scrollBy({ left: delta, behavior: 'smooth' });
+                                }
+
+                                setActive(0);
+                                centerOnActive();
+
+                                var shouldSlide = items.length > 4;
+                                if (shouldSlide) {
+                                    root.classList.add('is-slider');
+                                } else {
+                                    root.classList.remove('is-slider');
+                                }
+
+                                var prev = root.querySelector('.slider-prev');
+                                var next = root.querySelector('.slider-next');
+                                function getStep() {
+                                    var firstItem = items[0];
+                                    if (!firstItem) return 300;
+                                    var styles = window.getComputedStyle(firstItem);
+                                    var mr = parseFloat(styles.marginRight) || 0;
+                                    var ml = parseFloat(styles.marginLeft) || 0;
+                                    return firstItem.getBoundingClientRect().width + ml + mr;
+                                }
+                                if (prev) prev.addEventListener('click', function () {
+                                    setActive(activeIndex - 1);
+                                    centerOnActive();
+                                });
+                                if (next) next.addEventListener('click', function () {
+                                    setActive(activeIndex + 1);
+                                    centerOnActive();
+                                });
+
+                                // Click to focus
+                                row.addEventListener('click', function (e) {
+                                    var card = e.target && e.target.closest('.card');
+                                    if (!card) return;
+                                    var idx = cards.indexOf(card);
+                                    if (idx === -1) return;
+                                    setActive(idx);
+                                    centerOnActive();
+                                });
+                                window.addEventListener('resize', centerOnActive);
+                            }
+                            document.addEventListener('DOMContentLoaded', function () {
+                                document.querySelectorAll('.tickets-slider').forEach(initSlider);
+                            });
+                        })();
+                    </script>
 
                     <!--  current task -->
                     <div class="project-succes pt-3 pb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
@@ -1617,7 +1716,7 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
@@ -1810,7 +1909,7 @@
                                                 </div>
 
                                                 <!-- Status Colors -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
