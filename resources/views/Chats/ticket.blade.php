@@ -321,9 +321,9 @@
 
 
                     <div class="mb-2">
-                        <div class="row g-3">
+                        <div class="row g-3" style="flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory;">
                             <!-- 1-->
-                            <div class="col-6 col-md-4 col-lg-3">
+                            <div class="col-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -353,31 +353,35 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -385,27 +389,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -424,31 +431,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -456,27 +465,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -495,31 +507,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -527,27 +541,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -556,7 +573,7 @@
 
                             </div>
                             <!-- 2 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -586,31 +603,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -618,27 +637,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -657,59 +679,63 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                      <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
 
 
-
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -728,31 +754,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -760,27 +788,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                       <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -789,7 +820,7 @@
 
                             </div>
                             <!-- 3 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -819,59 +850,63 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
 
 
-
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -890,31 +925,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -922,27 +959,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -961,31 +1001,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -993,27 +1035,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -1022,7 +1067,7 @@
 
                             </div>
                             <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1051,31 +1096,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1083,27 +1130,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -1122,31 +1172,33 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1154,27 +1206,30 @@
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -1193,58 +1248,63 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:11px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold;">5 Tasks</span>
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: 22.10.2024</span>
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center; margin-left: 10px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
 
 
                                         <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-3" style="flex-wrap: nowrap;">
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
                                                 </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
-
-                                            <!-- Status Dots -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 5px;margin-right:4px;">
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                 <span style="color: #8BC34A;">● 1</span>
                                                 <span style="color: #FF9800;">● 3</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
 
-                                            </div>
-                                            <div>
-                                                <img src="{{URL::asset('/build/img/yelowflag.svg')}}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px; " alt="flag">
-                                            </div>
 
                                         </div>
                                         <!-- tasks -->
@@ -1252,6 +1312,252 @@
                                 </div>
 
                             </div>
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
+                                <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
+                                    <!-- Top Section -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div style="color: #00C853; font-weight: 600; font-size: 16px;"> Ticket In Done</div>
+                                            <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
+                                        </div>
+                                        <div>
+                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                                <option selected>Select Projects</option>
+                                                <option selected>Yekbon</option>
+                                                <option selected>CMS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
+
+                                        <!-- Task Line -->
+                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Progress Bar -->
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                </div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
+                                            </div>
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- tasks -->
+                                    </div>
+                                    <!-- 2 -->
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
+
+                                        <!-- Task Line -->
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Progress Bar -->
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                </div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
+                                            </div>
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- tasks -->
+                                    </div>
+                                    <!-- 3 -->
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div>
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
+                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
+
+                                        <!-- Task Line -->
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+
+                                            <!-- Task Count -->
+                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Start Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p> </span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Delivery Date -->
+                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+
+                                            <!-- Divider -->
+                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Progress Bar -->
+                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                </div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
+                                            </div>
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- tasks -->
+                                    </div>
+                                </div>
+
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -1311,35 +1617,36 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" style="scroll-snap-align: start;">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
 
                                         <!-- Progress Circle -->
-                                        <div style="width: 50px; height: 50px; position: relative;">
-                                            <svg width="50" height="50">
+                                        <div style="width: 36px; height: 36px; position: relative;">
+                                            <svg width="36" height="36">
                                                 <defs>
                                                     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                                                         <stop offset="0%" stop-color="#ff7f00" />
                                                         <stop offset="100%" stop-color="#fcd34d" />
                                                     </linearGradient>
                                                 </defs>
-                                                <circle cx="25" cy="25" r="21" stroke="#d1d1d1" stroke-width="6" fill="none" />
+                                                <circle cx="18" cy="18" r="15.12" stroke="#d1d1d1" stroke-width="4.32" fill="none" />
                                                 <circle
-                                                    cx="25"
-                                                    cy="25"
-                                                    r="21"
+                                                    cx="18"
+                                                    cy="18"
+                                                    r="15.12"
                                                     stroke="url(#grad)"
-                                                    stroke-width="6"
+                                                    stroke-width="4.32"
                                                     fill="none"
-                                                    stroke-dasharray="131.88"
-                                                    stroke-dashoffset="39.56" <!-- 70% progress -->
+                                                    stroke-dasharray="95.04"
+                                                    stroke-dashoffset="28.51" <!-- 70% progress -->
                                                     stroke-linecap="round"
-                                                    transform="rotate(-90 25 25)" />
+                                                    transform="rotate(-90 18 18)" />
                                             </svg>
-                                            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:11px; font-weight:600;">70%</span>
+                                            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:9.5px; font-weight:600;">70%</span>
                                         </div>
+
 
                                         <!-- Middle Card -->
                                         <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
@@ -1372,7 +1679,7 @@
 
                                         <!-- Ticket Icon -->
                                         <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
-                                            style="height: 25px; width: 25px; cursor: pointer;"
+                                            style="height: 32px; width: 32px; cursor: pointer;background:#F5F5F5;padding:3px;border-radius:5px;"
                                             alt="ticket"
                                             data-bs-toggle="modal"
                                             data-bs-target="#ticketModal"
@@ -1382,20 +1689,20 @@
                                     <!-- Project Stats -->
                                     <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
                                         style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;">
-                                        <div style="color: #10b981;"><strong>Tickets:</strong>
-                                            <p>{{ $projectTickets->count() }}</p>
+                                        <div style="color: #10b981;text-align:center"><strong>Tickets:</strong>
+                                            <p style="color: black;text-align:center">{{ $projectTickets->count() }}</p>
                                         </div>
                                         <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                        <div style="color: #10b981;"><strong>Tasks:</strong>
+                                        <div style="color: #10b981;text-align:center"><strong>Tasks:</strong>
                                             <p> <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></p>
                                         </div>
                                         <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                        <div style="color: #10b981;"><strong>Begining:</strong>
-                                            <p>{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y-m-d') }}</p>
+                                        <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
+                                            <p style="color: black;">{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y-m-d') }}</p>
                                         </div>
                                         <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                        <div style="color: #10b981;"><strong>End:</strong>
-                                            <p> {{ \Carbon\Carbon::parse($ticket->end_date)->format('Y-m-d') }} </p>
+                                        <div style="color: #10b981;text-align:center"><strong>End:</strong>
+                                            <p style="color: black;"> {{ \Carbon\Carbon::parse($ticket->end_date)->format('Y-m-d') }} </p>
                                         </div>
                                     </div>
 
@@ -1419,11 +1726,11 @@
                                             <hr style="flex: 1; height: 2.5px; border: none; 
                                              background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
                                                margin: 0;">
-                                          <img src="{{ asset('build/img/up_arrow.svg') }}" 
-                                          alt="toggle-icon" width="18" height="18"
-                                          style="margin-left: 6px; transition: transform 0.3s;"
-                                          class="toggle-icon">
-                                     
+                                            <img src="{{ asset('build/img/up_arrow.svg') }}"
+                                                alt="toggle-icon" width="18" height="18"
+                                                style="margin-left: 6px; transition: transform 0.3s;"
+                                                class="toggle-icon">
+
                                         </div>
 
                                     </div>
@@ -1452,7 +1759,7 @@
                                         <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                                             <!-- Ticket Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
-                                                
+
                                                 <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
                                                 <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $pt->section_name }}</div>
                                                 <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $pt->title }}</div>
@@ -1462,21 +1769,26 @@
                                                     data-project-id="{{ $pt->project_id }}"
                                                     @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
                                                     title="Edit ticket" style="cursor: pointer;">
-                                                    <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;"
-                                                         data-bs-toggle="modal" data-bs-target="#ticketModal"
-                                                         data-ticket-id="{{ $pt->_id ?? $pt->id }}"
-                                                         data-project-id="{{ $pt->project_id }}"
-                                                         @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif>
+                                                    <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="15px;"
+                                                        data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                                        data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                                                        data-project-id="{{ $pt->project_id }}"
+                                                        @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif>
                                                 </div>
                                             </div>
 
                                             <!-- Task Info -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
-                                                <span style="margin-right: 5px; font-weight: bold;"> Tasks <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" /></span>
+                                            <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                                                <span style="margin-right: 5px; font-weight: bold;"> Tasks <p>
+                                                     <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" />
+                                                </p></span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                <span style="margin-right: 5px; color: #28a745;">Start: {{ \Carbon\Carbon::parse($pt->start_date)->format('Y-m-d') }}</span>
+                                                <span style="margin-right: 5px; color: #28a745;">Start:
+                                                    <p style="color: black;">{{ \Carbon\Carbon::parse($pt->start_date)->format('Y-m-d') }}</p>
+                                                </span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                <span style="margin-right: 5px; color: #28a745;">Deliver: {{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</span>
+                                                <span style="margin-right: 5px; color: #28a745;">Deliver:
+                                                    <p style="color: black;">{{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</p> </span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                                 <!-- Avatars -->
@@ -1488,17 +1800,17 @@
                                             </div>
 
                                             <!-- Task Progress & Status -->
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
                                                         <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
                                                     <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
-                                                     <span style="margin-left: 8px; color: #ccc;">|</span>
+                                                    <span style="margin-left: 8px; color: #ccc;">|</span>
                                                 </div>
 
                                                 <!-- Status Colors -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
+                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px; overflow-x: auto; flex-wrap: nowrap; max-width: 160px;">
                                                     <span style="color: #8BC34A;">● 1</span>
                                                     <span style="color: #FF9800;">● 3</span>
                                                     <span style="color: #F44336;">● 0</span>
@@ -1655,7 +1967,7 @@
                     <button id="saveCloseTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Save and Close</button>
                     <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #F5A623; color: white; min-width: 160px;">Save & add Ticket</button>
                     <button id="updateTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Update and Close</button>
- 
+
                 </div>
 
 
@@ -1958,7 +2270,10 @@
                     window.location.reload();
                 } else {
                     let errMsg = 'Failed to update ticket';
-                    try { const err = await resp.json(); errMsg = err?.message || errMsg; } catch(_) {}
+                    try {
+                        const err = await resp.json();
+                        errMsg = err?.message || errMsg;
+                    } catch (_) {}
                     alert(errMsg);
                 }
             } catch (e) {
