@@ -67,7 +67,7 @@ class TodoController extends Controller
        //     ->get();
 
         $todayTodos = Todo::where('user_id', $user->id)
-            ->where('start_date', date('Y-m-d'))
+            ->where('end_date', date('Y-m-d'))
             ->where('completed',  0)
             ->where(function($q) {
                 $q->where('is_removed', 0)
@@ -92,8 +92,8 @@ class TodoController extends Controller
 
             
             $privateTodos = Todo::where('user_id', $user->id)
-            ->where('is_private', "1")
     ->where('completed',  0)
+     ->where('end_date', '>', date('Y-m-d'))
     ->where(function($q) {
         $q->where('is_removed', 0)
           ->orWhereNull('is_removed');

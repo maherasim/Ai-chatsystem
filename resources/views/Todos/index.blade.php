@@ -536,14 +536,16 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
+    data-own="1"
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-top:0px; margin-left:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -647,6 +649,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -724,7 +727,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="gap: 2rem !important; justify-content: center; font-size:13px; gap: .35rem !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -737,7 +740,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="justify-content: center;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="justify-content: center; font-size:13px; gap: .35rem !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -904,14 +907,16 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
+    data-own="1"
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1011,6 +1016,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -1082,7 +1088,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1095,7 +1101,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12"  style="justify-content: center;">
+                                                <div class="d-flex align-items-center gap-1 text-center"  style="justify-content: center;font-size:14px; gap: .35rem !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -1251,6 +1257,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-is_private="{{ $todo->is_private }}"
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
+    data-own="0"
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-total="{{ $todo->total_time }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
@@ -1259,7 +1267,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1300,6 +1308,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-reminder="{{ $todo->reminder }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
@@ -1388,7 +1397,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center font-12" style="gap: 2rem !important; justify-content: center;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1401,7 +1410,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center font-12"  style="justify-content: center;">
+                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: center;font-size:14px; gap: .35rem !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -2031,8 +2040,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 </div>
 
                 <!-- Input Fields -->
-                <input type="text" name="reason" required placeholder="Type the Reason"
+                <select  name="reason" required
                     style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
+                    <option value="Not Clear">Not Clear</option>
+                    <option value="Time to Short">Time to Short</option>
+                    <option value="Will set new one">Will set new one</option>
+                </select>
 
             </div>
 
@@ -2069,7 +2082,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                     <!-- Logo Centered, Half Outside -->
                     <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
-                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <img class="user-todo-img" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
                     </div>
 
                 </div>
@@ -2201,10 +2214,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         
                     </div>
                     
-                    <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3">
+                    <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3 owned">
 
                         <!-- Edit the Project -->
-                        <div id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
+                        <div id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer; display:none !important;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
                             </div>
@@ -2228,7 +2241,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             </div>
 
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                Remove
+                                Mark as Failed
                             </div>
                         </div>
 
@@ -3605,6 +3618,21 @@ console.log("Raw members data:", e_members);
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
             let isPrivate   = this.dataset.is_private;
+            let userimg   = this.dataset.image;
+            let dataown = this.dataset.own;
+
+            let ownedEl = document.querySelector('.owned');
+            if (dataown == "0") {
+                ownedEl.style.display = "none";
+            } else if (dataown == "1") {
+                ownedEl.style.display = "flex";
+            }
+
+
+           
+            let imgTag = document.querySelector('.user-todo-img');
+            imgTag.src = userimg;
+
             
             let sections    = JSON.parse(this.dataset.sections || "[]");
 
