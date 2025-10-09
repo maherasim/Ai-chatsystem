@@ -1606,6 +1606,15 @@
                             .tickets-slider .slider-prev { left: 4px; }
                             .tickets-slider .slider-next { right: 4px; }
                         }
+                        /* Minimal slider (no blur) */
+                        .tickets-slider-simple { position: relative; }
+                        .tickets-slider-simple .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+                        .tickets-slider-simple .row::-webkit-scrollbar { display: none; }
+                        .tickets-slider-simple .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; align-items: center; justify-content: center; }
+                        .tickets-slider-simple .slider-prev { left: 4px; }
+                        .tickets-slider-simple .slider-next { right: 4px; }
+                        .tickets-slider-simple.is-slider .slider-arrow { display: flex; }
+                        .tickets-slider-simple .slider-arrow[disabled] { opacity: .4; pointer-events: none; }
                     </style>
 
                     <script>
@@ -1615,7 +1624,7 @@
                                 if (!row) return;
                                 var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
 
-                                // Always apply bloom/blur effect; slider arrows appear only if items > 4
+                                // Always apply bloom/blur effect; slider arrows appear only if items > 3
                                 var cards = items.map(function (el) { return el.querySelector('.card'); }).filter(Boolean);
                                 var activeIndex = 0;
 
@@ -1670,7 +1679,7 @@
                                 setActive(0);
                                 centerOnActive();
 
-                                var shouldSlide = items.length > 4;
+                                var shouldSlide = items.length > 3;
                                 if (shouldSlide) {
                                     root.classList.add('is-slider');
                                 } else {
@@ -1726,6 +1735,62 @@
                             }
                             document.addEventListener('DOMContentLoaded', function () {
                                 document.querySelectorAll('.tickets-slider').forEach(initSlider);
+                            });
+                        })();
+                    </script>
+
+                    <script>
+                        (function () {
+                            function initSimpleSlider(root) {
+                                var row = root.querySelector('.row');
+                                if (!row) return;
+                                var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
+
+                                // Activate minimal slider if more than 3 cards
+                                var shouldSlide = items.length > 3;
+                                if (shouldSlide) {
+                                    root.classList.add('is-slider');
+                                } else {
+                                    root.classList.remove('is-slider');
+                                }
+
+                                function updateArrows() {
+                                    var prev = root.querySelector('.slider-prev');
+                                    var next = root.querySelector('.slider-next');
+                                    if (!prev || !next) return;
+                                    var maxScroll = Math.max(0, row.scrollWidth - row.clientWidth);
+                                    var left = Math.round(row.scrollLeft);
+                                    prev.disabled = left <= 0;
+                                    next.disabled = left >= maxScroll;
+                                }
+
+                                function scrollByCards(direction) {
+                                    // Scroll by one visible column width (includes gap)
+                                    var sample = items[0];
+                                    if (!sample) return;
+                                    var style = window.getComputedStyle(sample);
+                                    var marginLeft = parseFloat(style.marginLeft) || 0;
+                                    var marginRight = parseFloat(style.marginRight) || 0;
+                                    var delta = sample.getBoundingClientRect().width + marginLeft + marginRight;
+                                    var target = row.scrollLeft + (direction > 0 ? delta : -delta);
+                                    row.scrollTo({ left: target, behavior: 'smooth' });
+                                    setTimeout(updateArrows, 350);
+                                }
+
+                                var prev = root.querySelector('.slider-prev');
+                                var next = root.querySelector('.slider-next');
+                                if (prev) prev.addEventListener('click', function () { scrollByCards(-1); });
+                                if (next) next.addEventListener('click', function () { scrollByCards(1); });
+
+                                row.addEventListener('scroll', updateArrows, { passive: true });
+                                window.addEventListener('resize', updateArrows);
+                                updateArrows();
+                                // Ensure initial state after images/fonts load
+                                window.addEventListener('load', updateArrows);
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                document.querySelectorAll('.tickets-slider-simple').forEach(initSimpleSlider);
                             });
                         })();
                     </script>
@@ -1786,7 +1851,7 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-12 col-md-6 col-lg-4">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
@@ -1892,14 +1957,13 @@
 
 
                                         <div style="display: flex; align-items: center; width: 100%; margin: 8px 0;">
+                                            <img src="{{ asset('build/img/up_arrow.svg') }}"
+                                                alt="toggle-icon" width="18" height="18"
+                                                style="margin-right: 6px; transition: transform 0.3s;"
+                                                class="toggle-icon">
                                             <hr style="flex: 1; height: 2.5px; border: none; 
                                              background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
                                                margin: 0;">
-                                            <img src="{{ asset('build/img/up_arrow.svg') }}"
-                                                alt="toggle-icon" width="18" height="18"
-                                                style="margin-left: 6px; transition: transform 0.3s;"
-                                                class="toggle-icon">
-
                                         </div>
 
                                     </div>
@@ -2595,24 +2659,34 @@
 <script>
     document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            let details = this.nextElementSibling;
-            let icon = this.querySelector('.toggle-icon');
+            var details = this.nextElementSibling;
+            var icon = this.querySelector('.toggle-icon');
 
             if (details.classList.contains('show')) {
-                // Closing smoothly
-                details.style.maxHeight = details.scrollHeight + "px"; // pehle height set karo
-                setTimeout(() => {
-                    details.style.maxHeight = "0"; // phir 0 karo taake smooth collapse ho
+                // Close the currently open section
+                details.style.maxHeight = details.scrollHeight + 'px';
+                setTimeout(function () {
+                    details.style.maxHeight = '0';
                     details.classList.remove('show');
                 }, 10);
-
-                icon.style.transform = "rotate(0deg)";
+                if (icon) icon.style.transform = 'rotate(0deg)';
             } else {
-                // Opening smoothly
-                details.classList.add('show');
-                details.style.maxHeight = details.scrollHeight + "px";
+                // Close any other open sections first
+                document.querySelectorAll('.project-details.show').forEach(function (open) {
+                    if (open === details) return;
+                    open.style.maxHeight = open.scrollHeight + 'px';
+                    setTimeout(function () {
+                        open.style.maxHeight = '0';
+                        open.classList.remove('show');
+                    }, 10);
+                    var otherIcon = open.previousElementSibling && open.previousElementSibling.querySelector('.toggle-icon');
+                    if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                });
 
-                icon.style.transform = "rotate(180deg)";
+                // Open the clicked section
+                details.classList.add('show');
+                details.style.maxHeight = details.scrollHeight + 'px';
+                if (icon) icon.style.transform = 'rotate(180deg)';
             }
         });
     });
