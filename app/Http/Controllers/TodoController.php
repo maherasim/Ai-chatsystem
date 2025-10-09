@@ -86,11 +86,9 @@ class TodoController extends Controller
                             : asset("build/img/default.png"),
                     ];
                 });
-
                 return $todo;
             });
 
-            
             $privateTodos = Todo::where('user_id', $user->id)
     ->where('completed',  0)
      ->where('end_date', '>', date('Y-m-d'))

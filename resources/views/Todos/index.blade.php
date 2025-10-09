@@ -2038,6 +2038,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         <div style="color: #777; font-size: 13px;">Select reason why to remove</div>
                     </div>
                 </div>
+                
 
                 <!-- Input Fields -->
                 <select  name="reason" required
