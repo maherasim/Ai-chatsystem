@@ -117,6 +117,14 @@
                             <h6 class="mb-0">{{$user->name}}</h6>
                             <p class="last-seen text-truncate mb-0">{{$user->type}}</p>
                         </div>
+                        <div class="overflow-hidden">
+                            <h6 class="mb-0" style="cursor:pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" >
+                                <img src="{{ asset('build/img/arrow.svg') }}" alt="arrow"
+                                                style="margin-left:10px; width: 18px;"></h6>
+
+
+                                               
+                                            </div>
                     </div>
 
                 </div>
@@ -2460,11 +2468,27 @@
 
 
 
-
+@include('profile-modal')
 
 
 
 <script>
+
+    function showContent(tab) {
+        // Show/hide content
+        document.getElementById("overviewContent").style.display = tab === 'overview' ? 'block' : 'none';
+        document.getElementById("statisticsContent").style.display = tab === 'statistics' ? 'block' : 'none';
+
+        // Toggle button styles
+        document.getElementById("btnOverview").className = tab === 'overview' ?
+            'btn btn-success me-2' :
+            'btn btn-light border me-2';
+
+        document.getElementById("btnStatistics").className = tab === 'statistics' ?
+            'btn btn-success' :
+            'btn btn-light border';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;
         const darkBtn = document.getElementById('dark-mode-toggle');
