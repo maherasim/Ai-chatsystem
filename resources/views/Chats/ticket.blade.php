@@ -435,14 +435,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -465,7 +467,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -511,14 +513,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -541,7 +545,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -607,14 +611,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -679,18 +685,20 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                      <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -712,7 +720,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -758,14 +766,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -788,7 +798,7 @@
 
 
                                         <!-- Progress Bar -->
-                                       <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -854,14 +864,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -883,7 +895,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -925,18 +937,20 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -959,7 +973,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1005,14 +1019,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1035,7 +1051,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1096,18 +1112,20 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1130,7 +1148,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1176,14 +1194,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1206,7 +1226,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1252,14 +1272,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1281,7 +1303,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1341,18 +1363,20 @@
                                         </div>
 
                                         <!-- Task Line -->
-                                         <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1375,7 +1399,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1421,14 +1445,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1451,7 +1477,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1497,14 +1523,16 @@
 
                                             <!-- Task Count -->
                                             <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p></span>
+                                                <p style="color: black;">5</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
                                             <span style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p> </span>
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
 
                                             <!-- Divider -->
                                             <span style="margin-right: 5px; color: #ccc;">|</span>
@@ -1526,7 +1554,7 @@
 
 
                                         <!-- Progress Bar -->
-                                         <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
                                             <!-- Progress Bar + Percentage -->
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
@@ -1567,65 +1595,258 @@
                     </div>
 
                     <style>
-                        .tickets-slider { position: relative; }
-                        .tickets-slider.is-slider .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; }
-                        .tickets-slider.is-slider .row > * { scroll-snap-align: center; }
-                        .tickets-slider .row { perspective: 1100px; transform-style: preserve-3d; }
-                        .tickets-slider.is-slider .row::-webkit-scrollbar { display: none; }
-                        .tickets-slider .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; align-items: center; justify-content: center; }
-                        .tickets-slider .slider-prev { left: -12px; }
-                        .tickets-slider .slider-next { right: -12px; }
-                        .tickets-slider.is-slider .slider-arrow { display: flex; }
-                        .tickets-slider.overlay .row { position: relative; overflow: hidden; flex-wrap: nowrap !important; }
-                        .tickets-slider.overlay .row > * { position: absolute; top: 0; left: 50%; transform: translateX(-50%); transition: left .45s cubic-bezier(.22,.61,.36,1), opacity .35s ease, z-index .2s; }
+                        .tickets-slider {
+                            position: relative;
+                        }
+
+                        .tickets-slider.is-slider .row {
+                            flex-wrap: nowrap !important;
+                            overflow-x: auto;
+                            scroll-behavior: smooth;
+                            scroll-snap-type: x mandatory;
+                        }
+
+                        .tickets-slider.is-slider .row>* {
+                            scroll-snap-align: center;
+                        }
+
+                        .tickets-slider .row {
+                            perspective: 1100px;
+                            transform-style: preserve-3d;
+                        }
+
+                        .tickets-slider.is-slider .row::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .tickets-slider .slider-arrow {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            z-index: 3;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 50%;
+                            background: #ffffff;
+                            border: 1px solid #e5e7eb;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .tickets-slider .slider-prev {
+                            left: -12px;
+                        }
+
+                        .tickets-slider .slider-next {
+                            right: -12px;
+                        }
+
+                        .tickets-slider.is-slider .slider-arrow {
+                            display: flex;
+                        }
+
+                        .tickets-slider.overlay .row {
+                            position: relative;
+                            overflow: hidden;
+                            flex-wrap: nowrap !important;
+                        }
+
+                        .tickets-slider.overlay .row>* {
+                            position: absolute;
+                            top: 0;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            transition: left .45s cubic-bezier(.22, .61, .36, 1), opacity .35s ease, z-index .2s;
+                        }
+
                         /* Overlay positional classes for container items */
-                        .tickets-slider.overlay .pos-none { left: 50%; opacity: 0; z-index: 0; pointer-events: none; }
-                        .tickets-slider.overlay .pos-1 { left: 20%; opacity: 1; z-index: 1; }
-                        .tickets-slider.overlay .pos-2 { left: 35%; opacity: 1; z-index: 2; }
-                        .tickets-slider.overlay .pos-3 { left: 50%; opacity: 1; z-index: 4; }
-                        .tickets-slider.overlay .pos-4 { left: 65%; opacity: 1; z-index: 2; }
-                        .tickets-slider.overlay .pos-5 { left: 80%; opacity: 1; z-index: 1; }
+                        .tickets-slider.overlay .pos-none {
+                            left: 50%;
+                            opacity: 0;
+                            z-index: 0;
+                            pointer-events: none;
+                        }
+
+                        .tickets-slider.overlay .pos-1 {
+                            left: 20%;
+                            opacity: 1;
+                            z-index: 1;
+                        }
+
+                        .tickets-slider.overlay .pos-2 {
+                            left: 35%;
+                            opacity: 1;
+                            z-index: 2;
+                        }
+
+                        .tickets-slider.overlay .pos-3 {
+                            left: 50%;
+                            opacity: 1;
+                            z-index: 4;
+                        }
+
+                        .tickets-slider.overlay .pos-4 {
+                            left: 65%;
+                            opacity: 1;
+                            z-index: 2;
+                        }
+
+                        .tickets-slider.overlay .pos-5 {
+                            left: 80%;
+                            opacity: 1;
+                            z-index: 1;
+                        }
 
                         /* Bloom/blur effect */
-                        .tickets-slider .card { position: relative; transition: transform .45s cubic-bezier(.22,.61,.36,1), filter .35s ease, opacity .35s ease, box-shadow .35s ease; filter: blur(4px); opacity: .6; transform-origin: center center; will-change: transform; transform: translateX(var(--cf-shift, 0px)) translateZ(-140px) rotateY(0) scale(.94); }
-                        .tickets-slider .card.is-active { filter: none; opacity: 1; transform: translateX(var(--cf-shift, 0px)) translateZ(0) rotateY(0) scale(1.03); box-shadow: 0 12px 30px rgba(0,0,0,.14); z-index: 2; }
-                        .tickets-slider .card::before { content: ""; position: absolute; inset: 0; border-radius: 20px; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); }
-                        .tickets-slider .card.is-active::before { content: ""; position: absolute; inset: -6px; border-radius: 22px; box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 0 40px rgba(79,195,247,0.35); pointer-events: none; }
+                        .tickets-slider .card {
+                            position: relative;
+                            transition: transform .45s cubic-bezier(.22, .61, .36, 1), filter .35s ease, opacity .35s ease, box-shadow .35s ease;
+                            filter: blur(4px);
+                            opacity: .6;
+                            transform-origin: center center;
+                            will-change: transform;
+                            transform: translateX(var(--cf-shift, 0px)) translateZ(-140px) rotateY(0) scale(.94);
+                        }
+
+                        .tickets-slider .card.is-active {
+                            filter: none;
+                            opacity: 1;
+                            transform: translateX(var(--cf-shift, 0px)) translateZ(0) rotateY(0) scale(1.03);
+                            box-shadow: 0 12px 30px rgba(0, 0, 0, .14);
+                            z-index: 2;
+                        }
+
+                        .tickets-slider .card::before {
+                            content: "";
+                            position: absolute;
+                            inset: 0;
+                            border-radius: 20px;
+                            pointer-events: none;
+                            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35);
+                        }
+
+                        .tickets-slider .card.is-active::before {
+                            content: "";
+                            position: absolute;
+                            inset: -6px;
+                            border-radius: 22px;
+                            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6), 0 0 40px rgba(79, 195, 247, 0.35);
+                            pointer-events: none;
+                        }
 
                         /* Coverflow states via relative position attribute */
                         .tickets-slider .card[data-pos="-3"],
-                        .tickets-slider .card[data-pos="3"] { opacity: .35; filter: blur(3px); }
-                        .tickets-slider .card[data-pos="-3"] { transform: translateX(calc(var(--cf-shift, 0px) - 220px)) rotateY(28deg) translateZ(-220px) scale(.82); z-index: 0; }
-                        .tickets-slider .card[data-pos="-2"] { transform: translateX(calc(var(--cf-shift, 0px) - 160px)) rotateY(24deg) translateZ(-170px) scale(.86); z-index: 0; }
-                        .tickets-slider .card[data-pos="-1"] { transform: translateX(calc(var(--cf-shift, 0px) - 100px)) rotateY(18deg) translateZ(-110px) scale(.9); z-index: 1; }
-                        .tickets-slider .card[data-pos="1"] { transform: translateX(calc(var(--cf-shift, 0px) + 100px)) rotateY(-18deg) translateZ(-110px) scale(.9); z-index: 1; }
-                        .tickets-slider .card[data-pos="2"] { transform: translateX(calc(var(--cf-shift, 0px) + 160px)) rotateY(-24deg) translateZ(-170px) scale(.86); z-index: 0; }
-                        .tickets-slider .card[data-pos="3"] { transform: translateX(calc(var(--cf-shift, 0px) + 220px)) rotateY(-28deg) translateZ(-220px) scale(.82); z-index: 0; }
+                        .tickets-slider .card[data-pos="3"] {
+                            opacity: .35;
+                            filter: blur(3px);
+                        }
+
+                        .tickets-slider .card[data-pos="-3"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) - 220px)) rotateY(28deg) translateZ(-220px) scale(.82);
+                            z-index: 0;
+                        }
+
+                        .tickets-slider .card[data-pos="-2"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) - 160px)) rotateY(24deg) translateZ(-170px) scale(.86);
+                            z-index: 0;
+                        }
+
+                        .tickets-slider .card[data-pos="-1"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) - 100px)) rotateY(18deg) translateZ(-110px) scale(.9);
+                            z-index: 1;
+                        }
+
+                        .tickets-slider .card[data-pos="1"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) + 100px)) rotateY(-18deg) translateZ(-110px) scale(.9);
+                            z-index: 1;
+                        }
+
+                        .tickets-slider .card[data-pos="2"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) + 160px)) rotateY(-24deg) translateZ(-170px) scale(.86);
+                            z-index: 0;
+                        }
+
+                        .tickets-slider .card[data-pos="3"] {
+                            transform: translateX(calc(var(--cf-shift, 0px) + 220px)) rotateY(-28deg) translateZ(-220px) scale(.82);
+                            z-index: 0;
+                        }
 
                         @media (max-width: 576px) {
-                            .tickets-slider .slider-prev { left: 4px; }
-                            .tickets-slider .slider-next { right: 4px; }
+                            .tickets-slider .slider-prev {
+                                left: 4px;
+                            }
+
+                            .tickets-slider .slider-next {
+                                right: 4px;
+                            }
                         }
+
                         /* Minimal slider (no blur) */
-                        .tickets-slider-simple { position: relative; }
-                        .tickets-slider-simple .row { flex-wrap: nowrap !important; overflow-x: auto; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
-                        .tickets-slider-simple .row::-webkit-scrollbar { display: none; }
-                        .tickets-slider-simple .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; align-items: center; justify-content: center; }
-                        .tickets-slider-simple .slider-prev { left: 4px; }
-                        .tickets-slider-simple .slider-next { right: 4px; }
-                        .tickets-slider-simple.is-slider .slider-arrow { display: flex; }
-                        .tickets-slider-simple .slider-arrow[disabled] { opacity: .4; pointer-events: none; }
+                        .tickets-slider-simple {
+                            position: relative;
+                        }
+
+                        .tickets-slider-simple .row {
+                            flex-wrap: nowrap !important;
+                            overflow-x: auto;
+                            scroll-behavior: smooth;
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }
+
+                        .tickets-slider-simple .row::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .tickets-slider-simple .slider-arrow {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            z-index: 3;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 50%;
+                            background: #ffffff;
+                            border: 1px solid #e5e7eb;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .tickets-slider-simple .slider-prev {
+                            left: 4px;
+                        }
+
+                        .tickets-slider-simple .slider-next {
+                            right: 4px;
+                        }
+
+                        .tickets-slider-simple.is-slider .slider-arrow {
+                            display: flex;
+                        }
+
+                        .tickets-slider-simple .slider-arrow[disabled] {
+                            opacity: .4;
+                            pointer-events: none;
+                        }
                     </style>
 
                     <script>
-                        (function () {
+                        (function() {
                             function initSlider(root) {
                                 var row = root.querySelector('.row');
                                 if (!row) return;
-                                var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
+                                var items = Array.prototype.slice.call(row.children).filter(function(n) {
+                                    return n && n.nodeType === 1;
+                                });
 
                                 // Always apply bloom/blur effect; slider arrows appear only if items > 3
-                                var cards = items.map(function (el) { return el.querySelector('.card'); }).filter(Boolean);
+                                var cards = items.map(function(el) {
+                                    return el.querySelector('.card');
+                                }).filter(Boolean);
                                 var activeIndex = 0;
 
                                 function applyCoverflow() {
@@ -1633,10 +1854,10 @@
                                     var len = cards.length;
                                     if (!len) return;
                                     var half = len / 2;
-                                    cards.forEach(function (card, i) {
+                                    cards.forEach(function(card, i) {
                                         var raw = i - activeIndex;
-                                        if (raw > half) raw -= len;     // wrap right-to-left
-                                        if (raw < -half) raw += len;     // wrap left-to-right
+                                        if (raw > half) raw -= len; // wrap right-to-left
+                                        if (raw < -half) raw += len; // wrap left-to-right
                                         var offset = Math.max(-maxSide, Math.min(maxSide, raw));
                                         card.dataset.pos = String(offset);
                                         card.classList.toggle('is-active', i === activeIndex);
@@ -1666,13 +1887,20 @@
                                         var desired = targetLeft - (rowWidth - targetWidth) / 2;
                                         var maxScroll = Math.max(0, row.scrollWidth - rowWidth);
                                         desired = Math.max(0, Math.min(desired, maxScroll));
-                                        row.scrollTo({ left: desired, behavior: 'smooth' });
-                                        cards.forEach(function (c) { c.style.removeProperty('--cf-shift'); });
+                                        row.scrollTo({
+                                            left: desired,
+                                            behavior: 'smooth'
+                                        });
+                                        cards.forEach(function(c) {
+                                            c.style.removeProperty('--cf-shift');
+                                        });
                                     } else {
                                         var rowRect = row.getBoundingClientRect();
                                         var cardRect = target.getBoundingClientRect();
                                         var shift = -(cardRect.left - (rowRect.left + (rowRect.width - cardRect.width) / 2));
-                                        cards.forEach(function (c) { c.style.setProperty('--cf-shift', shift + 'px'); });
+                                        cards.forEach(function(c) {
+                                            c.style.setProperty('--cf-shift', shift + 'px');
+                                        });
                                     }
                                 }
 
@@ -1688,17 +1916,17 @@
 
                                 var prev = root.querySelector('.slider-prev');
                                 var next = root.querySelector('.slider-next');
-                                if (prev) prev.addEventListener('click', function () {
+                                if (prev) prev.addEventListener('click', function() {
                                     setActive(activeIndex - 1);
                                     centerOnActive();
                                 });
-                                if (next) next.addEventListener('click', function () {
+                                if (next) next.addEventListener('click', function() {
                                     setActive(activeIndex + 1);
                                     centerOnActive();
                                 });
 
                                 // Click to focus
-                                row.addEventListener('click', function (e) {
+                                row.addEventListener('click', function(e) {
                                     var card = e.target && e.target.closest('.card');
                                     if (!card) return;
                                     var idx = cards.indexOf(card);
@@ -1708,43 +1936,65 @@
                                 });
                                 // Keyboard navigation
                                 root.setAttribute('tabindex', '0');
-                                root.addEventListener('keydown', function (e) {
-                                    if (e.key === 'ArrowLeft') { e.preventDefault(); setActive(activeIndex - 1); centerOnActive(); }
-                                    if (e.key === 'ArrowRight') { e.preventDefault(); setActive(activeIndex + 1); centerOnActive(); }
+                                root.addEventListener('keydown', function(e) {
+                                    if (e.key === 'ArrowLeft') {
+                                        e.preventDefault();
+                                        setActive(activeIndex - 1);
+                                        centerOnActive();
+                                    }
+                                    if (e.key === 'ArrowRight') {
+                                        e.preventDefault();
+                                        setActive(activeIndex + 1);
+                                        centerOnActive();
+                                    }
                                 });
 
                                 // Wheel / trackpad navigation
-                                root.addEventListener('wheel', function (e) {
+                                root.addEventListener('wheel', function(e) {
                                     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
                                         e.preventDefault();
-                                        if (e.deltaX > 0) { setActive(activeIndex + 1); } else { setActive(activeIndex - 1); }
+                                        if (e.deltaX > 0) {
+                                            setActive(activeIndex + 1);
+                                        } else {
+                                            setActive(activeIndex - 1);
+                                        }
                                     } else {
                                         e.preventDefault();
-                                        if (e.deltaY > 0) { setActive(activeIndex + 1); } else { setActive(activeIndex - 1); }
+                                        if (e.deltaY > 0) {
+                                            setActive(activeIndex + 1);
+                                        } else {
+                                            setActive(activeIndex - 1);
+                                        }
                                     }
                                     centerOnActive();
-                                }, { passive: false });
+                                }, {
+                                    passive: false
+                                });
 
                                 window.addEventListener('resize', centerOnActive);
                                 if ('ResizeObserver' in window) {
-                                    var ro = new ResizeObserver(function () { centerOnActive(); });
+                                    var ro = new ResizeObserver(function() {
+                                        centerOnActive();
+                                    });
                                     ro.observe(row);
                                 }
                                 window.addEventListener('load', centerOnActive);
                                 applyCoverflow();
                             }
-                            document.addEventListener('DOMContentLoaded', function () {
+                            document.addEventListener('DOMContentLoaded', function() {
                                 document.querySelectorAll('.tickets-slider').forEach(initSlider);
                             });
                         })();
                     </script>
 
                     <script>
-                        (function () {
+                        (function() {
                             function initSimpleSlider(root) {
                                 var row = root.querySelector('.row');
                                 if (!row) return;
-                                var items = Array.prototype.slice.call(row.children).filter(function (n) { return n && n.nodeType === 1; });
+                                var items = Array.prototype.slice.call(row.children).filter(function(n) {
+                                    return n && n.nodeType === 1;
+                                });
 
                                 // Activate minimal slider if more than 3 cards
                                 var shouldSlide = items.length > 3;
@@ -1773,23 +2023,32 @@
                                     var marginRight = parseFloat(style.marginRight) || 0;
                                     var delta = sample.getBoundingClientRect().width + marginLeft + marginRight;
                                     var target = row.scrollLeft + (direction > 0 ? delta : -delta);
-                                    row.scrollTo({ left: target, behavior: 'smooth' });
+                                    row.scrollTo({
+                                        left: target,
+                                        behavior: 'smooth'
+                                    });
                                     setTimeout(updateArrows, 350);
                                 }
 
                                 var prev = root.querySelector('.slider-prev');
                                 var next = root.querySelector('.slider-next');
-                                if (prev) prev.addEventListener('click', function () { scrollByCards(-1); });
-                                if (next) next.addEventListener('click', function () { scrollByCards(1); });
+                                if (prev) prev.addEventListener('click', function() {
+                                    scrollByCards(-1);
+                                });
+                                if (next) next.addEventListener('click', function() {
+                                    scrollByCards(1);
+                                });
 
-                                row.addEventListener('scroll', updateArrows, { passive: true });
+                                row.addEventListener('scroll', updateArrows, {
+                                    passive: true
+                                });
                                 window.addEventListener('resize', updateArrows);
                                 updateArrows();
                                 // Ensure initial state after images/fonts load
                                 window.addEventListener('load', updateArrows);
                             }
 
-                            document.addEventListener('DOMContentLoaded', function () {
+                            document.addEventListener('DOMContentLoaded', function() {
                                 document.querySelectorAll('.tickets-slider-simple').forEach(initSimpleSlider);
                             });
                         })();
@@ -1922,7 +2181,7 @@
                                     </div>
                                     <!-- Project Stats -->
                                     <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
-                                        style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;">
+                                        style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;margin:7px;">
                                         <div style="color: #10b981;text-align:center"><strong>Tickets:</strong>
                                             <p style="color: black;text-align:center">{{ $projectTickets->count() }}</p>
                                         </div>
@@ -1989,9 +2248,9 @@
 
                                         <!-- Ticket Items -->
                                         @foreach ($projectTickets as $pt)
-                                        <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
+                                        <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 14px;">
                                             <!-- Ticket Header -->
-                                            <div class="d-flex justify-content-between flex-wrap">
+                                            <div class="d-flex justify-content-between  flex-wrap" style="padding: 8px 10px;margin: 7px;margin-top: 0px;">
 
                                                 <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
                                                 <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $pt->section_name }}</div>
@@ -2011,59 +2270,76 @@
                                             </div>
 
                                             <!-- Task Info -->
-                                            <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                                            <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 14px; color: #333;margin: 7px;">
                                                 <span style="margin-right: 5px; font-weight: bold;"> Tasks <p>
-                                                     <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" />
-                                                </p></span>
+                                                        <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 18px; height: 18px;" />
+                                                    </p></span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
                                                 <span style="margin-right: 5px; color: #28a745;">Start:
                                                     <p style="color: black;">{{ \Carbon\Carbon::parse($pt->start_date)->format('Y-m-d') }}</p>
                                                 </span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
                                                 <span style="margin-right: 5px; color: #28a745;">Deliver:
-                                                    <p style="color: black;">{{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</p> </span>
+                                                    <p style="color: black;">{{ \Carbon\Carbon::parse($pt->end_date)->format('Y-m-d') }}</p>
+                                                </span>
                                                 <span style="margin-right: 5px; color: #ccc;">|</span>
 
                                                 <!-- Avatars -->
                                                 <div style="display: flex; align-items: center; margin-left: 10px;">
                                                     @for ($i = 0; $i < 3; $i++)
-                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
+                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
                                                         @endfor
                                                 </div>
                                             </div>
 
                                             <!-- Task Progress & Status -->
-                                            <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;">
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
+                                            <div class="d-flex justify-content-between align-items-center mt-1 mb-1"
+                                                style="background-color: #fff; padding: 3px; border-radius: 10px;margin:7px;">
+
+                                                <!-- Left Side -->
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 12px; color: #4fc3f7;">75%</div>
+                                                    <div class="progress"
+                                                        style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: 75%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
-                                                    <span style="margin-left: 8px; color: #ccc;">|</span>
                                                 </div>
 
-                                                <!-- Status Colors -->
-                                                <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                    <span style="color: #8BC34A;">● 1</span>
-                                                    <span style="color: #FF9800;">● 3</span>
-                                                    <span style="color: #F44336;">● 0</span>
-                                                    <span style="color: #9C27B0;">● 0</span>
-                                                    <span style="color: #4CAF50;">● 0</span>
-                                                    <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
-                                                    <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
-                                                        <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
-                                                    </span>
+                                                <!-- Separator -->
+                                                <div style="color: #ccc;">
+                                                    <p>|</p>
                                                 </div>
 
-                                                {{-- <div class="d-flex align-items-center gap-2">
-                                                            <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
-                                                <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
-                                                    data-bs-toggle="modal" data-bs-target="#ticketModal"
-                                                    data-ticket-id="{{ $pt->_id ?? $pt->id }}"
-                                                    data-project-id="{{ $pt->project_id }}"
-                                                    @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
-                                                    >Edit</button>
-                                            </div> --}}
+
+                                                <!-- Center Section -->
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 26px;">
+                                                        <span style="color: #8BC34A;">●</span>
+                                                        <span style="color: #FF9800;">●</span>
+                                                        <span style="color: #F44336;">●</span>
+                                                        <span style="color: #9C27B0;">●</span>
+                                                        <span style="color: #4CAF50;">●</span>
+                                                    </div>
+                                                    <div style="font-size: 15px; margin-top: 2px; color: #555;">
+                                                        <span>1</span>
+                                                        <span style="margin-left: 9px;">3</span>
+                                                        <span style="margin-left: 9px;">0</span>
+                                                        <span style="margin-left: 9px;">0</span>
+                                                        <span style="margin-left: 9px;">0</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Separator -->
+                                                <div style="color: #ccc;">|</div>
+
+                                                <!-- Right Side Flag -->
+                                                <div style="background-color: #e9f8dd; border-radius: 2px; padding: 6px;margin-right:27px">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="flag" width="24px" height="24px;">
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                     @endforeach
@@ -2200,6 +2476,12 @@
                     <button id="saveCloseTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Save and Close</button>
                     <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #F5A623; color: white; min-width: 160px;">Save & add Ticket</button>
                     <button id="updateTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Update and Close</button>
+                    @if(isset($ticket))
+                    <button id="removeticket" data-id="{{ $ticket->id }}" class="btn" style="background-color: red; color: white; min-width: 160px; margin-bottom: 3px;">
+                        Remove Ticket
+                    </button>
+                    @endif
+
 
                 </div>
 
@@ -2210,6 +2492,7 @@
 </div>
 
 <!-- Bootstrap JS Required -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -2665,17 +2948,17 @@
             if (details.classList.contains('show')) {
                 // Close the currently open section
                 details.style.maxHeight = details.scrollHeight + 'px';
-                setTimeout(function () {
+                setTimeout(function() {
                     details.style.maxHeight = '0';
                     details.classList.remove('show');
                 }, 10);
                 if (icon) icon.style.transform = 'rotate(0deg)';
             } else {
                 // Close any other open sections first
-                document.querySelectorAll('.project-details.show').forEach(function (open) {
+                document.querySelectorAll('.project-details.show').forEach(function(open) {
                     if (open === details) return;
                     open.style.maxHeight = open.scrollHeight + 'px';
-                    setTimeout(function () {
+                    setTimeout(function() {
                         open.style.maxHeight = '0';
                         open.classList.remove('show');
                     }, 10);
@@ -2691,7 +2974,38 @@
         });
     });
 </script>
+<script>
+    document.getElementById("removeticket").addEventListener("click", function() {
+        const ticketId = this.getAttribute('data-id');
 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you really want to remove this ticket?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, remove it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/tickets/${ticketId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire("Removed!", "The ticket has been deleted successfully.", "success");
+                        // Optionally refresh the page or remove the ticket row from DOM
+                    })
+                    .catch(error => {
+                        Swal.fire("Error!", "Something went wrong while deleting.", "error");
+                    });
+            }
+        });
+    });
+</script>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 @component('components.model-popup')

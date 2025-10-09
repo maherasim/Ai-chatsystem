@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/tickets', [TicketController::class, 'list'])->name('tickets.list');
     Route::get('/api/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
     Route::put('/api/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
+    Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();

@@ -251,6 +251,19 @@ class TicketController extends Controller
 
         return response()->json(['message' => 'Ticket updated successfully']);
     }
+    public function destroy($id)
+{
+    $ticket = Ticket::find($id);
+
+    if (!$ticket) {
+        return response()->json(['error' => 'Ticket not found.'], 404);
+    }
+
+    $ticket->delete();
+
+    return response()->json(['success' => 'Ticket deleted successfully.']);
+}
+
 }
 
 
