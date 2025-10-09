@@ -717,15 +717,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                 @endif
                                             @endforeach
 
-                                            
-                                            
                                         </p>
     
-
                                         <!-- Date & Priority Row -->
                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
                                             
-                                                
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
                                                 <div class="d-flex align-items-center gap-1 text-center" style="gap: 2rem !important; justify-content: center; font-size:13px; gap: .35rem !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
@@ -774,7 +770,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             <span id="asimclic-{{ $index }}"></span>
                                         </div>
                                     
-
                                     @if($remaining > 0)
     <script>
         (function() {
@@ -809,6 +804,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     if (duration <= 0) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
                         clearInterval(timer);
+
+                        let todoCard = document.querySelector('.viewTodo[data-id="{{ $todo->id }}"]');
+                        if (todoCard) {
+                            display.innerText = "Task Expired";
+                            todoCard.click();
+                        }
+
                     } else if (duration <= part) {
                         container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
                     } else if (duration <= part * 2) {
@@ -2038,7 +2040,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         <div style="color: #777; font-size: 13px;">Select reason why to remove</div>
                     </div>
                 </div>
-                
+
 
                 <!-- Input Fields -->
                 <select  name="reason" required
