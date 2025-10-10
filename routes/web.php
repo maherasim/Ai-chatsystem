@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\TodoController;
 use App\Models\User;
 use App\Http\Controllers\KeywordController;
 
@@ -60,10 +61,22 @@ Route::get('/meetings', function () {
     return view('Chats.meetings');
 })->middleware('auth')->name('chat-meetings');
 
-Route::get('/todo', function () {
-      return view('Chats.groups');
+Route::middleware(['auth'])->group(function () {
+    //Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
+    Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+    Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+    Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
+    Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');
+    Route::post('/todosremove', [TodoController::class, 'remove'])->name('todos.remove');
+    Route::get('/deltodo', [TodoController::class, 'deltodo']);
+    Route::post('/todos/complete/{id}', [TodoController::class, 'complete'])->name('todos.complete');
+});
+
+//Route::get('/todo', function () {
+  //    return view('Chats.groups');
     
-})->middleware('auth')->name('chat-groups');
+//})->middleware('auth')->name('chat-groups');
+
 Route::get('/project', function () {
     return view('Chats.project');
 })->name('chat-project');
