@@ -1993,7 +1993,7 @@
                                             <!-- Ticket Header -->
                                             <div class="d-flex justify-content-between flex-wrap">
 
-                                                <div style="color: #1a73e8;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
+                                                <div style="color: #1a73e8; margin-left: 8px;"><strong>Tickets</strong><br>{{ $pt->code }}</div>
                                                 <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $pt->section_name }}</div>
                                                 <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $pt->title }}</div>
                                                 <div class="ticket-edit-trigger"
