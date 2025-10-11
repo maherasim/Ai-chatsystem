@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\TodoController;
 use App\Models\User;
 use App\Http\Controllers\KeywordController;
 use App\Models\Setting;
@@ -83,10 +84,20 @@ Route::get('/meetings', function () {
     return view('Chats.meetings', compact('headers'));
 })->middleware('auth')->name('chat-meetings');
 
-Route::get('/todo', function () {
-    $headers = Setting::all();
-    return view('Chats.groups', compact('headers'));
-})->middleware('auth')->name('chat-groups');
+Route::middleware(['auth'])->group(function () {
+    //Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
+    Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
+    Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+    Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
+    Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');
+    Route::post('/todosremove', [TodoController::class, 'remove'])->name('todos.remove');
+    Route::get('/deltodo', [TodoController::class, 'deltodo']);
+    Route::post('/todos/complete/{id}', [TodoController::class, 'complete'])->name('todos.complete');
+});
+// Route::get('/todo', function () {
+//     $headers = Setting::all();
+//     return view('Chats.groups', compact('headers'));php 
+// })->middleware('auth')->name('chat-groups');
 Route::get('/project', [App\Http\Controllers\ProjectController::class, 'index'])->name('chat-project');
 Route::post('/project', [App\Http\Controllers\ProjectController::class, 'store'])->name('project.store');
 Route::delete('/project/{id}', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('project.destroy');
