@@ -62,8 +62,8 @@ Route::get('/meetings', function () {
 })->middleware('auth')->name('chat-meetings');
 
 Route::middleware(['auth'])->group(function () {
-    //Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
-    Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+    Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
+   // Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
     Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
     Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
     Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');

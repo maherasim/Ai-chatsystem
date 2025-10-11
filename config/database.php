@@ -51,7 +51,7 @@ return [
             'username' => env('MONGO_DB_USERNAME'),
             'password' => env('MONGO_DB_PASSWORD'),
             'options' => [
-                'database' => 'chatsystem'  
+                 'database' => env('MONGO_DB_DATABASE', 'chatsystem_online' )
             ]
         ],
 /*
