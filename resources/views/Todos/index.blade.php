@@ -425,6 +425,14 @@ use Carbon\Carbon;
                         <h6>{{$user->name}}</h6>
                         <p class="last-seen text-truncate"> {{$user->type}}</p>
                     </div>
+                    <div class="overflow-hidden">
+                            <h6 class="mb-0" style="cursor:pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" >
+                                <img src="{{ asset('build/img/arrow.svg') }}" alt="arrow"
+                                                style="margin-left:10px; width: 18px;"></h6>
+
+
+                                               
+                                            </div>
                 </div>
 
                 <!-- Right Side Icons -->
@@ -2552,7 +2560,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     </div>
 </div>
 
-
+@include('profile-modal')
 
 <!-- add user -->
 <div class="modal fade" id="add_user" tabindex="-1">
@@ -3192,6 +3200,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 </form>
             </div>
         </div>
+
+        
 
         <!-- creaTE meting MODEL POPIP -->
 
@@ -4197,6 +4207,22 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
         });
     });
 });
+
+
+function showContent(tab) {
+        // Show/hide content
+        document.getElementById("overviewContent").style.display = tab === 'overview' ? 'block' : 'none';
+        document.getElementById("statisticsContent").style.display = tab === 'statistics' ? 'block' : 'none';
+
+        // Toggle button styles
+        document.getElementById("btnOverview").className = tab === 'overview' ?
+            'btn btn-success me-2' :
+            'btn btn-light border me-2';
+
+        document.getElementById("btnStatistics").className = tab === 'statistics' ?
+            'btn btn-success' :
+            'btn btn-light border';
+    }
 
         </script>
         @endsection
