@@ -19,12 +19,14 @@ class TodoController extends Controller
         $remid = $request->remid;
 
         $reason = $request->reason;
+        $isremove = $request->isremove;
 
         $todo = Todo::where('id', $remid)
-                ->where('user_id', $user->id)
+              //  ->where('user_id', $user->id)
                 ->first();
-
-        if($todo){
+        if($isremove == 1){
+            $todo->delete();
+        }else if($todo){
             $todo->is_removed = 1;
                 if ($reason) {
                     $todo->reason = $reason;
@@ -58,36 +60,34 @@ class TodoController extends Controller
                  ->where('_id', '!=', $user->_id)->where('completed', '!=', '1')
                  ->get();
 
-        // Today = start_date is today OR no start_date
-      //  $todayTodos = Todo::where('user_id', $user->id)->where('start_date', date('Y-m-d'))->get();
+       
 
-        // Private
-      //  $privateTodos = Todo::where('user_id', $user->id)
-       //     ->where('is_private', "1")->where('completed', '!=', '1')
-       //     ->get();
+      $todayTodos = Todo::where('end_date', date('Y-m-d'))
+        ->where('completed', 0)
+        ->where(function ($q) use ($user) {
+            $q->where('user_id', $user->_id)
+            ->orWhere('members', $user->_id); // ✅ works in MongoDB
+        })
+        ->where(function ($q) {
+            $q->where('is_removed', 0)
+            ->orWhereNull('is_removed');
+        })
+        ->get()
+    ->map(function ($todo) {
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
 
-        $todayTodos = Todo::where('user_id', $user->id)
-            ->where('end_date', date('Y-m-d'))
-            ->where('completed',  0)
-            ->where(function($q) {
-                $q->where('is_removed', 0)
-                ->orWhereNull('is_removed');
-            })
-            ->get()
-            ->map(function ($todo) {
-                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $todo->members_data = $members->map(function ($u) {
+            return [
+                'id'    => $u->_id,
+                'name'  => $u->name,
+                'image' => $u->profile_image
+                    ? asset("storage/" . $u->profile_image)
+                    : asset("build/img/default.png"),
+            ];
+        });
+        return $todo;
+    });
 
-                $todo->members_data = $members->map(function ($u) {
-                    return [
-                        'id'    => $u->_id,
-                        'name'  => $u->name,
-                        'image' => $u->profile_image
-                            ? asset("storage/" . $u->profile_image)
-                            : asset("build/img/default.png"),
-                    ];
-                });
-                return $todo;
-            });
 
             $privateTodos = Todo::where('user_id', $user->id)
     ->where('completed',  0)
@@ -117,8 +117,9 @@ class TodoController extends Controller
         // Shared
        // $sharedTodos = Todo::where('user_id', $user->id)->where('is_private', "0")->get();
         
-        $sharedTodos = Todo::where('user_id', '!=', $user->id)->where('members', $user->id)->where('completed', 0)
-        
+        $sharedTodos = Todo::where('user_id', '!=', $user->id)
+        ->where('members', $user->id)->where('completed', 0)
+        ->where('end_date', '>', date('Y-m-d'))
         ->where(function($q) {
         $q->where('completed',  0)
           ->orWhereNull('is_removed');

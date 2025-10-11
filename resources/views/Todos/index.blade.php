@@ -522,7 +522,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -539,7 +538,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
-    data-own="1"
+    data-own="today"
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
@@ -766,7 +765,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         @endif
     </div>
 
-                                        <div class="counter-div" id="timer-{{ $index }}">
+                                        <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $todo->id }}">
                                             <span id="asimclic-{{ $index }}"></span>
                                         </div>
                                     
@@ -799,10 +798,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 // When countdown enters reminder phase, show container
                 if (duration <= reminderSeconds) {
                     container.style.display = "flex"; // or "block" if needed
+                    container.dataset.reminderActive = "1"; 
 
                     // color changes during reminder phase
                     if (duration <= 0) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        container.style.backgroundColor = "#e74c3c"; // Final stage
                         clearInterval(timer);
 
                         let todoCard = document.querySelector('.viewTodo[data-id="{{ $todo->id }}"]');
@@ -812,11 +812,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         }
 
                     } else if (duration <= part) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                        container.style.backgroundColor = "#e74c3c"; //  last 1/3
                     } else if (duration <= part * 2) {
-                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                        container.style.backgroundColor = "#ff9800"; //  middle 1/3
                     } else {
-                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                        container.style.backgroundColor = "#4CAF50"; //  first 1/3
                     }
                 }
 
@@ -833,6 +833,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             let container = document.getElementById('timer-{{ $index }}');
             let display = document.getElementById('asimclic-{{ $index }}');
             display.innerText = "Task Expired";
+            container.dataset.reminderActive = "1";
             container.style.backgroundColor = "#e74c3c";
         });
     </script>
@@ -911,7 +912,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-total="{{ $todo->total_time }}"
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
-    data-own="1"
+    data-own="private"
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -2029,6 +2030,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             <form action="{{ route('todos.remove') }}" method="POST">
                 @csrf
                 <input type="hidden" name="remid" id="remid" />
+                <input type="hidden" name="isremove" id="isremove" value="0" />
             <!-- Denied Section -->
             <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
 
@@ -2220,14 +2222,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3 owned">
 
                         <!-- Edit the Project -->
-                        <div id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer; display:none !important;">
+                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
                             </div>
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
                         </div>
                         <!-- Complete the Project -->
-                        <div id="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
+                        <div id="markDoneBtn" class="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/thumbp.png') }}" alt="Complete" width="40" height="40">
                             </div>
@@ -2243,7 +2245,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
                             </div>
 
-                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
+                            <div class="markfail" style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
                                 Mark as Failed
                             </div>
                         </div>
@@ -3468,13 +3470,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let e_startDate   = this.dataset.start_date || "";
             let e_startTime   = this.dataset.start_time || "";
+            let e_endDate     = this.dataset.end_date || "";
             let e_endTime     = this.dataset.end_time || "";
             let e_reminder    = this.dataset.reminder;
             let e_priority    = this.dataset.priority 
-            let e_total    = this.dataset.total 
+            let e_total         =    this.dataset.total 
 
+            //working on edit
            // time-btn-3
             document.getElementById('timeHidden').value = e_total;
+            document.getElementById('endTimeSelect').value = e_endTime;
+            document.getElementById('dateInput').value = e_startDate
+            document.getElementById("dateInput").dispatchEvent(new Event('change'));
+            document.getElementById('enddateInput').value = e_endDate
+            document.getElementById("enddateInput").dispatchEvent(new Event('change'));
             
             document.querySelector('.time-btn').classList.remove('active');
 
@@ -3528,15 +3537,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let e_members = this.dataset.members;
 
-// Handle both cases (string or array)
-if (typeof e_members === "string") {
-    try {
-        e_members = JSON.parse(e_members);
-    } catch (err) {
-        console.error("Invalid JSON:", err);
-        e_members = [];
-    }
-}
+            // Handle both cases (string or array)
+            if (typeof e_members === "string") {
+                try {
+                    e_members = JSON.parse(e_members);
+                } catch (err) {
+                    console.error("Invalid JSON:", err);
+                    e_members = [];
+                }
+            }
 
 // Now safely use it
 // Auto-select members by ID
@@ -3563,6 +3572,33 @@ if (Array.isArray(e_members) && e_members.length) {
             }
         });
     }, 500); // wait for DOM ready
+}
+
+const wrapper = document.getElementById("sectionsWrapper");
+wrapper.innerHTML = `
+    <div class="col-md-12 d-flex align-items-center section-item">
+        <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
+               style="font-size: 13px; background-color: white; border-radius: 8px;">
+        <button type="button" class="btn btn-plus btn-sm ms-2 add-btn"><span>+</span></button>
+    </div>
+`;
+if (Array.isArray(e_sections) && e_sections.length > 0) {
+    // Set first input value
+    const firstInput = wrapper.querySelector('input[name="sections[]"]');
+    firstInput.value = e_sections[0] || "";
+
+    // Add more for the rest
+    for (let i = 1; i < e_sections.length; i++) {
+        const div = document.createElement("div");
+        div.className = "col-md-12 d-flex align-items-center section-item mt-2";
+        div.innerHTML = `
+            <input name="sections[]" type="text" class="form-control" value="${e_sections[i]}"
+                   placeholder="Section Description"
+                   style="font-size: 13px; background-color: white; border-radius: 8px;">
+            <button type="button" class="btn btn-minus btn-sm ms-2 remove-btn"><span>-</span></button>
+        `;
+        wrapper.appendChild(div);
+    }
 }
 
 /*
@@ -3624,11 +3660,39 @@ console.log("Raw members data:", e_members);
             let userimg   = this.dataset.image;
             let dataown = this.dataset.own;
 
+            let edivbtn = document.querySelector('.openEditFromView');
+            edivbtn.style.display = "none";
+            let donebtn = document.querySelector('.markDoneBtn');
+            donebtn.style.display = "block";
+
+            let markfial = document.querySelector('.markfail');
+            markfial.innerText = "Mark as Failed";
+
+            document.getElementById("isremove").value = 0;
+            
+
             let ownedEl = document.querySelector('.owned');
             if (dataown == "0") {
                 ownedEl.style.display = "none";
-            } else if (dataown == "1") {
+            } else if (dataown == "private"){
                 ownedEl.style.display = "flex";
+                edivbtn.style.display = "block";
+                donebtn.style.display = "none";
+                markfial.innerText = "Remove";
+                document.getElementById("isremove").value = 1;
+                //show edit as well
+            } else if (dataown == "today") {
+                //check if timer starts then show otherwise hide it
+
+                let timerDiv = document.querySelector(`.counter-div[data-todo-id="${dataid}"]`);
+                let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
+
+                let ownedEl = document.querySelector('.owned');
+                if (isReminderActive) {
+                    ownedEl.style.display = "flex";
+                } else {
+                    ownedEl.style.display = "none";
+                }
             }
 
 
