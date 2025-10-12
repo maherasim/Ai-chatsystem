@@ -318,12 +318,82 @@
                         </div>
                     </div>
 
+                    <!-- tickers -->
+                    <div class="container" style="margin-bottom: 30px;">
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <div class="d-flex flex-wrap justify-content-center align-items-center rounded shadow-sm px-3 py-3" style="background-color: #f8f9fa; gap: 20px;">
+
+                                    <!-- New Ticket -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center bg-white p-2 rounded-3 shadow-sm status-card" data-status="new" style="width: 130px; cursor: pointer; transition: all 0.3s ease;" onclick="centerSliderCard('new')">
+                                            <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                                <img src="{{URL::asset('/build/img/newtask.svg')}}" style="width: 30px; height: 30px;" alt="New Ticket">
+                                            </div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">New Ticket</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;">50</div>
+                                        </div>
+                                        <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
+                                    </div>
+
+                                    <!-- In Progress -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center bg-white p-2 rounded-3 shadow-sm status-card" data-status="progress" style="width: 130px; cursor: pointer; transition: all 0.3s ease;" onclick="centerSliderCard('progress')">
+                                            <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                                <img src="{{URL::asset('/build/img/progress.svg')}}" style="width: 30px; height: 30px;" alt="In Progress">
+                                            </div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">In Progress</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;">75</div>
+                                        </div>
+                                        <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
+                                    </div>
+
+                                    <!-- In Hold -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center bg-white p-2 rounded-3 shadow-sm status-card" data-status="hold" style="width: 130px; cursor: pointer; transition: all 0.3s ease;" onclick="centerSliderCard('hold')">
+                                            <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                                <img src="{{URL::asset('/build/img/inhold.svg')}}" style="width: 30px; height: 30px;" alt="In Hold">
+                                            </div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">In Hold</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;">25</div>
+                                        </div>
+                                        <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
+                                    </div>
+
+                                    <!-- In Delayed -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center bg-white p-2 rounded-3 shadow-sm status-card" data-status="delayed" style="width: 130px; cursor: pointer; transition: all 0.3s ease;" onclick="centerSliderCard('delayed')">
+                                            <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                                <img src="{{URL::asset('/build/img/delayed.svg')}}" style="width: 30px; height: 30px;" alt="In Delayed">
+                                            </div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">In Delayed</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;">2</div>
+                                        </div>
+                                        <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
+                                    </div>
+
+                                    <!-- In Done -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center bg-white p-2 rounded-3 shadow-sm status-card" data-status="done" style="width: 130px; cursor: pointer; transition: all 0.3s ease;" onclick="centerSliderCard('done')">
+                                            <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                                <img src="{{URL::asset('/build/img/indone.svg')}}" style="width: 30px; height: 30px;" alt="In Done">
+                                            </div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">In Done</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;">2</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
 
                     <div id="ticketsSlider1" class="mb-2 tickets-slider">
                         <div class="row g-3">
                             <!-- 1-->
-                            <div class="col-6 col-md-3 col-lg-3">
+                            <div class="col-6 col-md-3 col-lg-3" data-ticket-status="progress">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -577,7 +647,7 @@
 
                             </div>
                             <!-- 2 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="hold">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -830,7 +900,7 @@
 
                             </div>
                             <!-- 3 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="delayed">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1083,7 +1153,7 @@
 
                             </div>
                             <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="done">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1334,13 +1404,13 @@
                                 </div>
 
                             </div>
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="new">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <div>
-                                            <div style="color: #00C853; font-weight: 600; font-size: 16px;"> Ticket In Done</div>
-                                            <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
+                                            <div style="color: #2196F3; font-weight: 600; font-size: 16px;">New Ticket</div>
+                                            <div style="font-size: 13px; color: #2196F3;">Total Tasks: 50</div>
                                         </div>
                                         <div>
                                             <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
@@ -1586,12 +1656,6 @@
 
                             </div>
                         </div>
-                        <button class="slider-arrow slider-prev" type="button" aria-label="Previous">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <button class="slider-arrow slider-next" type="button" aria-label="Next">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
                     </div>
 
                     <style>
@@ -1620,19 +1684,7 @@
                         }
 
                         .tickets-slider .slider-arrow {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            z-index: 3;
-                            width: 36px;
-                            height: 36px;
-                            border-radius: 50%;
-                            background: #ffffff;
-                            border: 1px solid #e5e7eb;
-                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                            display: none;
-                            align-items: center;
-                            justify-content: center;
+                            display: none !important;
                         }
 
                         .tickets-slider .slider-prev {
@@ -1644,7 +1696,7 @@
                         }
 
                         .tickets-slider.is-slider .slider-arrow {
-                            display: flex;
+                            display: none !important;
                         }
 
                         .tickets-slider.overlay .row {
@@ -1711,11 +1763,11 @@
                         }
 
                         .tickets-slider .card.is-active {
-                            filter: none;
-                            opacity: 1;
-                            transform: translateX(var(--cf-shift, 0px)) translateZ(0) rotateY(0) scale(1.03);
-                            box-shadow: 0 12px 30px rgba(0, 0, 0, .14);
-                            z-index: 2;
+                            filter: none !important;
+                            opacity: 1 !important;
+                            transform: translateX(var(--cf-shift, 0px)) translateZ(0) rotateY(0) scale(1.03) !important;
+                            box-shadow: 0 12px 30px rgba(0, 0, 0, .14) !important;
+                            z-index: 2 !important;
                         }
 
                         .tickets-slider .card::before {
@@ -1784,6 +1836,19 @@
                         }
 
                         /* Minimal slider (no blur) */
+
+                        /* Status card hover and active states */
+                        .status-card:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                        }
+
+                        .status-card.active {
+                            background-color: #e3f2fd !important;
+                            border: 2px solid #2196f3 !important;
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3) !important;
+                        }
                         .tickets-slider-simple {
                             position: relative;
                         }
@@ -1801,19 +1866,7 @@
                         }
 
                         .tickets-slider-simple .slider-arrow {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            z-index: 3;
-                            width: 36px;
-                            height: 36px;
-                            border-radius: 50%;
-                            background: #ffffff;
-                            border: 1px solid #e5e7eb;
-                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                            display: none;
-                            align-items: center;
-                            justify-content: center;
+                            display: none !important;
                         }
 
                         .tickets-slider-simple .slider-prev {
@@ -1825,7 +1878,7 @@
                         }
 
                         .tickets-slider-simple.is-slider .slider-arrow {
-                            display: flex;
+                            display: none !important;
                         }
 
                         .tickets-slider-simple .slider-arrow[disabled] {
@@ -1985,6 +2038,128 @@
                                 document.querySelectorAll('.tickets-slider').forEach(initSlider);
                             });
                         })();
+
+                        // Function to center slider card based on status
+                        function centerSliderCard(status) {
+                            console.log('centerSliderCard called with status:', status);
+                            
+                            const slider = document.getElementById('ticketsSlider1');
+                            if (!slider) {
+                                console.log('Slider not found');
+                                return;
+                            }
+
+                            // Ensure slider has is-slider class for horizontal scrolling
+                            if (!slider.classList.contains('is-slider')) {
+                                slider.classList.add('is-slider');
+                                console.log('Added is-slider class');
+                            }
+
+                            const row = slider.querySelector('.row');
+                            const cards = Array.from(row.children).filter(function(n) {
+                                return n && n.nodeType === 1;
+                            });
+
+                            console.log('Found cards:', cards.length);
+                            console.log('Card statuses:', cards.map(card => card.getAttribute('data-ticket-status')));
+
+                            // Find the card with matching status
+                            const targetCard = cards.find(card => {
+                                return card.getAttribute('data-ticket-status') === status;
+                            });
+
+                            if (!targetCard) {
+                                console.log('Target card not found for status:', status);
+                                return;
+                            }
+                            
+                            console.log('Target card found:', targetCard);
+
+                            // Find the card element inside the column
+                            const cardElement = targetCard.querySelector('.card');
+                            if (!cardElement) return;
+
+                            // Remove active class from all cards first
+                            cards.forEach(card => {
+                                const cardEl = card.querySelector('.card');
+                                if (cardEl) {
+                                    cardEl.classList.remove('is-active');
+                                }
+                            });
+
+                            // Add active class to target card
+                            cardElement.classList.add('is-active');
+
+                            // Wait a bit for the CSS transition to start, then calculate scroll position
+                            setTimeout(() => {
+                                // Get container and card dimensions
+                                const containerWidth = slider.offsetWidth;
+                                const cardWidth = targetCard.offsetWidth;
+                                const cardOffsetLeft = targetCard.offsetLeft;
+                                
+                                console.log('Container width:', containerWidth);
+                                console.log('Card width:', cardWidth);
+                                console.log('Card offset left:', cardOffsetLeft);
+                                
+                                // Calculate the center position
+                                let centerPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+                                
+                                // Get the card index to handle edge cases
+                                const cardIndex = cards.indexOf(targetCard);
+                                console.log('Card index:', cardIndex);
+                                
+                                // Handle first card (index 0) - center it properly
+                                if (cardIndex === 0) {
+                                    centerPosition = 0;
+                                    console.log('First card - setting centerPosition to 0');
+                                }
+                                // Handle last card - ensure it doesn't scroll beyond bounds
+                                else if (cardIndex === cards.length - 1) {
+                                    const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
+                                    centerPosition = Math.min(centerPosition, maxScroll);
+                                    console.log('Last card - adjusting centerPosition');
+                                }
+                                
+                                // Ensure we don't scroll beyond bounds
+                                const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
+                                const finalPosition = Math.max(0, Math.min(centerPosition, maxScroll));
+                                
+                                console.log('Final scroll position:', finalPosition);
+                                console.log('Max scroll:', maxScroll);
+                                
+                                // Try scrollTo first, then fallback to scrollIntoView
+                                try {
+                                    row.scrollTo({
+                                        left: finalPosition,
+                                        behavior: 'smooth'
+                                    });
+                                } catch (e) {
+                                    console.log('scrollTo failed, using scrollIntoView');
+                                    targetCard.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'nearest',
+                                        inline: 'center'
+                                    });
+                                }
+                            }, 50);
+
+                            // Update status card active state
+                            updateStatusCardActive(status);
+                        }
+
+                        // Function to update status card active state
+                        function updateStatusCardActive(activeStatus) {
+                            // Remove active class from all status cards
+                            document.querySelectorAll('.status-card').forEach(card => {
+                                card.classList.remove('active');
+                            });
+
+                            // Add active class to clicked status card
+                            const activeCard = document.querySelector(`.status-card[data-status="${activeStatus}"]`);
+                            if (activeCard) {
+                                activeCard.classList.add('active');
+                            }
+                        }
                     </script>
 
                     <script>
@@ -2295,7 +2470,7 @@
 
                                             <!-- Task Progress & Status -->
                                             <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;margin:7px;">
-                                               <div style="text-align: center;">
+                                                <div style="text-align: center;">
                                                     <div style="font-size: 12px; color: #4fc3f7;">75%</div>
                                                     <div class="progress"
                                                         style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
