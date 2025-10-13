@@ -52,13 +52,13 @@
         height: 16px;
     }
 
-    /* Make dropdown chevron icon smaller */
+    /* Make dropdown chevron icon much smaller and better aligned */
     .form-select {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m2 6 6 6 6-6'/%3e%3c/svg%3e");
         background-repeat: no-repeat;
-        background-position: right 6px center;
-        background-size: 12px 12px;
-        padding-right: 24px !important;
+        background-position: right 8px center;
+        background-size: 8px 8px;
+        padding-right: 20px !important;
     }
 
     /* Default: show black icon */
@@ -414,7 +414,7 @@
                                             <div style="font-size: 13px; color: #7ED957;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
@@ -668,7 +668,7 @@
                                             <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
@@ -921,7 +921,7 @@
                                             <div style="font-size: 13px; color: #ED1C24;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
@@ -1174,7 +1174,7 @@
                                             <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                              <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                              <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
@@ -1425,7 +1425,7 @@
                                             <div style="font-size: 13px; color: #2196F3;">Total Tasks: 50</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
