@@ -52,6 +52,15 @@
         height: 16px;
     }
 
+    /* Make dropdown chevron icon smaller */
+    .form-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 6px center;
+        background-size: 12px 12px;
+        padding-right: 24px !important;
+    }
+
     /* Default: show black icon */
     .task-icon-link .icon-black {
         opacity: 1;
@@ -399,16 +408,16 @@
                             <div class="col-6 col-md-3 col-lg-3" data-ticket-status="progress">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
+                                        <div style="margin-left: 15px;">
                                             <div style="color: #7ED957; font-weight: 600; font-size: 16px;">Ticket In Progress</div>
                                             <div style="font-size: 13px; color: #7ED957;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style=" font-size: 13px;">
+                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option>Yekbon</option>
+                                                <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -653,16 +662,16 @@
                             <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="hold">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
+                                        <div style="margin-left: 15px;">
                                             <div style="color: #F5A623; font-weight: 600; font-size: 16px;"> Ticket In Hold</div>
                                             <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option>Yekbon</option>
+                                                <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -906,16 +915,16 @@
                             <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="delayed">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
+                                        <div style="margin-left: 15px;">
                                             <div style="color: #ED1C24; font-weight: 600; font-size: 16px;"> Ticket In Delayed</div>
                                             <div style="font-size: 13px; color: #ED1C24;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option>Yekbon</option>
+                                                <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1159,16 +1168,16 @@
                             <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="done">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
+                                        <div style="margin-left: 15px;">
                                             <div style="color: #00C853; font-weight: 600; font-size: 16px;"> Ticket In Done</div>
                                             <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                              <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option>Yekbon</option>
+                                                <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1410,16 +1419,16 @@
                             <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="new">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
+                                        <div style="margin-left: 15px;">
                                             <div style="color: #2196F3; font-weight: 600; font-size: 16px;">New Ticket</div>
                                             <div style="font-size: 13px; color: #2196F3;">Total Tasks: 50</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;">
+                                            <select class="form-select form-select-sm" style="font-size: 11px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
-                                                <option selected>Yekbon</option>
-                                                <option selected>CMS</option>
+                                                <option>Yekbon</option>
+                                                <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
