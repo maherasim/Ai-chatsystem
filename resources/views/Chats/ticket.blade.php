@@ -2175,13 +2175,13 @@
                                 console.log('✨ Added active class');
                             }
 
-                            // Calculate scroll position to center the card
-                            const containerWidth = container.offsetWidth;
-                            const cardLeft = targetWrapper.offsetLeft;
-                            const cardWidth = targetWrapper.offsetWidth;
-                            
-                            // Center formula: card's center - container's center
-                            let scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+                            // Calculate precise delta using bounding rects to center visually
+                            const containerRect = container.getBoundingClientRect();
+                            const targetRect = targetWrapper.getBoundingClientRect();
+                            let scrollPosition = container.scrollLeft
+                                + (targetRect.left - containerRect.left)
+                                + (targetRect.width / 2)
+                                - (container.clientWidth / 2);
 
                             // Clamp to avoid empty space on either edge
                             const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
@@ -2280,13 +2280,13 @@
                                                 });
                                             })();
 
-                                            // Center the delayed card
-                                            const containerWidth = container.offsetWidth;
-                                            const cardLeft = delayedWrapper.offsetLeft;
-                                            const cardWidth = delayedWrapper.offsetWidth;
-
-                                            // Center formula: card's center - container's center
-                                            let scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+                                            // Center the delayed card precisely using rect deltas
+                                            const containerRect = container.getBoundingClientRect();
+                                            const targetRect = delayedWrapper.getBoundingClientRect();
+                                            let scrollPosition = container.scrollLeft
+                                                + (targetRect.left - containerRect.left)
+                                                + (targetRect.width / 2)
+                                                - (container.clientWidth / 2);
 
                                             // Clamp to bounds to avoid empty space (should rarely trigger now)
                                             const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
