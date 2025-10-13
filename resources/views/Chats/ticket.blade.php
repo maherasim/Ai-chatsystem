@@ -2111,31 +2111,22 @@
 
                         // NEW APPROACH: Simple and Direct Centering Function
                         function centerSliderCard(status) {
-                            console.log('🎯 Centering card with status:', status);
-                            
                             const slider = document.getElementById('ticketsSlider1');
                             const container = slider.querySelector('.slider-container');
                             
                             if (!container) {
-                                console.error('❌ Slider container not found');
                                 return;
                             }
 
                             // Find all card wrappers
                             const cardWrappers = Array.from(container.children);
-                            console.log('📦 Found', cardWrappers.length, 'cards');
 
                             // Find the target card wrapper
                             const targetWrapper = cardWrappers.find(wrapper => {
                                 return wrapper.getAttribute('data-ticket-status') === status;
                             });
 
-                            if (!targetWrapper) {
-                                console.error('❌ Card not found for status:', status);
-                                return;
-                            }
-
-                            console.log('✅ Target card found');
+                            if (!targetWrapper) return;
 
                             // Reorder items using CSS 'order' so the selected card is visually centered
                             const getWrappers = () => Array.from(container.children);
@@ -2172,43 +2163,17 @@
 
                             // Add active class to target card
                             const targetCardElement = targetWrapper.querySelector('.card');
-                            if (targetCardElement) {
-                                targetCardElement.classList.add('is-active');
-                                console.log('✨ Added active class');
-                            }
+                            if (targetCardElement) targetCardElement.classList.add('is-active');
 
-                            // Calculate precise delta using bounding rects to center visually
-                            const containerRect = container.getBoundingClientRect();
-                            const targetRect = targetWrapper.getBoundingClientRect();
-                            let scrollPosition = container.scrollLeft
-                                + (targetRect.left - containerRect.left)
-                                + (targetRect.width / 2)
-                                - (container.clientWidth / 2);
-
-                            // Clamp to avoid empty space on either edge
-                            const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
-                            if (scrollPosition < 0) scrollPosition = 0;
-                            if (scrollPosition > maxScroll) scrollPosition = maxScroll;
+                            // Smoothly center and rely on scroll-snap alignment
+                            targetWrapper.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                             
-                            console.log('📊 Container width:', containerWidth);
-                            console.log('📊 Card left:', cardLeft);
-                            console.log('📊 Card width:', cardWidth);
-                            console.log('📊 Scroll to:', scrollPosition);
-
-                            // Scroll to center the card and rely on snap to finish alignment
-                            container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-                            // Nudge to nearest snap point after smooth scroll completes
-                            setTimeout(() => {
-                                container.scrollTo({ left: container.scrollLeft, behavior: 'auto' });
-                            }, 350);
+                            // No manual offset; scrollIntoView + scroll-snap handles final alignment
 
                             // Update status card active state
                             updateStatusCardActive(status);
                             
-                            // Verify after animation
-                            setTimeout(() => {
-                                console.log('✅ Scroll complete. Final position:', container.scrollLeft);
-                            }, 600);
+                            // No debug logs
                         }
 
                         // Function to update status card active state
@@ -2283,37 +2248,16 @@
                                                 });
                                             })();
 
-                                            // Center the delayed card precisely using rect deltas
-                                            const containerRect = container.getBoundingClientRect();
-                                            const targetRect = delayedWrapper.getBoundingClientRect();
-                                            let scrollPosition = container.scrollLeft
-                                                + (targetRect.left - containerRect.left)
-                                                + (targetRect.width / 2)
-                                                - (container.clientWidth / 2);
-
-                                            // Clamp to bounds to avoid empty space (should rarely trigger now)
-                                            const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
-                                            if (scrollPosition < 0) scrollPosition = 0;
-                                            if (scrollPosition > maxScroll) scrollPosition = maxScroll;
-
-                                            // Apply scroll to center the delayed card and nudge to snap point
-                                            container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-                                            setTimeout(() => {
-                                                container.scrollTo({ left: container.scrollLeft, behavior: 'auto' });
-                                            }, 350);
-                                            
-                                            console.log('✅ Page loaded: Delayed card selected and centered');
+                                            // Center the delayed card via scroll-snap
+                                            delayedWrapper.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                                         }
                                     }
                                 }
                                 
                                 // Add test function to window for debugging
                                 window.testCentering = function(status) {
-                                    console.log('Testing centering for status:', status);
                                     centerSliderCard(status);
                                 };
-                                
-                                console.log('Page loaded. Default selected: In Delayed (centered). Test centering with: window.testCentering("delayed") or window.testCentering("progress")');
                             }, 300);
                         });
                     </script>
