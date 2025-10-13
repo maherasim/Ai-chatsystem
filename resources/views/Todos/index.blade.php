@@ -552,7 +552,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-top:0px; margin-left:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -934,7 +934,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 41px; height: 41px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1293,7 +1293,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 41px; height: 41px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
