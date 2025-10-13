@@ -1668,6 +1668,7 @@
                             overflow-x: auto;
                             scroll-behavior: smooth;
                             scroll-snap-type: x mandatory;
+                            scroll-padding: 0 50%;
                         }
 
                         .tickets-slider.is-slider .row>* {
@@ -1913,7 +1914,7 @@
                                         if (raw < -half) raw += len; // wrap left-to-right
                                         var offset = Math.max(-maxSide, Math.min(maxSide, raw));
                                         card.dataset.pos = String(offset);
-                                        card.classList.toggle('is-active', i === activeIndex);
+                                        // Don't auto-set active class - let user clicks handle this
                                         card.setAttribute('aria-hidden', i === activeIndex ? 'false' : 'true');
                                     });
                                 }
@@ -1957,8 +1958,9 @@
                                     }
                                 }
 
-                                setActive(0);
-                                centerOnActive();
+                                // Don't auto-set active card on page load
+                                // setActive(0);
+                                // Don't auto-center on page load - let cards stay in their original positions
 
                                 var shouldSlide = items.length > 3;
                                 if (shouldSlide) {
@@ -2002,52 +2004,52 @@
                                     }
                                 });
 
-                                // Wheel / trackpad navigation
-                                root.addEventListener('wheel', function(e) {
-                                    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-                                        e.preventDefault();
-                                        if (e.deltaX > 0) {
-                                            setActive(activeIndex + 1);
-                                        } else {
-                                            setActive(activeIndex - 1);
-                                        }
-                                    } else {
-                                        e.preventDefault();
-                                        if (e.deltaY > 0) {
-                                            setActive(activeIndex + 1);
-                                        } else {
-                                            setActive(activeIndex - 1);
-                                        }
-                                    }
-                                    centerOnActive();
-                                }, {
-                                    passive: false
-                                });
+                                // Wheel / trackpad navigation - DISABLED
+                                // root.addEventListener('wheel', function(e) {
+                                //     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                                //         e.preventDefault();
+                                //         if (e.deltaX > 0) {
+                                //             setActive(activeIndex + 1);
+                                //         } else {
+                                //             setActive(activeIndex - 1);
+                                //         }
+                                //     } else {
+                                //         e.preventDefault();
+                                //         if (e.deltaY > 0) {
+                                //             setActive(activeIndex + 1);
+                                //         } else {
+                                //             setActive(activeIndex - 1);
+                                //         }
+                                //     }
+                                //     centerOnActive();
+                                // }, {
+                                //     passive: false
+                                // });
 
-                                window.addEventListener('resize', centerOnActive);
-                                if ('ResizeObserver' in window) {
-                                    var ro = new ResizeObserver(function() {
-                                        centerOnActive();
-                                    });
-                                    ro.observe(row);
-                                }
-                                window.addEventListener('load', centerOnActive);
-                                applyCoverflow();
+                                // Don't auto-center on resize - only center when user clicks
+                                window.addEventListener('load', function() {
+                                    // Don't auto-center on load - just apply coverflow effect without active states
+                                    applyCoverflow();
+                                });
                             }
                             document.addEventListener('DOMContentLoaded', function() {
                                 document.querySelectorAll('.tickets-slider').forEach(initSlider);
+                                
+                                // Don't auto-center on page load - let cards stay in their original positions
                             });
                         })();
 
                         // Function to center slider card based on status
                         function centerSliderCard(status) {
-                            console.log('centerSliderCard called with status:', status);
+                            console.log('=== CENTERING FUNCTION CALLED ===');
+                            console.log('Status:', status);
                             
                             const slider = document.getElementById('ticketsSlider1');
                             if (!slider) {
-                                console.log('Slider not found');
+                                console.log('ERROR: Slider not found');
                                 return;
                             }
+                            console.log('Slider found:', slider);
 
                             // Ensure slider has is-slider class for horizontal scrolling
                             if (!slider.classList.contains('is-slider')) {
@@ -2056,6 +2058,12 @@
                             }
 
                             const row = slider.querySelector('.row');
+                            if (!row) {
+                                console.log('ERROR: Row not found');
+                                return;
+                            }
+                            console.log('Row found:', row);
+
                             const cards = Array.from(row.children).filter(function(n) {
                                 return n && n.nodeType === 1;
                             });
@@ -2069,15 +2077,21 @@
                             });
 
                             if (!targetCard) {
-                                console.log('Target card not found for status:', status);
+                                console.log('ERROR: Target card not found for status:', status);
+                                console.log('Available statuses:', cards.map(card => card.getAttribute('data-ticket-status')));
                                 return;
                             }
                             
                             console.log('Target card found:', targetCard);
+                            console.log('Target card status:', targetCard.getAttribute('data-ticket-status'));
 
                             // Find the card element inside the column
                             const cardElement = targetCard.querySelector('.card');
-                            if (!cardElement) return;
+                            if (!cardElement) {
+                                console.log('ERROR: Card element not found inside target card');
+                                return;
+                            }
+                            console.log('Card element found:', cardElement);
 
                             // Remove active class from all cards first
                             cards.forEach(card => {
@@ -2089,62 +2103,143 @@
 
                             // Add active class to target card
                             cardElement.classList.add('is-active');
-
-                            // Wait a bit for the CSS transition to start, then calculate scroll position
-                            setTimeout(() => {
-                                // Get container and card dimensions
+                            console.log('Added is-active class to target card');
+                            
+                            // Force immediate centering with detailed logging
+                            const centerCard = () => {
+                                console.log('=== CENTERING CALCULATION ===');
                                 const containerWidth = slider.offsetWidth;
                                 const cardWidth = targetCard.offsetWidth;
                                 const cardOffsetLeft = targetCard.offsetLeft;
+                                const cardIndex = cards.indexOf(targetCard);
                                 
                                 console.log('Container width:', containerWidth);
                                 console.log('Card width:', cardWidth);
                                 console.log('Card offset left:', cardOffsetLeft);
-                                
-                                // Calculate the center position
-                                let centerPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
-                                
-                                // Get the card index to handle edge cases
-                                const cardIndex = cards.indexOf(targetCard);
                                 console.log('Card index:', cardIndex);
+                                console.log('Row scroll width:', row.scrollWidth);
+                                console.log('Current scroll left:', row.scrollLeft);
                                 
-                                // Handle first card (index 0) - center it properly
+                                // Calculate center position - improved formula
+                                let scrollPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+                                
+                                // Handle edge cases for first and last cards
                                 if (cardIndex === 0) {
-                                    centerPosition = 0;
-                                    console.log('First card - setting centerPosition to 0');
-                                }
-                                // Handle last card - ensure it doesn't scroll beyond bounds
-                                else if (cardIndex === cards.length - 1) {
+                                    // For first card, center it properly
+                                    scrollPosition = Math.max(0, cardOffsetLeft - (containerWidth - cardWidth) / 2);
+                                } else if (cardIndex === cards.length - 1) {
+                                    // For last card, ensure it doesn't scroll beyond bounds
                                     const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
-                                    centerPosition = Math.min(centerPosition, maxScroll);
-                                    console.log('Last card - adjusting centerPosition');
+                                    scrollPosition = Math.min(scrollPosition, maxScroll);
                                 }
                                 
                                 // Ensure we don't scroll beyond bounds
                                 const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
-                                const finalPosition = Math.max(0, Math.min(centerPosition, maxScroll));
+                                scrollPosition = Math.max(0, Math.min(scrollPosition, maxScroll));
                                 
-                                console.log('Final scroll position:', finalPosition);
+                                console.log('Calculated scroll position:', scrollPosition);
                                 console.log('Max scroll:', maxScroll);
+                                console.log('Final scroll position:', scrollPosition);
                                 
-                                // Try scrollTo first, then fallback to scrollIntoView
+                                // Apply scroll using multiple methods to ensure it works
+                                console.log('Attempting to scroll to position:', scrollPosition);
+                                
+                                // Method 1: Direct assignment
+                                row.scrollLeft = scrollPosition;
+                                console.log('Method 1 - scrollLeft after assignment:', row.scrollLeft);
+                                
+                                // Method 2: scrollTo
                                 try {
                                     row.scrollTo({
-                                        left: finalPosition,
-                                        behavior: 'smooth'
+                                        left: scrollPosition,
+                                        behavior: 'auto'
                                     });
+                                    console.log('Method 2 - scrollTo applied');
                                 } catch (e) {
-                                    console.log('scrollTo failed, using scrollIntoView');
-                                    targetCard.scrollIntoView({
-                                        behavior: 'smooth',
-                                        block: 'nearest',
-                                        inline: 'center'
-                                    });
+                                    console.log('Method 2 - scrollTo failed:', e);
                                 }
-                            }, 50);
+                                
+                                // Method 3: Force scroll with timeout
+                                setTimeout(() => {
+                                    row.scrollLeft = scrollPosition;
+                                    console.log('Method 3 - Force scroll applied. New scroll left:', row.scrollLeft);
+                                }, 10);
+                                
+                                // Verify the card is actually centered and try alternative methods if needed
+                                setTimeout(() => {
+                                    const cardRect = targetCard.getBoundingClientRect();
+                                    const containerRect = slider.getBoundingClientRect();
+                                    const cardCenter = cardRect.left + (cardRect.width / 2);
+                                    const containerCenter = containerRect.left + (containerRect.width / 2);
+                                    const offset = Math.abs(cardCenter - containerCenter);
+                                    
+                                    console.log('=== CENTERING VERIFICATION ===');
+                                    console.log('Card center:', cardCenter);
+                                    console.log('Container center:', containerCenter);
+                                    console.log('Offset from center:', offset);
+                                    console.log('Is centered?', offset < 50 ? 'YES' : 'NO');
+                                    console.log('Current scroll left:', row.scrollLeft);
+                                    
+                                    // If not centered and scroll didn't work, try alternative approach
+                                    if (offset > 50 && Math.abs(row.scrollLeft - scrollPosition) > 10) {
+                                        console.log('=== SCROLL FAILED - TRYING ALTERNATIVE ===');
+                                        
+                                        // Try scrolling the parent container if it exists
+                                        const parentContainer = slider.parentElement;
+                                        if (parentContainer && parentContainer.scrollLeft !== undefined) {
+                                            parentContainer.scrollLeft = scrollPosition;
+                                            console.log('Tried parent container scroll');
+                                        }
+                                        
+                                        // Try using scrollIntoView as last resort
+                                        targetCard.scrollIntoView({
+                                            behavior: 'auto',
+                                            block: 'nearest',
+                                            inline: 'center'
+                                        });
+                                        console.log('Used scrollIntoView as fallback');
+                                    }
+                                }, 50);
+                            };
+                            
+                            // Center immediately
+                            centerCard();
+                            
+                            // Try centering multiple times to ensure it works
+                            setTimeout(() => {
+                                console.log('=== RETRY CENTERING (100ms) ===');
+                                centerCard();
+                            }, 100);
+                            setTimeout(() => {
+                                console.log('=== RETRY CENTERING (300ms) ===');
+                                centerCard();
+                            }, 300);
+                            setTimeout(() => {
+                                console.log('=== RETRY CENTERING (500ms) ===');
+                                centerCard();
+                                
+                                // Fallback: if still not centered, try scrollIntoView
+                                setTimeout(() => {
+                                    const cardRect = targetCard.getBoundingClientRect();
+                                    const containerRect = slider.getBoundingClientRect();
+                                    const cardCenter = cardRect.left + (cardRect.width / 2);
+                                    const containerCenter = containerRect.left + (containerRect.width / 2);
+                                    const offset = Math.abs(cardCenter - containerCenter);
+                                    
+                                    if (offset > 50) {
+                                        console.log('=== FALLBACK: Using scrollIntoView ===');
+                                        targetCard.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'nearest',
+                                            inline: 'center'
+                                        });
+                                    }
+                                }, 100);
+                            }, 500);
 
                             // Update status card active state
                             updateStatusCardActive(status);
+                            console.log('=== CENTERING FUNCTION COMPLETE ===');
                         }
 
                         // Function to update status card active state
@@ -2160,6 +2255,37 @@
                                 activeCard.classList.add('active');
                             }
                         }
+                        
+                        // Initialize default state on page load - NO AUTO CENTERING
+                        document.addEventListener('DOMContentLoaded', function() {
+                            setTimeout(() => {
+                                // Set default active status card but don't center
+                                updateStatusCardActive('progress');
+                                
+                                // Make first card active but don't center it
+                                const slider = document.getElementById('ticketsSlider1');
+                                if (slider) {
+                                    const firstCard = slider.querySelector('.card');
+                                    if (firstCard) {
+                                        firstCard.classList.add('is-active');
+                                    }
+                                    
+                                    // Ensure slider starts at position 0 (left-aligned)
+                                    const row = slider.querySelector('.row');
+                                    if (row) {
+                                        row.scrollLeft = 0;
+                                    }
+                                }
+                                
+                                // Add test function to window for debugging
+                                window.testCentering = function(status) {
+                                    console.log('Testing centering for status:', status);
+                                    centerSliderCard(status);
+                                };
+                                
+                                console.log('Page loaded. Test centering with: window.testCentering("progress") or window.testCentering("hold")');
+                            }, 300);
+                        });
                     </script>
 
                     <script>
@@ -3190,6 +3316,7 @@
 
 <script>
     document.querySelectorAll('.toggle-btn').forEach(btn => {
+        if (!btn) return; // Skip if button is null
         btn.addEventListener('click', function() {
             var details = this.nextElementSibling;
             var icon = this.querySelector('.toggle-icon');
