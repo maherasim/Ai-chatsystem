@@ -2135,7 +2135,7 @@
 
                             console.log('✅ Target card found');
 
-                            // Rotate items so the selected card occupies the visual middle slot
+                            // Reorder items using CSS 'order' so the selected card is visually centered
                             const getWrappers = () => Array.from(container.children);
                             function getStepWidth() {
                                 const items = getWrappers();
@@ -2145,43 +2145,22 @@
                                 }
                                 return targetWrapper.offsetWidth;
                             }
-                            function moveFirstNToEnd(n) {
-                                if (!n) return;
-                                const frag = document.createDocumentFragment();
-                                for (let i = 0; i < n; i++) {
-                                    const el = container.firstElementChild;
-                                    if (!el) break;
-                                    frag.appendChild(el);
-                                }
-                                container.appendChild(frag);
-                            }
-                            function moveLastNToFront(n) {
-                                if (!n) return;
-                                const nodes = [];
-                                for (let i = 0; i < n; i++) {
-                                    const el = container.lastElementChild;
-                                    if (!el) break;
-                                    nodes.push(el);
-                                }
-                                for (let i = nodes.length - 1; i >= 0; i--) {
-                                    container.insertBefore(nodes[i], container.firstElementChild);
-                                }
-                            }
-                            (function rotateTargetToMiddle() {
-                                const stepWidth = getStepWidth();
-                                const viewport = container.clientWidth;
-                                const cardWidth = targetWrapper.offsetWidth;
-                                const sideSlots = Math.max(0, Math.floor((viewport - cardWidth) / (2 * stepWidth)));
+                            function rotateUsingOrder(targetEl) {
                                 const items = getWrappers();
-                                if (items.length === 0) return;
-                                let idx = items.indexOf(targetWrapper);
-                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(items.length - 1, 0));
-                                if (idx > desiredIndex) {
-                                    moveFirstNToEnd(idx - desiredIndex);
-                                } else if (idx < desiredIndex) {
-                                    moveLastNToFront(desiredIndex - idx);
-                                }
-                            })();
+                                const total = items.length;
+                                if (!total) return;
+                                const viewport = container.clientWidth;
+                                const cardWidth = targetEl.offsetWidth;
+                                const stepWidth = getStepWidth();
+                                const sideSlots = Math.max(0, Math.floor((viewport - cardWidth) / (2 * stepWidth)));
+                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(total - 1, 0));
+                                const idx = items.indexOf(targetEl);
+                                items.forEach((el, i) => {
+                                    const order = (i - idx + desiredIndex + total) % total;
+                                    el.style.order = String(order);
+                                });
+                            }
+                            rotateUsingOrder(targetWrapper);
 
                             // Remove active class from all cards
                             cardWrappers.forEach(wrapper => {
@@ -2275,8 +2254,8 @@
                                                 delayedCard.classList.add('is-active');
                                             }
                                             
-                                            // Rotate items on load so delayed card is in the visual middle
-                                            (function rotateTargetToMiddleOnLoad() {
+                                            // Reorder items using CSS 'order' on load so delayed card is visually centered
+                                            (function rotateUsingOrderOnLoad() {
                                                 function getWrappers() { return Array.from(container.children); }
                                                 function getStepWidth() {
                                                     const items = getWrappers();
@@ -2286,41 +2265,19 @@
                                                     }
                                                     return delayedWrapper.offsetWidth;
                                                 }
-                                                function moveFirstNToEnd(n) {
-                                                    if (!n) return;
-                                                    const frag = document.createDocumentFragment();
-                                                    for (let i = 0; i < n; i++) {
-                                                        const el = container.firstElementChild;
-                                                        if (!el) break;
-                                                        frag.appendChild(el);
-                                                    }
-                                                    container.appendChild(frag);
-                                                }
-                                                function moveLastNToFront(n) {
-                                                    if (!n) return;
-                                                    const nodes = [];
-                                                    for (let i = 0; i < n; i++) {
-                                                        const el = container.lastElementChild;
-                                                        if (!el) break;
-                                                        nodes.push(el);
-                                                    }
-                                                    for (let i = nodes.length - 1; i >= 0; i--) {
-                                                        container.insertBefore(nodes[i], container.firstElementChild);
-                                                    }
-                                                }
-                                                const stepWidth = getStepWidth();
+                                                const items = getWrappers();
+                                                const total = items.length;
+                                                if (!total) return;
                                                 const viewport = container.clientWidth;
                                                 const cardWidth = delayedWrapper.offsetWidth;
+                                                const stepWidth = getStepWidth();
                                                 const sideSlots = Math.max(0, Math.floor((viewport - cardWidth) / (2 * stepWidth)));
-                                                const items = getWrappers();
-                                                if (items.length === 0) return;
-                                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(items.length - 1, 0));
-                                                let idx = items.indexOf(delayedWrapper);
-                                                if (idx > desiredIndex) {
-                                                    moveFirstNToEnd(idx - desiredIndex);
-                                                } else if (idx < desiredIndex) {
-                                                    moveLastNToFront(desiredIndex - idx);
-                                                }
+                                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(total - 1, 0));
+                                                const idx = items.indexOf(delayedWrapper);
+                                                items.forEach((el, i) => {
+                                                    const order = (i - idx + desiredIndex + total) % total;
+                                                    el.style.order = String(order);
+                                                });
                                             })();
 
                                             // Center the delayed card
