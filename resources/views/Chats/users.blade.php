@@ -2534,11 +2534,14 @@ function confirmDelete(deleteUrl, userName) {
                             <h5>Working Times</h5>
                         </div>
                         <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
+                              <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>User type</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                     
+                </select>
                         </div>
 
                     </div>
@@ -2602,11 +2605,14 @@ function confirmDelete(deleteUrl, userName) {
                             <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
                         </div>
                         <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
+                             <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>User type</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                     
+                </select>
                         </div>
 
                     </div>
@@ -2774,9 +2780,9 @@ function confirmDelete(deleteUrl, userName) {
                     style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>User type</option>
                    
-                    <option value="subadmin">Subadmin</option>
-                    <option value="employee">Employee</option>
-                    <option value="developer">Developer</option>
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                     
                 </select>
 
 

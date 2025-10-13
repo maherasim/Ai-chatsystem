@@ -59,6 +59,44 @@
         background-position: right 8px center;
         background-size: 8px 8px;
         padding-right: 20px !important;
+        text-align: center;
+    }
+
+    /* Custom thin red scrollbar for individual cards */
+    .ticket-card-container {
+        overflow-y: auto;
+        max-height: 400px;
+        padding-right: 5px;
+    }
+
+    .ticket-card-container::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .ticket-card-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .ticket-card-container::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+
+    .ticket-card-container::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Center text in ticket items */
+    .ticket-item-text {
+        text-align: center;
+    }
+
+    .ticket-header-text {
+        text-align: center;
+    }
+
+    .ticket-task-line {
+        text-align: center;
     }
 
     /* Default: show black icon */
@@ -421,46 +459,49 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Scrollable Content Container -->
+                                    <div class="ticket-card-container">
 
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -504,41 +545,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -582,41 +623,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -655,6 +696,8 @@
                                         </div>
                                         <!-- tasks -->
                                     </div>
+                                    
+                                    </div> <!-- End Scrollable Content Container -->
                                 </div>
 
                             </div>
@@ -668,53 +711,56 @@
                                             <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                           <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Scrollable Content Container -->
+                                    <div class="ticket-card-container">
 
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -758,41 +804,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -835,41 +881,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -908,6 +954,8 @@
                                         </div>
                                         <!-- tasks -->
                                     </div>
+                                    
+                                    </div> <!-- End Scrollable Content Container -->
                                 </div>
 
                             </div>
@@ -928,46 +976,125 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Scrollable Content Container -->
+                                    <div class="ticket-card-container">
 
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Progress Bar -->
+                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
+                                            <!-- Progress Bar + Percentage -->
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                    </div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                </div>
+                                                <span style="margin-left: 8px; color: #ccc;">|</span>
+                                            </div>
+                                            <!-- Status Colors -->
+                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
+                                                <span style="color: #8BC34A;">● 1</span>
+                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #F44336;">● 0</span>
+                                                <span style="color: #9C27B0;">● 0</span>
+                                                <span style="color: #4CAF50;">● 0</span>
+                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
+                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- tasks -->
+                                    </div>
+                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
+
+                                        <!-- Header -->
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div class="ticket-header-text">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                            </div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                        </div>
+
+                                        <!-- Task Line -->
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+
+                                            <!-- Task Count -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                                <p style="color: black;">5</p>
+                                            </span>
+
+                                            <!-- Divider -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Start Date -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
+                                                <p style="color: black;">22.10.2024</p>
+                                            </span>
+
+                                            <!-- Divider -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Delivery Date -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+
+                                            <!-- Divider -->
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                                            <!-- Overlapping Profile Avatars -->
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1010,41 +1137,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1088,41 +1215,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1161,6 +1288,8 @@
                                         </div>
                                         <!-- tasks -->
                                     </div>
+                                    
+                                    </div> <!-- End Scrollable Content Container -->
                                 </div>
 
                             </div>
@@ -1174,52 +1303,55 @@
                                             <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                              <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option selected>Select Projects</option>
                                                 <option>Yekbon</option>
                                                 <option>CMS</option>
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Scrollable Content Container -->
+                                    <div class="ticket-card-container">
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1263,41 +1395,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1341,41 +1473,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1413,6 +1545,8 @@
                                         </div>
                                         <!-- tasks -->
                                     </div>
+                                    
+                                    </div> <!-- End Scrollable Content Container -->
                                 </div>
 
                             </div>
@@ -1432,45 +1566,48 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Scrollable Content Container -->
+                                    <div class="ticket-card-container">
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1514,41 +1651,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1592,41 +1729,41 @@
 
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
-                                            <div>
+                                            <div class="ticket-header-text">
                                                 <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
                                             </div>
-                                            <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
                                         </div>
 
                                         <!-- Task Line -->
-                                        <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
+                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
 
                                             <!-- Task Count -->
-                                            <span style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
+                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
                                                 <p style="color: black;">5</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Start Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Start:
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
                                                 <p style="color: black;">22.10.2024</p>
                                             </span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Delivery Date -->
-                                            <span style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
 
                                             <!-- Divider -->
-                                            <span style="margin-right: 5px; color: #ccc;">|</span>
+                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                                             <!-- Overlapping Profile Avatars -->
-                                            <div style="display: flex; align-items: center;">
+                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                                                 <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
@@ -1664,6 +1801,8 @@
                                         </div>
                                         <!-- tasks -->
                                     </div>
+                                    
+                                    </div> <!-- End Scrollable Content Container -->
                                 </div>
 
                             </div>
