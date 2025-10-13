@@ -1676,6 +1676,7 @@
                             overflow-x: auto;
                             overflow-y: visible;
                             scroll-behavior: smooth;
+                            scroll-snap-type: x mandatory; /* enable snapping to center */
                             /* Normal padding */
                             padding: 10px 20px;
                             /* Hide scrollbar but keep functionality */
@@ -1699,6 +1700,7 @@
                             flex: 0 0 auto;
                             width: 320px; /* Fixed width for each card */
                             min-width: 320px;
+                            scroll-snap-align: center; /* snap each card to center */
                             transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
                         }
 
@@ -2193,11 +2195,12 @@
                             console.log('📊 Card width:', cardWidth);
                             console.log('📊 Scroll to:', scrollPosition);
 
-                            // Scroll to center the card
-                            container.scrollTo({
-                                left: scrollPosition,
-                                behavior: 'smooth'
-                            });
+                            // Scroll to center the card and rely on snap to finish alignment
+                            container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                            // Nudge to nearest snap point after smooth scroll completes
+                            setTimeout(() => {
+                                container.scrollTo({ left: container.scrollLeft, behavior: 'auto' });
+                            }, 350);
 
                             // Update status card active state
                             updateStatusCardActive(status);
@@ -2293,11 +2296,11 @@
                                             if (scrollPosition < 0) scrollPosition = 0;
                                             if (scrollPosition > maxScroll) scrollPosition = maxScroll;
 
-                                            // Apply scroll to center the delayed card
-                                            container.scrollTo({
-                                                left: scrollPosition,
-                                                behavior: 'smooth'
-                                            });
+                                            // Apply scroll to center the delayed card and nudge to snap point
+                                            container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                                            setTimeout(() => {
+                                                container.scrollTo({ left: container.scrollLeft, behavior: 'auto' });
+                                            }, 350);
                                             
                                             console.log('✅ Page loaded: Delayed card selected and centered');
                                         }
