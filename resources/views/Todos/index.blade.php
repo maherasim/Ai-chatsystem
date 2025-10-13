@@ -692,7 +692,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                                                     @else
                                                         <small class="text-muted">
-                                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                             Private
                                                         </small>
                                                     @endif
                                                 </div>
@@ -889,6 +889,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                              @forelse($privateTodos  as $index => $todo)
                             
                              @php
+                             $todotyp = "shared";
+                                if($todo->is_private == "1"){
+                                    $todotyp = "private";
+                                    
+                                }
+                            
+                             
                                 //$remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
 // echo time();
@@ -927,7 +934,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 41px; height: 41px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1057,9 +1064,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             <div class="d-flex align-items-center">
                                                  <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
-                                                    <small class="text-muted">
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
-                                                    </small>
+                                                    @if($todo->is_private == 0)
+                                                        <small class="text-muted">
+                                                            <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
+                                                        </small>
+                            
+
+                                                    @else
+                                                        <small class="text-muted">
+                                                             Private
+                                                        </small>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -1278,7 +1293,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 41px; height: 41px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
