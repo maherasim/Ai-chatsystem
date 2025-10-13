@@ -730,7 +730,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
                                             
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center" style="gap: 2rem !important; justify-content: center; font-size:13px; gap: .35rem !important;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="gap: unset !important; justify-content: inherit; font-size:13px; gap: .35rem !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -743,7 +743,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center" style="justify-content: center; font-size:13px; gap: .35rem !important;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="justify-content: inherit; font-size:13px; gap: unset !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -1114,7 +1114,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: unset !important; justify-content: inherit;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1127,7 +1127,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center"  style="justify-content: center;font-size:14px; gap: .35rem !important;">
+                                                <div class="d-flex align-items-center gap-1 text-center"  style="justify-content: inherit;font-size:14px; gap: unset !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -1423,7 +1423,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: unset !important; justify-content: inherit;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1436,7 +1436,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: center;font-size:14px; gap: .35rem !important;">
+                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: inherit;font-size:14px; gap: unset !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
