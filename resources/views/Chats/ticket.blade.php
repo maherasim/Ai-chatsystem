@@ -182,7 +182,7 @@
                 </div>
                 @endif
                 <div class="chat-body chat-page-group">
-                    <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
+                    <div class="project-succes pt-1 pb-1 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
 
                         <!-- Left Side -->
                         <div>
@@ -203,9 +203,9 @@
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
-                        <div class="row g-3 py-2">
+                        <div class="py-1" style="display: flex; gap: 15px; justify-content: center;">
                             <!-- Card 1: Total Projects -->
-                            <div class="col-md-3 mb-1">
+                            <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                     <!-- Top Row -->
@@ -228,7 +228,7 @@
                             </div>
 
                             <!-- card-2 -->
-                            <div class="col-md-3 mb-3">
+                            <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                     <!-- Top Row -->
@@ -254,7 +254,7 @@
                             </div>
                             <!-- card 3 -->
 
-                            <div class="col-md-3 mb-3">
+                            <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                     <!-- Top Row -->
@@ -282,7 +282,7 @@
 
                             <!-- card 4 -->
 
-                            <div class="col-md-3 mb-3">
+                            <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                     <!-- Top Row -->
@@ -311,7 +311,7 @@
                     </div>
 
                     <!-- project overview -->
-                    <div class="project-succes pt-4 pb-2 d-flex flex-column flex-md-row  align-items-start align-items-md-center gap-3">
+                    <div class="project-succes pt-1 pb-1 d-flex flex-column flex-md-row  align-items-start align-items-md-center gap-3" style="margin-top: 10px;">
                         <div>
                             <h3 style="margin: 0;">Ticket Status</h3>
                             <strong>Total Shared ToDO's: 10</strong>
@@ -319,10 +319,10 @@
                     </div>
 
                     <!-- tickers -->
-                    <div class="container" style="margin-bottom: 30px;">
+                    <div class="container" style="margin-bottom: 15px;">
                         <div class="row justify-content-center">
                             <div class="col-auto">
-                                <div class="d-flex flex-wrap justify-content-center align-items-center rounded shadow-sm px-3 py-3" style="background-color: #f8f9fa; gap: 20px;">
+                                <div class="d-flex flex-wrap justify-content-center align-items-center rounded shadow-sm px-3 py-2" style="background-color: #f8f9fa; gap: 20px;">
 
                                     <!-- New Ticket -->
                                     <div class="d-flex align-items-center">
@@ -390,8 +390,8 @@
 
 
 
-                    <div id="ticketsSlider1" class="mb-2 tickets-slider">
-                        <div class="row g-3">
+                    <div id="ticketsSlider1" class="mb-2 tickets-slider-new">
+                        <div class="slider-container">
                             <!-- 1-->
                             <div class="col-6 col-md-3 col-lg-3" data-ticket-status="progress">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
@@ -1659,6 +1659,71 @@
                     </div>
 
                     <style>
+                        /* New Slider Design - Custom Flexbox Approach */
+                        .tickets-slider-new {
+                            position: relative;
+                            width: 100%;
+                            overflow: hidden;
+                            padding: 20px 0;
+                        }
+
+                        .slider-container {
+                            display: flex;
+                            gap: 20px;
+                            overflow-x: auto;
+                            overflow-y: visible;
+                            scroll-behavior: smooth;
+                            /* Normal padding */
+                            padding: 10px 20px;
+                            /* Hide scrollbar but keep functionality */
+                            scrollbar-width: none; /* Firefox */
+                            -ms-overflow-style: none; /* IE/Edge */
+                        }
+                        
+                        /* Add invisible spacers before and after cards to enable centering */
+                        .slider-container::before,
+                        .slider-container::after {
+                            content: '';
+                            flex-shrink: 0;
+                            width: calc(50vw - 180px);
+                        }
+
+                        .slider-container::-webkit-scrollbar {
+                            display: none; /* Chrome/Safari/Opera */
+                        }
+
+                        .slider-container > * {
+                            flex: 0 0 auto;
+                            width: 320px; /* Fixed width for each card */
+                            min-width: 320px;
+                            transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+                        }
+
+                        /* Override Bootstrap column classes inside slider */
+                        .slider-container > [class*="col-"] {
+                            max-width: 320px !important;
+                            width: 320px !important;
+                            flex: 0 0 320px !important;
+                        }
+
+                        /* Card styling */
+                        .slider-container .card {
+                            opacity: 0.6;
+                            filter: blur(2px);
+                            transform: scale(0.95);
+                            transition: all 0.4s ease;
+                        }
+
+                        .slider-container .card.is-active {
+                            opacity: 1 !important;
+                            filter: none !important;
+                            transform: scale(1.05) !important;
+                            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+                            z-index: 10 !important;
+                            position: relative;
+                        }
+
+                        /* Old slider styles */
                         .tickets-slider {
                             position: relative;
                         }
@@ -2039,148 +2104,73 @@
                             });
                         })();
 
-                        // Function to center slider card based on status
+                        // NEW APPROACH: Simple and Direct Centering Function
                         function centerSliderCard(status) {
-                            console.log('=== CENTERING FUNCTION CALLED ===');
-                            console.log('Status:', status);
+                            console.log('🎯 Centering card with status:', status);
                             
                             const slider = document.getElementById('ticketsSlider1');
-                            if (!slider) {
-                                console.log('ERROR: Slider not found');
-                                return;
-                            }
-                            console.log('Slider found:', slider);
-
-                            // Ensure slider has is-slider class for horizontal scrolling
-                            if (!slider.classList.contains('is-slider')) {
-                                slider.classList.add('is-slider');
-                                console.log('Added is-slider class');
-                            }
-
-                            const row = slider.querySelector('.row');
-                            if (!row) {
-                                console.log('ERROR: Row not found');
-                                return;
-                            }
-                            console.log('Row found:', row);
-
-                            const cards = Array.from(row.children).filter(function(n) {
-                                return n && n.nodeType === 1;
-                            });
-
-                            console.log('Found cards:', cards.length);
-                            console.log('Card statuses:', cards.map(card => card.getAttribute('data-ticket-status')));
-
-                            // Find the card with matching status
-                            const targetCard = cards.find(card => {
-                                return card.getAttribute('data-ticket-status') === status;
-                            });
-
-                            if (!targetCard) {
-                                console.log('ERROR: Target card not found for status:', status);
-                                console.log('Available statuses:', cards.map(card => card.getAttribute('data-ticket-status')));
-                                return;
-                            }
+                            const container = slider.querySelector('.slider-container');
                             
-                            console.log('Target card found:', targetCard);
-                            console.log('Target card status:', targetCard.getAttribute('data-ticket-status'));
-
-                            // Find the card element inside the column
-                            const cardElement = targetCard.querySelector('.card');
-                            if (!cardElement) {
-                                console.log('ERROR: Card element not found inside target card');
+                            if (!container) {
+                                console.error('❌ Slider container not found');
                                 return;
                             }
-                            console.log('Card element found:', cardElement);
 
-                            // Remove active class from all cards first
-                            cards.forEach(card => {
-                                const cardEl = card.querySelector('.card');
-                                if (cardEl) {
-                                    cardEl.classList.remove('is-active');
-                                }
+                            // Find all card wrappers
+                            const cardWrappers = Array.from(container.children);
+                            console.log('📦 Found', cardWrappers.length, 'cards');
+
+                            // Find the target card wrapper
+                            const targetWrapper = cardWrappers.find(wrapper => {
+                                return wrapper.getAttribute('data-ticket-status') === status;
+                            });
+
+                            if (!targetWrapper) {
+                                console.error('❌ Card not found for status:', status);
+                                return;
+                            }
+
+                            console.log('✅ Target card found');
+
+                            // Remove active class from all cards
+                            cardWrappers.forEach(wrapper => {
+                                const card = wrapper.querySelector('.card');
+                                if (card) card.classList.remove('is-active');
                             });
 
                             // Add active class to target card
-                            cardElement.classList.add('is-active');
-                            console.log('Added is-active class to target card');
-                            
+                            const targetCardElement = targetWrapper.querySelector('.card');
+                            if (targetCardElement) {
+                                targetCardElement.classList.add('is-active');
+                                console.log('✨ Added active class');
+                            }
 
-                            // Center the selected card - works for ANY index (0, 1, 2, 3, 4, etc.)
-                            const centerCard = () => {
-                                console.log('=== CENTERING CARD (Index-Agnostic) ===');
-                                console.log('Status:', status);
-                                console.log('Target card:', targetCard);
-                                
-                                // Get dimensions
-                                const containerWidth = slider.offsetWidth;
-                                const cardWidth = targetCard.offsetWidth;
-                                const cardLeft = targetCard.offsetLeft;
-                                
-                                console.log('Container width:', containerWidth);
-                                console.log('Card width:', cardWidth);
-                                console.log('Card offsetLeft:', cardLeft);
-                                console.log('Row scrollWidth:', row.scrollWidth);
-                                console.log('Current scrollLeft:', row.scrollLeft);
-                                
-                                // Calculate the scroll position to center the card
-                                // Formula: scroll to (card's left edge + half card width) - (half container width)
-                                const cardCenterPoint = cardLeft + (cardWidth / 2);
-                                const containerCenterPoint = containerWidth / 2;
-                                const targetScrollLeft = cardCenterPoint - containerCenterPoint;
-                                
-                                // Clamp to valid scroll range
-                                const maxScroll = row.scrollWidth - containerWidth;
-                                const finalScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll));
-                                
-                                console.log('Card center point:', cardCenterPoint);
-                                console.log('Container center point:', containerCenterPoint);
-                                console.log('Target scroll position:', targetScrollLeft);
-                                console.log('Max scroll:', maxScroll);
-                                console.log('Final scroll position:', finalScrollLeft);
-                                
-                                // Temporarily disable scroll snap
-                                const originalScrollSnapType = row.style.scrollSnapType;
-                                row.style.scrollSnapType = 'none';
-                                
-                                // Apply the scroll
-                                console.log('Scrolling to position:', finalScrollLeft);
-                                row.scrollTo({
-                                    left: finalScrollLeft,
-                                    behavior: 'smooth'
-                                });
-                                
-                                // Re-enable scroll snap after animation
-                                setTimeout(() => {
-                                    row.style.scrollSnapType = originalScrollSnapType || '';
-                                    console.log('Scroll snap re-enabled');
-                                }, 800);
-                                
-                                // Verify centering
-                                setTimeout(() => {
-                                    console.log('=== CENTERING VERIFICATION ===');
-                                    console.log('Final scrollLeft:', row.scrollLeft);
-                                    
-                                    const cardRect = targetCard.getBoundingClientRect();
-                                    const containerRect = slider.getBoundingClientRect();
-                                    const cardCenterPos = cardRect.left + (cardRect.width / 2);
-                                    const containerCenterPos = containerRect.left + (containerRect.width / 2);
-                                    const offset = Math.abs(cardCenterPos - containerCenterPos);
-                                    
-                                    console.log('Card center on screen:', cardCenterPos);
-                                    console.log('Container center on screen:', containerCenterPos);
-                                    console.log('Offset from center:', offset + 'px');
-                                    console.log('Is centered?', offset < 100 ? 'YES ✓' : 'NO ✗');
-                                }, 800);
-                            };
+                            // Calculate scroll position to center the card
+                            const containerWidth = container.offsetWidth;
+                            const cardLeft = targetWrapper.offsetLeft;
+                            const cardWidth = targetWrapper.offsetWidth;
                             
+                            // Center formula: card's center - container's center
+                            const scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+                            
+                            console.log('📊 Container width:', containerWidth);
+                            console.log('📊 Card left:', cardLeft);
+                            console.log('📊 Card width:', cardWidth);
+                            console.log('📊 Scroll to:', scrollPosition);
 
-                            // Center immediately
-                            centerCard();
+                            // Scroll to center the card
+                            container.scrollTo({
+                                left: scrollPosition,
+                                behavior: 'smooth'
+                            });
 
                             // Update status card active state
                             updateStatusCardActive(status);
-                            console.log('=== CENTERING FUNCTION COMPLETE ===');
+                            
+                            // Verify after animation
+                            setTimeout(() => {
+                                console.log('✅ Scroll complete. Final position:', container.scrollLeft);
+                            }, 600);
                         }
 
                         // Function to update status card active state
