@@ -1682,6 +1682,8 @@
                             /* Hide scrollbar but keep functionality */
                             scrollbar-width: none; /* Firefox */
                             -ms-overflow-style: none; /* IE/Edge */
+                            will-change: scroll-position; /* hint for smoother horizontal scroll */
+                            overscroll-behavior-inline: contain; /* prevent parent/page scroll on horizontal overscroll */
                         }
                         
                         /* Remove edge spacers to avoid empty gaps */
@@ -2165,10 +2167,19 @@
                             const targetCardElement = targetWrapper.querySelector('.card');
                             if (targetCardElement) targetCardElement.classList.add('is-active');
 
-                            // Smoothly center and rely on scroll-snap alignment
-                            targetWrapper.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                            
-                            // No manual offset; scrollIntoView + scroll-snap handles final alignment
+                            // Manually center horizontally to avoid any vertical page scroll
+                            {
+                                const containerRect = container.getBoundingClientRect();
+                                const targetRect = targetWrapper.getBoundingClientRect();
+                                let left = container.scrollLeft
+                                    + (targetRect.left - containerRect.left)
+                                    + (targetRect.width / 2)
+                                    - (container.clientWidth / 2);
+                                const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+                                if (left < 0) left = 0;
+                                if (left > maxScroll) left = maxScroll;
+                                container.scrollTo({ left, behavior: 'smooth' });
+                            }
 
                             // Update status card active state
                             updateStatusCardActive(status);
@@ -2248,8 +2259,19 @@
                                                 });
                                             })();
 
-                                            // Center the delayed card via scroll-snap
-                                            delayedWrapper.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                            // Center the delayed card horizontally without affecting page vertical scroll
+                                            {
+                                                const containerRect = container.getBoundingClientRect();
+                                                const targetRect = delayedWrapper.getBoundingClientRect();
+                                                let left = container.scrollLeft
+                                                    + (targetRect.left - containerRect.left)
+                                                    + (targetRect.width / 2)
+                                                    - (container.clientWidth / 2);
+                                                const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+                                                if (left < 0) left = 0;
+                                                if (left > maxScroll) left = maxScroll;
+                                                container.scrollTo({ left, behavior: 'smooth' });
+                                            }
                                         }
                                     }
                                 }
