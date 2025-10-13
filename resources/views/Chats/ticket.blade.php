@@ -2135,7 +2135,7 @@
 
                             console.log('✅ Target card found');
 
-                            // Helper utilities to ensure target can be centered without gaps by rotating items
+                            // Rotate items so the selected card occupies the visual middle slot
                             const getWrappers = () => Array.from(container.children);
                             function getStepWidth() {
                                 const items = getWrappers();
@@ -2157,7 +2157,6 @@
                             }
                             function moveLastNToFront(n) {
                                 if (!n) return;
-                                // Collect last N then insert before first to preserve order
                                 const nodes = [];
                                 for (let i = 0; i < n; i++) {
                                     const el = container.lastElementChild;
@@ -2168,31 +2167,19 @@
                                     container.insertBefore(nodes[i], container.firstElementChild);
                                 }
                             }
-
-                            // Ensure there are enough items on both sides to keep target visually centered
-                            (function ensureNeighborsForCentering() {
+                            (function rotateTargetToMiddle() {
                                 const stepWidth = getStepWidth();
-                                const containerWidth = container.clientWidth;
+                                const viewport = container.clientWidth;
                                 const cardWidth = targetWrapper.offsetWidth;
-                                const sideSlots = Math.max(0, Math.floor((containerWidth - cardWidth) / (2 * stepWidth)));
-
-                                // Not enough items to fill viewport anyway
-                                const total = getWrappers().length;
-                                if (total <= sideSlots * 2 + 1) return;
-
-                                // Bring enough items to the left
-                                let idx = getWrappers().indexOf(targetWrapper);
-                                if (idx < sideSlots) {
-                                    const need = sideSlots - idx;
-                                    moveLastNToFront(need);
-                                }
-
-                                // Recompute and bring enough items to the right
-                                idx = getWrappers().indexOf(targetWrapper);
-                                const rightCount = getWrappers().length - idx - 1;
-                                if (rightCount < sideSlots) {
-                                    const need = sideSlots - rightCount;
-                                    moveFirstNToEnd(need);
+                                const sideSlots = Math.max(0, Math.floor((viewport - cardWidth) / (2 * stepWidth)));
+                                const items = getWrappers();
+                                if (items.length === 0) return;
+                                let idx = items.indexOf(targetWrapper);
+                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(items.length - 1, 0));
+                                if (idx > desiredIndex) {
+                                    moveFirstNToEnd(idx - desiredIndex);
+                                } else if (idx < desiredIndex) {
+                                    moveLastNToFront(desiredIndex - idx);
                                 }
                             })();
 
@@ -2288,8 +2275,8 @@
                                                 delayedCard.classList.add('is-active');
                                             }
                                             
-                                            // Ensure neighbors so delayed card can be centered without gaps (same logic as on click)
-                                            (function ensureNeighborsForCenteringOnLoad() {
+                                            // Rotate items on load so delayed card is in the visual middle
+                                            (function rotateTargetToMiddleOnLoad() {
                                                 function getWrappers() { return Array.from(container.children); }
                                                 function getStepWidth() {
                                                     const items = getWrappers();
@@ -2322,20 +2309,17 @@
                                                     }
                                                 }
                                                 const stepWidth = getStepWidth();
-                                                const containerWidth = container.clientWidth;
+                                                const viewport = container.clientWidth;
                                                 const cardWidth = delayedWrapper.offsetWidth;
-                                                const sideSlots = Math.max(0, Math.floor((containerWidth - cardWidth) / (2 * stepWidth)));
-                                                const total = getWrappers().length;
-                                                if (total > sideSlots * 2 + 1) {
-                                                    let idx = getWrappers().indexOf(delayedWrapper);
-                                                    if (idx < sideSlots) {
-                                                        moveLastNToFront(sideSlots - idx);
-                                                    }
-                                                    idx = getWrappers().indexOf(delayedWrapper);
-                                                    const rightCount = getWrappers().length - idx - 1;
-                                                    if (rightCount < sideSlots) {
-                                                        moveFirstNToEnd(sideSlots - rightCount);
-                                                    }
+                                                const sideSlots = Math.max(0, Math.floor((viewport - cardWidth) / (2 * stepWidth)));
+                                                const items = getWrappers();
+                                                if (items.length === 0) return;
+                                                const desiredIndex = Math.min(Math.max(sideSlots, 0), Math.max(items.length - 1, 0));
+                                                let idx = items.indexOf(delayedWrapper);
+                                                if (idx > desiredIndex) {
+                                                    moveFirstNToEnd(idx - desiredIndex);
+                                                } else if (idx < desiredIndex) {
+                                                    moveLastNToFront(desiredIndex - idx);
                                                 }
                                             })();
 
