@@ -711,11 +711,14 @@
                                             <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                           <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select Projects</option>
-                                                <option>Yekbon</option>
-                                                <option>CMS</option>
-                                            </select>
+                                          <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>Select</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                    
+                </select>
                                         </div>
                                     </div>
                                     
@@ -969,11 +972,14 @@
                                             <div style="font-size: 13px; color: #ED1C24;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select Projects</option>
-                                                <option>Yekbon</option>
-                                                <option>CMS</option>
-                                            </select>
+                                           <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>Select</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                    
+                </select>
                                         </div>
                                     </div>
                                     
@@ -1303,11 +1309,14 @@
                                             <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select Projects</option>
-                                                <option>Yekbon</option>
-                                                <option>CMS</option>
-                                            </select>
+                                          <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>Select</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                    
+                </select>
                                         </div>
                                     </div>
                                     
@@ -1559,11 +1568,14 @@
                                             <div style="font-size: 13px; color: #2196F3;">Total Tasks: 50</div>
                                         </div>
                                         <div>
-                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select Projects</option>
-                                                <option>Yekbon</option>
-                                                <option>CMS</option>
-                                            </select>
+                                          <select name="type" id="typeSelect" required="required"
+                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                    <option value="" disabled selected>Select</option>
+                   
+                    <option value="subadmin">CMS</option>
+                    <option value="employee">Yekbun</option>
+                    
+                </select>
                                         </div>
                                     </div>
                                     
