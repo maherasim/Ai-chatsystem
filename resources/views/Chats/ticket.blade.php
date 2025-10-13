@@ -1683,12 +1683,12 @@
                             -ms-overflow-style: none; /* IE/Edge */
                         }
                         
-                        /* Add invisible spacers before and after cards to enable centering */
+                        /* Remove edge spacers to avoid empty gaps */
                         .slider-container::before,
                         .slider-container::after {
                             content: '';
                             flex-shrink: 0;
-                            width: calc(50vw - 180px);
+                            width: 0; /* no artificial spacing at edges */
                         }
 
                         .slider-container::-webkit-scrollbar {
@@ -2154,7 +2154,12 @@
                             const cardWidth = targetWrapper.offsetWidth;
                             
                             // Center formula: card's center - container's center
-                            const scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+                            let scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+
+                            // Clamp to avoid empty space on either edge
+                            const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+                            if (scrollPosition < 0) scrollPosition = 0;
+                            if (scrollPosition > maxScroll) scrollPosition = maxScroll;
                             
                             console.log('📊 Container width:', containerWidth);
                             console.log('📊 Card left:', cardLeft);
@@ -2226,10 +2231,15 @@
                                             const containerWidth = container.offsetWidth;
                                             const cardLeft = delayedWrapper.offsetLeft;
                                             const cardWidth = delayedWrapper.offsetWidth;
-                                            
+
                                             // Center formula: card's center - container's center
-                                            const scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-                                            
+                                            let scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+
+                                            // Clamp to bounds to avoid empty space
+                                            const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+                                            if (scrollPosition < 0) scrollPosition = 0;
+                                            if (scrollPosition > maxScroll) scrollPosition = maxScroll;
+
                                             // Apply scroll to center the delayed card
                                             container.scrollTo({
                                                 left: scrollPosition,
