@@ -11,7 +11,10 @@
         opacity: 0;
         transition: max-height 0.7s ease, opacity 0.6s ease;
     }
-
+    .px-4 {
+    padding-right: 1.5rem !important;
+    padding-left: 3.5rem !important;
+}
     .project-details.show {
         opacity: 1;
     }
@@ -203,7 +206,7 @@
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
-                        <div class="py-1" style="display: flex; gap: 15px; justify-content: center;">
+                        <div class="py-1" style="display: flex; gap: 80px; padding-left: 20px;">
                             <!-- Card 1: Total Projects -->
                             <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
@@ -320,7 +323,7 @@
 
                     <!-- tickers -->
                     <div class="container" style="margin-bottom: 15px;">
-                        <div class="row justify-content-center">
+                        <div class="row ">
                             <div class="col-auto">
                                 <div class="d-flex flex-wrap justify-content-center align-items-center rounded shadow-sm px-3 py-2" style="background-color: #f8f9fa; gap: 20px;">
 
@@ -2190,21 +2193,51 @@
                         // Initialize default state on page load - NO AUTO CENTERING
                         document.addEventListener('DOMContentLoaded', function() {
                             setTimeout(() => {
-                                // Set default active status card but don't center
-                                updateStatusCardActive('progress');
+                                // Set default active status card to "In Delayed"
+                                updateStatusCardActive('delayed');
                                 
-                                // Make first card active but don't center it
+                                // Make the delayed card active and center it
                                 const slider = document.getElementById('ticketsSlider1');
                                 if (slider) {
-                                    const firstCard = slider.querySelector('.card');
-                                    if (firstCard) {
-                                        firstCard.classList.add('is-active');
-                                    }
-                                    
-                                    // Ensure slider starts at position 0 (left-aligned)
-                                    const row = slider.querySelector('.row');
-                                    if (row) {
-                                        row.scrollLeft = 0;
+                                    const container = slider.querySelector('.slider-container');
+                                    if (container) {
+                                        // Find all card wrappers
+                                        const cardWrappers = Array.from(container.children);
+                                        
+                                        // Find the delayed card wrapper
+                                        const delayedWrapper = cardWrappers.find(wrapper => {
+                                            return wrapper.getAttribute('data-ticket-status') === 'delayed';
+                                        });
+                                        
+                                        if (delayedWrapper) {
+                                            // Remove active class from all cards
+                                            cardWrappers.forEach(wrapper => {
+                                                const card = wrapper.querySelector('.card');
+                                                if (card) card.classList.remove('is-active');
+                                            });
+                                            
+                                            // Add active class to delayed card
+                                            const delayedCard = delayedWrapper.querySelector('.card');
+                                            if (delayedCard) {
+                                                delayedCard.classList.add('is-active');
+                                            }
+                                            
+                                            // Center the delayed card
+                                            const containerWidth = container.offsetWidth;
+                                            const cardLeft = delayedWrapper.offsetLeft;
+                                            const cardWidth = delayedWrapper.offsetWidth;
+                                            
+                                            // Center formula: card's center - container's center
+                                            const scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+                                            
+                                            // Apply scroll to center the delayed card
+                                            container.scrollTo({
+                                                left: scrollPosition,
+                                                behavior: 'smooth'
+                                            });
+                                            
+                                            console.log('✅ Page loaded: Delayed card selected and centered');
+                                        }
                                     }
                                 }
                                 
@@ -2214,7 +2247,7 @@
                                     centerSliderCard(status);
                                 };
                                 
-                                console.log('Page loaded. Test centering with: window.testCentering("progress") or window.testCentering("hold")');
+                                console.log('Page loaded. Default selected: In Delayed (centered). Test centering with: window.testCentering("delayed") or window.testCentering("progress")');
                             }, 300);
                         });
                     </script>
@@ -2645,7 +2678,7 @@
                 <div class="p-3 mb-3 text-center" style="background-color: #f6f6f6; border-radius: 10px;">
                     <h6 style="font-weight: 600;">Ticket Start and Expired Date</h6>
                     <p style="color: #888;">Set activation Date</p>
-                    <div class="row justify-content-center g-2">
+                    <div class="row  g-2">
                         <!-- Start Date -->
                         <div class="col-md-4" id="startDateFieldWrapper" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px;  border: 1px solid #e0e0e0;  display: flex; flex-direction: column; justify-content: center;">
