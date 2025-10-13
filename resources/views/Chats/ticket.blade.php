@@ -2135,6 +2135,67 @@
 
                             console.log('✅ Target card found');
 
+                            // Helper utilities to ensure target can be centered without gaps by rotating items
+                            const getWrappers = () => Array.from(container.children);
+                            function getStepWidth() {
+                                const items = getWrappers();
+                                if (items.length >= 2) {
+                                    const step = items[1].offsetLeft - items[0].offsetLeft;
+                                    return step > 0 ? step : items[0].offsetWidth;
+                                }
+                                return targetWrapper.offsetWidth;
+                            }
+                            function moveFirstNToEnd(n) {
+                                if (!n) return;
+                                const frag = document.createDocumentFragment();
+                                for (let i = 0; i < n; i++) {
+                                    const el = container.firstElementChild;
+                                    if (!el) break;
+                                    frag.appendChild(el);
+                                }
+                                container.appendChild(frag);
+                            }
+                            function moveLastNToFront(n) {
+                                if (!n) return;
+                                // Collect last N then insert before first to preserve order
+                                const nodes = [];
+                                for (let i = 0; i < n; i++) {
+                                    const el = container.lastElementChild;
+                                    if (!el) break;
+                                    nodes.push(el);
+                                }
+                                for (let i = nodes.length - 1; i >= 0; i--) {
+                                    container.insertBefore(nodes[i], container.firstElementChild);
+                                }
+                            }
+
+                            // Ensure there are enough items on both sides to keep target visually centered
+                            (function ensureNeighborsForCentering() {
+                                const stepWidth = getStepWidth();
+                                const containerWidth = container.clientWidth;
+                                const cardWidth = targetWrapper.offsetWidth;
+                                const sideSlots = Math.max(0, Math.floor((containerWidth - cardWidth) / (2 * stepWidth)));
+
+                                // Not enough items to fill viewport anyway
+                                const total = getWrappers().length;
+                                if (total <= sideSlots * 2 + 1) return;
+
+                                // Bring enough items to the left
+                                let idx = getWrappers().indexOf(targetWrapper);
+                                if (idx < sideSlots) {
+                                    const need = sideSlots - idx;
+                                    moveLastNToFront(need);
+                                }
+
+                                // Recompute and bring enough items to the right
+                                idx = getWrappers().indexOf(targetWrapper);
+                                const rightCount = getWrappers().length - idx - 1;
+                                if (rightCount < sideSlots) {
+                                    const need = sideSlots - rightCount;
+                                    moveFirstNToEnd(need);
+                                }
+                            })();
+
                             // Remove active class from all cards
                             cardWrappers.forEach(wrapper => {
                                 const card = wrapper.querySelector('.card');
@@ -2227,6 +2288,57 @@
                                                 delayedCard.classList.add('is-active');
                                             }
                                             
+                                            // Ensure neighbors so delayed card can be centered without gaps (same logic as on click)
+                                            (function ensureNeighborsForCenteringOnLoad() {
+                                                function getWrappers() { return Array.from(container.children); }
+                                                function getStepWidth() {
+                                                    const items = getWrappers();
+                                                    if (items.length >= 2) {
+                                                        const step = items[1].offsetLeft - items[0].offsetLeft;
+                                                        return step > 0 ? step : items[0].offsetWidth;
+                                                    }
+                                                    return delayedWrapper.offsetWidth;
+                                                }
+                                                function moveFirstNToEnd(n) {
+                                                    if (!n) return;
+                                                    const frag = document.createDocumentFragment();
+                                                    for (let i = 0; i < n; i++) {
+                                                        const el = container.firstElementChild;
+                                                        if (!el) break;
+                                                        frag.appendChild(el);
+                                                    }
+                                                    container.appendChild(frag);
+                                                }
+                                                function moveLastNToFront(n) {
+                                                    if (!n) return;
+                                                    const nodes = [];
+                                                    for (let i = 0; i < n; i++) {
+                                                        const el = container.lastElementChild;
+                                                        if (!el) break;
+                                                        nodes.push(el);
+                                                    }
+                                                    for (let i = nodes.length - 1; i >= 0; i--) {
+                                                        container.insertBefore(nodes[i], container.firstElementChild);
+                                                    }
+                                                }
+                                                const stepWidth = getStepWidth();
+                                                const containerWidth = container.clientWidth;
+                                                const cardWidth = delayedWrapper.offsetWidth;
+                                                const sideSlots = Math.max(0, Math.floor((containerWidth - cardWidth) / (2 * stepWidth)));
+                                                const total = getWrappers().length;
+                                                if (total > sideSlots * 2 + 1) {
+                                                    let idx = getWrappers().indexOf(delayedWrapper);
+                                                    if (idx < sideSlots) {
+                                                        moveLastNToFront(sideSlots - idx);
+                                                    }
+                                                    idx = getWrappers().indexOf(delayedWrapper);
+                                                    const rightCount = getWrappers().length - idx - 1;
+                                                    if (rightCount < sideSlots) {
+                                                        moveFirstNToEnd(sideSlots - rightCount);
+                                                    }
+                                                }
+                                            })();
+
                                             // Center the delayed card
                                             const containerWidth = container.offsetWidth;
                                             const cardLeft = delayedWrapper.offsetLeft;
@@ -2235,7 +2347,7 @@
                                             // Center formula: card's center - container's center
                                             let scrollPosition = cardLeft - (containerWidth / 2) + (cardWidth / 2);
 
-                                            // Clamp to bounds to avoid empty space
+                                            // Clamp to bounds to avoid empty space (should rarely trigger now)
                                             const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
                                             if (scrollPosition < 0) scrollPosition = 0;
                                             if (scrollPosition > maxScroll) scrollPosition = maxScroll;
