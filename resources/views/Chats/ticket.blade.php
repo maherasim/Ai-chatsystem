@@ -2105,137 +2105,78 @@
                             cardElement.classList.add('is-active');
                             console.log('Added is-active class to target card');
                             
-                            // Force immediate centering with detailed logging
+
+                            // Center the selected card - works for ANY index (0, 1, 2, 3, 4, etc.)
                             const centerCard = () => {
-                                console.log('=== CENTERING CALCULATION ===');
+                                console.log('=== CENTERING CARD (Index-Agnostic) ===');
+                                console.log('Status:', status);
+                                console.log('Target card:', targetCard);
+                                
+                                // Get dimensions
                                 const containerWidth = slider.offsetWidth;
                                 const cardWidth = targetCard.offsetWidth;
-                                const cardOffsetLeft = targetCard.offsetLeft;
-                                const cardIndex = cards.indexOf(targetCard);
+                                const cardLeft = targetCard.offsetLeft;
                                 
                                 console.log('Container width:', containerWidth);
                                 console.log('Card width:', cardWidth);
-                                console.log('Card offset left:', cardOffsetLeft);
-                                console.log('Card index:', cardIndex);
-                                console.log('Row scroll width:', row.scrollWidth);
-                                console.log('Current scroll left:', row.scrollLeft);
+                                console.log('Card offsetLeft:', cardLeft);
+                                console.log('Row scrollWidth:', row.scrollWidth);
+                                console.log('Current scrollLeft:', row.scrollLeft);
                                 
-                                // Calculate center position - improved formula
-                                let scrollPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+                                // Calculate the scroll position to center the card
+                                // Formula: scroll to (card's left edge + half card width) - (half container width)
+                                const cardCenterPoint = cardLeft + (cardWidth / 2);
+                                const containerCenterPoint = containerWidth / 2;
+                                const targetScrollLeft = cardCenterPoint - containerCenterPoint;
                                 
-                                // Handle edge cases for first and last cards
-                                if (cardIndex === 0) {
-                                    // For first card, center it properly
-                                    scrollPosition = Math.max(0, cardOffsetLeft - (containerWidth - cardWidth) / 2);
-                                } else if (cardIndex === cards.length - 1) {
-                                    // For last card, ensure it doesn't scroll beyond bounds
-                                    const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
-                                    scrollPosition = Math.min(scrollPosition, maxScroll);
-                                }
+                                // Clamp to valid scroll range
+                                const maxScroll = row.scrollWidth - containerWidth;
+                                const finalScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll));
                                 
-                                // Ensure we don't scroll beyond bounds
-                                const maxScroll = Math.max(0, row.scrollWidth - containerWidth);
-                                scrollPosition = Math.max(0, Math.min(scrollPosition, maxScroll));
-                                
-                                console.log('Calculated scroll position:', scrollPosition);
+                                console.log('Card center point:', cardCenterPoint);
+                                console.log('Container center point:', containerCenterPoint);
+                                console.log('Target scroll position:', targetScrollLeft);
                                 console.log('Max scroll:', maxScroll);
-                                console.log('Final scroll position:', scrollPosition);
+                                console.log('Final scroll position:', finalScrollLeft);
                                 
-                                // Apply scroll using multiple methods to ensure it works
-                                console.log('Attempting to scroll to position:', scrollPosition);
+                                // Temporarily disable scroll snap
+                                const originalScrollSnapType = row.style.scrollSnapType;
+                                row.style.scrollSnapType = 'none';
                                 
-                                // Method 1: Direct assignment
-                                row.scrollLeft = scrollPosition;
-                                console.log('Method 1 - scrollLeft after assignment:', row.scrollLeft);
+                                // Apply the scroll
+                                console.log('Scrolling to position:', finalScrollLeft);
+                                row.scrollTo({
+                                    left: finalScrollLeft,
+                                    behavior: 'smooth'
+                                });
                                 
-                                // Method 2: scrollTo
-                                try {
-                                    row.scrollTo({
-                                        left: scrollPosition,
-                                        behavior: 'auto'
-                                    });
-                                    console.log('Method 2 - scrollTo applied');
-                                } catch (e) {
-                                    console.log('Method 2 - scrollTo failed:', e);
-                                }
-                                
-                                // Method 3: Force scroll with timeout
+                                // Re-enable scroll snap after animation
                                 setTimeout(() => {
-                                    row.scrollLeft = scrollPosition;
-                                    console.log('Method 3 - Force scroll applied. New scroll left:', row.scrollLeft);
-                                }, 10);
+                                    row.style.scrollSnapType = originalScrollSnapType || '';
+                                    console.log('Scroll snap re-enabled');
+                                }, 800);
                                 
-                                // Verify the card is actually centered and try alternative methods if needed
+                                // Verify centering
                                 setTimeout(() => {
+                                    console.log('=== CENTERING VERIFICATION ===');
+                                    console.log('Final scrollLeft:', row.scrollLeft);
+                                    
                                     const cardRect = targetCard.getBoundingClientRect();
                                     const containerRect = slider.getBoundingClientRect();
-                                    const cardCenter = cardRect.left + (cardRect.width / 2);
-                                    const containerCenter = containerRect.left + (containerRect.width / 2);
-                                    const offset = Math.abs(cardCenter - containerCenter);
+                                    const cardCenterPos = cardRect.left + (cardRect.width / 2);
+                                    const containerCenterPos = containerRect.left + (containerRect.width / 2);
+                                    const offset = Math.abs(cardCenterPos - containerCenterPos);
                                     
-                                    console.log('=== CENTERING VERIFICATION ===');
-                                    console.log('Card center:', cardCenter);
-                                    console.log('Container center:', containerCenter);
-                                    console.log('Offset from center:', offset);
-                                    console.log('Is centered?', offset < 50 ? 'YES' : 'NO');
-                                    console.log('Current scroll left:', row.scrollLeft);
-                                    
-                                    // If not centered and scroll didn't work, try alternative approach
-                                    if (offset > 50 && Math.abs(row.scrollLeft - scrollPosition) > 10) {
-                                        console.log('=== SCROLL FAILED - TRYING ALTERNATIVE ===');
-                                        
-                                        // Try scrolling the parent container if it exists
-                                        const parentContainer = slider.parentElement;
-                                        if (parentContainer && parentContainer.scrollLeft !== undefined) {
-                                            parentContainer.scrollLeft = scrollPosition;
-                                            console.log('Tried parent container scroll');
-                                        }
-                                        
-                                        // Try using scrollIntoView as last resort
-                                        targetCard.scrollIntoView({
-                                            behavior: 'auto',
-                                            block: 'nearest',
-                                            inline: 'center'
-                                        });
-                                        console.log('Used scrollIntoView as fallback');
-                                    }
-                                }, 50);
+                                    console.log('Card center on screen:', cardCenterPos);
+                                    console.log('Container center on screen:', containerCenterPos);
+                                    console.log('Offset from center:', offset + 'px');
+                                    console.log('Is centered?', offset < 100 ? 'YES ✓' : 'NO ✗');
+                                }, 800);
                             };
                             
+
                             // Center immediately
                             centerCard();
-                            
-                            // Try centering multiple times to ensure it works
-                            setTimeout(() => {
-                                console.log('=== RETRY CENTERING (100ms) ===');
-                                centerCard();
-                            }, 100);
-                            setTimeout(() => {
-                                console.log('=== RETRY CENTERING (300ms) ===');
-                                centerCard();
-                            }, 300);
-                            setTimeout(() => {
-                                console.log('=== RETRY CENTERING (500ms) ===');
-                                centerCard();
-                                
-                                // Fallback: if still not centered, try scrollIntoView
-                                setTimeout(() => {
-                                    const cardRect = targetCard.getBoundingClientRect();
-                                    const containerRect = slider.getBoundingClientRect();
-                                    const cardCenter = cardRect.left + (cardRect.width / 2);
-                                    const containerCenter = containerRect.left + (containerRect.width / 2);
-                                    const offset = Math.abs(cardCenter - containerCenter);
-                                    
-                                    if (offset > 50) {
-                                        console.log('=== FALLBACK: Using scrollIntoView ===');
-                                        targetCard.scrollIntoView({
-                                            behavior: 'smooth',
-                                            block: 'nearest',
-                                            inline: 'center'
-                                        });
-                                    }
-                                }, 100);
-                            }, 500);
 
                             // Update status card active state
                             updateStatusCardActive(status);
