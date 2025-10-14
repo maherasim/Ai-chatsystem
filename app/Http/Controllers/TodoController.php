@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Setting;
 use App\Models\Todo;
+use App\Models\TodoAttachment;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class TodoController extends Controller
@@ -21,12 +23,8 @@ class TodoController extends Controller
         $reason = $request->reason;
         $isremove = $request->isremove;
 
-        $todo = Todo::where('id', $remid)
-              //  ->where('user_id', $user->id)
-                ->first();
-        if($isremove == 1){
-            $todo->delete();
-        }else if($todo){
+        $todo = Todo::where('id', $remid)->first();
+        if($todo){
             $todo->is_removed = 1;
                 if ($reason) {
                     $todo->reason = $reason;
@@ -36,17 +34,39 @@ class TodoController extends Controller
             return redirect()->back()->with('success', 'Todo removed successfully.');
         }
 
+        
+
+        //$todo = Todo::where('id', $remid)
+              //  ->where('user_id', $user->id)
+       //         ->first();
+       // if($isremove == 1){
+       //     $todo->delete();
+       // }else if($todo){
+         //   $todo->is_removed = 1;
+         //       if ($reason) {
+        //            $todo->reason = $reason;
+        //        }
+       //     $todo->save();
+
+        //    return redirect()->back()->with('success', 'Todo removed successfully.');
+       // }
+
         return redirect()->back()->with('error', 'Todo not belonged to user');
         
     }
 
-    public function complete($id)
+    public function complete(Request $request)
     {
+        $id = $request->todo_id;
+
         $todo = Todo::findOrFail($id);
+
+        $ratings = $request->input('ratings');
+        $todo->ratings = $ratings;
         $todo->completed = 1;
         $todo->save();
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Todo mark as done successfully.');
     }
 
     public function index()
@@ -139,10 +159,8 @@ class TodoController extends Controller
                 return $todo;
             });
 
-
             $ctime = strtotime(date("Y-m-d H:i:s"));
-            
-            
+        
         return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime'));
     }
 
@@ -193,6 +211,18 @@ class TodoController extends Controller
         die("done");
     }
 
+    public function download($id)
+{
+    $attachment = TodoAttachment::findOrFail($id); // adjust model name if needed
+    $path = storage_path('app/public/' . $attachment->file_path);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->download($path, $attachment->file_name);
+}
+
 
     public function store(Request $request)
     {
@@ -207,7 +237,8 @@ class TodoController extends Controller
             'reminder' => 'nullable|integer',
             'sections'    => 'nullable|array',
             'sections.*'  => 'nullable|string',
-            'members' => 'nullable|array'
+            'members' => 'nullable|array',
+            'attachments.*' => 'file|mimes:pdf,mp4,png,jpg,jpeg|max:80240'
         ]);
 
         $startTime = $request->start_time;
@@ -251,6 +282,21 @@ class TodoController extends Controller
         'members'     => $request->members ?? []
     ]
 );
+
+if ($request->hasFile('attachments')) {
+        foreach ($request->file('attachments') as $file) {
+            $path = $file->store('uploads/todos', 'public');
+
+            TodoAttachment::create([
+                'todo_id' => $todo->_id,
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $path,
+                'size'        => Storage::disk('public')->size($path),
+                'file_type' => $file->getMimeType(),
+                'uploaded_by' => Auth::id()
+            ]);
+        }
+    }
 
 
 /*

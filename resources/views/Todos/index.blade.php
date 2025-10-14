@@ -1,12 +1,30 @@
 @php
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+$ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work Independently'];
 @endphp
+
+
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
 @section('content')
 
 <style>
+
+
+.rating-group label {
+        color: #ccc;
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.2s;
+        margin-right: 3px;
+    }
+
+    .rating-group label.hovered,
+    .rating-group label.active {
+        color: #facc15; /* gold color for active/hovered stars */
+    }
+
     #timeToday{
         display:flex;
     }
@@ -460,6 +478,13 @@ use Carbon\Carbon;
                     </form>
                 </div>
             </div>
+
+
+
+
+
+                       
+
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group">
@@ -546,6 +571,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
     data-own="today"
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -928,6 +958,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-own="private"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -1284,6 +1319,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-own="0"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-total="{{ $todo->total_time }}"
     data-sections='@json($todo->description)'
@@ -1701,7 +1741,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 × removed closed
             </button>-->
 
-            <form action="{{ route('todos.store') }}" method="POST">
+            <form action="{{ route('todos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="todo_id" id="todo_id">
                 <input type="hidden" name="start_date" id="startDateHidden">
@@ -1710,7 +1750,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <input type="hidden" name="end_date" id="endDateHidden">
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
                 <input type="hidden" name="priority" id="priorityHidden" value="low">
-                <input type="hidden" name="reminder" id="reminderHidden" value="60">
+                <input type="hidden" name="reminder" id="reminderHidden" value="30">
                 <input type="hidden" name="todaytime" id="timeHidden" value="2">
 
                 <!-- new changes -->
@@ -1774,6 +1814,20 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     </div>
                 </div>
                 <!-- shared section ends -->
+<div class="" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px; margin-bottom:5px;">
+    <div class="col-md-12">
+                 <div id="createPdfList" class="d-flex gap-2 flex-wrap">
+                            <!-- Tiles will be appended here -->
+                            <div class="pdf-add-tile d-flex align-items-center justify-content-center text-center"
+                                style="width: 160px; height: 60px; border: 1px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#fff;"
+                                onclick="createAddPdfFile()">
+                                <div style="font-size: 22px; color: #a0a4ab; line-height: 1;">+</div>
+                            </div>
+                        </div>
+                        <div id="createPdfInputs" style="display:none;"></div>
+    </div>
+    </div>       
+
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
                  <!-- schdule section ends -->
@@ -2070,9 +2124,15 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <!-- Input Fields -->
                 <select  name="reason" required
                     style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
-                    <option value="Not Clear">Not Clear</option>
-                    <option value="Time to Short">Time to Short</option>
-                    <option value="Will set new one">Will set new one</option>
+                    <option class="removal" value="By Mistake">By Mistake</option>
+                    <option class="removal" value="Not neet it">Not neet it</option>
+                    <option class="removal" value="No important">No important</option>
+                    <option class="removal" value="No time for it">No time for it</option>
+                    <option class="failed" value="Time to short">Time to short</option>
+                    <option class="failed" value="Todo not clear">Todo not clear</option>
+                    <option class="failed" value="Details not clear">Details not clear</option>
+                    <option class="failed" value="Documents not clear">Documents not clear</option>
+                    <option class="failed" value="Team not response">Team not response</option>
                 </select>
 
             </div>
@@ -2090,6 +2150,76 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     </div>
 </div>
 
+<!-- Mark as Done Modal -->
+<div class="modal fade" id="markDoneModal" tabindex="-1" aria-labelledby="markDoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 12px;">
+      <div class="modal-header">
+        <div class="row">
+        <h5  class="modal-title fw-bold col-md-12" id="markDoneModalLabel">Mark as Done</h5>
+        <p class="col-md-12">Mark as done and close it!</p>
+    </div>
+      </div>
+      
+      <form id="markDoneForm1" method="POST" action="{{route('todos.complete')}}">
+        @csrf
+        <div class="modal-body">
+            <div class="modal-inner">
+                <div class="row">
+
+                </div>
+
+
+                <div class="mt-3 text-left" style="background: #f9f9fb; padding: 16px; border-radius: 16px;">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="{{ asset('build/img/thumbp.png') }}" />
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Mark as Done</h3>
+                            <p>Todo is completed</p>
+                        </div>
+                    </div>
+
+                <p style="font-size: 13px; margin-top:10px;">Rate the Developer</p>
+
+                <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
+                    @foreach($ratingCategories as $key => $label)
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+     style="background:#fff; padding:9px; border-radius:10px;">
+    <span>{{ $label }}</span>
+    <span>
+        @for($i = 1; $i <= 5; $i++)
+            <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
+            <label for="rate-{{ $key }}-{{ $i }}" 
+                   class="fa-solid fa-star" 
+                   data-index="{{ $i }}" 
+                   data-category="{{ $label }}"></label>
+        @endfor
+    </span>
+</div>
+                    @endforeach
+                </div>
+
+            </div>
+
+
+            </div>
+          
+          <input type="hidden" id="doneTodoId" name="todo_id">
+        </div>
+        
+            <div class="text-center">
+                <button class="btn" style="background-color: #f7f7f7; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save &amp; Close
+                </button>
+            </div>
+        
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <!-- View Model -->
@@ -2109,7 +2239,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     </div>
 
                     <!-- Logo Centered, Half Outside -->
-                    <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                    <div style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
                         <img class="user-todo-img" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
                     </div>
 
@@ -2231,6 +2361,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             </div>
                         </div>
 
+                    </div>
+
+                    <div class="mt-2 mb-3 todo-files-block files-container"
+                        style="background-color: #f8f9fa; padding:10px;  border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+                        <h5 class="fw-bold" style="color: #1c2233; margin-bottom:8px;">Shared Files</h5>
+                        <div class="todo-files-list d-flex flex-column gap-2" style="font-size: 13px;"></div>
                     </div>
                    
                     
@@ -3678,6 +3814,87 @@ console.log("Raw members data:", e_members);
                 markDoneBtn.dataset.id = dataid; // set the data-id dynamically
             }
 
+
+let filecont = document.querySelector('.files-container');
+filecont.style.display = "block";
+
+
+
+let files = JSON.parse(this.dataset.files || "[]");
+let filesList = document.querySelector('.todo-files-list');
+
+// Hide container if no files
+
+filesList.innerHTML = '';
+
+if (files.length > 0) {
+    let rowHtml = '';
+
+    files.forEach((file, index) => {
+        let url = file.url || '';
+        let fname = file.name || 'Unknown';
+        let size = formatFileSize(file.size || 0);
+        
+
+        let parts = fname.split("_@_");
+
+        let name = parts[0] || "Unknown";
+        let id = parts[1] || "";
+
+        let ext = name.split('.').pop().toLowerCase();
+
+        let icon = "{{ asset('build/img/file-icon.svg') }}";
+        if (['pdf'].includes(ext)) icon = "https://admin.onlinesystems.info/build/img/pdf-icon.svg";
+        if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = url;
+        if (['mp4','mov','avi','mkv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
+
+        // File item markup
+        let fileHtml = `
+            <div class="col-md-6 mb-2">
+                <div class="d-flex align-items-center justify-content-between p-2"
+                     style="background:#f9fafb; border-radius:10px; border:1px solid #e5e7eb;">
+                    <div class="d-flex align-items-center">
+                        <img src="${icon}" alt="${name}" 
+                             style="width:40px; height:40px; border-radius:6px; object-fit:cover; margin-right:10px;">
+                        <div>
+                            <div style="font-weight:500; color:#1e293b; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px;">
+                                ${name}
+                            </div>
+                            <div style="font-size:12px; color:#6b7280;">${size}</div>
+                        </div>
+                    </div>
+                    <a href="/download/${id}" target="_blank" download 
+                       style="color:#1d4ed8; text-decoration:none;">
+                        <i class="fa fa-arrow-down" style="font-size:16px;"></i>
+                    </a>
+                </div>
+            </div>
+        `;
+
+        rowHtml += fileHtml;
+
+        // When 2 files added or last file reached → close row and append
+        if ((index + 1) % 2 === 0 || index === files.length - 1) {
+            filesList.innerHTML += `<div class="row g-2">${rowHtml}</div>`;
+            rowHtml = '';
+        }
+    });
+} else {
+    filecont.style.display = "none";
+}
+
+
+// Helper for file size formatting
+function formatFileSize(bytes) {
+  
+    if (bytes === 0 || !bytes) return "";
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return parseFloat((bytes / Math.pow(1024, i)).toFixed(1)) + ' ' + units[i];
+}
+
+
+
             let title       = this.dataset.title;
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
@@ -3694,7 +3911,17 @@ console.log("Raw members data:", e_members);
             markfial.innerText = "Mark as Failed";
 
             document.getElementById("isremove").value = 0;
+
+            let removals = document.querySelectorAll('.removal');
+            let faileds = document.querySelectorAll('.failed');
             
+            removals.forEach(el => {
+                el.style.display = "none";
+            });
+
+            faileds.forEach(el => {
+                el.style.display = "block";
+            });
 
             let ownedEl = document.querySelector('.owned');
             if (dataown == "0") {
@@ -3705,6 +3932,13 @@ console.log("Raw members data:", e_members);
                 donebtn.style.display = "none";
                 markfial.innerText = "Remove";
                 document.getElementById("isremove").value = 1;
+                removals.forEach(el => {
+                    el.style.display = "block";
+                });
+
+                faileds.forEach(el => {
+                    el.style.display = "none";
+                });
                 //show edit as well
             } else if (dataown == "today") {
                 //check if timer starts then show otherwise hide it
@@ -4177,6 +4411,22 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
     const todoId = this.dataset.id;
     if (!todoId) return;
 
+    const modalEl = document.querySelector('#inreject'); const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide();
+
+    // set hidden field in modal
+    document.getElementById('doneTodoId').value = todoId;
+
+    // open modal
+    const markModal = new bootstrap.Modal(document.getElementById('markDoneModal'));
+    markModal.show();
+});
+
+// Handle "Save" button inside modal
+/*
+document.getElementById('markDoneForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const todoId = document.getElementById('doneTodoId').value;
     const url = `/todos/complete/${todoId}`;
 
     fetch(url, {
@@ -4196,15 +4446,15 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
                 text: 'Todo successfully marked as completed.'
             });
 
-            // Optional: close modal & fade out card
-            const modalEl = document.querySelector('#inreject');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
+            // Close both modals
+            const doneModal = bootstrap.Modal.getInstance(document.getElementById('markDoneModal'));
+            if (doneModal) doneModal.hide();
 
+            const mainModal = bootstrap.Modal.getInstance(document.querySelector('#inreject'));
+            if (mainModal) mainModal.hide();
+
+            // Fade out or refresh
             setTimeout(() => location.reload(), 1000);
-
-            const card = document.querySelector(`.viewTodo[data-id="${todoId}"]`);
-            if (card) card.style.opacity = '0.5';
         } else {
             Swal.fire({
                 icon: 'error',
@@ -4222,7 +4472,7 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
         });
     });
 });
-
+*/
 
 function showContent(tab) {
         // Show/hide content
@@ -4238,6 +4488,100 @@ function showContent(tab) {
             'btn btn-success' :
             'btn btn-light border';
     }
+
+
+    window.createAddPdfFile = function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/pdf, video/mp4, image/png, image/jpeg';
+    input.name = 'attachments[]';
+    input.style.display = 'none';
+    input.addEventListener('change', function() { handlePdfSelected(this, 'create'); });
+    document.getElementById('createPdfInputs').appendChild(input);
+    input.click();
+};
+
+window.handlePdfSelected = function(fileInput, mode) {
+    if (!fileInput.files || !fileInput.files[0]) return;
+    var file = fileInput.files[0];
+    var list = mode === 'edit' ? document.getElementById('editPdfList') : document.getElementById('createPdfList');
+    var addTile = list.querySelector('.pdf-add-tile');
+
+    var fileType = file.type;
+    var iconSrc = '';
+    var previewHTML = '';
+
+    if (fileType.includes('pdf')) {
+        iconSrc = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+        previewHTML = `<img src="${iconSrc}" alt="PDF" style="width:20px;height:20px;">`;
+    } else if (fileType.includes('image')) {
+        var imageURL = URL.createObjectURL(file);
+        previewHTML = `<img src="${imageURL}" alt="Image" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">`;
+    } else if (fileType.includes('video')) {
+        iconSrc = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+        previewHTML = `<img src="${iconSrc}" alt="Video" style="width:24px;height:24px;">`;
+    }
+
+    var tile = document.createElement('div');
+    tile.className = 'd-flex align-items-center gap-2 px-2';
+    tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+    tile.innerHTML =
+        previewHTML +
+        `<div class="d-flex flex-column" style="min-width:100px;">
+            <small style="font-weight:600;">${file.name || 'File'}</small>
+            <small style="color:#6b7280;">${Math.round(file.size / 1024)} KB</small>
+        </div>
+        <button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)">
+            <i class="ti ti-trash"></i>
+        </button>`;
+
+    if (addTile) list.insertBefore(tile, addTile);
+    else list.appendChild(tile);
+
+    tile._fileInput = fileInput;
+};
+
+window.removePdfTile = function(btn) {
+    var tile = btn.closest('div');
+    if (!tile) return;
+    if (tile._fileInput) tile._fileInput.remove();
+    tile.remove();
+};
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.rating-group').forEach(group => {
+        const stars = group.querySelectorAll('label.fa-star');
+
+        stars.forEach((star, index) => {
+            // Hover effect (highlight on hover)
+            star.addEventListener('mouseenter', () => {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('hovered', i <= index);
+                });
+            });
+
+            // Remove hover when mouse leaves the group
+            group.addEventListener('mouseleave', () => {
+                stars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            // Click to select rating
+            star.addEventListener('click', () => {
+                // Remove active from all in this group
+                stars.forEach((s, i) => {
+                    s.classList.toggle('active', i <= index);
+                });
+
+                // Set radio input value
+                const inputs = group.querySelectorAll('input[type="radio"]');
+                inputs.forEach((input, i) => {
+                    input.checked = (i === index);
+                });
+            });
+        });
+    });
+});
 
         </script>
         @endsection

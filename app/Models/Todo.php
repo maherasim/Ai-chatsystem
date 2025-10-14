@@ -31,7 +31,13 @@ class Todo extends Model
         'members',
         'is_removed',
         'reason',
-        'total_time'
+        'total_time',
+        'ratings',
+        'reliability',
+        'punctuality',
+        'accuracy',
+        'quality',
+        'work_Independently'
     ];
 
     public function user()
@@ -42,6 +48,10 @@ class Todo extends Model
     public function assignedUsers()
     {
         return $this->belongsToMany(User::class, null, 'todo_ids', 'user_ids');
+    }
+    public function attachments()
+    {
+        return $this->hasMany(TodoAttachment::class, 'todo_id');
     }
     
 }
