@@ -2521,7 +2521,7 @@
                         </div>
 
                         <!-- Filter + Dropdown -->
-                        <div style="background: #f8fafc; padding: 6px 10px; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                        <div style="background: #f8fafc; padding: 6px 10px; border-radius: 8px;  padding-right: 310px ;display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
 
                             <!-- Filter Buttons -->
                             <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1 1 auto;">
