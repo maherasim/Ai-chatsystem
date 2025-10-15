@@ -468,9 +468,10 @@
                                                 <i class="fas fa-sync-alt"></i>
                                             </button>
                                             <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select Projects</option>
-                                                <option>Yekbon</option>
-                                                <option>CMS</option>
+                                                <option selected>Select</option>
+                                                @foreach ($projects as $project)
+                                                <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -504,9 +505,10 @@
                                             <select name="type" id="typeSelect" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
+                   @foreach ($projects as $project)
+                   <option value="{{ $project->id }}">{{ $project->title }}</option>
+                   @endforeach
                    
-                    <option value="subadmin">CMS</option>
-                    <option value="employee">Yekbun</option>
                     
                 </select>
                                         </div>
@@ -775,9 +777,9 @@
                                             <select name="type" id="typeSelect" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
-                   
-                    <option value="subadmin">CMS</option>
-                    <option value="employee">Yekbun</option>
+                    @foreach ($projects as $project)
+                    <option value="{{ $project->id }}">{{ $project->title }}</option>
+                    @endforeach
                     
                 </select>
                                         </div>
@@ -1122,9 +1124,9 @@
                                             <select name="type" id="typeSelect" required="required"
                                 style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                                 <option value="" disabled selected>Select</option>
-                            
-                                <option value="subadmin">CMS</option>
-                                <option value="employee">Yekbun</option>
+                                @foreach ($projects as $project)
+                                <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                @endforeach
                     
                 </select>
                                         </div>
@@ -1392,8 +1394,9 @@
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
                    
-                    <option value="subadmin">CMS</option>
-                    <option value="employee">Yekbun</option>
+                        @foreach ($projects as $project)
+                        <option value="{{ $project->id }}">{{ $project->title }}</option>
+                        @endforeach
                     
                 </select>
                                         </div>
@@ -2244,9 +2247,10 @@
                             <!-- Dropdown -->
                             <div style="flex-shrink: 0;">
                                 <select style="font-size: 14px; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; min-width: 140px;">
-                                    <option selected>Select Projects</option>
-                                    <option>Project 1</option>
-                                    <option>Project 2</option>
+                                    <option selected>Select </option>
+                                    @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

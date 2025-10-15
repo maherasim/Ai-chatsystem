@@ -14,7 +14,8 @@ class TicketController extends Controller
     {
         $headers = \App\Models\Setting::all();
         $tickets = Ticket::with('project')->orderByDesc('created_at')->paginate(12);
-        return view('Chats.ticket', compact('headers', 'tickets'));
+        $projects = Project::orderBy('title')->get();
+        return view('Chats.ticket', compact('headers', 'tickets', 'projects'));
     }
 
     public function projects()
