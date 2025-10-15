@@ -1,3 +1,10 @@
+@php
+    $totalRating = $userRatings['Total'] ?? 0;
+    $fullStars = floor($totalRating);
+    $halfStar = ($totalRating - $fullStars) >= 0.5;
+    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+@endphp
+
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
     style="width: 65vw; max-width: 100%; overflow-x: hidden;">
 
@@ -10,9 +17,21 @@
         <!-- Profile Image (top-right, overlapping) -->
         <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile"
             style="position: absolute; top: 20px; right: 50px; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 10;">
-        <div style="font-size: 18px; color: #fbc02d;border-radius:9px;padding:3px;position: absolute; top: 107px; right: 50px;">
-            ★★★☆☆
-        </div>
+        
+            <div style="font-size: 18px; color: #fbc02d; border-radius:9px; padding:3px; position: absolute; top: 107px; right: 50px;">
+    
+                @for ($i = 0; $i < $fullStars; $i++)
+                    <i class="bi bi-star-fill" style="color: #ffc107;"></i>
+                @endfor
+
+                @if ($halfStar)
+                    <i class="bi bi-star-half" style="color: #ffc107;"></i>
+                @endif
+
+                @for ($i = 0; $i < $emptyStars; $i++)
+                    <i class="bi bi-star" style="color: #d6dbe3;"></i>
+                @endfor
+            </div>
 
 
 
@@ -219,82 +238,62 @@
                         <div class="mt-2" style="font-family: 'Segoe UI', sans-serif;background-color: #fafcfc; padding: 20px;">
                             <div>
                                 <!-- Top Rating -->
-                                <div class="d-flex  mb-3">
-                                    <h2 class="me-2" style="font-size: 36px; color: #2e3a59;">5</h2>
-                                    <!-- Star Rating -->
-                                    <div>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                    </div>
-                                </div>
+                                <div class="d-flex mb-3 align-items-center">
+    <h2 class="me-2" style="font-size: 36px; color: #2e3a59;">
+        {{ number_format($totalRating, 1) }}
+    </h2>
+
+    <div>
+        @for ($i = 0; $i < $fullStars; $i++)
+            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
+        @endfor
+
+        @if ($halfStar)
+            <i class="bi bi-star-half" style="color: #ffc107;"></i>
+        @endif
+
+        @for ($i = 0; $i < $emptyStars; $i++)
+            <i class="bi bi-star" style="color: #d6dbe3;"></i>
+        @endfor
+    </div>
+</div>
 
                                 <!-- Individual Ratings -->
-                                <div class="d-grid gap-2">
-                                    <!-- One row -->
-                                    <div class="d-flex justify-content-between align-items-center p-2"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Reliability</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
+<div class="d-grid gap-2">
+    @foreach ($userRatings as $category => $rating)
+        @if ($category !== 'Total')
+            @php
+                $fullStars = floor($rating);
+                $halfStar = ($rating - $fullStars) >= 0.5;
+                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+            @endphp
 
-                                    <!-- Repeat for other traits -->
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Accuracy</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
+            <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                style="background-color: white;">
+                <div style="color: #6c7a89;">{{ $category }}</div>
+                <div>
+                    {{-- Full stars --}}
+                    @for ($i = 0; $i < $fullStars; $i++)
+                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
+                    @endfor
 
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Punctuality</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
+                    {{-- Half star --}}
+                    @if ($halfStar)
+                        <i class="bi bi-star-half" style="color: #ffc107;"></i>
+                    @endif
 
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Quality</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
+                    {{-- Empty stars --}}
+                    @for ($i = 0; $i < $emptyStars; $i++)
+                        <i class="bi bi-star" style="color: #d6dbe3;"></i>
+                    @endfor
+                </div>
+            </div>
+        @endif
+    @endforeach
+</div>
 
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Work independent</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -304,6 +303,58 @@
 
             <!-- Right Panel: col-9 -->
             <div class="col-md-8 col-sm-12">
+
+                                            
+                <!-- new todo list -->
+                 <div class="mt-2 mb-2" style="background-color: #f8f9fa; marin-bottom:10px; padding: 20px; border-radius: 14px;">
+                                    <!-- White card -->
+                                    <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">Todo's Overview</h5>
+                                      
+                                    @foreach($userTodos as $ctodo)
+                                    <div class="p-3 mb-2" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                                      
+                                        <div class="d-flex justify-content-start gap-2 w-100 text-center" style="font-size: 11px; margin-top:5px; font-weight: 500; color: #4b5c74; justify-content: space-between !important;">
+                                            <img src="{{ asset('storage/' . $ctodo->user->profile_image) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                                            <div>
+                                                <div style="color: #1d6fa5;">{{$ctodo->_id}}</div>
+                                                <div style="font-size: 13px;">{{ \Illuminate\Support\Str::limit($ctodo->title, 30, '...') }}</div>
+
+                                            </div>
+                                            <div>
+                                                <div style="color: #1d6fa5;">{{$ctodo->end_date}}</div>
+                                                <div style="font-size: 13px;">{{$ctodo->end_time}}</div>
+                                            </div>
+                                            <div>
+                                                <div style="color: #1d6fa5;">Todo Type</div>
+                                                <div style="font-size: 13px;">
+                                                    @if($ctodo->is_private == "1")
+                                                        Private
+                                                    @else
+                                                        Shared
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div style="color: #1d6fa5;">Status</div>
+                                                <div style="font-size: 13px;">
+                                                    @if($ctodo->is_removed == "1")
+                                                        <span style="color:#FD3A55 !important;">Failed</span>
+                                                    @else
+                                                        <span style="color:#0CC68C;">Done</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    @endforeach
+                                    
+                                    
+                                 
+
+                                </div>
+
+                                <!-- todo ends -->
 
                 <!-- Our projects -->
                 <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 0px;" class="mb-2">
@@ -456,7 +507,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                                        </div>
                         <!-- card 2 -->
                         <div class=" col-12 col-md-6">
                             <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">

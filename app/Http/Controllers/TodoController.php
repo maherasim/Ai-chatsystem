@@ -29,6 +29,7 @@ class TodoController extends Controller
                 if ($reason) {
                     $todo->reason = $reason;
                 }
+            $todo->completed = $request->iscomplete;
             $todo->save();
 
             return redirect()->back()->with('success', 'Todo removed successfully.');

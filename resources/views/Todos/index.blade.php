@@ -2108,6 +2108,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 @csrf
                 <input type="hidden" name="remid" id="remid" />
                 <input type="hidden" name="isremove" id="isremove" value="0" />
+                <input type="hidden" name="iscomplete" id="iscomplete" value="0" />
             <!-- Denied Section -->
             <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
 
@@ -2182,25 +2183,28 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         </div>
                     </div>
 
+                <div class="forshared">
                 <p style="font-size: 13px; margin-top:10px;">Rate the Developer</p>
 
                 <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
                     @foreach($ratingCategories as $key => $label)
                         <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
-     style="background:#fff; padding:9px; border-radius:10px;">
-    <span>{{ $label }}</span>
-    <span>
-        @for($i = 1; $i <= 5; $i++)
-            <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
-            <label for="rate-{{ $key }}-{{ $i }}" 
-                   class="fa-solid fa-star" 
-                   data-index="{{ $i }}" 
-                   data-category="{{ $label }}"></label>
-        @endfor
-    </span>
-</div>
+                            style="background:#fff; padding:9px; border-radius:10px;">
+                            <span>{{ $label }}</span>
+                            <span>
+                                @for($i = 1; $i <= 5; $i++)
+                                    <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
+                                    <label for="rate-{{ $key }}-{{ $i }}" 
+                                        class="fa-solid fa-star" 
+                                        data-index="{{ $i }}" 
+                                        data-category="{{ $label }}"></label>
+                                @endfor
+                            </span>
+                        </div>
                     @endforeach
                 </div>
+    </div>
+    
 
             </div>
 
@@ -3902,6 +3906,14 @@ function formatFileSize(bytes) {
             let userimg   = this.dataset.image;
             let dataown = this.dataset.own;
 
+
+            let forshared = document.querySelector('.forshared');
+            if(isPrivate == "1"){
+                forshared.style.display = "none";
+            }else{
+                forshared.style.display = "block";
+            }
+
             let edivbtn = document.querySelector('.openEditFromView');
             edivbtn.style.display = "none";
             let donebtn = document.querySelector('.markDoneBtn');
@@ -3914,6 +3926,8 @@ function formatFileSize(bytes) {
 
             let removals = document.querySelectorAll('.removal');
             let faileds = document.querySelectorAll('.failed');
+
+            document.getElementById("iscomplete").value = 1;
             
             removals.forEach(el => {
                 el.style.display = "none";
@@ -3921,6 +3935,7 @@ function formatFileSize(bytes) {
 
             faileds.forEach(el => {
                 el.style.display = "block";
+                
             });
 
             let ownedEl = document.querySelector('.owned');
@@ -3938,6 +3953,7 @@ function formatFileSize(bytes) {
 
                 faileds.forEach(el => {
                     el.style.display = "none";
+                    document.getElementById("iscomplete").value = 0;
                 });
                 //show edit as well
             } else if (dataown == "today") {
