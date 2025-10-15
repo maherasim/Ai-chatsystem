@@ -381,7 +381,7 @@
                                                 <img src="{{URL::asset('/build/img/newtask.svg')}}" style="width: 30px; height: 30px;" alt="New Ticket">
                                             </div>
                                             <div style="font-size: 13px; color: #4A4A4A;">New Ticket</div>
-                                            <div style="font-weight: bold; font-size: 14px; color: #000;">50</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;" id="new-ticket-status-count">0</div>
                                         </div>
                                         <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
                                     </div>
@@ -393,7 +393,7 @@
                                                 <img src="{{URL::asset('/build/img/progress.svg')}}" style="width: 30px; height: 30px;" alt="In Progress">
                                             </div>
                                             <div style="font-size: 13px; color: #4A4A4A;">In Progress</div>
-                                            <div style="font-weight: bold; font-size: 14px; color: #000;">75</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;" id="in-progress-status-count">0</div>
                                         </div>
                                         <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
                                     </div>
@@ -405,7 +405,7 @@
                                                 <img src="{{URL::asset('/build/img/inhold.svg')}}" style="width: 30px; height: 30px;" alt="In Hold">
                                             </div>
                                             <div style="font-size: 13px; color: #4A4A4A;">In Hold</div>
-                                            <div style="font-weight: bold; font-size: 14px; color: #000;">25</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;" id="in-hold-status-count">0</div>
                                         </div>
                                         <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
                                     </div>
