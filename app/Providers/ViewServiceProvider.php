@@ -58,6 +58,7 @@ class ViewServiceProvider extends ServiceProvider
                     }
                 }
             }
+            
 
             foreach ($ratingSums as $category => $sum) {
                 $ratingAverages[$category] = round($sum / $ratingCounts[$category], 2);
