@@ -483,11 +483,14 @@
                                     <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
                                         <div style="margin-left: 15px;">
                                             <div style="color: #F5A623; font-weight: 600; font-size: 16px;"> Ticket In Hold</div>
-                                            <div style="font-size: 13px; color: #F5A623;">Total Tasks: 10</div>
+                                            <div style="font-size: 13px; color: #F5A623;">Total Tasks: <span id="hold-count">0</span></div>
                                         </div>
-                                        <div>
-                                          <select name="type" id="typeSelect" required="required"
-                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-warning" onclick="loadHoldTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                            <select name="type" id="typeSelect" required="required"
+                    style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
                    
                     <option value="subadmin">CMS</option>
@@ -498,7 +501,14 @@
                                     </div>
                                     
                                     <!-- Scrollable Content Container -->
-                                    <div class="ticket-card-container">
+                                    <div class="ticket-card-container" id="hold-tickets">
+                                        <!-- Dynamic tickets will be loaded here -->
+                                        <div class="text-center p-4" id="loading-hold-tickets">
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Loading hold tickets...</p>
+                                        </div>
 
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
@@ -1091,11 +1101,14 @@
                                     <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
                                         <div style="margin-left: 15px;">
                                             <div style="color: #00C853; font-weight: 600; font-size: 16px;"> Ticket In Done</div>
-                                            <div style="font-size: 13px; color: #00C853;">Total Tasks: 10</div>
+                                            <div style="font-size: 13px; color: #00C853;">Total Tasks: <span id="done-count">0</span></div>
                                         </div>
-                                        <div>
-                                          <select name="type" id="typeSelect" required="required"
-                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-success" onclick="loadDoneTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                            <select name="type" id="typeSelect" required="required"
+                    style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
                    
                     <option value="subadmin">CMS</option>
@@ -1106,7 +1119,14 @@
                                     </div>
                                     
                                     <!-- Scrollable Content Container -->
-                                    <div class="ticket-card-container">
+                                    <div class="ticket-card-container" id="done-tickets">
+                                        <!-- Dynamic tickets will be loaded here -->
+                                        <div class="text-center p-4" id="loading-done-tickets">
+                                            <div class="spinner-border text-success" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Loading done tickets...</p>
+                                        </div>
                                     <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
 
                                         <!-- Header -->
@@ -1350,11 +1370,14 @@
                                     <div class="d-flex justify-content-between align-items-center mb-2" style="margin-top: 15px;">
                                         <div style="margin-left: 15px;">
                                             <div style="color: #2196F3; font-weight: 600; font-size: 16px;">New Ticket</div>
-                                            <div style="font-size: 13px; color: #2196F3;">Total Tasks: 50</div>
+                                            <div style="font-size: 13px; color: #2196F3;">Total Tasks: <span id="new-ticket-count">0</span></div>
                                         </div>
-                                        <div>
-                                          <select name="type" id="typeSelect" required="required"
-                    style="position: absolute; top: 16px; right: 16px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="loadNewTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                            <select name="type" id="typeSelect" required="required"
+                    style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" disabled selected>Select</option>
                    
                     <option value="subadmin">CMS</option>
@@ -1365,130 +1388,20 @@
                                     </div>
                                     
                                     <!-- Scrollable Content Container -->
-                                    <div class="ticket-card-container">
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                    <div class="ticket-card-container" id="new-tickets">
+                                        <!-- Dynamic tickets will be loaded here -->
+                                        <div class="text-center p-4" id="loading-new-tickets">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
                                             </div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
+                                            <p class="mt-2 text-muted">Loading new tickets...</p>
                                         </div>
+                                    </div> <!-- End Scrollable Content Container -->
+                                </div>
 
-                                        <!-- Task Line -->
-                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
-
-                                            <!-- Task Count -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p>
-                                            </span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p>
-                                            </span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Progress Bar -->
-                                        <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background:#fff;padding:5px;border-radius:10px;">
-                                            <!-- Progress Bar + Percentage -->
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
-                                                    </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
-                                                </div>
-                                                <span style="margin-left: 8px; color: #ccc;">|</span>
-                                            </div>
-                                            <!-- Status Colors -->
-                                            <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
-                                                <span style="color: #F44336;">● 0</span>
-                                                <span style="color: #9C27B0;">● 0</span>
-                                                <span style="color: #4CAF50;">● 0</span>
-                                                <span style="margin-left: 12px; color: #ccc; margin-right:5px;">|</span>
-                                                <span style="background-color: #e9f8dd; border-radius: 10; padding: 5px;">
-                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
-                                                </span>
-                                            </div>
-
-
-                                        </div>
-                                        <!-- tasks -->
-                                    </div>
-                                    <!-- 2 -->
-                                    <div class=" mt-2" style=" background-color: #f8f9fa; border-radius: 10px;padding:2px;font-size: 11px;">
-
-                                        <!-- Header -->
-                                        <div class="d-flex justify-content-between flex-wrap">
-                                            <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
-                                            </div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                            <div class="ticket-header-text" style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile Bugs</div>
-                                        </div>
-
-                                        <!-- Task Line -->
-                                        <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap;justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;font-size:12px;">
-
-                                            <!-- Task Count -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">Tasks
-                                                <p style="color: black;">5</p>
-                                            </span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Start Date -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Start:
-                                                <p style="color: black;">22.10.2024</p>
-                                            </span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Delivery Date -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">Deliver: <p style="color: black;">22.10.2024</p></span>
-
-                                            <!-- Divider -->
-                                            <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
-
-                                            <!-- Overlapping Profile Avatars -->
-                                            <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-
-                                            </div>
-                                        </div>
+                            </div>
+                            <!-- 2 -->
+                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="hold">
 
 
 
@@ -3394,7 +3307,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        ${generateProfileAvatars(assigneesCount)}
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -3451,7 +3366,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=delayed', {
+            const response = await fetch('/api/tickets/by-status?status=in_delayed', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3579,7 +3494,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        ${generateProfileAvatars(assigneesCount)}
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -3612,10 +3529,362 @@
         `;
     }
 
+    // Function to load new tickets dynamically
+    async function loadNewTickets() {
+        const refreshBtn = document.querySelector('button[onclick="loadNewTickets()"]');
+        const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
+        
+        try {
+            // Show loading state on refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            const response = await fetch('/api/tickets/by-status?status=new_ticket', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const tickets = data.tickets;
+                const count = data.count;
+                
+                // Update the count
+                const countElement = document.getElementById('new-ticket-count');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+
+                // Clear loading and populate tickets
+                const container = document.getElementById('new-tickets');
+                if (container) {
+                    container.innerHTML = '';
+                    
+                    if (tickets.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center p-4">
+                                <p class="text-muted">No new tickets</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    tickets.forEach(ticket => {
+                        const ticketHtml = createNewTicketCard(ticket);
+                        container.insertAdjacentHTML('beforeend', ticketHtml);
+                    });
+                }
+            } else {
+                console.error('Failed to load new tickets');
+                const container = document.getElementById('new-tickets');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="text-center p-4">
+                            <p class="text-danger">Failed to load new tickets</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading new tickets:', error);
+            const container = document.getElementById('new-tickets');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center p-4">
+                        <p class="text-danger">Error loading new tickets</p>
+                    </div>
+                `;
+            }
+        } finally {
+            // Restore refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = originalContent;
+            }
+        }
+    }
+
+    // Function to create new ticket card HTML
+    function createNewTicketCard(ticket) {
+        const startDate = ticket.start_date || 'N/A';
+        const endDate = ticket.end_date || 'N/A';
+        const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
+        
+        // Calculate progress percentage (you can modify this logic based on your needs)
+        const progressPercentage = 10; // Very low percentage for new tickets
+        
+        return `
+            <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
+                <!-- Header -->
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div class="ticket-header-text">
+                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Tickets</strong><br>${ticket.code}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Section</strong><br>${ticket.section_name || 'N/A'}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Ticket Title</strong><br>${ticket.title}
+                    </div>
+                </div>
+
+                <!-- Task Line -->
+                <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center; text-align: center; flex-wrap: wrap; justify-content: space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                    <!-- Task Count -->
+                    <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">
+                        Tasks
+                        <p style="color: black;">${assigneesCount}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Start Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Start:
+                        <p style="color: black;">${startDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Delivery Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Deliver: 
+                        <p style="color: black;">${endDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Overlapping Profile Avatars -->
+                    <div class="ticket-item-text" style="display: flex; align-items: center;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background: #fff; padding: 5px; border-radius: 10px;">
+                    <!-- Progress Bar + Percentage -->
+                    <div class="d-flex align-items-center" style="flex: 1;">
+                        <div class="d-flex align-items-center" style="flex: 1;">
+                            <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                <div class="progress-bar" role="progressbar" style="width: ${progressPercentage}%; background-color: #2196F3;"></div>
+                            </div>
+                            <div style="font-size: 12px; color: #2196F3; margin-left: 7px;">${progressPercentage}%</div>
+                        </div>
+                        <span style="margin-left: 8px; color: #ccc;">|</span>
+                    </div>
+                    <!-- Status Colors -->
+                    <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
+                        <span style="color: #8BC34A;">● 1</span>
+                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #F44336;">● 0</span>
+                        <span style="color: #9C27B0;">● 0</span>
+                        <span style="color: #4CAF50;">● 0</span>
+                        <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
+                        <span style="background-color: #e3f2fd; border-radius: 10; padding: 5px;">
+                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Function to load hold tickets dynamically
+    async function loadHoldTickets() {
+        const refreshBtn = document.querySelector('button[onclick="loadHoldTickets()"]');
+        const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
+        
+        try {
+            // Show loading state on refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            const response = await fetch('/api/tickets/by-status?status=in_hold', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const tickets = data.tickets;
+                const count = data.count;
+                
+                // Update the count
+                const countElement = document.getElementById('hold-count');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+
+                // Clear loading and populate tickets
+                const container = document.getElementById('hold-tickets');
+                if (container) {
+                    container.innerHTML = '';
+                    
+                    if (tickets.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center p-4">
+                                <p class="text-muted">No tickets on hold</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    tickets.forEach(ticket => {
+                        const ticketHtml = createHoldTicketCard(ticket);
+                        container.insertAdjacentHTML('beforeend', ticketHtml);
+                    });
+                }
+            } else {
+                console.error('Failed to load hold tickets');
+                const container = document.getElementById('hold-tickets');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="text-center p-4">
+                            <p class="text-danger">Failed to load hold tickets</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading hold tickets:', error);
+            const container = document.getElementById('hold-tickets');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center p-4">
+                        <p class="text-danger">Error loading hold tickets</p>
+                    </div>
+                `;
+            }
+        } finally {
+            // Restore refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = originalContent;
+            }
+        }
+    }
+
+    // Function to create hold ticket card HTML
+    function createHoldTicketCard(ticket) {
+        const startDate = ticket.start_date || 'N/A';
+        const endDate = ticket.end_date || 'N/A';
+        const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
+        
+        // Calculate progress percentage (you can modify this logic based on your needs)
+        const progressPercentage = 50; // Medium percentage for hold tickets
+        
+        return `
+            <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
+                <!-- Header -->
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div class="ticket-header-text">
+                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Tickets</strong><br>${ticket.code}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Section</strong><br>${ticket.section_name || 'N/A'}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Ticket Title</strong><br>${ticket.title}
+                    </div>
+                </div>
+
+                <!-- Task Line -->
+                <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center; text-align: center; flex-wrap: wrap; justify-content: space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                    <!-- Task Count -->
+                    <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">
+                        Tasks
+                        <p style="color: black;">${assigneesCount}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Start Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Start:
+                        <p style="color: black;">${startDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Delivery Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Deliver: 
+                        <p style="color: black;">${endDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Overlapping Profile Avatars -->
+                    <div class="ticket-item-text" style="display: flex; align-items: center;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background: #fff; padding: 5px; border-radius: 10px;">
+                    <!-- Progress Bar + Percentage -->
+                    <div class="d-flex align-items-center" style="flex: 1;">
+                        <div class="d-flex align-items-center" style="flex: 1;">
+                            <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                <div class="progress-bar" role="progressbar" style="width: ${progressPercentage}%; background-color: #F5A623;"></div>
+                            </div>
+                            <div style="font-size: 12px; color: #F5A623; margin-left: 7px;">${progressPercentage}%</div>
+                        </div>
+                        <span style="margin-left: 8px; color: #ccc;">|</span>
+                    </div>
+                    <!-- Status Colors -->
+                    <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
+                        <span style="color: #8BC34A;">● 1</span>
+                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #F44336;">● 0</span>
+                        <span style="color: #9C27B0;">● 0</span>
+                        <span style="color: #4CAF50;">● 0</span>
+                        <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
+                        <span style="background-color: #fff3cd; border-radius: 10; padding: 5px;">
+                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     // Load tickets when page loads
     document.addEventListener('DOMContentLoaded', function() {
         loadInProgressTickets();
         loadDelayedTickets();
+        loadNewTickets();
+        loadHoldTickets();
     });
 </script>
 

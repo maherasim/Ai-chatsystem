@@ -267,15 +267,22 @@ class TicketController extends Controller
     public function getTicketsByStatus(Request $request)
     {
         $status = $request->get('status', 'in_progress');
+        $projectId = $request->get('project_id');
         
-        $tickets = Ticket::where('status', $status)
-            ->orderByDesc('created_at')
-            ->get();
+        $query = Ticket::where('status', $status);
+        
+        // Filter by project if specified
+        if ($projectId) {
+            $query->where('project_id', $projectId);
+        }
+        
+        $tickets = $query->orderByDesc('created_at')->get();
 
         $data = $tickets->map(function ($ticket) {
             return [
                 'id' => (string) ($ticket->_id ?? $ticket->id),
                 'code' => $ticket->code,
+                'project_id' => $ticket->project_id,
                 'project_title' => $ticket->project_title,
                 'section_name' => $ticket->section_name,
                 'title' => $ticket->title,
@@ -294,6 +301,41 @@ class TicketController extends Controller
         return response()->json([
             'tickets' => $data,
             'count' => $tickets->count()
+        ]);
+    }
+
+    public function getDashboardStats()
+    {
+        // Get total tickets count
+        $totalTickets = Ticket::count();
+        
+        // Get tickets count by status
+        $inProgressCount = Ticket::where('status', 'in_progress')->count();
+        $inHoldCount = Ticket::where('status', 'in_hold')->count();
+        $inDelayedCount = Ticket::where('status', 'in_delayed')->count();
+        $newTicketCount = Ticket::where('status', 'new_ticket')->count();
+        $inDoneCount = Ticket::where('status', 'in_done')->count();
+        
+        // Calculate percentage changes (you can modify this logic based on your needs)
+        // For now, we'll use static percentages, but you can implement actual calculations
+        $totalPercentage = 8.5;
+        $inProgressPercentage = 8.5;
+        $inHoldPercentage = -8.5;
+        $inDelayedPercentage = -8.5;
+        
+        return response()->json([
+            'total_tickets' => $totalTickets,
+            'in_progress' => $inProgressCount,
+            'in_hold' => $inHoldCount,
+            'in_delayed' => $inDelayedCount,
+            'new_ticket' => $newTicketCount,
+            'in_done' => $inDoneCount,
+            'percentages' => [
+                'total' => $totalPercentage,
+                'in_progress' => $inProgressPercentage,
+                'in_hold' => $inHoldPercentage,
+                'in_delayed' => $inDelayedPercentage,
+            ]
         ]);
     }
 
