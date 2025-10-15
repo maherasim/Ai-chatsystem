@@ -362,7 +362,7 @@
 
                     <!-- project overview -->
                     
-                    <div class="project-succes pt-1 pb-1 d-flex flex-column flex-md-row align-items-start align-items-md-center" style="margin-top: 10px;">
+                    <div class="project-succes pt-1 pb-1 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-md-between w-100" style="margin-top: 10px;">
                         <!-- Left -->
                         <div>
                           <h3 style="margin: 0;">Ticket Status</h3>
@@ -370,7 +370,7 @@
                         </div>
                       
                         <!-- Right (ms-auto pushes this to the end of the row) -->
-                        <div class="d-flex align-items-center flex-wrap ms-auto" style="gap: 8px; position: relative; z-index: 30;">
+                        <div class="d-flex align-items-center flex-wrap ms-md-auto justify-content-md-end" style="gap: 8px; position: relative; z-index: 30;">
                             <button
                                 type="button"
                                 data-bs-toggle="modal"
