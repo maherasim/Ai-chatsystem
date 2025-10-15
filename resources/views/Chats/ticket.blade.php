@@ -241,7 +241,7 @@
                         </div>
 
                         <!-- Right Side -->
-                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
+                        <div class="d-flex align-items-center flex-wrap ms-auto" style="gap: 8px; position: relative; z-index: 30;">
                             <button
                                 type="button"
                                 data-bs-toggle="modal"
