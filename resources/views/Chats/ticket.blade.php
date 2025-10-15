@@ -370,14 +370,14 @@
                         </div>
                       
                         <!-- Right (ms-auto pushes this to the end of the row) -->
-                        <div class="d-flex align-items-center flex-wrap ms-auto" style="gap: 8px;">
-                          <button
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#ticketModal"
-                            style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            + Create Ticket
-                          </button>
+                        <div class="d-flex align-items-center flex-wrap ms-auto" style="gap: 8px; position: relative; z-index: 30;">
+                            <button
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ticketModal"
+                                style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative; z-index: 20;">
+                                + Create Ticket
+                            </button>
                         </div>
                       </div>
                       
