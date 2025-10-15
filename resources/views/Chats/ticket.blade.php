@@ -361,13 +361,26 @@
                     </div>
 
                     <!-- project overview -->
-                    <div class="project-succes pt-1 pb-1 d-flex flex-column flex-md-row  align-items-start align-items-md-center gap-3" style="margin-top: 10px;">
+                    
+                    <div class="project-succes pt-1 pb-1 d-flex flex-column flex-md-row align-items-start align-items-md-center" style="margin-top: 10px;">
+                        <!-- Left -->
                         <div>
-                            <h3 style="margin: 0;">Ticket Status</h3>
-                            <strong>Total Shared ToDO's: 10</strong>
+                          <h3 style="margin: 0;">Ticket Status</h3>
+                          <strong>Total Shared ToDO's: 10</strong>
                         </div>
-                    </div>
-
+                      
+                        <!-- Right (ms-auto pushes this to the end of the row) -->
+                        <div class="d-flex align-items-center flex-wrap ms-auto" style="gap: 8px;">
+                          <button
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ticketModal"
+                            style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            + Create Ticket
+                          </button>
+                        </div>
+                      </div>
+                      
                     <!-- tickers -->
                     <div class="container" style="margin-bottom: 15px;">
                         <div class="row ">
