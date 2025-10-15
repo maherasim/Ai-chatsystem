@@ -66,17 +66,17 @@ Route::get('/ticket', [TicketController::class, 'index'])->middleware('auth')->n
 
 // Ticket APIs
 Route::middleware('auth')->group(function () {
-    Route::get('/api/tickets/projects', [TicketController::class, 'projects'])->name('tickets.projects');
-    Route::get('/api/tickets/projects/{projectId}/sections', [TicketController::class, 'projectSections'])->name('tickets.project.sections');
-    Route::post('/api/tickets/projects/{projectId}/sections', [TicketController::class, 'addSection'])->name('tickets.project.sections.add');
-    Route::post('/api/tickets', [TicketController::class, 'store'])->name('tickets.store');
-    Route::get('/api/tickets', [TicketController::class, 'list'])->name('tickets.list');
-    Route::get('/api/tickets/by-status', [TicketController::class, 'getTicketsByStatus'])->name('tickets.by-status');
-    Route::get('/api/tickets/projects-from-tickets', [TicketController::class, 'getUniqueProjectsFromTickets'])->name('tickets.projects-from-tickets');
-    Route::get('/api/tickets/dashboard-stats', [TicketController::class, 'getDashboardStats'])->name('tickets.dashboard-stats');
-    Route::get('/api/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
-    Route::put('/api/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
-    Route::delete('/api/tickets/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
+    Route::get('/tickets/projects', [TicketController::class, 'projects'])->name('tickets.projects');
+    Route::get('/tickets/projects/{projectId}/sections', [TicketController::class, 'projectSections'])->name('tickets.project.sections');
+    Route::post('/tickets/projects/{projectId}/sections', [TicketController::class, 'addSection'])->name('tickets.project.sections.add');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets', [TicketController::class, 'list'])->name('tickets.list');
+    Route::get('/tickets/by-status', [TicketController::class, 'getTicketsByStatus'])->name('tickets.by-status');
+    Route::get('/tickets/projects-from-tickets', [TicketController::class, 'getUniqueProjectsFromTickets'])->name('tickets.projects-from-tickets');
+    Route::get('/tickets/dashboard-stats', [TicketController::class, 'getDashboardStats'])->name('tickets.dashboard-stats');
+    Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
+    Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();

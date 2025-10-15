@@ -3170,7 +3170,7 @@
     // Function to load dashboard statistics
     async function loadDashboardStats() {
         try {
-            const response = await fetch('/api/tickets/dashboard-stats', {
+            const response = await fetch('/tickets/dashboard-stats', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3247,7 +3247,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=in_progress', {
+            const response = await fetch('/tickets/by-status?status=in_progress', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3434,7 +3434,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=in_delayed', {
+            const response = await fetch('/tickets/by-status?status=in_delayed', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3609,7 +3609,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=new_ticket', {
+            const response = await fetch('/tickets/by-status?status=new_ticket', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3784,7 +3784,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=in_hold', {
+            const response = await fetch('/tickets/by-status?status=in_hold', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3959,7 +3959,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/api/tickets/by-status?status=in_done', {
+            const response = await fetch('/tickets/by-status?status=in_done', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
