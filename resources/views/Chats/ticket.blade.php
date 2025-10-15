@@ -237,7 +237,7 @@
                         <!-- Left Side -->
                         <div>
                             <h3 style="margin: 0;">Ticket Overview</h3>
-                            <strong>Total Tickets:10</strong>
+                            <strong>Total Tickets: <span id="total-tickets-count">0</span></strong>
                         </div>
 
                         <!-- Right Side -->
@@ -267,11 +267,11 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;" id="total-tickets-card">0</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
-                                        <i class="bi bi-arrow-up-right"></i> 8.5%
+                                        <i class="bi bi-arrow-up-right"></i> <span id="total-tickets-percentage">0</span>%
                                     </div>
 
                                 </div>
@@ -293,11 +293,11 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;" id="in-progress-card">0</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
-                                        <i class="bi bi-arrow-up-right"></i> 8.5%
+                                        <i class="bi bi-arrow-up-right"></i> <span id="in-progress-percentage">0</span>%
                                     </div>
 
                                 </div>
@@ -319,11 +319,11 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;" id="in-hold-card">0</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e">
-                                        <i class="bi bi-arrow-down-right"></i> 8.5%
+                                        <i class="bi bi-arrow-down-right"></i> <span id="in-hold-percentage">0</span>%
                                     </div>
 
                                 </div>
@@ -347,11 +347,11 @@
                                     </div>
 
                                     <!-- Project Number -->
-                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                    <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;" id="in-delayed-card">0</div>
 
                                     <!-- Percentage Change (Bottom Right) -->
                                     <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e;">
-                                        <i class="bi bi-arrow-down-right"></i> 8.5%
+                                        <i class="bi bi-arrow-down-right"></i> <span id="in-delayed-percentage">0</span>%
                                     </div>
 
                                 </div>
@@ -1108,11 +1108,11 @@
                                                 <i class="fas fa-sync-alt"></i>
                                             </button>
                                             <select name="type" id="typeSelect" required="required"
-                    style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
-                    <option value="" disabled selected>Select</option>
-                   
-                    <option value="subadmin">CMS</option>
-                    <option value="employee">Yekbun</option>
+                                style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
+                                <option value="" disabled selected>Select</option>
+                            
+                                <option value="subadmin">CMS</option>
+                                <option value="employee">Yekbun</option>
                     
                 </select>
                                         </div>
@@ -1401,7 +1401,7 @@
 
                             </div>
                             <!-- 2 -->
-                            <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="hold">
+                            {{-- <div class="col-12 col-sm-6 col-md-3 col-lg-3" data-ticket-status="hold">
 
 
 
@@ -1515,7 +1515,7 @@
                                     </div> <!-- End Scrollable Content Container -->
                                 </div>
 
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -3167,6 +3167,74 @@
         });
     });
 
+    // Function to load dashboard statistics
+    async function loadDashboardStats() {
+        try {
+            const response = await fetch('/api/tickets/dashboard-stats', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const stats = await response.json();
+                
+                // Update overview section
+                const totalTicketsCount = document.getElementById('total-tickets-count');
+                if (totalTicketsCount) {
+                    totalTicketsCount.textContent = stats.total_tickets;
+                }
+
+                // Update dashboard cards
+                const totalTicketsCard = document.getElementById('total-tickets-card');
+                if (totalTicketsCard) {
+                    totalTicketsCard.textContent = stats.total_tickets;
+                }
+
+                const totalTicketsPercentage = document.getElementById('total-tickets-percentage');
+                if (totalTicketsPercentage) {
+                    totalTicketsPercentage.textContent = stats.percentages.total;
+                }
+
+                const inProgressCard = document.getElementById('in-progress-card');
+                if (inProgressCard) {
+                    inProgressCard.textContent = stats.in_progress;
+                }
+
+                const inProgressPercentage = document.getElementById('in-progress-percentage');
+                if (inProgressPercentage) {
+                    inProgressPercentage.textContent = stats.percentages.in_progress;
+                }
+
+                const inHoldCard = document.getElementById('in-hold-card');
+                if (inHoldCard) {
+                    inHoldCard.textContent = stats.in_hold;
+                }
+
+                const inHoldPercentage = document.getElementById('in-hold-percentage');
+                if (inHoldPercentage) {
+                    inHoldPercentage.textContent = Math.abs(stats.percentages.in_hold);
+                }
+
+                const inDelayedCard = document.getElementById('in-delayed-card');
+                if (inDelayedCard) {
+                    inDelayedCard.textContent = stats.in_delayed;
+                }
+
+                const inDelayedPercentage = document.getElementById('in-delayed-percentage');
+                if (inDelayedPercentage) {
+                    inDelayedPercentage.textContent = Math.abs(stats.percentages.in_delayed);
+                }
+            }
+        } catch (error) {
+            console.error('Error loading dashboard stats:', error);
+        }
+    }
+
     // Function to load in-progress tickets dynamically
     async function loadInProgressTickets() {
         const refreshBtn = document.querySelector('button[onclick="loadInProgressTickets()"]');
@@ -3879,12 +3947,191 @@
         `;
     }
 
+    // Function to load done tickets dynamically
+    async function loadDoneTickets() {
+        const refreshBtn = document.querySelector('button[onclick="loadDoneTickets()"]');
+        const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
+        
+        try {
+            // Show loading state on refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            const response = await fetch('/api/tickets/by-status?status=in_done', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const tickets = data.tickets;
+                const count = data.count;
+                
+                // Update the count
+                const countElement = document.getElementById('done-count');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+
+                // Clear loading and populate tickets
+                const container = document.getElementById('done-tickets');
+                if (container) {
+                    container.innerHTML = '';
+                    
+                    if (tickets.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center p-4">
+                                <p class="text-muted">No tickets completed</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    tickets.forEach(ticket => {
+                        const ticketHtml = createDoneTicketCard(ticket);
+                        container.insertAdjacentHTML('beforeend', ticketHtml);
+                    });
+                }
+            } else {
+                console.error('Failed to load done tickets');
+                const container = document.getElementById('done-tickets');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="text-center p-4">
+                            <p class="text-danger">Failed to load done tickets</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading done tickets:', error);
+            const container = document.getElementById('done-tickets');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center p-4">
+                        <p class="text-danger">Error loading done tickets</p>
+                    </div>
+                `;
+            }
+        } finally {
+            // Restore refresh button
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = originalContent;
+            }
+        }
+    }
+
+    // Function to create done ticket card HTML
+    function createDoneTicketCard(ticket) {
+        const startDate = ticket.start_date || 'N/A';
+        const endDate = ticket.end_date || 'N/A';
+        const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
+        
+        // Calculate progress percentage (you can modify this logic based on your needs)
+        const progressPercentage = 100; // 100% for done tickets
+        
+        return `
+            <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
+                <!-- Header -->
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div class="ticket-header-text">
+                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Tickets</strong><br>${ticket.code}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Section</strong><br>${ticket.section_name || 'N/A'}
+                    </div>
+                    <div class="ticket-header-text" style="color: #1a73e8;">
+                        <strong>Ticket Title</strong><br>${ticket.title}
+                    </div>
+                </div>
+
+                <!-- Task Line -->
+                <div class="ticket-task-line" style="margin-top: 1rem; display: flex; align-items: center; text-align: center; flex-wrap: wrap; justify-content: space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 12px; color: #333;">
+                    <!-- Task Count -->
+                    <span class="ticket-item-text" style="margin-right: 5px; font-weight: bold; color: #28a745;">
+                        Tasks
+                        <p style="color: black;">${assigneesCount}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Start Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Start:
+                        <p style="color: black;">${startDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Delivery Date -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
+                        Deliver: 
+                        <p style="color: black;">${endDate}</p>
+                    </span>
+
+                    <!-- Divider -->
+                    <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
+
+                    <!-- Overlapping Profile Avatars -->
+                    <div class="ticket-item-text" style="display: flex; align-items: center;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="d-flex justify-content-between align-items-center mt-1 mb-1" style="flex-wrap: nowrap; background: #fff; padding: 5px; border-radius: 10px;">
+                    <!-- Progress Bar + Percentage -->
+                    <div class="d-flex align-items-center" style="flex: 1;">
+                        <div class="d-flex align-items-center" style="flex: 1;">
+                            <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                <div class="progress-bar" role="progressbar" style="width: ${progressPercentage}%; background-color: #00C853;"></div>
+                            </div>
+                            <div style="font-size: 12px; color: #00C853; margin-left: 7px;">${progressPercentage}%</div>
+                        </div>
+                        <span style="margin-left: 8px; color: #ccc;">|</span>
+                    </div>
+                    <!-- Status Colors -->
+                    <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
+                        <span style="color: #8BC34A;">● 1</span>
+                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #F44336;">● 0</span>
+                        <span style="color: #9C27B0;">● 0</span>
+                        <span style="color: #4CAF50;">● 0</span>
+                        <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
+                        <span style="background-color: #e8f5e8; border-radius: 10; padding: 5px;">
+                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     // Load tickets when page loads
     document.addEventListener('DOMContentLoaded', function() {
-        loadInProgressTickets();
-        loadDelayedTickets();
-        loadNewTickets();
-        loadHoldTickets();
+        // Load dashboard stats first, then load tickets
+        loadDashboardStats().then(() => {
+            loadInProgressTickets();
+            loadDelayedTickets();
+            loadNewTickets();
+            loadHoldTickets();
+            loadDoneTickets();
+        });
     });
 </script>
 
