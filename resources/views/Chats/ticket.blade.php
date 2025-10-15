@@ -381,7 +381,7 @@
                           </button>
                         </div>
                       </div>
-                </div>
+                      
                     <!-- tickers -->
                     <div class="container" style="margin-bottom: 15px;">
                         <div class="row ">
