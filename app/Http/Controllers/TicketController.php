@@ -264,6 +264,39 @@ class TicketController extends Controller
     return response()->json(['success' => 'Ticket deleted successfully.']);
 }
 
+    public function getTicketsByStatus(Request $request)
+    {
+        $status = $request->get('status', 'in_progress');
+        
+        $tickets = Ticket::where('status', $status)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $data = $tickets->map(function ($ticket) {
+            return [
+                'id' => (string) ($ticket->_id ?? $ticket->id),
+                'code' => $ticket->code,
+                'project_title' => $ticket->project_title,
+                'section_name' => $ticket->section_name,
+                'title' => $ticket->title,
+                'description' => $ticket->description,
+                'status' => $ticket->status,
+                'priority' => $ticket->priority,
+                'start_date' => optional($ticket->start_date)?->format('d.m.Y'),
+                'end_date' => optional($ticket->end_date)?->format('d.m.Y'),
+                'reminder_hours' => $ticket->reminder_hours,
+                'assignees' => $ticket->assignees ?? [],
+                'created_at' => $ticket->created_at?->format('d.m.Y'),
+                'updated_at' => $ticket->updated_at?->format('d.m.Y'),
+            ];
+        })->values();
+
+        return response()->json([
+            'tickets' => $data,
+            'count' => $tickets->count()
+        ]);
+    }
+
 }
 
 
