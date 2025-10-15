@@ -235,21 +235,28 @@
                     <div class="project-succes pt-1 pb-1 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
 
                         <!-- Left Side -->
-                        <div>
-                            <h3 style="margin: 0;">Ticket Overview</h3>
-                            <strong>Total Tickets: <span id="total-tickets-count">0</span></strong>
+                        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                            <!-- Left Side -->
+                            <div>
+                                <h3 class="mb-1">Ticket Overview</h3>
+                                <strong>Total Tickets: <span id="total-tickets-count">0</span></strong>
+                            </div>
+                        
+                            <!-- Right Side -->
+                            <div style="padding-left: 1000px;">
+                                <button
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ticketModal"
+                                    style="background-color: #E87326; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    + Create Ticket
+                                </button>
+                            </div>
                         </div>
+                        
 
                         <!-- Right Side -->
-                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
-                            <button
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#ticketModal"
-                                style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                + Create Ticket
-                            </button>
-                        </div>
+                      
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
@@ -370,16 +377,7 @@
                         </div>
                       
                         <!-- Right (ms-auto pushes this to the end of the row) -->
-                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px; padding-left:900px">
-                
-                          <button
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#ticketModal"
-                            style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            + Create Ticket
-                          </button>
-                        </div>
+                       
                       </div>
                       
                     <!-- tickers -->
@@ -2649,7 +2647,7 @@
                 <!-- Buttons -->
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <button id="saveCloseTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Save and Close</button>
-                    <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #F5A623; color: white; min-width: 160px;">Save & add Ticket</button>
+                    <button id="saveAddAnotherTicketBtn" class="btn" style="background-color: #E87326; color: white; min-width: 160px;">Save & add Ticket</button>
                     <button id="updateTicketBtn" class="btn" style="background-color: #00C853; color: white; min-width: 160px;margin-bottom:3px;">Update and Close</button>
                     <button id="removeTicketBtn" class="btn btn-danger" style="min-width: 160px;margin-bottom:3px;">Remove Ticket</button>
                 </div>
