@@ -246,7 +246,7 @@
                                 type="button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#ticketModal"
-                                style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                style="background-color: orange; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative; z-index: 20;">
                                 + Create Ticket
                             </button>
                         </div>
