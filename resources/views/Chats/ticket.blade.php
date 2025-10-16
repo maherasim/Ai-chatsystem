@@ -2396,7 +2396,7 @@
                                                       ($ticket->status == 'in_hold' ? 'yelowflag.svg' : 
                                                        ($ticket->status == 'in_delayed' ? 'redflag.svg' : 
                                                         ($ticket->status == 'in_done' ? 'greenflag.svg' : 'greenflag.svg'))))) 
-                                                ) }}" alt="Flag" width="16" height="16">
+                                                ) }}" alt="Flag" width="35px" height="35px">
                                             </div>
 
                                             <!-- Logo (center) -->
