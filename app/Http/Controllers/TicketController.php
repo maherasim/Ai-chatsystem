@@ -277,7 +277,7 @@ class TicketController extends Controller
             $query->where('project_id', $projectId);
         }
         
-        $tickets = $query->orderByDesc('created_at')->get();
+        $tickets = $query->with('project')->orderByDesc('created_at')->get();
 
         $data = $tickets->map(function ($ticket) {
             return [
@@ -285,6 +285,7 @@ class TicketController extends Controller
                 'code' => $ticket->code,
                 'project_id' => $ticket->project_id,
                 'project_title' => $ticket->project_title,
+                'project_logo_path' => $ticket->project ? $ticket->project->logo_path : null,
                 'section_name' => $ticket->section_name,
                 'title' => $ticket->title,
                 'description' => $ticket->description,

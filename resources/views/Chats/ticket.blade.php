@@ -464,11 +464,9 @@
                                             <div style="font-size: 13px; color: #7ED957;">Total Tasks: <span id="in-progress-count">0</span></div>
                                         </div>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="loadInProgressTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                            <select class="form-select form-select-sm" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
-                                                <option selected>Select</option>
+                                            
+                                            <select class="form-select form-select-sm" id="in-progress-project-filter" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                                <option value="" selected>All Projects</option>
                                                 @foreach ($projects as $project)
                                                 <option value="{{ $project->id }}">{{ $project->title }}</option>
                                                 @endforeach
@@ -499,12 +497,10 @@
                                             <div style="font-size: 13px; color: #F5A623;">Total Tasks: <span id="hold-count">0</span></div>
                                         </div>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-warning" onclick="loadHoldTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                            <select name="type" id="typeSelect" required="required"
+                                            
+                                            <select name="type" id="hold-project-filter" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
-                    <option value="" disabled selected>Select</option>
+                    <option value="" selected>All Projects</option>
                    @foreach ($projects as $project)
                    <option value="{{ $project->id }}">{{ $project->title }}</option>
                    @endforeach
@@ -563,9 +559,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -578,16 +574,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -641,9 +637,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -655,16 +651,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -718,9 +714,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -733,16 +729,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -771,12 +767,10 @@
                                             <div style="font-size: 13px; color: #ED1C24;">Total Tasks: <span id="delayed-count">0</span></div>
                                         </div>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-danger" onclick="loadDelayedTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                            <select name="type" id="typeSelect" required="required"
+                                             
+                                            <select name="type" id="delayed-project-filter" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
-                    <option value="" disabled selected>Select</option>
+                    <option value="" selected>All Projects</option>
                     @foreach ($projects as $project)
                     <option value="{{ $project->id }}">{{ $project->title }}</option>
                     @endforeach
@@ -834,9 +828,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -848,16 +842,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -910,9 +904,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -924,16 +918,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -987,9 +981,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1002,16 +996,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1065,9 +1059,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1080,16 +1074,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1118,12 +1112,10 @@
                                             <div style="font-size: 13px; color: #00C853;">Total Tasks: <span id="done-count">0</span></div>
                                         </div>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-success" onclick="loadDoneTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                            <select name="type" id="typeSelect" required="required"
+                                            
+                                            <select name="type" id="done-project-filter" required="required"
                                 style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
-                                <option value="" disabled selected>Select</option>
+                                <option value="" selected>All Projects</option>
                                 @foreach ($projects as $project)
                                 <option value="{{ $project->id }}">{{ $project->title }}</option>
                                 @endforeach
@@ -1180,9 +1172,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1195,16 +1187,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1258,9 +1250,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1273,16 +1265,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1336,9 +1328,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1350,16 +1342,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1387,13 +1379,10 @@
                                             <div style="font-size: 13px; color: #2196F3;">Total Tasks: <span id="new-ticket-count">0</span></div>
                                         </div>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="loadNewTickets()" style="font-size: 12px; padding: 4px 8px; height: 28px;" title="Refresh tickets">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                            <select name="type" id="typeSelect" required="required"
+                                          
+                                            <select name="type" id="new-ticket-project-filter" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
-                    <option value="" disabled selected>Select</option>
-                   
+                    <option value="" selected>All Projects</option>
                         @foreach ($projects as $project)
                         <option value="{{ $project->id }}">{{ $project->title }}</option>
                         @endforeach
@@ -1426,16 +1415,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -1489,9 +1478,9 @@
 
                                             <!-- Overlapping Profile Avatars -->
                                             <div class="ticket-item-text" style="display: flex; align-items: center;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                                                <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
 
                                             </div>
                                         </div>
@@ -1503,16 +1492,16 @@
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <div class="progress" style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #4fc3f7;"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
                                                 </div>
                                                 <span style="margin-left: 8px; color: #ccc;">|</span>
                                             </div>
                                             <!-- Status Colors -->
                                             <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right:4px;">
-                                                <span style="color: #8BC34A;">● 1</span>
-                                                <span style="color: #FF9800;">● 3</span>
+                                                <span style="color: #8BC34A;">● 0</span>
+                                                <span style="color: #FF9800;">● 0</span>
                                                 <span style="color: #F44336;">● 0</span>
                                                 <span style="color: #9C27B0;">● 0</span>
                                                 <span style="color: #4CAF50;">● 0</span>
@@ -2458,7 +2447,7 @@
                                                 <!-- Avatars -->
                                                 <div style="display: flex; align-items: center; margin-left: 10px;">
                                                     @for ($i = 0; $i < 3; $i++)
-                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
+                                                        <img src="{{ asset('assets/spin-loader.gif') }}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;" alt="User">
                                                         @endfor
                                                 </div>
                                             </div>
@@ -2467,11 +2456,11 @@
                                             <!-- Task Progress & Status -->
                                             <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;margin:7px;">
                                                 <div style="text-align: center;">
-                                                    <div style="font-size: 12px; color: #4fc3f7;">75%</div>
+                                                    <div style="font-size: 12px; color: #4fc3f7;">0%</div>
                                                     <div class="progress"
                                                         style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
                                                         <div class="progress-bar" role="progressbar"
-                                                            style="width: 75%; background-color: #4fc3f7;"></div>
+                                                            style="width: 0%; background-color: #4fc3f7;"></div>
                                                     </div>
                                                 </div>
 
@@ -3252,7 +3241,7 @@
     }
 
     // Function to load in-progress tickets dynamically
-    async function loadInProgressTickets() {
+    async function loadInProgressTickets(projectId = '') {
         const refreshBtn = document.querySelector('button[onclick="loadInProgressTickets()"]');
         const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
         
@@ -3263,7 +3252,8 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/tickets/by-status?status=in_progress', {
+            const url = projectId ? `/tickets/by-status?status=in_progress&project_id=${projectId}` : '/tickets/by-status?status=in_progress';
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3340,14 +3330,17 @@
         const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
         
         // Calculate progress percentage (you can modify this logic based on your needs)
-        const progressPercentage = 75; // Default for now, you can calculate based on actual progress
+        const progressPercentage = 0; // Default for now, you can calculate based on actual progress
         
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
-                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                        ${ticket.project_logo_path ? 
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                        }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
                         <strong>Tickets</strong><br>${ticket.code}
@@ -3391,9 +3384,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -3411,8 +3404,8 @@
                     </div>
                     <!-- Status Colors -->
                     <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
-                        <span style="color: #8BC34A;">● 1</span>
-                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #8BC34A;">● 0</span>
+                        <span style="color: #FF9800;">● 0</span>
                         <span style="color: #F44336;">● 0</span>
                         <span style="color: #9C27B0;">● 0</span>
                         <span style="color: #4CAF50;">● 0</span>
@@ -3432,14 +3425,14 @@
         const maxAvatars = Math.min(count, 3); // Show max 3 avatars
         
         for (let i = 0; i < maxAvatars; i++) {
-            avatars += `<img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">`;
+            avatars += `<img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">`;
         }
         
         return avatars;
     }
 
     // Function to load delayed tickets dynamically
-    async function loadDelayedTickets() {
+    async function loadDelayedTickets(projectId = '') {
         const refreshBtn = document.querySelector('button[onclick="loadDelayedTickets()"]');
         const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
         
@@ -3450,7 +3443,8 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/tickets/by-status?status=in_delayed', {
+            const url = projectId ? `/tickets/by-status?status=in_delayed&project_id=${projectId}` : '/tickets/by-status?status=in_delayed';
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3527,14 +3521,17 @@
         const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
         
         // Calculate progress percentage (you can modify this logic based on your needs)
-        const progressPercentage = 25; // Lower percentage for delayed tickets
+        const progressPercentage = 0; // Lower percentage for delayed tickets
         
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
-                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                        ${ticket.project_logo_path ? 
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                        }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
                         <strong>Tickets</strong><br>${ticket.code}
@@ -3578,9 +3575,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -3598,14 +3595,14 @@
                     </div>
                     <!-- Status Colors -->
                     <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
-                        <span style="color: #8BC34A;">● 1</span>
-                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #8BC34A;">● 0</span>
+                        <span style="color: #FF9800;">● 0</span>
                         <span style="color: #F44336;">● 0</span>
                         <span style="color: #9C27B0;">● 0</span>
                         <span style="color: #4CAF50;">● 0</span>
                         <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
                         <span style="background-color: #ffebee; border-radius: 10; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                            <img src="{{ URL::asset('/build/img/redflag.svg') }}" alt="alt" width="20px;">
                         </span>
                     </div>
                 </div>
@@ -3614,7 +3611,7 @@
     }
 
     // Function to load new tickets dynamically
-    async function loadNewTickets() {
+    async function loadNewTickets(projectId = '') {
         const refreshBtn = document.querySelector('button[onclick="loadNewTickets()"]');
         const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
         
@@ -3625,7 +3622,8 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/tickets/by-status?status=new_ticket', {
+            const url = projectId ? `/tickets/by-status?status=new_ticket&project_id=${projectId}` : '/tickets/by-status?status=new_ticket';
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3702,14 +3700,17 @@
         const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
         
         // Calculate progress percentage (you can modify this logic based on your needs)
-        const progressPercentage = 10; // Very low percentage for new tickets
+        const progressPercentage = 0; // Very low percentage for new tickets
         
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
-                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                        ${ticket.project_logo_path ? 
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                        }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
                         <strong>Tickets</strong><br>${ticket.code}
@@ -3753,9 +3754,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -3773,14 +3774,14 @@
                     </div>
                     <!-- Status Colors -->
                     <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
-                        <span style="color: #8BC34A;">● 1</span>
-                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #8BC34A;">● 0</span>
+                        <span style="color: #FF9800;">● 0</span>
                         <span style="color: #F44336;">● 0</span>
                         <span style="color: #9C27B0;">● 0</span>
                         <span style="color: #4CAF50;">● 0</span>
                         <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
                         <span style="background-color: #e3f2fd; border-radius: 10; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                            <img src="{{ URL::asset('/build/img/blueflag.svg') }}" alt="alt" width="20px;">
                         </span>
                     </div>
                 </div>
@@ -3789,7 +3790,7 @@
     }
 
     // Function to load hold tickets dynamically
-    async function loadHoldTickets() {
+    async function loadHoldTickets(projectId = '') {
         const refreshBtn = document.querySelector('button[onclick="loadHoldTickets()"]');
         const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
         
@@ -3800,7 +3801,8 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/tickets/by-status?status=in_hold', {
+            const url = projectId ? `/tickets/by-status?status=in_hold&project_id=${projectId}` : '/tickets/by-status?status=in_hold';
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3877,14 +3879,17 @@
         const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
         
         // Calculate progress percentage (you can modify this logic based on your needs)
-        const progressPercentage = 50; // Medium percentage for hold tickets
+        const progressPercentage = 0; // Medium percentage for hold tickets
         
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
-                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                        ${ticket.project_logo_path ? 
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                        }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
                         <strong>Tickets</strong><br>${ticket.code}
@@ -3927,11 +3932,7 @@
                     <span class="ticket-item-text" style="margin-right: 5px; color: #ccc;">|</span>
 
                     <!-- Overlapping Profile Avatars -->
-                    <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                    </div>
+                   
                 </div>
 
                 <!-- Progress Bar -->
@@ -3948,14 +3949,14 @@
                     </div>
                     <!-- Status Colors -->
                     <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
-                        <span style="color: #8BC34A;">● 1</span>
-                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #8BC34A;">● 0</span>
+                        <span style="color: #FF9800;">● 0</span>
                         <span style="color: #F44336;">● 0</span>
                         <span style="color: #9C27B0;">● 0</span>
                         <span style="color: #4CAF50;">● 0</span>
                         <span style="margin-left: 12px; color: #ccc; margin-right: 5px;">|</span>
                         <span style="background-color: #fff3cd; border-radius: 10; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="alt" width="20px;">
+                            <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" alt="alt" width="20px;">
                         </span>
                     </div>
                 </div>
@@ -3964,7 +3965,7 @@
     }
 
     // Function to load done tickets dynamically
-    async function loadDoneTickets() {
+    async function loadDoneTickets(projectId = '') {
         const refreshBtn = document.querySelector('button[onclick="loadDoneTickets()"]');
         const originalContent = refreshBtn ? refreshBtn.innerHTML : '';
         
@@ -3975,7 +3976,8 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const response = await fetch('/tickets/by-status?status=in_done', {
+            const url = projectId ? `/tickets/by-status?status=in_done&project_id=${projectId}` : '/tickets/by-status?status=in_done';
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4052,14 +4054,17 @@
         const assigneesCount = ticket.assignees ? ticket.assignees.length : 0;
         
         // Calculate progress percentage (you can modify this logic based on your needs)
-        const progressPercentage = 100; // 100% for done tickets
+        const progressPercentage = 0; // 100% for done tickets
         
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
-                        <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                        ${ticket.project_logo_path ? 
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                        }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
                         <strong>Tickets</strong><br>${ticket.code}
@@ -4103,9 +4108,9 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
                     </div>
                 </div>
 
@@ -4123,8 +4128,8 @@
                     </div>
                     <!-- Status Colors -->
                     <div class="d-flex align-items-center ms-3" style="font-size: 11px; gap: 3px; margin-right: 4px;">
-                        <span style="color: #8BC34A;">● 1</span>
-                        <span style="color: #FF9800;">● 3</span>
+                        <span style="color: #8BC34A;">● 0</span>
+                        <span style="color: #FF9800;">● 0</span>
                         <span style="color: #F44336;">● 0</span>
                         <span style="color: #9C27B0;">● 0</span>
                         <span style="color: #4CAF50;">● 0</span>
@@ -4148,6 +4153,43 @@
             loadHoldTickets();
             loadDoneTickets();
         });
+
+        // Add event listeners for project filters
+        const inProgressFilter = document.getElementById('in-progress-project-filter');
+        const holdFilter = document.getElementById('hold-project-filter');
+        const delayedFilter = document.getElementById('delayed-project-filter');
+        const newTicketFilter = document.getElementById('new-ticket-project-filter');
+        const doneFilter = document.getElementById('done-project-filter');
+
+        if (inProgressFilter) {
+            inProgressFilter.addEventListener('change', function() {
+                loadInProgressTickets(this.value);
+            });
+        }
+
+        if (holdFilter) {
+            holdFilter.addEventListener('change', function() {
+                loadHoldTickets(this.value);
+            });
+        }
+
+        if (delayedFilter) {
+            delayedFilter.addEventListener('change', function() {
+                loadDelayedTickets(this.value);
+            });
+        }
+
+        if (newTicketFilter) {
+            newTicketFilter.addEventListener('change', function() {
+                loadNewTickets(this.value);
+            });
+        }
+
+        if (doneFilter) {
+            doneFilter.addEventListener('change', function() {
+                loadDoneTickets(this.value);
+            });
+        }
     });
 </script>
 
