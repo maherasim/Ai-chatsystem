@@ -269,12 +269,18 @@ class TicketController extends Controller
     {
         $status = $request->get('status', 'in_progress');
         $projectId = $request->get('project_id');
+        $priority = $request->get('priority');
         
         $query = Ticket::where('status', $status);
         
         // Filter by project if specified
         if ($projectId) {
             $query->where('project_id', $projectId);
+        }
+        
+        // Filter by priority if specified
+        if ($priority) {
+            $query->where('priority', $priority);
         }
         
         $tickets = $query->with('project')->orderByDesc('created_at')->get();

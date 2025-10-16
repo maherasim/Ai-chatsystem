@@ -525,7 +525,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -603,7 +603,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -680,7 +680,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -794,7 +794,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -870,7 +870,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -947,7 +947,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -1025,7 +1025,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -1138,7 +1138,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -1216,7 +1216,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -1294,7 +1294,7 @@
                                         <!-- Header -->
                                         <div class="d-flex justify-content-between flex-wrap">
                                             <div class="ticket-header-text">
-                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 25px; height: 35px;">
+                                                <img src="{{ asset('build/img/yekbon.svg') }}" alt="yekbon" style="width: 35px; height: 35px;">
                                             </div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
                                             <div class="ticket-header-text" style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
@@ -2227,16 +2227,16 @@
 
                             <!-- Filter Buttons -->
                             <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1 1 auto;">
-                                <button onclick="setActive(this)" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">All</button>
-                                <button onclick="setActive(this)" style="background: #28c76f; color: white; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Low</button>
-                                <button onclick="setActive(this)" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Middle</button>
-                                <button onclick="setActive(this)" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">High</button>
+                                <button id="priority-all" onclick="setActivePriority(this, 'all')" style="background: #28c76f; color: white; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">All</button>
+                                <button id="priority-low" onclick="setActivePriority(this, 'low')" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Low</button>
+                                <button id="priority-middle" onclick="setActivePriority(this, 'middle')" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Middle</button>
+                                <button id="priority-high" onclick="setActivePriority(this, 'high')" style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">High</button>
                             </div>
 
                             <!-- Dropdown -->
                             <div style="flex-shrink: 0;">
-                                <select style="font-size: 14px; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; min-width: 140px;">
-                                    <option selected>Select </option>
+                                <select id="project-filter" onchange="filterByProjectAndPriority()" style="font-size: 14px; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; min-width: 140px;">
+                                    <option value="" selected>All Projects</option>
                                     @foreach ($projects as $project)
                                     <option value="{{ $project->id }}">{{ $project->title }}</option>
                                     @endforeach
@@ -2246,14 +2246,91 @@
 
                         <!-- Inline JS -->
                         <script>
-                            function setActive(el) {
-                                const buttons = el.parentElement.querySelectorAll('button');
-                                buttons.forEach(btn => {
+                            // Global variables to track current filters
+                            let currentPriority = 'all';
+                            let currentProjectId = '';
+
+                            function setActivePriority(el, priority) {
+                                // Reset all priority buttons
+                                const priorityButtons = document.querySelectorAll('[id^="priority-"]');
+                                priorityButtons.forEach(btn => {
                                     btn.style.background = 'transparent';
                                     btn.style.color = '#6c757d';
                                 });
+                                
+                                // Set active button
                                 el.style.background = '#28c76f';
                                 el.style.color = 'white';
+                                
+                                // Update current priority
+                                currentPriority = priority;
+                                
+                                // Apply filters
+                                filterByProjectAndPriority();
+                            }
+
+                            function filterByProjectAndPriority() {
+                                const projectSelect = document.getElementById('project-filter');
+                                currentProjectId = projectSelect.value;
+                                
+                                // Apply filters to all ticket sections
+                                filterTicketsByPriorityAndProject();
+                            }
+
+                            function filterTicketsByPriorityAndProject() {
+                                // Get all project cards
+                                const projectCards = document.querySelectorAll('.col-12.col-md-6.col-lg-4');
+                                
+                                projectCards.forEach(card => {
+                                    let shouldShow = true;
+                                    
+                                    // Check project filter
+                                    if (currentProjectId) {
+                                        const projectId = card.querySelector('[data-project-id]')?.getAttribute('data-project-id');
+                                        if (projectId !== currentProjectId) {
+                                            shouldShow = false;
+                                        }
+                                    }
+                                    
+                                    // Check priority filter
+                                    if (currentPriority !== 'all') {
+                                        const priorityElement = card.querySelector('[style*="background-color: #4caf50"]');
+                                        if (priorityElement) {
+                                            const priorityText = priorityElement.nextElementSibling?.textContent?.toLowerCase();
+                                            if (priorityText !== currentPriority) {
+                                                shouldShow = false;
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Show/hide card
+                                    card.style.display = shouldShow ? 'block' : 'none';
+                                });
+                            }
+
+                            // Initialize with "All" selected
+                            document.addEventListener('DOMContentLoaded', function() {
+                                setActivePriority(document.getElementById('priority-all'), 'all');
+                            });
+
+                            // Helper function to build URL with filters
+                            function buildFilteredUrl(baseUrl, status) {
+                                let url = baseUrl;
+                                const params = [];
+                                
+                                if (currentProjectId) {
+                                    params.push(`project_id=${currentProjectId}`);
+                                }
+                                
+                                if (currentPriority !== 'all') {
+                                    params.push(`priority=${currentPriority}`);
+                                }
+                                
+                                if (params.length > 0) {
+                                    url += (url.includes('?') ? '&' : '?') + params.join('&');
+                                }
+                                
+                                return url;
                             }
                         </script>
 
@@ -2304,15 +2381,32 @@
                                         <!-- Middle Card -->
                                         <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
 
-                                            <!-- Green Flag -->
-                                            <div style="background-color: #D1FAE5; border-radius: 6px; padding: 4px; display: flex; align-items: center; justify-content: center;">
-                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="16" height="16">
+                                            <!-- Dynamic Flag based on ticket status -->
+                                            <div style="background-color: 
+                                                @if($ticket->status == 'new_ticket') #e3f2fd
+                                                @elseif($ticket->status == 'in_progress') #D1FAE5
+                                                @elseif($ticket->status == 'in_hold') #fff3cd
+                                                @elseif($ticket->status == 'in_delayed') #ffebee
+                                                @elseif($ticket->status == 'in_done') #D1FAE5
+                                                @else #D1FAE5
+                                                @endif; border-radius: 6px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                                                <img src="{{ URL::asset('/build/img/' . 
+                                                    ($ticket->status == 'new_ticket' ? 'blueflag.svg' : 
+                                                     ($ticket->status == 'in_progress' ? 'greenflag.svg' : 
+                                                      ($ticket->status == 'in_hold' ? 'yelowflag.svg' : 
+                                                       ($ticket->status == 'in_delayed' ? 'redflag.svg' : 
+                                                        ($ticket->status == 'in_done' ? 'greenflag.svg' : 'greenflag.svg'))))) 
+                                                ) }}" alt="Flag" width="16" height="16">
                                             </div>
 
                                             <!-- Logo (center) -->
                                             <div class="text-center" style="flex-grow: 1;">
                                                 <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
-                                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                    @if($ticket->project && $ticket->project->logo_path)
+                                                        <img src="{{ asset('storage/' . $ticket->project->logo_path) }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                    @else
+                                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                    @endif
                                                 </div>
                                                 <div>
                                                     <h5 class="text-center" title="{{ $ticket->project->title }}" style="font-size: 12px !important; margin: 0 auto; font-weight: bold; color: #2e2e5d; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
@@ -2481,7 +2575,7 @@
                                                     </div>
                                                     <div style="font-size: 15px; margin-top: 2px; color: #555;">
                                                         <span>1</span>
-                                                        <span style="margin-left: 9px;">3</span>
+                                                        <span style="margin-left: 9px;">0</span>
                                                         <span style="margin-left: 9px;">0</span>
                                                         <span style="margin-left: 9px;">0</span>
                                                         <span style="margin-left: 9px;">0</span>
@@ -2492,8 +2586,21 @@
                                                 <div style="color: #ccc;">|</div>
 
                                                 <!-- Right Side Flag -->
-                                                <div style="background-color: #e9f8dd; border-radius: 2px; padding: 6px;margin-right:27px">
-                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="flag" width="24px" height="24px;">
+                                                <div style="background-color: 
+                                                    @if($pt->status == 'new_ticket') #e3f2fd
+                                                    @elseif($pt->status == 'in_progress') #e9f8dd
+                                                    @elseif($pt->status == 'in_hold') #fff3cd
+                                                    @elseif($pt->status == 'in_delayed') #ffebee
+                                                    @elseif($pt->status == 'in_done') #e9f8dd
+                                                    @else #e9f8dd
+                                                    @endif; border-radius: 2px; padding: 6px;margin-right:27px">
+                                                    <img src="{{ URL::asset('/build/img/' . 
+                                                        ($pt->status == 'new_ticket' ? 'blueflag.svg' : 
+                                                         ($pt->status == 'in_progress' ? 'greenflag.svg' : 
+                                                          ($pt->status == 'in_hold' ? 'yelowflag.svg' : 
+                                                           ($pt->status == 'in_delayed' ? 'redflag.svg' : 
+                                                            ($pt->status == 'in_done' ? 'greenflag.svg' : 'greenflag.svg'))))) 
+                                                    ) }}" alt="flag" width="24px" height="24px;">
                                                 </div>
 
 
@@ -3278,7 +3385,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = projectId ? `/tickets/by-status?status=in_progress&project_id=${projectId}` : '/tickets/by-status?status=in_progress';
+            const url = buildFilteredUrl('/tickets/by-status?status=in_progress', 'in_progress');
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3364,8 +3471,8 @@
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
                         ${ticket.project_logo_path ? 
-                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
-                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 35px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 35px; height: 35px;">`
                         }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
@@ -3469,7 +3576,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = projectId ? `/tickets/by-status?status=in_delayed&project_id=${projectId}` : '/tickets/by-status?status=in_delayed';
+            const url = buildFilteredUrl('/tickets/by-status?status=in_delayed', 'in_delayed');
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3555,8 +3662,8 @@
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
                         ${ticket.project_logo_path ? 
-                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
-                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 35px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 35px; height: 35px;">`
                         }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
@@ -3648,7 +3755,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = projectId ? `/tickets/by-status?status=new_ticket&project_id=${projectId}` : '/tickets/by-status?status=new_ticket';
+            const url = buildFilteredUrl('/tickets/by-status?status=new_ticket', 'new_ticket');
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3734,8 +3841,8 @@
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
                         ${ticket.project_logo_path ? 
-                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
-                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 35px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 35px; height: 35px;">`
                         }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
@@ -3827,7 +3934,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = projectId ? `/tickets/by-status?status=in_hold&project_id=${projectId}` : '/tickets/by-status?status=in_hold';
+            const url = buildFilteredUrl('/tickets/by-status?status=in_hold', 'in_hold');
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3913,8 +4020,8 @@
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
                         ${ticket.project_logo_path ? 
-                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
-                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 35px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 35px; height: 35px;">`
                         }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
@@ -4002,7 +4109,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = projectId ? `/tickets/by-status?status=in_done&project_id=${projectId}` : '/tickets/by-status?status=in_done';
+            const url = buildFilteredUrl('/tickets/by-status?status=in_done', 'in_done');
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -4088,8 +4195,8 @@
                 <div class="d-flex justify-content-between flex-wrap">
                     <div class="ticket-header-text">
                         ${ticket.project_logo_path ? 
-                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 25px; height: 35px;">` : 
-                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 25px; height: 35px;">`
+                            `<img src="/storage/${ticket.project_logo_path}" alt="Project Logo" style="width: 35px; height: 35px;">` : 
+                            `<img src="{{ asset('build/img/yekbon.svg') }}" alt="Project Logo" style="width: 35px; height: 35px;">`
                         }
                     </div>
                     <div class="ticket-header-text" style="color: #1a73e8;">
