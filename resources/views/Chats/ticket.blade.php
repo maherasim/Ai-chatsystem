@@ -2574,7 +2574,7 @@
                                                         <span style="color: #4CAF50;">●</span>
                                                     </div>
                                                     <div style="font-size: 15px; margin-top: 2px; color: #555;">
-                                                        <span>1</span>
+                                                        <span>0</span>
                                                         <span style="margin-left: 9px;">0</span>
                                                         <span style="margin-left: 9px;">0</span>
                                                         <span style="margin-left: 9px;">0</span>
