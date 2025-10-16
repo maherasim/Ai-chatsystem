@@ -2782,7 +2782,7 @@
         // Fetch projects into dropdown
         async function loadProjects(prefill) {
             try {
-                const resp = await fetch('/api/tickets/projects', {
+                const resp = await fetch('/tickets/projects', {
                     credentials: 'same-origin'
                 });
                 const data = await resp.json();
@@ -2805,7 +2805,7 @@
             sectionSelect.innerHTML = '<option value="">Select the Section</option>';
             if (!projectId) return;
             try {
-                const resp = await fetch(`/api/tickets/projects/${projectId}/sections`, {
+                const resp = await fetch(`/tickets/projects/${projectId}/sections`, {
                     credentials: 'same-origin'
                 });
                 const data = await resp.json();
@@ -2832,7 +2832,7 @@
                 section_name: sectionSelect.value || '',
                 title: document.getElementById('ticketTitle')?.value || '',
                 description: document.getElementById('ticketDescription')?.value || '',
-                status: 'in_progress',
+                status: 'new_ticket',
                 priority: priorityHidden.value || 'low',
                 start_date: document.getElementById('startDateInput')?.value || null,
                 end_date: document.getElementById('expiredDateInput')?.value || null,
@@ -2843,7 +2843,7 @@
                 // Prevent double submit
                 saveCloseBtn?.setAttribute('disabled', 'disabled');
                 saveAddAnotherBtn?.setAttribute('disabled', 'disabled');
-                const resp = await fetch('/api/tickets', {
+                const resp = await fetch('/tickets', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2933,7 +2933,7 @@
                 section_name: sectionSelect.value || '',
                 title: document.getElementById('ticketTitle')?.value || '',
                 description: document.getElementById('ticketDescription')?.value || '',
-                status: 'in_progress',
+                status: 'new_ticket',
                 priority: priorityHidden.value || 'low',
                 start_date: document.getElementById('startDateInput')?.value || null,
                 end_date: document.getElementById('expiredDateInput')?.value || null,
@@ -2942,7 +2942,7 @@
 
             try {
                 updateBtn?.setAttribute('disabled', 'disabled');
-                const resp = await fetch(`/api/tickets/${editingTicketId}`, {
+                const resp = await fetch(`/tickets/${editingTicketId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -3028,7 +3028,7 @@
                 if (editingTicketId) {
                     (async () => {
                         try {
-                            const resp = await fetch(`/api/tickets/${editingTicketId}`, {
+                            const resp = await fetch(`/tickets/${editingTicketId}`, {
                                 credentials: 'same-origin'
                             });
                             const t = await resp.json();
@@ -3141,7 +3141,7 @@
                         removeBtn.setAttribute('disabled', 'disabled');
                         removeBtn.textContent = 'Deleting...';
 
-                        const resp = await fetch(`/api/tickets/${editingTicketId}`, {
+                        const resp = await fetch(`/tickets/${editingTicketId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json',
