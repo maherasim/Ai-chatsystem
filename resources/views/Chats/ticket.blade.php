@@ -429,7 +429,7 @@
                                                 <img src="{{URL::asset('/build/img/delayed.svg')}}" style="width: 30px; height: 30px;" alt="In Delayed">
                                             </div>
                                             <div style="font-size: 13px; color: #4A4A4A;">In Delayed</div>
-                                            <div style="font-weight: bold; font-size: 14px; color: #000;">2</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;" id="in-delayed-status-count">0</div>
                                         </div>
                                         <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
                                     </div>
@@ -441,7 +441,7 @@
                                                 <img src="{{URL::asset('/build/img/indone.svg')}}" style="width: 30px; height: 30px;" alt="In Done">
                                             </div>
                                             <div style="font-size: 13px; color: #4A4A4A;">In Done</div>
-                                            <div style="font-weight: bold; font-size: 14px; color: #000;">2</div>
+                                            <div style="font-weight: bold; font-size: 14px; color: #000;" id="in-done-status-count">0</div>
                                         </div>
                                     </div>
 
@@ -3233,6 +3233,32 @@
                 const inDelayedPercentage = document.getElementById('in-delayed-percentage');
                 if (inDelayedPercentage) {
                     inDelayedPercentage.textContent = Math.abs(stats.percentages.in_delayed);
+                }
+
+                // Update status card counts
+                const newTicketStatusCount = document.getElementById('new-ticket-status-count');
+                if (newTicketStatusCount) {
+                    newTicketStatusCount.textContent = stats.new_ticket || 0;
+                }
+
+                const inProgressStatusCount = document.getElementById('in-progress-status-count');
+                if (inProgressStatusCount) {
+                    inProgressStatusCount.textContent = stats.in_progress || 0;
+                }
+
+                const inHoldStatusCount = document.getElementById('in-hold-status-count');
+                if (inHoldStatusCount) {
+                    inHoldStatusCount.textContent = stats.in_hold || 0;
+                }
+
+                const inDelayedStatusCount = document.getElementById('in-delayed-status-count');
+                if (inDelayedStatusCount) {
+                    inDelayedStatusCount.textContent = stats.in_delayed || 0;
+                }
+
+                const inDoneStatusCount = document.getElementById('in-done-status-count');
+                if (inDoneStatusCount) {
+                    inDoneStatusCount.textContent = stats.in_done || 0;
                 }
             }
         } catch (error) {
