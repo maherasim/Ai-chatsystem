@@ -43,7 +43,7 @@ public function completeprofile(Request $request)
     $user = Auth::user();
 
     $request->validate([
-        'phone' => 'required',
+        'password' => 'required|min:6|confirmed',
         'image' => 'required|image',
         'cardImgInput' => 'required|image',
     ]);
@@ -56,11 +56,12 @@ public function completeprofile(Request $request)
         $user->card_image = $request->file('cardImgInput')->store('cards', 'public');
     }
 
-    $user->phone = $request->phone;
+   // $user->phone = $request->phone;
     $user->name = $request->name;
-    $user->email = $request->email;
+   // $user->email = $request->email;
     $user->country = $request->country;
     $user->policy_accepted = true;
+    $user->password = Hash::make($request->password);
     $user->agreement_accepted = true;
     $user->save();
 
