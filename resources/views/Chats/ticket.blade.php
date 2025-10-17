@@ -164,6 +164,9 @@
         border-radius: 3px;
         background-color: #eee;
     }
+    .gap-3 {
+    gap: 5rem !important;
+}
 
     .progress-bar {
         border-radius: 3px;
@@ -465,7 +468,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select class="form-select form-select-sm" id="in-progress-project-filter" onchange="filterByProjectAndPriority()" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" id="in-progress-project-filter" onchange="filterInProgressTickets()" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option value="" selected>All Projects</option>
                                                 @foreach ($projects as $project)
                                                 <option value="{{ $project->id }}">{{ $project->title }}</option>
@@ -498,7 +501,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select name="type" id="hold-project-filter" onchange="filterByProjectAndPriority()" required="required"
+                                            <select name="type" id="hold-project-filter" onchange="filterHoldTickets()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                    @foreach ($projects as $project)
@@ -768,7 +771,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                              
-                                            <select name="type" id="delayed-project-filter" onchange="filterByProjectAndPriority()" required="required"
+                                            <select name="type" id="delayed-project-filter" onchange="filterDelayedTickets()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                     @foreach ($projects as $project)
@@ -1113,7 +1116,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select name="type" id="done-project-filter" onchange="filterByProjectAndPriority()" required="required"
+                                            <select name="type" id="done-project-filter" onchange="filterDoneTickets()" required="required"
                                 style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                                 <option value="" selected>All Projects</option>
                                 @foreach ($projects as $project)
@@ -1380,7 +1383,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                           
-                                            <select name="type" id="new-ticket-project-filter" onchange="filterByProjectAndPriority()" required="required"
+                                            <select name="type" id="new-ticket-project-filter" onchange="filterNewTickets()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                         @foreach ($projects as $project)
@@ -2250,6 +2253,13 @@
                             let currentPriority = 'all';
                             let currentProjectId = '';
 
+                            // Individual section filter variables
+                            let inProgressProjectId = '';
+                            let holdProjectId = '';
+                            let delayedProjectId = '';
+                            let doneProjectId = '';
+                            let newTicketProjectId = '';
+
                             function setActivePriority(el, priority) {
                                 // Reset all priority buttons
                                 const priorityButtons = document.querySelectorAll('[id^="priority-"]');
@@ -2265,40 +2275,53 @@
                                 // Update current priority
                                 currentPriority = priority;
                                 
-                                // Apply filters
-                                filterByProjectAndPriority();
+                                // Apply filters only to main Current Tasks section
+                                filterMainTasksByPriorityAndProject();
                             }
 
+                            // Main Current Tasks filter function
                             function filterByProjectAndPriority() {
-                                // Get the project filter value from any of the dropdowns
-                                const mainProjectFilter = document.getElementById('project-filter');
-                                const inProgressFilter = document.getElementById('in-progress-project-filter');
-                                const holdFilter = document.getElementById('hold-project-filter');
-                                const delayedFilter = document.getElementById('delayed-project-filter');
-                                const doneFilter = document.getElementById('done-project-filter');
-                                const newTicketFilter = document.getElementById('new-ticket-project-filter');
+                                const projectSelect = document.getElementById('project-filter');
+                                currentProjectId = projectSelect.value;
                                 
-                                // Determine which filter was changed and get its value
-                                let selectedProjectId = '';
-                                if (mainProjectFilter) selectedProjectId = mainProjectFilter.value;
-                                if (inProgressFilter && inProgressFilter.value) selectedProjectId = inProgressFilter.value;
-                                if (holdFilter && holdFilter.value) selectedProjectId = holdFilter.value;
-                                if (delayedFilter && delayedFilter.value) selectedProjectId = delayedFilter.value;
-                                if (doneFilter && doneFilter.value) selectedProjectId = doneFilter.value;
-                                if (newTicketFilter && newTicketFilter.value) selectedProjectId = newTicketFilter.value;
-                                
-                                // Sync all dropdowns to the selected value
-                                syncAllProjectFilters(selectedProjectId);
-                                
-                                currentProjectId = selectedProjectId;
-                                
-                                // Apply filters to all ticket sections
-                                filterTicketsByPriorityAndProject();
+                                // Apply filters only to main Current Tasks section
+                                filterMainTasksByPriorityAndProject();
                             }
 
-                            function filterTicketsByPriorityAndProject() {
-                                // Get all project cards
-                                const projectCards = document.querySelectorAll('.col-12.col-md-6.col-lg-4');
+                            // Individual section filter functions
+                            function filterInProgressTickets() {
+                                const projectSelect = document.getElementById('in-progress-project-filter');
+                                inProgressProjectId = projectSelect.value;
+                                loadInProgressTickets(inProgressProjectId);
+                            }
+
+                            function filterHoldTickets() {
+                                const projectSelect = document.getElementById('hold-project-filter');
+                                holdProjectId = projectSelect.value;
+                                loadHoldTickets(holdProjectId);
+                            }
+
+                            function filterDelayedTickets() {
+                                const projectSelect = document.getElementById('delayed-project-filter');
+                                delayedProjectId = projectSelect.value;
+                                loadDelayedTickets(delayedProjectId);
+                            }
+
+                            function filterDoneTickets() {
+                                const projectSelect = document.getElementById('done-project-filter');
+                                doneProjectId = projectSelect.value;
+                                loadDoneTickets(doneProjectId);
+                            }
+
+                            function filterNewTickets() {
+                                const projectSelect = document.getElementById('new-ticket-project-filter');
+                                newTicketProjectId = projectSelect.value;
+                                loadNewTickets(newTicketProjectId);
+                            }
+
+                            function filterMainTasksByPriorityAndProject() {
+                                // Get all project cards in the main Current Tasks section
+                                const projectCards = document.querySelectorAll('.current-task-card');
                                 
                                 projectCards.forEach(card => {
                                     let shouldShow = true;
@@ -2332,17 +2355,13 @@
                                 setActivePriority(document.getElementById('priority-all'), 'all');
                             });
 
-                            // Helper function to build URL with filters
-                            function buildFilteredUrl(baseUrl, status) {
+                            // Helper function to build URL with filters for individual sections
+                            function buildFilteredUrl(baseUrl, status, projectId = '') {
                                 let url = baseUrl;
                                 const params = [];
                                 
-                                if (currentProjectId) {
-                                    params.push(`project_id=${currentProjectId}`);
-                                }
-                                
-                                if (currentPriority !== 'all') {
-                                    params.push(`priority=${currentPriority}`);
+                                if (projectId) {
+                                    params.push(`project_id=${projectId}`);
                                 }
                                 
                                 if (params.length > 0) {
@@ -2352,30 +2371,27 @@
                                 return url;
                             }
 
-                            // Function to sync all project filter dropdowns
-                            function syncAllProjectFilters(selectedValue) {
-                                const allFilters = [
-                                    'project-filter',
-                                    'in-progress-project-filter', 
-                                    'hold-project-filter',
-                                    'delayed-project-filter',
-                                    'done-project-filter',
-                                    'new-ticket-project-filter'
-                                ];
-                                
-                                allFilters.forEach(filterId => {
-                                    const filter = document.getElementById(filterId);
-                                    if (filter) {
-                                        filter.value = selectedValue;
-                                    }
-                                });
-                            }
                         </script>
+
+                        <!-- CSS for Current Tasks Layout -->
+                        <style>
+                            @media (max-width: 1200px) {
+                                .current-task-card {
+                                    flex: 0 0 calc(50% - 12px) !important;
+                                }
+                            }
+                            
+                            @media (max-width: 768px) {
+                                .current-task-card {
+                                    flex: 0 0 calc(100% - 12px) !important;
+                                }
+                            }
+                        </style>
 
                     </div>
 
                     <div class="mb-2">
-                        <div class="row g-3">
+                        <div class="d-flex flex-wrap gap-3" style="width: 100%; justify-content: flex-start;">
                             @php
                             $ticketsByProject = ($tickets instanceof \Illuminate\Pagination\LengthAwarePaginator || $tickets instanceof \Illuminate\Pagination\Paginator)
                             ? $tickets->getCollection()->groupBy('project_id')
@@ -2385,7 +2401,7 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div style="flex: 0 0 calc(33.333% - 12px); min-width: 300px; max-width: 400px;" class="current-task-card">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
@@ -3423,7 +3439,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_progress', 'in_progress');
+            const url = buildFilteredUrl('/tickets/by-status?status=in_progress', 'in_progress', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3614,7 +3630,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_delayed', 'in_delayed');
+            const url = buildFilteredUrl('/tickets/by-status?status=in_delayed', 'in_delayed', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3793,7 +3809,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=new_ticket', 'new_ticket');
+            const url = buildFilteredUrl('/tickets/by-status?status=new_ticket', 'new_ticket', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -3972,7 +3988,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_hold', 'in_hold');
+            const url = buildFilteredUrl('/tickets/by-status?status=in_hold', 'in_hold', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -4147,7 +4163,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_done', 'in_done');
+            const url = buildFilteredUrl('/tickets/by-status?status=in_done', 'in_done', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
