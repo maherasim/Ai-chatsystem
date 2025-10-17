@@ -465,7 +465,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select class="form-select form-select-sm" id="in-progress-project-filter" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
+                                            <select class="form-select form-select-sm" id="in-progress-project-filter" onchange="filterByProjectAndPriority()" style="font-size: 12px; border-radius: 6px; border: 1px solid #e0e0e0; padding: 4px 8px; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); min-width: 100px; height: 28px;">
                                                 <option value="" selected>All Projects</option>
                                                 @foreach ($projects as $project)
                                                 <option value="{{ $project->id }}">{{ $project->title }}</option>
@@ -498,7 +498,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select name="type" id="hold-project-filter" required="required"
+                                            <select name="type" id="hold-project-filter" onchange="filterByProjectAndPriority()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                    @foreach ($projects as $project)
@@ -768,7 +768,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                              
-                                            <select name="type" id="delayed-project-filter" required="required"
+                                            <select name="type" id="delayed-project-filter" onchange="filterByProjectAndPriority()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                     @foreach ($projects as $project)
@@ -1113,7 +1113,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                             
-                                            <select name="type" id="done-project-filter" required="required"
+                                            <select name="type" id="done-project-filter" onchange="filterByProjectAndPriority()" required="required"
                                 style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                                 <option value="" selected>All Projects</option>
                                 @foreach ($projects as $project)
@@ -1380,7 +1380,7 @@
                                         </div>
                                         <div class="d-flex gap-2">
                                           
-                                            <select name="type" id="new-ticket-project-filter" required="required"
+                                            <select name="type" id="new-ticket-project-filter" onchange="filterByProjectAndPriority()" required="required"
                     style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #333; width: 120px; background-color: white;">
                     <option value="" selected>All Projects</option>
                         @foreach ($projects as $project)
@@ -2270,8 +2270,27 @@
                             }
 
                             function filterByProjectAndPriority() {
-                                const projectSelect = document.getElementById('project-filter');
-                                currentProjectId = projectSelect.value;
+                                // Get the project filter value from any of the dropdowns
+                                const mainProjectFilter = document.getElementById('project-filter');
+                                const inProgressFilter = document.getElementById('in-progress-project-filter');
+                                const holdFilter = document.getElementById('hold-project-filter');
+                                const delayedFilter = document.getElementById('delayed-project-filter');
+                                const doneFilter = document.getElementById('done-project-filter');
+                                const newTicketFilter = document.getElementById('new-ticket-project-filter');
+                                
+                                // Determine which filter was changed and get its value
+                                let selectedProjectId = '';
+                                if (mainProjectFilter) selectedProjectId = mainProjectFilter.value;
+                                if (inProgressFilter && inProgressFilter.value) selectedProjectId = inProgressFilter.value;
+                                if (holdFilter && holdFilter.value) selectedProjectId = holdFilter.value;
+                                if (delayedFilter && delayedFilter.value) selectedProjectId = delayedFilter.value;
+                                if (doneFilter && doneFilter.value) selectedProjectId = doneFilter.value;
+                                if (newTicketFilter && newTicketFilter.value) selectedProjectId = newTicketFilter.value;
+                                
+                                // Sync all dropdowns to the selected value
+                                syncAllProjectFilters(selectedProjectId);
+                                
+                                currentProjectId = selectedProjectId;
                                 
                                 // Apply filters to all ticket sections
                                 filterTicketsByPriorityAndProject();
@@ -2331,6 +2350,25 @@
                                 }
                                 
                                 return url;
+                            }
+
+                            // Function to sync all project filter dropdowns
+                            function syncAllProjectFilters(selectedValue) {
+                                const allFilters = [
+                                    'project-filter',
+                                    'in-progress-project-filter', 
+                                    'hold-project-filter',
+                                    'delayed-project-filter',
+                                    'done-project-filter',
+                                    'new-ticket-project-filter'
+                                ];
+                                
+                                allFilters.forEach(filterId => {
+                                    const filter = document.getElementById(filterId);
+                                    if (filter) {
+                                        filter.value = selectedValue;
+                                    }
+                                });
                             }
                         </script>
 
