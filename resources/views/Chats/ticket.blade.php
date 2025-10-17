@@ -2377,17 +2377,11 @@
                         <style>
                             @media (max-width: 1200px) {
                                 .current-task-card {
-                                    flex: 0 0 calc(33.333% - 8px) !important;
-                                }
-                            }
-                            
-                            @media (max-width: 900px) {
-                                .current-task-card {
                                     flex: 0 0 calc(50% - 8px) !important;
                                 }
                             }
                             
-                            @media (max-width: 600px) {
+                            @media (max-width: 768px) {
                                 .current-task-card {
                                     flex: 0 0 calc(100% - 8px) !important;
                                 }
@@ -2407,7 +2401,7 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div style="flex: 0 0 calc(25% - 8px); min-width: 250px; max-width: 350px;" class="current-task-card">
+                            <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;" class="current-task-card">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
@@ -2456,7 +2450,7 @@
                                                       ($ticket->status == 'in_hold' ? 'yelowflag.svg' : 
                                                        ($ticket->status == 'in_delayed' ? 'redflag.svg' : 
                                                         ($ticket->status == 'in_done' ? 'greenflag.svg' : 'greenflag.svg'))))) 
-                                                ) }}" alt="Flag" width="35px" height="35px">
+                                                ) }}" alt="Flag" width="20px" height="20px">
                                             </div>
 
                                             <!-- Logo (center) -->
