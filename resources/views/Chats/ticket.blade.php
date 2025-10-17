@@ -2377,13 +2377,19 @@
                         <style>
                             @media (max-width: 1200px) {
                                 .current-task-card {
-                                    flex: 0 0 calc(50% - 12px) !important;
+                                    flex: 0 0 calc(33.333% - 8px) !important;
                                 }
                             }
                             
-                            @media (max-width: 768px) {
+                            @media (max-width: 900px) {
                                 .current-task-card {
-                                    flex: 0 0 calc(100% - 12px) !important;
+                                    flex: 0 0 calc(50% - 8px) !important;
+                                }
+                            }
+                            
+                            @media (max-width: 600px) {
+                                .current-task-card {
+                                    flex: 0 0 calc(100% - 8px) !important;
                                 }
                             }
                         </style>
@@ -2391,7 +2397,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <div class="d-flex flex-wrap gap-3" style="width: 100%; justify-content: flex-start;">
+                        <div class="d-flex flex-wrap gap-2" style="width: 100%; justify-content: flex-start;">
                             @php
                             $ticketsByProject = ($tickets instanceof \Illuminate\Pagination\LengthAwarePaginator || $tickets instanceof \Illuminate\Pagination\Paginator)
                             ? $tickets->getCollection()->groupBy('project_id')
@@ -2401,7 +2407,7 @@
                             @foreach ($ticketsByProject as $projectId => $projectTickets)
                             @php $ticket = $projectTickets->first(); @endphp
 
-                            <div style="flex: 0 0 calc(33.333% - 12px); min-width: 300px; max-width: 400px;" class="current-task-card">
+                            <div style="flex: 0 0 calc(25% - 8px); min-width: 250px; max-width: 350px;" class="current-task-card">
                                 <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                     <!-- Top Section -->
                                     <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
@@ -2459,7 +2465,7 @@
                                                     @if($ticket->project && $ticket->project->logo_path)
                                                         <img src="{{ asset('storage/' . $ticket->project->logo_path) }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
                                                     @else
-                                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
                                                     @endif
                                                 </div>
                                                 <div>
