@@ -1918,8 +1918,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                  <!-- schdule section ends -->
                 <div style="background-color: #f9f9fb; border-radius:10px; padding:8px; margin-bottom:10px;">
                     <!-- Toggle Today/Scheduled -->
-                    <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px; background:#fff;">
+                    <div style="  margin-bottom: 6px; margin-top: 4px;">
+                        <div style="border-radius: 10px; padding: 8px; gap: 8px; background:#fff;">
                             <button class="btnToday" id="btnToday" type="button"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
@@ -1927,7 +1927,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     document.getElementById('btnScheduled').style.backgroundColor='transparent';
                     document.getElementById('btnScheduled').style.color='#64748b';
                     document.getElementById('timeRow').classList.add('justify-content-center1');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                style="border: none; background-color: #22c55e; color: white; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Today ToDo's
                             </button>
 
@@ -1938,7 +1938,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     document.getElementById('btnToday').style.backgroundColor='transparent';
                     document.getElementById('btnToday').style.color='#64748b';
                     document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled ToDo's
                             </button>
                         </div>
