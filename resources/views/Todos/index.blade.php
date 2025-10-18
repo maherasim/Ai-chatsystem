@@ -3709,19 +3709,18 @@ document.addEventListener("DOMContentLoaded", function () {
         div.addEventListener("click", function () {
             let userId = this.getAttribute("data-user-id");
 
-            // toggle active class
-            this.classList.toggle("user_active");
+            // Unselect all others first
+            document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+            membersSelect.querySelectorAll("option").forEach(opt => opt.selected = false);
 
-            // check if selected
+            // Select the clicked one
+            this.classList.add("user_active");
             let option = membersSelect.querySelector(`option[value="${userId}"]`);
-            if (this.classList.contains("user_active")) {
-                option.selected = true;
-            } else {
-                option.selected = false;
-            }
+            if (option) option.selected = true;
         });
     });
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const btnShared = document.getElementById("btnShared");
