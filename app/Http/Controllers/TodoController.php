@@ -25,7 +25,10 @@ class TodoController extends Controller
 
         $todo = Todo::where('id', $remid)->first();
         if($todo){
-            $todo->is_removed = 1;
+            if($request->iscomplete != "-1"){
+                $todo->is_removed = 1;
+            }
+            
                 if ($reason) {
                     $todo->reason = $reason;
                 }
@@ -64,7 +67,10 @@ class TodoController extends Controller
 
         $ratings = $request->input('ratings');
         $todo->ratings = $ratings;
-        $todo->completed = 1;
+        $todo->completed = $request->setcomplete;
+        $todo->all_tasks_done  = $request->has('all_tasks_done')  ? 1 : 0;
+        $todo->all_tasks_check = $request->has('all_tasks_check') ? 1 : 0;
+        $todo->files_upload    = $request->has('files_upload')    ? 1 : 0;
         $todo->save();
 
         return redirect()->back()->with('success', 'Todo mark as done successfully.');
@@ -76,15 +82,52 @@ class TodoController extends Controller
 
         $setting = Setting::first();
 
-        
         $users = User::whereIn('type', ['employee', 'developer'])
                  ->where('_id', '!=', $user->_id)->where('completed', '!=', '1')
                  ->get();
 
-       
 
+        $todayTodos = Todo::where('end_date', date('Y-m-d'))
+    ->where(function ($q) use ($user) {
+        $q
+        // ✅ Case 1: completed = 2 → only include if this user is owner
+        ->where(function ($sub) use ($user) {
+            $sub->whereIn('completed', ["-1", "2"])
+                ->where('user_id', $user->_id);
+        })
+        // ✅ Case 2: completed ≠ 1 and completed ≠ 2 → include if user is owner or member
+        ->orWhere(function ($sub) use ($user) {
+            $sub->whereNotIn('completed', ["1", "2", "-1"])
+                ->where(function ($inner) use ($user) {
+                    $inner->where('user_id', $user->_id)
+                          ->orWhere('members', $user->_id);
+                });
+        });
+    })
+    ->where(function ($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })
+    ->get()
+    ->map(function ($todo) {
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $todo->members_data = $members->map(function ($u) {
+            return [
+                'id'    => $u->_id,
+                'name'  => $u->name,
+                'image' => $u->profile_image
+                    ? asset("storage/" . $u->profile_image)
+                    : asset("build/img/default.png"),
+            ];
+        });
+        return $todo;
+    });
+
+
+       
+/*
       $todayTodos = Todo::where('end_date', date('Y-m-d'))
-        ->where('completed', 0)
+        ->where('completed', "!=", 2)
         ->where(function ($q) use ($user) {
             $q->where('user_id', $user->_id)
             ->orWhere('members', $user->_id); // ✅ works in MongoDB
@@ -109,7 +152,7 @@ class TodoController extends Controller
         return $todo;
     });
 
-
+*/
             $privateTodos = Todo::where('user_id', $user->id)
     ->where('completed',  0)
      ->where('end_date', '>', date('Y-m-d'))
@@ -133,6 +176,9 @@ class TodoController extends Controller
 
                 return $todo;
             });
+
+
+
 
 
         // Shared

@@ -666,7 +666,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-     
         if (cardImgInput && !cardImgInput.files.length) {
             alert("Please upload your card image.");
             return;
@@ -685,7 +684,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("repassword").focus();
             return;
         }
-
         // Submit via normal POST (full page reload)
         profileForm.submit();
     });

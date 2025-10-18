@@ -37,7 +37,10 @@ class Todo extends Model
         'punctuality',
         'accuracy',
         'quality',
-        'work_Independently'
+        'work_Independently',
+        'all_tasks_done',
+        'all_tasks_check',
+        'files_upload'
     ];
 
     public function user()

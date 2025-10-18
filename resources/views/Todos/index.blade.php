@@ -11,7 +11,66 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 
 <style>
 
+    .invit-img img{
+        max-height:100px;
+    }
 
+   .user-slider {
+    display: flex !important;          /* override Bootstrap row */
+    flex-wrap: nowrap !important;      /* prevent new lines */
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    padding: 10px 40px; /* space for arrows */
+}
+
+.user-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.user_div {
+    flex: 0 0 auto;                    /* don't shrink */
+    width: 160px;                      /* each card fixed width */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    z-index: 2;
+    width: 35px;
+    height: 60px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.scroll-btn:hover {
+    background: #f0f0f0;
+}
+
+.left-btn { left: 0; }
+.right-btn { right: 0; }
+
+
+
+
+.text-center{
+    text-align:center;
+}
 .rating-group label {
         color: #ccc;
         cursor: pointer;
@@ -540,6 +599,10 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
                                     $todotyp = "private";
                                     
                                 }
+                                $owner = 0;
+                                if($todo->user_id == $user->_id){
+                                    $owner = 1;
+                                }
 
                                // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
@@ -566,8 +629,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-end_time="{{ $todo->end_time }}"
     data-is_private="{{ $todo->is_private }}"
     data-priority="{{ $todo->priority }}"
+    data-reason="{{$todo->reason}}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
+    data-owner="{{$owner}}"
+    data-complete="{{$todo->completed}}"
     data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
@@ -796,11 +862,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time);
                                         @endphp
 
-                                        @if ($endDateTime->isPast())
-                                            <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                                Need Counter
-                                            </button>
-                                        @endif
+                                        
     </div>
 
                                         <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $todo->id }}">
@@ -1800,19 +1862,42 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <h5>Select Users</h5>
                     <p>Project - Team</p>
 
-                    <div class="row">
-                        @foreach($users as $cuser)
-                            <div class="col-md-3 user_div invit-box text-center" 
-                                id="user_{{$cuser->_id}}" 
-                                data-user-id="{{$cuser->_id}}">
-                                <div class="invit-img">
-                                    <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+
+                    <div id="userScroller" class="user-slider-wrapper" style="display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 16px; -ms-overflow-style: none; scrollbar-width: none;" onscroll=" var scroller=this; var containerWidth=scroller.offsetWidth; var index=Math.round(scroller.scrollLeft/containerWidth); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot'+i); dot.style.background=(i===index)?'#00c469':'#d4d4d4'; dot.style.width=(i===index)?'40px':'20px'; } ">
+
+                            <style>
+                                #userScroller::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+
+
+                            @foreach($users as $cuser)
+                                <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;" 
+                                    id="user_{{$cuser->_id}}" 
+                                    data-user-id="{{$cuser->_id}}">
+                                    <div class="invit-img">
+                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                    </div>
+                                    <div class="invit-txt">{{$cuser->name}}</div>
                                 </div>
-                                <div class="invit-txt">{{$cuser->name}}</div>
+                            @endforeach
+
+                            
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                            <div id="dot_user0" style="width: 40px; height: 5px; border-radius: 8px; background: #00c469; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:0*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i);  dot.style.background=(i===0)?'#00c469':'#d4d4d4';  dot.style.width=(i===0)?'40px':'20px'; } ">
                             </div>
-                        @endforeach
-                    </div>
-                </div>
+                            <div id="dot_user1" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:1*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===1)?'#00c469':'#d4d4d4'; dot.style.width=(i===1)?'40px':'20px'; } ">
+                            </div>
+                            <div id="dot_user2" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:2*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===2)?'#00c469':'#d4d4d4'; dot.style.width=(i===2)?'40px':'20px'; } ">
+                            </div>
+                        </div>
+
+                    <!-- user starts -->
+
+    </div>
+
                 <!-- shared section ends -->
 <div class="" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px; margin-bottom:5px;">
     <div class="col-md-12">
@@ -2139,10 +2224,18 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             </div>
 
             <!-- Save Button -->
-            <div class="text-center" style="margin-top: 15px;">
+            <div class="text-center" style="margin-top: 15px; display:flex; justify-content: space-around;">
+                <button data-bs-dismiss="modal" type="button" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                     Close
+                </button>
                 <button type="submit" class="btn" 
                     style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                     Save & Close
+                </button>
+                <button type="button" class="btn rejectbtn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Reject it
                 </button>
             </div>
             </form>
@@ -2183,39 +2276,78 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         </div>
                     </div>
 
-                <div class="forshared">
-                <p style="font-size: 13px; margin-top:10px;">Rate the Developer</p>
+                <div class="dev_finish">
+                    <p style="font-size: 13px; margin-top:10px;">Provide details on project</p>
 
-                <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
-                    @foreach($ratingCategories as $key => $label)
-                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
-                            style="background:#fff; padding:9px; border-radius:10px;">
-                            <span>{{ $label }}</span>
-                            <span>
-                                @for($i = 1; $i <= 5; $i++)
-                                    <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
-                                    <label for="rate-{{ $key }}-{{ $i }}" 
-                                        class="fa-solid fa-star" 
-                                        data-index="{{ $i }}" 
-                                        data-category="{{ $label }}"></label>
-                                @endfor
-                            </span>
-                        </div>
-                    @endforeach
+                    <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
+                       
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you did all tasks</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="all_tasks_done" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you did all tasks</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="all_tasks_check" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you did all tasks</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="files_upload" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                       
+                    </div>
                 </div>
-    </div>
-    
 
+                <div class="forshared">
+                    <p style="font-size: 13px; margin-top:10px;">Rate the Developer</p>
+
+                    <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
+                        @foreach($ratingCategories as $key => $label)
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>{{ $label }}</span>
+                                <span>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
+                                        <label for="rate-{{ $key }}-{{ $i }}" 
+                                            class="fa-solid fa-star" 
+                                            data-index="{{ $i }}" 
+                                            data-category="{{ $label }}"></label>
+                                    @endfor
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
-
-
             </div>
           
           <input type="hidden" id="doneTodoId" name="todo_id">
+          <input type="hidden" id="setcomplete" name="setcomplete">
         </div>
         
-            <div class="text-center">
-                <button class="btn" style="background-color: #f7f7f7; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+            <div style="padding: 0 20px;">
+                <button class="btn" data-bs-dismiss="modal" type="button" style="background-color: #f7f7f7; float:left; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Close
+                </button>
+                <button class="btn" style="background-color: #f7f7f7; float:right; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                     Save &amp; Close
                 </button>
             </div>
@@ -2379,6 +2511,30 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px;">
                         <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Description •</div>
                         <div class="sections-list"></div>
+                        
+                    </div>
+
+                    <div class="p-3 owner-state mt-3" style="background-color: #f5f5f5; text-align:center; border-radius: 10px;">
+                        <div class="todo-removed text-center"  style="padding:10px;margin-bottom:5px; background:#FEE9EA; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User was failed to complete the task.<span class="rem_reason"></span>
+                        </div>
+                        <div class="todo-complete text-center" style="padding:10px;margin-bottom:5px;text-align:center;  background:#E9FAF0; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User has completed the task On Time
+                        </div>
+
+                        <div class="todo-waiting text-center" style="padding:10px; text-align:center; margin-bottom:5px; background:#FAE6c8; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/waiting.png') }}" alt="waiting" width="40" height="40">
+                            </div>
+                            Waiting for user activity
+                        </div>
+                        
                         
                     </div>
                     
@@ -3800,7 +3956,46 @@ console.log("Raw members data:", e_members);
             // Get attributes
             let dataid      = this.dataset.id;
 
-            const editBtnInModal = document.getElementById('openEditFromView');
+            //const editBtnInModal = document.getElementById('openEditFromView');
+            const editBtnInModal = document.querySelector('.edit_' + dataid);
+            const openModal = document.getElementById('inreject');
+
+            const rejectBtn = document.querySelector('.rejectbtn');
+            const inRejectModal = document.getElementById('inreject');
+            const editButton = document.querySelector('.edit_'+ dataid +' .editTodo');
+
+            if (rejectBtn && inRejectModal && editButton) {
+        rejectBtn.addEventListener('click', function () {
+            editButton.click();
+            const modalInstance = bootstrap.Modal.getInstance(inRejectModal);
+            /*
+            if (modalInstance) {
+                // Wait until modal is fully hidden
+                inRejectModal.addEventListener('hidden.bs.modal', function handler() {
+                    inRejectModal.removeEventListener('hidden.bs.modal', handler);
+                    // ✅ Trigger the editTodo click to open #todomodel
+                    editButton.click();
+                });
+                modalInstance.hide();
+            } else {
+                // Fallback for older Bootstrap/jQuery modal
+                $(inRejectModal).on('hidden.bs.modal', function handler() {
+                    $(inRejectModal).off('hidden.bs.modal', handler);
+                    editButton.click();
+                }).modal('hide');
+            }
+                */
+        });
+    }
+
+            /*
+            if (triggerBtn && editBtnInModal) {
+                triggerBtn.addEventListener('click', function () {
+                    editBtnInModal.click(); // ✅ Trigger the other button’s click event
+                });
+            }
+                */
+
 
             let eidtdiv = ".edit_" + dataid;
            
@@ -3826,6 +4021,46 @@ filecont.style.display = "block";
 
 let files = JSON.parse(this.dataset.files || "[]");
 let filesList = document.querySelector('.todo-files-list');
+
+
+const list = document.getElementById('createPdfList');
+    const addTile = list.querySelector('.pdf-add-tile');
+
+    // Remove any existing tiles (previous create/edit)
+    list.querySelectorAll('.d-flex.align-items-center.gap-2.px-2').forEach(el => el.remove());
+
+    // If there are existing files, append them
+    files.forEach(file => {
+        const url = file.url || '';
+        const fname = file.name || 'Unknown';
+        const size = Math.round((file.size || 0) / 1024) + ' KB';
+        const parts = fname.split("_@_");
+        const name = parts[0] || "Unknown";
+        const id = parts[1] || "";
+        const ext = name.split('.').pop().toLowerCase();
+
+        let icon = 'https://admin.onlinesystems.info/build/img/file-icon.svg';
+        if (['pdf'].includes(ext)) icon = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+        if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = url;
+        if (['mp4','mov','avi','mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+
+        const tile = document.createElement('div');
+        tile.className = 'd-flex align-items-center gap-2 px-2';
+        tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+        tile.innerHTML = `
+            <img src="${icon}" alt="${name}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+            <div class="d-flex flex-column" style="min-width:100px;">
+                <small style="font-weight:600;">${name}</small>
+                <small style="color:#6b7280;">${size}</small>
+            </div>
+            <button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)">
+                <i class="ti ti-trash"></i>
+            </button>
+        `;
+
+        // Insert before the “+ Add” tile
+        list.insertBefore(tile, addTile);
+    });
 
 // Hide container if no files
 
@@ -3903,16 +4138,61 @@ function formatFileSize(bytes) {
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
             let isPrivate   = this.dataset.is_private;
-            let userimg   = this.dataset.image;
-            let dataown = this.dataset.own;
-
+            let userimg     = this.dataset.image;
+            let dataown     = this.dataset.own;
+            let owner       = this.dataset.owner;
+            let reason      = this.dataset.reason;
+            let iscomplete  = this.dataset.complete;
 
             let forshared = document.querySelector('.forshared');
-            if(isPrivate == "1"){
+            
+            
+
+            let todfinish = document.querySelector('.dev_finish');
+            let ownerstate = document.querySelector('.owner-state');
+            let remreason = document.querySelector('.rem_reason');
+            let todremove = document.querySelector('.todo-removed');
+            let todcomplete = document.querySelector('.todo-complete');
+            let todwaiting = document.querySelector('.todo-waiting');
+
+            document.getElementById("isremove").value = 0;
+
+            todremove.style.display = "none";
+            todcomplete.style.display = "none";
+            todwaiting.style.display = "none";
+            
+
+            if(owner == "0"){
+                todfinish.style.display = "block";
                 forshared.style.display = "none";
+                ownerstate.style.display = "none";
+                document.getElementById("setcomplete").value = 2;
             }else{
+                todfinish.style.display = "none";
                 forshared.style.display = "block";
+                ownerstate.style.display = "block";
+                document.getElementById("setcomplete").value = 1;
+                document.getElementById("isremove").value = 1;
+
+                if(iscomplete == "-1"){
+                    todremove.style.display = "block";
+                    remreason.innerText = reason;
+                }else if(iscomplete == "2"){
+                    todcomplete.style.display = "block";
+                }else{
+                    todwaiting.style.display = "block";
+                }
+
+                if(isPrivate == "1"){
+                    forshared.style.display = "none";
+                }else{
+                    forshared.style.display = "block";
+                }
+
             }
+
+            
+
 
             let edivbtn = document.querySelector('.openEditFromView');
             edivbtn.style.display = "none";
@@ -3922,12 +4202,12 @@ function formatFileSize(bytes) {
             let markfial = document.querySelector('.markfail');
             markfial.innerText = "Mark as Failed";
 
-            document.getElementById("isremove").value = 0;
+            
 
             let removals = document.querySelectorAll('.removal');
             let faileds = document.querySelectorAll('.failed');
 
-            document.getElementById("iscomplete").value = 1;
+            document.getElementById("iscomplete").value = "-1";
             
             removals.forEach(el => {
                 el.style.display = "none";
@@ -3963,10 +4243,13 @@ function formatFileSize(bytes) {
                 let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
 
                 let ownedEl = document.querySelector('.owned');
+                let ownerstate = document.querySelector('.owner-state');
                 if (isReminderActive) {
                     ownedEl.style.display = "flex";
+                    ownerstate.style.display = "block";
                 } else {
                     ownedEl.style.display = "none";
+                    ownerstate.style.display = "none";
                 }
             }
 
@@ -4174,6 +4457,15 @@ document.querySelectorAll(".addtodo").forEach(btn => {
     document.getElementById("btnShared").click();
     document.getElementById("btnToday").click();
     document.querySelector(".time-btn-2").click();
+    document.getElementById('todo_name').value = "";
+    document.querySelector(".rem-30").click();
+
+    document.querySelectorAll('.user_div.user_active').forEach(el => {
+            el.classList.remove('user_active');
+        });
+
+
+    
 
     document.getElementById("todo_heading").innerText = "Create new ToDo";
     });
@@ -4506,7 +4798,7 @@ function showContent(tab) {
     }
 
 
-    window.createAddPdfFile = function() {
+window.createAddPdfFile = function() {
     var input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/pdf, video/mp4, image/png, image/jpeg';
@@ -4598,6 +4890,22 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+
+document.querySelectorAll('.user-slider-wrapper').forEach(wrapper => {
+    const slider = wrapper.querySelector('.user-slider');
+    const leftBtn = wrapper.querySelector('.left-btn');
+    const rightBtn = wrapper.querySelector('.right-btn');
+
+    leftBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: -200, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: 200, behavior: 'smooth' });
+    });
+});
+
 
         </script>
         @endsection
