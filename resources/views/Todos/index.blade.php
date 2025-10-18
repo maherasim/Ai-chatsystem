@@ -2293,7 +2293,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
                                 style="background:#fff; padding:9px; border-radius:10px;">
-                                <span>Did you did all tasks</span>
+                                <span>Did you do check all tasks</span>
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
                                         <input type="checkbox" name="all_tasks_check" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
@@ -2303,7 +2303,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
                                 style="background:#fff; padding:9px; border-radius:10px;">
-                                <span>Did you did all tasks</span>
+                                <span>Did you upload all files</span>
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
                                         <input type="checkbox" name="files_upload" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
