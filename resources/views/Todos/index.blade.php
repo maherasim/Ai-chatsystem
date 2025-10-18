@@ -11,6 +11,10 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 
 <style>
 
+    .required{
+        border-color:red;
+    }
+
     .invit-img img{
         max-height:80px;
     }
@@ -1803,7 +1807,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 × removed closed
             </button>-->
 
-            <form action="{{ route('todos.store') }}" method="POST" enctype="multipart/form-data">
+            <form  id="todoForm" action="{{ route('todos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="todo_id" id="todo_id">
                 <input type="hidden" name="start_date" id="startDateHidden">
@@ -1811,31 +1815,43 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <input type="hidden" name="end_time" id="endTimeHidden">
                 <input type="hidden" name="end_date" id="endDateHidden">
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
-                <input type="hidden" name="priority" id="priorityHidden" value="low">
-                <input type="hidden" name="reminder" id="reminderHidden" value="30">
-                <input type="hidden" name="todaytime" id="timeHidden" value="2">
+                <input type="hidden" name="todo_visibility" id="todo_visibility">
+                <input type="hidden" name="selected_user" id="selected_user">
+                <input type="hidden" name="priority" id="priorityHidden" >
+                <input type="hidden" name="reminder" id="reminderHidden" >
+                <input type="hidden" name="todaytime" id="timeHidden" >
+                 <input type="hidden" name="todo_type" id="todo_type">
 
                 <!-- new changes -->
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
                 <h5  style="font-weight: 600; color: #1e293b;"><span id="todo_heading">Create new ToDo</span>
                     <!-- Toggle Buttons -->
-                        <div style="padding:8px 5px; background-color: white; background-color: #F2F2F2; border-radius: 12px; float:right; border-radius: 10px; display: flex; gap: 8px;">
-                            <button type="button" id="btnShared"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
-                                style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Shared ToDo's
-                            </button>
-                            <button type="button" id="btnPrivate"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Private ToDo's
-                            </button>
-                        </div>
+                        <div style="padding:8px 5px; background-color: #F2F2F2; border-radius: 10px; float:right; display: flex; gap: 8px; margin-top:10px;">
+        <button type="button" id="btnShared"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnPrivate').style.backgroundColor='transparent';
+                document.getElementById('btnPrivate').style.color='#64748b';
+                document.getElementById('todo_visibility').value='shared';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Shared ToDo's
+        </button>
 
-
-
-
+        <button type="button" id="btnPrivate"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnShared').style.backgroundColor='transparent';
+                document.getElementById('btnShared').style.color='#64748b';
+                document.getElementById('todo_visibility').value='private';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Private ToDo's
+        </button>
+    </div>
                 </h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
 
@@ -1844,14 +1860,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <select class="form-control selection">
+                            <select id="select_project" class="form-control selection">
                                 <option value="">Select Project</option>
                                 <option value="1">Project1</option>
                                 <option value="2">Project2</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control selection">
+                            <select id="select_team" class="form-control selection">
                                 <option value="">Select Team</option>
                                 <option value="1">Team 1</option>
                                 <option value="2">Team 2</option>
@@ -1862,7 +1878,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <h5>Select Users</h5>
                     <p>Project - Team</p>
 
-
                     <div id="userScroller" class="user-slider-wrapper" style="display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 16px; -ms-overflow-style: none; scrollbar-width: none;" onscroll=" var scroller=this; var containerWidth=scroller.offsetWidth; var index=Math.round(scroller.scrollLeft/containerWidth); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot'+i); dot.style.background=(i===index)?'#00c469':'#d4d4d4'; dot.style.width=(i===index)?'40px':'20px'; } ">
 
                             <style>
@@ -1870,7 +1885,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     display: none;
                                 }
                             </style>
-
 
                             @foreach($users as $cuser)
                                 <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 135px;" 
@@ -1883,7 +1897,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 </div>
                             @endforeach
 
-                            
                         </div>
                         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
                             <div id="dot_user0" style="width: 40px; height: 5px; border-radius: 8px; background: #00c469; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:0*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i);  dot.style.background=(i===0)?'#00c469':'#d4d4d4';  dot.style.width=(i===0)?'40px':'20px'; } ">
@@ -1920,28 +1933,32 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <!-- Toggle Today/Scheduled -->
                     <div style="  margin-bottom: 6px; margin-top: 4px;">
                         <div style="border-radius: 10px; padding: 6px; gap: 8px; background:#fff;">
-                            <button class="btnToday" id="btnToday" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('timeRow').classList.add('justify-content-center1');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Today ToDo's
-                            </button>
+        <button class="btnToday" id="btnToday" type="button"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                document.getElementById('btnScheduled').style.color='#64748b';
+                document.getElementById('timeRow').classList.add('justify-content-center1');
+                document.getElementById('todo_type').value='today';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Today ToDo's
+        </button>
 
-                            <button class="btnScheduled" id="btnScheduled" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnToday').style.backgroundColor='transparent';
-                    document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled ToDo's
-                            </button>
-                        </div>
+        <button class="btnScheduled" id="btnScheduled" type="button"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnToday').style.backgroundColor='transparent';
+                document.getElementById('btnToday').style.color='#64748b';
+                document.getElementById('timeRow').classList.remove('justify-content-center');
+                document.getElementById('todo_type').value='scheduled';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Scheduled ToDo's
+        </button>
+    </div>
                     </div>
                     
                     <div class="gap-2 " style="padding:8px;">
@@ -1949,12 +1966,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             <p>Time to deliver the work</p>
                     </div>
                    
-
-                    
-
                     <!-- selection of tody section -->
                     <div class="d-flex1 gap-2 mb-3 bg-white" id="timeToday" style="padding: 8px;";>
-                        <button type="button" class="time-btn time-btn-2 active" data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn time-btn-2 " data-value="2">2 Hour</button>
                         <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
                         <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
                         <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
@@ -2065,22 +2079,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex1 gap-2 bg-white">
-                                <button class="priority active" type="button" id="priorityLow" >Low</button>
+                                <button class="priority active1" type="button" id="priorityLow" >Low</button>
                                 <button class="priority" type="button" id="priorityMiddle" >Middle</button>
                                 <button class="priority" type="button" id="priorityHigh" >High</button>
                             </div>
                         </div>
                         
                     </div>
-                    <!--
-                    <div class="row g-2 mt-2">
-                        <div class="col-md-12">
-                            <input name="description" type="text" class="form-control" placeholder="Section Description"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                        </div>
-
-                    </div>-->
-
+                    
                     <div class="row g-2 mt-2" id="sectionsWrapper">
                         <div class="col-md-12 d-flex align-items-center section-item">
                             <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
@@ -2093,13 +2099,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 </div>
 
 
-
-
-
                 <!-- Shared / Private ToDo Section -->
                 <div style="background-color: #f9f9fb; display:none; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-
-                    
 
                     <!-- Project & Members Inputs -->
                     <div class="row g-2 mb-0 justify-content-center">
@@ -2141,7 +2142,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 <button type="button" id="reminder3" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">3 Hour</button>
                                 <button type="button" id="reminder4" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">4 Hour</button>-->
                                 <div class="d-flex " style="background:#fff; border-radius: 5px; gap: 3px; padding: 5px;">
-                                    <button type="button" class="reminder-btn rem-30 active" data-value="30">30 Min</button>
+                                    <button type="button" class="reminder-btn rem-30 " data-value="30">30 Min</button>
                                     <button type="button" class="reminder-btn rem-60" data-value="60">60 Min</button>
                                     <button type="button" class="reminder-btn rem-120" data-value="120">2 Hour</button>
                                     <button type="button" class="reminder-btn rem-180" data-value="180">3 Hour</button>
@@ -2152,21 +2153,16 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     </div>
                 </div>
 
-              
-
                 <div class="text-center" style="margin-top: 15px;">
                     <button class="btn" type="button" data-bs-dismiss="modal"
                         style="background-color: #f7f7f7; color:#64748b; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                         Close
                     </button>
-                    <button class="btn" 
+                    <button id="saveBtn" type="button" class="btn" 
                         style="background-color: #f7f7f7; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                         Save & Close
                     </button>
                 </div>
-
-
-
 
             </div>
 </form>
@@ -4002,7 +3998,7 @@ console.log("Raw members data:", e_members);
 
             for (let attr of this.attributes) {
             if (attr.name.startsWith('data-')) {
-                    editBtnInModal.setAttribute(attr.name, attr.value);
+                  //  editBtnInModal.setAttribute(attr.name, attr.value);
                 }
             }
 
@@ -4218,9 +4214,12 @@ function formatFileSize(bytes) {
                 
             });
 
+            //let ownerstate = document.querySelector('.owner-state');
+
             let ownedEl = document.querySelector('.owned');
             if (dataown == "0") {
                 ownedEl.style.display = "none";
+                ownerstate.style.display = "none";
             } else if (dataown == "private"){
                 ownedEl.style.display = "flex";
                 edivbtn.style.display = "block";
@@ -4230,6 +4229,8 @@ function formatFileSize(bytes) {
                 removals.forEach(el => {
                     el.style.display = "block";
                 });
+
+                ownerstate.style.display = "none";
 
                 faileds.forEach(el => {
                     el.style.display = "none";
@@ -4243,10 +4244,15 @@ function formatFileSize(bytes) {
                 let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
 
                 let ownedEl = document.querySelector('.owned');
-                let ownerstate = document.querySelector('.owner-state');
-                if (isReminderActive) {
+                
+                if (isReminderActive ) {
                     ownedEl.style.display = "flex";
-                    ownerstate.style.display = "block";
+                    if(owner == "1"){
+                        ownerstate.style.display = "block";
+                    }else{
+                        ownerstate.style.display = "none";
+                    }
+                    
                 } else {
                     ownedEl.style.display = "none";
                     ownerstate.style.display = "none";
@@ -4454,11 +4460,11 @@ function formatFileSize(bytes) {
 document.querySelectorAll(".addtodo").forEach(btn => {
     btn.addEventListener("click", function() {
     document.getElementById('todo_id').value = "";
-    document.getElementById("btnShared").click();
-    document.getElementById("btnToday").click();
-    document.querySelector(".time-btn-2").click();
+    //document.getElementById("btnShared").click();
+    //document.getElementById("btnToday").click();
+   // document.querySelector(".time-btn-2").click();
     document.getElementById('todo_name').value = "";
-    document.querySelector(".rem-30").click();
+   // document.querySelector(".rem-30").click();
 
     document.querySelectorAll('.user_div.user_active').forEach(el => {
             el.classList.remove('user_active');
@@ -4892,17 +4898,105 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-document.querySelectorAll('.user-slider-wrapper').forEach(wrapper => {
-    const slider = wrapper.querySelector('.user-slider');
-    const leftBtn = wrapper.querySelector('.left-btn');
-    const rightBtn = wrapper.querySelector('.right-btn');
+const titleEl = document.getElementById('todo_name');
+const projectEl = document.getElementById('select_project');
+const teamEl = document.getElementById('select_team');
 
-    leftBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: -200, behavior: 'smooth' });
-    });
 
-    rightBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: 200, behavior: 'smooth' });
+document.getElementById('saveBtn').addEventListener('click', function (e) {
+    
+    e.preventDefault();
+    const form = document.getElementById('todoForm');
+
+  const title = titleEl.value.trim();
+  const project = projectEl.value;
+  const team = teamEl.value;
+
+    const priorityHidden = document.getElementById('priorityHidden').value;
+    const reminderHidden = document.getElementById('reminderHidden').value;
+    const timeHidden = document.getElementById('timeHidden').value;
+    const todoType = document.getElementById('todo_type').value;
+    const todoVisibility = document.getElementById('todo_visibility').value;
+
+    const startDate = document.getElementById('dateInput')?.value;
+    const endDate = document.getElementById('enddateInput')?.value;
+    const endTime = document.getElementById('endTimeSelect')?.value;
+    
+
+    if (!todoVisibility) {
+        alert("Please select 'Shared ToDo's' or 'Private ToDo's' before submitting.");
+        return;
+    }
+
+    if (!todoType) {
+        alert("Please select 'Today ToDo's' or 'Scheduled ToDo's' before submitting.");
+        return;
+    }
+
+    if (todoVisibility === 'shared') {
+        const activeUser = document.querySelector('.user_div.user_active');
+        if (!activeUser) {
+            alert('Please select at least one user for Shared ToDo.');
+            return;
+        }
+    }
+
+    if (todoType === 'scheduled') {
+        if (!startDate) {
+            alert('Please select a Start Date.');
+            return;
+        }
+        if (!endDate) {
+            alert('Please select a Deliver Date.');
+            return;
+        }
+        if (!endTime) {
+            alert('Please select a Deliver Time.');
+            return;
+        }
+
+        // Optional: check that end date >= start date
+        if (new Date(endDate) < new Date(startDate)) {
+            alert('Deliver Date cannot be earlier than Start Date.');
+            return;
+        }
+    }else if(!timeHidden){
+        alert('Please provide Deliver time before submitting.');
+            return;
+    }
+
+
+
+  // Reset previous error highlights
+  [titleEl, projectEl, teamEl].forEach(el => el.classList.remove('required'));
+
+  // Add highlight if empty
+  if (!title) titleEl.classList.add('required');
+  if (!project) projectEl.classList.add('required');
+  if (!team) teamEl.classList.add('required');
+
+  // Stop submission if any field is empty
+  if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+    alert('Please fill all required fields before submitting.');
+    return;
+  }
+
+    form.submit();
+});
+
+[titleEl, projectEl, teamEl].forEach(el => {
+  el.addEventListener('input', () => {
+    if (el.value.trim() !== '') {
+      el.classList.remove('required');
+    }
+  });
+});
+
+
+document.querySelectorAll('.user_div').forEach(div => {
+    div.addEventListener('click', () => {
+        
+        document.getElementById('selected_user').value = div.dataset.userId;
     });
 });
 
