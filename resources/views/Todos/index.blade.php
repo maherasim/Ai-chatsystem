@@ -1919,7 +1919,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <div style="background-color: #f9f9fb; border-radius:10px; padding:8px; margin-bottom:10px;">
                     <!-- Toggle Today/Scheduled -->
                     <div style="  margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 8px; gap: 8px; background:#fff;">
+                        <div style="border-radius: 10px; padding: 6px; gap: 8px; background:#fff;">
                             <button class="btnToday" id="btnToday" type="button"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
