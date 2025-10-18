@@ -2159,7 +2159,7 @@
                                 });
 
                                 // Activate minimal slider if more than 3 cards
-                                var shouldSlide = items.length > 3;
+                                var shouldSlide = items.length > 3f;
                                 if (shouldSlide) {
                                     root.classList.add('is-slider');
                                 } else {
@@ -2443,23 +2443,23 @@
                                                 @elseif($ticket->status == 'in_delayed') #ffebee
                                                 @elseif($ticket->status == 'in_done') #D1FAE5
                                                 @else #D1FAE5
-                                                @endif; border-radius: 6px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                                                @endif; border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center;">
                                                 <img src="{{ URL::asset('/build/img/' . 
                                                     ($ticket->status == 'new_ticket' ? 'blueflag.svg' : 
                                                      ($ticket->status == 'in_progress' ? 'greenflag.svg' : 
                                                       ($ticket->status == 'in_hold' ? 'yelowflag.svg' : 
                                                        ($ticket->status == 'in_delayed' ? 'redflag.svg' : 
                                                         ($ticket->status == 'in_done' ? 'greenflag.svg' : 'greenflag.svg'))))) 
-                                                ) }}" alt="Flag" width="20px" height="20px">
+                                                ) }}" alt="Flag" width="18px" height="18px">
                                             </div>
 
                                             <!-- Logo (center) -->
                                             <div class="text-center" style="flex-grow: 1;">
                                                 <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
                                                     @if($ticket->project && $ticket->project->logo_path)
-                                                        <img src="{{ asset('storage/' . $ticket->project->logo_path) }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                        <img src="{{ asset('storage/' . $ticket->project->logo_path) }}" alt="Project Logo" style="height: 45px; width: 45px; object-fit: cover;border-radius:2px;" class="rounded-cirle" >
                                                     @else
-                                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 35px; width: 35px; object-fit: cover;">
+                                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 45px; width: 45px; object-fit: cover;" class="rounded-cirle">
                                                     @endif
                                                 </div>
                                                 <div>
@@ -2470,7 +2470,7 @@
                                             </div>
 
                                             <!-- Priority -->
-                                            <div style="background: #ffffff; padding: 3px 8px; border-radius: 12px; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <div style="background: #ffffff; padding: 3px 4px; border-radius: 2px; display: flex; align-items: center; gap: 8px; margin-top: 2px;">
                                                 <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
                                                 <span style="color: #4caf50; font-size: 12px; font-weight: 500;">Low</span>
                                             </div>
@@ -2480,7 +2480,7 @@
 
                                         <!-- Ticket Icon -->
                                         <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
-                                            style="height: 32px; width: 32px; cursor: pointer;background:#F5F5F5;padding:3px;border-radius:5px;"
+                                            style="height: 40px; width: 38px; cursor: pointer;background:#F5F5F5;padding:5px;border-radius:5px;"
                                             alt="ticket"
                                             data-bs-toggle="modal"
                                             data-bs-target="#ticketModal"
