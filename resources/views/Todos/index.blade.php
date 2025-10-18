@@ -12,7 +12,7 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 <style>
 
     .invit-img img{
-        max-height:100px;
+        max-height:80px;
     }
 
    .user-slider {
@@ -1873,7 +1873,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
 
                             @foreach($users as $cuser)
-                                <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;" 
+                                <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 135px;" 
                                     id="user_{{$cuser->_id}}" 
                                     data-user-id="{{$cuser->_id}}">
                                     <div class="invit-img">
