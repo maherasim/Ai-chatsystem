@@ -400,7 +400,7 @@ use Carbon\Carbon;
     <!-- Left Sidebar Menu -->
 
     <div style="visibility: visible;">
-        @include('Todos.todosidebar')
+        @include('Chats.chatsidebar')
     </div>
     <!-- /Left Sidebar Menu -->
 
