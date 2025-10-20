@@ -921,7 +921,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Clyde Smith</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">03:15 AM</span>
@@ -1143,7 +1143,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Sharon Ford</h6>
-                                                    <p>Hi How are you 🔥</p>
+                                                    <p>Hi How are you ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -1205,7 +1205,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Wilbur Martinez</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -1305,7 +1305,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Clyde Smith</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">03:15 AM</span>
@@ -1596,7 +1596,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Sharon Ford</h6>
-                                                    <p>Hi How are you 🔥</p>
+                                                    <p>Hi How are you ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -1658,7 +1658,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Wilbur Martinez</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -1821,7 +1821,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Clyde Smith</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">03:15 AM</span>
@@ -2048,7 +2048,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Sharon Ford</h6>
-                                                    <p>Hi How are you 🔥</p>
+                                                    <p>Hi How are you ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -2110,7 +2110,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Wilbur Martinez</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -2209,7 +2209,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Clyde Smith</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">03:15 AM</span>
@@ -2500,7 +2500,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Sharon Ford</h6>
-                                                    <p>Hi How are you 🔥</p>
+                                                    <p>Hi How are you ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -2562,7 +2562,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Wilbur Martinez</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -2693,7 +2693,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Clyde Smith</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">03:15 AM</span>
@@ -2952,7 +2952,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Sharon Ford</h6>
-                                                    <p>Hi How are you 🔥</p>
+                                                    <p>Hi How are you ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>
@@ -3014,7 +3014,7 @@
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Wilbur Martinez</h6>
-                                                    <p>Haha oh man 🔥</p>
+                                                    <p>Haha oh man ðŸ”¥</p>
                                                 </div>
                                                 <div class="chat-user-time">
                                                     <span class="time">02:40 PM</span>

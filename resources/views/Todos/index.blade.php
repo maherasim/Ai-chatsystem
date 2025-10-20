@@ -1,12 +1,93 @@
 @php
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+$ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work Independently'];
 @endphp
+
+
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
 @section('content')
 
 <style>
+
+    .required{
+        border-color:red;
+    }
+
+    .invit-img img{
+        max-height:80px;
+    }
+
+   .user-slider {
+    display: flex !important;          /* override Bootstrap row */
+    flex-wrap: nowrap !important;      /* prevent new lines */
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    padding: 10px 40px; /* space for arrows */
+}
+
+.user-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.user_div {
+    flex: 0 0 auto;                    /* don't shrink */
+    width: 160px;                      /* each card fixed width */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    z-index: 2;
+    width: 35px;
+    height: 60px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.scroll-btn:hover {
+    background: #f0f0f0;
+}
+
+.left-btn { left: 0; }
+.right-btn { right: 0; }
+
+
+
+
+.text-center{
+    text-align:center;
+}
+.rating-group label {
+        color: #ccc;
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.2s;
+        margin-right: 3px;
+    }
+
+    .rating-group label.hovered,
+    .rating-group label.active {
+        color: #facc15; /* gold color for active/hovered stars */
+    }
+
     #timeToday{
         display:flex;
     }
@@ -400,7 +481,7 @@ use Carbon\Carbon;
     <!-- Left Sidebar Menu -->
 
     <div style="visibility: visible;">
-        @include('Chats.chatsidebar')
+        @include('Todos.todosidebar')
     </div>
     <!-- /Left Sidebar Menu -->
 
@@ -419,13 +500,20 @@ use Carbon\Carbon;
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $user->profile_image)) }} class="rounded-circle" alt="image">
-                        
+                        <img src="{{ asset('storage/' . $user->profile_image) }}" class="rounded-circle" alt="image">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6>{{$user->name}}</h6>
                         <p class="last-seen text-truncate"> {{$user->type}}</p>
                     </div>
+                    <div class="overflow-hidden">
+                            <h6 class="mb-0" style="cursor:pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" >
+                                <img src="{{ asset('build/img/arrow.svg') }}" alt="arrow"
+                                                style="margin-left:10px; width: 18px;"></h6>
+
+
+                                               
+                                            </div>
                 </div>
 
                 <!-- Right Side Icons -->
@@ -453,6 +541,13 @@ use Carbon\Carbon;
                     </form>
                 </div>
             </div>
+
+
+
+
+
+                       
+
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group">
@@ -467,7 +562,7 @@ use Carbon\Carbon;
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
-                                <button class="btn btn-danger addtodo" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap; display:none;">
+                                <button class="btn btn-danger addtodo" data-bs-toggle="modal" data-bs-target="#todomodel" style="white-space: nowrap;">
                                     Add TODO
                                 </button>
                                 
@@ -508,6 +603,10 @@ use Carbon\Carbon;
                                     $todotyp = "private";
                                     
                                 }
+                                $owner = 0;
+                                if($todo->user_id == $user->_id){
+                                    $owner = 1;
+                                }
 
                                // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
@@ -523,7 +622,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -535,18 +633,26 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-end_time="{{ $todo->end_time }}"
     data-is_private="{{ $todo->is_private }}"
     data-priority="{{ $todo->priority }}"
+    data-reason="{{$todo->reason}}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
-    data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+    data-owner="{{$owner}}"
+    data-complete="{{$todo->completed}}"
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
-    data-own="1"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
+    data-own="today"
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-top:0px; margin-left:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -650,7 +756,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
-   data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -686,7 +792,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                                                     @else
                                                         <small class="text-muted">
-                                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
+                                                             Private
                                                         </small>
                                                     @endif
                                                 </div>
@@ -724,7 +830,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
                                             
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center" style="gap: 2rem !important; justify-content: center; font-size:13px; gap: .35rem !important;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="gap: unset !important; justify-content: inherit; font-size:13px; gap: .35rem !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -737,7 +843,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center" style="justify-content: center; font-size:13px; gap: .35rem !important;" >
+                                                <div class="d-flex align-items-center gap-1 text-center" style="justify-content: inherit; font-size:13px; gap: unset !important;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -760,14 +866,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time);
                                         @endphp
 
-                                        @if ($endDateTime->isPast())
-                                            <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                                Need Counter
-                                            </button>
-                                        @endif
+                                        
     </div>
 
-                                        <div class="counter-div" id="timer-{{ $index }}">
+                                        <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $todo->id }}">
                                             <span id="asimclic-{{ $index }}"></span>
                                         </div>
                                     
@@ -800,10 +902,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 // When countdown enters reminder phase, show container
                 if (duration <= reminderSeconds) {
                     container.style.display = "flex"; // or "block" if needed
+                    container.dataset.reminderActive = "1"; 
 
                     // color changes during reminder phase
                     if (duration <= 0) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        container.style.backgroundColor = "#e74c3c"; // Final stage
                         clearInterval(timer);
 
                         let todoCard = document.querySelector('.viewTodo[data-id="{{ $todo->id }}"]');
@@ -813,11 +916,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         }
 
                     } else if (duration <= part) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                        container.style.backgroundColor = "#e74c3c"; //  last 1/3
                     } else if (duration <= part * 2) {
-                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                        container.style.backgroundColor = "#ff9800"; //  middle 1/3
                     } else {
-                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                        container.style.backgroundColor = "#4CAF50"; //  first 1/3
                     }
                 }
 
@@ -834,6 +937,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             let container = document.getElementById('timer-{{ $index }}');
             let display = document.getElementById('asimclic-{{ $index }}');
             display.innerText = "Task Expired";
+            container.dataset.reminderActive = "1";
             container.style.backgroundColor = "#e74c3c";
         });
     </script>
@@ -881,6 +985,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                              @forelse($privateTodos  as $index => $todo)
                             
                              @php
+                             $todotyp = "shared";
+                                if($todo->is_private == "1"){
+                                    $todotyp = "private";
+                                    
+                                }
+                            
+                             
                                 //$remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
 // echo time();
@@ -910,16 +1021,21 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
-    data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-sections='@json($todo->description)'
-    data-own="1"
+    data-own="private"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1019,7 +1135,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
-   data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -1049,9 +1165,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             <div class="d-flex align-items-center">
                                                  <div>
                                                     <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
-                                                    <small class="text-muted">
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle me-1" alt="image" style="width: 20px; height: 20px;"> private
-                                                    </small>
+                                                    @if($todo->is_private == 0)
+                                                        <small class="text-muted">
+                                                            <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
+                                                        </small>
+                            
+
+                                                    @else
+                                                        <small class="text-muted">
+                                                             Private
+                                                        </small>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -1091,7 +1215,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: unset !important; justify-content: inherit;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1104,7 +1228,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center"  style="justify-content: center;font-size:14px; gap: .35rem !important;">
+                                                <div class="d-flex align-items-center gap-1 text-center"  style="justify-content: inherit;font-size:14px; gap: unset !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -1157,14 +1281,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                     // color changes during reminder phase
                     if (duration <= 0) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ Final stage
                         clearInterval(timer);
                     } else if (duration <= part) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ last 1/3
                     } else if (duration <= part * 2) {
-                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                        container.style.backgroundColor = "#ff9800"; // ðŸŸ  middle 1/3
                     } else {
-                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                        container.style.backgroundColor = "#4CAF50"; // ðŸŸ¢ first 1/3
                     }
                 }
 
@@ -1261,7 +1385,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-own="0"
-    data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
+    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
     data-total="{{ $todo->total_time }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
@@ -1270,7 +1399,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 40px; height: 40px; margin:5px; margin-left:0px; margin-top:0px;">
+                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1311,7 +1440,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
-   data-image="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $todo->user->profile_image)) }}"
+   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
    data-reminder="{{ $todo->reminder }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
@@ -1400,7 +1529,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                             
                                                 
                                                 @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
-                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: 2rem !important; justify-content: center;font-size:14px;" >
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: unset !important; justify-content: inherit;font-size:14px;" >
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
                                                         Today</span></span>
                                                     <span></span>
@@ -1413,7 +1542,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     </span>
                                                 
                                                 @else
-                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: center;font-size:14px; gap: .35rem !important;">
+                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: inherit;font-size:14px; gap: unset !important;">
                                                     <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
                                                     <span></span>
                                                     <span class="text-muted">|</span>
@@ -1464,14 +1593,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                     // color changes during reminder phase
                     if (duration <= 0) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 Final stage
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ Final stage
                         clearInterval(timer);
                     } else if (duration <= part) {
-                        container.style.backgroundColor = "#e74c3c"; // 🔴 last 1/3
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ last 1/3
                     } else if (duration <= part * 2) {
-                        container.style.backgroundColor = "#ff9800"; // 🟠 middle 1/3
+                        container.style.backgroundColor = "#ff9800"; // ðŸŸ  middle 1/3
                     } else {
-                        container.style.backgroundColor = "#4CAF50"; // 🟢 first 1/3
+                        container.style.backgroundColor = "#4CAF50"; // ðŸŸ¢ first 1/3
                     }
                 }
 
@@ -1546,7 +1675,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 aria-label="Close"
                 onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                × removed close
+                Ã— removed close
             </button>-->
 
             <form id="editForm" method="POST">
@@ -1675,10 +1804,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                × removed closed
+                Ã— removed closed
             </button>-->
 
-            <form action="{{ route('todos.store') }}" method="POST">
+            <form  id="todoForm" action="{{ route('todos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="todo_id" id="todo_id">
                 <input type="hidden" name="start_date" id="startDateHidden">
@@ -1686,31 +1815,43 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <input type="hidden" name="end_time" id="endTimeHidden">
                 <input type="hidden" name="end_date" id="endDateHidden">
                 <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
-                <input type="hidden" name="priority" id="priorityHidden" value="low">
-                <input type="hidden" name="reminder" id="reminderHidden" value="60">
-                <input type="hidden" name="todaytime" id="timeHidden" value="2">
+                <input type="hidden" name="todo_visibility" id="todo_visibility">
+                <input type="hidden" name="selected_user" id="selected_user">
+                <input type="hidden" name="priority" id="priorityHidden" >
+                <input type="hidden" name="reminder" id="reminderHidden" >
+                <input type="hidden" name="todaytime" id="timeHidden" >
+                 <input type="hidden" name="todo_type" id="todo_type">
 
                 <!-- new changes -->
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
                 <h5  style="font-weight: 600; color: #1e293b;"><span id="todo_heading">Create new ToDo</span>
                     <!-- Toggle Buttons -->
-                        <div style="padding:8px 5px; background-color: white; background-color: #F2F2F2; border-radius: 12px; float:right; border-radius: 10px; display: flex; gap: 8px;">
-                            <button type="button" id="btnShared"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnPrivate').style.backgroundColor='transparent'; document.getElementById('btnPrivate').style.color='#64748b';"
-                                style="border: none; background-color: #22c55e; color: white; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Shared ToDo's
-                            </button>
-                            <button type="button" id="btnPrivate"
-                                onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('btnShared').style.backgroundColor='transparent'; document.getElementById('btnShared').style.color='#64748b';"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Private ToDo's
-                            </button>
-                        </div>
+                        <div style="padding:8px 5px; background-color: #F2F2F2; border-radius: 10px; float:right; display: flex; gap: 8px; margin-top:10px;">
+        <button type="button" id="btnShared"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnPrivate').style.backgroundColor='transparent';
+                document.getElementById('btnPrivate').style.color='#64748b';
+                document.getElementById('todo_visibility').value='shared';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Shared ToDo's
+        </button>
 
-
-
-
+        <button type="button" id="btnPrivate"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnShared').style.backgroundColor='transparent';
+                document.getElementById('btnShared').style.color='#64748b';
+                document.getElementById('todo_visibility').value='private';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Private ToDo's
+        </button>
+    </div>
                 </h5>
                 <p style="color: #64748b; font-size: 14px;">Manage your Time</p>
 
@@ -1719,14 +1860,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <select class="form-control selection">
+                            <select id="select_project" class="form-control selection">
                                 <option value="">Select Project</option>
                                 <option value="1">Project1</option>
                                 <option value="2">Project2</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control selection">
+                            <select id="select_team" class="form-control selection">
                                 <option value="">Select Team</option>
                                 <option value="1">Team 1</option>
                                 <option value="2">Team 2</option>
@@ -1737,50 +1878,87 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     <h5>Select Users</h5>
                     <p>Project - Team</p>
 
-                    <div class="row">
-                        @foreach($users as $cuser)
-                            <div class="col-md-3 user_div invit-box text-center" 
-                                id="user_{{$cuser->_id}}" 
-                                data-user-id="{{$cuser->_id}}">
-                                <div class="invit-img">
-                                    <img src="{{ Str::replaceFirst('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $cuser->profile_image)) }}" />
+                    <div id="userScroller" class="user-slider-wrapper" style="display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 16px; -ms-overflow-style: none; scrollbar-width: none;" onscroll=" var scroller=this; var containerWidth=scroller.offsetWidth; var index=Math.round(scroller.scrollLeft/containerWidth); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot'+i); dot.style.background=(i===index)?'#00c469':'#d4d4d4'; dot.style.width=(i===index)?'40px':'20px'; } ">
 
+                            <style>
+                                #userScroller::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+
+                            @foreach($users as $cuser)
+                                <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 135px;" 
+                                    id="user_{{$cuser->_id}}" 
+                                    data-user-id="{{$cuser->_id}}">
+                                    <div class="invit-img">
+                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                    </div>
+                                    <div class="invit-txt">{{$cuser->name}}</div>
                                 </div>
-                                <div class="invit-txt">{{$cuser->name}}</div>
+                            @endforeach
+
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                            <div id="dot_user0" style="width: 40px; height: 5px; border-radius: 8px; background: #00c469; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:0*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i);  dot.style.background=(i===0)?'#00c469':'#d4d4d4';  dot.style.width=(i===0)?'40px':'20px'; } ">
                             </div>
-                        @endforeach
-                    </div>
-                </div>
+                            <div id="dot_user1" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:1*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===1)?'#00c469':'#d4d4d4'; dot.style.width=(i===1)?'40px':'20px'; } ">
+                            </div>
+                            <div id="dot_user2" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:2*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===2)?'#00c469':'#d4d4d4'; dot.style.width=(i===2)?'40px':'20px'; } ">
+                            </div>
+                        </div>
+
+                    <!-- user starts -->
+
+    </div>
+
                 <!-- shared section ends -->
+<div class="" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px; margin-bottom:5px;">
+    <div class="col-md-12">
+                 <div id="createPdfList" class="d-flex gap-2 flex-wrap">
+                            <!-- Tiles will be appended here -->
+                            <div class="pdf-add-tile d-flex align-items-center justify-content-center text-center"
+                                style="width: 160px; height: 60px; border: 1px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#fff;"
+                                onclick="createAddPdfFile()">
+                                <div style="font-size: 22px; color: #a0a4ab; line-height: 1;">+</div>
+                            </div>
+                        </div>
+                        <div id="createPdfInputs" style="display:none;"></div>
+    </div>
+    </div>       
+
 
                 <!-- Today/Scheduled Toggle + Date/Time Section -->
                  <!-- schdule section ends -->
                 <div style="background-color: #f9f9fb; border-radius:10px; padding:8px; margin-bottom:10px;">
                     <!-- Toggle Today/Scheduled -->
-                    <div style="display: flex;  margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 8px; display: flex; gap: 8px; background:#fff;">
-                            <button class="btnToday" id="btnToday" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('timeRow').classList.add('justify-content-center1');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Today ToDo's
-                            </button>
+                    <div style="  margin-bottom: 6px; margin-top: 4px;">
+                        <div style="border-radius: 10px; padding: 6px; gap: 8px; background:#fff;">
+        <button class="btnToday" id="btnToday" type="button"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnScheduled').style.backgroundColor='transparent';
+                document.getElementById('btnScheduled').style.color='#64748b';
+                document.getElementById('timeRow').classList.add('justify-content-center1');
+                document.getElementById('todo_type').value='today';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Today ToDo's
+        </button>
 
-                            <button class="btnScheduled" id="btnScheduled" type="button"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnToday').style.backgroundColor='transparent';
-                    document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled ToDo's
-                            </button>
-                        </div>
+        <button class="btnScheduled" id="btnScheduled" type="button"
+            onclick="
+                this.style.backgroundColor='#22c55e';
+                this.style.color='white';
+                document.getElementById('btnToday').style.backgroundColor='transparent';
+                document.getElementById('btnToday').style.color='#64748b';
+                document.getElementById('timeRow').classList.remove('justify-content-center');
+                document.getElementById('todo_type').value='scheduled';
+            "
+            style="border: none; background-color: transparent; color: #64748b; padding: 2px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+            Scheduled ToDo's
+        </button>
+    </div>
                     </div>
                     
                     <div class="gap-2 " style="padding:8px;">
@@ -1788,12 +1966,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             <p>Time to deliver the work</p>
                     </div>
                    
-
-                    
-
                     <!-- selection of tody section -->
                     <div class="d-flex1 gap-2 mb-3 bg-white" id="timeToday" style="padding: 8px;";>
-                        <button type="button" class="time-btn time-btn-2 active" data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn time-btn-2 " data-value="2">2 Hour</button>
                         <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
                         <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
                         <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
@@ -1904,22 +2079,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex1 gap-2 bg-white">
-                                <button class="priority active" type="button" id="priorityLow" >Low</button>
+                                <button class="priority active1" type="button" id="priorityLow" >Low</button>
                                 <button class="priority" type="button" id="priorityMiddle" >Middle</button>
                                 <button class="priority" type="button" id="priorityHigh" >High</button>
                             </div>
                         </div>
                         
                     </div>
-                    <!--
-                    <div class="row g-2 mt-2">
-                        <div class="col-md-12">
-                            <input name="description" type="text" class="form-control" placeholder="Section Description"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                        </div>
-
-                    </div>-->
-
+                    
                     <div class="row g-2 mt-2" id="sectionsWrapper">
                         <div class="col-md-12 d-flex align-items-center section-item">
                             <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
@@ -1932,13 +2099,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 </div>
 
 
-
-
-
                 <!-- Shared / Private ToDo Section -->
                 <div style="background-color: #f9f9fb; display:none; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-
-                    
 
                     <!-- Project & Members Inputs -->
                     <div class="row g-2 mb-0 justify-content-center">
@@ -1980,7 +2142,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 <button type="button" id="reminder3" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">3 Hour</button>
                                 <button type="button" id="reminder4" onclick="this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b';" style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">4 Hour</button>-->
                                 <div class="d-flex " style="background:#fff; border-radius: 5px; gap: 3px; padding: 5px;">
-                                    <button type="button" class="reminder-btn rem-30 active" data-value="30">30 Min</button>
+                                    <button type="button" class="reminder-btn rem-30 " data-value="30">30 Min</button>
                                     <button type="button" class="reminder-btn rem-60" data-value="60">60 Min</button>
                                     <button type="button" class="reminder-btn rem-120" data-value="120">2 Hour</button>
                                     <button type="button" class="reminder-btn rem-180" data-value="180">3 Hour</button>
@@ -1991,21 +2153,16 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     </div>
                 </div>
 
-              
-
                 <div class="text-center" style="margin-top: 15px;">
                     <button class="btn" type="button" data-bs-dismiss="modal"
                         style="background-color: #f7f7f7; color:#64748b; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                         Close
                     </button>
-                    <button class="btn" 
+                    <button id="saveBtn" type="button" class="btn" 
                         style="background-color: #f7f7f7; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                         Save & Close
                     </button>
                 </div>
-
-
-
 
             </div>
 </form>
@@ -2031,6 +2188,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             <form action="{{ route('todos.remove') }}" method="POST">
                 @csrf
                 <input type="hidden" name="remid" id="remid" />
+                <input type="hidden" name="isremove" id="isremove" value="0" />
+                <input type="hidden" name="iscomplete" id="iscomplete" value="0" />
             <!-- Denied Section -->
             <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
 
@@ -2047,18 +2206,32 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 <!-- Input Fields -->
                 <select  name="reason" required
                     style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
-                    <option value="Not Clear">Not Clear</option>
-                    <option value="Time to Short">Time to Short</option>
-                    <option value="Will set new one">Will set new one</option>
+                    <option class="removal" value="By Mistake">By Mistake</option>
+                    <option class="removal" value="Not neet it">Not neet it</option>
+                    <option class="removal" value="No important">No important</option>
+                    <option class="removal" value="No time for it">No time for it</option>
+                    <option class="failed" value="Time to short">Time to short</option>
+                    <option class="failed" value="Todo not clear">Todo not clear</option>
+                    <option class="failed" value="Details not clear">Details not clear</option>
+                    <option class="failed" value="Documents not clear">Documents not clear</option>
+                    <option class="failed" value="Team not response">Team not response</option>
                 </select>
 
             </div>
 
             <!-- Save Button -->
-            <div class="text-center" style="margin-top: 15px;">
+            <div class="text-center" style="margin-top: 15px; display:flex; justify-content: space-around;">
+                <button data-bs-dismiss="modal" type="button" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                     Close
+                </button>
                 <button type="submit" class="btn" 
                     style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                     Save & Close
+                </button>
+                <button type="button" class="btn rejectbtn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Reject it
                 </button>
             </div>
             </form>
@@ -2067,6 +2240,118 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     </div>
 </div>
 
+<!-- Mark as Done Modal -->
+<div class="modal fade" id="markDoneModal" tabindex="-1" aria-labelledby="markDoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 12px;">
+      <div class="modal-header">
+        <div class="row">
+        <h5  class="modal-title fw-bold col-md-12" id="markDoneModalLabel">Mark as Done</h5>
+        <p class="col-md-12">Mark as done and close it!</p>
+    </div>
+      </div>
+      
+      <form id="markDoneForm1" method="POST" action="{{route('todos.complete')}}">
+        @csrf
+        <div class="modal-body">
+            <div class="modal-inner">
+                <div class="row">
+
+                </div>
+
+
+                <div class="mt-3 text-left" style="background: #f9f9fb; padding: 16px; border-radius: 16px;">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="{{ asset('build/img/thumbp.png') }}" />
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Mark as Done</h3>
+                            <p>Todo is completed</p>
+                        </div>
+                    </div>
+
+                <div class="dev_finish">
+                    <p style="font-size: 13px; margin-top:10px;">Provide details on project</p>
+
+                    <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
+                       
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you did all tasks</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="all_tasks_done" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you do check all tasks</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="all_tasks_check" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>Did you upload all files</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: rgb(204, 204, 204); border-radius: 18px;">
+                                        <input type="checkbox" name="files_upload" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                       
+                    </div>
+                </div>
+
+                <div class="forshared">
+                    <p style="font-size: 13px; margin-top:10px;">Rate the Developer</p>
+
+                    <div class="mt-2" id="ratingContainer" style="font-size: 13px;">
+                        @foreach($ratingCategories as $key => $label)
+                            <div class="d-flex align-items-center justify-content-between mb-2 rating-group" 
+                                style="background:#fff; padding:9px; border-radius:10px;">
+                                <span>{{ $label }}</span>
+                                <span>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <input type="radio" name="ratings[{{ $label }}]" id="rate-{{ $key }}-{{ $i }}" value="{{ $i }}" style="display:none;">
+                                        <label for="rate-{{ $key }}-{{ $i }}" 
+                                            class="fa-solid fa-star" 
+                                            data-index="{{ $i }}" 
+                                            data-category="{{ $label }}"></label>
+                                    @endfor
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            </div>
+          
+          <input type="hidden" id="doneTodoId" name="todo_id">
+          <input type="hidden" id="setcomplete" name="setcomplete">
+        </div>
+        
+            <div style="padding: 0 20px;">
+                <button class="btn" data-bs-dismiss="modal" type="button" style="background-color: #f7f7f7; float:left; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Close
+                </button>
+                <button class="btn" style="background-color: #f7f7f7; float:right; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save &amp; Close
+                </button>
+            </div>
+        
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <!-- View Model -->
@@ -2086,7 +2371,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                     </div>
 
                     <!-- Logo Centered, Half Outside -->
-                    <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                    <div style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
                         <img class="user-todo-img" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
                     </div>
 
@@ -2209,27 +2494,57 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         </div>
 
                     </div>
+
+                    <div class="mt-2 mb-3 todo-files-block files-container"
+                        style="background-color: #f8f9fa; padding:10px;  border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+                        <h5 class="fw-bold" style="color: #1c2233; margin-bottom:8px;">Shared Files</h5>
+                        <div class="todo-files-list d-flex flex-column gap-2" style="font-size: 13px;"></div>
+                    </div>
                    
                     
                     <!-- Notes -->
                     <!-- Notes Section (Exact Match) -->
                     <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px;">
-                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Description •</div>
+                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">â€¢ Description â€¢</div>
                         <div class="sections-list"></div>
+                        
+                    </div>
+
+                    <div class="p-3 owner-state mt-3" style="background-color: #f5f5f5; text-align:center; border-radius: 10px;">
+                        <div class="todo-removed text-center"  style="padding:10px;margin-bottom:5px; background:#FEE9EA; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User was failed to complete the task.<span class="rem_reason"></span>
+                        </div>
+                        <div class="todo-complete text-center" style="padding:10px;margin-bottom:5px;text-align:center;  background:#E9FAF0; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User has completed the task On Time
+                        </div>
+
+                        <div class="todo-waiting text-center" style="padding:10px; text-align:center; margin-bottom:5px; background:#FAE6c8; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/waiting.png') }}" alt="waiting" width="40" height="40">
+                            </div>
+                            Waiting for user activity
+                        </div>
+                        
                         
                     </div>
                     
                     <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3 owned">
 
                         <!-- Edit the Project -->
-                        <div id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer; display:none !important;">
+                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
                             </div>
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
                         </div>
                         <!-- Complete the Project -->
-                        <div id="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
+                        <div id="markDoneBtn" class="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/thumbp.png') }}" alt="Complete" width="40" height="40">
                             </div>
@@ -2245,7 +2560,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                 <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
                             </div>
 
-                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
+                            <div class="markfail" style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
                                 Mark as Failed
                             </div>
                         </div>
@@ -2329,7 +2644,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
                 style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                ×
+                Ã—
             </button>
 
 
@@ -2461,7 +2776,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                 </div>
 
 
-                <!-- ✅ Priority & Reminder Section Styled Box -->
+                <!-- âœ… Priority & Reminder Section Styled Box -->
                 <div class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
                     <div class="row g-3">
                         <!-- Meeting Priority -->
@@ -3193,6 +3508,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             </div>
         </div>
 
+        
+
         <!-- creaTE meting MODEL POPIP -->
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -3392,19 +3709,18 @@ document.addEventListener("DOMContentLoaded", function () {
         div.addEventListener("click", function () {
             let userId = this.getAttribute("data-user-id");
 
-            // toggle active class
-            this.classList.toggle("user_active");
+            // Unselect all others first
+            document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+            membersSelect.querySelectorAll("option").forEach(opt => opt.selected = false);
 
-            // check if selected
+            // Select the clicked one
+            this.classList.add("user_active");
             let option = membersSelect.querySelector(`option[value="${userId}"]`);
-            if (this.classList.contains("user_active")) {
-                option.selected = true;
-            } else {
-                option.selected = false;
-            }
+            if (option) option.selected = true;
         });
     });
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const btnShared = document.getElementById("btnShared");
@@ -3470,13 +3786,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let e_startDate   = this.dataset.start_date || "";
             let e_startTime   = this.dataset.start_time || "";
+            let e_endDate     = this.dataset.end_date || "";
             let e_endTime     = this.dataset.end_time || "";
             let e_reminder    = this.dataset.reminder;
             let e_priority    = this.dataset.priority 
-            let e_total    = this.dataset.total 
+            let e_total         =    this.dataset.total 
 
+            //working on edit
            // time-btn-3
             document.getElementById('timeHidden').value = e_total;
+            document.getElementById('endTimeSelect').value = e_endTime;
+            document.getElementById('dateInput').value = e_startDate
+            document.getElementById("dateInput").dispatchEvent(new Event('change'));
+            document.getElementById('enddateInput').value = e_endDate
+            document.getElementById("enddateInput").dispatchEvent(new Event('change'));
             
             document.querySelector('.time-btn').classList.remove('active');
 
@@ -3530,15 +3853,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let e_members = this.dataset.members;
 
-// Handle both cases (string or array)
-if (typeof e_members === "string") {
-    try {
-        e_members = JSON.parse(e_members);
-    } catch (err) {
-        console.error("Invalid JSON:", err);
-        e_members = [];
-    }
-}
+            // Handle both cases (string or array)
+            if (typeof e_members === "string") {
+                try {
+                    e_members = JSON.parse(e_members);
+                } catch (err) {
+                    console.error("Invalid JSON:", err);
+                    e_members = [];
+                }
+            }
 
 // Now safely use it
 // Auto-select members by ID
@@ -3565,6 +3888,33 @@ if (Array.isArray(e_members) && e_members.length) {
             }
         });
     }, 500); // wait for DOM ready
+}
+
+const wrapper = document.getElementById("sectionsWrapper");
+wrapper.innerHTML = `
+    <div class="col-md-12 d-flex align-items-center section-item">
+        <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
+               style="font-size: 13px; background-color: white; border-radius: 8px;">
+        <button type="button" class="btn btn-plus btn-sm ms-2 add-btn"><span>+</span></button>
+    </div>
+`;
+if (Array.isArray(e_sections) && e_sections.length > 0) {
+    // Set first input value
+    const firstInput = wrapper.querySelector('input[name="sections[]"]');
+    firstInput.value = e_sections[0] || "";
+
+    // Add more for the rest
+    for (let i = 1; i < e_sections.length; i++) {
+        const div = document.createElement("div");
+        div.className = "col-md-12 d-flex align-items-center section-item mt-2";
+        div.innerHTML = `
+            <input name="sections[]" type="text" class="form-control" value="${e_sections[i]}"
+                   placeholder="Section Description"
+                   style="font-size: 13px; background-color: white; border-radius: 8px;">
+            <button type="button" class="btn btn-minus btn-sm ms-2 remove-btn"><span>-</span></button>
+        `;
+        wrapper.appendChild(div);
+    }
 }
 
 /*
@@ -3601,14 +3951,53 @@ console.log("Raw members data:", e_members);
             // Get attributes
             let dataid      = this.dataset.id;
 
-            const editBtnInModal = document.getElementById('openEditFromView');
+            //const editBtnInModal = document.getElementById('openEditFromView');
+            const editBtnInModal = document.querySelector('.edit_' + dataid);
+            const openModal = document.getElementById('inreject');
+
+            const rejectBtn = document.querySelector('.rejectbtn');
+            const inRejectModal = document.getElementById('inreject');
+            const editButton = document.querySelector('.edit_'+ dataid +' .editTodo');
+
+            if (rejectBtn && inRejectModal && editButton) {
+        rejectBtn.addEventListener('click', function () {
+            editButton.click();
+            const modalInstance = bootstrap.Modal.getInstance(inRejectModal);
+            /*
+            if (modalInstance) {
+                // Wait until modal is fully hidden
+                inRejectModal.addEventListener('hidden.bs.modal', function handler() {
+                    inRejectModal.removeEventListener('hidden.bs.modal', handler);
+                    // âœ… Trigger the editTodo click to open #todomodel
+                    editButton.click();
+                });
+                modalInstance.hide();
+            } else {
+                // Fallback for older Bootstrap/jQuery modal
+                $(inRejectModal).on('hidden.bs.modal', function handler() {
+                    $(inRejectModal).off('hidden.bs.modal', handler);
+                    editButton.click();
+                }).modal('hide');
+            }
+                */
+        });
+    }
+
+            /*
+            if (triggerBtn && editBtnInModal) {
+                triggerBtn.addEventListener('click', function () {
+                    editBtnInModal.click(); // âœ… Trigger the other buttonâ€™s click event
+                });
+            }
+                */
+
 
             let eidtdiv = ".edit_" + dataid;
            
 
             for (let attr of this.attributes) {
             if (attr.name.startsWith('data-')) {
-                    editBtnInModal.setAttribute(attr.name, attr.value);
+                  //  editBtnInModal.setAttribute(attr.name, attr.value);
                 }
             }
 
@@ -3619,18 +4008,257 @@ console.log("Raw members data:", e_members);
                 markDoneBtn.dataset.id = dataid; // set the data-id dynamically
             }
 
+
+let filecont = document.querySelector('.files-container');
+filecont.style.display = "block";
+
+
+
+let files = JSON.parse(this.dataset.files || "[]");
+let filesList = document.querySelector('.todo-files-list');
+
+
+const list = document.getElementById('createPdfList');
+    const addTile = list.querySelector('.pdf-add-tile');
+
+    // Remove any existing tiles (previous create/edit)
+    list.querySelectorAll('.d-flex.align-items-center.gap-2.px-2').forEach(el => el.remove());
+
+    // If there are existing files, append them
+    files.forEach(file => {
+        const url = file.url || '';
+        const fname = file.name || 'Unknown';
+        const size = Math.round((file.size || 0) / 1024) + ' KB';
+        const parts = fname.split("_@_");
+        const name = parts[0] || "Unknown";
+        const id = parts[1] || "";
+        const ext = name.split('.').pop().toLowerCase();
+
+        let icon = 'https://admin.onlinesystems.info/build/img/file-icon.svg';
+        if (['pdf'].includes(ext)) icon = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+        if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = url;
+        if (['mp4','mov','avi','mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+
+        const tile = document.createElement('div');
+        tile.className = 'd-flex align-items-center gap-2 px-2';
+        tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+        tile.innerHTML = `
+            <img src="${icon}" alt="${name}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+            <div class="d-flex flex-column" style="min-width:100px;">
+                <small style="font-weight:600;">${name}</small>
+                <small style="color:#6b7280;">${size}</small>
+            </div>
+            <button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)">
+                <i class="ti ti-trash"></i>
+            </button>
+        `;
+
+        // Insert before the â€œ+ Addâ€ tile
+        list.insertBefore(tile, addTile);
+    });
+
+// Hide container if no files
+
+filesList.innerHTML = '';
+
+if (files.length > 0) {
+    let rowHtml = '';
+
+    files.forEach((file, index) => {
+        let url = file.url || '';
+        let fname = file.name || 'Unknown';
+        let size = formatFileSize(file.size || 0);
+        
+
+        let parts = fname.split("_@_");
+
+        let name = parts[0] || "Unknown";
+        let id = parts[1] || "";
+
+        let ext = name.split('.').pop().toLowerCase();
+
+        let icon = "{{ asset('build/img/file-icon.svg') }}";
+        if (['pdf'].includes(ext)) icon = "https://admin.onlinesystems.info/build/img/pdf-icon.svg";
+        //if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = url;
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+            icon = url.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+        }
+        if (['mp4','mov','avi','mkv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
+
+        // File item markup
+        let fileHtml = `
+            <div class="col-md-6 mb-2">
+                <div class="d-flex align-items-center justify-content-between p-2"
+                     style="background:#f9fafb; border-radius:10px; border:1px solid #e5e7eb;">
+                    <div class="d-flex align-items-center">
+                        <img src="${icon}" alt="${name}" 
+                             style="width:40px; height:40px; border-radius:6px; object-fit:cover; margin-right:10px;">
+                        <div>
+                            <div style="font-weight:500; color:#1e293b; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px;">
+                                ${name}
+                            </div>
+                            <div style="font-size:12px; color:#6b7280;">${size}</div>
+                        </div>
+                    </div>
+                    <a href="https://team.onlinesystems.info/download/${id}" target="_blank" download 
+                       style="color:#1d4ed8; text-decoration:none;">
+                        <i class="fa fa-arrow-down" style="font-size:16px;"></i>
+                    </a>
+                </div>
+            </div>
+        `;
+
+        rowHtml += fileHtml;
+
+        // When 2 files added or last file reached â†’ close row and append
+        if ((index + 1) % 2 === 0 || index === files.length - 1) {
+            filesList.innerHTML += `<div class="row g-2">${rowHtml}</div>`;
+            rowHtml = '';
+        }
+    });
+} else {
+    filecont.style.display = "none";
+}
+
+
+// Helper for file size formatting
+function formatFileSize(bytes) {
+  
+    if (bytes === 0 || !bytes) return "";
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return parseFloat((bytes / Math.pow(1024, i)).toFixed(1)) + ' ' + units[i];
+}
+
+
+
             let title       = this.dataset.title;
             let description = this.dataset.description;
             let priority    = this.dataset.priority || "Normal";
             let isPrivate   = this.dataset.is_private;
-            let userimg   = this.dataset.image;
-            let dataown = this.dataset.own;
+            let userimg     = this.dataset.image;
+            let dataown     = this.dataset.own;
+            let owner       = this.dataset.owner;
+            let reason      = this.dataset.reason;
+            let iscomplete  = this.dataset.complete;
+
+            let forshared = document.querySelector('.forshared');
+            
+            
+
+            let todfinish = document.querySelector('.dev_finish');
+            let ownerstate = document.querySelector('.owner-state');
+            let remreason = document.querySelector('.rem_reason');
+            let todremove = document.querySelector('.todo-removed');
+            let todcomplete = document.querySelector('.todo-complete');
+            let todwaiting = document.querySelector('.todo-waiting');
+
+            document.getElementById("isremove").value = 0;
+
+            todremove.style.display = "none";
+            todcomplete.style.display = "none";
+            todwaiting.style.display = "none";
+            
+
+            if(owner == "0"){
+                todfinish.style.display = "block";
+                forshared.style.display = "none";
+                ownerstate.style.display = "none";
+                document.getElementById("setcomplete").value = 2;
+            }else{
+                todfinish.style.display = "none";
+                forshared.style.display = "block";
+                ownerstate.style.display = "block";
+                document.getElementById("setcomplete").value = 1;
+                document.getElementById("isremove").value = 1;
+
+                if(iscomplete == "-1"){
+                    todremove.style.display = "block";
+                    remreason.innerText = reason;
+                }else if(iscomplete == "2"){
+                    todcomplete.style.display = "block";
+                }else{
+                    todwaiting.style.display = "block";
+                }
+
+                if(isPrivate == "1"){
+                    forshared.style.display = "none";
+                }else{
+                    forshared.style.display = "block";
+                }
+
+            }
+
+            
+
+
+            let edivbtn = document.querySelector('.openEditFromView');
+            edivbtn.style.display = "none";
+            let donebtn = document.querySelector('.markDoneBtn');
+            donebtn.style.display = "block";
+
+            let markfial = document.querySelector('.markfail');
+            markfial.innerText = "Mark as Failed";
+
+            
+
+            let removals = document.querySelectorAll('.removal');
+            let faileds = document.querySelectorAll('.failed');
+
+            document.getElementById("iscomplete").value = "-1";
+            
+            removals.forEach(el => {
+                el.style.display = "none";
+            });
+
+            faileds.forEach(el => {
+                el.style.display = "block";
+                
+            });
+
+            //let ownerstate = document.querySelector('.owner-state');
 
             let ownedEl = document.querySelector('.owned');
             if (dataown == "0") {
                 ownedEl.style.display = "none";
-            } else if (dataown == "1") {
+                ownerstate.style.display = "none";
+            } else if (dataown == "private"){
                 ownedEl.style.display = "flex";
+                edivbtn.style.display = "block";
+                donebtn.style.display = "none";
+                markfial.innerText = "Remove";
+                document.getElementById("isremove").value = 1;
+                removals.forEach(el => {
+                    el.style.display = "block";
+                });
+
+                ownerstate.style.display = "none";
+
+                faileds.forEach(el => {
+                    el.style.display = "none";
+                    document.getElementById("iscomplete").value = 0;
+                });
+                //show edit as well
+            } else if (dataown == "today") {
+                //check if timer starts then show otherwise hide it
+
+                let timerDiv = document.querySelector(`.counter-div[data-todo-id="${dataid}"]`);
+                let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
+
+                let ownedEl = document.querySelector('.owned');
+                
+                if (isReminderActive ) {
+                    ownedEl.style.display = "flex";
+                    if(owner == "1"){
+                        ownerstate.style.display = "block";
+                    }else{
+                        ownerstate.style.display = "none";
+                    }
+                    
+                } else {
+                    ownedEl.style.display = "none";
+                    ownerstate.style.display = "none";
+                }
             }
 
 
@@ -3749,9 +4377,9 @@ console.log("Raw members data:", e_members);
                 
                 // show times_sch
                 modal.querySelector(".todo-start-date").innerText = formatDate(startDate);
-                // Deliver → start_time
+                // Deliver â†’ start_time
                 modal.querySelector(".todo-deliver-date").innerText = startTime || "--";
-                // Deliver Time → end_time
+                // Deliver Time â†’ end_time
                 modal.querySelector(".todo-deliver-time").innerText = endTime || "--";
 
             }
@@ -3834,9 +4462,18 @@ console.log("Raw members data:", e_members);
 document.querySelectorAll(".addtodo").forEach(btn => {
     btn.addEventListener("click", function() {
     document.getElementById('todo_id').value = "";
-    document.getElementById("btnShared").click();
-    document.getElementById("btnToday").click();
-    document.querySelector(".time-btn-2").click();
+    //document.getElementById("btnShared").click();
+    //document.getElementById("btnToday").click();
+   // document.querySelector(".time-btn-2").click();
+    document.getElementById('todo_name').value = "";
+   // document.querySelector(".rem-30").click();
+
+    document.querySelectorAll('.user_div.user_active').forEach(el => {
+            el.classList.remove('user_active');
+        });
+
+
+    
 
     document.getElementById("todo_heading").innerText = "Create new ToDo";
     });
@@ -4090,6 +4727,22 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
     const todoId = this.dataset.id;
     if (!todoId) return;
 
+    const modalEl = document.querySelector('#inreject'); const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide();
+
+    // set hidden field in modal
+    document.getElementById('doneTodoId').value = todoId;
+
+    // open modal
+    const markModal = new bootstrap.Modal(document.getElementById('markDoneModal'));
+    markModal.show();
+});
+
+// Handle "Save" button inside modal
+/*
+document.getElementById('markDoneForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const todoId = document.getElementById('doneTodoId').value;
     const url = `/todos/complete/${todoId}`;
 
     fetch(url, {
@@ -4109,15 +4762,15 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
                 text: 'Todo successfully marked as completed.'
             });
 
-            // Optional: close modal & fade out card
-            const modalEl = document.querySelector('#inreject');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
+            // Close both modals
+            const doneModal = bootstrap.Modal.getInstance(document.getElementById('markDoneModal'));
+            if (doneModal) doneModal.hide();
 
+            const mainModal = bootstrap.Modal.getInstance(document.querySelector('#inreject'));
+            if (mainModal) mainModal.hide();
+
+            // Fade out or refresh
             setTimeout(() => location.reload(), 1000);
-
-            const card = document.querySelector(`.viewTodo[data-id="${todoId}"]`);
-            if (card) card.style.opacity = '0.5';
         } else {
             Swal.fire({
                 icon: 'error',
@@ -4135,6 +4788,220 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
         });
     });
 });
+*/
+
+function showContent(tab) {
+        // Show/hide content
+        document.getElementById("overviewContent").style.display = tab === 'overview' ? 'block' : 'none';
+        document.getElementById("statisticsContent").style.display = tab === 'statistics' ? 'block' : 'none';
+
+        // Toggle button styles
+        document.getElementById("btnOverview").className = tab === 'overview' ?
+            'btn btn-success me-2' :
+            'btn btn-light border me-2';
+
+        document.getElementById("btnStatistics").className = tab === 'statistics' ?
+            'btn btn-success' :
+            'btn btn-light border';
+    }
+
+
+window.createAddPdfFile = function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/pdf, video/mp4, image/png, image/jpeg';
+    input.name = 'attachments[]';
+    input.style.display = 'none';
+    input.addEventListener('change', function() { handlePdfSelected(this, 'create'); });
+    document.getElementById('createPdfInputs').appendChild(input);
+    input.click();
+};
+
+window.handlePdfSelected = function(fileInput, mode) {
+    if (!fileInput.files || !fileInput.files[0]) return;
+    var file = fileInput.files[0];
+    var list = mode === 'edit' ? document.getElementById('editPdfList') : document.getElementById('createPdfList');
+    var addTile = list.querySelector('.pdf-add-tile');
+
+    var fileType = file.type;
+    var iconSrc = '';
+    var previewHTML = '';
+
+    if (fileType.includes('pdf')) {
+        iconSrc = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+        previewHTML = `<img src="${iconSrc}" alt="PDF" style="width:20px;height:20px;">`;
+    } else if (fileType.includes('image')) {
+        var imageURL = URL.createObjectURL(file);
+        previewHTML = `<img src="${imageURL}" alt="Image" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">`;
+    } else if (fileType.includes('video')) {
+        iconSrc = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+        previewHTML = `<img src="${iconSrc}" alt="Video" style="width:24px;height:24px;">`;
+    }
+
+    var tile = document.createElement('div');
+    tile.className = 'd-flex align-items-center gap-2 px-2';
+    tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+    tile.innerHTML =
+        previewHTML +
+        `<div class="d-flex flex-column" style="min-width:100px;">
+            <small style="font-weight:600;">${file.name || 'File'}</small>
+            <small style="color:#6b7280;">${Math.round(file.size / 1024)} KB</small>
+        </div>
+        <button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)">
+            <i class="ti ti-trash"></i>
+        </button>`;
+
+    if (addTile) list.insertBefore(tile, addTile);
+    else list.appendChild(tile);
+
+    tile._fileInput = fileInput;
+};
+
+window.removePdfTile = function(btn) {
+    var tile = btn.closest('div');
+    if (!tile) return;
+    if (tile._fileInput) tile._fileInput.remove();
+    tile.remove();
+};
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.rating-group').forEach(group => {
+        const stars = group.querySelectorAll('label.fa-star');
+
+        stars.forEach((star, index) => {
+            // Hover effect (highlight on hover)
+            star.addEventListener('mouseenter', () => {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('hovered', i <= index);
+                });
+            });
+
+            // Remove hover when mouse leaves the group
+            group.addEventListener('mouseleave', () => {
+                stars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            // Click to select rating
+            star.addEventListener('click', () => {
+                // Remove active from all in this group
+                stars.forEach((s, i) => {
+                    s.classList.toggle('active', i <= index);
+                });
+
+                // Set radio input value
+                const inputs = group.querySelectorAll('input[type="radio"]');
+                inputs.forEach((input, i) => {
+                    input.checked = (i === index);
+                });
+            });
+        });
+    });
+});
+
+
+const titleEl = document.getElementById('todo_name');
+const projectEl = document.getElementById('select_project');
+const teamEl = document.getElementById('select_team');
+
+
+document.getElementById('saveBtn').addEventListener('click', function (e) {
+    
+    e.preventDefault();
+    const form = document.getElementById('todoForm');
+
+  const title = titleEl.value.trim();
+  const project = projectEl.value;
+  const team = teamEl.value;
+
+    const priorityHidden = document.getElementById('priorityHidden').value;
+    const reminderHidden = document.getElementById('reminderHidden').value;
+    const timeHidden = document.getElementById('timeHidden').value;
+    const todoType = document.getElementById('todo_type').value;
+    const todoVisibility = document.getElementById('todo_visibility').value;
+
+    const startDate = document.getElementById('dateInput')?.value;
+    const endDate = document.getElementById('enddateInput')?.value;
+    const endTime = document.getElementById('endTimeSelect')?.value;
+    
+
+    if (!todoVisibility) {
+        alert("Please select 'Shared ToDo's' or 'Private ToDo's' before submitting.");
+        return;
+    }
+
+    if (!todoType) {
+        alert("Please select 'Today ToDo's' or 'Scheduled ToDo's' before submitting.");
+        return;
+    }
+
+    if (todoVisibility === 'shared') {
+        const activeUser = document.querySelector('.user_div.user_active');
+        if (!activeUser) {
+            alert('Please select at least one user for Shared ToDo.');
+            return;
+        }
+    }
+
+    if (todoType === 'scheduled') {
+        if (!startDate) {
+            alert('Please select a Start Date.');
+            return;
+        }
+        if (!endDate) {
+            alert('Please select a Deliver Date.');
+            return;
+        }
+        if (!endTime) {
+            alert('Please select a Deliver Time.');
+            return;
+        }
+
+        // Optional: check that end date >= start date
+        if (new Date(endDate) < new Date(startDate)) {
+            alert('Deliver Date cannot be earlier than Start Date.');
+            return;
+        }
+    }else if(!timeHidden){
+        alert('Please provide Deliver time before submitting.');
+            return;
+    }
+
+
+
+  // Reset previous error highlights
+  [titleEl, projectEl, teamEl].forEach(el => el.classList.remove('required'));
+
+  // Add highlight if empty
+  if (!title) titleEl.classList.add('required');
+  if (!project) projectEl.classList.add('required');
+  if (!team) teamEl.classList.add('required');
+
+  // Stop submission if any field is empty
+  if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+    alert('Please fill all required fields before submitting.');
+    return;
+  }
+
+    form.submit();
+});
+
+[titleEl, projectEl, teamEl].forEach(el => {
+  el.addEventListener('input', () => {
+    if (el.value.trim() !== '') {
+      el.classList.remove('required');
+    }
+  });
+});
+
+
+document.querySelectorAll('.user_div').forEach(div => {
+    div.addEventListener('click', () => {
+        
+        document.getElementById('selected_user').value = div.dataset.userId;
+    });
+});
+
 
         </script>
         @endsection

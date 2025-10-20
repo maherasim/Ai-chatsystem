@@ -88,14 +88,15 @@ Route::get('/meetings', function () {
 })->middleware('auth')->name('chat-meetings');
 
 Route::middleware(['auth'])->group(function () {
-    //Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
-    Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+    Route::get('/todos', [TodoController::class, 'index'])->name('chat-groups');
+    //Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
     Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
     Route::post('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
     Route::post('/todosupdate/{id}', [TodoController::class, 'update'])->name('todos.update');
     Route::post('/todosremove', [TodoController::class, 'remove'])->name('todos.remove');
     Route::get('/deltodo', [TodoController::class, 'deltodo']);
-    Route::post('/todos/complete/{id}', [TodoController::class, 'complete'])->name('todos.complete');
+    Route::post('/todoss/complete', [TodoController::class, 'complete'])->name('todos.complete');
+    Route::get('/download/{id}', [TodoController::class, 'download'])->name('todos.download');
 });
 // Route::get('/todo', function () {
 //     $headers = Setting::all();
