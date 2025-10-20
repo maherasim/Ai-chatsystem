@@ -4920,6 +4920,8 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     const startDate = document.getElementById('dateInput')?.value;
     const endDate = document.getElementById('enddateInput')?.value;
     const endTime = document.getElementById('endTimeSelect')?.value;
+
+    let checkprojteam = 0;
     
 
     if (!todoVisibility) {
@@ -4938,6 +4940,7 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
             alert('Please select at least one user for Shared ToDo.');
             return;
         }
+        checkprojteam = 1;
     }
 
     if (todoType === 'scheduled') {
@@ -4975,10 +4978,18 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
   if (!team) teamEl.classList.add('required');
 
   // Stop submission if any field is empty
-  if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+  if(checkprojteam == 1){
+        if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+            alert('Please fill all required fields before submitting.');
+            return;
+        }
+  }else{
+    if (!title || !priorityHidden || !reminderHidden ) {
     alert('Please fill all required fields before submitting.');
     return;
   }
+  }
+  
 
     form.submit();
 });
