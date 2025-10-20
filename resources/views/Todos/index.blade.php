@@ -1891,7 +1891,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     id="user_{{$cuser->_id}}" 
                                     data-user-id="{{$cuser->_id}}">
                                     <div class="invit-img">
-                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                        <img src="{{ str_replace('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $cuser->profile_image)) }}
+" />
                                     </div>
                                     <div class="invit-txt">{{$cuser->name}}</div>
                                 </div>
@@ -4923,6 +4924,8 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     const startDate = document.getElementById('dateInput')?.value;
     const endDate = document.getElementById('enddateInput')?.value;
     const endTime = document.getElementById('endTimeSelect')?.value;
+
+    let checkprojteam = 0;
     
 
     if (!todoVisibility) {
@@ -4941,6 +4944,7 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
             alert('Please select at least one user for Shared ToDo.');
             return;
         }
+        checkprojteam = 1;
     }
 
     if (todoType === 'scheduled') {
@@ -4978,13 +4982,22 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
   if (!team) teamEl.classList.add('required');
 
   // Stop submission if any field is empty
-  if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+  if(checkprojteam == 1){
+        if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+            alert('Please fill all required fields before submitting.');
+            return;
+        }
+  }else{
+    if (!title || !priorityHidden || !reminderHidden ) {
     alert('Please fill all required fields before submitting.');
     return;
   }
+  }
+  
 
     form.submit();
 });
+
 
 [titleEl, projectEl, teamEl].forEach(el => {
   el.addEventListener('input', () => {
