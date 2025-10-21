@@ -2329,6 +2329,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var projectSelect = document.getElementById('select-project');
     var ticketSelect = document.getElementById('select-ticket');
+    var ticketCache = {};
+    var startDateSpan = document.getElementById('ticket-start-date');
+    var endDateSpan = document.getElementById('ticket-end-date');
+
+    function formatDate(value) {
+        if (!value) return '--';
+        if (typeof value === 'string') {
+            // Display as YYYY-MM-DD regardless of timezone format
+            return value.substring(0, 10);
+        }
+        return '--';
+    }
+
+    function renderTicketDates(ticket) {
+        if (!startDateSpan || !endDateSpan) return;
+        if (!ticket) {
+            startDateSpan.textContent = '--';
+            endDateSpan.textContent = '--';
+            return;
+        }
+        startDateSpan.textContent = formatDate(ticket.start_date);
+        endDateSpan.textContent = formatDate(ticket.end_date);
+    }
 
     function setSelectLoading(selectEl, loading) {
         if (!selectEl) return;
@@ -2354,13 +2377,18 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function (resp) {
                 ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
                 var items = (resp && Array.isArray(resp.tickets)) ? resp.tickets : [];
+                // cache tickets by id for quick lookup on change
+                ticketCache = {};
                 items.forEach(function (t) {
                     var opt = document.createElement('option');
                     opt.value = t.id;
-                    opt.textContent = (t.code ? (t.code + ' - ') : '') + (t.title || 'Untitled');
+                    opt.textContent = (t.title || 'Untitled');
                     ticketSelect.appendChild(opt);
+                    ticketCache[t.id] = t;
                 });
                 ticketSelect.disabled = false;
+                // reset displayed dates when list refreshes
+                renderTicketDates(null);
             })
             .catch(function () {
                 ticketSelect.innerHTML = '<option value="">Failed to load tickets</option>';
@@ -2378,6 +2406,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (projectSelect) {
         projectSelect.addEventListener('change', function (e) {
             loadTickets(e.target.value);
+        });
+    }
+
+    if (ticketSelect) {
+        ticketSelect.addEventListener('change', function (e) {
+            var selectedId = e.target.value;
+            var ticket = ticketCache[selectedId];
+            renderTicketDates(ticket || null);
         });
     }
 });
@@ -2484,11 +2520,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="d-flex gap-2 mt-2">
                             <div class="text-center p-2 text-white" style="background: #28c76f; border-radius: 8px; flex: 1;">
                                 <small>Start Date</small><br>
-                                <span class="fw-bold">21.09.2025 – 15:00</span>
+                                <span id="ticket-start-date" class="fw-bold">--</span>
                             </div>
                             <div class="text-center p-2 text-white" style="background: #ea5455; border-radius: 8px; flex: 1;">
                                 <small>Deliver Date</small><br>
-                                <span class="fw-bold">27.09.2025 – 15:00</span>
+                                <span id="ticket-end-date" class="fw-bold">--</span>
                             </div>
                         </div>
                     </div>
