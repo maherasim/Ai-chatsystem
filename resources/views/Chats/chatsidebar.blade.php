@@ -68,7 +68,7 @@ $setting = App\Models\Setting::first();
                        </a>
                    </li>
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('todo') ? 'active' : '' }}">
+                       <a href="{{ route('chat-groups') }}" class="nav-link task-icon-link {{ request()->is('todos') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
                            <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>
@@ -80,12 +80,6 @@ $setting = App\Models\Setting::first();
                        </a>
                    </li>
                  
-
-
-                
-
-                 
-
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-api') }}" class="nav-link task-icon-link {{ request()->is('Apis') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/API-White.svg') }}" alt="API White" class="icon-white">

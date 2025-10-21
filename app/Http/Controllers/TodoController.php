@@ -154,8 +154,10 @@ class TodoController extends Controller
             });
 
             $ctime = strtotime(date("Y-m-d H:i:s"));
+
+            $headers = Setting::all();
         
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime'));
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers'));
     }
 
     public function destroy($id)
