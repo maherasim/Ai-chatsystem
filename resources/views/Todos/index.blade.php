@@ -481,7 +481,7 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
     <!-- Left Sidebar Menu -->
 
     <div style="visibility: visible;">
-        @include('Todos.todosidebar')
+        @include('Chats.chatsidebar')
     </div>
     <!-- /Left Sidebar Menu -->
 
@@ -492,61 +492,7 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
         <div>
-            <div class="chat-header">
-                <div class="user-details">
-                    <div class="d-xl-none">
-                        <a class="text-muted chat-close me-2" href="#">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
-                    </div>
-                    <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{ asset('storage/' . $user->profile_image) }}" class="rounded-circle" alt="image">
-                    </div>
-                    <div class="ms-2 overflow-hidden">
-                        <h6>{{$user->name}}</h6>
-                        <p class="last-seen text-truncate"> {{$user->type}}</p>
-                    </div>
-                    <div class="overflow-hidden">
-                            <h6 class="mb-0" style="cursor:pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" >
-                                <img src="{{ asset('build/img/arrow.svg') }}" alt="arrow"
-                                                style="margin-left:10px; width: 18px;"></h6>
-
-
-                                               
-                                            </div>
-                </div>
-
-                <!-- Right Side Icons -->
-                <div class="left-icons d-flex align-items-center gap-5">
-
-                    
-
-                    <li style="list-style: none;">
-                        <!-- Moon Icon -->
-                        <a href="#" id="dark-mode-toggle" style="display: inline;">
-                            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-                        </a>
-
-                        <!-- Sun Icon -->
-                        <a href="#" id="light-mode-toggle" style="display: none;">
-                            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-
-
-
-
-                       
+            @include('Chats.header')
 
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
@@ -638,7 +584,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-total="{{ $todo->total_time }}"
     data-owner="{{$owner}}"
     data-complete="{{$todo->completed}}"
-    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+    data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
     data-files='@json($todo->attachments->map(fn($a) => [
@@ -652,7 +598,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
+                                            <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -756,7 +702,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
-   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+   data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -1021,7 +967,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-total="{{ $todo->total_time }}"
-    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+    data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
     data-sections='@json($todo->description)'
     data-own="private"
     data-files='@json($todo->attachments->map(fn($a) => [
@@ -1035,7 +981,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
+                                            <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1135,7 +1081,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
    data-reminder="{{ $todo->reminder }}"
-   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+   data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
    data-members='@json($todo->members_data)'
@@ -1390,7 +1336,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
             "size" => $a->size,
             "url"  => asset("storage/{$a->file_path}")
         ]))'
-    data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+    data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
     data-total="{{ $todo->total_time }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
@@ -1399,7 +1345,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                     <!-- Card Header -->
                                     <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
                                         <div class="d-flex">
-                                            <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
+                                            <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
                                                 <div style="font-weight: bold;">{{$user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
@@ -1440,7 +1386,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
    data-end_time="{{ $todo->end_time }}"
    data-is_private="{{ $todo->is_private }}"
    data-priority="{{ $todo->priority }}"
-   data-image="{{ asset('storage/' . $todo->user->profile_image) }}"
+   data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
    data-reminder="{{ $todo->reminder }}"
    data-total="{{ $todo->total_time }}"
    data-sections='@json($todo->description)'
