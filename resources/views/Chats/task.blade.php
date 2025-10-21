@@ -171,7 +171,7 @@
                                         <img src="{{URL::asset('/build/img/sigma.svg')}}" alt="icon" style="width: 18px; height: 18px;" />
                                     </div>
                                 </div>
-                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                                 <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
                                     <i class="bi bi-arrow-up-right"></i> 8.5%
                                 </div>
@@ -187,7 +187,7 @@
                                         <img src="{{URL::asset('/build/img/like.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
-                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                                 <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
                                     <i class="bi bi-arrow-up-right"></i> 8.5%
                                 </div>
@@ -203,7 +203,7 @@
                                         <img src="{{URL::asset('/build/img/delayed.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
-                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                                 <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e;">
                                     <i class="bi bi-arrow-down-right"></i> 8.5%
                                 </div>
@@ -219,7 +219,7 @@
                                         <img src="{{URL::asset('/build/img/rejected.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
-                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                                 <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #ff2e2e;">
                                     <i class="bi bi-arrow-down-right"></i> 8.5%
                                 </div>
@@ -235,7 +235,7 @@
                                         <img src="{{URL::asset('/build/img/Done.svg')}}" alt="icon" style="width: 20px; height: 20px;" />
                                     </div>
                                 </div>
-                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;">10</div>
+                                <div class="fw-bold mt-1" style="font-size: 1.5rem; color: #1e2b4d;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                                 <div style="position: absolute; bottom: 8px; right: 16px; font-size: 0.9rem; color: #28c76f;">
                                     <i class="bi bi-arrow-up-right"></i> 8.5%
                                 </div>
@@ -366,7 +366,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/totaltask.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">Total Tasks</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">150</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -378,7 +378,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/newtask.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">New Task</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">50</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -390,7 +390,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/progress.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Progress</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">75</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -402,7 +402,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/inhold.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Hold</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">25</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -414,7 +414,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/incheck.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Checked</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -426,7 +426,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/delayed.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Delayed</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -438,7 +438,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/rejected.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Rejected</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                             <!-- Divider -->
@@ -450,7 +450,7 @@
                                 onmouseout="this.style.background='#fff'">
                                 <img src="{{ asset('build/img/indone.svg') }}" style="width:26px; margin-bottom:6px;" alt="">
                                 <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Done</div>
-                                <div style="font-weight:700; font-size:14px; color:#1e293b;">2</div>
+                                <div style="font-weight:700; font-size:14px; color:#1e293b;"><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="height: 24px;"></div>
                             </div>
 
                         </div>
@@ -2322,6 +2322,66 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var createTaskModalEl = document.getElementById('createTaskModal');
+    if (!createTaskModalEl) return;
+
+    var projectSelect = document.getElementById('select-project');
+    var ticketSelect = document.getElementById('select-ticket');
+
+    function setSelectLoading(selectEl, loading) {
+        if (!selectEl) return;
+        selectEl.disabled = !!loading;
+        if (loading) {
+            selectEl.innerHTML = '<option>Loading...</option>';
+        }
+    }
+
+    // Projects are rendered server-side; no client-side fetching needed
+
+    function loadTickets(projectId) {
+        if (!ticketSelect) return;
+        if (!projectId) {
+            ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+            return;
+        }
+        setSelectLoading(ticketSelect, true);
+        var url = new URL('{{ route('tasks.tickets') }}', window.location.origin);
+        url.searchParams.set('project_id', projectId);
+        fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+            .then(function (res) { return res.json(); })
+            .then(function (resp) {
+                ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                var items = (resp && Array.isArray(resp.tickets)) ? resp.tickets : [];
+                items.forEach(function (t) {
+                    var opt = document.createElement('option');
+                    opt.value = t.id;
+                    opt.textContent = (t.code ? (t.code + ' - ') : '') + (t.title || 'Untitled');
+                    ticketSelect.appendChild(opt);
+                });
+                ticketSelect.disabled = false;
+            })
+            .catch(function () {
+                ticketSelect.innerHTML = '<option value="">Failed to load tickets</option>';
+                ticketSelect.disabled = false;
+            });
+    }
+
+    createTaskModalEl.addEventListener('shown.bs.modal', function () {
+        if (ticketSelect) {
+            ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+            ticketSelect.disabled = true;
+        }
+    });
+
+    if (projectSelect) {
+        projectSelect.addEventListener('change', function (e) {
+            loadTickets(e.target.value);
+        });
+    }
+});
+</script>
 
 
 
@@ -2402,11 +2462,17 @@
                         <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                         <small class="text-muted">Ticket Details</small>
                         <div class="d-flex gap-2 mt-2">
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Project</option>
+                            <select id="select-project" name="project_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Project</option>
+                                @if(isset($projects) && count($projects))
+                                
+                                    @foreach($projects as $project)
+                                        <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                    @endforeach
+                                @endif
                             </select>
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Ticket</option>
+                            <select id="select-ticket" name="ticket_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Ticket</option>
                             </select>
                         </div>
                     </div>

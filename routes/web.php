@@ -10,6 +10,7 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TaskController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -57,10 +58,7 @@ Route::get('/Ai', function () {
     $headers = Setting::all();
     return view('Chats.Ai', compact('headers'));
 })->middleware('auth')->name('chat-ai');
-Route::get('/tasks', function () {
-    $headers = Setting::all();
-    return view('Chats.task', compact('headers'));
-})->middleware('auth')->name('chat-task');
+Route::get('/tasks', [TaskController::class, 'index'])->middleware('auth')->name('chat-task');
 
 Route::get('/ticket', [TicketController::class, 'index'])->middleware('auth')->name('chat-ticket');
 
@@ -77,6 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
     Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
+    // Tasks APIs
+    Route::get('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
+    Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();
