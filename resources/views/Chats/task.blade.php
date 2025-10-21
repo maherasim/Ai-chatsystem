@@ -2335,11 +2335,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function formatDate(value) {
         if (!value) return '--';
-        if (typeof value === 'string') {
-            // Display as YYYY-MM-DD regardless of timezone format
-            return value.substring(0, 10);
-        }
-        return '--';
+        var iso = typeof value === 'string' ? value : '';
+        if (!iso) return '--';
+        // normalize to first 10 chars (YYYY-MM-DD) even if ISO with timezone
+        var ymd = iso.substring(0, 10);
+        var parts = ymd.split('-');
+        if (parts.length !== 3) return '--';
+        var yyyy = parts[0];
+        var mm = parts[1];
+        var dd = parts[2];
+        return dd + ':' + mm + ':' + yyyy; // DD:MM:YYYY
     }
 
     function renderTicketDates(ticket) {
