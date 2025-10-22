@@ -75,6 +75,18 @@ class UsersController extends Controller
     }
 
 
+    public function updoc(Request $request){
+        $userid = $request->user;
+        $user = User::where("user_id", $userid)->first();
+
+        if ($request->hasFile('attachment')) {
+            $user->card_image = $request->file('attachment')->store('cards', 'public');
+            $user->save();
+            return back()->with('success', 'File uploaded: ');
+        }
+        return back()->with('error', 'Error: File not uploaded. ');
+
+    }
 
   public function store(Request $request)
 {

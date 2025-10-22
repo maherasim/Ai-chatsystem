@@ -8,19 +8,23 @@
          <div class="avatar avatar-lg online flex-shrink-0">
              @php
     $header = $headers[0] ?? null;
+   
 @endphp
 
 @if($header)
-    <img src="{{ !empty($header->image) ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
+    <img src="{{ $header->image ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
          class="rounded-circle"
          alt="image">
 @endif
+
+
          </div>
          <div class="ms-2 overflow-hidden">
              <h6>{{$header->first_name}}</h6>
              <p class="last-seen text-truncate"> Online</p>
          </div>
      </div>
+     
 
      <!-- Right Side Icons -->
      <div class="left-icons d-flex align-items-center gap-5">

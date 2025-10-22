@@ -24,6 +24,8 @@ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout')
 //  users
 
 Route::post('/store', [UsersController::class, 'store'])->name('user.store');
+Route::post('/uploadoc', [UsersController::class, 'updoc'])->name('users.document');
+
 Route::put('/user/{id}', [UsersController::class, 'update'])->name('user.update');
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');

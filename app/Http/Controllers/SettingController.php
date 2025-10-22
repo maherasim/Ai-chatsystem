@@ -116,14 +116,20 @@ public function store(Request $request)
         $setting->user_id = auth()->id();
     }
 
+    $user = User::where('id', auth()->id())->first();
     // Upload image if provided
     if ($request->hasFile('image')) {
-        $setting->image = $request->file('image')->store('uploads/chat_users', 'public');
+        $setting->image = $request->file('image')->store('upload/users', 'public');
+        $user->image = $setting->image;
     }
 
     $setting->first_name = $request->first_name;
     $setting->dob = $request->dob;
     $setting->save();
+
+    
+    $user->name = $request->first_name;
+    $user->save();
 
     return back()->with('success', 'Settings updated!');
 }
