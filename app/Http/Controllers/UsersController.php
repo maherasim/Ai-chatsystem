@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserWelcomeMail;
 use Illuminate\Support\Facades\File;
@@ -18,6 +19,9 @@ class UsersController extends Controller
 
         //all users other than superadmin
      $users = User::where('email', '!=', 'admin@gmail.com')->get();
+
+    $headers = Setting::all();
+    $setting = Setting::first();
       
         $totalUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
@@ -64,7 +68,9 @@ class UsersController extends Controller
             'membersCount',
             'developersCount',
             'employeesCount',
-            'adminsCount'
+            'adminsCount',
+            'headers',
+            'setting'
         ));
     }
 

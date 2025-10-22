@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
@@ -39,6 +40,24 @@ class Project extends Model
         'attachments'=> 'array',
     ];
     
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'project_id');
+    }
+    public function getRemainingDaysAttribute()
+{
+    if (!$this->end_date) {
+        return null;
+    }
+
+    $end = Carbon::parse($this->end_date)->startOfDay();
+    $today = Carbon::now()->startOfDay();
+
+    $days = $today->diffInDays($end, false);
+
+    return $days > 0 ? $days : 0;
+}
+
 }
 
     

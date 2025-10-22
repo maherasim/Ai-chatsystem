@@ -10,6 +10,9 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\DashboardController;
+
+
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -32,11 +35,17 @@ Route::get('/', function () {
 
 // routes/web.php
 
+/*
 Route::get('/home', function () {
     $header = Setting::all();
     $setting = Setting::first();
     return view('index', compact('header','setting'));
 })->middleware('auth')->name('home');
+*/
+
+Route::get('/home', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('home');
 
 Route::get('/login', function () {
     return view('signin');
