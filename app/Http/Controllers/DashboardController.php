@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         $projects = Project::latest()->take(50)->get();
         $tickets = Ticket::latest()->take(50)->get();
-        $header = Setting::all();
+        $headers = Setting::all();
         $setting = Setting::first();
 
         $todayTodos = Todo::where('end_date', date('Y-m-d'))
@@ -52,7 +52,7 @@ class DashboardController extends Controller
             'project'  => Project::count(),
         ];
 
-        return view('index', compact('user', 'stats', 'header','setting', 'projects', 'teams', 'tickets', 'todayTodos'));
+        return view('index', compact('user', 'stats', 'headers','setting', 'projects', 'teams', 'tickets', 'todayTodos'));
     }
 
     

@@ -134,11 +134,15 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        @foreach($headers as $header)
-                        <img src="{{ $header->image ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
-                            class="rounded-circle"
-                            alt="image">
-                        @endforeach
+                        @php
+    $header = $headers[0] ?? null;
+@endphp
+
+@if($header)
+    <img src="{{ !empty($header->image) ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
+         class="rounded-circle"
+         alt="image">
+@endif
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6>{{$header->first_name}}</h6>
