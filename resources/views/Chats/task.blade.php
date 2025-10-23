@@ -353,6 +353,49 @@
                                         </div>
                                     </div>
 
+            <!-- Marker details modal -->
+            <div class="modal fade" id="markerDetailsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="border-radius:10px;">
+                        <div class="modal-header">
+                            <h6 class="modal-title">Marker Details</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label class="form-label">Title</label>
+                                <input type="text" id="marker-title" class="form-control form-control-sm" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Description</label>
+                                <textarea id="marker-description" class="form-control form-control-sm" rows="3"></textarea>
+                            </div>
+                            <div class="d-flex gap-2 mb-2">
+                                <div class="flex-fill">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" id="marker-start" class="form-control form-control-sm" />
+                                </div>
+                                <div class="flex-fill">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" id="marker-end" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label m-0">Checkpoints</label>
+                                    <button type="button" id="add-checkpoint" class="btn btn-sm" style="background:#28c76f;color:#fff;">Add</button>
+                                </div>
+                                <div id="checkpoints-list" class="d-flex flex-column gap-2"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="save-marker" class="btn btn-primary btn-sm">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                                 </div>
                             </div>
                         </div>
@@ -2332,6 +2375,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var ticketCache = {};
     var startDateSpan = document.getElementById('ticket-start-date');
     var endDateSpan = document.getElementById('ticket-end-date');
+    var markerLayer = document.getElementById('markerLayer');
+    var previewImg = document.getElementById('previewImage');
+    var currentMarker = null;
+    var currentShape = 'square';
+    var currentColor = '#ea5455';
 
     function formatDate(value) {
         if (!value) return '--';
@@ -2364,6 +2412,74 @@ document.addEventListener('DOMContentLoaded', function () {
         if (loading) {
             selectEl.innerHTML = '<option>Loading...</option>';
         }
+    }
+
+    // marker controls
+    var shapeSquareBtn = document.getElementById('marker-shape-square');
+    var shapeCircleBtn = document.getElementById('marker-shape-circle');
+    if (shapeSquareBtn) shapeSquareBtn.addEventListener('click', function(){ currentShape = 'square'; this.style.background='#e9ecef'; if(shapeCircleBtn) shapeCircleBtn.style.background='#f8f9fa'; });
+    if (shapeCircleBtn) shapeCircleBtn.addEventListener('click', function(){ currentShape = 'circle'; this.style.background='#e9ecef'; if(shapeSquareBtn) shapeSquareBtn.style.background='#f8f9fa'; });
+    document.querySelectorAll('.marker-color').forEach(function(btn){
+        btn.addEventListener('click', function(){ currentColor = this.getAttribute('data-color') || '#ea5455'; });
+    });
+    var clearBtn = document.getElementById('marker-clear');
+    if (clearBtn) clearBtn.addEventListener('click', function(){ if(currentMarker){ currentMarker.remove(); currentMarker=null; } });
+
+    function createMarker(x, y) {
+        if (!markerLayer) return;
+        if (currentMarker) { currentMarker.remove(); currentMarker = null; }
+        var marker = document.createElement('div');
+        marker.className = 'marker-box';
+        marker.style.position = 'absolute';
+        marker.style.left = (x - 40) + 'px';
+        marker.style.top = (y - 40) + 'px';
+        marker.style.width = '80px';
+        marker.style.height = '80px';
+        marker.style.border = '2px solid ' + currentColor;
+        marker.style.background = 'rgba(0,0,0,0.0)';
+        marker.style.cursor = 'move';
+        marker.style.userSelect = 'none';
+        marker.style.pointerEvents = 'auto';
+        marker.style.borderRadius = currentShape === 'circle' ? '50%' : '6px';
+
+        var plus = document.createElement('div');
+        plus.textContent = '+';
+        plus.title = 'Add details';
+        plus.style.position = 'absolute';
+        plus.style.right = '-10px';
+        plus.style.top = '-10px';
+        plus.style.width = '24px';
+        plus.style.height = '24px';
+        plus.style.borderRadius = '50%';
+        plus.style.background = currentColor;
+        plus.style.color = '#fff';
+        plus.style.display = 'flex';
+        plus.style.alignItems = 'center';
+        plus.style.justifyContent = 'center';
+        plus.style.cursor = 'pointer';
+        marker.appendChild(plus);
+
+        markerLayer.appendChild(marker);
+        currentMarker = marker;
+
+        // enable drag + resize (requires jQuery UI loaded in page assets)
+        if (typeof $ === 'function' && typeof $.fn.draggable === 'function' && typeof $.fn.resizable === 'function') {
+            $(marker).draggable({ containment: markerLayer });
+            $(marker).resizable({ aspectRatio: currentShape === 'circle', containment: markerLayer, handles: 'n, e, s, w, ne, se, sw, nw', resize: function(){ if(currentShape==='circle'){ var w = $(this).width(); $(this).height(w); } } });
+        }
+
+        plus.addEventListener('click', function(e){
+            e.stopPropagation();
+            var modal = new bootstrap.Modal(document.getElementById('markerDetailsModal'));
+            modal.show();
+        });
+    }
+
+    if (markerLayer && previewImg) {
+        markerLayer.addEventListener('click', function(e){
+            var rect = markerLayer.getBoundingClientRect();
+            createMarker(e.clientX - rect.left, e.clientY - rect.top);
+        });
     }
 
     // Projects are rendered server-side; no client-side fetching needed
@@ -2421,6 +2537,81 @@ document.addEventListener('DOMContentLoaded', function () {
             renderTicketDates(ticket || null);
         });
     }
+
+    // checkpoints handling inside marker modal
+    var checkpointsList = document.getElementById('checkpoints-list');
+    var addCheckpointBtn = document.getElementById('add-checkpoint');
+    function addCheckpointRow(value){
+        if(!checkpointsList) return;
+        var row = document.createElement('div');
+        row.className = 'd-flex align-items-center gap-2';
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control form-control-sm';
+        if (value) input.value = value;
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'btn btn-sm';
+        remove.style.background = '#ea5455';
+        remove.style.color = '#fff';
+        remove.textContent = 'Remove';
+        remove.addEventListener('click', function(){ row.remove(); });
+        row.appendChild(input);
+        row.appendChild(remove);
+        checkpointsList.appendChild(row);
+    }
+    if (addCheckpointBtn) addCheckpointBtn.addEventListener('click', function(){ addCheckpointRow(''); });
+
+    // save marker: crop selected region from base image to get base64 PNG
+    var saveMarkerBtn = document.getElementById('save-marker');
+    function cropMarkerToBase64() {
+        if (!currentMarker || !previewImg) return null;
+        var imgRect = previewImg.getBoundingClientRect();
+        var layerRect = markerLayer.getBoundingClientRect();
+        var markerRect = currentMarker.getBoundingClientRect();
+        // compute marker position relative to the image pixel space
+        var scaleX = previewImg.naturalWidth / imgRect.width;
+        var scaleY = previewImg.naturalHeight / imgRect.height;
+        var leftPx = (markerRect.left - layerRect.left) * scaleX;
+        var topPx = (markerRect.top - layerRect.top) * scaleY;
+        var widthPx = markerRect.width * scaleX;
+        var heightPx = markerRect.height * scaleY;
+
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(widthPx));
+        canvas.height = Math.max(1, Math.round(heightPx));
+        var ctx = canvas.getContext('2d');
+
+        var tmpImg = new Image();
+        tmpImg.src = previewImg.src;
+        // draw synchronous if cached; else async onload
+        function draw() {
+            ctx.drawImage(tmpImg, Math.round(leftPx), Math.round(topPx), Math.round(widthPx), Math.round(heightPx), 0, 0, canvas.width, canvas.height);
+            try { return canvas.toDataURL('image/png'); } catch(e) { return null; }
+        }
+        if (tmpImg.complete) {
+            return draw();
+        } else {
+            // fallback async not used in this flow
+            tmpImg.onload = function(){ draw(); };
+            return null;
+        }
+    }
+    if (saveMarkerBtn) saveMarkerBtn.addEventListener('click', function(){
+        var payload = {
+            title: (document.getElementById('marker-title')||{}).value || '',
+            description: (document.getElementById('marker-description')||{}).value || '',
+            start_date: (document.getElementById('marker-start')||{}).value || '',
+            end_date: (document.getElementById('marker-end')||{}).value || '',
+            checkpoints: Array.from((checkpointsList||{}).children || []).map(function(row){ return row.querySelector('input')?.value || ''; }).filter(Boolean),
+            shape: currentShape,
+            color: currentColor,
+            mark_image: cropMarkerToBase64(),
+        };
+        // TODO: integrate with a form submit or API as needed
+        console.log('Marker saved', payload);
+        try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
+    });
 });
 </script>
 
@@ -2540,6 +2731,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="row">
                     <!-- Left Upload Area -->
                     <div class="col-md-5">
+                        
                         <div
                             id="uploadBox"
                             onclick="document.getElementById('fileInput').click();"
@@ -2560,6 +2752,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 Upload Or Drag<br><small>PDF, JPG, PNG</small>
                             </p>
                             <img id="previewImage" src="" style="display:none; max-width:100%; max-height:200px; margin-top:10px;" />
+                            <div id="markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"></div>
                         </div>
 
                         <!-- Hidden file input -->
@@ -2572,6 +2765,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var file = this.files[0];
       var previewImg = document.getElementById('previewImage');
       var text = document.getElementById('uploadText');
+      var markerLayer = document.getElementById('markerLayer');
 
       if (!file) return;
 
@@ -2581,11 +2775,13 @@ document.addEventListener('DOMContentLoaded', function () {
           previewImg.src = e.target.result;
           previewImg.style.display = 'block';
           text.style.display = 'none';
+          markerLayer.style.display = 'block';
         };
         reader.readAsDataURL(file);
       } else {
         previewImg.style.display = 'none';
         text.innerHTML = '📄 ' + file.name;
+        markerLayer.style.display = 'none';
       }
     " />
                     </div>
