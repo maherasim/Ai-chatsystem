@@ -27,7 +27,7 @@ public function customLogin(Request $request)
     $user = Auth::user();
 
     //Check if user already completed profile & accepted policy
-    if ($user->policy_accepted && $user->phone && $user->profile_image && $user->card_image) {
+    if ($user->policy_accepted  && $user->profile_image && $user->card_image) {
         return response()->json(['success' => true, 'redirect' => route('home')]);
     }
 
