@@ -7,7 +7,7 @@
 
     /* Force Genos font across this page */
     .content.main_content, .content.main_content * {
-        font-family: 'Genos', sans-serif !important;
+       /* font-family: 'Genos', sans-serif !important;*/
     }
 
     /* Slightly larger, more readable base sizes */
@@ -20,7 +20,7 @@
     .content.main_content h3 { font-size: 24px !important; }
     .content.main_content h4 { font-size: 21px !important; }
     .content.main_content h5 { font-size: 19px !important; }
-    .content.main_content h6 { font-size: 17px !important; }
+   
     .content.main_content label,
     .content.main_content .form-control,
     .content.main_content .form-select,

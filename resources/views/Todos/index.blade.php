@@ -749,7 +749,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                     @if($todo->is_private == 0)
                                                         <div class="overlap-container">
                                                             @foreach($todo->members_data as $mem)
-                                                            <img src="{{ $mem['image']}}">
+                                                            <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
                                                             @endforeach
                                                         </div>
                                                     @endif
@@ -1131,7 +1131,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                         @if($todo->is_private == 0)
                                                             <div class="overlap-container">
                                                                 @foreach($todo->members_data as $mem)
-                                                                <img src="{{ $mem['image']}}">
+                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
                                                                 @endforeach
                                                             </div>
                                                         @endif
@@ -1448,7 +1448,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                                         @if($todo->is_private == 0)
                                                             <div class="overlap-container">
                                                                 @foreach($todo->members_data as $mem)
-                                                                <img src="{{ $mem['image']}}">
+                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
                                                                 @endforeach
                                                             </div>
                                                         @endif
@@ -4379,7 +4379,7 @@ function formatFileSize(bytes) {
                     div.classList.add("col-md-3", "invit-box");
                     div.innerHTML = `
                         <div class="invit-img">
-                            <img src="${m.image}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
+                            <img src="${m.image.replace('admin.', 'team.')}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
                         </div>
                         <div class="invit-txt">${m.name}</div>
                     `;
