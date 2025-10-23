@@ -400,6 +400,7 @@
                             </div>
                         </div>
 
+                        
                         <!-- Task Status Cards -->
                         <div class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius:10px; padding:1px;">
 
@@ -2365,6 +2366,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var createTaskModalEl = document.getElementById('createTaskModal');
@@ -2417,13 +2419,123 @@ document.addEventListener('DOMContentLoaded', function () {
     // marker controls
     var shapeSquareBtn = document.getElementById('marker-shape-square');
     var shapeCircleBtn = document.getElementById('marker-shape-circle');
-    if (shapeSquareBtn) shapeSquareBtn.addEventListener('click', function(){ currentShape = 'square'; this.style.background='#e9ecef'; if(shapeCircleBtn) shapeCircleBtn.style.background='#f8f9fa'; });
-    if (shapeCircleBtn) shapeCircleBtn.addEventListener('click', function(){ currentShape = 'circle'; this.style.background='#e9ecef'; if(shapeSquareBtn) shapeSquareBtn.style.background='#f8f9fa'; });
+    if (shapeSquareBtn) shapeSquareBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        currentShape = 'square';
+        this.style.background='#e9ecef';
+        if(shapeCircleBtn) shapeCircleBtn.style.background='#f8f9fa';
+        if (markerLayer) {
+            var rect = markerLayer.getBoundingClientRect();
+            createMarker(rect.width/2, rect.height/2);
+        }
+    });
+    if (shapeCircleBtn) shapeCircleBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        currentShape = 'circle';
+        this.style.background='#e9ecef';
+        if(shapeSquareBtn) shapeSquareBtn.style.background='#f8f9fa';
+        if (markerLayer) {
+            var rect = markerLayer.getBoundingClientRect();
+            createMarker(rect.width/2, rect.height/2);
+        }
+    });
+    var markerToolbarEl = document.getElementById('markerToolbar');
+    if (markerToolbarEl) {
+        markerToolbarEl.addEventListener('click', function(e){ e.stopPropagation(); });
+    }
     document.querySelectorAll('.marker-color').forEach(function(btn){
         btn.addEventListener('click', function(){ currentColor = this.getAttribute('data-color') || '#ea5455'; });
     });
     var clearBtn = document.getElementById('marker-clear');
     if (clearBtn) clearBtn.addEventListener('click', function(){ if(currentMarker){ currentMarker.remove(); currentMarker=null; } });
+
+    function openMarkerDetailsSwal() {
+        if (!(window.Swal && typeof Swal.fire === 'function')) return;
+        Swal.fire({
+            title: 'Add marker details',
+            html: (
+                '<div id="swal-marker-form">\
+                    <div class="mb-2">\
+                        <label class="form-label">Title</label>\
+                        <input type="text" id="swal-title" class="form-control form-control-sm" />\
+                    </div>\
+                    <div class="mb-2">\
+                        <label class="form-label">Description</label>\
+                        <textarea id="swal-description" class="form-control form-control-sm" rows="3"></textarea>\
+                    </div>\
+                    <div class="d-flex gap-2 mb-2">\
+                        <div class="flex-fill">\
+                            <label class="form-label">Start Date</label>\
+                            <input type="date" id="swal-start" class="form-control form-control-sm" />\
+                        </div>\
+                        <div class="flex-fill">\
+                            <label class="form-label">End Date</label>\
+                            <input type="date" id="swal-end" class="form-control form-control-sm" />\
+                        </div>\
+                    </div>\
+                    <div class="mb-2">\
+                        <div class="d-flex justify-content-between align-items-center mb-1">\
+                            <label class="form-label m-0">Checkpoints</label>\
+                            <button type="button" id="swal-add-checkpoint" class="btn btn-sm" style="background:#28c76f;color:#fff;">Add</button>\
+                        </div>\
+                        <div id="swal-checkpoints-list" class="d-flex flex-column gap-2"></div>\
+                    </div>\
+                </div>'
+            ),
+            focusConfirm: false,
+            width: 600,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            didOpen: function(){
+                var list = document.getElementById('swal-checkpoints-list');
+                var addBtn = document.getElementById('swal-add-checkpoint');
+                function addRow(value){
+                    var row = document.createElement('div');
+                    row.className = 'd-flex align-items-center gap-2';
+                    var input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control form-control-sm';
+                    if (value) input.value = value;
+                    var remove = document.createElement('button');
+                    remove.type = 'button';
+                    remove.className = 'btn btn-sm';
+                    remove.style.background = '#ea5455';
+                    remove.style.color = '#fff';
+                    remove.textContent = 'Remove';
+                    remove.addEventListener('click', function(){ row.remove(); });
+                    row.appendChild(input);
+                    row.appendChild(remove);
+                    list.appendChild(row);
+                }
+                if (addBtn) addBtn.addEventListener('click', function(){ addRow(''); });
+            },
+            preConfirm: function(){
+                var title = (document.getElementById('swal-title')||{}).value || '';
+                var description = (document.getElementById('swal-description')||{}).value || '';
+                var startDate = (document.getElementById('swal-start')||{}).value || '';
+                var endDate = (document.getElementById('swal-end')||{}).value || '';
+                var checkpoints = Array.from((document.getElementById('swal-checkpoints-list')||{}).children || [])
+                    .map(function(row){ return row.querySelector('input')?.value || ''; })
+                    .filter(Boolean);
+                var base64 = (typeof cropMarkerToBase64 === 'function') ? cropMarkerToBase64() : null;
+                return {
+                    title: title,
+                    description: description,
+                    start_date: startDate,
+                    end_date: endDate,
+                    checkpoints: checkpoints,
+                    shape: currentShape,
+                    color: currentColor,
+                    mark_image: base64,
+                };
+            }
+        }).then(function(result){
+            if (result.isConfirmed) {
+                Swal.fire({ icon: 'success', title: 'Saved', timer: 1200, showConfirmButton: false });
+                console.log('Marker saved (Swal):', result.value);
+            }
+        });
+    }
 
     function createMarker(x, y) {
         if (!markerLayer) return;
@@ -2459,6 +2571,11 @@ document.addEventListener('DOMContentLoaded', function () {
         plus.style.cursor = 'pointer';
         marker.appendChild(plus);
 
+        // prevent marker interactions from bubbling to upload box (which opens file chooser)
+        marker.addEventListener('mousedown', function(e){ e.stopPropagation(); });
+        marker.addEventListener('mouseup', function(e){ e.stopPropagation(); });
+        marker.addEventListener('click', function(e){ e.stopPropagation(); });
+
         markerLayer.appendChild(marker);
         currentMarker = marker;
 
@@ -2470,15 +2587,64 @@ document.addEventListener('DOMContentLoaded', function () {
 
         plus.addEventListener('click', function(e){
             e.stopPropagation();
-            var modal = new bootstrap.Modal(document.getElementById('markerDetailsModal'));
-            modal.show();
+            if (!(window.Swal && typeof Swal.fire === 'function')) { alert('Add details'); return; }
+            var palette = ['#ea5455','#28c76f','#7367f0','#ff9f43','#00cfe8','#1f2a57'];
+            var chosen = currentColor;
+            var swatches = palette.map(function(c){
+                return '<button type="button" class="swal-color" data-color="'+c+'" style="width:28px;height:28px;border-radius:50%;border:2px solid '+(c===chosen?'#111':'#e0e6ed')+';background:'+c+';cursor:pointer;"></button>';
+            }).join(' ');
+            Swal.fire({
+                title: 'Select color',
+                html: '<div class="d-flex align-items-center gap-2">'+swatches+'</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Create Task',
+                width: 420,
+                didOpen: function(){
+                    document.querySelectorAll('.swal-color').forEach(function(btn){
+                        btn.addEventListener('click', function(){
+                            chosen = this.getAttribute('data-color');
+                            document.querySelectorAll('.swal-color').forEach(function(b){ b.style.borderColor = '#e0e6ed'; });
+                            this.style.borderColor = '#111';
+                        });
+                    });
+                },
+                preConfirm: function(){ return chosen; }
+            }).then(function(res){
+                if (res.isConfirmed) {
+                    currentColor = res.value || currentColor;
+                    marker.style.border = '2px solid ' + currentColor;
+                    plus.style.background = currentColor;
+                    openMarkerDetailsSwal();
+                }
+            });
         });
     }
 
     if (markerLayer && previewImg) {
         markerLayer.addEventListener('click', function(e){
+            // Prevent bubbling to #uploadBox which would open file chooser
+            e.stopPropagation();
             var rect = markerLayer.getBoundingClientRect();
             createMarker(e.clientX - rect.left, e.clientY - rect.top);
+        });
+        // Right-click: add circular marker at cursor
+        markerLayer.addEventListener('contextmenu', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var rect = markerLayer.getBoundingClientRect();
+            var prevShape = currentShape;
+            currentShape = 'circle';
+            createMarker(e.clientX - rect.left, e.clientY - rect.top);
+            currentShape = prevShape;
+        });
+    }
+
+    // Clear any existing markers when a new image is uploaded
+    var uploadInput = document.getElementById('fileInput');
+    if (uploadInput) {
+        uploadInput.addEventListener('change', function(){
+            if (markerLayer) { markerLayer.innerHTML = ''; }
+            if (currentMarker) { currentMarker = null; }
         });
     }
 
@@ -2751,8 +2917,25 @@ document.addEventListener('DOMContentLoaded', function () {
                             <p id="uploadText" class="text-muted m-0">
                                 Upload Or Drag<br><small>PDF, JPG, PNG</small>
                             </p>
-                            <img id="previewImage" src="" style="display:none; max-width:100%; max-height:200px; margin-top:10px;" />
+                            <img id="previewImage" src="" style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); object-fit:contain;" />
                             <div id="markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"></div>
+                            <div id="markerToolbar" style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                <button id="marker-shape-square" type="button" class="btn btn-sm" style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                        <circle cx="5" cy="5" r="2" fill="#1f2a57"/>
+                                        <circle cx="19" cy="5" r="2" fill="#1f2a57"/>
+                                        <circle cx="5" cy="19" r="2" fill="#1f2a57"/>
+                                        <circle cx="19" cy="19" r="2" fill="#1f2a57"/>
+                                    </svg>
+                                </button>
+                                <button id="marker-shape-circle" type="button" class="btn btn-sm" style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="8" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                        <path d="M15 6 A8 8 0 0 1 18 12" fill="none" stroke="#8fa3bf" stroke-linecap="round" stroke-width="2"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Hidden file input -->
@@ -2766,6 +2949,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var previewImg = document.getElementById('previewImage');
       var text = document.getElementById('uploadText');
       var markerLayer = document.getElementById('markerLayer');
+      var markerToolbar = document.getElementById('markerToolbar');
 
       if (!file) return;
 
@@ -2776,12 +2960,14 @@ document.addEventListener('DOMContentLoaded', function () {
           previewImg.style.display = 'block';
           text.style.display = 'none';
           markerLayer.style.display = 'block';
+          if (markerToolbar) markerToolbar.style.display = 'flex';
         };
         reader.readAsDataURL(file);
       } else {
         previewImg.style.display = 'none';
         text.innerHTML = '📄 ' + file.name;
         markerLayer.style.display = 'none';
+        if (markerToolbar) markerToolbar.style.display = 'none';
       }
     " />
                     </div>
@@ -3018,13 +3204,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             <!-- Add Task -->
                             <!-- Hidden File Input -->
-                            <input type="file" id="fileInput" style="display: none;" onchange="document.getElementById('addTaskBox').innerText = '+ ' + this.files[0].name">
+                            <input type="file" id="addTaskFileInput" style="display: none;" onchange="document.getElementById('addTaskBox').innerText = '+ ' + this.files[0].name">
 
                             <!-- Clickable Box -->
                             <div id="addTaskBox"
                                 class="border border-dashed p-2 text-center rounded"
                                 style="cursor: pointer;"
-                                onclick="document.getElementById('fileInput').click();">
+                                onclick="document.getElementById('addTaskFileInput').click();">
                                 + Add new Task
                             </div>
 
