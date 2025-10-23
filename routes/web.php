@@ -10,6 +10,9 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\DashboardController;
+
+
 use App\Http\Controllers\TaskController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
@@ -22,6 +25,8 @@ Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout')
 //  users
 
 Route::post('/store', [UsersController::class, 'store'])->name('user.store');
+Route::post('/uploadoc', [UsersController::class, 'updoc'])->name('users.document');
+
 Route::put('/user/{id}', [UsersController::class, 'update'])->name('user.update');
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
@@ -33,11 +38,17 @@ Route::get('/', function () {
 
 // routes/web.php
 
+/*
 Route::get('/home', function () {
     $header = Setting::all();
     $setting = Setting::first();
     return view('index', compact('header','setting'));
 })->middleware('auth')->name('home');
+*/
+
+Route::get('/home', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('home');
 
 Route::get('/login', function () {
     return view('signin');

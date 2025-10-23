@@ -161,51 +161,7 @@ function confirmDelete(deleteUrl, userName) {
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
         <div>
-            <div class="chat-header">
-                <div class="user-details">
-                    <div class="d-xl-none">
-                        <a class="text-muted chat-close me-2" href="#">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
-                    </div>
-                    <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
-                    </div>
-                    <div class="ms-2 overflow-hidden">
-                        <h6>Username</h6>
-                        <p class="last-seen text-truncate"> Online</p>
-                    </div>
-                </div>
-
-                <!-- Right Side Icons -->
-                <div class="left-icons d-flex align-items-center gap-5">
-
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
-
-                    <li style="list-style: none;">
-                        <!-- Moon Icon -->
-                        <a href="#" id="dark-mode-toggle" style="display: inline;">
-                            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-                        </a>
-
-                        <!-- Sun Icon -->
-                        <a href="#" id="light-mode-toggle" style="display: none;">
-                            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-                        </button>
-                    </form>
-                </div>
-            </div>
+            @include('Chats.header')
             <!-- Flash Messages -->
             @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
@@ -414,6 +370,7 @@ function confirmDelete(deleteUrl, userName) {
                                                         "type" => $user->type,
                                                         "image_url" => $user->image ? asset($user->image) : "",
                                                         "banner_url" => $user->banner ? asset($user->banner) : "",
+                                                        "card_image" => $user->card_image ? asset($user->card_image) : "",
                                                         "permissions" => $user->permissions,
                                                     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openEditUser(JSON.parse(this.getAttribute('data-user')))" data-bs-toggle="modal" data-bs-target="#add_user">
 
@@ -447,6 +404,7 @@ function confirmDelete(deleteUrl, userName) {
                                                         "country" => $user->country ?? "",
                                                         "team" => $user->team ?? "",
                                                         "phone" => $user->phone ?? "",
+                                                        "card_image" => $user->card_image ?? "",
                                                         "image_url" => $user->image ? asset($user->image) : "",
                                                         "join_date" => optional($user->created_at)->format('d.m.Y')
                                                     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openUserOffcanvas(JSON.parse(this.getAttribute('data-user')))"> {{$user->name}}</div>
@@ -549,7 +507,7 @@ function confirmDelete(deleteUrl, userName) {
         try {
             setImage('offcanvasProfileImageTop', user.image_url, '{{URL::asset('/build/img/profileuser.svg')}}');
             setImage('offcanvasProfileImageMain', user.image_url, '{{URL::asset('/build/img/profileuser.svg')}}');
-
+            
             setText('offcanvasRealName', user.name);
             setText('offcanvasType', user.type);
             setText('offcanvasDescription', user.user_description);
@@ -560,6 +518,46 @@ function confirmDelete(deleteUrl, userName) {
             setText('offcanvasJoinDate', user.join_date);
             setText('offcanvasPhone', user.phone);
             setText('offcanvasEmail', user.email);
+
+            document.getElementById('userid').value = user.id;
+
+            const baseUrl = "{{ asset('storage') }}/"; // Laravel storage base URL
+            const fileUrl = baseUrl + user.card_image;
+
+            const fileName = user.card_image.split('/').pop();
+            const ext = fileName.split('.').pop().toLowerCase();
+
+            const docName = document.getElementById('doc_name');
+            const docImage = document.getElementById('doc_img');
+
+           
+
+            let icon = 'https://admin.onlinesystems.info/build/img/file-icon.svg';
+            if (['pdf'].includes(ext)) icon = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+            if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = fileUrl;
+            if (['mp4','mov','avi','mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+
+
+            let dispname  = fileName.replace(/^cards\//, '');
+
+            // limit to 50 characters max
+            if (dispname.length > 25) {
+                dispname = dispname.substring(0, 25) + '...';
+            }
+
+            // set the text content
+            docName.textContent = dispname;
+            docImage.src = icon;
+
+            docImage.style.cursor = 'pointer';
+            docImage.onclick = () => {
+                window.open(fileUrl, '_blank');
+            };
+            
+            
+
+
+
         } catch (e) {
             console.error('Failed to populate user offcanvas', e);
         }
@@ -704,91 +702,30 @@ function confirmDelete(deleteUrl, userName) {
                                 <div class="col-12 mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded"
                                         style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
+                                        
                                         <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="PDF Icon"
+                                            <img id="doc_img" src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                                                
                                                 style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
                                             <div>
-                                                <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
-                                                <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
+                                                <div id="doc_name" style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
+                                                <!--<div id="doc_size" style="font-size: 12px; color: #8c94a3;">94 KB </div>-->
                                             </div>
                                         </div>
-                                        <!-- Trigger Button -->
-                                        <div style="position: relative; display: inline-block;">
-                                            <div
-                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                            </div>
-
-                                            <!-- Popup Menu -->
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Title -->
-                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-
-                                                <!-- Icons -->
-                                                <div style="display:flex; justify-content: space-between; align-items:center;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Close on outside click -->
-                                        <script>
-                                            document.addEventListener("click", function() {
-                                                document.querySelectorAll(".menu-box").forEach(el => el.style.display = "none");
-                                            });
-                                        </script>
+   
 
                                     </div>
+                                    <form  id="uploaddoc" action="{{ route('users.document') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="user" value="" id="userid" />
+                                        <div class="pdf-add-tile d-flex align-items-center justify-content-center text-center" style="margin:auto; margin-top:10px; width: 160px; height: 60px; border: 1px dashed #cfd3d9; border-radius: 10px; cursor: pointer; background:#fff;" onclick="createAddPdfFile()">
+                                            <div style="font-size: 22px; color: #a0a4ab; line-height: 1;">+</div>
+                                        </div>
+                                
+                                    </form>
                                 </div>
 
-                                <div class="col-12 mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="PDF Icon"
-                                                style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                            <div>
-                                                <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
-                                                <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                            </div>
-                                        </div>
-                                        <!-- Trigger Button -->
-                                        <div style="position: relative; display: inline-block;">
-                                            <div
-                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                            </div>
-
-                                            <!-- Popup Menu -->
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Title -->
-                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-
-                                                <!-- Icons -->
-                                                <div style="display:flex; justify-content: space-between; align-items:center;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                
 
                             </div>
                         </div>
@@ -2266,7 +2203,7 @@ function confirmDelete(deleteUrl, userName) {
                         <!-- pdf -->
 
                         <div class="mt-2" style="background-color: #fafcfc; padding: 20px;">
-                            <h6 class="mb-3" style="color: #6c7a89;">Documents</h6>
+                            <h6 class="mb-3" style="color: #6c7a89;">Documents </h6>
                             <div class="row">
                                 <!-- Document Card -->
                                 <div class="col-12 mb-3">
@@ -3852,6 +3789,7 @@ function confirmDelete(deleteUrl, userName) {
     }
 
     function openEditUser(user) {
+
         document.getElementById('userModalTitle').innerText = 'Edit Member';
         document.getElementById('userModalSubtitle').innerText = 'Update user details';
         document.getElementById('userCreateForm').action = '{{ route('user.update', '__ID__') }}'.replace('__ID__', user.id);
@@ -3903,6 +3841,7 @@ function confirmDelete(deleteUrl, userName) {
         var bannerPreview = document.getElementById('bannerPreview');
         var bannerPlaceholder = document.getElementById('bannerPlaceholder');
         var bannerInput = document.getElementById('bannerInput');
+        
         if (bannerInput) bannerInput.required = false;
         if (user.banner_url) {
             bannerPreview.src = user.banner_url;
@@ -3930,5 +3869,32 @@ function confirmDelete(deleteUrl, userName) {
         // Show all sections in edit mode
         if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
     }
+
+
+    window.createAddPdfFile = function() {
+    // Create file input
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/pdf, image/png, image/jpeg, image/jpg';
+    input.name = 'attachment'; // or 'attachments[]' if multiple
+    input.style.display = 'none';
+
+    // When file selected
+    input.addEventListener('change', function() {
+        if (input.files.length === 0) return;
+
+        // Append to form
+        var form = document.getElementById('uploaddoc');
+        form.appendChild(input);
+
+        // Submit form
+        form.submit();
+    });
+
+    // Trigger file picker
+    input.click();
+};
+
+
 </script>
 @endsection

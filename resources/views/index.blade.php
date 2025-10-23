@@ -14,6 +14,24 @@
         overflow-x: hidden;
     }
 
+   .datecls{
+    text-align:center; 
+    background:#ffffff; 
+    color:#000; 
+    border-radius:16px; 
+    width:60px; 
+    padding:10px;
+    
+   }
+   .dateclsactiv{
+    text-align:center; 
+    background:#ff3d3d; 
+    color:white; 
+    border-radius:16px; 
+    width:60px; 
+    padding:10px;
+   }
+
     /* Prevent parent containers from overflowing */
     .main_content,
     .chat-body,
@@ -85,6 +103,15 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
+    .low{
+        color: #28c76f;
+    }
+    .medium{
+        color: #fbbc05;
+    }
+    .high{
+        color: #e64241;
+    }
 </style>
 
 
@@ -95,71 +122,11 @@
         @include('Chats.chatsidebar')
     </div>
 
+    @include('Todos.notification')
+
     <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
         <div>
-            <div class="chat-header">
-                <div class="user-details">
-                    <div class="d-xl-none">
-                        <a class="text-muted chat-close me-2" href="#">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
-                    </div>
-                    <div class="avatar avatar-lg online" style="visibility: visible;">
-                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" class="rounded-circle" alt="image">
-
-
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <!-- Image -->
-                          @foreach($header as $header)
-                        <img src="{{ $header->image ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}" style="width: 50px; height: 50px;margin-left:30px;" class="rounded-circle me-3" alt="User Image">
-                         @endforeach
-                        <!-- Username and Status -->
-                        <div class="overflow-hidden">
-                            <h6 class="mb-0">
-                                @isset($header->first_name)
-                                    {{ $header->first_name }}
-                                @else
-                                    No Name
-                                @endisset
-                            </h6>
-                            
-                            <p class="last-seen text-truncate mb-0">Online</p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Right Side Icons -->
-                <div class="left-icons d-flex align-items-center gap-5">
-
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
-
-                    <li style="list-style: none;">
-                        <!-- Moon Icon -->
-                        <a href="#" id="dark-mode-toggle" style="display: inline;">
-                            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-                        </a>
-
-                        <!-- Sun Icon -->
-                        <a href="#" id="light-mode-toggle" style="display: none;">
-                            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-                        </a>
-                    </li>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-                        </button>
-                    </form>
-                </div>
-            </div>
+            @include('Chats.header')
             <!-- Wrapper -->
             <div style="overflow-y: auto;flex:1;height: 90vh;">
                 <div class="chat-body chat-page-group">
@@ -173,11 +140,11 @@
                                     <div class="row align-items-center">
                                         <!-- Welcome Section -->
                                         <div class="col-12 col-md-8 d-flex align-items-start mb-3 mb-md-0">
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
+                                            <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
                                             <div>
-                                                <h6 class="mb-1">Welcome Back, <b>Admin Name</b></h6>
+                                                <h6 class="mb-1">Welcome Back, <b>{{$user->name}}</b></h6>
                                                 <small>
-                                                    Dear <b>"Admin name"</b> you have for today
+                                                    Dear <b>"{{$user->name}}"</b> you have for today
                                                     <span style="color:red; font-weight:600;">12 Messages</span>,
                                                     <span style="color:#e75480; font-weight:600;">5 Meetings</span>,
                                                     <span style="color:#e75480; font-weight:600;">3 ToDo’s</span>,
@@ -202,100 +169,10 @@
                                         <div>
                                             <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-lg-4">
-                                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:'Segoe UI', sans-serif;">
 
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                    <!-- Left: Circular Progress -->
-                                                    <div style="position: relative; width: 45px; height: 45px;">
-                                                        <svg viewBox="0 0 36 36" width="45" height="45">
-                                                            <path
-                                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                            <path
-                                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                                stroke-dasharray="70, 100"
-                                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                        </svg>
-                                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                            70%
-                                                        </div>
-                                                    </div>
+                                    @foreach($projects as $proj)
 
-                                                    <!-- Center: Yekbon Logo -->
-                                                    <div class="mx-auto">
-                                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                                    </div>
-
-                                                    <!-- Right: Empty space for balance (optional) -->
-                                                    <div style="width: 45px;"></div>
-                                                </div>
-
-
-                                                <!-- Project Title -->
-                                                <!-- Project Title & Project ID -->
-                                                <div class="text-center" style="cursor: pointer;">
-                                                    <h6 style="cursor: pointer;"
-                                                        data-bs-toggle="offcanvas"
-                                                        data-bs-target="#offcanvasRight"
-                                                        aria-controls="offcanvasRight">
-                                                        Project Title
-                                                    </h6>
-                                                    <!-- Project ID styled exactly like screenshot -->
-                                                </div>
-
-
-                                                <!-- Progress Status -->
-                                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                                    <!-- Red Flag with soft red background -->
-                                                    <div style="background: #fddede; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                                        <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px;" alt="flag" />
-                                                    </div>
-
-                                                    <!-- Status with green dot and soft gray/green background -->
-                                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                                    </div>
-                                                </div>
-
-                                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                                                </div>
-
-                                                <!-- Section Progress Block -->
-                                                <div class="flex-grow-1  mt-1" style="background:#f8f9fa;border-radius:10px;">
-                                                    <!-- Stats -->
-                                                    <div class="d-flex justify-content-between text-center mb-2">
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Blue Progress Bar -->
-                                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
+                                   
                                         <div class="col-12 col-sm-6 col-lg-4">
                                             <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
 
@@ -333,7 +210,7 @@
                                                         data-bs-toggle="offcanvas"
                                                         data-bs-target="#offcanvasRight"
                                                         aria-controls="offcanvasRight">
-                                                        Project Title
+                                                        {{$proj->title}}
                                                     </h6>
                                                     <!-- Project ID styled exactly like screenshot -->
                                                 </div>
@@ -348,109 +225,15 @@
 
                                                     <!-- Status with green dot and soft gray/green background -->
                                                     <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
+                                                        <span class="{{$proj->priority}}" style="width: 10px; height: 10px; border-radius: 50%;  display: inline-block;"></span>
+                                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">{{$proj->priority}}</span>
                                                     </div>
                                                 </div>
 
                                                 <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
                                                     <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                                                </div>
-
-                                                <!-- Section Progress Block -->
-                                                <div class="flex-grow-1  mt-1" style=" background:#f8f9fa;border-radius:10px;">
-                                                    <!-- Stats -->
-                                                    <div class="d-flex justify-content-between text-center mb-2">
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                                        </div>
-                                                        <div style="flex: 1;">
-                                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Blue Progress Bar -->
-                                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-lg-4">
-                                            <div class="card shadow-sm  p-3" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                    <!-- Left: Circular Progress -->
-                                                    <div style="position: relative; width: 45px; height: 45px;">
-                                                        <svg viewBox="0 0 36 36" width="45" height="45">
-                                                            <path
-                                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                            <path
-                                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                                stroke-dasharray="70, 100"
-                                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                        </svg>
-                                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                                            70%
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Center: Yekbon Logo -->
-                                                    <div class="mx-auto">
-                                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                                    </div>
-
-                                                    <!-- Right: Empty space for balance (optional) -->
-                                                    <div style="width: 45px;"></div>
-                                                </div>
-
-
-                                                <!-- Project Title -->
-                                                <!-- Project Title & Project ID -->
-                                                <div class="text-center" style="cursor: pointer;">
-                                                    <h6 style="cursor: pointer;"
-                                                        data-bs-toggle="offcanvas"
-                                                        data-bs-target="#offcanvasRight"
-                                                        aria-controls="offcanvasRight">
-                                                        Project Title
-                                                    </h6>
-                                                    <!-- Project ID styled exactly like screenshot -->
-                                                </div>
-
-
-                                                <!-- Progress Status -->
-                                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                                    <!-- Red Flag with soft red background -->
-                                                    <div style="background: #fddede; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                                        <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px;" alt="flag" />
-                                                    </div>
-
-                                                    <!-- Status with green dot and soft gray/green background -->
-                                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                                    </div>
-                                                </div>
-
-                                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                                                    <div><span style="color: #28c76f;">Start:</span> {{ \Carbon\Carbon::parse($proj->start_date)->format('d-m-Y') }}</div>
+                                                    <div><span style="color: #28c76f;">Deliver:</span>{{ \Carbon\Carbon::parse($proj->end_date)->format('d-m-Y') }}</div>
                                                 </div>
 
                                                 <!-- Section Progress Block -->
@@ -459,7 +242,7 @@
                                                     <div class="d-flex justify-content-between text-center mb-2">
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
+                                                            <div style="font-size: 12px; color: #649bc3;">{{$proj->tickets()->count()}}</div>
                                                         </div>
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
@@ -467,7 +250,7 @@
                                                         </div>
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
+                                                            <div style="font-size: 13px; color: #649bc3;">{{ $proj->remaining_days }}</div>
                                                         </div>
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
@@ -480,10 +263,13 @@
                                                         <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
+
+                                        <!-- loops ends -->
+                                        @endforeach
+
+
 
                                     </div>
                                 </div>
@@ -495,8 +281,8 @@
                                             <!-- Top Date and Time -->
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div>
-                                                    <h1 style="font-size:64px; font-weight:700; margin:0; color:#0f1b3d;">10</h1>
-                                                    <p style="font-size:24px; font-weight:600; margin:-10px 0 0; color:#0f1b3d;">Sep 2025</p>
+                                                    <h1 style="font-size:64px; font-weight:700; margin:0; color:#0f1b3d;">{{ date('d') }}</h1>
+                                                    <p style="font-size:24px; font-weight:600; margin:-10px 0 0; color:#0f1b3d;">{{ date('M Y') }}</p>
                                                 </div>
                                                 <div style="font-size:24px; font-weight:500; color:#0f1b3d;" id="clock">
                                                     <script>
@@ -512,43 +298,43 @@
                                             <div class="d-flex align-items-center mt-4 px-1" style="overflow-x:auto; gap:12px;">
 
                                                 <!-- Active Day -->
-                                                <div style="text-align:center; background:#ff3d3d; color:white; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Mon</div>
-                                                    <div style="font-size:18px;">10</div>
+                                                <div class="dateclsactiv" >
+                                                    <div style="font-weight:600;">{{ date('D') }}</div>
+                                                    <div style="font-size:18px;">{{ date('d') }}</div>
                                                 </div>
 
                                                 <!-- Other Days -->
                                                 <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Tue</div>
-                                                    <div style="font-size:18px;">11</div>
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+1 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+1 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Wed</div>
-                                                    <div style="font-size:18px;">12</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+2 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+2 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Thu</div>
-                                                    <div style="font-size:18px;">13</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+3 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+3 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Fri</div>
-                                                    <div style="font-size:18px;">14</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+4 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+4 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Sat</div>
-                                                    <div style="font-size:18px;">15</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+5 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+5 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Sun</div>
-                                                    <div style="font-size:18px;">17</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+6 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+6 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Mon</div>
-                                                    <div style="font-size:18px;">18</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+7 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+7 day')) }}</div>
                                                 </div>
-                                                <div style="text-align:center; background:#ffffff; color:#000; border-radius:16px; width:60px; padding:10px;">
-                                                    <div style="font-weight:600;">Tue</div>
-                                                    <div style="font-size:18px;">19</div>
+                                                <div class="datecls" >
+                                                    <div style="font-weight:600;">{{ date('D', strtotime('+8 day')) }}</div>
+                                                    <div style="font-size:18px;">{{ date('d', strtotime('+8 day')) }}</div>
                                                 </div>
                                             </div>
 
@@ -561,7 +347,9 @@
 
                                             <!-- zoom meeting -->
                                             <div class="card p-3 mt-2 mb-2" style="border-radius:16px; background:#fff;">
-
+@include('loader')
+@php
+/*
                                                 <!-- Top Row -->
                                                 <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
 
@@ -651,7 +439,10 @@
                                                     </div>
 
                                                 </div>
+                                                */
+                                                @endphp
                                             </div>
+                                            @foreach($todayTodos as $todo)
                                             <!-- 2nd card -->
                                             <div class="card p-3 mt-2 mb-2" style="border-radius:16px; background:#fff;">
 
@@ -660,10 +451,10 @@
 
                                                     <!-- Meeting Info -->
                                                     <div class="d-flex align-items-center me-3 mb-2">
-                                                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="border-radius:50%; width:35px; height:35px; object-fit:cover; margin-right:10px;">
+                                                        <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" style="border-radius:50%; width:35px; height:35px; object-fit:cover; margin-right:10px;">
                                                         <div>
-                                                            <div style="font-weight:600; color:#0f1b3d;">Admin Name</div>
-                                                            <div style="font-size:13px; color:#888;">Time&Date</div>
+                                                            <div style="font-weight:600; color:#0f1b3d;">{{$todo->user->name}}</div>
+                                                            <div style="font-size:13px; color:#888;">{{$todo->end_date . " " . $todo->end_time}}</div>
                                                         </div>
                                                     </div>
 
@@ -671,8 +462,20 @@
                                                     <div class="d-flex align-items-center me-3 mb-2">
                                                         <img src="{{URL::asset('/build/img/yekbon.svg')}}" style="width:34px; height:30px; margin-right:8px;">
                                                         <div>
-                                                            <div style="font-weight:600; font-size:14px;">Title Of ToDo</div>
-                                                            <div style="font-size:12px; color:#999;">shared</div>
+                                                            <div style="font-weight:600; font-size:14px;">{{$todo->title}}</div>
+                                                            <div style="font-size:12px; color:#999;">
+                                                                @if($todo->is_private == 0)
+                                                                    <small class="text-muted">
+                                                                        <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
+                                                                    </small>
+                                        
+
+                                                                @else
+                                                                    <small class="text-muted">
+                                                                        Private
+                                                                    </small>
+                                                                @endif
+                                                </div>
                                                         </div>
                                                     </div>
 
@@ -685,17 +488,24 @@
                                                 <!-- Row 2: Description + Avatars -->
                                                 <div class="d-flex justify-content-between flex-wrap align-items-center mb-3">
                                                     <div style="font-size:14px; color:#333;">
-                                                        Here we will add the description of the ToDo Only<br>
-                                                        you is Superadmin ToDo
+                                                        @foreach($todo->description as $idx => $des)
+                                                            @if($loop->first)
+                                                                <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                                    <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                                    <span style="color:#667085;font-size:13.5px;">{{ Str::limit($des, 40) }}</span>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
                                                     </div>
                                                     <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                    </div>
+                                                        @if($todo->is_private == 0)
+                                                        <div class="overlap-container">
+                                                            @foreach($todo->members_data as $mem)
+                                                            <img src="{{ $mem['image']}}">
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                        </div>
                                                 </div>
                                                 <div class="d-flex  align-items-center p-2" style="border-radius: 20px; background-color: #fff; max-width: 700px;">
                                                     <div style="width: 30px;"></div>
@@ -708,7 +518,7 @@
                                                             <!-- Start Date -->
                                                             <div class="d-flex align-items-center">
                                                                 <span style="color: #28a745; font-weight: 500;">Start:</span>
-                                                                <span class="ms-1" style="color: #3b3f5c;">22.10.2024</span>
+                                                                <span class="ms-1" style="color: #3b3f5c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span>
                                                             </div>
 
                                                             <!-- Separator -->
@@ -717,107 +527,26 @@
                                                             <!-- Delivery Info -->
                                                             <div class="d-flex align-items-center">
                                                                 <span style="color: #3b3f5c; font-weight: 500;">Deliver:</span>
-                                                                <span class="ms-1" style="color: #dc3545;">Today</span>
+                                                                <span class="ms-1" style="color: #dc3545;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span>
                                                             </div>
                                                             <!-- Right Side: Status Pill -->
                                                             <div class="d-flex align-items-center gap-1 px-1 py-1" style="background-color: #f0faf4; border-radius: 20px;">
-                                                                <i class="bi bi-circle-fill" style="color: #28a745; font-size: 10px;"></i>
-                                                                <span style="color: #3b3f5c; font-size: 14px;">Low</span>
+                                                                <i class="bi bi-circle-fill {{$todo->priority}}" style=" font-size: 10px;"></i>
+                                                                
+                                                                <span style="color: #3b3f5c; font-size: 14px; ">{{$todo->priority}}</span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Right Side: Join Button -->
-                                                    <div class="text-center py-2">
-                                                        <button style="background-color: #fbbc05; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;margin-left: 30px;">
-                                                            Need Counte
-                                                        </button>
-                                                    </div>
+                                                    
 
                                                 </div>
                                             </div>
+                                            @endforeach
+
+
+
                                             <!-- 3rd card -->
-                                            <div class="card p-3 mt-2 mb-2" style="border-radius:16px; background:#fff;">
-
-                                                <!-- Top Row -->
-                                                <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
-
-                                                    <!-- Meeting Info -->
-                                                    <div class="d-flex align-items-center me-3 mb-2">
-                                                        <img src="{{ asset('build/img/groups/group-01.jpg') }}" style="border-radius:50%; width:35px; height:35px; object-fit:cover; margin-right:10px;">
-                                                        <div>
-                                                            <div style="font-weight:600; color:#0f1b3d;">Admin Name</div>
-                                                            <div style="font-size:13px; color:#888;">Time&Date</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Project Info -->
-                                                    <div class="d-flex align-items-center me-3 mb-2">
-                                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" style="width:34px; height:30px; margin-right:8px;">
-                                                        <div>
-                                                            <div style="font-weight:600; font-size:14px;">Title Of ToDo</div>
-                                                            <div style="font-size:12px; color:#999;">shared</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Zoom Button -->
-                                                    <div class="mb-2">
-                                                        <button style="background:#007bff; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:13px;">ToDo Task</button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Row 2: Description + Avatars -->
-                                                <div class="d-flex justify-content-between flex-wrap align-items-center mb-3">
-                                                    <div style="font-size:14px; color:#333;">
-                                                        Here we will add the description of the ToDo Only<br>
-                                                        you is Superadmin ToDo
-                                                    </div>
-                                                    <div class="d-flex justify-content-center mt-1" style="margin-left: 10px;">
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}"
-                                                            style="height: 30px; width: 30px; border: 2px solid #00e0ff; margin-left: -10px; border-radius: 50%;" />
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex  align-items-center p-2" style="border-radius: 20px; background-color: #fff; max-width: 700px;">
-                                                    <div style="width: 30px;"></div>
-                                                    <!-- Left Side: Icons + Text -->
-                                                    <div class="d-flex align-items-start justify-content-between px-1" style=" background-color: #f4f4f4;border-radius:10px; display: inline-flex;">
-
-                                                        <!-- Left Side: Start and Deliver Info -->
-                                                        <div class="d-flex align-items-center gap-1">
-
-                                                            <!-- Start Date -->
-                                                            <div class="d-flex align-items-center">
-                                                                <span style="color: #28a745; font-weight: 500;">Start:</span>
-                                                                <span class="ms-1" style="color: #3b3f5c;">22.10.2024</span>
-                                                            </div>
-
-                                                            <!-- Separator -->
-                                                            <div style="width: 2px; height: 20px; background-color: #e0e0e0;"></div>
-
-                                                            <!-- Delivery Info -->
-                                                            <div class="d-flex align-items-center">
-                                                                <span style="color: #3b3f5c; font-weight: 500;">Deliver:</span>
-                                                                <span class="ms-1" style="color: #dc3545;">Today</span>
-                                                            </div>
-                                                            <!-- Right Side: Status Pill -->
-                                                            <div class="d-flex align-items-center gap-1 px-1 py-1" style="background-color: #f0faf4; border-radius: 20px;">
-                                                                <i class="bi bi-circle-fill" style="color: #28a745; font-size: 10px;"></i>
-                                                                <span style="color: #3b3f5c; font-size: 14px;">Low</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Right Side: Join Button -->
-                                                    <div class="text-center py-2">
-                                                        <button style="background-color: #fbbc05; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;margin-left: 30px;">
-                                                            Need Counte
-                                                        </button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
+                                            
 
                                             <!-- footer buttons -->
                                             <div class="d-flex justify-content-center gap-3 mt-2">
@@ -1028,6 +757,8 @@
                                                     <div style="font-size: 13px; color: #4b5563;">3 Tickets</div>
                                                 </div>
                                             </div>
+                                            
+                                           @foreach($tickets as $ticket)
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1036,7 +767,7 @@
                                                     <div class="d-flex justify-content-between  mb-3">
                                                         <!-- Ticket Title on the left -->
                                                         <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                                            Ticket Title
+                                                            {{$ticket->title}}
                                                         </div>
 
                                                         <!-- Status badges on the right -->
@@ -1059,8 +790,8 @@
 
                                                             <!-- Low Badge with Green Dot -->
                                                             <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                                                LOW
+                                                                <span class="{{$ticket->priority}}" style="width: 10px; height: 10px; border-radius: 50%; display: inline-block;"></span>
+                                                                {{$ticket->priority}}
                                                             </span>
 
                                                             <!-- Yellow Badge with Flag -->
@@ -1116,8 +847,8 @@
                                             <!-- Ticket meta info -->
                                             <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
                                                 <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                                                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                                                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                                                <div><span style="color: #28c76f;">Start:</span> {{ \Carbon\Carbon::parse($ticket->start_date)->format('d-m-Y') }} |</div>
+                                                <div><span style="color: #28c76f;">Deliver:</span> {{ \Carbon\Carbon::parse($ticket->end_date)->format('d-m-Y') }}</div>
 
                                             </div>
                                             <div class="d-flex justify-content-center mt-3 mb-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
@@ -1146,125 +877,9 @@
 
                                                 </div>
                                             </div>
-                                            <!-- 2 -->
-                                            <!-- Ticket Title + Status and Metrics -->
-                                            <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;border-radius: 10px;">
-                                                <!-- Ticket Title & Status -->
-                                                <div style="background:#fff">
-                                                    <!-- Ticket Title -->
-                                                    <div class="d-flex justify-content-between  mb-3">
-                                                        <!-- Ticket Title on the left -->
-                                                        <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                                            Ticket Title
-                                                        </div>
-
-                                                        <!-- Status badges on the right -->
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- Red Badge with Lightning Icon -->
-                                                            <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                                                <!-- Left icon area -->
-                                                                <span style=" padding: 6px 8px; display: flex; align-items: center;">
-                                                                    <img src="{{ asset('build/img/yekbon.svg') }}" alt="Icon" width="20" height="20" />
-                                                                </span>
-
-                                                                <!-- Red badge area -->
-                                                                <div style="background: #fddede; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                                                    <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px;" alt="flag" />
-                                                                </div>
-
-                                                            </span>
+                                        @endforeach
 
 
-                                                            <!-- Low Badge with Green Dot -->
-                                                            <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                                                <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                                                LOW
-                                                            </span>
-
-                                                            <!-- Yellow Badge with Flag -->
-
-
-                                                            <!--  -->
-                                                            <span class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                                                <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                                    style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                                                <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                                    style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-
-                                                            </span>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <!-- Ticket Metrics Box -->
-                                                <div style="max-width: 450px;">
-                                                    <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                                        <!-- Metrics Box -->
-                                                        <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 3px; flex-grow: 1; max-width: 100%;margin-bottom: 9px; margin-top: 4px; margin-right: 4px;">
-                                                            <div style="display: flex; gap: 25px; align-items: center;">
-                                                                <div class="text-center">
-                                                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                                                    <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                                                    <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                                            <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                                                <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <!-- Circular Progress -->
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Ticket meta info -->
-                                            <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                                                <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                                                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                                                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-
-                                            </div>
-                                            <div class="d-flex justify-content-center mt-3 mb-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background-color: #fdf6ec; font-size: 12px; border-radius: 10px;margin-bottom:6px;">
-
-                                                    <!-- Avatar and Username -->
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <img src="https://i.pravatar.cc/28" class="rounded-circle" width="28" height="28" alt="Avatar">
-                                                        <span style="color: #000; font-weight: 500;">Username</span>
-                                                    </div>
-
-                                                    <!-- Start Date -->
-                                                    <div style="color: #22c55e;">
-                                                        <strong>Start:</strong> 22.10.2024
-                                                    </div>
-
-                                                    <!-- Deliver Date -->
-                                                    <div style="color: #ef4444;">
-                                                        <strong>Deliver:</strong> 22.10.2024
-                                                    </div>
-
-                                                    <!-- Reason -->
-                                                    <div style="color: #ef4444;">
-                                                        <strong>! We will get the reason here</strong>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
                                         <!--new tasks -->
                                         <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
@@ -1275,6 +890,12 @@
                                                     <div style="font-size: 13px; color: #4b5563;">15 Member</div>
                                                 </div>
                                             </div>
+
+                                           
+                                            @include('loader')
+
+                                            @php
+                                            /*
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1364,6 +985,10 @@
                                                 <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
                                                 <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                                             </div>
+                                            */
+                                            @endphp
+
+                                            <!-- loop ends -->
 
                                         </div>
                                         <!-- task in progress -->
@@ -1375,6 +1000,10 @@
                                                     <div style="font-size: 13px; color: #4b5563;">3 Tasks</div>
                                                 </div>
                                             </div>
+
+                                            @include('loader')
+                                            @php
+                                            /*
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1464,6 +1093,8 @@
                                                 <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
                                                 <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                                             </div>
+                                            */
+                                            @endphp
 
                                         </div>
                                         <!-- task in hold -->
@@ -1475,6 +1106,9 @@
                                                     <div style="font-size: 13px; color: #4b5563;">15 Member</div>
                                                 </div>
                                             </div>
+                                            @include('loader')
+                                            @php
+                                            /*
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1593,6 +1227,8 @@
 
                                                 </div>
                                             </div>
+                                            */
+                                            @endphp
 
                                         </div>
                                         <!-- task in check -->
@@ -1604,6 +1240,9 @@
                                                     <div style="font-size: 13px; color: #4b5563;">3 Tasks</div>
                                                 </div>
                                             </div>
+                                            @include('loader')
+                                            @php
+                                            /*
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1693,6 +1332,8 @@
                                                 <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
                                                 <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                                             </div>
+                                            */
+                                            @endphp
 
                                         </div>
                                         <!-- Rejected -->
@@ -1704,6 +1345,9 @@
                                                     <div style="font-size: 13px; color: #4b5563;">3 Task</div>
                                                 </div>
                                             </div>
+                                            @include('loader')
+                                            @php
+                                            /*
                                             <!-- Ticket Title + Status and Metrics -->
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
@@ -1822,6 +1466,8 @@
 
                                                 </div>
                                             </div>
+                                            */
+                                            @endphp
 
                                         </div>
                                     </div>
@@ -1853,7 +1499,7 @@
                                             <div style="color: #126bb3; font-weight: 700; font-size: 14px;">Tickets</div>
 
                                             <!-- Value -->
-                                            <div style="color: #126bb3; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #126bb3; font-weight: 700; font-size: 18px;">{{$stats->ticket}}</div>
 
                                             <!-- Change Indicator -->
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #dc3545; font-weight: 600; display: flex; align-items: center;">
@@ -1876,7 +1522,7 @@
 
                                             <div style="color: #f37021; font-weight: 700; font-size: 14px;">Tasks</div>
 
-                                            <div style="color: #f37021; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #f37021; font-weight: 700; font-size: 18px;">0</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
@@ -1898,7 +1544,7 @@
 
                                             <div style="color: #6a768e; font-weight: 700; font-size: 14px;">Members</div>
 
-                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">{{$stats->members}}</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
@@ -1926,7 +1572,7 @@
                                             <div style="color: #6a768e; font-weight: 700; font-size: 14px;">Meetings</div>
 
                                             <!-- Value -->
-                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">0</div>
 
                                             <!-- Change Indicator -->
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #dc3545; font-weight: 600; display: flex; align-items: center;">
@@ -1949,7 +1595,7 @@
 
                                             <div style="color: #025f2d; font-weight: 700; font-size: 14px;">ToDo's</div>
 
-                                            <div style="color: #025f2d; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #025f2d; font-weight: 700; font-size: 18px;">{{$stats->todo}}</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
@@ -2196,56 +1842,41 @@
                                     <div class="row d-flex no-wrap pb-3">
                                         <!-- CARD 1 - Green Border -->
                                         <!-- CARD 1 -->
+                                         @foreach($teams as $team)
+
+                                         @php
+                                            $imagePath = $team->profile_image
+                                                ? asset('storage/' . $team->profile_image)
+                                                : asset('build/img/avatar.svg');
+
+                                            $imagePath = str_replace('admin.', 'team.', $imagePath);
+
+
+                                            $backImg = $team->card_image
+                                                ? asset('storage/' . $team->banner)
+                                                : asset('build/img/bgractangle.svg');
+
+                                            $backgrouimg = str_replace('admin.', 'team.', $backImg);
+                                        @endphp
                                         <div class="col-4 mb-2">
                                             <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
                                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    <img src="{{ $backgrouimg }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
                                                 </div>
                                                 <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
+                                                    <img src="{{ $imagePath}}" alt="Profile"
                                                         class="rounded-circle border border-white border-2"
                                                         style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
                                                 </div>
                                                 <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
+                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">{{$team->name}}</h6>
+                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">{{$team->type}}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
 
-                                        <!-- CARD 2 -->
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid gold;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Subadmin</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!-- seprater -->
                                     <div style="display: flex; justify-content: center; margin-bottom:20px">
@@ -2255,117 +1886,10 @@
                                     <div class="row d-flex no-wrap pb-3">
                                         <!-- CARD 1 - Green Border -->
                                         <!-- CARD 1 -->
-                                        <div class="col-4 mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- CARD 2 -->
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid gold;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Subadmin</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
-                                    <!-- seprater -->
-                                    <div style="display: flex; justify-content: center; margin-bottom:20px">
-                                        <div style="width: 100px;height: 4px;background: #ccc;border-radius: 10px;"></div>
-                                    </div>
-                                    <!-- row 3 -->
-                                    <div class="row d-flex no-wrap pb-3">
-                                        <!-- CARD 1 - Green Border -->
-                                        <!-- CARD 1 -->
-                                        <div class="col-4 mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid limegreen;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Admin</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- CARD 2 -->
-                                        <div class="col-4  mb-2">
-                                            <div class="card text-center" style="border-radius: 16px; border: none; overflow: hidden; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 110px; margin: auto;">
-                                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
-                                                <div style="position: relative; margin-top: -20px;">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                                        class="rounded-circle border border-white border-2"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border: 2px solid gold;">
-                                                </div>
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-1" style="font-weight: 600; font-size: 11px; color: #000;">Name Lastname</h6>
-                                                    <p class="mb-0" style="color: #7f8ea3; font-size: 10px;">Subadmin</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- seprater -->
+                                  
+                                   
 
 
 
