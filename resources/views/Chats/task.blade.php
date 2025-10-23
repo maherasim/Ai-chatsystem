@@ -2482,13 +2482,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>\
                 </div>'
             ),
+            allowEnterKey: true,
+            allowOutsideClick: true,
+            allowEscapeKey: true,
             focusConfirm: false,
+            returnFocus: false,
             width: 600,
             showCancelButton: true,
             confirmButtonText: 'Save',
             didOpen: function(){
                 var list = document.getElementById('swal-checkpoints-list');
                 var addBtn = document.getElementById('swal-add-checkpoint');
+                var titleEl = document.getElementById('swal-title');
+                if (titleEl) titleEl.focus();
                 function addRow(value){
                     var row = document.createElement('div');
                     row.className = 'd-flex align-items-center gap-2';
@@ -2529,7 +2535,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     mark_image: base64,
                 };
             }
-        }).then(function(result){
+            }).then(function(result){
             if (result.isConfirmed) {
                 Swal.fire({ icon: 'success', title: 'Saved', timer: 1200, showConfirmButton: false });
                 console.log('Marker saved (Swal):', result.value);
@@ -2585,38 +2591,76 @@ document.addEventListener('DOMContentLoaded', function () {
             $(marker).resizable({ aspectRatio: currentShape === 'circle', containment: markerLayer, handles: 'n, e, s, w, ne, se, sw, nw', resize: function(){ if(currentShape==='circle'){ var w = $(this).width(); $(this).height(w); } } });
         }
 
+        function removeInlineColorRows(){
+            document.querySelectorAll('.marker-color-row').forEach(function(el){ el.remove(); });
+        }
+
         plus.addEventListener('click', function(e){
             e.stopPropagation();
-            if (!(window.Swal && typeof Swal.fire === 'function')) { alert('Add details'); return; }
-            var palette = ['#ea5455','#28c76f','#7367f0','#ff9f43','#00cfe8','#1f2a57'];
-            var chosen = currentColor;
-            var swatches = palette.map(function(c){
-                return '<button type="button" class="swal-color" data-color="'+c+'" style="width:28px;height:28px;border-radius:50%;border:2px solid '+(c===chosen?'#111':'#e0e6ed')+';background:'+c+';cursor:pointer;"></button>';
-            }).join(' ');
-            Swal.fire({
-                title: 'Select color',
-                html: '<div class="d-flex align-items-center gap-2">'+swatches+'</div>',
-                showCancelButton: true,
-                confirmButtonText: 'Create Task',
-                width: 420,
-                didOpen: function(){
-                    document.querySelectorAll('.swal-color').forEach(function(btn){
-                        btn.addEventListener('click', function(){
-                            chosen = this.getAttribute('data-color');
-                            document.querySelectorAll('.swal-color').forEach(function(b){ b.style.borderColor = '#e0e6ed'; });
-                            this.style.borderColor = '#111';
-                        });
-                    });
-                },
-                preConfirm: function(){ return chosen; }
-            }).then(function(res){
-                if (res.isConfirmed) {
-                    currentColor = res.value || currentColor;
+            removeInlineColorRows();
+            var mRect = marker.getBoundingClientRect();
+            var lRect = markerLayer.getBoundingClientRect();
+            var row = document.createElement('div');
+            row.className = 'marker-color-row';
+            row.style.position = 'absolute';
+            row.style.left = (mRect.right - lRect.left + 8) + 'px';
+            row.style.top = (mRect.top - lRect.top) + 'px';
+            row.style.background = '#ffffff';
+            row.style.padding = '8px 10px';
+            row.style.borderRadius = '10px';
+            row.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.gap = '8px';
+            row.style.zIndex = '20';
+
+            var palette = ['#ea5455', '#28c76f', '#ffde59', '#00cfe8'];
+            palette.forEach(function(c){
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.style.width = '24px';
+                b.style.height = '24px';
+                b.style.borderRadius = '50%';
+                b.style.border = '2px solid ' + (c === currentColor ? '#111' : '#e0e6ed');
+                b.style.background = c;
+                b.style.cursor = 'pointer';
+                b.addEventListener('click', function(ev){
+                    ev.stopPropagation();
+                    currentColor = c;
                     marker.style.border = '2px solid ' + currentColor;
                     plus.style.background = currentColor;
-                    openMarkerDetailsSwal();
-                }
+                    // update selection borders
+                    row.querySelectorAll('button').forEach(function(btn){
+                        if (btn !== createBtn) btn.style.borderColor = '#e0e6ed';
+                    });
+                    b.style.borderColor = '#111';
+                });
+                row.appendChild(b);
             });
+
+            var createBtn = document.createElement('button');
+            createBtn.type = 'button';
+            createBtn.className = 'btn btn-sm';
+            createBtn.textContent = 'Create Task';
+            createBtn.style.background = '#28c76f';
+            createBtn.style.color = '#fff';
+            createBtn.style.borderRadius = '6px';
+            createBtn.addEventListener('click', function(ev){
+                ev.stopPropagation();
+                removeInlineColorRows();
+                openMarkerDetailsSwal();
+            });
+            row.appendChild(createBtn);
+
+            markerLayer.appendChild(row);
+            // keep inside right edge
+            try {
+                var rRect = row.getBoundingClientRect();
+                var overflowX = rRect.right - lRect.right;
+                if (overflowX > 0) {
+                    row.style.left = (parseFloat(row.style.left) - overflowX - 8) + 'px';
+                }
+            } catch(_){}
         });
     }
 
@@ -2788,7 +2832,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <!-- createTaskModal Modal -->
-<div class="modal fade" id="createTaskModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="createTaskModal" tabindex="-1" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" style="border-radius: 12px;">
             <!-- Modal Header -->
