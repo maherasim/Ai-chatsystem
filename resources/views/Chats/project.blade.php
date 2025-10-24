@@ -3,8 +3,7 @@
 @section('content')
 <style>
     /* Ensure base styles don't interfere */
-    @import url('https://fonts.googleapis.com/css2?family=Genos:wght@100;200;300;400;500;600;700&display=swap');
-
+    
     /* Force Genos font across this page */
     .content.main_content, .content.main_content * {
        /* font-family: 'Genos', sans-serif !important;*/
@@ -126,18 +125,7 @@
         opacity: 1;
     }
 
-    .elevated-card {
-        border-radius: 12px;
-        border: 1px solid #dee2e6;
-        /* Light-dark border */
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        /* very light shadow */
-        transform: translateY(-2px);
-        /* very slight lift */
-        background-color: #fff;
-        padding: 20px;
-        text-align: center;
-    }
+    
 
 
     .employee-grid img {
@@ -247,7 +235,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 23px; color: #1e2b4d;">Total Projects</div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">Total Projects</div>
                                         <div style="background-color: #eae8fd; padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/sigma.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -273,7 +261,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 23px; color: #1e2b4d;">New Project </div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">New Project </div>
                                         <div style="background-color: #eae8fd; padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/blueflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -301,7 +289,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 23px; color: #1e2b4d;">In Progress</div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Progress</div>
                                         <div style="background-color: #e9f8dd;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -329,7 +317,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 23px; color: #1e2b4d;">In Hold</div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Hold</div>
                                         <div style="background-color: #fff3cd;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />
@@ -359,7 +347,7 @@
 
                                     <!-- Top Row -->
                                     <div class="d-flex justify-content-between align-items-start">
-                                        <div style="font-size: 23px; color: #1e2b4d;">In Delayed</div>
+                                        <div style="font-size: 0.9rem; color: #1e2b4d;">In Delayed</div>
                                         <div style="background-color: #fddede;  padding: 5px;">
                                             <img src="{{ URL::asset('/build/img/redflag.svg') }}" alt="icon"
                                                 style="width: 20px; height: 20px;" />

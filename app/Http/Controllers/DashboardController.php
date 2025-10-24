@@ -50,6 +50,10 @@ class DashboardController extends Controller
             'members'  => User::where('type', 'developer')->orWhere('type', 'employee')->count(),
             'ticket'   => Ticket::count(),
             'project'  => Project::count(),
+            'todo_today' => Todo::where('end_date', date('Y-m-d'))->count(),
+            'tasks' => 0,
+            'meetings' => 0,
+            'messages' => 0
         ];
 
         return view('index', compact('user', 'stats', 'headers','setting', 'projects', 'teams', 'tickets', 'todayTodos'));

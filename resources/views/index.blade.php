@@ -112,6 +112,14 @@
     .high{
         color: #e64241;
     }
+    .maindiv{
+        margin-left:70px;
+    }
+    @media (max-width: 620px) {
+        .maindiv{
+            margin-left:0px;
+        }
+    }
 </style>
 
 
@@ -122,9 +130,8 @@
         @include('Chats.chatsidebar')
     </div>
 
-    @include('Todos.notification')
 
-    <div class="chat chat-messages show" id="middle" style="overflow-y: hidden;">
+    <div class="chat chat-messages show maindiv" id="middle" style="overflow-y: hidden; ">
         <div>
             @include('Chats.header')
             <!-- Wrapper -->
@@ -132,7 +139,7 @@
                 <div class="chat-body chat-page-group">
                     <!-- Header -->
                     <!-- Main Layout -->
-                    <div class="container-fluid mt-3" style="padding-left: 85px;">
+                    <div class="container-fluid mt-3" >
                         <div class="row">
                             <!-- Left Column -->
                             <div class="col-lg-9">
@@ -145,10 +152,10 @@
                                                 <h6 class="mb-1">Welcome Back, <b>{{$user->name}}</b></h6>
                                                 <small>
                                                     Dear <b>"{{$user->name}}"</b> you have for today
-                                                    <span style="color:red; font-weight:600;">12 Messages</span>,
-                                                    <span style="color:#e75480; font-weight:600;">5 Meetings</span>,
-                                                    <span style="color:#e75480; font-weight:600;">3 ToDo’s</span>,
-                                                    <span style="color:#d9534f; font-weight:600;">3 Private Tasks</span>.
+                                                    <span style="color:red; font-weight:600;">{{$stats->messages}} Messages</span>,
+                                                    <span style="color:#e75480; font-weight:600;">{{$stats->meetings}} Meetings</span>,
+                                                    <span style="color:#e75480; font-weight:600;">{{$stats->todo_today}} ToDo’s</span>,
+                                                    <span style="color:#d9534f; font-weight:600;">{{$stats->tasks}} Private Tasks</span>.
                                                 </small>
                                             </div>
                                         </div>
@@ -657,6 +664,10 @@
                                                 </div>
                                             </div>
                                             <!-- Ticket Title + Status and Metrics -->
+                                             
+                                            @include('loader');
+                                            @php
+                                             /*
                                             <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                                                 <!-- Ticket Title & Status -->
                                                 <div style="background:#fff">
@@ -700,12 +711,14 @@
                                                                     <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
                                                                 </span>
                                                             </span>
-                                                        </div>
+                                                        
+                                                
+</div>
 
                                                     </div>
+                                                    
 
                                                 </div>
-
                                                 <!-- Ticket Metrics Box -->
                                                 <div style="max-width: 450px;">
 
@@ -745,7 +758,8 @@
                                                 <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
                                                 <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
                                             </div>
-
+*/
+                                                    @endphp
                                         </div>
 
                                         <!-- Assigned Tickets -->
@@ -1632,6 +1646,9 @@
                                 <div class="mt-2" style="background-color: #f8f9fa; padding: 20px; border-radius: 14px;">
                                     <!-- White card -->
                                     <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
+                                   @include("loader");
+                                   @php
+                                   /*
                                     <div class="p-3 mb-2" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
 
                                         <div class="d-flex justify-content-start gap-2 w-100 text-center" style="font-size: 11px; font-weight: 500; color: #4b5c74;">
@@ -1655,75 +1672,11 @@
                                         </div>
 
                                     </div>
-                                    <div class="p-3 mb-2" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                                    */
+                                    @endphp
 
-                                        <div class="d-flex justify-content-start gap-2 w-100 text-center" style="font-size: 11px; font-weight: 500; color: #4b5c74;">
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Date</div>
-                                                <div style="font-size: 13px;">DD.MM.YYYY</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Time</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Logout</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Total</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="p-3 mb-2" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-
-                                        <div class="d-flex justify-content-start gap-2 w-100 text-center" style="font-size: 11px; font-weight: 500; color: #4b5c74;">
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Date</div>
-                                                <div style="font-size: 13px;">DD.MM.YYYY</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Time</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Logout</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Total</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="p-3 mb-2" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-
-                                        <div class="d-flex justify-content-start gap-2 w-100 text-center" style="font-size: 11px; font-weight: 500; color: #4b5c74;">
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Date</div>
-                                                <div style="font-size: 13px;">DD.MM.YYYY</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Login Time</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Logout</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                            <div>
-                                                <div style="color: #1d6fa5;">Total</div>
-                                                <div style="font-size: 13px;">HH:MM</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                   
+                                   
 
                                 </div>
 
@@ -1739,7 +1692,9 @@
                                             <!-- Add options here -->
                                         </select>
                                     </div>
-
+                                    @include('loader');
+@php
+/*
                                     <!-- Task Activity Item -->
                                     <div class="d-flex mb-4">
                                         <div>
@@ -1769,66 +1724,10 @@
                                             </div>
                                         </div>
                                     </div>
+*/
+@endphp
 
-                                    <!-- Repeat Task Activity Items -->
-                                    <div class="d-flex mb-4">
-                                        <div>
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" class="rounded-circle me-3" style="width: 50px; height: 50px;" />
-                                        </div>
-                                        <div style="background:#fff; border-radius:10px;padding:10px;">
-                                            <p style="margin: 0; font-weight: bold;">Admin name</p>
-                                            <p style="margin: 0;">Has started the Task ID on Time Deliver Date</p>
-                                            <div class="d-flex justify-content-end align-items-center px-1 py-1"
-                                                style="background-color: #f4f4f4; border-radius: 10px; width: fit-content; float: right;">
-
-                                                <!-- Date -->
-                                                <span class="me-3" style="font-size: 14px;">
-                                                    <span style="color: #00c264; font-weight: 500;">Date:</span>
-                                                    <span style="color: #2c2c2c;">22.10.2024</span>
-                                                </span>
-
-                                                <!-- Separator -->
-                                                <div style="height: 16px; width: 2px; background-color: #ccc;" class="me-3"></div>
-
-                                                <!-- Time -->
-                                                <span style="font-size: 14px;">
-                                                    <span style="color: #00c264; font-weight: 500;">Time:</span>
-                                                    <span style="color: #ff0000;">HH:MM</span>
-                                                </span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex">
-                                        <div>
-                                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" class="rounded-circle me-3" style="width: 50px; height: 50px;" />
-                                        </div>
-                                        <div style="background:#fff; border-radius:10px;padding:10px;">
-                                            <p style="margin: 0; font-weight: bold;">Admin name</p>
-                                            <p style="margin: 0;">Has started the Task ID on Time Deliver Date</p>
-                                            <div class="d-flex justify-content-end align-items-center px-1 py-1"
-                                                style="background-color: #f4f4f4; border-radius: 10px; width: fit-content; float: right;">
-
-                                                <!-- Date -->
-                                                <span class="me-3" style="font-size: 14px;">
-                                                    <span style="color: #00c264; font-weight: 500;">Date:</span>
-                                                    <span style="color: #2c2c2c;">22.10.2024</span>
-                                                </span>
-
-                                                <!-- Separator -->
-                                                <div style="height: 16px; width: 2px; background-color: #ccc;" class="me-3"></div>
-
-                                                <!-- Time -->
-                                                <span style="font-size: 14px;">
-                                                    <span style="color: #00c264; font-weight: 500;">Time:</span>
-                                                    <span style="color: #ff0000;">HH:MM</span>
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    
 
                                 </div>
                                 <!--  -->
@@ -1898,10 +1797,10 @@
                                 <div class="mt-2" style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
                                     <!-- Title Outside Card -->
                                     <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
-                                    <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
-
+                                    <div style="display:none; color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
+                                            @include('loader');
                                     <!-- Card -->
-                                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
+                                    <div style="background: white; display:none; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
                                         <div style="display: flex; align-items: flex-end; height: 350px; position: relative;">
                                             <!-- Y-Axis Labels -->
                                             <!-- Y-Axis Labels -->

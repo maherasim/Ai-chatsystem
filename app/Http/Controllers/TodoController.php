@@ -87,6 +87,28 @@ class TodoController extends Controller
                  ->get();
 
 
+        $prevTodos = Todo::where('end_date', '<', date('Y-m-d'))
+   
+    ->where(function ($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })->latest()
+    ->get()
+    ->map(function ($todo) {
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $todo->members_data = $members->map(function ($u) {
+            return [
+                'id'    => $u->_id,
+                'name'  => $u->name,
+                'image' => $u->profile_image
+                    ? asset("storage/" . $u->profile_image)
+                    : asset("build/img/default.png"),
+            ];
+        });
+        return $todo;
+    });
+
+
         $todayTodos = Todo::where('end_date', date('Y-m-d'))
    
     ->where(function ($q) {
@@ -157,7 +179,7 @@ class TodoController extends Controller
 
             $headers = Setting::all();
         
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers'));
+        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers'));
     }
 
     public function destroy($id)
