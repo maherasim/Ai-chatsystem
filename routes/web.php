@@ -89,6 +89,12 @@ Route::middleware('auth')->group(function () {
     // Tasks APIs
     Route::get('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
     Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');
+    Route::post('/tasks/store', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::post('/tasks/board', [TaskController::class, 'uploadBoard'])->name('tasks.board.upload');
+    Route::get('/tasks/by-ticket', [TaskController::class, 'byTicket'])->name('tasks.by_ticket');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();

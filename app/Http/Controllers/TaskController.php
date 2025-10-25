@@ -5,15 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Ticket;
+use App\Models\Task;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function index()
     {
         $headers = \App\Models\Setting::all();
+        // Always load all projects for the select dropdown
         $projects = Project::orderBy('title')->get();
-       // dd($projects);
-        return view('Chats.task', compact('headers', 'projects'));
+        $tasks = Task::orderByDesc('created_at')->limit(50)->get();
+        $projectIds = $tasks->pluck('project_id')->filter()->map(fn($v) => (string)$v)->unique()->values();
+        $ticketIds  = $tasks->pluck('ticket_id')->filter()->map(fn($v) => (string)$v)->unique()->values();
+
+        $projectSubset = $projectIds->isNotEmpty()
+            ? $projects->whereIn('_id', $projectIds)->values()
+            : collect();
+        $tickets  = $ticketIds->isNotEmpty()
+            ? Ticket::whereIn('_id', $ticketIds)->get()
+            : collect();
+        $projectMap = ($projectSubset->isNotEmpty() ? $projectSubset : $projects)->keyBy(fn($p) => (string)($p->_id ?? $p->id));
+        $ticketMap  = $tickets->keyBy(fn($t) => (string)($t->_id ?? $t->id));
+
+        $tasks = $tasks->map(function($t) use ($projectMap, $ticketMap){
+            $t->project = $projectMap->get((string)($t->project_id ?? ''));
+            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            return $t;
+        });
+        return view('Chats.task', compact('headers', 'projects', 'tasks'));
     }
 
     public function projects()
@@ -63,6 +84,140 @@ class TaskController extends Controller
         'tickets' => $data
     ]);
 }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'project_id'   => 'nullable|string',
+            'ticket_id'    => 'nullable|string',
+            'title'        => 'required|string|max:255',
+            'description'  => 'nullable|string',
+            'start_date'   => 'nullable|date',
+            'end_date'     => 'nullable|date|after_or_equal:start_date',
+            'checkpoints'  => 'nullable|array',
+            'checkpoints.*'=> 'nullable|string',
+            'shape'        => 'nullable|string',
+            'color'        => 'nullable|string',
+            'position'     => 'nullable|array',
+            'position.left'=> 'nullable|numeric',
+            'position.top' => 'nullable|numeric',
+            'number'       => 'nullable|integer',
+            'mark_image'   => 'nullable|string', // base64 data URL
+        ]);
+
+        $path = null;
+        $dataUrl = $validated['mark_image'] ?? null;
+        if ($dataUrl && str_starts_with($dataUrl, 'data:image')) {
+            try {
+                [$meta, $encoded] = explode(',', $dataUrl, 2);
+                $binary = base64_decode($encoded);
+                $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                $filename = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                Storage::disk('public')->put($filename, $binary);
+                $path = $filename;
+            } catch (\Throwable $e) {
+                $path = null;
+            }
+        }
+
+        $task = Task::create([
+            'project_id'     => $validated['project_id'] ?? null,
+            'ticket_id'      => $validated['ticket_id'] ?? null,
+            'title'          => $validated['title'],
+            'description'    => $validated['description'] ?? null,
+            'start_date'     => $validated['start_date'] ?? null,
+            'end_date'       => $validated['end_date'] ?? null,
+            'checkpoints'    => $validated['checkpoints'] ?? [],
+            'shape'          => $validated['shape'] ?? null,
+            'color'          => $validated['color'] ?? null,
+            'position'       => $validated['position'] ?? null,
+            'number'         => $validated['number'] ?? null,
+            'mark_image_path'=> $path,
+            'created_by'     => Auth::id(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'task' => [
+                'id' => (string)($task->_id ?? $task->id),
+                'mark_image_url' => $path ? Storage::disk('public')->url($path) : null,
+            ],
+        ]);
+    }
+
+    public function show($id)
+    {
+        $task = Task::findOrFail($id);
+        return response()->json(['success' => true, 'task' => $task]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title'        => 'sometimes|required|string|max:255',
+            'description'  => 'nullable|string',
+            'start_date'   => 'nullable|date',
+            'end_date'     => 'nullable|date|after_or_equal:start_date',
+            'checkpoints'  => 'nullable|array',
+            'checkpoints.*'=> 'nullable|string',
+            'mark_image'   => 'nullable|string',
+        ]);
+
+        $task = Task::findOrFail($id);
+
+        // Optional new image
+        if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {
+            try {
+                [$meta, $encoded] = explode(',', $validated['mark_image'], 2);
+                $binary = base64_decode($encoded);
+                $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                $filename = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                Storage::disk('public')->put($filename, $binary);
+                $validated['mark_image_path'] = $filename;
+            } catch (\Throwable $e) {}
+        }
+
+        unset($validated['mark_image']);
+        $task->update($validated);
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy($id)
+    {
+        $task = Task::findOrFail($id);
+        $task->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // Optional: upload the base board image used for markers (kept by ticket)
+    public function uploadBoard(Request $request)
+    {
+        $request->validate([
+            'ticket_id' => 'required|string',
+            'image'     => 'required|image|max:4096'
+        ]);
+        $path = $request->file('image')->store('tasks/boards', 'public');
+        // store path on ticket (or a dedicated collection) for retrieval
+        $ticket = Ticket::find($request->ticket_id);
+        if ($ticket) {
+            $ticket->board_image_path = $path;
+            $ticket->save();
+        }
+        return back()->with('success', 'Board uploaded');
+    }
+
+    // Fetch tasks (and board) for a ticket to re-render markers
+    public function byTicket(Request $request)
+    {
+        $ticketId = (string)$request->query('ticket_id');
+        $tasks = Task::where('ticket_id', $ticketId)->orderBy('number')->get();
+        $ticket = Ticket::find($ticketId);
+        return response()->json([
+            'success' => true,
+            'board_image_url' => ($ticket && $ticket->board_image_path) ? Storage::disk('public')->url($ticket->board_image_path) : null,
+            'tasks' => $tasks,
+        ]);
+    }
 
 }
 

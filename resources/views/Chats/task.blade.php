@@ -362,20 +362,20 @@
                                 <h6 class="modal-title mb-0" style="font-weight:600;">Add Task</h6>
                                 <small class="text-muted">Create a Task</small>
                             </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                             
                         </div>
                         <div class="modal-body">
                             <div class="mb-2">
                                 <label class="form-label" style="font-weight:600;color:#2b2d42;">Type the Title</label>
                                 <div style="position:relative;">
-                                    <input type="text" id="marker-title" name="title" class="form-control form-control-sm" placeholder="Type the Title" style="border:1px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                                    <input type="text" id="marker-title" name="title" class="form-control form-control-sm" placeholder="Type the Title" style="border:3px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
                                     <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
                                 </div>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" style="font-weight:600;color:#2b2d42;">Describe the issue </label>
                                 <div style="position:relative;">
-                                    <input type="text" id="marker-title" name="description" class="form-control form-control-sm" placeholder="Describe the issue" style="border:1px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                                    <input type="text" id="marker-description" name="description" class="form-control form-control-sm" placeholder="Describe the issue" style="border:3px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
                                     <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
                                 </div>
                             </div>
@@ -408,9 +408,9 @@
                                 <div id="checkpoints-list" class="d-flex flex-column gap-2"></div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" id="save-marker" class="btn btn-light btn-sm">Save & Close</button>
                             <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="save-marker" class="btn btn-primary btn-sm">Save & Close</button>
                         </div>
                     </div>
                 </div>
@@ -2407,6 +2407,69 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch(_){}
     }, true);
 
+    // Task edit/delete handlers
+    window.taskEdit = function(taskId){
+        try {
+            fetch(`{{ url('/tasks') }}/${taskId}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+                .then(function(res){ return res.json(); })
+                .then(function(resp){
+                    if (!resp || !resp.success) return;
+                    var t = resp.task || {};
+                    document.querySelector('#markerDetailsModal .modal-title').textContent = 'Edit Task';
+                    (document.getElementById('marker-title')||{}).value = t.title || '';
+                    (document.getElementById('marker-description')||{}).value = t.description || '';
+                    (document.getElementById('marker-start')||{}).value = (t.start_date||'').substring(0,10);
+                    (document.getElementById('marker-end')||{}).value = (t.end_date||'').substring(0,10);
+                    var list = document.getElementById('checkpoints-list');
+                    if (list) {
+                        list.innerHTML = '';
+                        var cps = t.checkpoints;
+                        if (typeof cps === 'string') {
+                            try { cps = JSON.parse(cps); } catch(e) { cps = cps ? cps.split(',') : []; }
+                        }
+                        if (!Array.isArray(cps) || cps.length === 0) cps = [''];
+                        cps.forEach(function(c){ addCheckpointRow((c||'').toString()); });
+                    }
+                    var modalEl = document.getElementById('markerDetailsModal');
+                    if (modalEl && modalEl.parentNode !== document.body) { document.body.appendChild(modalEl); }
+                    new bootstrap.Modal(modalEl, { backdrop: true, focus: true }).show();
+                    // on save, switch to update
+                    var saveBtn = document.getElementById('save-marker');
+                    if (saveBtn) {
+                        saveBtn.dataset.editingId = taskId;
+                    }
+                });
+        } catch(_){}
+    };
+
+    window.taskDelete = function(taskId){
+        if (!(window.Swal && typeof Swal.fire === 'function')) {
+            if (!confirm('Delete this task?')) return;
+            fetch(`{{ url('/tasks') }}/${taskId}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(res){ return res.json(); }).then(function(){ location.reload(); });
+            return;
+        }
+        Swal.fire({
+            title: 'Delete Task?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ea5455',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
+        }).then(function(result){
+            if (!result.isConfirmed) return;
+            fetch(`{{ url('/tasks') }}/${taskId}`, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(function(res){ return res.json(); }).then(function(){
+                Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false });
+                setTimeout(function(){ location.reload(); }, 900);
+            });
+        });
+    };
+
     var projectSelect = document.getElementById('select-project');
     var ticketSelect = document.getElementById('select-ticket');
     var ticketCache = {};
@@ -2496,7 +2559,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label class="form-label" style="font-weight:600;color:#2b2d42;">Type the Title</label>\
                         <div style="position:relative;">\
                             <input type="text" id="swal-title" class="form-control form-control-sm" placeholder="Type the Title"\
-                                   style="border:1px solid #ced4da;border-radius:6px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />\
+                                   style="border:3px solid #ced4da;border-radius:6px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />\
                             <img src=\"{{ asset('assets/img/title.svg') }}\" alt=\"title\"\
                                  style=\"position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;\" />\
                         </div>\
@@ -2504,7 +2567,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="mb-2">\
                         <label class="form-label" style="font-weight:600;color:#2b2d42;">Describe the Issue</label>\
                         <textarea id="swal-description" class="form-control form-control-sm" rows="4" placeholder="Describe the Issue"\
-                                  style="border:1px solid #ced4da;border-radius:6px;background:#fff;color:#2b2d42;min-height:110px;"></textarea>\
+                                  style="border:3px solid #ced4da;border-radius:6px;background:#fff;color:#2b2d42;min-height:110px;"></textarea>\
                     </div>\
                     <div class="d-flex gap-2 mb-2">\
                         <div class="flex-fill">\
@@ -2603,8 +2666,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     list.appendChild(row);
                 }
                 if (addBtn) addBtn.addEventListener('click', function(){ addRow(''); });
-                // add four default checkpoint rows to match Figma
-                for (var i = 0; i < 4; i++) { addRow(''); }
+                // start with a single empty row
+                addRow('');
             },
             preConfirm: function(){
                 var title = (document.getElementById('swal-title')||{}).value || '';
@@ -2843,7 +2906,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         row.appendChild(remove);
                         list.appendChild(row);
                     };
-                    for (var i = 0; i < 4; i++) { addRow(''); }
+                    addRow('');
                     if (addBtn && !addBtn._bound) {
                         addBtn.addEventListener('click', function(){ addRow(''); });
                         addBtn._bound = true;
@@ -2954,6 +3017,54 @@ document.addEventListener('DOMContentLoaded', function () {
             var selectedId = e.target.value;
             var ticket = ticketCache[selectedId];
             renderTicketDates(ticket || null);
+            // Load board image and markers for this ticket
+            try {
+                fetch(`{{ route('tasks.by_ticket') }}?ticket_id=${encodeURIComponent(selectedId)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+                    .then(function(res){ return res.json(); })
+                    .then(function(resp){
+                        if (!resp || !resp.success) return;
+                        if (resp.board_image_url && previewImg) {
+                            previewImg.src = resp.board_image_url;
+                        }
+                        if (markerLayer) { markerLayer.innerHTML = ''; }
+                        badgeCounter = 0;
+                        (resp.tasks || []).forEach(function(t){
+                            // create badge marker at saved position
+                            var badge = document.createElement('div');
+                            badge.className = 'marker-badge';
+                            var num = t.number || (++badgeCounter);
+                            badge.textContent = String(num);
+                            badge.style.position = 'absolute';
+                            badge.style.left = (t.position?.left || 20) + 'px';
+                            badge.style.top = (t.position?.top || 20) + 'px';
+                            badge.style.transform = 'translate(-50%, -50%)';
+                            badge.style.color = t.color || '#28c76f';
+                            badge.style.fontWeight = '800';
+                            badge.style.fontSize = '18px';
+                            badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+                            badge.style.cursor = 'pointer';
+                            badge.style.zIndex = '25';
+                            badge.addEventListener('click', function(ev){
+                                ev.stopPropagation();
+                                var cp = Array.isArray(t.checkpoints) ? t.checkpoints : (typeof t.checkpoints === 'string' ? (function(s){ try{return JSON.parse(s);}catch(_){return s.split(',');} }) (t.checkpoints) : []);
+                                var checkpointsHtml = cp.length ? ('<ul style="text-align:left;">'+cp.map(function(c){ return '<li>'+c+'</li>'; }).join('')+'</ul>') : '<em>No checkpoints</em>';
+                                if (window.Swal && typeof Swal.fire === 'function') {
+                                    Swal.fire({
+                                        title: t.title || 'Task',
+                                        html: ('<div style="text-align:left;">'
+                                            + '<div><strong>Description:</strong> '+(t.description || '-')+'</div>'
+                                            + '<div class="mt-1"><strong>Start:</strong> '+(t.start_date || '-')+' &nbsp; <strong>End:</strong> '+(t.end_date || '-')+'</div>'
+                                            + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
+                                            + '</div>'),
+                                        confirmButtonText: 'Close'
+                                    });
+                                }
+                            });
+                            if (markerLayer) markerLayer.appendChild(badge);
+                            if (num > badgeCounter) badgeCounter = num;
+                        });
+                    });
+            } catch(_){ }
         });
     }
 
@@ -2999,7 +3110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         row.appendChild(remove);
         checkpointsList.appendChild(row);
     }
-    if (addCheckpointBtn) addCheckpointBtn.addEventListener('click', function(){ addCheckpointRow(''); });
+    // Do not bind here to avoid duplicate handlers; binding occurs when opening the modal
 
     // Reset modal inputs when shown
     var markerDetailsModalEl = document.getElementById('markerDetailsModal');
@@ -3020,7 +3131,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch(_){}
             if (checkpointsList) {
                 checkpointsList.innerHTML = '';
-                for (var i = 0; i < 4; i++) addCheckpointRow('');
+                addCheckpointRow('');
             }
         });
     }
@@ -3070,7 +3181,31 @@ document.addEventListener('DOMContentLoaded', function () {
             shape: currentShape,
             color: currentColor,
             mark_image: cropMarkerToBase64(),
+            project_id: (projectSelect||{}).value || null,
+            ticket_id: (ticketSelect||{}).value || null,
+            position: (function(){
+                if (!markerLayer) return null;
+                var layerRect = markerLayer.getBoundingClientRect();
+                var markerRect = (currentMarker||{}).getBoundingClientRect ? currentMarker.getBoundingClientRect() : layerRect;
+                return { left: (markerRect.left - layerRect.left) + markerRect.width/2, top: (markerRect.top - layerRect.top) + markerRect.height/2 };
+            })(),
+            number: badgeCounter + 1
         };
+        try {
+            fetch("{{ route('tasks.store') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(payload)
+            }).then(function(res){ return res.json(); }).then(function(resp){
+                if (resp && resp.success) {
+                    try { var last = createdTasks[createdTasks.length-1]; if (last) last.id = resp.task?.id; } catch(_){ }
+                }
+            }).catch(function(){});
+        } catch(_){ }
         // Create badge and store task like SweetAlert flow
         var taskData = payload || {};
         badgeCounter += 1;
@@ -3123,6 +3258,25 @@ document.addEventListener('DOMContentLoaded', function () {
         // Remove drawn marker box; keep number
         if (currentMarker) { try { currentMarker.remove(); } catch(_){} currentMarker = null; }
 
+        // Decide create vs update
+        var editingId = (document.getElementById('save-marker')||{}).dataset?.editingId;
+        var url = editingId ? `{{ url('/tasks') }}/${editingId}` : `{{ route('tasks.store') }}`;
+        var method = editingId ? 'PUT' : 'POST';
+        try {
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(payload)
+            }).then(function(res){ return res.json(); }).then(function(resp){
+                // reset editing flag
+                try { delete (document.getElementById('save-marker')||{}).dataset.editingId; } catch(_){ }
+                location.reload();
+            }).catch(function(){});
+        } catch(_){ }
         try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
     });
 });
@@ -3338,216 +3492,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                             <!-- Task Cards -->
+                            @foreach(($tasks ?? []) as $task)
                             <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
                                 <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                    @php
+                                        $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                    @endphp
+                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image" style="width: 50px; height: 100px; border-radius: 6px; object-fit: cover;">
                                 </div>
-
-                                <!-- Task Content -->
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
+                                            <img src="{{ $logo }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
+                                            {{ $task->title }}
                                         </div>
                                         <div class="d-flex align-items-center gap-2" style="position: relative;">
-                                            <button
-                                                onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
-                                                style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
+                                            <button onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
-
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
+                                            <div class="menu-box" style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;" onclick="event.stopPropagation();">
                                                 <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
-
-
+                                                    <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskDelete('{{ (string)($task->_id ?? $task->id) }}')">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskEdit('{{ (string)($task->_id ?? $task->id) }}')">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
+                                    <div style="font-size: 12px; color: #6c757d;">{{ optional($task->ticket)->code ? optional($task->ticket)->code.' - ' : '' }}{{ optional($task->ticket)->title ?? 'Ticket' }}</div>
+                                    <div style="font-size: 13px; margin-top: 2px;">{{ $task->description ?? '-' }}</div>
                                     <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
                                         <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
+                                            <small>Start: {{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '--') }}</small>
                                         </div>
-
                                         <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
+                                            <small>Deliver: {{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '--') }}</small>
                                         </div>
-
-                                        <!-- Deadline/Warning -->
                                         <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
+                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;"> {{ $task->number ?? '01' }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @endforeach
 
                             <!-- 2 -->
-                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
-                                <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
-                                </div>
-
-                                <!-- Task Content -->
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
-                                            <button
-                                                onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
-                                                style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                                <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
-                                            </button>
-
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
-                                                <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
-                                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
-                                    <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
-                                        </div>
-
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
-                                        </div>
-
-                                        <!-- Deadline/Warning -->
-                                        <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 3 -->
-                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
-                                <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
-                                </div>
-
-                                <!-- Task Content -->
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
-                                            <button
-                                                onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
-                                                style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                                <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
-                                            </button>
-
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
-                                                <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
-                                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
-                                    <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
-                                        </div>
-
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
-                                        </div>
-
-                                        <!-- Deadline/Warning -->
-                                        <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
 
                             <!-- Add Task -->
                             <!-- Hidden File Input -->
