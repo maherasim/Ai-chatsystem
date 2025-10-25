@@ -50,5 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'user_id',
     ];
 
+    public function attachments()
+    {
+        return $this->hasMany(UserAttachment::class, 'user_id', '_id');
+    }
+
  
 }

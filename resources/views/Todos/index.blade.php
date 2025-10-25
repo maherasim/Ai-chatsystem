@@ -1588,8 +1588,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                          <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
                             <div>
-                                <h3 style="margin: 0;">Previous ToDo's</h3>
-                                <strong>Previous ToDo's: <span id="previous_count">{{count($prevTodos)}}</span></strong>
+                                <h3 style="margin: 0;">User Shred ToDo's</h3>
+                                <strong>User Shred ToDo's: <span id="previous_count">{{count($prevTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
@@ -1819,22 +1819,77 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 
                                         <div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
                                         
-                                        @if($todo->completed == "2" || $todo->completed == "1")
-                                            <div class="counter-div">
-                                                    <span>Task Completed</span>
-                                            </div>
+                                      <div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
+<div class="counter-div" id="shtimer-{{ $index }}">
+        <span id="shasimclic-{{ $index }}"></span>
+    </div>
+                                    
+ @if($remaining > 0)
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
 
-                                        @else
-                                            <div class="counter-div todofail">
-                                                    <span>Task Failed</span>
-                                            </div>
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
 
-                                        @endif
-                                        
+            function shupdateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
+
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
+
+                display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+
+                    // color changes during reminder phase
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ Final stage
+                        clearInterval(timer);
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; // ðŸŸ  middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; // ðŸŸ¢ first 1/3
+                    }
+                }
+
+                duration--;
+            }
+
+            shupdateClock();
+            let timer = setInterval(shupdateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+                                   
+                                    </div>
+
                                     
 
                                    
-                                    </div>
 
                                     <!-- Footer Button -->
 
@@ -1842,7 +1897,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                             </div>
                             <!-- End of Card 1 -->
                            @empty
-                                <div class="alert alert-warning">No Previous todos.</div>
+                                <div class="alert alert-warning">No Users todos.</div>
                         @endforelse
                             
                         </div>

@@ -50,6 +50,10 @@ function confirmDelete(deleteUrl, userName) {
         overflow-x: hidden;
     }
 
+    #attachmentsContainer{
+        width: 100%;
+    }
+
     /* SweetAlert Custom Styles */
     .swal2-popup-custom {
         border-radius: 12px !important;
@@ -405,6 +409,15 @@ function confirmDelete(deleteUrl, userName) {
                                                         "team" => $user->team ?? "",
                                                         "phone" => $user->phone ?? "",
                                                         "card_image" => $user->card_image ?? "",
+                                                        "attachments" => $user->attachments->map(function ($attachment) {
+                                                                return [
+                                                                    "file_name" => $attachment->file_name,
+                                                                    "id" => $attachment->_id,
+                                                                    "file_path" => asset('storage/' . $attachment->file_path),
+                                                                    "file_type" => $attachment->file_type,
+                                                                    "size"      => $attachment->size,
+                                                                ];
+                                                            }),
                                                         "image_url" => $user->image ? asset($user->image) : "",
                                                         "join_date" => optional($user->created_at)->format('d.m.Y')
                                                     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openUserOffcanvas(JSON.parse(this.getAttribute('data-user')))"> {{$user->name}}</div>
@@ -521,38 +534,98 @@ function confirmDelete(deleteUrl, userName) {
 
             document.getElementById('userid').value = user.id;
 
-            const baseUrl = "{{ asset('storage') }}/"; // Laravel storage base URL
-            const fileUrl = baseUrl + user.card_image;
+           // const baseUrl = "{{ asset('storage') }}/"; // Laravel storage base URL
+           // const fileUrl = baseUrl + user.card_image;
 
-            const fileName = user.card_image.split('/').pop();
-            const ext = fileName.split('.').pop().toLowerCase();
+           // const fileName = user.card_image.split('/').pop();
+          //  const ext = fileName.split('.').pop().toLowerCase();
 
-            const docName = document.getElementById('doc_name');
-            const docImage = document.getElementById('doc_img');
+          //  const docName = document.getElementById('doc_name');
+         //   const docImage = document.getElementById('doc_img');
 
            
 
-            let icon = 'https://admin.onlinesystems.info/build/img/file-icon.svg';
-            if (['pdf'].includes(ext)) icon = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
-            if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = fileUrl;
-            if (['mp4','mov','avi','mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+          //  let icon = 'https://admin.onlinesystems.info/build/img/file-icon.svg';
+          ////  if (['pdf'].includes(ext)) icon = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+           // if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = fileUrl;
+           // if (['mp4','mov','avi','mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
 
 
-            let dispname  = fileName.replace(/^cards\//, '');
+          //  let dispname  = fileName.replace(/^cards\//, '');
 
             // limit to 50 characters max
-            if (dispname.length > 25) {
-                dispname = dispname.substring(0, 25) + '...';
-            }
+           // if (dispname.length > 25) {
+           //     dispname = dispname.substring(0, 25) + '...';
+          //  }
 
             // set the text content
-            docName.textContent = dispname;
-            docImage.src = icon;
+            //docName.textContent = dispname;
+           // docImage.src = icon;
 
-            docImage.style.cursor = 'pointer';
-            docImage.onclick = () => {
-                window.open(fileUrl, '_blank');
-            };
+            //docImage.style.cursor = 'pointer';
+            //docImage.onclick = () => {
+            //    window.open(fileUrl, '_blank');
+            //};
+
+
+            const container = document.getElementById('attachmentsContainer');
+            container.innerHTML = '';
+
+            user.attachments.forEach((file, index) => {
+                const fileUrl = file.file_path;
+                const fileName = file.file_name;
+                const ext = fileName.split('.').pop().toLowerCase();
+
+                // Determine icon
+                let icon = '{{URL::asset("/build/img/file-icon.svg")}}';
+                if (['pdf'].includes(ext)) icon = '{{URL::asset("/build/img/pdf-icon.svg")}}';
+                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) icon = fileUrl;
+                if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+
+                // Truncate name
+                let dispname = fileName.length > 25 ? fileName.substring(0, 25) + '...' : fileName;
+
+                // Build HTML block
+                const block = document.createElement('div');
+                block.className = "d-flex justify-content-between align-items-center p-2 mb-2 rounded";
+                block.style.backgroundColor = "white";
+                block.style.boxShadow = "0 0 6px rgba(0,0,0,0.05)";
+
+                block.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <img src="${icon}" style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px; cursor: pointer;"
+                            onclick="window.open('${fileUrl}', '_blank')" />
+                        <div>
+                            <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">${dispname}</div>
+                        </div>
+                    </div>
+
+                    <div style="position: relative; display: inline-block;">
+                        <div
+                            style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                            onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                            <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                        </div>
+
+                        <div class="menu-box"
+                            style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                            onclick="event.stopPropagation();">
+                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                            <div style="display:flex; justify-content: space-between; align-items:center;">
+                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
+                                    style="width: 22px; cursor: pointer;"
+                                    onclick="deleteAttachment('${file.id}', this)">
+                                <a href="${fileUrl}" download>
+                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Download" style="width: 22px; cursor: pointer;">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(block);
+            });
+
             
             
 
@@ -562,6 +635,66 @@ function confirmDelete(deleteUrl, userName) {
             console.error('Failed to populate user offcanvas', e);
         }
     }
+
+    function deleteAttachment(id, el) {
+        
+        Swal.fire({
+            title: 'Delete Document?',
+            text: "Are you sure you want to delete this file?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                // Fire the DELETE request
+                fetch(`/attachments/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'The attachment has been deleted.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+
+                        // remove the element smoothly
+                        const block = el.closest('.d-flex');
+                        block.style.transition = 'opacity 0.3s ease';
+                        block.style.opacity = '0';
+                        setTimeout(() => block.remove(), 300);
+
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'Failed to delete the file.',
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting attachment:', err);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong while deleting the file.',
+                        icon: 'error'
+                    });
+                });
+            }
+        });
+    }
+
+
 </script>
 
 <!-- user pop-up -->
@@ -604,7 +737,7 @@ function confirmDelete(deleteUrl, userName) {
 
 
     <!-- Main Content Grid -->
-    <div id="overviewContent" class="toggle-content" style="display: block;">
+    <div  style="display: block;">
         <div class="row m-0  py-2">
             <!-- Left Panel: col-3 -->
             <div class="col-lg-4 col-md-8 col-sm-12">
@@ -703,18 +836,15 @@ function confirmDelete(deleteUrl, userName) {
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded"
                                         style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
                                         
-                                        <div class="d-flex align-items-center">
-                                            <img id="doc_img" src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                
-                                                style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                            <div>
-                                                <div id="doc_name" style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
-                                                <!--<div id="doc_size" style="font-size: 12px; color: #8c94a3;">94 KB </div>-->
-                                            </div>
-                                        </div>
+                                        
+
+                                        <div id="attachmentsContainer"></div>
    
 
                                     </div>
+
+
+
                                     <form  id="uploaddoc" action="{{ route('users.document') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="user" value="" id="userid" />
@@ -816,8 +946,275 @@ function confirmDelete(deleteUrl, userName) {
                 </div>
             </div>
 
+
+            <!-- here can set -->
+             <!-- Right Panel: col-9 -->
+            <div id="statisticsContent" class="toggle-content  col-md-8 col-sm-12" style="display:none";>
+
+                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
+                    <!-- Title Outside Card -->
+                    <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
+                    <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
+
+                    <!-- Card -->
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
+                        <div style="display: flex; align-items: flex-end; height: 353px; position: relative;">
+                            <!-- Y-Axis Labels -->
+                            <!-- Y-Axis Labels -->
+                            <div style="position: absolute; bottom: 0; left: 0; height: 310px; width: 30px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; font-size: 10px; color: #666;">
+                                <div style="margin-top: -56px;">250</div>
+                                <div style="margin-top: 6px;">200</div>
+                                <div style="margin-top: 11px;">150</div>
+                                <div style="margin-top: 8px;">100</div>
+                                <div style="margin-top: 8px;">50</div>
+                                <div style="margin-bottom: -7px;">0</div>
+                                <div style="margin-top: -2px;"></div>
+                                <div style="margin-top: -2px;"></div>
+                            </div>
+
+
+                            <!-- Graph Area -->
+                            <div style="margin-left: 30px; width: 100%; position: relative;">
+                                <!-- Dotted Lines -->
+                                <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;margin-top:-59px;">
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
+                                </div>
+
+                                <!-- Bars -->
+                                <!-- Bars -->
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%; z-index: 2;position: relative;">
+
+                                    <!-- Progress -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(15 / 123 * 310px); width: 36px; background: #a7e92f; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">15</div>
+                                        <img src="{{ asset('build/img/progress.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Progress</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- In Hold -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(55 / 250 * 310px); width: 36px; background: #f5a623; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">55</div>
+                                        <img src="{{ asset('build/img/inhold.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">In Hold</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Delayed -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(184 / 294 * 310px); width: 36px; background: #f44336; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">155</div>
+                                        <img src="{{ asset('build/img/delayed.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Delayed</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Rejected -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(45 / 250 * 310px); width: 36px; background: #f54ea2; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">45</div>
+                                        <img src="{{ asset('build/img/rejected.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Rejected</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Done -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(245 / 317 * 310px); width: 36px; background: #00d36d; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">199</div>
+                                        <img src="{{ asset('build/img/Done.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Done</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- timeboxes -->
+                <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5>Working Times</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- Box 1 -->
+                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                        <!-- Date -->
+                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
+                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
+                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
+                        </div>
+
+                        <!-- Time + Bar -->
+                        <div style="position: relative; height: 60px;">
+                            <!-- Time Labels -->
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
+                                <span>8:00</span>
+                                <span>12:00</span>
+                                <span>16:00</span>
+                                <span>20:00</span>
+                            </div>
+
+                            <!-- Dotted line -->
+
+
+                            <!-- Blue Bars -->
+                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Duplicate this Box for second row -->
+                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px;">
+                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
+                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
+                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
+                        </div>
+
+                        <div style="position: relative; height: 60px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
+                                <span>8:00</span>
+                                <span>12:00</span>
+                                <span>16:00</span>
+                                <span>20:00</span>
+                            </div>
+
+
+                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- system log -->
+                <div class="mt-2" style="background-color: #f0f2f5; padding: 20px;padding-bottom:10px; border-radius: 14px;">
+                    <!-- Header -->
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- Log Entry Card #1 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Log Entry Card #2 -->
+
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Log Entry Card #3 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Log Entry Card #4 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
             <!-- Right Panel: col-9 -->
-            <div class="col-md-8 col-sm-12">
+            <div id="overviewContent" class="toggle-content col-md-8 col-sm-12" style="display:block;">
 
                 <!-- Our projects -->
                 <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 0px;" class="mb-2">
@@ -2118,532 +2515,7 @@ function confirmDelete(deleteUrl, userName) {
         <!-- Statistics Content -->
 
     </div>
-    <div id="statisticsContent" class="toggle-content" style="display: none;">
-        <div class="row m-0  py-2">
-            <!-- Left Panel: col-3 -->
-            <div class="col-lg-4 col-md-8 col-sm-12">
-                <!-- Add left side profile card/info -->
-                <div class="card mb-3">
-                    <div style=" font-family: 'Segoe UI', sans-serif;">
-                        <!-- Header with Blue Background -->
-                        <div style="background: linear-gradient(to right, #1565c0, #4fc3f7); height: 140px; position: relative; border-top-left-radius: 10px; border-top-right-radius: 10px;"></div>
-
-                        <!-- Info Section Background -->
-                        <div style="background-color: #fafcfc; padding: 20px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                            <!-- Profile Image (Overlapping) -->
-                            <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
-                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-                                <h5 class="mt-2 mb-1">Name Lastname</h5>
-                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Developer</span>
-                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">Description</span>
-                            </div>
-                            <!-- Info Rows -->
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="user" style="width: 20px;"> Gender</div>
-                                    <div class="fw-bold">Female</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> User ID</div>
-                                    <div class="fw-bold">Ticket ID</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/Globus.svg')}}" alt="" style="width: 20px;"> Country</div>
-                                    <div class="fw-bold">Pakistan</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/teamicon.svg')}}" alt="" style="width: 20px;"> Team</div>
-                                    <div class="fw-bold">Ticket ID</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="" style="width: 20px;"> Join Date</div>
-                                    <div class="fw-bold">Ticket ID</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div><img src="{{URL::asset('/build/img/calling.svg')}}" alt="" style="width: 20px;"> Phone</div>
-                                    <div class="fw-bold">Ticket ID</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/Letter.svg')}}" alt="" style="width: 20px;"> E-Mail</div>
-                                    <div class="fw-bold">Ticket ID</div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-2 p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div> <img src="{{URL::asset('/build/img/msg.svg')}}" alt="" style="width: 20px;"> Message</div>
-                                    <div class="fw-bold text-primary">@LogiTeam</div>
-                                </div>
-                            </div>
-
-
-
-
-
-                        </div>
-
-                        <!-- pdf -->
-
-                        <div class="mt-2" style="background-color: #fafcfc; padding: 20px;">
-                            <h6 class="mb-3" style="color: #6c7a89;">Documents </h6>
-                            <div class="row">
-                                <!-- Document Card -->
-                                <div class="col-12 mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="PDF Icon"
-                                                style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                            <div>
-                                                <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
-                                                <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                            </div>
-                                        </div>
-                                         <!-- Trigger Button -->
-                                        <div style="position: relative; display: inline-block;">
-                                            <div
-                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                            </div>
-
-                                            <!-- Popup Menu -->
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Title -->
-                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-
-                                                <!-- Icons -->
-                                                <div style="display:flex; justify-content: space-between; align-items:center;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white; box-shadow: 0 0 6px rgba(0,0,0,0.05);">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                                                alt="PDF Icon"
-                                                style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px;">
-                                            <div>
-                                                <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">ID Card Font ...</div>
-                                                <div style="font-size: 12px; color: #8c94a3;">94 KB - Date</div>
-                                            </div>
-                                        </div>
-                                         <!-- Trigger Button -->
-                                        <div style="position: relative; display: inline-block;">
-                                            <div
-                                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
-                                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
-                                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
-                                            </div>
-
-                                            <!-- Popup Menu -->
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Title -->
-                                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-
-                                                <!-- Icons -->
-                                                <div style="display:flex; justify-content: space-between; align-items:center;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-                                                    <img src="{{URL::asset('/build/img/download.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" >
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- 5 starts -->
-                        <div class="mt-2" style="font-family: 'Segoe UI', sans-serif;background-color: #fafcfc; padding: 20px;">
-                            <div>
-                                <!-- Top Rating -->
-                                <div class="d-flex  mb-3">
-                                    <h2 class="me-2" style="font-size: 36px; color: #2e3a59;">5</h2>
-                                    <!-- Star Rating -->
-                                    <div>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                        <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                    </div>
-                                </div>
-
-                                <!-- Individual Ratings -->
-                                <div class="d-grid gap-2">
-                                    <!-- One row -->
-                                    <div class="d-flex justify-content-between align-items-center p-2"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Reliability</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-
-                                    <!-- Repeat for other traits -->
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Accuracy</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Punctuality</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Quality</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded"
-                                        style="background-color: white;">
-                                        <div style="color: #6c7a89;">Work independent</div>
-                                        <div>
-                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                            <i class="bi bi-star" style="color: #d6dbe3;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <!-- Right Panel: col-9 -->
-            <div class="col-md-8 col-sm-12">
-
-                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
-                    <!-- Title Outside Card -->
-                    <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
-                    <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
-
-                    <!-- Card -->
-                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
-                        <div style="display: flex; align-items: flex-end; height: 353px; position: relative;">
-                            <!-- Y-Axis Labels -->
-                            <!-- Y-Axis Labels -->
-                            <div style="position: absolute; bottom: 0; left: 0; height: 310px; width: 30px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; font-size: 10px; color: #666;">
-                                <div style="margin-top: -56px;">250</div>
-                                <div style="margin-top: 6px;">200</div>
-                                <div style="margin-top: 11px;">150</div>
-                                <div style="margin-top: 8px;">100</div>
-                                <div style="margin-top: 8px;">50</div>
-                                <div style="margin-bottom: -7px;">0</div>
-                                <div style="margin-top: -2px;"></div>
-                                <div style="margin-top: -2px;"></div>
-                            </div>
-
-
-                            <!-- Graph Area -->
-                            <div style="margin-left: 30px; width: 100%; position: relative;">
-                                <!-- Dotted Lines -->
-                                <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;margin-top:-59px;">
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
-                                </div>
-
-                                <!-- Bars -->
-                                <!-- Bars -->
-                                <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%; z-index: 2;position: relative;">
-
-                                    <!-- Progress -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(15 / 123 * 310px); width: 36px; background: #a7e92f; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">15</div>
-                                        <img src="{{ asset('build/img/progress.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Progress</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- In Hold -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(55 / 250 * 310px); width: 36px; background: #f5a623; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">55</div>
-                                        <img src="{{ asset('build/img/inhold.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">In Hold</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Delayed -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(184 / 294 * 310px); width: 36px; background: #f44336; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">155</div>
-                                        <img src="{{ asset('build/img/delayed.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Delayed</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Rejected -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(45 / 250 * 310px); width: 36px; background: #f54ea2; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">45</div>
-                                        <img src="{{ asset('build/img/rejected.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Rejected</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Done -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(245 / 317 * 310px); width: 36px; background: #00d36d; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">199</div>
-                                        <img src="{{ asset('build/img/Done.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Done</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- timeboxes -->
-                <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="wh">
-                            <h5>Working Times</h5>
-                        </div>
-                        <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <!-- Box 1 -->
-                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-                        <!-- Date -->
-                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
-                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
-                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
-                        </div>
-
-                        <!-- Time + Bar -->
-                        <div style="position: relative; height: 60px;">
-                            <!-- Time Labels -->
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
-                                <span>8:00</span>
-                                <span>12:00</span>
-                                <span>16:00</span>
-                                <span>20:00</span>
-                            </div>
-
-                            <!-- Dotted line -->
-
-
-                            <!-- Blue Bars -->
-                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Duplicate this Box for second row -->
-                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px;">
-                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
-                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
-                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
-                        </div>
-
-                        <div style="position: relative; height: 60px;">
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
-                                <span>8:00</span>
-                                <span>12:00</span>
-                                <span>16:00</span>
-                                <span>20:00</span>
-                            </div>
-
-
-                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- system log -->
-                <div class="mt-2" style="background-color: #f0f2f5; padding: 20px;padding-bottom:10px; border-radius: 14px;">
-                    <!-- Header -->
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="wh">
-                            <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
-                        </div>
-                        <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <!-- Log Entry Card #1 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Log Entry Card #2 -->
-
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Log Entry Card #3 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Log Entry Card #4 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
-    </div>
+    
     <!-- Statistics Content -->
 
 </div>

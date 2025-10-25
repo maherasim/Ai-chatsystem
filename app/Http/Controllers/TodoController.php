@@ -87,12 +87,27 @@ class TodoController extends Controller
                  ->get();
 
 
-        $prevTodos = Todo::where('end_date', '<', date('Y-m-d'))
-   
+                 $prevTodos = Todo::where('end_date', '>', date('Y-m-d'))
+    ->where(function ($q) use ($user) {
+        $q
+        // ✅ Case 1: completed = 2 → only include if this user is owner
+        ->where(function ($sub) use ($user) {
+            $sub->whereIn('completed', ["-1", "2"])
+                ->where('user_id', '!=', $user->_id);
+        })
+        // ✅ Case 2: completed ≠ 1 and completed ≠ 2 → include if user is owner or member
+        ->orWhere(function ($sub) use ($user) {
+            $sub->whereNotIn('completed', ["1", "2", "-1"])
+                ->where(function ($inner) use ($user) {
+                    $inner->where('user_id', '!=', $user->_id)
+                          ->orWhere('members', '!=', $user->_id);
+                });
+        });
+    })
     ->where(function ($q) {
         $q->where('is_removed', 0)
           ->orWhereNull('is_removed');
-    })->latest()
+    })
     ->get()
     ->map(function ($todo) {
         $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
@@ -107,6 +122,9 @@ class TodoController extends Controller
         });
         return $todo;
     });
+
+
+       
 
 
         $todayTodos = Todo::where('end_date', date('Y-m-d'))
