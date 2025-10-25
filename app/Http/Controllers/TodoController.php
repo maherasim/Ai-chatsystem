@@ -29,10 +29,15 @@ class TodoController extends Controller
                 $todo->is_removed = 1;
             }
             
-                if ($reason) {
-                    $todo->reason = $reason;
-                }
-            $todo->completed = $request->iscomplete;
+            if ($reason) {
+                $todo->reason = $reason;
+            }
+            if($request->iscomplete == "-1" && $todo->user_id == $user->_id){
+                $todo->completed = "-2";
+            }else{
+                $todo->completed = $request->iscomplete;
+            }
+            
             $todo->save();
 
             return redirect()->back()->with('success', 'Todo removed successfully.');
@@ -97,7 +102,7 @@ class TodoController extends Controller
         })
         // ✅ Case 2: completed ≠ 1 and completed ≠ 2 → include if user is owner or member
         ->orWhere(function ($sub) use ($user) {
-            $sub->whereNotIn('completed', ["1", "2", "-1"])
+            $sub->whereNotIn('completed', ["1", "2", "-1", "-2"])
                 ->where(function ($inner) use ($user) {
                     $inner->where('user_id', $user->_id)
                           ->orWhere('members', $user->_id);

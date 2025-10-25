@@ -17,23 +17,21 @@ class ViewServiceProvider extends ServiceProvider
 
         if ($user) {
 
+            
             // --- Get latest 50 completed todos where user is creator or member ---
-            $todos = Todo::where('completed', 1)
+            $todos = Todo::whereIn('completed', ["1", "2", "-1", "-2"])
                 ->where(function ($q) use ($user) {
-                    $q->where('user_id', $user->_id)
-                      ->orWhere('members', $user->_id);
+                    $q->where('members', $user->_id);
                 })
                 ->latest()
                 ->take(50)
                 ->get();
 
             // --- Get all completed todos for rating calculation ---
-            $allTodos = Todo::where('completed', 1)
-                ->where(function ($q) use ($user) {
-                    $q->where('user_id', $user->_id)
-                      ->orWhere('members', $user->_id);
-                })
-                ->get();
+           
+            $allTodos = Todo::where('completed', "1")->whereIn('members', [(string) $user->_id])->get();
+
+               
 
             // --- Calculate category-wise and total average rating ---
             $ratingSums = [];

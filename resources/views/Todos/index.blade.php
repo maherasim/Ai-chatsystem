@@ -611,9 +611,9 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
                                // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
                                 if ($remaining < 0) $remaining = 0;
@@ -997,9 +997,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
 
@@ -1360,9 +1360,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
 
@@ -4275,7 +4275,9 @@ function formatFileSize(bytes) {
 
             let [year, month, day] = endDate.split('-').map(Number);
             let [hour, minute] = endTime.split(':').map(Number);
-            let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            //let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            let endDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
+            endDateTime = new Date(endDateTime.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
 
            // alert(endDate + " " + endTime);
 

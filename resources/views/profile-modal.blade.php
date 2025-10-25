@@ -17,7 +17,7 @@
         <!-- Profile Image (top-right, overlapping) -->
         <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile"
             style="position: absolute; top: 20px; right: 50px; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index: 10;">
-        
+       
             <div style="font-size: 18px; color: #fbc02d; border-radius:9px; padding:3px; position: absolute; top: 107px; right: 50px;">
     
                 @for ($i = 0; $i < $fullStars; $i++)
@@ -55,7 +55,7 @@
 
 
     <!-- Main Content Grid -->
-    <div id="overviewContent" class="toggle-content" style="display: block;">
+    <div >
         <div class="row m-0  py-2">
             <!-- Left Panel: col-3 -->
             <div class="col-lg-4 col-md-8 col-sm-12">
@@ -301,8 +301,273 @@
                 </div>
             </div>
 
+            <div id="statisticsContent" class="toggle-content col-md-8 col-sm-12" style="display: none;">
+
+                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
+                    <!-- Title Outside Card -->
+                    <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
+                    <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
+
+                    <!-- Card -->
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
+                        <div style="display: flex; align-items: flex-end; height: 353px; position: relative;">
+                            <!-- Y-Axis Labels -->
+                            <!-- Y-Axis Labels -->
+                            <div style="position: absolute; bottom: 0; left: 0; height: 310px; width: 30px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; font-size: 10px; color: #666;">
+                                <div style="margin-top: -56px;">250</div>
+                                <div style="margin-top: 6px;">200</div>
+                                <div style="margin-top: 11px;">150</div>
+                                <div style="margin-top: 8px;">100</div>
+                                <div style="margin-top: 8px;">50</div>
+                                <div style="margin-bottom: -7px;">0</div>
+                                <div style="margin-top: -2px;"></div>
+                                <div style="margin-top: -2px;"></div>
+                            </div>
+
+
+                            <!-- Graph Area -->
+                            <div style="margin-left: 30px; width: 100%; position: relative;">
+                                <!-- Dotted Lines -->
+                                <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;margin-top:-59px;">
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
+                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
+                                </div>
+
+                                <!-- Bars -->
+                                <!-- Bars -->
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%; z-index: 2;position: relative;">
+
+                                    <!-- Progress -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(15 / 123 * 310px); width: 36px; background: #a7e92f; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">15</div>
+                                        <img src="{{ asset('build/img/progress.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Progress</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- In Hold -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(55 / 250 * 310px); width: 36px; background: #f5a623; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">55</div>
+                                        <img src="{{ asset('build/img/inhold.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">In Hold</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Delayed -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(184 / 294 * 310px); width: 36px; background: #f44336; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">155</div>
+                                        <img src="{{ asset('build/img/delayed.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Delayed</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Rejected -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(45 / 250 * 310px); width: 36px; background: #f54ea2; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">45</div>
+                                        <img src="{{ asset('build/img/rejected.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Rejected</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                    <!-- Done -->
+                                    <div style="text-align: center;">
+                                        <div style="height: calc(245 / 317 * 310px); width: 36px; background: #00d36d; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">199</div>
+                                        <img src="{{ asset('build/img/Done.svg') }}" style="width: 24px;">
+                                        <div style="font-size: 10px; color: #444;">Done</div>
+                                        <div style="font-size: 10px; color: #444;">15</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- timeboxes -->
+                <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5>Working Times</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- Box 1 -->
+                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                        <!-- Date -->
+                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
+                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
+                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
+                        </div>
+
+                        <!-- Time + Bar -->
+                        <div style="position: relative; height: 60px;">
+                            <!-- Time Labels -->
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
+                                <span>8:00</span>
+                                <span>12:00</span>
+                                <span>16:00</span>
+                                <span>20:00</span>
+                            </div>
+
+                            <!-- Dotted line -->
+
+
+                            <!-- Blue Bars -->
+                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Duplicate this Box for second row -->
+                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px;">
+                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
+                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
+                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
+                        </div>
+
+                        <div style="position: relative; height: 60px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
+                                <span>8:00</span>
+                                <span>12:00</span>
+                                <span>16:00</span>
+                                <span>20:00</span>
+                            </div>
+
+
+                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- system log -->
+                <div class="mt-2" style="background-color: #f0f2f5; padding: 20px;padding-bottom:10px; border-radius: 14px;">
+                    <!-- Header -->
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="wh">
+                            <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
+                                <option selected>Select Projects</option>
+                                <option selected>Yekbon</option>
+                                <option selected>CMS</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- Log Entry Card #1 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Log Entry Card #2 -->
+
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Log Entry Card #3 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Log Entry Card #4 -->
+                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
+                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Date</div>
+                                <div style="font-size: 15px;">DD.MM.YYYY</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Login Time</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;margin-right:45px;">
+                                <div style="color: #1d6fa5;">Logout</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="color: #1d6fa5;">Total</div>
+                                <div style="font-size: 15px;">HH:MM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
             <!-- Right Panel: col-9 -->
-            <div class="col-md-8 col-sm-12">
+            <div id="overviewContent" class="toggle-content col-md-8 col-sm-12">
 
                                             
                 <!-- new todo list -->
@@ -337,7 +602,7 @@
                                             <div>
                                                 <div style="color: #1d6fa5;">Status</div>
                                                 <div style="font-size: 13px;">
-                                                    @if($ctodo->is_removed == "1")
+                                                    @if( $ctodo->completed == "-1" || $ctodo->completed == "-2")
                                                         <span style="color:#FD3A55 !important;">Failed</span>
                                                     @else
                                                         <span style="color:#0CC68C;">Done</span>
@@ -1655,9 +1920,12 @@
         <!-- Statistics Content -->
 
     </div>
-<div id="statisticsContent" class="toggle-content" style="display: none;">
+<div  style="display: none;">
         <div class="row m-0  py-2">
             <!-- Left Panel: col-3 -->
+           
+           
+           
             <div class="col-lg-4 col-md-8 col-sm-12">
                 <!-- Add left side profile card/info -->
                 <div class="card mb-3">
@@ -1915,270 +2183,7 @@
 
 
             <!-- Right Panel: col-9 -->
-            <div class="col-md-8 col-sm-12">
-
-                <div style="background: #eef0f4; padding: 20px; border-radius: 12px;  font-family: 'Segoe UI', sans-serif;">
-                    <!-- Title Outside Card -->
-                    <div style="color: #2b3e5f; font-weight: 600; font-size: 15px;">Task Activities</div>
-                    <div style="color: #6c757d; font-size: 12px; margin-bottom: 10px;">Total Asigned 250</div>
-
-                    <!-- Card -->
-                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px 10px 10px 10px; position: relative;">
-                        <div style="display: flex; align-items: flex-end; height: 353px; position: relative;">
-                            <!-- Y-Axis Labels -->
-                            <!-- Y-Axis Labels -->
-                            <div style="position: absolute; bottom: 0; left: 0; height: 310px; width: 30px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; font-size: 10px; color: #666;">
-                                <div style="margin-top: -56px;">250</div>
-                                <div style="margin-top: 6px;">200</div>
-                                <div style="margin-top: 11px;">150</div>
-                                <div style="margin-top: 8px;">100</div>
-                                <div style="margin-top: 8px;">50</div>
-                                <div style="margin-bottom: -7px;">0</div>
-                                <div style="margin-top: -2px;"></div>
-                                <div style="margin-top: -2px;"></div>
-                            </div>
-
-
-                            <!-- Graph Area -->
-                            <div style="margin-left: 30px; width: 100%; position: relative;">
-                                <!-- Dotted Lines -->
-                                <div style="position: absolute; top: 0; width: 100%; height: 100%; z-index: 0;margin-top:-59px;">
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 3px dashed #ccc; height: 20%;"></div>
-                                    <div style="border-top: 1px solid #ccc; height: 1%;"></div>
-                                </div>
-
-                                <!-- Bars -->
-                                <!-- Bars -->
-                                <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 100%; z-index: 2;position: relative;">
-
-                                    <!-- Progress -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(15 / 123 * 310px); width: 36px; background: #a7e92f; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">15</div>
-                                        <img src="{{ asset('build/img/progress.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Progress</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- In Hold -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(55 / 250 * 310px); width: 36px; background: #f5a623; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">55</div>
-                                        <img src="{{ asset('build/img/inhold.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">In Hold</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Delayed -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(184 / 294 * 310px); width: 36px; background: #f44336; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">155</div>
-                                        <img src="{{ asset('build/img/delayed.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Delayed</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Rejected -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(45 / 250 * 310px); width: 36px; background: #f54ea2; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">45</div>
-                                        <img src="{{ asset('build/img/rejected.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Rejected</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                    <!-- Done -->
-                                    <div style="text-align: center;">
-                                        <div style="height: calc(245 / 317 * 310px); width: 36px; background: #00d36d; border-radius: 4px; margin-bottom: 5px; font-size: 10px; color: white; line-height: 20px;">199</div>
-                                        <img src="{{ asset('build/img/Done.svg') }}" style="width: 24px;">
-                                        <div style="font-size: 10px; color: #444;">Done</div>
-                                        <div style="font-size: 10px; color: #444;">15</div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- timeboxes -->
-                <div style="background-color: #f0f2f5; padding: 20px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;" class="mt-2">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="wh">
-                            <h5>Working Times</h5>
-                        </div>
-                        <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <!-- Box 1 -->
-                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-                        <!-- Date -->
-                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
-                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
-                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
-                        </div>
-
-                        <!-- Time + Bar -->
-                        <div style="position: relative; height: 60px;">
-                            <!-- Time Labels -->
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
-                                <span>8:00</span>
-                                <span>12:00</span>
-                                <span>16:00</span>
-                                <span>20:00</span>
-                            </div>
-
-                            <!-- Dotted line -->
-
-
-                            <!-- Blue Bars -->
-                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Duplicate this Box for second row -->
-                    <div style="background-color: #ffffff; border-radius: 12px; padding: 16px;">
-                        <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px;">
-                            <span style="font-size: 22px; font-weight: bold; color: #2196f3;">27</span>
-                            <span style="font-size: 13px; color: #00bcd4;">September 2019</span>
-                        </div>
-
-                        <div style="position: relative; height: 60px;">
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #4b5c74; margin-bottom: 8px;">
-                                <span>8:00</span>
-                                <span>12:00</span>
-                                <span>16:00</span>
-                                <span>20:00</span>
-                            </div>
-
-
-                            <div style="position: absolute; top: 33px; left: 0%; width: 18%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 24%; width: 20%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                            <div style="position: absolute; top: 33px; left: 52%; width: 44%; height: 6px; background: linear-gradient(to right, #00c6ff, #0072ff); border-radius: 4px;"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- system log -->
-                <div class="mt-2" style="background-color: #f0f2f5; padding: 20px;padding-bottom:10px; border-radius: 14px;">
-                    <!-- Header -->
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="wh">
-                            <h5 style="font-weight: 600; color: #1a1a3c; margin-bottom: 16px;">System Logs</h5>
-                        </div>
-                        <div>
-                            <select class="form-select form-select-sm" style="width: 140px; font-size: 13px;border-radius:8px">
-                                <option selected>Select Projects</option>
-                                <option selected>Yekbon</option>
-                                <option selected>CMS</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <!-- Log Entry Card #1 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Log Entry Card #2 -->
-
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Log Entry Card #3 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Log Entry Card #4 -->
-                    <div class="p-3 mb-3" style="background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
-                        <div class="d-flex align-items-center justify-content-center gap-3" style="font-size: 17px; font-weight: 500; color: #4b5c74;">
-                            <img src="{{ asset('build/img/groups/group-01.jpg') }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Date</div>
-                                <div style="font-size: 15px;">DD.MM.YYYY</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Login Time</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;margin-right:45px;">
-                                <div style="color: #1d6fa5;">Logout</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="color: #1d6fa5;">Total</div>
-                                <div style="font-size: 15px;">HH:MM</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
+            
         </div>
     </div>
     <!-- Statistics Content -->
