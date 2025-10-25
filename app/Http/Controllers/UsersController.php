@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
+use App\Models\UserAttachment;
 use App\Mail\UserWelcomeMail;
 use Illuminate\Support\Facades\File;
 use MongoDB\BSON\ObjectId;
@@ -79,13 +80,38 @@ class UsersController extends Controller
         $userid = $request->user;
         $user = User::where("user_id", $userid)->first();
 
-        if ($request->hasFile('attachment')) {
-            $user->card_image = $request->file('attachment')->store('cards', 'public');
-            $user->save();
-            return back()->with('success', 'File uploaded: ');
-        }
+        $file = $request->file('attachment');
+
+        // Store file in /storage/app/public/user_attachments
+        $filePath = $file->store('user_attachments', 'public');
+
+        // Create attachment record
+        UserAttachment::create([
+            'user_id'     => $user->_id ?? $user->id, // use MongoDB _id if exists
+            'file_name'   => $file->getClientOriginalName(),
+            'file_path'   => $filePath,
+            'file_type'   => $file->getClientMimeType(),
+            'uploaded_by' => auth()->id(),
+            'size'        => $file->getSize(),
+        ]);
+
         return back()->with('error', 'Error: File not uploaded. ');
 
+    }
+
+    public function destroyattachement($id){
+        $attachment = UserAttachment::find($id);
+        if (!$attachment) {
+            return response()->json(['success' => false, 'message' => 'Not found']);
+        }
+
+        // Delete file from storage
+        \Storage::disk('public')->delete($attachment->file_path);
+
+        // Delete record
+        $attachment->delete();
+
+        return response()->json(['success' => true]);
     }
 
   public function store(Request $request)

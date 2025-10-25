@@ -20,8 +20,8 @@
 
          </div>
          <div class="ms-2 overflow-hidden">
-             <h6>{{$header->first_name}}</h6>
-             <p class="last-seen text-truncate"> Online</p>
+             <h6>{{ auth()->user()->name }}</h6>
+             <p class="last-seen text-truncate"> {{ auth()->user()->type ?? 'Admin' }}</p>
          </div>
      </div>
      

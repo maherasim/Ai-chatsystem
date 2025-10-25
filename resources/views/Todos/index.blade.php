@@ -120,6 +120,9 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
         width: 150px; 
         margin:auto;
     }
+    .todofail{
+        background-color:rgb(231, 76, 60);
+    }
 
     #endTimeSelect{
         border: none;
@@ -1580,6 +1583,326 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                         @endforelse
                             
                         </div>
+
+                        <!-- previous todos -->
+
+                         <div class="project-succes pt-4 pb-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 style="margin: 0;">User Shred ToDo's</h3>
+                                <strong>User Shred ToDo's: <span id="previous_count">{{count($prevTodos)}}</span></strong>
+                            </div>
+
+                            <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;margin-right:20px;">
+
+
+                                <button type="button" cid="all" class="btn selection-btn active prev_btn" >
+                                    All
+                                </button>
+                                <button type="button" cid="low" class="btn selection-btn prev_btn" >
+                                    Low
+                                </button>
+                                <button type="button" cid="middle" class="btn selection-btn prev_btn" >
+                                    Middle
+                                </button>
+                                <button type="button" cid="high" class="btn selection-btn prev_btn" >
+                                    High
+                                </button>
+
+                            </div>
+
+                        </div>
+                        <!-- CARD CONTAINER -->
+                        <div class="row g-3 shared_div">
+                            @forelse($prevTodos  as $index => $todo)
+
+                            @php
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+// echo time();
+                               // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
+
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                ->diffInSeconds($endDateTime, false));
+
+
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $todo->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+                            @endphp  
+                            <!-- Start of Card 1 -->
+                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
+                                <div class="card viewTodo" data-id="{{ $todo->id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-own="0"
+    data-files='@json($todo->attachments->map(fn($a) => [
+            "name" => $a->file_name."_@_".$a->_id,
+            "size" => $a->size,
+            "url"  => asset("storage/{$a->file_path}")
+        ]))'
+    data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
+    data-total="{{ $todo->total_time }}"
+    data-sections='@json($todo->description)'
+    data-members='@json($todo->members_data)'
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
+                                    <!-- Card Header -->
+                                    <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec; padding-right:5px;">
+                                        <div class="d-flex">
+                                            <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
+                                            <div>
+                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
+                                            </div>
+                                        </div>
+                                        <!--<div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>-->
+                                        <!-- edit delete starts -->
+
+                                        <span class="priority-txt  {{$todo->priority}}">
+                                            <span class="priority-icon" ></span>
+                                            {{$todo->priority}}
+                                        </span>
+                                        @if ($todo->end_date == date('Y-m-d'))
+                                            <span class="priority-txt high">Today</span>
+                                        @elseif ($todo->end_date > date('Y-m-d'))
+                                            <span class="priority-txt schduled">Scheduled</span>
+                                        @endif
+
+                                        <div class="dropdown" style="display:none;">
+        <div id="todoMenu{{$todo->id}}" class="drop-menu" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
+                                                <div class="drop-icon">
+                                                    <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                </div>
+                                            </div>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoMenu{{$todo->id}}" style="height:80px; padding-top: 10px; overflow:hidden; text-align:center; position:absolute; right:0;">
+        <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+        <div class="dorp-btns">  
+
+            <button type="button" class="btn btn-sm1 btn-icon1" style="padding:0px; "   >
+                <a href="javascript:void(0);"  style="padding-top:0px; "
+               class="dropdown-item text-primary viewTodo" 
+               data-id="{{ $todo->id }}"
+   data-title="{{ $todo->title }}"
+   data-description=""
+   data-start_date="{{ $todo->start_date }}"
+   data-start_time="{{ $todo->start_time }}"
+   data-end_date="{{ $todo->end_date }}"
+   data-end_time="{{ $todo->end_time }}"
+   data-is_private="{{ $todo->is_private }}"
+   data-priority="{{ $todo->priority }}"
+   data-image="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}"
+   data-reminder="{{ $todo->reminder }}"
+   data-total="{{ $todo->total_time }}"
+   data-sections='@json($todo->description)'
+   data-members='@json($todo->members_data)'
+    data-bs-toggle="modal" data-bs-target="#inreject">
+               
+               <img src="{{asset('/assets/img/viewic.png')}}" alt="Edit" style="width: 25px; cursor: pointer;" />
+            </a>
+
+            </button>
+
+            <button type="submit" class="btn btn-sm btn-icon" style="display:none;"   >
+                <a href="javascript:void(0);" 
+               class="dropdown-item text-primary" 
+               data-id="{{ $todo->_id }}"
+    data-title="{{ $todo->title }}"
+    data-description=""
+    data-start_date="{{ $todo->start_date }}"
+    data-start_time="{{ $todo->start_time }}"
+    data-end_date="{{ $todo->end_date }}"
+    data-end_time="{{ $todo->end_time }}"
+    data-is_private="{{ $todo->is_private }}"
+    data-project="{{ $todo->project }}"
+    data-priority="{{ $todo->priority }}"
+    data-reminder="{{ $todo->reminder }}"
+    data-members='@json($todo->members)'
+    onclick="openEditModal(this)">
+               <i class="fa fa-edit"></i>  
+            </a>
+
+            </button>
+
+</div>
+            
+
+</div>
+</div>
+
+
+                                        <!-- edit delete ends -->
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <!-- Title & Avatars -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
+                                                    <small class="text-muted">
+                                                        <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <!-- Avatars -->
+                                            <div class="d-flex" style="margin-left: auto;">
+                                                <div style="position: relative; width: 60px; height: 30px;">
+                                                    <div style="position: relative; width: 60px; height: 30px;">
+                                                        @if($todo->is_private == 0)
+                                                            <div class="overlap-container">
+                                                                @foreach($todo->members_data as $mem)
+                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Description -->
+                                        <p class=" mt-3" style="font-size: 13px; color: #333;">
+                                           @foreach($todo->description as $idx => $des)
+                                                @if($loop->first)
+                                                    <div style="background:#f8f8f8;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                                        <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                                        <span style="color:#667085;font-size:13.5px;">{{ Str::limit($des, 40) }}</span>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </p>
+                                        
+                                        <!-- Date & Priority Row -->
+                                             <div class="d-flex1 justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;border-radius:10px;">
+                                            
+                                                
+                                                @if($todo->is_schduled == 0 && $todo->end_date == date("Y-m-d"))
+                                                <div class="d-flex align-items-center gap-1 text-center " style="gap: unset !important; justify-content: inherit;font-size:14px;" >
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #e64241;">
+                                                        Today</span></span>
+                                                    <span></span>
+                                                    
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br>
+                                                        <span style="color: #1c274c;">
+                                                            {{$todo->total_time}} Hours
+                                                        </span>
+                                                    </span>
+                                                
+                                                @else
+                                                <div class="d-flex align-items-center gap-1 text-center "  style="justify-content: inherit;font-size:14px; gap: unset !important;">
+                                                    <span class="text-success fw-semibold">Start: <br> <span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->start_date)->format('d-m-Y') }}</span></span>
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_date)->format('d-m-Y') }}</span></span>
+                                                    
+                                                    <span></span>
+                                                    <span class="text-muted">|</span>
+                                                    <span class="text-success fw-semibold">Deliver Time:<br><span style="color: #1c274c;">{{ \Carbon\Carbon::parse($todo->end_time)->format('H:i') }}</span></span>
+                                                
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
+                                        
+                                      <div class="d-flex justify-content-center py-2" style="margin-top: -10px;"></div>
+<div class="counter-div" id="shtimer-{{ $index }}">
+        <span id="shasimclic-{{ $index }}"></span>
+    </div>
+                                    
+ @if($remaining > 0)
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
+
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
+
+            function shupdateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
+
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
+
+                display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+
+                    // color changes during reminder phase
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ Final stage
+                        clearInterval(timer);
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; // ðŸ”´ last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; // ðŸŸ  middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; // ðŸŸ¢ first 1/3
+                    }
+                }
+
+                duration--;
+            }
+
+            shupdateClock();
+            let timer = setInterval(shupdateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('shtimer-{{ $index }}');
+            let display = document.getElementById('shasimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+                                   
+                                    </div>
+
+                                    
+
+                                   
+
+                                    <!-- Footer Button -->
+
+                                </div>
+                            </div>
+                            <!-- End of Card 1 -->
+                           @empty
+                                <div class="alert alert-warning">No Users todos.</div>
+                        @endforelse
+                            
+                        </div>
+
+                        <!-- previous todos ends -->
                     </div>
                 </div>
 

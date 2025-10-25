@@ -87,6 +87,46 @@ class TodoController extends Controller
                  ->get();
 
 
+                 $prevTodos = Todo::where('end_date', '>', date('Y-m-d'))
+    ->where(function ($q) use ($user) {
+        $q
+        // ✅ Case 1: completed = 2 → only include if this user is owner
+        ->where(function ($sub) use ($user) {
+            $sub->whereIn('completed', ["-1", "2"])
+                ->where('user_id', '!=', $user->_id);
+        })
+        // ✅ Case 2: completed ≠ 1 and completed ≠ 2 → include if user is owner or member
+        ->orWhere(function ($sub) use ($user) {
+            $sub->whereNotIn('completed', ["1", "2", "-1"])
+                ->where(function ($inner) use ($user) {
+                    $inner->where('user_id', '!=', $user->_id)
+                          ->orWhere('members', '!=', $user->_id);
+                });
+        });
+    })
+    ->where(function ($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })
+    ->get()
+    ->map(function ($todo) {
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $todo->members_data = $members->map(function ($u) {
+            return [
+                'id'    => $u->_id,
+                'name'  => $u->name,
+                'image' => $u->profile_image
+                    ? asset("storage/" . $u->profile_image)
+                    : asset("build/img/default.png"),
+            ];
+        });
+        return $todo;
+    });
+
+
+       
+
+
         $todayTodos = Todo::where('end_date', date('Y-m-d'))
    
     ->where(function ($q) {
@@ -157,7 +197,7 @@ class TodoController extends Controller
 
             $headers = Setting::all();
         
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers'));
+        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers'));
     }
 
     public function destroy($id)
