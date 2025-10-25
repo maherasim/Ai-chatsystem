@@ -560,9 +560,9 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
                                // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
                                 if ($remaining < 0) $remaining = 0;
@@ -603,7 +603,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex">
                                             <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -946,9 +946,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
 
@@ -986,7 +986,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex align-items-center">
                                             <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1309,9 +1309,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
 
@@ -1350,7 +1350,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex">
                                             <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1621,9 +1621,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
 // echo time();
                                // $remaining = strtotime($todo->end_date . " " . $todo->end_time) - time();
 
-                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'UTC');
-//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'UTC'), false);
-$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
+                                $endDateTime = \Carbon\Carbon::parse($todo->end_date . ' ' . $todo->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
 
 
@@ -1662,7 +1662,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'UTC')
                                         <div class="d-flex">
                                             <img src="{{ str_replace('admin.', 'team.', asset('storage/' . $todo->user->profile_image)) }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -4544,11 +4544,12 @@ function formatFileSize(bytes) {
             let startTime   = this.dataset.start_time || "";
             let endTime     = this.dataset.end_time || "";
 
-            
 
             let [year, month, day] = endDate.split('-').map(Number);
             let [hour, minute] = endTime.split(':').map(Number);
-            let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            //let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            let endDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
+            endDateTime = new Date(endDateTime.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
 
            // alert(endDate + " " + endTime);
 
