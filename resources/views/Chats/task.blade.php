@@ -355,42 +355,62 @@
 
             <!-- Marker details modal -->
             <div class="modal fade" id="markerDetailsModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content" style="border-radius:10px;">
-                        <div class="modal-header">
-                            <h6 class="modal-title">Marker Details</h6>
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="border-radius:12px;">
+                        <div class="modal-header" style="background:#fff;">
+                            <div>
+                                <h6 class="modal-title mb-0" style="font-weight:600;">Add Task</h6>
+                                <small class="text-muted">Create a Task</small>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-2">
-                                <label class="form-label">Title</label>
-                                <input type="text" id="marker-title" class="form-control form-control-sm" />
+                                <label class="form-label" style="font-weight:600;color:#2b2d42;">Type the Title</label>
+                                <div style="position:relative;">
+                                    <input type="text" id="marker-title" name="title" class="form-control form-control-sm" placeholder="Type the Title" style="border:1px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                                    <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                </div>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label">Description</label>
-                                <textarea id="marker-description" class="form-control form-control-sm" rows="3"></textarea>
+                                <label class="form-label" style="font-weight:600;color:#2b2d42;">Describe the issue </label>
+                                <div style="position:relative;">
+                                    <input type="text" id="marker-title" name="description" class="form-control form-control-sm" placeholder="Describe the issue" style="border:1px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                                    <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                </div>
                             </div>
                             <div class="d-flex gap-2 mb-2">
                                 <div class="flex-fill">
                                     <label class="form-label">Start Date</label>
-                                    <input type="date" id="marker-start" class="form-control form-control-sm" />
+                                    <div style="position:relative;">
+                                        <input type="date" id="marker-start" class="form-control form-control-sm" style="padding-right:38px;border-radius:10px;" />
+                                        <img src="{{ asset('assets/img/date.png') }}" alt="date" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                    </div>
                                 </div>
                                 <div class="flex-fill">
-                                    <label class="form-label">End Date</label>
-                                    <input type="date" id="marker-end" class="form-control form-control-sm" />
+                                    <label class="form-label">Deliver Date</label>
+                                    <div style="position:relative;">
+                                        <input type="date" id="marker-end" class="form-control form-control-sm" style="padding-right:38px;border-radius:10px;" />
+                                        <img src="{{ asset('assets/img/date.png') }}" alt="date" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-2">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label class="form-label m-0">Checkpoints</label>
-                                    <button type="button" id="add-checkpoint" class="btn btn-sm" style="background:#28c76f;color:#fff;">Add</button>
+                                    <div>
+                                        <div class="form-label m-0" style="font-weight:600;color:#2b2d42;">Checkpoints</div>
+                                        <small class="text-muted">Create Checkpoints</small>
+                                    </div>
+                                    <button type="button" id="add-checkpoint" class="btn btn-sm p-0" style="color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                        <img src="{{ asset('assets/img/add.svg') }}" alt="add" style="width:14px;height:14px;"/>
+                                    </button>
                                 </div>
                                 <div id="checkpoints-list" class="d-flex flex-column gap-2"></div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="save-marker" class="btn btn-primary btn-sm">Save</button>
+                            <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="save-marker" class="btn btn-primary btn-sm">Save & Close</button>
                         </div>
                     </div>
                 </div>
@@ -2372,6 +2392,21 @@ document.addEventListener('DOMContentLoaded', function () {
     var createTaskModalEl = document.getElementById('createTaskModal');
     if (!createTaskModalEl) return;
 
+    // Ensure newly opened modals stack above currently open ones (Bootstrap 5)
+    document.addEventListener('show.bs.modal', function (ev) {
+        try {
+            var openCount = document.querySelectorAll('.modal.show').length;
+            var zIndex = 1050 + 10 * openCount; // ensure new modal sits above existing
+            ev.target.style.zIndex = String(zIndex);
+            setTimeout(function(){
+                document.querySelectorAll('.modal-backdrop:not(.modal-stack)').forEach(function(bd){
+                    bd.style.zIndex = String(zIndex - 1);
+                    bd.classList.add('modal-stack');
+                });
+            }, 0);
+        } catch(_){}
+    }, true);
+
     var projectSelect = document.getElementById('select-project');
     var ticketSelect = document.getElementById('select-ticket');
     var ticketCache = {};
@@ -2462,7 +2497,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div style="position:relative;">\
                             <input type="text" id="swal-title" class="form-control form-control-sm" placeholder="Type the Title"\
                                    style="border:1px solid #ced4da;border-radius:6px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />\
-                            <img src=\"{{ asset('assets/img/title.png') }}\" alt=\"title\"\
+                            <img src=\"{{ asset('assets/img/title.svg') }}\" alt=\"title\"\
                                  style=\"position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;\" />\
                         </div>\
                     </div>\
@@ -2526,8 +2561,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (eEl && t.end_date) eEl.value = (''+t.end_date).substring(0,10);
                     }
                 } catch(_){}
-                var iconTitleUrl = "{{ asset('assets/img/title.png') }}";
-                var iconRemoveUrl = "{{ asset('assets/img/remove.png') }}";
+                var iconTitleUrl = "{{ asset('assets/img/title.svg') }}";
+                var iconRemoveUrl = "{{ asset('assets/img/remove.svg') }}";
                 function addRow(value){
                     var row = document.createElement('div');
                     row.className = 'd-flex align-items-center gap-2';
@@ -2556,8 +2591,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     var remove = document.createElement('button');
                     remove.type = 'button';
                     remove.className = 'btn btn-sm p-0';
-                    remove.style.background = '#ea5455';
-                    remove.style.color = '#fff';
+                    remove.style.background = 'transparent';
+                    remove.style.color = '#ea5455';
                     remove.style.width = '28px';
                     remove.style.height = '28px';
                     remove.style.borderRadius = '50%';
@@ -2755,7 +2790,74 @@ document.addEventListener('DOMContentLoaded', function () {
             createBtn.addEventListener('click', function(ev){
                 ev.stopPropagation();
                 removeInlineColorRows();
-                openMarkerDetailsSwal();
+                try {
+                    // Prefill dates from selected ticket into modal fields
+                    var sEl = document.getElementById('marker-start');
+                    var eEl = document.getElementById('marker-end');
+                    if (ticketSelect && ticketSelect.value && ticketCache[ticketSelect.value]) {
+                        var t = ticketCache[ticketSelect.value];
+                        if (sEl && t.start_date) sEl.value = (''+t.start_date).substring(0,10);
+                        if (eEl && t.end_date) eEl.value = (''+t.end_date).substring(0,10);
+                    }
+                } catch(_){}
+                // reset checkpoints list with four empty rows
+                try {
+                    var list = document.getElementById('checkpoints-list');
+                    list.innerHTML = '';
+                    var addBtn = document.getElementById('add-checkpoint');
+                    var addRow = function(value){
+                        var row = document.createElement('div');
+                        row.className = 'd-flex align-items-center gap-2';
+                        var wrap = document.createElement('div');
+                        wrap.style.position = 'relative';
+                        wrap.style.flex = '1';
+                        var input = document.createElement('input');
+                        input.type = 'text';
+                        input.placeholder = 'Describe the Checkpoint';
+                        input.className = 'form-control form-control-sm';
+                        input.style.paddingRight = '38px';
+                        if (value) input.value = value;
+                        var icon = document.createElement('img');
+                        icon.src = "{{ asset('assets/img/title.svg') }}";
+                        icon.alt = 'title';
+                        icon.style.position = 'absolute';
+                        icon.style.right = '10px';
+                        icon.style.top = '50%';
+                        icon.style.transform = 'translateY(-50%)';
+                        icon.style.width = '16px';
+                        icon.style.height = '16px';
+                        icon.style.opacity = '.8';
+                        wrap.appendChild(input);
+                        wrap.appendChild(icon);
+                        var remove = document.createElement('button');
+                        remove.type = 'button';
+                        remove.className = 'btn btn-sm p-0';
+                        remove.style.background = 'transparent';
+                        remove.style.color = '#ea5455';
+                        remove.style.width = '28px';
+                        remove.style.height = '28px';
+                        remove.style.borderRadius = '50%';
+                        remove.innerHTML = '<img src="{{ asset('assets/img/remove.png') }}" alt="remove" style="width:14px;height:14px;" />';
+                        remove.addEventListener('click', function(){ row.remove(); });
+                        row.appendChild(wrap);
+                        row.appendChild(remove);
+                        list.appendChild(row);
+                    };
+                    for (var i = 0; i < 4; i++) { addRow(''); }
+                    if (addBtn && !addBtn._bound) {
+                        addBtn.addEventListener('click', function(){ addRow(''); });
+                        addBtn._bound = true;
+                    }
+                } catch(_){}
+                // open bootstrap modal
+                try {
+                    var modalEl = document.getElementById('markerDetailsModal');
+                    // append to body to avoid parent stacking contexts
+                    if (modalEl && modalEl.parentNode !== document.body) {
+                        document.body.appendChild(modalEl);
+                    }
+                    new bootstrap.Modal(modalEl, { backdrop: true, focus: true }).show();
+                } catch(e) {}
             });
             row.appendChild(createBtn);
 
@@ -2855,29 +2957,73 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // checkpoints handling inside marker modal
+    // checkpoints handling inside marker modal (Figma-style)
     var checkpointsList = document.getElementById('checkpoints-list');
     var addCheckpointBtn = document.getElementById('add-checkpoint');
     function addCheckpointRow(value){
         if(!checkpointsList) return;
         var row = document.createElement('div');
         row.className = 'd-flex align-items-center gap-2';
+        var wrap = document.createElement('div');
+        wrap.style.position = 'relative';
+        wrap.style.flex = '1';
         var input = document.createElement('input');
         input.type = 'text';
+        input.placeholder = 'Describe the Checkpoint';
         input.className = 'form-control form-control-sm';
+        input.style.paddingRight = '38px';
         if (value) input.value = value;
+        var icon = document.createElement('img');
+        icon.src = "{{ asset('assets/img/title.svg') }}";
+        icon.alt = 'title';
+        icon.style.position = 'absolute';
+        icon.style.right = '10px';
+        icon.style.top = '50%';
+        icon.style.transform = 'translateY(-50%)';
+        icon.style.width = '16px';
+        icon.style.height = '16px';
+        icon.style.opacity = '.8';
+        wrap.appendChild(input);
+        wrap.appendChild(icon);
         var remove = document.createElement('button');
         remove.type = 'button';
-        remove.className = 'btn btn-sm';
-        remove.style.background = '#ea5455';
-        remove.style.color = '#fff';
-        remove.textContent = 'Remove';
+        remove.className = 'btn btn-sm p-0';
+        remove.style.background = 'transparent';
+        remove.style.color = '#ea5455';
+        remove.style.width = '28px';
+        remove.style.height = '28px';
+        remove.style.borderRadius = '50%';
+        remove.innerHTML = '<img src="{{ asset('assets/img/remove.png') }}" alt="remove" style="width:14px;height:14px;" />';
         remove.addEventListener('click', function(){ row.remove(); });
-        row.appendChild(input);
+        row.appendChild(wrap);
         row.appendChild(remove);
         checkpointsList.appendChild(row);
     }
     if (addCheckpointBtn) addCheckpointBtn.addEventListener('click', function(){ addCheckpointRow(''); });
+
+    // Reset modal inputs when shown
+    var markerDetailsModalEl = document.getElementById('markerDetailsModal');
+    if (markerDetailsModalEl) {
+        markerDetailsModalEl.addEventListener('shown.bs.modal', function(){
+            try {
+                // focus title
+                var titleEl = document.getElementById('marker-title');
+                if (titleEl) titleEl.focus();
+                // prefill dates from ticket
+                var sEl = document.getElementById('marker-start');
+                var eEl = document.getElementById('marker-end');
+                if (ticketSelect && ticketSelect.value && ticketCache[ticketSelect.value]) {
+                    var t = ticketCache[ticketSelect.value];
+                    if (sEl && t.start_date) sEl.value = (''+t.start_date).substring(0,10);
+                    if (eEl && t.end_date) eEl.value = (''+t.end_date).substring(0,10);
+                }
+            } catch(_){}
+            if (checkpointsList) {
+                checkpointsList.innerHTML = '';
+                for (var i = 0; i < 4; i++) addCheckpointRow('');
+            }
+        });
+    }
 
     // save marker: crop selected region from base image to get base64 PNG
     var saveMarkerBtn = document.getElementById('save-marker');
@@ -2925,8 +3071,58 @@ document.addEventListener('DOMContentLoaded', function () {
             color: currentColor,
             mark_image: cropMarkerToBase64(),
         };
-        // TODO: integrate with a form submit or API as needed
-        console.log('Marker saved', payload);
+        // Create badge and store task like SweetAlert flow
+        var taskData = payload || {};
+        badgeCounter += 1;
+        taskData.number = badgeCounter;
+        taskData.color = currentColor;
+        taskData.position = (function(){
+            var layerRect = markerLayer.getBoundingClientRect();
+            var mRect = (currentMarker || {}).getBoundingClientRect ? currentMarker.getBoundingClientRect() : layerRect;
+            return {
+                left: (mRect.left - layerRect.left) + mRect.width/2,
+                top: (mRect.top - layerRect.top) + mRect.height/2
+            };
+        })();
+        createdTasks.push(taskData);
+
+        var badge = document.createElement('div');
+        badge.className = 'marker-badge';
+        badge.textContent = String(taskData.number);
+        badge.style.position = 'absolute';
+        badge.style.left = taskData.position.left + 'px';
+        badge.style.top = taskData.position.top + 'px';
+        badge.style.transform = 'translate(-50%, -50%)';
+        badge.style.color = taskData.color || '#28c76f';
+        badge.style.fontWeight = '800';
+        badge.style.fontSize = '18px';
+        badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+        badge.style.cursor = 'pointer';
+        badge.style.zIndex = '25';
+        badge.addEventListener('click', function(ev){
+            ev.stopPropagation();
+            var cp = Array.isArray(taskData.checkpoints) ? taskData.checkpoints : [];
+            var checkpointsHtml = cp.length ? ('<ul style="text-align:left;">'+cp.map(function(c){ return '<li>'+c+'</li>'; }).join('')+'</ul>') : '<em>No checkpoints</em>';
+            if (window.Swal && typeof Swal.fire === 'function') {
+                Swal.fire({
+                    title: taskData.title || 'Task',
+                    html: ('<div style="text-align:left;">'
+                        + '<div><strong>Description:</strong> '+(taskData.description || '-')+'</div>'
+                        + '<div class="mt-1"><strong>Start:</strong> '+(taskData.start_date || '-')+' &nbsp; <strong>End:</strong> '+(taskData.end_date || '-')+'</div>'
+                        + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
+                        + '</div>'),
+                    confirmButtonText: 'Close'
+                });
+            }
+        });
+        // Avoid triggering upload
+        badge.addEventListener('mousedown', function(ev){ ev.stopPropagation(); });
+        badge.addEventListener('mouseup', function(ev){ ev.stopPropagation(); });
+        markerLayer.appendChild(badge);
+
+        // Remove drawn marker box; keep number
+        if (currentMarker) { try { currentMarker.remove(); } catch(_){} currentMarker = null; }
+
         try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
     });
 });
