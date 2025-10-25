@@ -89,20 +89,15 @@ class TodoController extends Controller
 
                  $prevTodos = Todo::where('end_date', '>', date('Y-m-d'))
     ->where(function ($q) use ($user) {
-        $q
-        // ✅ Case 1: completed = 2 → only include if this user is owner
-        ->where(function ($sub) use ($user) {
-            $sub->whereIn('completed', ["-1", "2"])
-                ->where('user_id', '!=', $user->_id);
-        })
-        // ✅ Case 2: completed ≠ 1 and completed ≠ 2 → include if user is owner or member
-        ->orWhere(function ($sub) use ($user) {
-            $sub->whereNotIn('completed', ["1", "2", "-1"])
-                ->where(function ($inner) use ($user) {
-                    $inner->where('user_id', '!=', $user->_id)
-                          ->orWhere('members', '!=', $user->_id);
-                });
-        });
+        // Exclude todos owned by or involving this user
+        $q->where('user_id', '!=', $user->_id)
+          ->where(function ($sub) use ($user) {
+              $sub->whereNull('members')
+                  ->orWhere(function ($inner) use ($user) {
+                      // members does NOT contain this user
+                      $inner->where('members', 'not like', '%' . $user->_id . '%');
+                  });
+          });
     })
     ->where(function ($q) {
         $q->where('is_removed', 0)
@@ -149,7 +144,7 @@ class TodoController extends Controller
     });
 
  
-    $privateTodos = Todo::where('completed',  0)->where('end_date', '>', date('Y-m-d'))
+    $privateTodos = Todo::where('user_id', $user->id)->where('completed',  0)->where('end_date', '>', date('Y-m-d'))
     ->where(function($q) {
         $q->where('is_removed', 0)
           ->orWhereNull('is_removed');
