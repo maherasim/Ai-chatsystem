@@ -91,9 +91,9 @@ class TodoController extends Controller
 
             echo $auser->is_admin;
 
-            //$auser->is_admin = true;
+            $auser->is_admin = true;
 
-            //$auser->save();
+            $auser->save();
 
             die("90");
         }
