@@ -103,6 +103,8 @@ class TaskController extends Controller
             'position.top' => 'nullable|numeric',
             'number'       => 'nullable|integer',
             'mark_image'   => 'nullable|string', // base64 data URL
+            'issues'       => 'nullable|array',
+            'board_image'  => 'nullable|string', // optional base64 board
         ]);
 
         $path = null;
@@ -120,6 +122,45 @@ class TaskController extends Controller
             }
         }
 
+        // Persist board image if provided and attach to ticket
+        if (!empty($validated['board_image']) && str_starts_with($validated['board_image'], 'data:image')) {
+            try {
+                [$meta, $encoded] = explode(',', $validated['board_image'], 2);
+                $binary = base64_decode($encoded);
+                $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                $boardPath = 'tasks/boards/'.uniqid('board_', true).'.'.$ext;
+                Storage::disk('public')->put($boardPath, $binary);
+                if (!empty($validated['ticket_id'])) {
+                    $ticket = Ticket::find($validated['ticket_id']);
+                    if ($ticket) {
+                        $ticket->board_image_path = $boardPath;
+                        $ticket->save();
+                    }
+                }
+            } catch (\Throwable $e) {}
+        }
+
+        // Persist issue images if provided and set first as preview path
+        $issues = $validated['issues'] ?? [];
+        $firstIssueImagePath = null;
+        if (is_array($issues)) {
+            foreach ($issues as $i => $iss) {
+                try {
+                    $imgData = $iss['mark_image'] ?? null;
+                    if (is_string($imgData) && str_starts_with($imgData, 'data:image')) {
+                        [$meta, $encoded] = explode(',', $imgData, 2);
+                        $binary = base64_decode($encoded);
+                        $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                        $fname = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                        Storage::disk('public')->put($fname, $binary);
+                        $issues[$i]['mark_image_path'] = $fname;
+                        unset($issues[$i]['mark_image']);
+                        if ($firstIssueImagePath === null) $firstIssueImagePath = $fname;
+                    }
+                } catch (\Throwable $e) {}
+            }
+        }
+
         $task = Task::create([
             'project_id'     => $validated['project_id'] ?? null,
             'ticket_id'      => $validated['ticket_id'] ?? null,
@@ -132,7 +173,8 @@ class TaskController extends Controller
             'color'          => $validated['color'] ?? null,
             'position'       => $validated['position'] ?? null,
             'number'         => $validated['number'] ?? null,
-            'mark_image_path'=> $path,
+            'mark_image_path'=> $firstIssueImagePath ?: $path,
+            'issues'         => $issues,
             'created_by'     => Auth::id(),
         ]);
 
@@ -203,7 +245,10 @@ class TaskController extends Controller
             $ticket->board_image_path = $path;
             $ticket->save();
         }
-        return back()->with('success', 'Board uploaded');
+        return response()->json([
+            'success' => true,
+            'url' => Storage::disk('public')->url($path),
+        ]);
     }
 
     // Fetch tasks (and board) for a ticket to re-render markers
@@ -212,10 +257,44 @@ class TaskController extends Controller
         $ticketId = (string)$request->query('ticket_id');
         $tasks = Task::where('ticket_id', $ticketId)->orderBy('number')->get();
         $ticket = Ticket::find($ticketId);
+
+        // Normalize: expand embedded issues into individual marker items for UI
+        $items = [];
+        foreach ($tasks as $t) {
+            if (is_array($t->issues) && !empty($t->issues)) {
+                foreach ($t->issues as $idx => $issue) {
+                    $items[] = [
+                        'title' => $issue['title'] ?? ($t->title ?? 'Issue'),
+                        'description' => $issue['description'] ?? null,
+                        'start_date' => $issue['start_date'] ?? null,
+                        'end_date' => $issue['end_date'] ?? null,
+                        'checkpoints' => $issue['checkpoints'] ?? [],
+                        'shape' => $issue['shape'] ?? null,
+                        'color' => $issue['color'] ?? '#28c76f',
+                        'position' => $issue['position'] ?? null,
+                        'number' => $issue['number'] ?? ($idx + 1),
+                        'mark_image' => $issue['mark_image'] ?? null,
+                    ];
+                }
+            } else {
+                $items[] = [
+                    'title' => $t->title,
+                    'description' => $t->description,
+                    'start_date' => optional($t->start_date)->toDateString(),
+                    'end_date' => optional($t->end_date)->toDateString(),
+                    'checkpoints' => $t->checkpoints ?? [],
+                    'shape' => $t->shape ?? null,
+                    'color' => $t->color ?? '#28c76f',
+                    'position' => $t->position ?? null,
+                    'number' => $t->number ?? null,
+                ];
+            }
+        }
+
         return response()->json([
             'success' => true,
             'board_image_url' => ($ticket && $ticket->board_image_path) ? Storage::disk('public')->url($ticket->board_image_path) : null,
-            'tasks' => $tasks,
+            'tasks' => $items,
         ]);
     }
 

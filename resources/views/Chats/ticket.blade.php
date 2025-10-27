@@ -3010,8 +3010,15 @@
                         const modalEl = document.getElementById('ticketModal');
                         const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         modal.hide();
-                        // Reload to show session success alert
-                        window.location.reload();
+                        // Do not reload; keep current view and optionally show a brief success note
+                        try {
+                            const note = document.createElement('div');
+                            note.className = 'position-fixed top-0 end-0 p-3';
+                            note.style.zIndex = '1060';
+                            note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Ticket created successfully</div>';
+                            document.body.appendChild(note);
+                            setTimeout(function(){ try { note.remove(); } catch(_){} }, 2000);
+                        } catch(_) {}
                     } else {
                         // Inline success alert inside modal (not closing)
                         const modalBody = document.querySelector('#ticketModal .modal-body');
@@ -3106,7 +3113,15 @@
                     const modalEl = document.getElementById('ticketModal');
                     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                     modal.hide();
-                    window.location.reload();
+                    // Do not reload; show a brief success note
+                    try {
+                        const note = document.createElement('div');
+                        note.className = 'position-fixed top-0 end-0 p-3';
+                        note.style.zIndex = '1060';
+                        note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Ticket updated successfully</div>';
+                        document.body.appendChild(note);
+                        setTimeout(function(){ try { note.remove(); } catch(_){} }, 2000);
+                    } catch(_) {}
                 } else {
                     let errMsg = 'Failed to update ticket';
                     try {

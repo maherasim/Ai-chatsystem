@@ -359,8 +359,8 @@
                     <div class="modal-content" style="border-radius:12px;">
                         <div class="modal-header" style="background:#fff;">
                             <div>
-                                <h6 class="modal-title mb-0" style="font-weight:600;">Add Task</h6>
-                                <small class="text-muted">Create a Task</small>
+                                <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue</h6>
+                                <small class="text-muted">Create a Issue</small>
                             </div>
                              
                         </div>
@@ -2446,7 +2446,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!(window.Swal && typeof Swal.fire === 'function')) {
             if (!confirm('Delete this task?')) return;
             fetch(`{{ url('/tasks') }}/${taskId}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(function(res){ return res.json(); }).then(function(){ location.reload(); });
+                .then(function(res){ return res.json(); }).then(function(){
+                    try {
+                        var note = document.createElement('div');
+                        note.className = 'position-fixed top-0 end-0 p-3';
+                        note.style.zIndex = '1060';
+                        note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task deleted</div>';
+                        document.body.appendChild(note);
+                        setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
+                    } catch(_) {}
+                });
             return;
         }
         Swal.fire({
@@ -2465,7 +2474,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
             }).then(function(res){ return res.json(); }).then(function(){
                 Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false });
-                setTimeout(function(){ location.reload(); }, 900);
             });
         });
     };
@@ -2482,6 +2490,51 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentColor = '#ea5455';
     var createdTasks = [];
     var badgeCounter = 0;
+
+    // Prevent marker label overlap by nudging new badges to a nearby free spot
+    function getExistingBadgePositions(){
+        try {
+            return Array.from((markerLayer||{}).querySelectorAll?.('.marker-badge') || []).map(function(el){
+                var l = parseFloat(el.style.left||'0');
+                var t = parseFloat(el.style.top||'0');
+                return { left: l, top: t };
+            });
+        } catch(_) { return []; }
+    }
+    function isFarEnough(left, top, positions, minDist){
+        minDist = minDist || 24; // pixels center-to-center
+        for (var i=0;i<positions.length;i++){
+            var p = positions[i];
+            var dx = (left - (p.left||0));
+            var dy = (top - (p.top||0));
+            if (Math.sqrt(dx*dx + dy*dy) < minDist) return false;
+        }
+        return true;
+    }
+    function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
+    function findFreePosition(baseLeft, baseTop){
+        var positions = getExistingBadgePositions();
+        var layerRect = (markerLayer||{}).getBoundingClientRect ? markerLayer.getBoundingClientRect() : { width: 0, height: 0 };
+        var half = 0; // we use transform translate(-50%, -50%), so centers can be anywhere; we'll clamp inside
+        var maxLeft = Math.max(half, (layerRect.width||0) - half);
+        var maxTop  = Math.max(half, (layerRect.height||0) - half);
+        var baseL = clamp(baseLeft, half, maxLeft);
+        var baseT = clamp(baseTop, half, maxTop);
+        if (isFarEnough(baseL, baseT, positions)) return { left: baseL, top: baseT };
+        var deltas = [];
+        for (var r=16; r<=96; r+=16){
+            for (var a=0; a<360; a+=30){
+                var rad = a * Math.PI / 180;
+                deltas.push([Math.round(Math.cos(rad)*r), Math.round(Math.sin(rad)*r)]);
+            }
+        }
+        for (var j=0;j<deltas.length;j++){
+            var candL = clamp(baseL + deltas[j][0], half, maxLeft);
+            var candT = clamp(baseT + deltas[j][1], half, maxTop);
+            if (isFarEnough(candL, candT, positions)) return { left: candL, top: candT };
+        }
+        return { left: baseL, top: baseT };
+    }
 
     function formatDate(value) {
         if (!value) return '--';
@@ -2525,6 +2578,7 @@ document.addEventListener('DOMContentLoaded', function () {
         this.style.background='#e9ecef';
         if(shapeCircleBtn) shapeCircleBtn.style.background='#f8f9fa';
         if (markerLayer) {
+            try { previewImg.style.display='block'; markerLayer.style.display='block'; } catch(_) {}
             var rect = markerLayer.getBoundingClientRect();
             createMarker(rect.width/2, rect.height/2);
         }
@@ -2535,6 +2589,7 @@ document.addEventListener('DOMContentLoaded', function () {
         this.style.background='#e9ecef';
         if(shapeSquareBtn) shapeSquareBtn.style.background='#f8f9fa';
         if (markerLayer) {
+            try { previewImg.style.display='block'; markerLayer.style.display='block'; } catch(_) {}
             var rect = markerLayer.getBoundingClientRect();
             createMarker(rect.width/2, rect.height/2);
         }
@@ -2846,13 +2901,20 @@ document.addEventListener('DOMContentLoaded', function () {
             var createBtn = document.createElement('button');
             createBtn.type = 'button';
             createBtn.className = 'btn btn-sm';
-            createBtn.textContent = 'Create Task';
+            createBtn.textContent = 'Create Issue';
             createBtn.style.background = '#28c76f';
             createBtn.style.color = '#fff';
             createBtn.style.borderRadius = '6px';
             createBtn.addEventListener('click', function(ev){
                 ev.stopPropagation();
                 removeInlineColorRows();
+                // Ensure image and layers stay visible when opening the issue modal
+                try {
+                    if (previewImg) previewImg.style.display = 'block';
+                    if (markerLayer) markerLayer.style.display = 'block';
+                    var mtb = document.getElementById('markerToolbar');
+                    if (mtb) mtb.style.display = 'flex';
+                } catch(_) {}
                 try {
                     // Prefill dates from selected ticket into modal fields
                     var sEl = document.getElementById('marker-start');
@@ -3017,6 +3079,18 @@ document.addEventListener('DOMContentLoaded', function () {
             var selectedId = e.target.value;
             var ticket = ticketCache[selectedId];
             renderTicketDates(ticket || null);
+            // If an image is already loaded by user, keep it visible when switching tickets
+            try {
+                var uiImg = previewImg?.src || '';
+                if (uiImg) {
+                    if (previewImg) previewImg.style.display = 'block';
+                    var ut = document.getElementById('uploadText');
+                    if (ut) ut.style.display = 'none';
+                    if (markerLayer) markerLayer.style.display = 'block';
+                    var mt = document.getElementById('markerToolbar');
+                    if (mt) mt.style.display = 'flex';
+                }
+            } catch(_) {}
             // Load board image and markers for this ticket
             try {
                 fetch(`{{ route('tasks.by_ticket') }}?ticket_id=${encodeURIComponent(selectedId)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
@@ -3025,6 +3099,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (!resp || !resp.success) return;
                         if (resp.board_image_url && previewImg) {
                             previewImg.src = resp.board_image_url;
+                            try { previewImg.style.display = 'block'; } catch(_) {}
+                            try { (document.getElementById('uploadText')||{}).style.display = 'none'; } catch(_) {}
+                            try { (document.getElementById('markerLayer')||{}).style.display = 'block'; } catch(_) {}
+                            try { (document.getElementById('markerToolbar')||{}).style.display = 'flex'; } catch(_) {}
                         }
                         if (markerLayer) { markerLayer.innerHTML = ''; }
                         badgeCounter = 0;
@@ -3191,21 +3269,34 @@ document.addEventListener('DOMContentLoaded', function () {
             })(),
             number: badgeCounter + 1
         };
+        // If editing an existing task, update immediately instead of creating an issue
         try {
-            fetch("{{ route('tasks.store') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify(payload)
-            }).then(function(res){ return res.json(); }).then(function(resp){
-                if (resp && resp.success) {
-                    try { var last = createdTasks[createdTasks.length-1]; if (last) last.id = resp.task?.id; } catch(_){ }
-                }
-            }).catch(function(){});
+            var editingId = (document.getElementById('save-marker')||{}).dataset?.editingId;
+            if (editingId) {
+                fetch(`{{ url('/tasks') }}/${editingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(payload)
+                }).then(function(res){ return res.json(); }).then(function(){
+                    try { delete (document.getElementById('save-marker')||{}).dataset.editingId; } catch(_){ }
+                    try {
+                        var note = document.createElement('div');
+                        note.className = 'position-fixed top-0 end-0 p-3';
+                        note.style.zIndex = '1060';
+                        note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task updated</div>';
+                        document.body.appendChild(note);
+                        setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
+                    } catch(_) {}
+                    try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
+                });
+                return;
+            }
         } catch(_){ }
+        // Do not post per-issue; accumulate locally until Save & Close
         // Create badge and store task like SweetAlert flow
         var taskData = payload || {};
         badgeCounter += 1;
@@ -3214,10 +3305,12 @@ document.addEventListener('DOMContentLoaded', function () {
         taskData.position = (function(){
             var layerRect = markerLayer.getBoundingClientRect();
             var mRect = (currentMarker || {}).getBoundingClientRect ? currentMarker.getBoundingClientRect() : layerRect;
-            return {
+            var base = {
                 left: (mRect.left - layerRect.left) + mRect.width/2,
                 top: (mRect.top - layerRect.top) + mRect.height/2
             };
+            var free = findFreePosition(base.left, base.top);
+            return { left: free.left, top: free.top };
         })();
         createdTasks.push(taskData);
 
@@ -3258,27 +3351,77 @@ document.addEventListener('DOMContentLoaded', function () {
         // Remove drawn marker box; keep number
         if (currentMarker) { try { currentMarker.remove(); } catch(_){} currentMarker = null; }
 
-        // Decide create vs update
-        var editingId = (document.getElementById('save-marker')||{}).dataset?.editingId;
-        var url = editingId ? `{{ url('/tasks') }}/${editingId}` : `{{ route('tasks.store') }}`;
-        var method = editingId ? 'PUT' : 'POST';
-        try {
-            fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify(payload)
-            }).then(function(res){ return res.json(); }).then(function(resp){
-                // reset editing flag
-                try { delete (document.getElementById('save-marker')||{}).dataset.editingId; } catch(_){ }
-                location.reload();
-            }).catch(function(){});
-        } catch(_){ }
+        // No immediate backend request here; task will be created on Save & Close
         try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
     });
+    // Save aggregated issues into a single task on main modal Save & Close
+    try {
+        var createTaskSaveBtn = document.getElementById('create-task-save');
+        if (createTaskSaveBtn && !createTaskSaveBtn._bound) {
+            createTaskSaveBtn.addEventListener('click', function(){
+                try {
+                    if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
+                        alert('Please add at least one issue on the image before saving the task.');
+                        return;
+                    }
+                    var ticketText = (function(){
+                        try {
+                            var opt = ticketSelect?.selectedOptions?.[0];
+                            return opt ? (opt.textContent||'').trim() : '';
+                        } catch(_){ return ''; }
+                    })();
+                    var taskTitle = ticketText ? (ticketText + ' - ' + createdTasks.length + ' issues') : ('Task with ' + createdTasks.length + ' issues');
+                    var payload = {
+                        project_id: (projectSelect||{}).value || null,
+                        ticket_id: (ticketSelect||{}).value || null,
+                        title: taskTitle,
+                        description: '',
+                        // Persist task-level dates from the selected ticket
+                        start_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date||null) : null; } catch(_){ return null; } })(),
+                        end_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date||null) : null; } catch(_){ return null; } })(),
+                        issues: createdTasks,
+                        // Include board image if present and still a dataURL (not yet persisted)
+                        board_image: (function(){
+                            try {
+                                var src = (previewImg||{}).src || '';
+                                return (src && src.indexOf('data:image') === 0) ? src : null;
+                            } catch(_){ return null; }
+                        })()
+                    };
+                    fetch("{{ route('tasks.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(function(res){ return res.json(); }).then(function(resp){
+                        if (resp && resp.success) {
+                            try {
+                                var note = document.createElement('div');
+                                note.className = 'position-fixed top-0 end-0 p-3';
+                                note.style.zIndex = '1060';
+                                note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task created with issues</div>';
+                                document.body.appendChild(note);
+                                setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
+                            } catch(_) {}
+                            // Optionally reset accumulator
+                            try {
+                                createdTasks = []; badgeCounter = 0;
+                                // remove badges from layer
+                                var existing = markerLayer?.querySelectorAll('.marker-badge') || [];
+                                existing.forEach?.(function(n){ try { n.remove(); } catch(_){} });
+                            } catch(_) {}
+                        } else {
+                            alert('Failed to create task');
+                        }
+                    }).catch(function(){ alert('Failed to create task'); });
+                } catch(_){ }
+            });
+            createTaskSaveBtn._bound = true;
+        }
+    } catch(_){ }
 });
 </script>
 
@@ -3297,7 +3440,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <!-- Title + Subtitle -->
                 <div>
                     <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
-                    <small class="text-muted">Create a Task</small>
+                    <small class="text-muted">Create Task</small>
                 </div>
 
                 <!-- Task Type Buttons -->
@@ -3462,6 +3605,31 @@ document.addEventListener('DOMContentLoaded', function () {
           text.style.display = 'none';
           markerLayer.style.display = 'block';
           if (markerToolbar) markerToolbar.style.display = 'flex';
+          // Persist board image to ticket for later sessions
+          try {
+            var tid = (document.getElementById('select-ticket')||{}).value || '';
+            if (tid) {
+              var formData = new FormData();
+              formData.append('ticket_id', tid);
+              // convert dataURL to blob
+              var arr = e.target.result.split(',');
+              var mime = arr[0].match(/:(.*?);/)[1];
+              var bstr = atob(arr[1]);
+              var n = bstr.length; var u8arr = new Uint8Array(n);
+              while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+              var blob = new Blob([u8arr], {type:mime});
+              formData.append('image', blob, 'board.png');
+              fetch('{{ route('tasks.board.upload') }}', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: formData
+              }).then(function(r){ return r.json(); }).then(function(resp){
+                if (resp && resp.success) {
+                  try { previewImg.src = resp.url; } catch(_) {}
+                }
+              }).catch(function(){});
+            }
+          } catch(_){ }
         };
         reader.readAsDataURL(file);
       } else {
@@ -3497,8 +3665,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="me-2">
                                     @php
                                         $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                        $thumb = !empty($task->mark_image_path)
+                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                            : (optional($task->ticket)->board_image_path
+                                                ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
+                                                : asset('build/img/dooted img.svg'));
                                     @endphp
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image" style="width: 50px; height: 100px; border-radius: 6px; object-fit: cover;">
+                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 50px; height: 100px; border-radius: 6px; object-fit: cover;">
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -3520,7 +3693,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         </div>
                                     </div>
                                     <div style="font-size: 12px; color: #6c757d;">{{ optional($task->ticket)->code ? optional($task->ticket)->code.' - ' : '' }}{{ optional($task->ticket)->title ?? 'Ticket' }}</div>
-                                    <div style="font-size: 13px; margin-top: 2px;">{{ $task->description ?? '-' }}</div>
+                                    <div style="font-size: 13px; margin-top: 2px;">{{ optional($task->ticket)->description ?? '-' }}</div>
                                     <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
                                         <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
                                             <small>Start: {{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '--') }}</small>
@@ -3559,6 +3732,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="modal-footer d-flex justify-content-between">
                 <!-- Save and Close (Green) -->
                 <button
+                    id="create-task-save"
                     type="button"
                     class="btn text-white"
                     style="background-color: #28c76f; border-radius: 6px;"

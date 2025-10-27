@@ -22,6 +22,7 @@ class Task extends Model
         'position', // { left, top }
         'number',
         'mark_image_path', // saved file path in storage
+        'issues', // array of embedded issue objects
         'created_by',
     ];
 
@@ -30,6 +31,7 @@ class Task extends Model
         'end_date'    => 'datetime',
         'checkpoints' => 'array',
         'position'    => 'array',
+        'issues'      => 'array',
     ];
 }
 
