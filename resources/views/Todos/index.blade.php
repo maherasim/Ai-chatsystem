@@ -624,8 +624,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                
                                     $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
-                                        ? 'https://onlinesystems.info'
-                                        : 'https://onlinesystems.info';
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
 
                                     $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
                                 
@@ -1018,11 +1018,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $part = $reminderSeconds / 3;
 
                                 $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
-                                        ? 'https://onlinesystems.info'
-                                        : 'https://onlinesystems.info';
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
 
                                     $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
                                 
+
                             @endphp    
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -1388,8 +1389,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $part = $reminderSeconds / 3;
 
                                 $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
-                                        ? 'https://onlinesystems.info'
-                                        : 'https://onlinesystems.info';
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
 
                                     $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
                                 
