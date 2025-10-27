@@ -49,7 +49,11 @@ function confirmDelete(deleteUrl, userName) {
     body {
         overflow-x: hidden;
     }
-
+    .user-typ{
+        position:absolute;
+        top:5px;
+        left:5px;
+    }
     #attachmentsContainer{
         width: 100%;
     }
@@ -427,7 +431,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                        <span class="user-typ" style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             {{$user->type}}
                                         </span>
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
