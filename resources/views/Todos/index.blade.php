@@ -624,7 +624,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = asset('storage/' . $todo->user->profile_image);
 
-                                if (!in_array($todo->user->type, ['admin', 'superadmin'])) {
+                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
+
+                                if (!$isAdmin) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
                                 }
 
@@ -1017,7 +1019,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = asset('storage/' . $todo->user->profile_image);
 
-                                if (!in_array($todo->user->type, ['admin', 'superadmin'])) {
+                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
+
+                                if (!$isAdmin) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
                                 }
                             @endphp    
@@ -1386,7 +1390,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = asset('storage/' . $todo->user->profile_image);
 
-                                if (!in_array($todo->user->type, ['admin', 'superadmin'])) {
+                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
+
+                                if (!$isAdmin) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
                                 }
 
