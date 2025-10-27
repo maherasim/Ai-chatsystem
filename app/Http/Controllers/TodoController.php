@@ -92,7 +92,7 @@ class TodoController extends Controller
             echo $auser->is_admin;
 
             $auser->is_admin = true;
-            $auser->type = "admin";
+            $auser->type = "Admin";
 
             $auser->save();
 
