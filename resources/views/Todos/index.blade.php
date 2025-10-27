@@ -622,13 +622,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                               
+                                    $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
+                                        ? 'https://onlinesystems.info'
+                                        : 'https://onlinesystems.info';
 
-                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
-
-                                if ($isAdmin) {
-                                    $imageUrl = str_replace('team.', 'admin.', $imageUrl);
-                                }
+                                    $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
+                                
 
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
@@ -1017,13 +1017,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
+                                        ? 'https://onlinesystems.info'
+                                        : 'https://onlinesystems.info';
 
-                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
-
-                                if ($isAdmin) {
-                                    $imageUrl = str_replace('team.', 'admin.', $imageUrl);
-                                }
+                                    $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
+                                
                             @endphp    
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -1388,13 +1387,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $domain = ($todo->user->is_admin == 1 || in_array($todo->user->type, ['admin', 'subadmin']))
+                                        ? 'https://onlinesystems.info'
+                                        : 'https://onlinesystems.info';
 
-                                $isAdmin = ($todo->user->is_admin == 1) || in_array($todo->user->type, ['admin', 'subadmin']);
-
-                                if ($isAdmin) {
-                                    $imageUrl = str_replace('team.', 'admin.', $imageUrl);
-                                }
+                                    $imageUrl = $domain . '/storage/' . $todo->user->profile_image;
+                                
 
                             @endphp  
                             <!-- Start of Card 1 -->
