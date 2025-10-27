@@ -660,7 +660,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1049,7 +1049,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex align-items-center">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1389,7 +1389,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 if (!in_array($todo->user->type, ['admin', 'superadmin'])) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
                                 }
-                                
+
                             @endphp  
                             <!-- Start of Card 1 -->
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
@@ -1420,7 +1420,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$user->name;}}</div>
+                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
