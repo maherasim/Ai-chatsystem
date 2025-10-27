@@ -121,6 +121,7 @@ public function store(Request $request)
     if ($request->hasFile('image')) {
         $setting->image = $request->file('image')->store('upload/users', 'public');
         $user->image = $setting->image;
+        $user->profile_image = $setting->image;
     }
 
     $setting->first_name = $request->first_name;
