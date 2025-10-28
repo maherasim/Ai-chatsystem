@@ -631,7 +631,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 
 
                             @endphp
-                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
+                            <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
     data-title="{{ $todo->title }}"
     data-description=""
@@ -1025,7 +1025,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 
 
                             @endphp    
-                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
+                            <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
     data-title="{{ $todo->title }}"
     data-description=""
@@ -1397,7 +1397,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                             @endphp  
                             <!-- Start of Card 1 -->
-                            <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
+                            <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
     data-title="{{ $todo->title }}"
     data-description=""
