@@ -2488,6 +2488,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentMarker = null;
     var currentShape = 'square';
     var currentColor = '#ea5455';
+    var placingActive = false; // only place marker when explicitly activated
     var createdTasks = [];
     var badgeCounter = 0;
 
@@ -2575,23 +2576,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (shapeSquareBtn) shapeSquareBtn.addEventListener('click', function(e){
         e.stopPropagation();
         currentShape = 'square';
-        this.style.background='#e9ecef';
-        if(shapeCircleBtn) shapeCircleBtn.style.background='#f8f9fa';
+        this.style.background = '#e9ecef';
+        if (shapeCircleBtn) shapeCircleBtn.style.background = '#f8f9fa';
+        // enter place mode; do not auto-create marker
+        placingActive = true;
         if (markerLayer) {
-            try { previewImg.style.display='block'; markerLayer.style.display='block'; } catch(_) {}
-            var rect = markerLayer.getBoundingClientRect();
-            createMarker(rect.width/2, rect.height/2);
+            try { previewImg.style.display = 'block'; markerLayer.style.display = 'block'; } catch(_) {}
+            markerLayer.style.cursor = 'crosshair';
         }
     });
     if (shapeCircleBtn) shapeCircleBtn.addEventListener('click', function(e){
         e.stopPropagation();
         currentShape = 'circle';
-        this.style.background='#e9ecef';
-        if(shapeSquareBtn) shapeSquareBtn.style.background='#f8f9fa';
+        this.style.background = '#e9ecef';
+        if (shapeSquareBtn) shapeSquareBtn.style.background = '#f8f9fa';
+        // enter place mode; do not auto-create marker
+        placingActive = true;
         if (markerLayer) {
-            try { previewImg.style.display='block'; markerLayer.style.display='block'; } catch(_) {}
-            var rect = markerLayer.getBoundingClientRect();
-            createMarker(rect.width/2, rect.height/2);
+            try { previewImg.style.display = 'block'; markerLayer.style.display = 'block'; } catch(_) {}
+            markerLayer.style.cursor = 'crosshair';
         }
     });
     var markerToolbarEl = document.getElementById('markerToolbar');
@@ -3002,11 +3005,15 @@ document.addEventListener('DOMContentLoaded', function () {
         markerLayer.addEventListener('click', function(e){
             // Prevent bubbling to #uploadBox which would open file chooser
             e.stopPropagation();
+            if (!placingActive) return; // only place when a shape was explicitly chosen
             var rect = markerLayer.getBoundingClientRect();
             createMarker(e.clientX - rect.left, e.clientY - rect.top);
+            placingActive = false;
+            markerLayer.style.cursor = 'default';
         });
-        // Right-click: add circular marker at cursor
+        // Right-click: add circular marker at cursor (only in place mode)
         markerLayer.addEventListener('contextmenu', function(e){
+            if (!placingActive) return;
             e.preventDefault();
             e.stopPropagation();
             var rect = markerLayer.getBoundingClientRect();
@@ -3014,8 +3021,18 @@ document.addEventListener('DOMContentLoaded', function () {
             currentShape = 'circle';
             createMarker(e.clientX - rect.left, e.clientY - rect.top);
             currentShape = prevShape;
+            placingActive = false;
+            markerLayer.style.cursor = 'default';
+        });
+        // Escape cancels place mode
+        document.addEventListener('keydown', function(ev){
+            if (ev.key === 'Escape') { placingActive = false; markerLayer.style.cursor='default'; }
         });
     }
+
+    // Changing project/ticket cancels place mode
+    if (projectSelect) projectSelect.addEventListener('change', function(){ placingActive = false; if(markerLayer) markerLayer.style.cursor='default'; });
+    if (ticketSelect) ticketSelect.addEventListener('change', function(){ placingActive = false; if(markerLayer) markerLayer.style.cursor='default'; });
 
     // Clear any existing markers when a new image is uploaded
     var uploadInput = document.getElementById('fileInput');
@@ -3079,70 +3096,22 @@ document.addEventListener('DOMContentLoaded', function () {
             var selectedId = e.target.value;
             var ticket = ticketCache[selectedId];
             renderTicketDates(ticket || null);
-            // If an image is already loaded by user, keep it visible when switching tickets
+            // Clear drop areas; keep empty until user uploads
             try {
-                var uiImg = previewImg?.src || '';
-                if (uiImg) {
-                    if (previewImg) previewImg.style.display = 'block';
-                    var ut = document.getElementById('uploadText');
-                    if (ut) ut.style.display = 'none';
-                    if (markerLayer) markerLayer.style.display = 'block';
-                    var mt = document.getElementById('markerToolbar');
-                    if (mt) mt.style.display = 'flex';
-                }
+                var p = document.getElementById('previewImage');
+                var t = document.getElementById('uploadText');
+                var ml = document.getElementById('markerLayer');
+                var mt = document.getElementById('markerToolbar');
+                if (p) { p.src = ''; p.style.display = 'none'; }
+                if (t) { t.style.display = 'block'; t.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>'; }
+                if (ml) { ml.style.display = 'none'; ml.innerHTML = ''; }
+                if (mt) { mt.style.display = 'none'; }
+                var fi = document.getElementById('fileInput'); if (fi) fi.value = '';
+                var wfi = document.getElementById('web-fileInput'); if (wfi) wfi.value = '';
+                var wpi = document.getElementById('web-previewImage'); if (wpi) { wpi.src=''; wpi.style.display='none'; }
+                var wut = document.getElementById('web-uploadText'); if (wut) { wut.style.display='block'; wut.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>'; }
             } catch(_) {}
-            // Load board image and markers for this ticket
-            try {
-                fetch(`{{ route('tasks.by_ticket') }}?ticket_id=${encodeURIComponent(selectedId)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
-                    .then(function(res){ return res.json(); })
-                    .then(function(resp){
-                        if (!resp || !resp.success) return;
-                        if (resp.board_image_url && previewImg) {
-                            previewImg.src = resp.board_image_url;
-                            try { previewImg.style.display = 'block'; } catch(_) {}
-                            try { (document.getElementById('uploadText')||{}).style.display = 'none'; } catch(_) {}
-                            try { (document.getElementById('markerLayer')||{}).style.display = 'block'; } catch(_) {}
-                            try { (document.getElementById('markerToolbar')||{}).style.display = 'flex'; } catch(_) {}
-                        }
-                        if (markerLayer) { markerLayer.innerHTML = ''; }
-                        badgeCounter = 0;
-                        (resp.tasks || []).forEach(function(t){
-                            // create badge marker at saved position
-                            var badge = document.createElement('div');
-                            badge.className = 'marker-badge';
-                            var num = t.number || (++badgeCounter);
-                            badge.textContent = String(num);
-                            badge.style.position = 'absolute';
-                            badge.style.left = (t.position?.left || 20) + 'px';
-                            badge.style.top = (t.position?.top || 20) + 'px';
-                            badge.style.transform = 'translate(-50%, -50%)';
-                            badge.style.color = t.color || '#28c76f';
-                            badge.style.fontWeight = '800';
-                            badge.style.fontSize = '18px';
-                            badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
-                            badge.style.cursor = 'pointer';
-                            badge.style.zIndex = '25';
-                            badge.addEventListener('click', function(ev){
-                                ev.stopPropagation();
-                                var cp = Array.isArray(t.checkpoints) ? t.checkpoints : (typeof t.checkpoints === 'string' ? (function(s){ try{return JSON.parse(s);}catch(_){return s.split(',');} }) (t.checkpoints) : []);
-                                var checkpointsHtml = cp.length ? ('<ul style="text-align:left;">'+cp.map(function(c){ return '<li>'+c+'</li>'; }).join('')+'</ul>') : '<em>No checkpoints</em>';
-                                if (window.Swal && typeof Swal.fire === 'function') {
-                                    Swal.fire({
-                                        title: t.title || 'Task',
-                                        html: ('<div style="text-align:left;">'
-                                            + '<div><strong>Description:</strong> '+(t.description || '-')+'</div>'
-                                            + '<div class="mt-1"><strong>Start:</strong> '+(t.start_date || '-')+' &nbsp; <strong>End:</strong> '+(t.end_date || '-')+'</div>'
-                                            + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
-                                            + '</div>'),
-                                        confirmButtonText: 'Close'
-                                    });
-                                }
-                            });
-                            if (markerLayer) markerLayer.appendChild(badge);
-                            if (num > badgeCounter) badgeCounter = num;
-                        });
-                    });
-            } catch(_){ }
+            // Removed auto-fetch of ticket board/tasks to avoid interfering with drag & drop
         });
     }
 
@@ -3312,6 +3281,11 @@ document.addEventListener('DOMContentLoaded', function () {
             var free = findFreePosition(base.left, base.top);
             return { left: free.left, top: free.top };
         })();
+        // Store the current layer size for later scaling in viewer
+        try {
+            var lRectPersist = markerLayer.getBoundingClientRect();
+            taskData.layer = { width: Math.round(lRectPersist.width||0), height: Math.round(lRectPersist.height||0) };
+        } catch(_){ taskData.layer = null; }
         createdTasks.push(taskData);
 
         var badge = document.createElement('div');
@@ -3370,7 +3344,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             return opt ? (opt.textContent||'').trim() : '';
                         } catch(_){ return ''; }
                     })();
-                    var taskTitle = ticketText ? (ticketText + ' - ' + createdTasks.length + ' issues') : ('Task with ' + createdTasks.length + ' issues');
+                    var taskTitle = ticketText ? ticketText : 'Task';
                     var payload = {
                         project_id: (projectSelect||{}).value || null,
                         ticket_id: (ticketSelect||{}).value || null,
@@ -3442,7 +3416,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
                     <small class="text-muted">Create Task</small>
                 </div>
-
+bile
                 <!-- Task Type Buttons -->
                 <div
                     class="d-flex gap-2 p-1 rounded"
@@ -3545,6 +3519,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div
                             id="uploadBox"
                             onclick="document.getElementById('fileInput').click();"
+                            ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
+                            ondragleave="this.style.borderColor='#ccc';"
+                            ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } }"
                             style="background-color: #f7f7f7;
       height: 100%;
       min-height: 250px;
@@ -3562,7 +3539,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 Upload Or Drag<br><small>PDF, JPG, PNG</small>
                             </p>
                             <img id="previewImage" src="" style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); object-fit:contain;" />
-                            <div id="markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"></div>
+                            <div id="markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"
+                                 ondragover="event.preventDefault();"
+                                 ondrop="event.preventDefault(); var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); if(previewImg){ previewImg.style.display='none'; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } }"></div>
                             <div id="markerToolbar" style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                                 <button id="marker-shape-square" type="button" class="btn btn-sm" style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                     <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -3605,31 +3584,7 @@ document.addEventListener('DOMContentLoaded', function () {
           text.style.display = 'none';
           markerLayer.style.display = 'block';
           if (markerToolbar) markerToolbar.style.display = 'flex';
-          // Persist board image to ticket for later sessions
-          try {
-            var tid = (document.getElementById('select-ticket')||{}).value || '';
-            if (tid) {
-              var formData = new FormData();
-              formData.append('ticket_id', tid);
-              // convert dataURL to blob
-              var arr = e.target.result.split(',');
-              var mime = arr[0].match(/:(.*?);/)[1];
-              var bstr = atob(arr[1]);
-              var n = bstr.length; var u8arr = new Uint8Array(n);
-              while(n--){ u8arr[n] = bstr.charCodeAt(n); }
-              var blob = new Blob([u8arr], {type:mime});
-              formData.append('image', blob, 'board.png');
-              fetch('{{ route('tasks.board.upload') }}', {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                body: formData
-              }).then(function(r){ return r.json(); }).then(function(resp){
-                if (resp && resp.success) {
-                  try { previewImg.src = resp.url; } catch(_) {}
-                }
-              }).catch(function(){});
-            }
-          } catch(_){ }
+          // Removed auto-persist to server to avoid 404 GET on preview
         };
         reader.readAsDataURL(file);
       } else {
@@ -3661,16 +3616,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             <!-- Task Cards -->
                             @foreach(($tasks ?? []) as $task)
-                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
+                            @php
+                                $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                $thumb = !empty($task->mark_image_path)
+                                    ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                    : (optional($task->ticket)->board_image_path
+                                        ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
+                                        : asset('build/img/dooted img.svg'));
+                                $viewerImg = optional($task->ticket)->board_image_path
+                                    ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
+                                    : $thumb;
+                            @endphp
+                            <div class="d-flex p-2 rounded mt-2 task-card" style="background-color: #ebebeb; cursor: pointer;"
+                                 data-board="{{ $viewerImg }}"
+                                 data-issues='@json($task->issues ?? [])'
+                                 data-title="{{ e($task->title) }}"
+                                 onclick="openTaskViewer(this)">
                                 <div class="me-2">
-                                    @php
-                                        $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
-                                        $thumb = !empty($task->mark_image_path)
-                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
-                                            : (optional($task->ticket)->board_image_path
-                                                ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
-                                                : asset('build/img/dooted img.svg'));
-                                    @endphp
                                     <img src="{{ $thumb }}" alt="Task Image" style="width: 50px; height: 100px; border-radius: 6px; object-fit: cover;">
                                 </div>
                                 <div class="flex-grow-1">
@@ -3866,8 +3828,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     <!-- Left Upload Area -->
                     <div class="col-md-5">
                         <div
-                            id="uploadBox"
-                            onclick="document.getElementById('fileInput').click();"
+                            id="web-uploadBox"
+                            onclick="document.getElementById('web-fileInput').click();"
+                            ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
+                            ondragleave="this.style.borderColor='#ccc';"
+                            ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('web-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('web-previewImage'); var text=document.getElementById('web-uploadText'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('web-previewImage'); var text=document.getElementById('web-uploadText'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; }"
                             style="background-color: #f7f7f7;
       height: 100%;
       min-height: 250px;
@@ -3881,22 +3846,22 @@ document.addEventListener('DOMContentLoaded', function () {
       flex-direction: column;
       position: relative;
     ">
-                            <p id="uploadText" class="text-muted m-0">
+                            <p id="web-uploadText" class="text-muted m-0">
                                 Upload Or Drag<br><small>PDF, JPG, PNG</small>
                             </p>
-                            <img id="previewImage" src="" style="display:none; max-width:100%; max-height:200px; margin-top:10px;" />
+                            <img id="web-previewImage" src="" style="display:none; max-width:100%; max-height:200px; margin-top:10px;" />
                         </div>
 
                         <!-- Hidden file input -->
                         <input
                             type="file"
-                            id="fileInput"
+                            id="web-fileInput"
                             accept=".jpg,.jpeg,.png,.pdf"
                             style="display:none;"
                             onchange="
       var file = this.files[0];
-      var previewImg = document.getElementById('previewImage');
-      var text = document.getElementById('uploadText');
+      var previewImg = document.getElementById('web-previewImage');
+      var text = document.getElementById('web-uploadText');
 
       if (!file) return;
 
@@ -4149,13 +4114,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             <!-- Add Task -->
                             <!-- Hidden File Input -->
-                            <input type="file" id="fileInput" style="display: none;" onchange="document.getElementById('addTaskBox').innerText = '+ ' + this.files[0].name">
+                            <input type="file" id="web-addFileInput" style="display: none;" onchange="document.getElementById('web-addTaskBox').innerText = '+ ' + this.files[0].name">
 
                             <!-- Clickable Box -->
-                            <div id="addTaskBox"
+                            <div id="web-addTaskBox"
                                 class="border border-dashed p-2 text-center rounded"
                                 style="cursor: pointer;"
-                                onclick="document.getElementById('fileInput').click();">
+                                onclick="document.getElementById('web-addFileInput').click();">
                                 + Add new Task
                             </div>
 
@@ -4638,6 +4603,88 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         </div>
     </div>
+</div>
+
+<!-- Task Viewer Modal (shows board image with numbered markers) -->
+<div class="modal fade" id="taskViewerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content" style="border-radius:12px; overflow:hidden;">
+            <div class="modal-header" style="background:#fff;">
+                <h6 class="modal-title mb-0" id="taskViewerTitle" style="font-weight:600;">Task</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="position:relative;">
+                <div id="taskViewerCanvas" style="position:relative; background:#f7f7f7; border:2px dashed #ccc; border-radius:10px; min-height:220px;">
+                    <img id="taskViewerImage" src="" alt="Task Board" style="display:block; max-width:100%; border-radius:8px; margin:0 auto;">
+                    <div id="taskViewerLayer" style="position:absolute; inset:0; pointer-events:none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openTaskViewer(card){
+            try {
+                var title = card.getAttribute('data-title') || 'Task';
+                var board = card.getAttribute('data-board') || '';
+                var issues = [];
+                try { issues = JSON.parse(card.getAttribute('data-issues')||'[]') || []; } catch(_){ issues = []; }
+                document.getElementById('taskViewerTitle').textContent = title;
+                var img = document.getElementById('taskViewerImage');
+                var layer = document.getElementById('taskViewerLayer');
+                img.src = board || '';
+                // clear old markers
+                if (layer) layer.innerHTML = '';
+                // place numbered badges scaled to current canvas, if original layer size saved per issue
+                var savedW = (issues && issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                var savedH = (issues && issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                var renderBadges = function(){
+                    var rect = document.getElementById('taskViewerCanvas').getBoundingClientRect();
+                    var sx = savedW ? (rect.width / savedW) : 1;
+                    var sy = savedH ? (rect.height / savedH) : 1;
+                    (issues || []).forEach(function(it, idx){
+                        var n = (it && it.number) ? it.number : (idx+1);
+                        var badge = document.createElement('div');
+                        badge.textContent = String(n);
+                        badge.className = 'viewer-badge';
+                        badge.style.position = 'absolute';
+                        var lx = (it && it.position && it.position.left ? it.position.left : 24) * sx;
+                        var ly = (it && it.position && it.position.top ? it.position.top : (24 + idx*22)) * sy;
+                        badge.style.left = lx + 'px';
+                        badge.style.top = ly + 'px';
+                        badge.style.transform = 'translate(-50%, -50%)';
+                        badge.style.color = (it && it.color) ? it.color : '#28c76f';
+                        badge.style.fontWeight = '800';
+                        badge.style.fontSize = '16px';
+                        badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+                        badge.style.pointerEvents = 'auto';
+                        badge.style.cursor = 'pointer';
+                        badge.addEventListener('click', function(ev){
+                            ev.stopPropagation();
+                            if (window.Swal && typeof Swal.fire === 'function') {
+                                var cp = Array.isArray(it?.checkpoints) ? it.checkpoints : [];
+                                var checkpointsHtml = cp.length ? ('<ul style="text-align:left;">'+cp.map(function(c){ return '<li>'+c+'</li>'; }).join('')+'</ul>') : '<em>No checkpoints</em>';
+                                Swal.fire({
+                                    title: it?.title || ('Issue #' + String(n)),
+                                    html: ('<div style="text-align:left;">'
+                                        + '<div><strong>Description:</strong> '+(it?.description || '-')+'</div>'
+                                        + '<div class="mt-1"><strong>Start:</strong> '+(it?.start_date || '-')+' &nbsp; <strong>End:</strong> '+(it?.end_date || '-')+'</div>'
+                                        + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
+                                        + '</div>'),
+                                    confirmButtonText: 'Close'
+                                });
+                            }
+                        });
+                        if (layer) layer.appendChild(badge);
+                    });
+                };
+                if (img.complete) { renderBadges(); } else { img.onload = renderBadges; }
+                new bootstrap.Modal(document.getElementById('taskViewerModal'), { backdrop: true }).show();
+            } catch(e) {}
+        }
+    </script>
 </div>
 
 <!-- progress Model -->
