@@ -395,7 +395,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-2">
+                                                        {{-- <div class="mb-2">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <div>
                                         <div class="form-label m-0" style="font-weight:600;color:#2b2d42;">Checkpoints</div>
@@ -406,7 +406,7 @@
                                     </button>
                                 </div>
                                 <div id="checkpoints-list" class="d-flex flex-column gap-2"></div>
-                            </div>
+                                                        </div> --}}
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
                             <button type="button" id="save-marker" class="btn btn-light btn-sm">Save & Close</button>
@@ -2453,6 +2453,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         note.style.zIndex = '1060';
                         note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task deleted</div>';
                         document.body.appendChild(note);
+                        window.location.reload();
                         setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
                     } catch(_) {}
                 });
@@ -2474,6 +2475,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
             }).then(function(res){ return res.json(); }).then(function(){
                 Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false });
+                window.location.reload();
             });
         });
     };
@@ -2788,7 +2790,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         '<div style="text-align:left;">'
                         + '<div><strong>Description:</strong> '+(taskData.description || '-')+'</div>'
                         + '<div class="mt-1"><strong>Start:</strong> '+(taskData.start_date || '-')+' &nbsp; <strong>End:</strong> '+(taskData.end_date || '-')+'</div>'
-                        + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
+                        
                         + '</div>'
                     ),
                     confirmButtonText: 'Close'
@@ -3311,7 +3313,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     html: ('<div style="text-align:left;">'
                         + '<div><strong>Description:</strong> '+(taskData.description || '-')+'</div>'
                         + '<div class="mt-1"><strong>Start:</strong> '+(taskData.start_date || '-')+' &nbsp; <strong>End:</strong> '+(taskData.end_date || '-')+'</div>'
-                        + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
+                        
                         + '</div>'),
                     confirmButtonText: 'Close'
                 });
@@ -3387,6 +3389,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 var existing = markerLayer?.querySelectorAll('.marker-badge') || [];
                                 existing.forEach?.(function(n){ try { n.remove(); } catch(_){} });
                             } catch(_) {}
+                            // Close modal and reload the page to reflect the new task
+                            try { bootstrap.Modal.getOrCreateInstance(document.getElementById('createTaskModal')).hide(); } catch(_) {}
+                            setTimeout(function(){ window.location.reload(); }, 300);
                         } else {
                             alert('Failed to create task');
                         }
@@ -3397,6 +3402,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     } catch(_){ }
 });
+</script>
+
+<script>
+function taskDelete(taskId){
+    try {
+        if (!taskId) return;
+        var url = "{{ route('tasks.destroy', '__ID__') }}".replace('__ID__', encodeURIComponent(taskId));
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        }).then(function(r){ return r.json(); }).then(function(){
+            window.location.reload();
+        }).catch(function(){ window.location.reload(); });
+    } catch (_) { window.location.reload(); }
+}
 </script>
 
 
@@ -3416,9 +3440,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
                     <small class="text-muted">Create Task</small>
                 </div>
-bile
+
                 <!-- Task Type Buttons -->
-                <div
+                {{-- <div
                     class="d-flex gap-2 p-1 rounded"
                     style="background: #f2f2f2; border-radius: 10px;">
                     <button
@@ -3447,19 +3471,8 @@ bile
         document.getElementById('btn-employee').style.color = '#6c757d';
       ">Web Task</button>
 
-                    <button
-                        id="btn-employee"
-                        class="btn btn-sm"
-                        style="background-color: transparent; color: #6c757d;"
-                        onclick="
-        document.getElementById('btn-employee').style.backgroundColor = '#28c76f';
-        document.getElementById('btn-employee').style.color = 'white';
-        document.getElementById('btn-mobile').style.backgroundColor = 'transparent';
-        document.getElementById('btn-mobile').style.color = '#6c757d';
-        document.getElementById('btn-web').style.backgroundColor = 'transparent';
-        document.getElementById('btn-web').style.color = '#6c757d';
-      ">Employee Task</button>
-                </div>
+                   
+                </div> --}}
 
                 <!-- Close Button -->
 
@@ -3618,22 +3631,36 @@ bile
                             @foreach(($tasks ?? []) as $task)
                             @php
                                 $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                // Thumbnail for the list card: prefer task's own image, else board, else placeholder
                                 $thumb = !empty($task->mark_image_path)
                                     ? asset('storage/'.ltrim($task->mark_image_path,'/'))
                                     : (optional($task->ticket)->board_image_path
                                         ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
                                         : asset('build/img/dooted img.svg'));
-                                $viewerImg = optional($task->ticket)->board_image_path
+                                // Viewer image should prioritize the task-specific image so each task shows its own picture
+                                $viewerImg = !empty($task->mark_image_path)
+                                    ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                    : (optional($task->ticket)->board_image_path
                                     ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
-                                    : $thumb;
+                                        : asset('build/img/dooted img.svg'));
                             @endphp
-                            <div class="d-flex p-2 rounded mt-2 task-card" style="background-color: #ebebeb; cursor: pointer;"
+                            <div class="d-flex p-2 rounded mt-2 task-card" style="background:#ffffff; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
                                  data-board="{{ $viewerImg }}"
                                  data-issues='@json($task->issues ?? [])'
                                  data-title="{{ e($task->title) }}"
+                                 data-project-id="{{ (string)($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id) }}"
+                                 data-ticket-id="{{ (string)($task->ticket_id ?? optional($task->ticket)->_id ?? optional($task->ticket)->id) }}"
+                                 data-project-title="{{ e(optional($task->project)->title ?? '') }}"
+                                 data-project-logo="{{ $logo }}"
+                                 data-ticket-code="{{ e(optional($task->ticket)->code ?? '') }}"
+                                 data-ticket-title="{{ e(optional($task->ticket)->title ?? '') }}"
+                                 data-task-id="{{ 'TSK-'.str_pad((string)(1000 + $loop->iteration), 4, '0', STR_PAD_LEFT) }}"
+                                 data-section="{{ e(optional($task->ticket)->section_name ?? 'Section') }}"
+                                 data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
+                                 data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
                                  onclick="openTaskViewer(this)">
                                 <div class="me-2">
-                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 50px; height: 100px; border-radius: 6px; object-fit: cover;">
+                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 100px; height: auto; max-height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -3664,7 +3691,7 @@ bile
                                             <small>Deliver: {{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '--') }}</small>
                                         </div>
                                         <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;"> {{ $task->number ?? '01' }}
+                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;"> {{ str_pad((string)($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
                                         </div>
                                     </div>
                                 </div>
@@ -4603,85 +4630,270 @@ bile
             </div>
         </div>
     </div>
+    <script>
+        (function(){
+            var modalEl = document.getElementById('markerDetailsModal');
+            if (!modalEl) return;
+            function resetMarkerForm(){
+                var ids = ['marker-title','marker-description','marker-start','marker-end'];
+                ids.forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+                var list = document.getElementById('checkpoints-list');
+                if (list) list.innerHTML = '';
+            }
+            // Clear when the modal is closed so next open is fresh
+            modalEl.addEventListener('hidden.bs.modal', function(){ resetMarkerForm(); });
+            // Also clear on Save & Close
+            var saveBtn = document.getElementById('save-marker');
+            if (saveBtn){
+                saveBtn.addEventListener('click', function(){
+                    // allow any existing save logic to run, then close and reset
+                    setTimeout(function(){
+                        var inst = bootstrap.Modal.getOrCreateInstance(modalEl);
+                        inst.hide();
+                        resetMarkerForm();
+                    }, 0);
+                });
+            }
+        })();
+    </script>
 </div>
 
-<!-- Task Viewer Modal (shows board image with numbered markers) -->
-<div class="modal fade" id="taskViewerModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content" style="border-radius:12px; overflow:hidden;">
-            <div class="modal-header" style="background:#fff;">
-                <h6 class="modal-title mb-0" id="taskViewerTitle" style="font-weight:600;">Task</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Task Viewer Modal (Progress-style copy) -->
+<div class="modal fade" id="taskProgressViewerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
+            <div class="modal-body p-0">
+                <div style="background: linear-gradient(to right, #74b749, #c5e1a5); color: white; padding: 25px 20px; position: relative;">
+                    <div style="text-align: left;">
+                        <h5 id="tpvProject" style="margin: 0;">Project Name aim</h5>
+                        <small id="tpvTicket">Ticket #1 - Ticket Title</small>
             </div>
-            <div class="modal-body" style="position:relative;">
-                <div id="taskViewerCanvas" style="position:relative; background:#f7f7f7; border:2px dashed #ccc; border-radius:10px; min-height:220px;">
-                    <img id="taskViewerImage" src="" alt="Task Board" style="display:block; max-width:100%; border-radius:8px; margin:0 auto;">
-                    <div id="taskViewerLayer" style="position:absolute; inset:0; pointer-events:none;"></div>
+                    <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                        <img id="tpvLogo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
                 </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position:absolute; top:12px; right:12px; filter:invert(1);"></button>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <div class="p-2">
+                    <div style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
+                        <h5 id="tpvTaskTitle" class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title     </h5>
+                        <div class="text-center mb-3">
+                            <span id="tpvChipStatus" class="badge rounded-pill" style="background-color: #e4f1d8; color: #0d6efd; font-size: 13px; padding: 8px 12px;">
+                                <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="Logo" style="width: 16px; height: 16px;"> in progress
+                            </span>
+                            <span id="tpvChipCount" class="badge rounded-pill" style="background-color: #ff4d4d; color: white; font-size: 13px; padding: 8px 12px;">
+                                <i class="bi bi-lightning-fill me-1"></i> 01
+                            </span>
+                            <span id="tpvChipLevel" class="badge rounded-pill" style="background-color: #f1fdf5; color: #22c55e; font-size: 13px; padding: 8px 12px;">
+                                <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
+                            </span>
+            </div>
+                        <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 14px;">
+                            <div><div class="text-muted" id="tpvTaskId">Task ID</div></div>
+                            <div><div class="text-muted" id="tpvSection">Section</div></div>
+                            <div><div><span class="text-success">Start:</span> <span id="tpvStart">-</span></div></div>
+                            <div><div><span class="text-success">Deliver:</span> <span id="tpvDeliver">-</span></div></div>
+        </div>
+    </div>
+                    <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
+                        <strong>Issue Description :</strong>
+                        <p id="tpvIssueDesc" style="font-size: 14px; margin-top: 5px;">-</p>
+                    </div>
+                    <!-- Image Canvas (replaces sign-in box) -->
+                    <div id="tpvCanvas" class="mx-auto my-4" style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #fefefe; text-align: center; overflow:hidden; background-image: linear-gradient(45deg, #e6e6e6 25%, transparent 25%), linear-gradient(-45deg, #e6e6e6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e6e6e6 75%), linear-gradient(-45deg, transparent 75%, #e6e6e6 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
+                        <img id="tpvImage" src="" alt="Task Board" style="width:100%; height:auto; border-radius:8px; display:block;">
+                        <div id="tpvLayer" style="position:absolute; inset:0; pointer-events:auto;"></div>
+                        <div id="tpvFocus" style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;"></div>
+                    </div>
+                    <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px;">
+                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Notes •</div>
+                        <div style="background-color: #fff; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="icon" style="width: 18px; height: 18px; margin-right: 10px;">
+                            <span style="color: #667085; font-size: 13.5px;">Take Backup before start Development</span>
+                        </div>
+                        <div style="background-color: #fff; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="icon" style="width: 18px; height: 18px; margin-right: 10px;">
+                            <span style="color: #667085; font-size: 13.5px;">Work on your Local Server</span>
+                        </div>
+                        <div style="background-color: #fff; border-radius: 6px; padding: 8px 12px; display: flex; align-items: center;">
+                            <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="icon" style="width: 18px; height: 18px; margin-right: 10px;">
+                            <span style="color: #667085; font-size: 13.5px;">Check your work before u deliver the work</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <style>
+        .viewer-badge{
+            background:#ffffff;
+            border:2px solid #28c76f;
+            color:#28c76f;
+            border-radius:999px;
+            padding:2px 8px;
+            line-height:1;
+            position:absolute;
+            transform:translate(-50%,-50%);
+            font-weight:800;
+            font-size:16px;
+            box-shadow:0 2px 8px rgba(0,0,0,.12);
+            cursor:pointer;
+        }
+    </style>
     <script>
-        function openTaskViewer(card){
+        async function fetchJson(url){
+            try{ const r = await fetch(url, { headers: { 'Accept':'application/json' } }); if(!r.ok) return null; return await r.json(); }catch(_){ return null; }
+        }
+        async function resolveHeaderFromIds(projectId, ticketId){
+            var header = { projectTitle: null, ticketText: null, start: null, end: null, section: null };
+            if (ticketId){
+                var t = await fetchJson('/tickets/'+encodeURIComponent(ticketId));
+                if (t && !t.message){
+                    header.projectTitle = t.project_title || null;
+                    var codeTxt = t.code || 'Ticket';
+                    header.ticketText = codeTxt + (t.title ? (' - ' + t.title) : '');
+                    header.start = t.start_date || null;
+                    header.end = t.end_date || null;
+                    header.section = t.section_name || null;
+                }
+            }
+            if (!header.projectTitle && projectId){
+                var list = await fetchJson('/tickets/projects');
+                if (Array.isArray(list)){
+                    var found = list.find(function(p){ return String(p.id)===String(projectId); });
+                    if (found) header.projectTitle = found.title;
+                }
+            }
+            return header;
+        }
+        function openTaskViewer(card, focusNumber){
             try {
                 var title = card.getAttribute('data-title') || 'Task';
                 var board = card.getAttribute('data-board') || '';
                 var issues = [];
                 try { issues = JSON.parse(card.getAttribute('data-issues')||'[]') || []; } catch(_){ issues = []; }
-                document.getElementById('taskViewerTitle').textContent = title;
-                var img = document.getElementById('taskViewerImage');
-                var layer = document.getElementById('taskViewerLayer');
+                // Set header and chips; prefer explicit attributes and override with fetch later
+                var projectTitleAttr = card.getAttribute('data-project-title') || card.getAttribute('data-project');
+                var ticketCodeAttr   = card.getAttribute('data-ticket-code');
+                var ticketTitleAttr  = card.getAttribute('data-ticket-title') || card.getAttribute('data-ticket-text');
+                document.getElementById('tpvProject').textContent = projectTitleAttr || 'Project Name';
+                if (ticketCodeAttr || ticketTitleAttr) {
+                    document.getElementById('tpvTicket').textContent = (ticketCodeAttr || 'Ticket') + (ticketTitleAttr ? (' - ' + ticketTitleAttr) : '');
+                } else {
+                    document.getElementById('tpvTicket').textContent = card.getAttribute('data-ticket') || 'Ticket #1 - Ticket Title';
+                }
+                document.getElementById('tpvTaskTitle').textContent = title;
+                document.getElementById('tpvTaskId').textContent = card.getAttribute('data-task-id') || 'Task ID';
+                document.getElementById('tpvSection').textContent = card.getAttribute('data-section') || 'Section';
+                document.getElementById('tpvStart').textContent = card.getAttribute('data-start') || '-';
+                document.getElementById('tpvDeliver').textContent = card.getAttribute('data-deliver') || '-';
+                var logoEl = document.getElementById('tpvLogo');
+                var logoAttr = card.getAttribute('data-project-logo');
+                if (logoEl && logoAttr) { logoEl.src = logoAttr; }
+                (async function(){
+                    var pid = card.getAttribute('data-project-id') || card.getAttribute('data-project_id') || card.getAttribute('data-pid');
+                    var tid = card.getAttribute('data-ticket-id') || card.getAttribute('data-ticket_id') || card.getAttribute('data-tid');
+                    var h = await resolveHeaderFromIds(pid, tid);
+                    if (h.projectTitle){ document.getElementById('tpvProject').textContent = h.projectTitle; }
+                    if (h.ticketText){ document.getElementById('tpvTicket').textContent = h.ticketText; }
+                    if (h.start){ document.getElementById('tpvStart').textContent = h.start; }
+                    if (h.end){ document.getElementById('tpvDeliver').textContent = h.end; }
+                    if (h.section){ document.getElementById('tpvSection').textContent = h.section; }
+                })();
+                var img = document.getElementById('tpvImage');
+                var layer = document.getElementById('tpvLayer');
+                var focusRect = document.getElementById('tpvFocus');
                 img.src = board || '';
-                // clear old markers
                 if (layer) layer.innerHTML = '';
-                // place numbered badges scaled to current canvas, if original layer size saved per issue
+                focusRect.style.display = 'none';
+                // scale helpers
                 var savedW = (issues && issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
                 var savedH = (issues && issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
-                var renderBadges = function(){
-                    var rect = document.getElementById('taskViewerCanvas').getBoundingClientRect();
-                    var sx = savedW ? (rect.width / savedW) : 1;
-                    var sy = savedH ? (rect.height / savedH) : 1;
+                function applyFocus(it){
+                    var rect = document.getElementById('tpvCanvas').getBoundingClientRect();
+                    var sx = savedW ? (rect.width) / savedW : 1;
+                    var sy = savedH ? (rect.height) / savedH : 1;
+                    var cx = (it && it.position && it.position.left ? it.position.left : rect.width/2) * sx;
+                    var cy = (it && it.position && it.position.top ? it.position.top : rect.height/2) * sy;
+                    var bw = (it && it.box && it.box.width ? it.box.width : 140) * sx;
+                    var bh = (it && it.box && it.box.height ? it.box.height : 80) * sy;
+                    focusRect.style.left = (cx - bw/2) + 'px';
+                    focusRect.style.top = (cy - bh/2) + 'px';
+                    focusRect.style.width = bw + 'px';
+                    focusRect.style.height = bh + 'px';
+                    focusRect.style.display = 'block';
+                }
+                function renderBadges(){
+                    if (layer) layer.innerHTML = '';
+                    var rect = document.getElementById('tpvCanvas').getBoundingClientRect();
+                    var sx = savedW ? (rect.width) / savedW : 1;
+                    var sy = savedH ? (rect.height) / savedH : 1;
+                    var used = {};
                     (issues || []).forEach(function(it, idx){
                         var n = (it && it.number) ? it.number : (idx+1);
                         var badge = document.createElement('div');
                         badge.textContent = String(n);
                         badge.className = 'viewer-badge';
-                        badge.style.position = 'absolute';
-                        var lx = (it && it.position && it.position.left ? it.position.left : 24) * sx;
-                        var ly = (it && it.position && it.position.top ? it.position.top : (24 + idx*22)) * sy;
-                        badge.style.left = lx + 'px';
-                        badge.style.top = ly + 'px';
-                        badge.style.transform = 'translate(-50%, -50%)';
-                        badge.style.color = (it && it.color) ? it.color : '#28c76f';
-                        badge.style.fontWeight = '800';
-                        badge.style.fontSize = '16px';
-                        badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+                        // fallback layout if position missing
+                        var baseLeft = (it && it.position && typeof it.position.left === 'number') ? it.position.left : 24;
+                        var baseTop  = (it && it.position && typeof it.position.top === 'number')  ? it.position.top  : (24 + idx * 36);
+                        var lx = baseLeft * sx;
+                        var ly = baseTop * sy;
+                        var key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                        if (used[key] === undefined) { used[key] = 0; } else { used[key]++; }
+                        // if overlapping, nudge subsequent ones
+                        var k = used[key];
+                        var dx = (k % 3 - 1) * 14; // -14, 0, +14
+                        var dy = Math.floor(k / 3) * 14; // stack every 3
+                        badge.style.left = (lx + dx) + 'px';
+                        badge.style.top = (ly + dy) + 'px';
+                        badge.style.zIndex = 10 + idx;
                         badge.style.pointerEvents = 'auto';
-                        badge.style.cursor = 'pointer';
                         badge.addEventListener('click', function(ev){
                             ev.stopPropagation();
+                            // Show issue details popup if SweetAlert is available
                             if (window.Swal && typeof Swal.fire === 'function') {
-                                var cp = Array.isArray(it?.checkpoints) ? it.checkpoints : [];
-                                var checkpointsHtml = cp.length ? ('<ul style="text-align:left;">'+cp.map(function(c){ return '<li>'+c+'</li>'; }).join('')+'</ul>') : '<em>No checkpoints</em>';
+                                var titleText = (it && it.title) ? it.title : 'Issue';
+                                var desc = (it && it.description) ? it.description : '-';
+                                var start = (it && it.start_date) ? it.start_date : '-';
+                                var end = (it && it.end_date) ? it.end_date : '-';
+                                var accent = (it && it.color) ? it.color : '#28c76f';
                                 Swal.fire({
-                                    title: it?.title || ('Issue #' + String(n)),
-                                    html: ('<div style="text-align:left;">'
-                                        + '<div><strong>Description:</strong> '+(it?.description || '-')+'</div>'
-                                        + '<div class="mt-1"><strong>Start:</strong> '+(it?.start_date || '-')+' &nbsp; <strong>End:</strong> '+(it?.end_date || '-')+'</div>'
-                                        + '<div class="mt-2"><strong>Checkpoints:</strong> '+checkpointsHtml+'</div>'
-                                        + '</div>'),
+                                    title: '',
+                                    html: (
+                                        '<div style="text-align:left;">'
+                                        +   '<div style="font-weight:700; font-size:16px; margin-bottom:8px; color:'+accent+';">'+titleText+'</div>'
+                                        +   '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px;">'+desc+'</div>'
+                                        +   '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">'
+                                        +       '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600;">Start: '+start+'</span>'
+                                        +       '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600;">End: '+end+'</span>'
+                                        +   '</div>'
+                                        + '</div>'
+                                    ),
+                                    width: 620,
+                                    showCloseButton: true,
                                     confirmButtonText: 'Close'
                                 });
+                            } else {
+                                var msg = (it && it.title ? (it.title + '\n') : '')
+                                    + 'Description: ' + ((it && it.description) ? it.description : '-') + '\n'
+                                    + 'Start: ' + ((it && it.start_date) ? it.start_date : '-') + '  End: ' + ((it && it.end_date) ? it.end_date : '-');
+                                alert(msg);
                             }
                         });
-                        if (layer) layer.appendChild(badge);
+                        layer.appendChild(badge);
                     });
-                };
-                if (img.complete) { renderBadges(); } else { img.onload = renderBadges; }
-                new bootstrap.Modal(document.getElementById('taskViewerModal'), { backdrop: true }).show();
+                    // no initial rectangle highlight
+                }
+                var isShown = false;
+                var isImgReady = false;
+                function ensureRender(){ if (isShown && isImgReady) { renderBadges(); } }
+                if (img.complete) { isImgReady = true; } else { img.onload = function(){ isImgReady = true; ensureRender(); }; }
+                var modalEl = document.getElementById('taskProgressViewerModal');
+                function onShown(){ isShown = true; ensureRender(); window.addEventListener('resize', renderBadges); modalEl.removeEventListener('shown.bs.modal', onShown); }
+                function onHidden(){ window.removeEventListener('resize', renderBadges); modalEl.removeEventListener('hidden.bs.modal', onHidden); }
+                modalEl.addEventListener('shown.bs.modal', onShown);
+                modalEl.addEventListener('hidden.bs.modal', onHidden);
+                new bootstrap.Modal(modalEl, { backdrop: true }).show();
             } catch(e) {}
         }
     </script>
