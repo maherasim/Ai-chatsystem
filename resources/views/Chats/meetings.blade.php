@@ -123,17 +123,24 @@
 }
 
 .user_div {
-    flex: 0 0 auto;                    /* don't shrink */
-    width: 160px;                      /* each card fixed width */
+    flex: 0 0 auto;                     /* each card fixed width */
     border: 1px solid #ddd;
-    border-radius: 10px;
     background: #fff;
     padding: 10px;
     cursor: pointer;
+    max-height:180px;
+    flex: 0 0 auto;
+  width: 110px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: center;
+  height: 135px;
 }
-.user_div{
-        cursor:pointer;
-    }
+
+.uder_div img{
+    max-height:110px;
+}
+
 
     .user_active{
         border:solid 1px #62c728ff;
