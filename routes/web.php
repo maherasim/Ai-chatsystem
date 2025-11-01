@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\MeetingsController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
@@ -34,6 +35,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/deltodo', [TodoController::class, 'deltodo']);
     Route::post('/todoss/complete', [TodoController::class, 'complete'])->name('todos.complete');
     Route::get('/download/{id}', [TodoController::class, 'download'])->name('todos.download');
+
+    Route::get('/meetings', [MeetingsController::class, 'index'])->name('chat-meetings');
+    Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
+
+/*
+Route::get('/meetings', function () {
+    return view('Chats.meetings');
+})->middleware('auth')->name('chat-meetings');
+*/
+
 });
 
 
@@ -121,9 +132,7 @@ Route::get('/ticket', function () {
 Route::get('/teams', function () {
     return view('Chats.teams');
 })->middleware('auth')->name('chat-team');
-Route::get('/meetings', function () {
-    return view('Chats.meetings');
-})->middleware('auth')->name('chat-meetings');
+
 
 
 Route::get('/project', function () {

@@ -2135,7 +2135,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         </div>
                         <div class="col-md-4">
                             
-
                             <select class="form-control" id="members" multiple name="members[]">
                                 <option value="">Select Members</option>
                                 @foreach($users as $cuser)

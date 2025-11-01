@@ -14,6 +14,131 @@
         overflow-x: hidden;
     }
 
+    .btn-plus{
+    background-color: #22c55e;
+  border: 1px solid #22c55e;
+  color: #FFF;
+}
+.btn-plus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.btn-minus{
+    background-color: #FD3A55;
+  border: 1px solid #FD3A55;
+  color: #FFF;
+
+}
+.btn-minus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.overlap-container {
+        display: flex;
+    }
+
+    .overlap-container img {
+        width: 30px;          /* Adjust size */
+        height: 30px;
+        border-radius: 50%;   /* Make circular */
+        border: 2px solid #fff;
+        object-fit: cover;
+        margin-left: -14px;   /* Creates the overlap */
+        box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    }
+
+    .overlap-container img:first-child {
+        margin-left: 0;
+    }
+
+.priority-txt{
+        color: #4caf50; 
+        font-weight: 500; 
+        background:#f2f2f2; 
+        padding:2px 5px; 
+        border-radius:5px;
+    }
+    .priority-txt.middle{
+        color: #fbbc05;
+    }
+    .priority-txt.high{
+        color: #e64241;
+    }
+    .priority-txt.schduled{
+        color: #1b75bc;
+    }
+    .priority-icon{
+        width: 8px; 
+        height: 8px; 
+        background-color: #4caf50; 
+        border-radius: 50%; 
+        display:inline-block;
+    }
+    
+
+    .priority-txt.middle .priority-icon{
+        background-color: #fbbc05;
+    }
+    .priority-txt.high .priority-icon{
+        background-color: #e64241;
+    }
+
+    .priority{
+        border: medium;
+        background-color: white;
+        color: rgb(100, 116, 139);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+    .priority.active{
+        background-color: rgb(34, 197, 94);
+        color: white;
+    }
+
+.reminder-btn, .time-btn {
+    border: none;
+    background-color: white;
+    color: #64748b;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    width: 80px;;
+}
+.reminder-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
+.time-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
+.user_div {
+    flex: 0 0 auto;                    /* don't shrink */
+    width: 160px;                      /* each card fixed width */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+.user_div{
+        cursor:pointer;
+    }
+
+    .user_active{
+        border:solid 1px #62c728ff;
+    }
+
     /* Prevent parent containers from overflowing */
     .main_content,
     .chat-body,
@@ -34,7 +159,6 @@
         opacity: 1 !important;
         visibility: visible !important;
     }
-
 
     .task-icon-link img {
         width: 25px !important;
@@ -85,6 +209,25 @@
     .task-icon-link.active .icon-white {
         opacity: 1;
     }
+
+     .timeselect{
+        border: none;
+        font-size: 13px;
+        color: #333;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        padding-right: 25px; /* space for icon */
+        appearance: none; /* hide default arrow */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/2088/2088617.png'); /* clock icon */
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 15px;
+        cursor: pointer;
+    }
+
 </style>
 
 
@@ -124,11 +267,7 @@
                 <!-- Right Side Icons -->
                 <div class="left-icons d-flex align-items-center gap-5">
 
-                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-                        <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                            <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                        </a>
-                    </li>
+                    
 
                     <li style="list-style: none;">
                         <!-- Moon Icon -->
@@ -160,7 +299,7 @@
 
                             <div>
                                 <h3 style="margin: 0;">TOday's Reminder's</h3>
-                                <strong>Reminders: 10</strong>
+                                <strong>Reminders: {{count($todayMeetings)}}</strong>
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-end align-items-center"
@@ -212,35 +351,57 @@
 
                         <!-- CARD CONTAINER -->
                         <div class=" row g-3">
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <!-- Start of Card 1 -->
-                                <div class="card" style=" height:fit-content; border: 1px solid #ef4444; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            
+                                @forelse($todayMeetings as $index => $meeting)
+
+                                @php
+
+                                $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
+
+                                if ($isLocal) {
+                                    $imageUrl = asset('storage/' . $meeting->user->profile_image);
+                                } else {
+                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
+
+                                    $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
+                                }
+
+                                @endphp
+                            <!-- Start of Card 1 -->
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" height:fit-content; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
 
                                     <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
+                                    <div class="d-flex justify-content-between align-items-start p-2">
                                         <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                            <img src="{{$imageUrl}}" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                             <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">{{ $meeting->title }}</h6>
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg); display: inline-block;"></i>
-
+                                        <span class="priority-txt {{$meeting->priority}}">
+                                            <span class="priority-icon" ></span>
+                                            {{$meeting->priority}}
+                                        </span>
                                     </div>
 
                                     <!-- Description -->
                                     <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
+                                        {{$meeting->description}}
                                     </div>
 
                                     <!-- Avatars + user count -->
                                     <div class="text-center mt-2">
                                         <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
+                                            <div class="overlap-container">
+                                                            @foreach($meeting->members_data as $mem)
+                                                                <img src="{{ $mem['image']}}">
+                                                            @endforeach
+                                            </div>
+                                       
                                         </div>
                                         <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
                                     </div>
@@ -248,9 +409,7 @@
                                     <!-- Status Row -->
                                     <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
                                         <!-- Green dot -->
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                        </div>
+                                        
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -272,7 +431,7 @@
                                         <div class="d-flex align-items-center gap-1">
 
                                             <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
-                                            <span style="color: #ef4444;">17:30 - 18:00</span>
+                                            <span style="color: #ef4444;">{{$meeting->start_time}} - {{$meeting->end_time}}</span>
                                         </div>
                                     </div>
 
@@ -287,228 +446,19 @@
 
                                 </div>
                             </div>
+                            
                             <!-- End of Card 1 -->
-                            <!-- Start of Card 2-->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" height:fit-content; border: 1px solid #eee;; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                             @empty
+                             
+                             @endforelse
 
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Avatars + user count -->
-                                    <div class="text-center mt-2">
-                                        <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
-                                        </div>
-                                        <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
-                                        <!-- Green dot -->
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                        </div>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Bell Icon -->
-                                        <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                        <span style="color: red;">Today</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- "Now" Text -->
-
-
-                                        <!-- Clock Icon + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
-                                            <span style="color: #ef4444;">17:30 - 18:00</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Join Now Button -->
-                                    <div class="text-center py-2">
-                                        <button style="background-color: #fbbc05; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                                            Need Counte
-                                        </button>
-                                    </div>
-
-
-                                </div>
                             </div>
-                            <!-- End of Card 2 -->
-                            <!-- card 3 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" height:fit-content; border: 1px solid #eee;; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
-
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Avatars + user count -->
-                                    <div class="text-center mt-2">
-                                        <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
-                                        </div>
-                                        <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
-                                        <!-- Green dot -->
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                        </div>
-
-                                        <!-- Divider -->
-
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-                                        <span> <img src="{{URL::asset('/build/img/call.svg')}}" alt="Image" style="width: 20px;height:20px;"></span>
-                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
-                                        <!-- Bell Icon -->
-                                        <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                        <span style="color: red;"> Today</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-
-
-                                        <!-- Divider -->
-
-                                        <!-- Clock Icon + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
-                                            <span style="color: #ef4444;">17:30 - 18:00</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Join Now Button -->
-                                    <div style="text-align: center; padding: 6px 0;">
-                                        <button style="background-color: #ef233c;color: white;padding: 6px 18px;border: none;border-radius: 25px;font-size: 13px;font-weight: 500;cursor: pointer;display: inline-flex;align-items: center;gap: 8px;">
-                                            Missed Meeting
-                                            <i class="bi bi-telephone-x" style="font-size: 16px;"></i>
-                                        </button>
-                                    </div>
-
-
-
-
-                                </div>
-                            </div>
-                            <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
-
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Avatars + user count -->
-                                    <div class="text-center mt-2">
-                                        <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
-                                            <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
-                                        </div>
-                                        <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
-                                        <!-- Green dot -->
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                        </div>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Bell Icon -->
-                                        <i class="bi bi-bell-fill text-danger" style="font-size: 14px;"></i>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- "Now" Text -->
-                                        <span style="color: red; font-weight: 500;">Now</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Clock Icon + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-clock" style="font-size: 14px; color: #6b7280;"></i>
-                                            <span style="color: #ef4444;">17:30 - 18:00</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Join Now Button -->
-                                    <div class="text-center py-2">
-                                        <button style="background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                                            Join now
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                        
                         <!-- meeting todo -->
                         <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
                             <div>
                                 <h3 style="margin: 0;">Meetings Events</h3>
-                                <strong>Events: 10</strong>
+                                <strong>Events: {{count($upcomingMeetings)}}</strong>
                             </div>
 
                             <div class="d-flex" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px; margin-right: 20px;">
@@ -548,26 +498,46 @@
                         </div>
                         <!-- CARD CONTAINER -->
                         <div class="row g-3">
-                            <!-- Start of Card 1 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+
+                            @forelse($upcomingMeetings as $index => $meeting)
+
+                                @php
+
+                                $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
+
+                                if ($isLocal) {
+                                    $imageUrl = asset('storage/' . $meeting->user->profile_image);
+                                } else {
+                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
+
+                                    $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
+                                }
+
+                                @endphp
+                                 <!-- Start of Card 1 -->
+                             <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card" style=" height:fit-content; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
 
                                     <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
+                                    <div class="d-flex justify-content-between align-items-start p-2">
                                         <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                            <img src="{{$imageUrl}}" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                             <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
+                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">{{ $meeting->title }}</h6>
                                                 <small style="color: #6b7280; font-size: 11px;">Project Title</small>
                                             </div>
                                         </div>
-                                        <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg); display: inline-block;"></i>
-
+                                        <span class="priority-txt {{$meeting->priority}}">
+                                            <span class="priority-icon" ></span>
+                                            {{$meeting->priority}}
+                                        </span>
                                     </div>
 
                                     <!-- Description -->
-                                    <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
+                                    <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
+                                        {{$meeting->description}}
                                     </div>
 
                                     <!-- Accepted / Rejected Avatars -->
@@ -611,7 +581,7 @@
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Date -->
-                                        <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
+                                        <span style="color: #e53935; font-weight: 500;">{{ \Carbon\Carbon::parse($meeting->start_date)->format('D. d.m.Y') }}</span>
 
                                         <!-- Divider -->
                                         <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
@@ -619,7 +589,7 @@
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
                                             <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                            <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
+                                            <span style="color: #e53935; font-weight: 500;">{{$meeting->start_time}} - {{$meeting->end_time}}</span>
                                         </div>
 
                                     </div>
@@ -640,303 +610,16 @@
                                             Remove
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                             <!-- End of Card 1 -->
-                            <!-- Start of Card 2 (Middle Priority) -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
 
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
+                            @empty
+                             
+                             @endforelse
 
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Accepted / Rejected Avatars -->
-                                    <div class="d-flex justify-content-around px-3 pb-2">
-                                        <!-- Accepted -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Rejected -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
-
-                                        <!-- Green Dot -->
-                                        <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Video Icon -->
-                                        <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Date -->
-                                        <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Clock + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                            <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Scheduled Tag -->
-                                    <div class="text-center mb-2">
-                                        <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
-                                            posponed
-                                        </span>
-                                    </div>
-
-                                    <!-- Footer Buttons -->
-                                    <div class="d-flex">
-                                        <!-- Accept Button -->
-                                        <button class="flex-fill text-center py-2"
-                                            style="background-color: #66d19e; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-left-radius: 8px;">
-                                            Accept
-                                        </button>
-
-                                        <!-- Denied Button -->
-                                        <button class="flex-fill text-center py-2"
-                                            style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-right-radius: 8px;">
-                                            Denied
-                                        </button>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                            <!-- End of Card 2 -->
-                            <!-- card 3 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
-
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Accepted / Rejected Avatars -->
-                                    <div class="d-flex justify-content-around px-3 pb-2">
-                                        <!-- Accepted -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Rejected -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
-
-                                        <!-- Green Dot -->
-                                        <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Video Icon -->
-                                        <img src="{{URL::asset('/build/img/de.svg')}}" alt="Image" style="width: 20px;height:20px;">
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Date -->
-                                        <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Clock + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                            <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Scheduled Tag -->
-                                    <div class="text-center mb-2">
-                                        <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
-                                            cancelled
-                                        </span>
-                                    </div>
-
-                                    <!-- Footer Buttons -->
-                                    <div>
-                                        <button class="w-100 text-center py-2" data-bs-toggle="modal" data-bs-target="#deniedModal"
-                                            style="background-color: #f36c6c; border: none; color: white; font-weight: 500; font-size: 13px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
-                                            Meeting Cancelled
-                                        </button>
-                                    </div>
-
-
-
-                                </div>
-                            </div>
-                            <!-- 4 -->
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style="border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
-
-                                    <!-- Header -->
-                                    <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <div>
-                                                <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                                <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="px-3 pt-1 pb-2" style="font-size: 12px; color: #6b7280; line-height: 1.4; text-align: center;">
-                                        Here we will add the description of the ToDo Only you is Superadmin ToDo
-                                    </div>
-
-                                    <!-- Accepted / Rejected Avatars -->
-                                    <div class="d-flex justify-content-around px-3 pb-2">
-                                        <!-- Accepted -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-
-                                        <!-- Rejected -->
-                                        <div class="text-center">
-                                            <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Status Row -->
-                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
-
-                                        <!-- Green Dot -->
-                                        <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Video Icon -->
-                                        <img src="{{URL::asset('/build/img/headphone.svg')}}" alt="Image" style="width: 20px;height:20px;">
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Date -->
-                                        <span style="color: #e53935; font-weight: 500;">Mon. 22.12.2025</span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 2px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                        <!-- Clock + Time -->
-                                        <div class="d-flex align-items-center gap-1">
-                                            <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
-                                            <span style="color: #e53935; font-weight: 500;">17:30 - 18:00</span>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- Scheduled Tag -->
-                                    <div class="text-center mb-2">
-                                        <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
-                                            Scheduled
-                                        </span>
-                                    </div>
-
-                                    <!-- Footer Buttons -->
-                                    <div class="d-flex">
-                                        <button class="flex-fill text-center py-2" style="background-color: #f1f5f9; border: none; color: #1e293b; font-weight: 500; font-size: 13px;">
-                                            Edit
-                                        </button>
-                                        <button class="flex-fill text-center py-2" style="background-color: #fca5a5; border: none; color: white; font-weight: 500; font-size: 13px;">
-                                            Remove
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
+       
                         </div>
-
-
-
                     </div>
                 </div>
 
@@ -1001,66 +684,60 @@
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
             <!-- Close Button -->
-            <button type="button"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onclick="this.closest('.modal').classList.remove('show'); this.closest('.modal').style.display='none';"
-                onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
-                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1e293b';"
-                style="color: #1e293b; font-weight: bold; z-index: 999; width: 32px; height: 32px; line-height: 28px; text-align: center; font-size: 20px; position: absolute; top: 8px; right: 12px; border: none; background-color: transparent; border-radius: 50%; transition: all 0.3s ease;">
-                ×
-            </button>
+            
 
+            <form  id="meetingForm" action="{{ route('meetings.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
+            <input type="hidden" name="todo_id" id="todo_id">
+                <input type="hidden" name="start_date" id="startDateHidden">
+                <input type="hidden" name="start_time" id="startTimeHidden">
+                <input type="hidden" name="end_time" id="endTimeHidden">
+                <input type="hidden" name="end_date" id="endDateHidden">
+                <input type="hidden" name="is_private" id="isPrivateHidden" value="0">
+                <input type="hidden" name="todo_visibility" id="todo_visibility">
+                <input type="hidden" name="selected_user" id="selected_user">
+                <input type="hidden" name="priority" id="priorityHidden" >
+                <input type="hidden" name="reminder" id="reminderHidden" >
+                <input type="hidden" name="todaytime" id="timeHidden" >
+                 <input type="hidden" name="todo_type" id="todo_type">
+
+                 <select id="members" name="members[]" multiple style="display:none;"></select>
 
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
                 <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
                 <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
 
-                <!-- Meeting Details -->
-                <div class="border rounded p-3 mb-3" style="background-color: #f9f9fb;">
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Meeting Details</p>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Select Project" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Meeting Title" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Describe the meeting" style="font-size: 13px;">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Select Members" style="font-size: 13px;">
-                        </div>
-                    </div>
-                </div>
+                
                 <!-- Schedule Type Toggle -->
-                <div style="background-color: #f9f9fb;">
+                <div style="background-color: #f9f9fb; border-radius:10px; padding:0px 5px;">
                     <!-- Toggle Buttons -->
-                    <div style="display: flex; justify-content: center; margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px;">
-                            <button id="btnToday"
+                    <div style="display: flex;  padding:10px; margin-bottom: 6px; margin-top: 4px;">
+                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; background:#fff;">
+                            <button type="button" id="btnToday"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
                     document.getElementById('btnScheduled').style.backgroundColor='transparent';
                     document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='none';
+                    document.getElementById('schdule_time').style.display='none';
+                    document.getElementById('timeToday').style.display='block';
+                    document.getElementById('todo_type').value='today';
                     document.getElementById('timeRow').classList.add('justify-content-center');"
                                 style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Meeting Today
                             </button>
 
-                            <button id="btnScheduled"
+                            <button type="button" id="btnScheduled"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
                     this.style.color='white';
                     document.getElementById('btnToday').style.backgroundColor='transparent';
                     document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('startDateField').style.display='block';
+                    document.getElementById('schdule_time').style.display='flex';
+                    document.getElementById('timeToday').style.display='none';
+                    document.getElementById('todo_type').value='scheduled';
                     document.getElementById('timeRow').classList.remove('justify-content-center');"
                                 style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Scheduled Meeting
@@ -1072,7 +749,19 @@
                     <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
 
                         <!-- Start Date (hidden by default) -->
-                        <div class="col-md-4" id="startDateField" style="position: relative; display: none;">
+
+                        <!-- selection of tody section -->
+                    <div class="d-flex1 gap-2 mb-3 bg-white" id="timeToday" style="padding: 8px;";>
+                        <button type="button" class="time-btn time-btn-2 " data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
+                        <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
+                        <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
+                        <button type="button" class="time-btn time-btn-12" data-value="12">12 Hour</button>
+                    </div>
+                    
+                    <div id="schdule_time" style="display:none;">
+
+                        <div class="col-md-4" id="startDateField" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
                                 <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
                                 <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
@@ -1086,11 +775,21 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Start Time -->
                         <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 10px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                
+                            <select name="start_time" id="startTimeSelect" class="timeselect" >
+                                    <option value="">Start Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                                <!--
+                            <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
                                 <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
                                 <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
@@ -1100,26 +799,133 @@
                                         onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
                                         style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
                                 </div>
+                            -->
+
+
                             </div>
                         </div>
-
                         <!-- End Time -->
                         <div class="col-md-4" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">End Time</div>
-                                <div id="endTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('endTimeInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="time" id="endTimeInput"
-                                        onchange="if(this.value)document.getElementById('endTimeDisplay').innerText=this.value;"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
+                                
+                            
+                                <select name="end_time" id="endTimeSelect" class="timeselect" >
+                                    <option value="">End Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+
                             </div>
                         </div>
+
+                    </div>
+
+
+                        
                     </div>
                 </div>
+
+                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <!-- Heading and Subtext -->
+                    <div class="row">
+                        <div style="margin-bottom: 12px;" class="col-md-6">
+                            <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">Meeting Details</p>
+                            <p style="font-size: 12px; color: #64748b; margin: 0;">About the meeting</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
+                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the priority of the Meeting</p>
+                                
+
+                        </div>
+                    </div>
+
+                    <!-- Inputs -->
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input id="meeting_name" name="title" required type="text" class="form-control" placeholder="Meeting Title"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex1 gap-2 bg-white">
+                                <button class="priority active1" type="button" id="priorityLow" >Low</button>
+                                <button class="priority" type="button" id="priorityMiddle" >Middle</button>
+                                <button class="priority" type="button" id="priorityHigh" >High</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row g-2 mt-2" id="sectionsWrapper">
+                        <div class="col-md-12 d-flex align-items-center section-item">
+                            <input name="sections" type="text" class="form-control" placeholder="Describe the Meeting"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                            
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- shared section starts -->
+                <div class="mb-3" id="selectUsersBox" style="background-color: #f9f9fb; border-radius:10px; padding:16px;">
+                    
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <select id="select_project" class="form-control selection">
+                                <option value="">Select Project</option>
+                                <option value="1">Project1</option>
+                                <option value="2">Project2</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="select_team" class="form-control selection">
+                                <option value="">Select Team</option>
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <h5>Select Users</h5>
+                    <p>Project - Team</p>
+
+                    <div id="userScroller" class="user-slider-wrapper" style="display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 16px; -ms-overflow-style: none; scrollbar-width: none;" onscroll=" var scroller=this; var containerWidth=scroller.offsetWidth; var index=Math.round(scroller.scrollLeft/containerWidth); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot'+i); dot.style.background=(i===index)?'#00c469':'#d4d4d4'; dot.style.width=(i===index)?'40px':'20px'; } ">
+
+                            <style>
+                                #userScroller::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+
+                            @foreach($users as $cuser)
+                                <div class="user_div" 
+                                    id="user_{{$cuser->_id}}" 
+                                    data-user-id="{{$cuser->_id}}">
+                                    <div class="invit-img">
+                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                    </div>
+                                    <div class="invit-txt">{{$cuser->name}}</div>
+                                </div>
+                            @endforeach
+
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                            <div id="dot_user0" style="width: 40px; height: 5px; border-radius: 8px; background: #00c469; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:0*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i);  dot.style.background=(i===0)?'#00c469':'#d4d4d4';  dot.style.width=(i===0)?'40px':'20px'; } ">
+                            </div>
+                            <div id="dot_user1" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:1*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===1)?'#00c469':'#d4d4d4'; dot.style.width=(i===1)?'40px':'20px'; } ">
+                            </div>
+                            <div id="dot_user2" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;" onclick=" var scroller=document.getElementById('userScroller'); var containerWidth=scroller.offsetWidth; scroller.scrollTo({left:2*containerWidth,behavior:'smooth'}); for(var i=0;i&lt;3;i++){ var dot=document.getElementById('dot_user'+i); dot.style.background=(i===2)?'#00c469':'#d4d4d4'; dot.style.width=(i===2)?'40px':'20px'; } ">
+                            </div>
+                        </div>
+
+                    <!-- user starts -->
+
+    </div>
 
 
                 <!-- Meeting Links -->
@@ -1127,7 +933,7 @@
                 <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; margin: auto;margin-bottom: 12px;">
 
                     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
-                        <button id="btnMeet"
+                        <button type="button" id="btnMeet"
                             onclick="
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
@@ -1139,7 +945,7 @@
                             Meet Link
                         </button>
 
-                        <button id="btnZoom"
+                        <button type="button" id="btnZoom"
                             onclick="
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
@@ -1153,7 +959,7 @@
                     </div>
 
 
-                    <input type="text"
+                    <input  type="text"
                         placeholder="Past link"
                         style="width: 100%; background-color: white; color: #64748b; border: none;
            border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
@@ -1164,41 +970,21 @@
                 <div class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
                     <div class="row g-3">
                         <!-- Meeting Priority -->
-                        <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
-                            <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the Priority of the Meeting</p>
-                            <div class="d-flex gap-2">
-                                <button id="priorityLow" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    Low
-                                </button>
-
-                                <button id="priorityMiddle" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityHigh').style.backgroundColor='white'; document.getElementById('priorityHigh').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px ;font-size: 12px;">
-                                    Middle
-                                </button>
-
-                                <button id="priorityHigh" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('priorityLow').style.backgroundColor='white'; document.getElementById('priorityLow').style.color='#64748b'; document.getElementById('priorityMiddle').style.backgroundColor='white'; document.getElementById('priorityMiddle').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    High
-                                </button>
-                            </div>
-                        </div>
+                        
 
                         <!-- Expired Reminder -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Expired Reminder</p>
                             <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set a reminder before expired</p>
-                            <div class="d-flex gap-2">
-                                <button id="reminder6" onclick="this.style.backgroundColor='#22c55e';this.style.color='white';document.getElementById('reminder12').style.backgroundColor='white';document.getElementById('reminder12').style.color='#64748b';document.getElementById('reminder24').style.backgroundColor='white';document.getElementById('reminder24').style.color='#64748b';" style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px;font-size: 12px;">
-                                    6 Hr
-                                </button>
+                            
 
-                                <button id="reminder12" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder24').style.backgroundColor='white'; document.getElementById('reminder24').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    12 Hr
-                                </button>
-
-                                <button id="reminder24" onclick=" this.style.backgroundColor='#22c55e'; this.style.color='white'; document.getElementById('reminder6').style.backgroundColor='white'; document.getElementById('reminder6').style.color='#64748b'; document.getElementById('reminder12').style.backgroundColor='white'; document.getElementById('reminder12').style.color='#64748b' " style="border: none; background-color: white; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                    24 Hr
-                                </button>
-                            </div>
+                            <div class="d-flex " style="background:#fff; border-radius: 5px; gap: 3px; padding: 5px;">
+                                    <button type="button" class="reminder-btn rem-30 " data-value="30">30 Min</button>
+                                    <button type="button" class="reminder-btn rem-60" data-value="60">60 Min</button>
+                                    <button type="button" class="reminder-btn rem-120" data-value="120">2 Hour</button>
+                                    <button type="button" class="reminder-btn rem-180" data-value="180">3 Hour</button>
+                                    <button type="button" class="reminder-btn rem-240" data-value="240">4 Hour</button>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -1206,12 +992,14 @@
 
                 <!-- Submit Button -->
                 <div class="text-center">
-                    <button class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
+                    <button id="saveBtn" class="btn" style="background-color: #5b21b6; color: white; padding: 8px 40px; border-radius: 8px; font-size: 14px;">
                         Create
                     </button>
                 </div>
 
             </div>
+
+                            </form>
         </div>
     </div>
 </div>
@@ -1860,17 +1648,81 @@
         <!-- creaTE meting MODEL POPIP -->
 
         <script>
-            const toggleIcon = document.getElementById("toggleIcon");
-            const chevron = document.getElementById("chevronIcon");
+         //   const toggleIcon = document.getElementById("toggleIcon");
+          //  const chevron = document.getElementById("chevronIcon");
 
-            toggleIcon.addEventListener("click", () => {
-                setTimeout(() => {
-                    chevron.classList.toggle("ti-chevron-down");
-                    chevron.classList.toggle("ti-chevron-up");
-                }, 150);
-            });
+         //   toggleIcon.addEventListener("click", () => {
+          //      setTimeout(() => {
+          //          chevron.classList.toggle("ti-chevron-down");
+          //          chevron.classList.toggle("ti-chevron-up");
+           //     }, 150);
+           // });
         </script>
         <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const userDivs = document.querySelectorAll('.user_div');
+    const selectMembers = document.getElementById('members');
+
+    userDivs.forEach(div => {
+        div.addEventListener('click', function () {
+            const userId = this.dataset.userId;
+
+            // Toggle user_active class
+            this.classList.toggle('user_active');
+
+            // Update select options
+            let selected = Array.from(selectMembers.options).map(o => o.value);
+
+            if (this.classList.contains('user_active')) {
+                // Add to select if not present
+                if (!selected.includes(userId)) {
+                    let option = new Option(userId, userId, true, true);
+                    selectMembers.add(option);
+                }
+            } else {
+                // Remove from select
+                Array.from(selectMembers.options).forEach(opt => {
+                    if (opt.value === userId) opt.remove();
+                });
+            }
+
+            // Trigger change event (if needed for plugins like Select2)
+            selectMembers.dispatchEvent(new Event('change'));
+        });
+    });
+});
+
+document.querySelectorAll('.user_div').forEach(div => {
+    div.addEventListener('click', () => {
+        
+        document.getElementById('selected_user').value = div.dataset.userId;
+    });
+});
+
+// Priority
+document.getElementById('priorityLow').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.getElementById('priorityHidden').value = 'low';
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityLow').classList.add('active');
+});
+document.getElementById('priorityMiddle').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.getElementById('priorityHidden').value = 'middle';
+    document.querySelector('#priorityHigh').classList.remove('active');
+    document.querySelector('#priorityLow').classList.remove('active');
+    document.querySelector('#priorityMiddle').classList.add('active');
+});
+document.getElementById('priorityHigh').addEventListener('click', function (e) {
+    e.preventDefault();
+    
+    document.getElementById('priorityHidden').value = 'high';
+    document.querySelector('#priorityMiddle').classList.remove('active');
+    document.querySelector('#priorityLow').classList.remove('active');
+    document.querySelector('#priorityHigh').classList.add('active');
+});
             document.addEventListener('DOMContentLoaded', function() {
                 const body = document.body;
                 const darkBtn = document.getElementById('dark-mode-toggle');
@@ -1889,6 +1741,169 @@
                     lightBtn.style.display = 'none';
                     darkBtn.style.display = 'inline';
                 });
+
+
+
+                const startSelect = document.getElementById('startTimeSelect');
+    const endSelect = document.getElementById('endTimeSelect');
+
+
+    document.getElementById('dateInput').addEventListener('change', function () {
+    document.getElementById('startDateHidden').value = this.value;
+});
+
+
+    function validateTimes() {
+        const start = startSelect.value;
+        const end = endSelect.value;
+
+        if (start && end) {
+            const startTime = toMinutes(start);
+            const endTime = toMinutes(end);
+
+            if (endTime <= startTime) {
+                alert('End time must be later than start time.');
+                endSelect.value = ''; // Reset invalid selection
+            }
+        }
+    }
+
+    function toMinutes(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+
+    startSelect.addEventListener('change', validateTimes);
+    endSelect.addEventListener('change', validateTimes);
+
+
+
             });
+
+
+        document.querySelectorAll('.reminder-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // reset all
+        document.querySelectorAll('.reminder-btn').forEach(b => b.classList.remove('active'));
+        // activate clicked
+        this.classList.add('active');
+        // update hidden input
+        document.getElementById('reminderHidden').value = this.dataset.value;
+    });
+});
+
+document.querySelectorAll('.time-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // reset all
+        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+        // activate clicked
+        this.classList.add('active');
+        // update hidden input
+        document.getElementById('timeHidden').value = this.dataset.value;
+    });
+});
+
+
+
+const titleEl = document.getElementById('meeting_name');
+const projectEl = document.getElementById('select_project');
+const teamEl = document.getElementById('select_team');
+
+
+document.getElementById('saveBtn').addEventListener('click', function (e) {
+    
+    e.preventDefault();
+    const form = document.getElementById('meetingForm');
+
+  const title = titleEl.value.trim();
+  const project = projectEl.value;
+  const team = teamEl.value;
+
+    const priorityHidden = document.getElementById('priorityHidden').value;
+    const reminderHidden = document.getElementById('reminderHidden').value;
+    const timeHidden = document.getElementById('timeHidden').value;
+    const todoType = document.getElementById('todo_type').value;
+    
+    const startDate = document.getElementById('dateInput')?.value;
+    const startTime = document.getElementById('startTimeSelect')?.value;
+    const endTime = document.getElementById('endTimeSelect')?.value;
+
+    let checkprojteam = 0;
+    
+
+
+    if (!todoType) {
+        alert("Please select 'Today Meeting' or 'Scheduled Meeting' before submitting.");
+        return;
+    }
+
+   // if (todoVisibility === 'shared') {
+        const activeUser = document.querySelector('.user_div.user_active');
+        if (!activeUser) {
+            alert('Please select at least one user for Meeting.');
+            return;
+        }
+        //checkprojteam = 1;
+   // }
+
+    if (todoType === 'scheduled') {
+        if (!startDate) {
+            alert('Please select a Start Date.');
+            return;
+        }
+        if (!startTime) {
+            alert('Please select a Start Time.');
+            return;
+        }
+        if (!endTime) {
+            alert('Please select a End Time.');
+            return;
+        }
+
+        // Optional: check that end date >= start date
+        if (new Date(endTime) < new Date(startTime)) {
+            alert('Meeting Date cannot be earlier than Start Date.');
+            return;
+        }
+    }else if(!timeHidden){
+        alert('Please provide End time before submitting.');
+            return;
+    }
+
+
+
+  // Reset previous error highlights
+  [titleEl, projectEl, teamEl].forEach(el => el.classList.remove('required'));
+
+  // Add highlight if empty
+  if (!title) titleEl.classList.add('required');
+  if (!project) projectEl.classList.add('required');
+  if (!team) teamEl.classList.add('required');
+
+  // Stop submission if any field is empty
+  if(checkprojteam == 1){
+        if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+            alert('Please fill all required fields before submitting.');
+            return;
+        }
+  }else{
+    if (!title || !priorityHidden || !reminderHidden ) {
+    alert('Please fill all required fields before submitting.');
+    return;
+  }
+  }
+  
+
+    form.submit();
+});
+
+[titleEl, projectEl, teamEl].forEach(el => {
+  el.addEventListener('input', () => {
+    if (el.value.trim() !== '') {
+      el.classList.remove('required');
+    }
+  });
+});
+
         </script>
         @endsection
