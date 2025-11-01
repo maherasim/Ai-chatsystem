@@ -134,7 +134,7 @@
   border-radius: 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   text-align: center;
-  height: 135px;
+  height: 155px;
 }
 
 .uder_div img{
