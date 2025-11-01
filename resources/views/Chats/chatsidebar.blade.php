@@ -59,15 +59,16 @@
                            <img src="{{ asset('/build/img/Teams_Icon_Black.svg') }}" alt="User Black" class="icon-black">
                        </a>
                    </li>
+                   -->
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-meetings') }}" class="nav-link task-icon-link {{ request()->is('meetings') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
                            <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
                        </a>
                    </li>
--->
+
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('todos.index') }}" class="nav-link task-icon-link {{ request()->is('todo') ? 'active' : '' }}">
+                       <a href="{{ route('todos.index') }}" class="nav-link task-icon-link {{ request()->is('todos') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
                            <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>
