@@ -137,7 +137,7 @@
   height: 155px;
 }
 
-.uder_div img{
+.user_div img{
     max-height:110px;
 }
 
