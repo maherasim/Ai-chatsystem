@@ -39,6 +39,10 @@
   height: 22px;
   display: block;
 }
+#schdule_time .col-md-4{
+    padding-left:5px !important;
+    padding-right:5px !important;
+}
 
 .overlap-container {
         display: flex;
@@ -235,6 +239,132 @@
         cursor: pointer;
     }
 
+
+    .todohead.shared{
+    background: linear-gradient(to right, #3eaee7, #94d2f1);; 
+    
+}
+
+.time-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 14px;  /* smaller font */
+  font-weight: bold;
+  color: #1c2233;
+}
+
+
+.btn-plus{
+    background-color: #22c55e;
+  border: 1px solid #22c55e;
+  color: #FFF;
+}
+.btn-plus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.btn-minus{
+    background-color: #FD3A55;
+  border: 1px solid #FD3A55;
+  color: #FFF;
+
+}
+.btn-minus span{
+    border: solid 1px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.reminder-btn, .time-btn {
+    border: none;
+    background-color: white;
+    color: #64748b;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    width: 80px;;
+}
+.reminder-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
+.time-btn.active {
+    background-color: #22c55e;
+    color: white;
+}
+
+
+#countdown{
+    padding-bottom:10px;
+}
+.circle-timer {
+  position: relative;
+  width: 60px;   /* reduced */
+  height: 60px;  /* reduced */
+  margin: auto;
+}
+
+.circle-timer svg {
+  width: 60px;   /* reduced */
+  height: 60px;  /* reduced */
+  transform: rotate(-90deg);
+}
+
+.circle-timer circle {
+  fill: none;
+  stroke-width: 6;   /* thinner */
+  cx: 50%;
+  cy: 50%;
+  r: 25;             /* reduced radius */
+  stroke: #e6e6e6;
+}
+
+.circle-timer circle:nth-child(2) {
+  stroke: #22c55e;
+  stroke-dasharray: 157; /* 2 * PI * 25 */
+  stroke-dashoffset: 157;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.todohead{
+    background: linear-gradient(to right, #e53935, #f48fb1); 
+    color: white; 
+    padding: 25px 20px; 
+    position: relative;
+}
+.todohead.shared{
+    background: linear-gradient(to right, #3eaee7, #94d2f1);; 
+    
+}
+
+.time-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 14px;  /* smaller font */
+  font-weight: bold;
+  color: #1c2233;
+}
+
+.timer-text {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px; /* smaller label */
+  color: #666;
+}
+
+
 </style>
 
 
@@ -363,6 +493,11 @@
 
                                 @php
 
+                                $owner = 0;
+                                if($meeting->user_id == $user->_id){
+                                    $owner = 1;
+                                }
+
                                 $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
 
                                 if ($isLocal) {
@@ -375,10 +510,40 @@
                                     $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
                                 }
 
+                                $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
+                ->diffInSeconds($endDateTime, false));
+
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $meeting->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+
                                 @endphp
                             <!-- Start of Card 1 -->
                              <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" height:fit-content; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                                <div class="card  viewMeeting"  data-id="{{ $meeting->id }}"
+    data-title="{{ $meeting->title }}"
+    data-description=""
+    data-start_date="{{ $meeting->start_date }}"
+    data-start_time="{{ $meeting->start_time }}"
+    data-end_date="{{ $meeting->end_date }}"
+    data-end_time="{{ $meeting->end_time }}"
+    data-is_private="{{ $meeting->is_private }}"
+    data-priority="{{ $meeting->priority }}"
+    data-reason="{{$meeting->reason}}"
+    data-reminder="{{ $meeting->reminder }}"
+    data-total="{{ $meeting->total_time }}"
+    data-owner="{{$owner}}"
+    data-complete="{{$meeting->completed}}"
+    data-image="{{ $imageUrl }}"
+    data-sections="{{$meeting->description}}"
+    data-members='@json($meeting->members_data)'
+    data-own="today"
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" height:fit-content; cursor:pointer; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
 
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-start p-2">
@@ -450,6 +615,93 @@
                                         </button>
                                     </div>
 
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        
+                                        @php
+                                            // Combine date and time
+                                            $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time);
+                                        @endphp
+
+                                        
+    </div>
+
+                                        <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $meeting->id }}">
+                                            <span id="asimclic-{{ $index }}"></span>
+                                        </div>
+                                    
+                                    @if($remaining > 0)
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('asimclic-{{ $index }}');
+            //let container = document.getElementById('timer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
+
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+               // container.style.display = "none";
+            }
+
+            function updateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
+
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
+
+                //display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    //container.style.display = "flex"; // or "block" if needed
+                   // container.dataset.reminderActive = "1"; 
+
+                    // color changes during reminder phase
+                    if (duration <= 0) {
+                        //container.style.backgroundColor = "#e74c3c"; // Final stage
+                        clearInterval(timer);
+
+                        let todoCard = document.querySelector('.viewTodo[data-id="{{ $meeting->id }}"]');
+                        if (todoCard) {
+                           // display.innerText = "Task Expired";
+                            todoCard.click();
+                        }
+
+                    } else if (duration <= part) {
+                        //container.style.backgroundColor = "#e74c3c"; //  last 1/3
+                    } else if (duration <= part * 2) {
+                        //container.style.backgroundColor = "#ff9800"; //  middle 1/3
+                    } else {
+                        //container.style.backgroundColor = "#4CAF50"; //  first 1/3
+                    }
+                }
+
+                duration--;
+            }
+
+            updateClock();
+            let timer = setInterval(updateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('timer-{{ $index }}');
+           // let display = document.getElementById('asimclic-{{ $index }}');
+            //display.innerText = "Task Expired";
+           // container.dataset.reminderActive = "1";
+            //container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+                                                
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -510,6 +762,11 @@
 
                                 @php
 
+                                $owner = 0;
+                                if($meeting->user_id == $user->_id){
+                                    $owner = 1;
+                                }
+
                                 $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
 
                                 if ($isLocal) {
@@ -522,10 +779,40 @@
                                     $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
                                 }
 
+                                $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time, 'Europe/Berlin');
+//$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
+$remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
+                ->diffInSeconds($endDateTime, false));
+
+                                if ($remaining < 0) $remaining = 0;
+
+                                $reminderMinutes = $meeting->reminder ?? 60;
+                                $reminderSeconds = $reminderMinutes * 60;
+                                $part = $reminderSeconds / 3;
+
                                 @endphp
                                  <!-- Start of Card 1 -->
                              <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="card" style=" height:fit-content; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                                <div class="card  viewMeeting" data-id="{{ $meeting->id }}"
+    data-title="{{ $meeting->title }}"
+    data-description=""
+    data-start_date="{{ $meeting->start_date }}"
+    data-start_time="{{ $meeting->start_time }}"
+    data-end_date="{{ $meeting->end_date }}"
+    data-end_time="{{ $meeting->end_time }}"
+    data-is_private="{{ $meeting->is_private }}"
+    data-priority="{{ $meeting->priority }}"
+    data-reason="{{$meeting->reason}}"
+    data-reminder="{{ $meeting->reminder }}"
+    data-total="{{ $meeting->total_time }}"
+    data-owner="{{$owner}}"
+    data-complete="{{$meeting->completed}}"
+    data-image="{{ $imageUrl }}"
+    data-sections="{{$meeting->description}}"
+    data-members='@json($meeting->members_data)'
+    data-own="today"
+    data-bs-toggle="modal"
+    data-bs-target="#inreject" style=" height:fit-content; cursor:pointer; border: 1px solid #c0c0c0; border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
 
                                     <!-- Header -->
                                     <div class="d-flex justify-content-between align-items-start p-2">
@@ -617,6 +904,94 @@
                                             Remove
                                         </button>
                                     </div>
+
+
+                                    <!-- Footer Button -->
+                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
+                                        
+                                        @php
+                                            // Combine date and time
+                                            $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time);
+                                        @endphp
+
+                                        
+    </div>
+
+                                        <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $meeting->id }}">
+                                            <span id="asimclic-{{ $index }}"></span>
+                                        </div>
+                                    
+                                    @if($remaining > 0)
+    <script>
+        (function() {
+            let duration = {{ $remaining }};
+            let display = document.getElementById('asimclic-{{ $index }}');
+            let container = document.getElementById('timer-{{ $index }}');
+            let part = {{ $part }};
+            let reminderSeconds = {{ $reminderSeconds }};
+
+            // hide timer initially if not in reminder period yet
+            if (duration > reminderSeconds) {
+                container.style.display = "none";
+            }
+
+            function updateClock() {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
+
+                let formatted =
+                    String(hours).padStart(2, '0') + ":" +
+                    String(minutes).padStart(2, '0') + ":" +
+                    String(seconds).padStart(2, '0');
+
+                display.innerText = formatted;
+
+                // When countdown enters reminder phase, show container
+                if (duration <= reminderSeconds) {
+                    container.style.display = "flex"; // or "block" if needed
+                    container.dataset.reminderActive = "1"; 
+
+                    // color changes during reminder phase
+                    if (duration <= 0) {
+                        container.style.backgroundColor = "#e74c3c"; // Final stage
+                        clearInterval(timer);
+
+                        let todoCard = document.querySelector('.viewTodo[data-id="{{ $meeting->id }}"]');
+                        if (todoCard) {
+                            display.innerText = "Task Expired";
+                            todoCard.click();
+                        }
+
+                    } else if (duration <= part) {
+                        container.style.backgroundColor = "#e74c3c"; //  last 1/3
+                    } else if (duration <= part * 2) {
+                        container.style.backgroundColor = "#ff9800"; //  middle 1/3
+                    } else {
+                        container.style.backgroundColor = "#4CAF50"; //  first 1/3
+                    }
+                }
+
+                duration--;
+            }
+
+            updateClock();
+            let timer = setInterval(updateClock, 1000);
+        })();
+    </script>
+@else
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let container = document.getElementById('timer-{{ $index }}');
+            let display = document.getElementById('asimclic-{{ $index }}');
+            display.innerText = "Task Expired";
+            container.dataset.reminderActive = "1";
+            container.style.backgroundColor = "#e74c3c";
+        });
+    </script>
+@endif
+                                                
+                                    </div>
                                 </div>
                             </div>
                             <!-- End of Card 1 -->
@@ -637,6 +1012,326 @@
 
     </div>
 
+</div>
+
+
+<!-- remove model -->
+ <div class="modal fade" id="removeModel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; padding: 15px;">
+
+            <!-- Modal Header -->
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
+                Delete Todo
+            </div>
+            <div style="font-size: 13px; color:black">
+                Tell us why ?!
+            </div>
+            <hr style="background-color: #777; height: 1px; border: none; margin: 10px 0;">
+
+
+            <form action="{{ route('todos.remove') }}" method="POST">
+                @csrf
+                <input type="hidden" name="remid" id="remid" />
+                <input type="hidden" name="isremove" id="isremove" value="0" />
+                <input type="hidden" name="iscomplete" id="iscomplete" value="0" />
+            <!-- Denied Section -->
+            <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
+
+                <!-- Icon + Text left aligned -->
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+                    <img src="{{ asset('build/img/deletep.svg') }}" alt="Pause Icon" width="38px" height="38px">
+                    <div>
+                        <div style="font-size: 18px; font-weight: 600;color:black">Delete</div>
+                        <div style="color: #777; font-size: 13px;">Select reason why to remove</div>
+                    </div>
+                </div>
+
+
+                <!-- Input Fields -->
+                <select  name="reason" required
+                    style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
+                    <option class="removal" value="By Mistake">By Mistake</option>
+                    <option class="removal" value="Not neet it">Not neet it</option>
+                    <option class="removal" value="No important">No important</option>
+                    <option class="removal" value="No time for it">No time for it</option>
+                    <option class="failed" value="Time to short">Time to short</option>
+                    <option class="failed" value="Todo not clear">Todo not clear</option>
+                    <option class="failed" value="Details not clear">Details not clear</option>
+                    <option class="failed" value="Documents not clear">Documents not clear</option>
+                    <option class="failed" value="Team not response">Team not response</option>
+                </select>
+
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center" style="margin-top: 15px; display:flex; justify-content: space-around;">
+                <button data-bs-dismiss="modal" type="button" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                     Close
+                </button>
+                <button type="submit" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Save & Close
+                </button>
+                <button type="button" class="btn rejectbtn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Reject it
+                </button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- View Model -->
+<div class="modal fade" id="inreject" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
+
+            <!-- Modal Body -->
+            <div class="modal-body p-0">
+                <!-- Header -->
+                <div class="todohead " >
+
+                    <!-- Text Left-Aligned -->
+                    <div style="text-align: left;">
+                        <h5 style="margin: 0;">&nbsp;</h5>
+                        <small>&nbsp;</small>
+                    </div>
+
+                    <!-- Logo Centered, Half Outside -->
+                    <div style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                        <img class="user-todo-img" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 60px; height: 60px; border-radius: 50%;">
+                    </div>
+
+                </div>
+
+                <!-- Task Card -->
+                <div class="p-2">
+
+                    <div class="mt-2 mb-3" style="background-color: #f8f9fa; padding:10px; border-radius:10px;">
+    <h5 class="text-center fw-bold mb-3" style="color: #1c2233; margin-bottom:10px !important;">Timer</h5>
+    <div class="row text-center justify-content-center" id="countdown">
+    <!-- Days -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="days-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="days">0</div>
+            <div class="timer-text">Days</div>
+        </div>
+    </div>
+
+    <!-- Hours -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="hours-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="hours">0</div>
+            <div class="timer-text">Hours</div>
+        </div>
+    </div>
+
+    <!-- Minutes -->
+    <div class="col-md-4">
+        <div class="circle-timer">
+            <svg>
+                <circle cx="50%" cy="50%" r="25"></circle>
+                <circle id="minutes-circle" cx="50%" cy="50%" r="25"></circle>
+            </svg>
+            <div class="time-value" id="minutes">0</div>
+            <div class="timer-text">Minutes</div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
+
+                    <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
+                        <h5 class="text-center fw-bold mb-3 modal-title todo-title" style="color: #1c2233;">Task Title</h5>
+                        <p class="text-center">
+                            <span class="todo-type  badge bg-secondary" style="background: #fff !important; font-size: 13px; padding: 8px 12px; border-color: #fff !important; color: #1c274c;">Priviatess Todo's</span>
+                            <span class="todo-type badge rounded-pill1 todo-priority" style="color: #22c55e; font-size: 13px; padding: 8px 12px;">
+                                <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
+                            </span>
+                        </p>
+
+                        
+                    </div>
+
+                    <div class="mt-2 mb-3 " style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+                        <!-- Title -->
+                        <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Meeting Start & End Time</h5>
+
+                        <!-- Info Row -->
+                        <div id="times_sch" class="d-flex1 flex-wrap justify-content-around text-center" style="font-size: 13px;">
+                            
+                            <div class="right-border">
+                                <div class="text-muted"><b>Scheduled</b></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Start Date:</span> <span class="todo-start-date">--</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Start Time:</span> <span class="todo-deliver-date">--</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">End Time:</span> <span class="todo-deliver-time">--</span></div>
+                            </div>
+                        </div>
+                        <!-- Info Row -->
+                        <div id="times_today" class=" flex-wrap justify-content-around text-center" style="font-size: 13px;">
+                            
+                            <div class="right-border">
+                                <div class="text-muted"><b>Todays</b></div>
+                            </div>&nbsp;|&nbsp;
+                            
+                            <div class="right-border">
+                                <div><span class="text-success">Start Time:</span> <span class="todo-deliver-date">{{ now()->toDateString() }}</span></div>
+                            </div>&nbsp;|&nbsp;
+                            <div class="right-border">
+                                <div><span class="text-success">Total Time:</span> <span class="todo-total_time">2 hour</span></div>
+                            </div>
+                        </div>
+
+                    
+
+                    <div class="mt-2 mb-3 invited-users-block" style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+                        
+                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Description •</div>
+                            <div style="background:#fff;border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                <img src="/build/img/tera.svg" width="18" height="18" style="margin-right:10px;">
+                                <span style="color:#667085;font-size:13.5px;" id="descripion" class="descripn"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 mb-3 invited-users-block" style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+
+                        <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 10px;">• Meeting Link •</div>
+                        <div style="background:#fff;justify-content: space-between; border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
+                                <img src="/build/img/vidlink.png" width="18" height="18" style="margin-right:10px;">
+                                <span style="color:#667085;font-size:13.5px;" id="vidlink" >Meeting on Zoom</span>
+                                <span style="color:#fff; background: #1BC469; border-radius:5px; padding:5px; cursor:pointer;">
+                                    Join: <span id="days1"></span>D:<span id="hours1"></span>H:<span id="minutes1"></span>M:
+                                    <img src="/build/img/joinlink.png" width="18" height="18" style="margin-right:10px;">
+                                
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+</div>
+                    <!-- Invited User -->
+                    <div class="mt-2 mb-3 invited-users-block" style="background-color: #f8f9fa; padding:10px; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+
+                        
+                        <h5 class=" fw-bold" style="color: #1c2233;">Invited Users</h5>
+                        <p>Shared Meeting with </p>
+
+                        <!-- Info Row -->
+                        <div class="row text-center invited-users-list todo-members" style="font-size: 14px; margin:auto;">
+                            
+                            <div class="col-md-3 invit-box">
+                                <div class="invit-img">
+                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
+                                </div>
+                                <div class="invit-txt">User name</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-2 mb-3 todo-files-block files-container"
+                        style="background-color: #f8f9fa; padding:10px;  border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);">
+                        <h5 class="fw-bold" style="color: #1c2233; margin-bottom:8px;">Shared Files</h5>
+                        <div class="todo-files-list d-flex flex-column gap-2" style="font-size: 13px;"></div>
+                    </div>
+                   
+
+                    <div class="p-3 owner-state mt-3" style="background-color: #f5f5f5; text-align:center; border-radius: 10px;">
+                        <div class="todo-removed text-center"  style="padding:10px;margin-bottom:5px; background:#FEE9EA; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User was failed to complete the task.<span class="rem_reason"></span>
+                        </div>
+                        <div class="todo-complete text-center" style="padding:10px;margin-bottom:5px;text-align:center;  background:#E9FAF0; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+                            User has completed the task On Time
+                        </div>
+
+                        <div class="todo-waiting text-center" style="padding:10px; text-align:center; margin-bottom:5px; background:#FAE6c8; border-radius:10px;">
+                            <div class="text-center mb-2">
+                                <img src="{{ asset('build/img/waiting.png') }}" alt="waiting" width="40" height="40">
+                            </div>
+                            Waiting for user activity
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3 owned">
+
+                        <!-- Edit the Project -->
+                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
+                            <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
+                            </div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
+                        </div>
+                        <!-- Complete the Project -->
+                        <div id="markDoneBtn" class="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
+                            <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Complete" width="40" height="40">
+                            </div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Mark as Done</div>
+                        </div>
+
+
+                        <!-- Remove the Project -->
+                        <div style="text-align: center; flex: 1; cursor: pointer;"
+                            data-bs-toggle="modal" data-bs-target="#removeModel">
+
+                            <div style=" padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
+                            </div>
+
+                            <div class="markfail" style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
+                                Mark as Failed
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+            </div> <!-- End .p-3 -->
+
+        </div> <!-- End .modal-body -->
+
+    </div>
 </div>
 
 <!-- Denied Modal -->
@@ -766,7 +1461,7 @@
                         <button type="button" class="time-btn time-btn-12" data-value="12">12 Hour</button>
                     </div>
                     
-                    <div id="schdule_time" style="display:none;">
+                    <div id="schdule_time" class="row" style="display:none;">
 
                         <div class="col-md-4" id="startDateField" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
@@ -858,7 +1553,7 @@
                                 style="font-size: 13px; background-color: white; border-radius: 8px;">
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex1 gap-2 bg-white">
+                            <div class="d-flex1 gap-2 bg-white" style="justify-content:center; display:flex; justify-content: space-between;">
                                 <button class="priority active1" type="button" id="priorityLow" >Low</button>
                                 <button class="priority" type="button" id="priorityMiddle" >Middle</button>
                                 <button class="priority" type="button" id="priorityHigh" >High</button>
@@ -1666,6 +2361,451 @@
            // });
         </script>
         <script>
+
+let timerInterval;
+let customtimer = {{ $ctime }} * 1000;
+
+    setInterval(() => {
+        customtimer += 1000; // decrease by 1 second each tick
+    }, 1000);
+
+    const modal = document.getElementById("inreject");
+
+    document.querySelectorAll(".viewMeeting").forEach(btn => {
+        btn.addEventListener("click", function () {
+            // Get attributes
+            let dataid      = this.dataset.id;
+
+            //const editBtnInModal = document.getElementById('openEditFromView');
+            const editBtnInModal = document.querySelector('.edit_' + dataid);
+            const openModal = document.getElementById('inreject');
+
+            const rejectBtn = document.querySelector('.rejectbtn');
+            const inRejectModal = document.getElementById('inreject');
+            const editButton = document.querySelector('.edit_'+ dataid +' .editTodo');
+
+            if (rejectBtn && inRejectModal && editButton) {
+        rejectBtn.addEventListener('click', function () {
+            editButton.click();
+            const modalInstance = bootstrap.Modal.getInstance(inRejectModal);
+            /*
+            if (modalInstance) {
+                // Wait until modal is fully hidden
+                inRejectModal.addEventListener('hidden.bs.modal', function handler() {
+                    inRejectModal.removeEventListener('hidden.bs.modal', handler);
+                    // ✅ Trigger the editTodo click to open #todomodel
+                    editButton.click();
+                });
+                modalInstance.hide();
+            } else {
+                // Fallback for older Bootstrap/jQuery modal
+                $(inRejectModal).on('hidden.bs.modal', function handler() {
+                    $(inRejectModal).off('hidden.bs.modal', handler);
+                    editButton.click();
+                }).modal('hide');
+            }
+                */
+        });
+    }
+
+            /*
+            if (triggerBtn && editBtnInModal) {
+                triggerBtn.addEventListener('click', function () {
+                    editBtnInModal.click(); // ✅ Trigger the other button’s click event
+                });
+            }
+                */
+
+
+            let eidtdiv = ".edit_" + dataid;
+           
+
+            for (let attr of this.attributes) {
+            if (attr.name.startsWith('data-')) {
+                  //  editBtnInModal.setAttribute(attr.name, attr.value);
+                }
+            }
+
+            document.getElementById("remid").value = dataid;
+
+            const markDoneBtn = document.getElementById('markDoneBtn');
+            if (markDoneBtn) {
+                markDoneBtn.dataset.id = dataid; // set the data-id dynamically
+            }
+
+
+let filecont = document.querySelector('.files-container');
+filecont.style.display = "block";
+
+
+
+let files = JSON.parse(this.dataset.files || "[]");
+//let filesList = document.querySelector('.todo-files-list');
+
+
+const list = document.getElementById('createPdfList');
+   // const addTile = list.querySelector('.pdf-add-tile');
+
+    // Remove any existing tiles (previous create/edit)
+    //list.querySelectorAll('.d-flex.align-items-center.gap-2.px-2').forEach(el => el.remove());
+
+    
+
+// Hide container if no files
+
+
+
+    filecont.style.display = "none";
+
+
+
+
+
+
+            let title       = this.dataset.title;
+            let description = this.dataset.description;
+            let priority    = this.dataset.priority || "Normal";
+            let isPrivate   = this.dataset.is_private;
+            let userimg     = this.dataset.image;
+            let dataown     = this.dataset.own;
+            let owner       = this.dataset.owner;
+            let reason      = this.dataset.reason;
+            let iscomplete  = this.dataset.complete;
+
+            let forshared = document.querySelector('.forshared');
+            
+            
+
+            let todfinish = document.querySelector('.dev_finish');
+            let ownerstate = document.querySelector('.owner-state');
+            let remreason = document.querySelector('.rem_reason');
+            let todremove = document.querySelector('.todo-removed');
+            let todcomplete = document.querySelector('.todo-complete');
+            let todwaiting = document.querySelector('.todo-waiting');
+
+            document.getElementById("isremove").value = 0;
+
+            todremove.style.display = "none";
+            todcomplete.style.display = "none";
+            todwaiting.style.display = "none";
+            
+
+          //  if(owner == "0"){
+                //todfinish.style.display = "block";
+               // forshared.style.display = "none";
+              //  ownerstate.style.display = "none";
+               // document.getElementById("setcomplete").value = 2;
+          //  }else{
+                //todfinish.style.display = "none";
+               // forshared.style.display = "block";
+               // ownerstate.style.display = "block";
+               // document.getElementById("setcomplete").value = 1;
+               // document.getElementById("isremove").value = 1;
+
+             //   if(iscomplete == "-1"){
+                   // todremove.style.display = "block";
+                   // remreason.innerText = reason;
+             //   }else if(iscomplete == "2"){
+                   // todcomplete.style.display = "block";
+             //   }else{
+                   // todwaiting.style.display = "block";
+              //  }
+
+              //  if(isPrivate == "1"){
+                    //forshared.style.display = "none";
+              //  }else{
+                   // forshared.style.display = "block";
+              //  }
+
+         //   }
+
+            
+
+
+            let edivbtn = document.querySelector('.openEditFromView');
+            edivbtn.style.display = "none";
+            let donebtn = document.querySelector('.markDoneBtn');
+            donebtn.style.display = "block";
+
+            let markfial = document.querySelector('.markfail');
+            markfial.innerText = "Mark as Failed";
+
+            
+
+            let removals = document.querySelectorAll('.removal');
+            let faileds = document.querySelectorAll('.failed');
+
+            document.getElementById("iscomplete").value = "-1";
+            
+            removals.forEach(el => {
+                el.style.display = "none";
+            });
+
+            faileds.forEach(el => {
+                el.style.display = "block";
+                
+            });
+
+            //let ownerstate = document.querySelector('.owner-state');
+
+            let ownedEl = document.querySelector('.owned');
+            if (dataown == "0") {
+                ownedEl.style.display = "none";
+                ownerstate.style.display = "none";
+            } else if (dataown == "private"){
+                ownedEl.style.display = "flex";
+                edivbtn.style.display = "block";
+                donebtn.style.display = "none";
+                markfial.innerText = "Remove";
+                document.getElementById("isremove").value = 1;
+                removals.forEach(el => {
+                    el.style.display = "block";
+                });
+
+                ownerstate.style.display = "none";
+
+                faileds.forEach(el => {
+                    el.style.display = "none";
+                    document.getElementById("iscomplete").value = 0;
+                });
+                //show edit as well
+            } else if (dataown == "today") {
+                //check if timer starts then show otherwise hide it
+
+                let timerDiv = document.querySelector(`.counter-div[data-todo-id="${dataid}"]`);
+                let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
+
+                let ownedEl = document.querySelector('.owned');
+                
+                if (isReminderActive ) {
+                    ownedEl.style.display = "flex";
+                    if(owner == "1"){
+                        ownerstate.style.display = "block";
+                    }else{
+                        ownerstate.style.display = "none";
+                    }
+                    
+                } else {
+                    ownedEl.style.display = "none";
+                    ownerstate.style.display = "none";
+                }
+            }
+
+
+           
+            let imgTag = document.querySelector('.user-todo-img');
+            imgTag.src = userimg;
+
+            
+            let descripion    = this.dataset.sections;
+
+            let startDate   = this.dataset.start_date || "";
+            let endDate   = this.dataset.end_date || "";
+            let startTime   = this.dataset.start_time || "";
+            let endTime     = this.dataset.end_time || "";
+
+            document.getElementById("descripion").innerText = descripion;
+
+            let [year, month, day] = endDate.split('-').map(Number);
+            let [hour, minute] = endTime.split(':').map(Number);
+            //let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            let endDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
+            endDateTime = new Date(endDateTime.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
+
+           // alert(endDate + " " + endTime);
+
+            //let endDateTime = new Date(`${endDate} ${endTime}`).getTime();
+            const CIRC = 157; 
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            function updateTimer() {
+
+            //    const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
+           //     const serverDate = new Date(serverTimestamp);
+           // const now = serverDate; // new Date().getTime();
+           // const distance = endDateTime - now;
+
+            const serverTimestamp = customtimer; // {{ $ctime }} * 1000; // already adjusted from controller
+            
+            const serverDate = new Date(serverTimestamp);
+            const now = serverDate; // your reference time from backend
+            const distance = endDateTime - now;
+
+
+        if (distance <= 0) {
+            document.getElementById("days").innerText = 0;
+            document.getElementById("hours").innerText = 0;
+            document.getElementById("minutes").innerText = 0;
+
+            document.getElementById("days-circle").style.strokeDashoffset = CIRC;
+            document.getElementById("hours-circle").style.strokeDashoffset = CIRC;
+            document.getElementById("minutes-circle").style.strokeDashoffset = CIRC;
+
+            clearInterval(timerInterval);
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+
+        document.getElementById("days1").innerText = days;
+        document.getElementById("hours1").innerText = hours;
+        document.getElementById("minutes1").innerText = minutes;
+
+        // Animate circle progress
+        document.getElementById("days-circle").style.strokeDashoffset = CIRC - (days % 365) / 365 * CIRC;
+        document.getElementById("hours-circle").style.strokeDashoffset = CIRC - (hours / 24) * CIRC;
+        document.getElementById("minutes-circle").style.strokeDashoffset = CIRC - (minutes / 60) * CIRC;
+
+
+        const hoursRemaining = distance / (1000 * 60 * 60);
+
+        const hoursCircle = document.getElementById("hours-circle");
+        const minutesCircle = document.getElementById("minutes-circle");
+
+        if (hoursRemaining < 1) {
+            hoursCircle.style.stroke = "#dc2626";   // red (<1h)
+            minutesCircle.style.stroke = "#dc2626";
+        } else if (hoursRemaining < 3) {
+            hoursCircle.style.stroke = "#f97316";   // orange (<3h)
+            minutesCircle.style.stroke = "#f97316";
+        } else {
+            hoursCircle.style.stroke = "#22c55e";   // green (default)
+            minutesCircle.style.stroke = "#22c55e";
+        }
+
+    }
+
+    updateTimer();
+    //timerInterval = setInterval(updateTimer, 60000);
+    timerInterval = setInterval(updateTimer, 1000);
+
+    //const serverTimestamp = {{ \Carbon\Carbon::now()->timestamp }} * 1000;
+                //const serverDate = new Date(serverTimestamp);
+            //let today = new Date().toISOString().split("T")[0];
+
+            let today = "{{ now()->format('Y-m-d') }}";
+
+            
+
+            if (startDate === today) {
+               
+                //show times_today
+                document.getElementById("times_today").style.display = "flex";
+                document.getElementById("times_sch").style.display = "none";
+
+                let tottime       = this.dataset.total;
+
+                if(tottime == "0" || tottime == ""){
+                    
+
+                    let start = new Date(`1970-01-01T${startTime}:00`);
+                    let end = new Date(`1970-01-01T${endTime}:00`);
+
+                    // Get difference in milliseconds
+                    let diffMs = end - start;
+
+                    // Convert to hours & minutes
+                    let diffHrs = Math.floor(diffMs / 1000 / 60 / 60);
+                    let diffMins = Math.floor((diffMs / 1000 / 60) % 60);
+
+                    tottime = diffMins === 0 ? `${diffHrs} hours` : `${diffHrs} hours ${diffMins} min`;
+
+                }else{
+                    tottime = tottime + " Hours";
+                }
+                    
+                modal.querySelector(".todo-total_time").innerText = tottime;
+
+                
+
+            }else{
+                
+                document.getElementById("times_sch").style.display = "flex";
+                document.getElementById("times_today").style.display = "none";
+                
+                // show times_sch
+                modal.querySelector(".todo-start-date").innerText = formatDate(startDate);
+                // Deliver → start_time
+                modal.querySelector(".todo-deliver-date").innerText = startTime || "--";
+                // Deliver Time → end_time
+                modal.querySelector(".todo-deliver-time").innerText = endTime || "--";
+
+            }
+
+            // Set title & description
+            modal.querySelector(".todo-title").innerText = title;
+           // modal.querySelector(".todo-description").innerText = description || "No description.";
+
+            // Priority
+           // let priorityBadge = modal.querySelector(".todo-priority");
+          //  priorityBadge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> ${priority}`;
+
+            let priorityBadge = modal.querySelector(".todo-priority");
+
+            let color = "green"; // default
+            if (priority.toLowerCase() === "middle") {
+                color = "orange";
+            } else if (priority.toLowerCase() === "high") {
+                color = "red";
+            }
+
+            priorityBadge.innerHTML = `
+            <i class="bi bi-circle-fill me-1" style="font-size: 8px; color: ${color};"></i> 
+            <span style="color: ${color}; font-weight: 600;">${priority}</span>
+            `;
+
+            // Private vs Shared
+            let typeBadge = modal.querySelector(".todo-type");
+            let sharedBlock = modal.querySelector(".invited-users-block");
+            
+            if (isPrivate == "1") {
+                typeBadge.innerText = "Private Meeting";
+                sharedBlock.style.display = "none";
+                modal.querySelector(".todohead").classList.remove("shared");
+            } else {
+                typeBadge.innerText = "Shared Meeting";
+                sharedBlock.style.display = "block";
+                modal.querySelector(".todohead").classList.add("shared");
+            }
+
+
+            let members = JSON.parse(this.dataset.members || "[]");
+            
+            let membersContainer = modal.querySelector(".todo-members");
+            membersContainer.innerHTML = ""; // clear old ones
+
+            if (members && members.length) {
+                members.forEach(m => {
+                    let div = document.createElement("div");
+                    div.classList.add("col-md-3", "invit-box");
+                    div.innerHTML = `
+                        <div class="invit-img">
+                            <img src="${m.image}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
+                        </div>
+                        <div class="invit-txt">${m.name}</div>
+                    `;
+                    membersContainer.appendChild(div);
+                });
+            } else {
+                membersContainer.innerHTML = `<p class="text-muted">No invited users.</p>`;
+            }
+
+
+        });
+    });
+function formatDate(dateStr) {
+    if (!dateStr) return "--";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr; // fallback if invalid
+    return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const userDivs = document.querySelectorAll('.user_div');
