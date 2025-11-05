@@ -256,7 +256,7 @@
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
                                 + Mobile Task
                             </button>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#webtask"
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#webtask2"
                                 style="background-color:blue ; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer;">
                                 + Web Task
                             </button>
@@ -548,7 +548,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -597,7 +597,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px;  background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -645,7 +645,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -714,7 +714,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -762,7 +762,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -810,7 +810,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -879,7 +879,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -928,7 +928,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -976,7 +976,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1045,7 +1045,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1094,7 +1094,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1142,7 +1142,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1211,7 +1211,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1260,7 +1260,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1308,7 +1308,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1377,7 +1377,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1426,7 +1426,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1474,7 +1474,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1543,7 +1543,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1592,7 +1592,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1640,7 +1640,7 @@
                                     <!-- Task Image -->
                                     <div class="me-2">
                                         <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                            style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                            style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                     </div>
 
                                     <!-- Task Content -->
@@ -1729,7 +1729,6 @@
                                 el.style.color = 'white';
                             }
                         </script>
-
                     </div>
                     <!-- cards -->
                     <div class="mb-2">
@@ -2031,7 +2030,7 @@
 
                                     <!-- Bottom Stats Row -->
                                     <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px;  padding: 8px 10px;flex-wrap:wrap">
+                                        style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px; padding: 8px 10px;flex-wrap:wrap">
 
                                         <!-- Tickets -->
                                         <div style="color: #1e293b; white-space: nowrap;">
@@ -2064,7 +2063,6 @@
                                     </div>
 
                                 </div>
-
                             </div>
                             <!-- 4 -->
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -2232,7 +2230,7 @@
                                         <!-- Task Image -->
                                         <div class="me-2">
                                             <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                                style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                         </div>
 
                                         <!-- Task Content -->
@@ -2281,7 +2279,7 @@
                                         <!-- Task Image -->
                                         <div class="me-2">
                                             <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                                style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                         </div>
 
                                         <!-- Task Content -->
@@ -2329,7 +2327,7 @@
                                         <!-- Task Image -->
                                         <div class="me-2">
                                             <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                                style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                         </div>
 
                                         <!-- Task Content -->
@@ -2477,6 +2475,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false });
                 window.location.reload();
             });
+        });
+    };
+
+    // Web task delete (SweetAlert)
+    window.webTaskDelete = function(id){
+        if (!(window.Swal && typeof Swal.fire === 'function')) {
+            if (!confirm('Delete this web task?')) return;
+            fetch(`{{ url('/webtasks') }}/${id}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(res){ return res.json(); })
+                .then(function(){ window.location.reload(); });
+            return;
+        }
+        Swal.fire({
+            title: 'Delete Web Task?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ea5455',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
+        }).then(function(result){
+            if (!result.isConfirmed) return;
+            fetch(`{{ url('/webtasks') }}/${id}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(res){ return res.json(); })
+                .then(function(){ Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false }); window.location.reload(); });
         });
     };
 
@@ -2807,7 +2831,6 @@ document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({ icon: 'success', title: 'Task created', timer: 1000, showConfirmButton: false });
         });
     }
-
     function createMarker(x, y) {
         if (!markerLayer) return;
         if (currentMarker) { currentMarker.remove(); currentMarker = null; }
@@ -3185,40 +3208,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // save marker: crop selected region from base image to get base64 PNG
+    // save marker: return the FULL base image (no cropping)
     var saveMarkerBtn = document.getElementById('save-marker');
     function cropMarkerToBase64() {
-        if (!currentMarker || !previewImg) return null;
-        var imgRect = previewImg.getBoundingClientRect();
-        var layerRect = markerLayer.getBoundingClientRect();
-        var markerRect = currentMarker.getBoundingClientRect();
-        // compute marker position relative to the image pixel space
-        var scaleX = previewImg.naturalWidth / imgRect.width;
-        var scaleY = previewImg.naturalHeight / imgRect.height;
-        var leftPx = (markerRect.left - layerRect.left) * scaleX;
-        var topPx = (markerRect.top - layerRect.top) * scaleY;
-        var widthPx = markerRect.width * scaleX;
-        var heightPx = markerRect.height * scaleY;
-
-        var canvas = document.createElement('canvas');
-        canvas.width = Math.max(1, Math.round(widthPx));
-        canvas.height = Math.max(1, Math.round(heightPx));
-        var ctx = canvas.getContext('2d');
-
-        var tmpImg = new Image();
-        tmpImg.src = previewImg.src;
-        // draw synchronous if cached; else async onload
-        function draw() {
-            ctx.drawImage(tmpImg, Math.round(leftPx), Math.round(topPx), Math.round(widthPx), Math.round(heightPx), 0, 0, canvas.width, canvas.height);
-            try { return canvas.toDataURL('image/png'); } catch(e) { return null; }
-        }
-        if (tmpImg.complete) {
-            return draw();
-        } else {
-            // fallback async not used in this flow
-            tmpImg.onload = function(){ draw(); };
-            return null;
-        }
+        if (!previewImg) return null;
+        try {
+            var src = previewImg.src || '';
+            return (src && src.indexOf('data:image') === 0) ? src : null;
+        } catch(_) { return null; }
     }
     if (saveMarkerBtn) saveMarkerBtn.addEventListener('click', function(){
         var payload = {
@@ -3421,6 +3418,68 @@ function taskDelete(taskId){
         }).catch(function(){ window.location.reload(); });
     } catch (_) { window.location.reload(); }
 }
+// Mobile-specific confirm wrapper
+function taskDeleteConfirm(taskId){
+    try {
+        if (window.Swal && typeof Swal.fire === 'function') {
+            Swal.fire({
+                title: 'Delete Mobile Task?',
+                text: 'This will remove the task and its issues.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ea5455',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete'
+            }).then(function(result){
+                if (!result.isConfirmed) return;
+                fetch(`{{ url('/tasks') }}/${taskId}`, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
+                }).then(function(res){ return res.json(); }).then(function(){
+                    Swal.fire({ icon: 'success', title: 'Deleted', timer: 900, showConfirmButton: false });
+                    window.location.reload();
+                });
+            });
+        } else {
+            if (!confirm('Delete Mobile Task?')) return;
+            fetch(`{{ url('/tasks') }}/${taskId}`, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(function(res){ return res.json(); }).then(function(){ window.location.reload(); });
+        }
+    } catch(_) { /* noop */ }
+}
+
+// Web tasks: dedicated delete hitting webtasks.destroy with its own confirm
+function webTaskDelete(taskId){
+    try {
+        var exec = function(){
+            if (!taskId) return;
+            var url = "{{ route('webtasks.destroy', '__ID__') }}".replace('__ID__', encodeURIComponent(taskId));
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            }).then(function(r){ return r.json(); }).then(function(){ window.location.reload(); }).catch(function(){ window.location.reload(); });
+        };
+        if (window.Swal && typeof Swal.fire === 'function') {
+            Swal.fire({
+                title: 'Delete Web Task?',
+                text: 'This will remove the web task and its issues.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ea5455',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete'
+            }).then(function(result){ if(result.isConfirmed){ exec(); } });
+        } else {
+            if (confirm('Delete Web Task?')) { exec(); }
+        }
+    } catch(_) { /* noop */ }
+}
 </script>
 
 
@@ -3441,40 +3500,7 @@ function taskDelete(taskId){
                     <small class="text-muted">Create Task</small>
                 </div>
 
-                <!-- Task Type Buttons -->
-                {{-- <div
-                    class="d-flex gap-2 p-1 rounded"
-                    style="background: #f2f2f2; border-radius: 10px;">
-                    <button
-                        id="btn-mobile"
-                        class="btn btn-sm"
-                        style="background-color: #28c76f; color: white;"
-                        onclick="
-        document.getElementById('btn-mobile').style.backgroundColor = '#28c76f';
-        document.getElementById('btn-mobile').style.color = 'white';
-        document.getElementById('btn-web').style.backgroundColor = 'transparent';
-        document.getElementById('btn-web').style.color = '#6c757d';
-        document.getElementById('btn-employee').style.backgroundColor = 'transparent';
-        document.getElementById('btn-employee').style.color = '#6c757d';
-      ">Mobile Task</button>
-
-                    <button
-                        id="btn-web"
-                        class="btn btn-sm"
-                        style="background-color: transparent; color: #6c757d;"
-                        onclick="
-        document.getElementById('btn-web').style.backgroundColor = '#28c76f';
-        document.getElementById('btn-web').style.color = 'white';
-        document.getElementById('btn-mobile').style.backgroundColor = 'transparent';
-        document.getElementById('btn-mobile').style.color = '#6c757d';
-        document.getElementById('btn-employee').style.backgroundColor = 'transparent';
-        document.getElementById('btn-employee').style.color = '#6c757d';
-      ">Web Task</button>
-
-                   
-                </div> --}}
-
-                <!-- Close Button -->
+                 
 
             </div>
 
@@ -3551,7 +3577,7 @@ function taskDelete(taskId){
                             <p id="uploadText" class="text-muted m-0">
                                 Upload Or Drag<br><small>PDF, JPG, PNG</small>
                             </p>
-                            <img id="previewImage" src="" style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); object-fit:contain;" />
+                            <img id="previewImage" src="" style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); " />
                             <div id="markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"
                                  ondragover="event.preventDefault();"
                                  ondrop="event.preventDefault(); var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); if(previewImg){ previewImg.style.display='none'; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } }"></div>
@@ -3631,20 +3657,18 @@ function taskDelete(taskId){
                             @foreach(($tasks ?? []) as $task)
                             @php
                                 $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
-                                // Thumbnail for the list card: prefer task's own image, else board, else placeholder
-                                $thumb = !empty($task->mark_image_path)
-                                    ? asset('storage/'.ltrim($task->mark_image_path,'/'))
-                                    : (optional($task->ticket)->board_image_path
-                                        ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
-                                        : asset('build/img/dooted img.svg'));
-                                // Viewer image should prioritize the task-specific image so each task shows its own picture
-                                $viewerImg = !empty($task->mark_image_path)
-                                    ? asset('storage/'.ltrim($task->mark_image_path,'/'))
-                                    : (optional($task->ticket)->board_image_path
-                                    ? asset('storage/'.ltrim(optional($task->ticket)->board_image_path,'/'))
-                                        : asset('build/img/dooted img.svg'));
+                                $thumb = (!empty($task->board_image_path)
+                                        ? asset('storage/'.ltrim($task->board_image_path,'/'))
+                                        : (!empty($task->mark_image_path)
+                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                            : asset('build/img/dooted img.svg')));
+                                $viewerImg = (!empty($task->board_image_path)
+                                        ? asset('storage/'.ltrim($task->board_image_path,'/'))
+                                        : (!empty($task->mark_image_path)
+                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                            : asset('build/img/dooted img.svg')));
                             @endphp
-                            <div class="d-flex p-2 rounded mt-2 task-card" style="background:#ffffff; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
+                            <div class="d-flex p-2 rounded mt-2 task-card" style="background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
                                  data-board="{{ $viewerImg }}"
                                  data-issues='@json($task->issues ?? [])'
                                  data-title="{{ e($task->title) }}"
@@ -3660,7 +3684,7 @@ function taskDelete(taskId){
                                  data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
                                  onclick="openTaskViewer(this)">
                                 <div class="me-2">
-                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 100px; height: auto; max-height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
+                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px;   background: transparent; border: none; padding: 0; display:block;">
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -3675,8 +3699,8 @@ function taskDelete(taskId){
                                             <div class="menu-box" style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;" onclick="event.stopPropagation();">
                                                 <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskDelete('{{ (string)($task->_id ?? $task->id) }}')">
-                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskEdit('{{ (string)($task->_id ?? $task->id) }}')">
+                                                    <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskDeleteConfirm('{{ (string)($task->_id ?? $task->id) }}')">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: default; opacity:.4;">
                                                 </div>
                                             </div>
                                         </div>
@@ -3931,7 +3955,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -3959,11 +3983,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4004,7 +4027,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -4031,11 +4054,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4073,7 +4095,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -4101,11 +4123,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4179,6 +4200,329 @@ function taskDelete(taskId){
         </div>
     </div>
 </div>
+<!-- Web Task (functional clone) -->
+<div class="modal fade" id="webtask2" tabindex="-1" aria-hidden="true" data-bs-focus="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header d-flex justify-content-between flex-wrap align-items-start" style="background: #fff;">
+                <div>
+                    <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Web Task</h5>
+                    <small class="text-muted">Create Task</small>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
+                        <small class="text-muted">Ticket Details</small>
+                        <div class="d-flex gap-2 mt-2">
+                            <select id="wt-select-project" name="project_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Project</option>
+                                @if(isset($projects) && count($projects))
+                                    @foreach($projects as $project)
+                                        <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <select id="wt-select-ticket" name="ticket_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Ticket</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver Date</label><br>
+                        <small class="text-muted">Tasks must be done in this duration</small>
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="text-center p-2 text-white" style="background: #28c76f; border-radius: 8px; flex: 1;">
+                                <small>Start Date</small><br>
+                                <span id="wt-ticket-start-date" class="fw-bold">--</span>
+                            </div>
+                            <div class="text-center p-2 text-white" style="background: #ea5455; border-radius: 8px; flex: 1;">
+                                <small>Deliver Date</small><br>
+                                <span id="wt-ticket-end-date" class="fw-bold">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div id="wt-uploadBox"
+                             onclick="document.getElementById('wt-fileInput').click();"
+                             ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
+                             ondragleave="this.style.borderColor='#ccc';"
+                             ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; } if(tb){ tb.style.display='none'; } }"
+                             style="background-color: #f7f7f7; height: 100%; min-height: 250px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
+                            <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG, PNG</small></p>
+                            <img id="wt-previewImage" src="" style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px);  " />
+                            <div id="wt-markerLayer" style="display:none; position:absolute; inset:10px; pointer-events:auto;"></div>
+                            <div id="wt-markerToolbar" style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                <button id="wt-marker-shape-square" type="button" class="btn btn-sm" style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                        <circle cx="5" cy="5" r="2" fill="#1f2a57"/>
+                                        <circle cx="19" cy="5" r="2" fill="#1f2a57"/>
+                                        <circle cx="5" cy="19" r="2" fill="#1f2a57"/>
+                                        <circle cx="19" cy="19" r="2" fill="#1f2a57"/>
+                                    </svg>
+                                </button>
+                                <button id="wt-marker-shape-circle" type="button" class="btn btn-sm" style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="8" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                        <path d="M15 6 A8 8 0 0 1 18 12" fill="none" stroke="#8fa3bf" stroke-linecap="round" stroke-width="2"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" id="wt-fileInput" accept=".jpg,.jpeg,.png,.pdf" style="display:none;"
+                               onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ p.src=e.target.result; p.style.display='block'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; }; r.readAsDataURL(f);} else { p.style.display='none'; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; }" />
+                    </div>
+                    <div class="col-md-7" style="border: 3px solid #f7f7f7;">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
+                                    <small class="text-muted">Total Task: {{ isset($webtasks) ? count($webtasks) : 0 }}</small>
+                                </div>
+                                <div style="color: #ea5455; font-size: 12px;">Max. 4 Tasks each Ticket</div>
+                            </div>
+
+                            @foreach(($webtasks ?? []) as $task)
+                            @php
+                                $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                $thumb = (!empty($task->board_image_path)
+                                        ? asset('storage/'.ltrim($task->board_image_path,'/'))
+                                        : (!empty($task->mark_image_path)
+                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                            : asset('build/img/dooted img.svg')));
+                                $viewerImg = (!empty($task->board_image_path)
+                                        ? asset('storage/'.ltrim($task->board_image_path,'/'))
+                                        : (!empty($task->mark_image_path)
+                                            ? asset('storage/'.ltrim($task->mark_image_path,'/'))
+                                            : asset('build/img/dooted img.svg')));
+                            @endphp
+                            <div class="d-flex p-2 rounded mt-2 task-card" style="background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
+                                 data-board="{{ $viewerImg }}"
+                                 data-issues='@json($task->issues ?? [])'
+                                 data-title="{{ e($task->title) }}"
+                                 data-project-id="{{ (string)($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id) }}"
+                                 data-ticket-id="{{ (string)($task->ticket_id ?? optional($task->ticket)->_id ?? optional($task->ticket)->id) }}"
+                                 data-project-title="{{ e(optional($task->project)->title ?? '') }}"
+                                 data-project-logo="{{ $logo }}"
+                                 data-ticket-code="{{ e(optional($task->ticket)->code ?? '') }}"
+                                 data-ticket-title="{{ e(optional($task->ticket)->title ?? '') }}"
+                                 data-task-id="{{ 'WTSK-'.str_pad((string)(1000 + $loop->iteration), 4, '0', STR_PAD_LEFT) }}"
+                                 data-section="{{ e(optional($task->ticket)->section_name ?? 'Section') }}"
+                                 data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
+                                 data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
+                                 onclick="openTaskViewer(this)">
+                                <div class="me-2">
+                                    <img src="{{ $thumb }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px;  background: transparent; border: none; padding: 0; display:block;">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
+                                            <img src="{{ $logo }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
+                                            {{ $task->title }}
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
+                                            <button onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
+                                                <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
+                                            </button>
+                                            <div class="menu-box" style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;" onclick="event.stopPropagation();">
+                                                <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
+                                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                                                    <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="webTaskDelete('{{ (string)($task->_id ?? $task->id) }}')">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: default; opacity:.4;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 12px; color: #6c757d;">{{ optional($task->ticket)->code ? optional($task->ticket)->code.' - ' : '' }}{{ optional($task->ticket)->title ?? 'Ticket' }}</div>
+                                    <div style="font-size: 13px; margin-top: 2px;">{{ optional($task->ticket)->description ?? '-' }}</div>
+                                    <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
+                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
+                                            <small>Start: {{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '--') }}</small>
+                                        </div>
+                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
+                                            <small>Deliver: {{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '--') }}</small>
+                                        </div>
+                                        <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
+                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;"> {{ str_pad((string)($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button id="wt-create-task-save" type="button" class="btn text-white" style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal">Save and Close</button>
+                <button type="button" class="btn text-white" style="background-color: #f98f3e; border-radius: 6px;" data-bs-dismiss="modal">Save & add Task</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Web Task Issue Modal -->
+<div class="modal fade" id="wt-markerDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:12px;">
+            <div class="modal-header" style="background:#fff;">
+                <div>
+                    <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue</h6>
+                    <small class="text-muted">Create an Issue</small>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label" style="font-weight:600;color:#2b2d42;">Type the Title</label>
+                    <div style="position:relative;">
+                        <input type="text" id="wt-marker-title" class="form-control form-control-sm" placeholder="Type the Title" style="border:3px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                        <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" style="font-weight:600;color:#2b2d42;">Describe the issue</label>
+                    <div style="position:relative;">
+                        <input type="text" id="wt-marker-description" class="form-control form-control-sm" placeholder="Describe the issue" style="border:3px solid #ced4da;border-radius:10px;background:#fff;color:#2b2d42;height:38px;padding-right:38px;" />
+                        <img src="{{ asset('assets/img/title.svg') }}" alt="title" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-2">
+                    <div class="flex-fill">
+                        <label class="form-label">Start Date</label>
+                        <div style="position:relative;">
+                            <input type="date" id="wt-marker-start" class="form-control form-control-sm" style="padding-right:38px;border-radius:10px;" />
+                            <img src="{{ asset('assets/img/date.png') }}" alt="date" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                        </div>
+                    </div>
+                    <div class="flex-fill">
+                        <label class="form-label">Deliver Date</label>
+                        <div style="position:relative;">
+                            <input type="date" id="wt-marker-end" class="form-control form-control-sm" style="padding-right:38px;border-radius:10px;" />
+                            <img src="{{ asset('assets/img/date.png') }}" alt="date" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" id="wt-save-marker" class="btn btn-light btn-sm">Save & Close</button>
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    var wtProjectSelect = document.getElementById('wt-select-project');
+    var wtTicketSelect = document.getElementById('wt-select-ticket');
+    var wtTicketCache = {};
+    var wtStartDateSpan = document.getElementById('wt-ticket-start-date');
+    var wtEndDateSpan = document.getElementById('wt-ticket-end-date');
+    var wtLayer = document.getElementById('wt-markerLayer');
+    var wtPreview = document.getElementById('wt-previewImage');
+    var wtToolbar = document.getElementById('wt-markerToolbar');
+    var wtCurrentMarker = null;
+    var wtCurrentShape = 'square';
+    var wtCurrentColor = '#ea5455';
+    var wtPlacing = false;
+    var wtIssues = [];
+    var wtBadgeCounter = 0;
+
+    function wtFormatDate(iso){ if(!iso) return '--'; var s=(''+iso).substring(0,10); var p=s.split('-'); if(p.length!==3) return '--'; return p[2]+':'+p[1]+':'+p[0]; }
+    function wtRenderDates(t){ if(!wtStartDateSpan||!wtEndDateSpan) return; if(!t){ wtStartDateSpan.textContent='--'; wtEndDateSpan.textContent='--'; return;} wtStartDateSpan.textContent=wtFormatDate(t.start_date); wtEndDateSpan.textContent=wtFormatDate(t.end_date); }
+
+    function wtSetSelectLoading(sel,loading){ if(!sel) return; sel.disabled=!!loading; if(loading){ sel.innerHTML='<option>Loading...</option>'; } }
+    function wtLoadTickets(pid){ if(!wtTicketSelect){return;} if(!pid){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; return;} wtSetSelectLoading(wtTicketSelect,true); var url=new URL('{{ route('webtasks.tickets') }}', window.location.origin); url.searchParams.set('project_id', pid); fetch(url.toString(),{ headers:{'X-Requested-With':'XMLHttpRequest'} }).then(function(r){ return r.json(); }).then(function(resp){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; var items=(resp && Array.isArray(resp.tickets))?resp.tickets:[]; wtTicketCache={}; items.forEach(function(t){ var opt=document.createElement('option'); opt.value=t.id; opt.textContent=t.title||'Untitled'; wtTicketSelect.appendChild(opt); wtTicketCache[t.id]=t; }); wtTicketSelect.disabled=false; wtRenderDates(null); }).catch(function(){ wtTicketSelect.innerHTML='<option value="">Failed to load tickets</option>'; wtTicketSelect.disabled=false; }); }
+
+    if (wtProjectSelect) wtProjectSelect.addEventListener('change', function(e){ wtLoadTickets(e.target.value); });
+    if (wtTicketSelect) wtTicketSelect.addEventListener('change', function(e){ var t=wtTicketCache[e.target.value]; wtRenderDates(t||null); try{ var p=document.getElementById('wt-previewImage'); var txt=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(p){ p.src=''; p.style.display='none'; } if(txt){ txt.style.display='block'; txt.innerHTML='Upload Or Drag<br><small>PDF, JPG, PNG</small>'; } if(l){ l.style.display='none'; l.innerHTML=''; } if(tb){ tb.style.display='none'; } var fi=document.getElementById('wt-fileInput'); if(fi) fi.value=''; } catch(_){} });
+
+    var wtSq = document.getElementById('wt-marker-shape-square');
+    var wtCi = document.getElementById('wt-marker-shape-circle');
+    if (wtSq) wtSq.addEventListener('click', function(e){ e.stopPropagation(); wtCurrentShape='square'; this.style.background='#e9ecef'; if(wtCi) wtCi.style.background='#f8f9fa'; wtPlacing=true; if(wtLayer){ try{ wtPreview.style.display='block'; wtLayer.style.display='block'; }catch(_){} wtLayer.style.cursor='crosshair'; } });
+    if (wtCi) wtCi.addEventListener('click', function(e){ e.stopPropagation(); wtCurrentShape='circle'; this.style.background='#e9ecef'; if(wtSq) wtSq.style.background='#f8f9fa'; wtPlacing=true; if(wtLayer){ try{ wtPreview.style.display='block'; wtLayer.style.display='block'; }catch(_){} wtLayer.style.cursor='crosshair'; } });
+
+    function wtCreateMarker(x,y){ if(!wtLayer) return; if(wtCurrentMarker){ wtCurrentMarker.remove(); wtCurrentMarker=null; } var m=document.createElement('div'); m.className='marker-box'; m.style.position='absolute'; m.style.left=(x-40)+'px'; m.style.top=(y-40)+'px'; m.style.width='80px'; m.style.height='80px'; m.style.border='2px solid '+wtCurrentColor; m.style.background='rgba(0,0,0,0.0)'; m.style.cursor='move'; m.style.userSelect='none'; m.style.pointerEvents='auto'; m.style.borderRadius= (wtCurrentShape==='circle'?'50%':'6px'); var plus=document.createElement('div'); plus.textContent='+'; plus.title='Add details'; plus.style.position='absolute'; plus.style.right='-10px'; plus.style.top='-10px'; plus.style.width='24px'; plus.style.height='24px'; plus.style.borderRadius='50%'; plus.style.background=wtCurrentColor; plus.style.color='#fff'; plus.style.display='flex'; plus.style.alignItems='center'; plus.style.justifyContent='center'; plus.style.cursor='pointer'; m.appendChild(plus); m.addEventListener('mousedown', function(ev){ ev.stopPropagation(); }); m.addEventListener('mouseup', function(ev){ ev.stopPropagation(); }); m.addEventListener('click', function(ev){ ev.stopPropagation(); }); wtLayer.appendChild(m); wtCurrentMarker=m; if (typeof $==='function' && $.fn.draggable && $.fn.resizable){ $(m).draggable({ containment: wtLayer }); $(m).resizable({ aspectRatio: wtCurrentShape==='circle', containment: wtLayer, handles:'n, e, s, w, ne, se, sw, nw', resize:function(){ if(wtCurrentShape==='circle'){ var w=$(this).width(); $(this).height(w);} } }); }
+        plus.addEventListener('click', function(ev){ ev.stopPropagation(); ev.stopImmediatePropagation(); try{ if(wtPreview) wtPreview.style.display='block'; if(wtLayer) wtLayer.style.display='block'; if(wtToolbar) wtToolbar.style.display='flex'; }catch(_){}
+            // Inline color palette and Create Issue button (web)
+            try { document.querySelectorAll('.wt-marker-color-row').forEach(function(el){ el.remove(); }); } catch(_){ }
+            var mRect = m.getBoundingClientRect();
+            var lRect = wtLayer.getBoundingClientRect();
+            var row = document.createElement('div');
+            row.className = 'wt-marker-color-row';
+            row.style.position = 'absolute';
+            row.style.left = (mRect.right - lRect.left + 8) + 'px';
+            row.style.top = (mRect.top - lRect.top) + 'px';
+            row.style.background = '#ffffff';
+            row.style.padding = '8px 10px';
+            row.style.borderRadius = '10px';
+            row.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.gap = '8px';
+            row.style.zIndex = '20';
+            ['#ea5455','#28c76f','#ffde59','#00cfe8'].forEach(function(c){
+                var b=document.createElement('button'); b.type='button';
+                b.style.width='24px'; b.style.height='24px'; b.style.borderRadius='50%';
+                b.style.border='2px solid '+(c===wtCurrentColor?'#111':'#e0e6ed'); b.style.background=c; b.style.cursor='pointer';
+                b.addEventListener('click', function(e2){ e2.stopPropagation(); wtCurrentColor=c; m.style.border='2px solid '+wtCurrentColor; plus.style.background=wtCurrentColor; row.querySelectorAll('button').forEach(function(btn){ if(btn!==createBtn) btn.style.borderColor='#e0e6ed'; }); b.style.borderColor='#111'; });
+                row.appendChild(b);
+            });
+            var createBtn=document.createElement('button'); createBtn.type='button'; createBtn.className='btn btn-sm'; createBtn.textContent='Create Issue'; createBtn.style.background='#28c76f'; createBtn.style.color='#fff'; createBtn.style.borderRadius='6px';
+            createBtn.addEventListener('click', function(e2){ e2.stopPropagation(); try { document.querySelectorAll('.wt-marker-color-row').forEach(function(el){ el.remove(); }); } catch(_){ } 
+                try {
+                var sEl = document.getElementById('wt-marker-start');
+                var eEl = document.getElementById('wt-marker-end');
+                if (wtTicketSelect && wtTicketSelect.value && wtTicketCache[wtTicketSelect.value]) {
+                    var t = wtTicketCache[wtTicketSelect.value];
+                    if (sEl && t.start_date) sEl.value = (''+t.start_date).substring(0,10);
+                    if (eEl && t.end_date) eEl.value = (''+t.end_date).substring(0,10);
+                }
+            } catch(_) {}
+            var mdl=document.getElementById('wt-markerDetailsModal'); if(mdl && mdl.parentNode!==document.body){ document.body.appendChild(mdl);} new bootstrap.Modal(mdl,{backdrop:true, focus:true}).show();
+            });
+            row.appendChild(createBtn);
+            wtLayer.appendChild(row);
+            try{ var rRect=row.getBoundingClientRect(); var overflowX=rRect.right - lRect.right; if(overflowX>0){ row.style.left=(parseFloat(row.style.left) - overflowX - 8) + 'px'; } }catch(_){}
+        }); }
+
+    if (wtLayer && wtPreview){ wtLayer.addEventListener('click', function(e){ e.stopPropagation(); if(!wtPlacing) return; var r=wtLayer.getBoundingClientRect(); wtCreateMarker(e.clientX - r.left, e.clientY - r.top); wtPlacing=false; wtLayer.style.cursor='default'; }); }
+
+    function wtCropMarker(){ try{ var src = (wtPreview||{}).src || ''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; } }
+
+    // Prefill dates when the modal is shown as a fallback
+    try {
+        var wtDetailsModalEl = document.getElementById('wt-markerDetailsModal');
+        if (wtDetailsModalEl) {
+            wtDetailsModalEl.addEventListener('shown.bs.modal', function(){
+                try {
+                    var sEl = document.getElementById('wt-marker-start');
+                    var eEl = document.getElementById('wt-marker-end');
+                    if (wtTicketSelect && wtTicketSelect.value && wtTicketCache[wtTicketSelect.value]) {
+                        var t = wtTicketCache[wtTicketSelect.value];
+                        if (sEl && !sEl.value && t.start_date) sEl.value = (''+t.start_date).substring(0,10);
+                        if (eEl && !eEl.value && t.end_date) eEl.value = (''+t.end_date).substring(0,10);
+                    }
+                } catch(_) {}
+            });
+        }
+    } catch(_) {}
+
+    var wtSave = document.getElementById('wt-save-marker');
+    if (wtSave) wtSave.addEventListener('click', function(){ var title=(document.getElementById('wt-marker-title')||{}).value||''; var desc=(document.getElementById('wt-marker-description')||{}).value||''; var s=(document.getElementById('wt-marker-start')||{}).value||''; var e=(document.getElementById('wt-marker-end')||{}).value||''; var layerRect = wtLayer ? wtLayer.getBoundingClientRect() : {left:0, top:0, width:0, height:0}; var mRect = (wtCurrentMarker && wtCurrentMarker.getBoundingClientRect) ? wtCurrentMarker.getBoundingClientRect() : layerRect; wtBadgeCounter += 1; var item={ title:title, description:desc, start_date:s, end_date:e, shape: wtCurrentShape, color: wtCurrentColor, mark_image: wtCropMarker(), project_id: (wtProjectSelect||{}).value||null, ticket_id: (wtTicketSelect||{}).value||null, position:{ left:(mRect.left - layerRect.left) + mRect.width/2, top:(mRect.top - layerRect.top) + mRect.height/2 }, number: wtBadgeCounter, layer:{ width: Math.round(layerRect.width||0), height: Math.round(layerRect.height||0) } };
+        wtIssues.push(item); var badge=document.createElement('div'); badge.className='marker-badge'; badge.textContent=String(item.number); badge.style.position='absolute'; badge.style.left=item.position.left+'px'; badge.style.top=item.position.top+'px'; badge.style.transform='translate(-50%, -50%)'; badge.style.color=item.color||'#28c76f'; badge.style.fontWeight='800'; badge.style.fontSize='18px'; badge.style.textShadow='0 1px 2px rgba(0,0,0,0.25)'; badge.style.cursor='pointer'; badge.style.zIndex='25'; badge.addEventListener('mousedown', function(ev){ ev.stopPropagation(); }); badge.addEventListener('mouseup', function(ev){ ev.stopPropagation(); }); if (wtLayer) wtLayer.appendChild(badge); if (wtCurrentMarker){ try{ wtCurrentMarker.remove(); }catch(_){} wtCurrentMarker=null; } try{ bootstrap.Modal.getInstance(document.getElementById('wt-markerDetailsModal')).hide(); }catch(e){} });
+
+    var wtCreateSave = document.getElementById('wt-create-task-save');
+    if (wtCreateSave) wtCreateSave.addEventListener('click', function(){ if(!Array.isArray(wtIssues) || wtIssues.length===0){ alert('Please add at least one issue on the image before saving the task.'); return; } var ticketText=(function(){ try{ var opt=wtTicketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : ''; }catch(_){ return ''; } })(); var taskTitle = ticketText || 'Task'; var payload={ project_id:(wtProjectSelect||{}).value||null, ticket_id:(wtTicketSelect||{}).value||null, title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), issues: wtIssues, board_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; } })() };
+        fetch("{{ route('webtasks.store') }}", { method:'POST', headers:{ 'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}', 'X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(payload) }).then(function(r){ return r.json(); }).then(function(resp){ if(resp && resp.success){ try{ wtIssues=[]; wtBadgeCounter=0; var existing=wtLayer?.querySelectorAll('.marker-badge')||[]; existing.forEach?.(function(n){ try{ n.remove(); }catch(_){} }); }catch(_){} setTimeout(function(){ window.location.reload(); }, 300); } else { alert('Failed to create web task'); } });
+    });
+});
+</script>
 <!-- create  employee task -->
 <div class="modal fade" id="emptask" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -4393,7 +4737,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -4421,11 +4765,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4464,7 +4807,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -4492,11 +4835,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4534,7 +4876,7 @@ function taskDelete(taskId){
                                 <!-- Task Image -->
                                 <div class="me-2">
                                     <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
 
                                 <!-- Task Content -->
@@ -4562,11 +4904,10 @@ function taskDelete(taskId){
                                                 <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: pointer;">
+                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
 
                                                     <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: pointer;"
-                                                        data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
 
 
                                                 </div>
@@ -4657,12 +4998,11 @@ function taskDelete(taskId){
         })();
     </script>
 </div>
-
 <!-- Task Viewer Modal (Progress-style copy) -->
 <div class="modal fade" id="taskProgressViewerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
-            <div class="modal-body p-0">
+        <div class="modal-content" style="border-radius: 15px;">
+            <div class="modal-body p-0" style="max-height: calc(100vh - 120px); overflow-y: auto;">
                 <div style="background: linear-gradient(to right, #74b749, #c5e1a5); color: white; padding: 25px 20px; position: relative;">
                     <div style="text-align: left;">
                         <h5 id="tpvProject" style="margin: 0;">Project Name aim</h5>
@@ -4700,7 +5040,7 @@ function taskDelete(taskId){
                     </div>
                     <!-- Image Canvas (replaces sign-in box) -->
                     <div id="tpvCanvas" class="mx-auto my-4" style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #fefefe; text-align: center; overflow:hidden; background-image: linear-gradient(45deg, #e6e6e6 25%, transparent 25%), linear-gradient(-45deg, #e6e6e6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e6e6e6 75%), linear-gradient(-45deg, transparent 75%, #e6e6e6 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
-                        <img id="tpvImage" src="" alt="Task Board" style="width:100%; height:auto; border-radius:8px; display:block;">
+                        <img id="tpvImage" src="" alt="Task Board" style="width:100%; border-radius:8px; display:block;">
                         <div id="tpvLayer" style="position:absolute; inset:0; pointer-events:auto;"></div>
                         <div id="tpvFocus" style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;"></div>
                     </div>
@@ -5527,7 +5867,6 @@ function taskDelete(taskId){
 
     </div>
 </div>
-
 <!-- total task -->
 <div class="modal fade" id="indone" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">

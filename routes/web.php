@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WebTaskController;
 
 
 use App\Http\Controllers\TaskController;
@@ -97,6 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::post('/tasks/board', [TaskController::class, 'uploadBoard'])->name('tasks.board.upload');
     Route::get('/tasks/by-ticket', [TaskController::class, 'byTicket'])->name('tasks.by_ticket');
+    // WebTasks APIs (separate collection)
+    Route::get('/webtasks/tickets', [WebTaskController::class, 'tickets'])->name('webtasks.tickets');
+    Route::post('/webtasks/store', [WebTaskController::class, 'store'])->name('webtasks.store');
+    Route::delete('/webtasks/{id}', [WebTaskController::class, 'destroy'])->name('webtasks.destroy');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();

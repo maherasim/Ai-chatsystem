@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Task;
+use App\Models\WebTask;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,8 +18,11 @@ class TaskController extends Controller
         // Always load all projects for the select dropdown
         $projects = Project::orderBy('title')->get();
         $tasks = Task::orderByDesc('created_at')->limit(50)->get();
-        $projectIds = $tasks->pluck('project_id')->filter()->map(fn($v) => (string)$v)->unique()->values();
-        $ticketIds  = $tasks->pluck('ticket_id')->filter()->map(fn($v) => (string)$v)->unique()->values();
+        $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
+        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))
+            ->filter()->map(fn($v) => (string)$v)->unique()->values();
+        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))
+            ->filter()->map(fn($v) => (string)$v)->unique()->values();
 
         $projectSubset = $projectIds->isNotEmpty()
             ? $projects->whereIn('_id', $projectIds)->values()
@@ -34,7 +38,12 @@ class TaskController extends Controller
             $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        return view('Chats.task', compact('headers', 'projects', 'tasks'));
+        $webtasks = $webtasks->map(function($t) use ($projectMap, $ticketMap){
+            $t->project = $projectMap->get((string)($t->project_id ?? ''));
+            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            return $t;
+        });
+        return view('Chats.task', compact('headers', 'projects', 'tasks', 'webtasks'));
     }
 
     public function projects()
