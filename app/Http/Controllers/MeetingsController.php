@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Models\Setting;
 use App\Models\Todo;
 use App\Models\Meetings;
+use App\Models\MeetingMembers;
 use Illuminate\Support\Facades\Storage;
+use MongoDB\BSON\ObjectId;
 use Carbon\Carbon;
 
 class MeetingsController extends Controller
@@ -19,7 +21,8 @@ class MeetingsController extends Controller
 public function index()
     {
 
-       
+
+        
         $user = Auth::user();
 
         $setting = Setting::first();
@@ -29,6 +32,19 @@ public function index()
                  ->get();
 
 
+$todayMeetings = Meetings::where(function ($q) use ($user) {
+        // Meetings created by this user
+        $q->where('user_id', $user->id)
+          // OR meetings where this user is in members
+          ->orWhereHas('members', function ($m) use ($user) {
+              $m->where('user_id', $user->id);
+          });
+    })
+    ->where('completed', 0)
+    ->where('start_date',  date('Y-m-d'))
+    ->get();
+     
+    /*
         $todayMeetings = Meetings::where('start_date', date('Y-m-d'))
     ->where(function ($q) use ($user) {
         $q
@@ -65,6 +81,7 @@ public function index()
         return $todo;
     });
 
+    
             $upcomingMeetings = Meetings::where('user_id', $user->id)
     ->where('completed',  0)
      ->where('start_date', '>', date('Y-m-d'))
@@ -88,6 +105,58 @@ public function index()
 
                 return $todo;
             });
+*/
+//$upcomingMeetings = Meetings::where('user_id', $user->id)
+  //  ->where('completed',  0)
+  //  ->where('start_date', '>', date('Y-m-d'))
+   // ->where(function($q) {
+   //     $q->where('is_removed', 0)
+   //       ->orWhereNull('is_removed');
+  //  })
+  //  ->get();
+
+    $upcomingMeetings = Meetings::where(function ($q) use ($user) {
+        // Meetings created by this user
+        $q->where('user_id', $user->id)
+          // OR meetings where this user is in members
+          ->orWhereHas('members', function ($m) use ($user) {
+              $m->where('user_id', $user->id);
+          });
+    })
+    ->where('completed', 0)
+    ->where('start_date', '>', date('Y-m-d'))
+  //  ->where(function ($q) {
+  //      $q->where('is_removed', 0)
+  //        ->orWhereNull('is_removed');
+  //  })
+    ->get();
+
+
+/*
+    $userId = new ObjectId($user->id);
+
+// First, find all meeting IDs where the user is a member
+$memberMeetingIds = MeetingMembers::where('user_id', $userId)
+    ->pluck('meeting_id')
+    ->toArray();
+
+// Now fetch meetings either created by or joined by the user
+$upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds) {
+        $q->where('user_id', $userId)
+          ->orWhereIn('_id', $memberMeetingIds);
+    })
+    ->where('completed', 0)
+    ->where('start_date', '>', date('Y-m-d'))
+    ->where(function($q) {
+        $q->where('is_removed', 0)
+          ->orWhereNull('is_removed');
+    })
+    ->get();
+*/
+         //   foreach ($upcomingMeetings as $m) {
+    //echo $m->_id . ' => ' . MeetingMembers::where('meeting_id', $m->_id)->count() . "<br>";
+//}
+//die("");
 
             $ctime = strtotime(date("Y-m-d H:i:s"));
         
@@ -112,7 +181,7 @@ public function index()
         ]);
 
         $startTime = $request->start_time;
-        $endDate = $request->end_date ?? date('Y-m-d');
+        
         $endTime = $request->end_time;
         $total_time = 0;
         $startDate = $request->start_date ?? date('Y-m-d');
@@ -122,7 +191,7 @@ public function index()
             $hoursToAdd =  (int) $request->todaytime; // e.g. 2,3,6
             $startTime = now()->format('H:i');
             $endTime = now()->addHours($hoursToAdd)->format('H:i');
-            $endDate = now()->addHours($hoursToAdd)->format('Y-m-d');
+           
             $total_time = $request->todaytime;
             $startDate = date('Y-m-d');
         }
@@ -130,7 +199,7 @@ public function index()
         //echo date("H:i");
         //die("");
 
-        $todoid = $request->todo_id;
+        $todoid = $request->meeting_id;
 
         $todo = Meetings::updateOrCreate(
     ['_id' => $todoid], // condition to match
@@ -138,7 +207,7 @@ public function index()
         'title'       => $request->title,
         'start_date'  => $startDate,
         'start_time'  => $startTime,
-        'end_date'    => $endDate,
+        'end_date'    => $startDate,
         'end_time'    => $endTime,
         'is_private'  => $request->is_private,
         'project'     => $request->project,
@@ -149,15 +218,91 @@ public function index()
         'total_time'  => $total_time,
         'completed'   => 0,
         'is_schduled' => $request->start_date ? 1 : 0,
-        'members'     => $request->members ?? []
+       // 'members'     => $request->members ?? [],
+        'link_type'   => $request->link_type,
+        'meet_link'   => $request->meetinglink
     ]
 );
+
+
+    if ($request->filled('members')) {
+        // Remove existing entries if updating existing meeting
+        MeetingMembers::where('meeting_id', new ObjectId($todo->_id))->delete();
+
+        foreach ($request->members as $memberId) {
+            MeetingMembers::create([
+                'meeting_id' => $todo->_id,
+                'user_id'    => $memberId,
+                'decision'   => 0, // pending by default
+            ]);
+        }
+    }
+
 
 
 
 
         return redirect()->back()->with('success', 'Meeting created successfully!');
     }
+
+    public function acceptMeeting($id)
+{
+    $userId = new ObjectId(Auth::id());
+    $meetingId = new ObjectId($id);
+
+    $member = MeetingMembers::where('meeting_id', $id)
+        ->where('user_id', Auth::id())
+        ->first();
+
+    if ($member) {
+        $member->update(['decision' => 1]);
+        return response()->json(['success' => true, 'message' => 'Meeting accepted.']);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Not authorized or not part of meeting.'], 403);
+}
+
+public function remove(Request $request){
+        
+        $user = Auth::user();
+        $remid = $request->remid;
+
+        $reason = $request->reason;
+        $isremove = $request->isremove;
+
+        $meeting = Meetings::where('id', $remid)->first();
+
+       
+        if($meeting){
+            
+            $meeting->is_removed = -1;
+            
+            $meeting->reason = $reason;
+            
+            $meeting->save();
+
+            return redirect()->back()->with('success', 'Meeting removed successfully.');
+        }
+
+
+        return redirect()->back()->with('error', 'Meeting not belonged to user');
+        
+    }
+
+public function rejectMeeting($id)
+{
+   
+    $member = MeetingMembers::where('meeting_id', $id)
+        ->where('user_id', Auth::id())
+        ->first();
+
+    if ($member) {
+        $member->update(['decision' => -1]);
+        return response()->json(['success' => true, 'message' => 'Meeting rejected.']);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Not authorized or not part of meeting.'], 403);
+}
 
     public function destroy($id)
     {

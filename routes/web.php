@@ -38,6 +38,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/meetings', [MeetingsController::class, 'index'])->name('chat-meetings');
     Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
+    Route::post('/meetings/{id}/accept', [MeetingsController::class, 'acceptMeeting'])->name('meetings.accept');
+    Route::post('/meetings/{id}/reject', [MeetingsController::class, 'rejectMeeting'])->name('meetings.reject');
+    Route::post('/meetingsremove', [MeetingsController::class, 'remove'])->name('meetings.remove');
+
 
 /*
 Route::get('/meetings', function () {

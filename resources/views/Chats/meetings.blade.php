@@ -13,6 +13,9 @@
         overflow-y: auto;
         overflow-x: hidden;
     }
+    .invit-box{
+        position:relative;
+    }
 
     .btn-plus{
     background-color: #22c55e;
@@ -703,7 +706,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     </div>
 
 
-                                </div>
                             </div>
                             
                             <!-- End of Card 1 -->
@@ -839,11 +841,35 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <!-- Accepted -->
                                         <div class="text-center">
                                             <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Accepted</div>
-                                            <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
+                                            <div style="position: relative; width: 45px; height: 30px;"> 
+                                                
+                                                @foreach ($meeting->members as $member)
+                                                    @if ($member->decision == 1)
+                                                    
+                                                @php
+                                                    
+                                                    if ($isLocal) {
+                                                        $memberimg = asset('storage/' . $member->user->profile_image);
+                                                    } else {
+                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
+                                                            ? 'https://admin.onlinesystems.info'
+                                                            : 'https://team.onlinesystems.info';
+
+                                                        $memberimg = $domain . '/storage/' . $member->user->profile_image;
+                                                    }
+                                                @endphp
+
+                                                    <img src="{{ $memberimg }}"
+                                                        class="rounded-circle"
+                                                        style="position: absolute;
+                                                                left: {{ $loop->index * 15 }}px;
+                                                                z-index: {{ count($meeting->members) - $loop->index }};
+                                                                border: 2px solid white;
+                                                                width: 28px;
+                                                                height: 28px;" />
+                                                    @endif
+                                                @endforeach
+                                              
                                             </div>
                                         </div>
 
@@ -851,23 +877,41 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="text-center">
                                             <div style="font-size: 11px; font-weight: 600; color: #1e293b;">Rejected</div>
                                             <div style="position: relative; width: 45px; height: 30px;">
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 0; z-index: 2; border: 2px solid white; width: 28px; height: 28px;" />
-                                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle"
-                                                    style="position: absolute; left: 15px; z-index: 1; border: 2px solid white; width: 28px; height: 28px;" />
-                                            </div>
+                                                @foreach ($meeting->members as $member)
+                                                    @if ($member->decision == -1)
+                                                    
+                                                @php
+                                                    
+                                                    if ($isLocal) {
+                                                        $memberimg = asset('storage/' . $member->user->profile_image);
+                                                    } else {
+                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
+                                                            ? 'https://admin.onlinesystems.info'
+                                                            : 'https://team.onlinesystems.info';
+
+                                                        $memberimg = $domain . '/storage/' . $member->user->profile_image;
+                                                    }
+                                                @endphp
+
+                                                    <img src="{{ $memberimg }}"
+                                                        class="rounded-circle"
+                                                        style="position: absolute;
+                                                                left: {{ $loop->index * 15 }}px;
+                                                                z-index: {{ count($meeting->members) - $loop->index }};
+                                                                border: 2px solid white;
+                                                                width: 28px;
+                                                                height: 28px;" />
+                                                    @endif
+                                                @endforeach
+                                                </div>
                                         </div>
                                     </div>
 
                                     <!-- Status Row -->
                                     <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
 
-                                        <!-- Green Dot -->
-                                        <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
+                                       
+                                        
                                         <!-- Video Icon -->
                                         <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
 
@@ -891,32 +935,89 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     <!-- Scheduled Tag -->
                                     <div class="text-center mb-2">
                                         <span style="background-color: #f5f5f5; color: #f44336; font-size: 12px; font-weight: 500; padding: 2px 12px; border-radius: 12px;">
-                                            Scheduled
+                                                @if ($meeting->is_removed == "-1")
+                                                    Cancelled
+                                                @elseif($meeting->is_removed == "-2")
+                                                    Postponed
+                                                @else
+                                                    Scheduled
+                                                @endif
+                                        
                                         </span>
                                     </div>
 
                                     <!-- Footer Buttons -->
                                     <div class="d-flex">
-                                        <button class="flex-fill text-center py-2" style="background-color: #f1f5f9; border: none; color: #1e293b; font-weight: 500; font-size: 13px;">
-                                            Edit
-                                        </button>
-                                        <button class="flex-fill text-center py-2" style="background-color: #fca5a5; border: none; color: white; font-weight: 500; font-size: 13px;">
-                                            Remove
-                                        </button>
-                                    </div>
+    @if ($meeting->is_removed == "-1")
+
+            <button   class="flex-fill text-center py-2"
+                style="background-color: #F36166; border: none; color: white; font-weight: 500; font-size: 13px;">
+            Cancelled
+        </button>
+                                                    
+    @elseif ($meeting->user_id == Auth::id())
+        {{-- ✅ Logged-in user is the creator — show Edit/Delete --}}
+        <button data-id="{{ $meeting->_id }}"
+    data-bs-toggle="modal" data-bs-target="#meetingModal"
+    onclick="event.stopPropagation(); addmeetid(this);"  class="flex-fill text-center py-2"
+                style="background-color: #f1f5f9; border: none; color: #1e293b; font-weight: 500; font-size: 13px;">
+            Edit
+        </button>
+        <button  data-id="{{ $meeting->_id }}"
+    data-bs-toggle="modal" data-bs-target="#removeModel"
+    onclick="event.stopPropagation(); updteid(this);" class="flex-fill text-center py-2"
+                style="background-color: #fca5a5; border: none; color: white; font-weight: 500; font-size: 13px;">
+            Remove
+        </button>
+
+    @else
+        
+        
+
+        @foreach ($meeting->members as $member)
+            @if($member->user_id == Auth::id())
+                @if ($member->decision == 0)
+                    {{-- Pending — show Accept / Reject buttons --}}
+                    <button data-id="{{ $meeting->_id }}"
+    data-bs-toggle="modal" data-bs-target="#acceptModal"
+    onclick="event.stopPropagation(); handleMeetingAction(this, 'accept');" class="flex-fill text-center py-2"
+                            style="background-color: #22c55e; border: none; color: white; font-weight: 500; font-size: 13px;">
+                        Accept
+                    </button>
+                    <button data-id="{{ $meeting->_id }}"
+    data-bs-toggle="modal" data-bs-target="#rejectModal"
+    onclick="event.stopPropagation(); handleMeetingAction(this, 'reject'); " class="flex-fill text-center py-2"
+                            style="background-color: #f87171; border: none; color: white; font-weight: 500; font-size: 13px;">
+                        Reject
+                    </button>
+
+                @elseif ($member->decision == 1)
+                    {{-- Accepted --}}
+                    <button  class="flex-fill text-center py-2"
+                            style="background-color: #22c55e; border: none; color: white; font-weight: 500; font-size: 13px;">
+                        Accepted
+                    </button>
+
+                @elseif ($member->decision == -1)
+                    {{-- Rejected --}}
+                    <button class="flex-fill text-center py-2"
+                            style="background-color: #f87171; border: none; color: white; font-weight: 500; font-size: 13px;">
+                        Rejected
+                    </button>
+                @endif
+            @endif
+        @endforeach
+    @endif
+</div>
+
 
 
                                     <!-- Footer Button -->
-                                    <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                                        
                                         @php
                                             // Combine date and time
                                             $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time);
                                         @endphp
-
-                                        
-    </div>
-
+                                    
                                         <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $meeting->id }}">
                                             <span id="asimclic-{{ $index }}"></span>
                                         </div>
@@ -992,7 +1093,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 @endif
                                                 
                                     </div>
-                                </div>
                             </div>
                             <!-- End of Card 1 -->
 
@@ -1022,7 +1122,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
             <!-- Modal Header -->
             <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
-                Delete Todo
+                Delete Meeting
             </div>
             <div style="font-size: 13px; color:black">
                 Tell us why ?!
@@ -1030,7 +1130,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
             <hr style="background-color: #777; height: 1px; border: none; margin: 10px 0;">
 
 
-            <form action="{{ route('todos.remove') }}" method="POST">
+            <form action="{{ route('meetings.remove') }}" method="POST">
                 @csrf
                 <input type="hidden" name="remid" id="remid" />
                 <input type="hidden" name="isremove" id="isremove" value="0" />
@@ -1047,7 +1147,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     </div>
                 </div>
 
-
                 <!-- Input Fields -->
                 <select  name="reason" required
                     style="width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #fff;">
@@ -1056,12 +1155,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     <option class="removal" value="No important">No important</option>
                     <option class="removal" value="No time for it">No time for it</option>
                     <option class="failed" value="Time to short">Time to short</option>
-                    <option class="failed" value="Todo not clear">Todo not clear</option>
                     <option class="failed" value="Details not clear">Details not clear</option>
-                    <option class="failed" value="Documents not clear">Documents not clear</option>
                     <option class="failed" value="Team not response">Team not response</option>
                 </select>
-
             </div>
 
             <!-- Save Button -->
@@ -1072,12 +1168,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 </button>
                 <button type="submit" class="btn" 
                     style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
-                    Save & Close
+                    Delete & Close
                 </button>
-                <button type="button" class="btn rejectbtn" 
-                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
-                    Reject it
-                </button>
+               
             </div>
             </form>
 
@@ -1261,7 +1354,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     </div>
                    
 
-                    <div class="p-3 owner-state mt-3" style="background-color: #f5f5f5; text-align:center; border-radius: 10px;">
+                    <div class="p-3 owner-state_ mt-3" style="background-color: #f5f5f5; text-align:center; border-radius: 10px; display:none;">
                         <div class="todo-removed text-center"  style="padding:10px;margin-bottom:5px; background:#FEE9EA; border-radius:10px;">
                             <div class="text-center mb-2">
                                 <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
@@ -1294,13 +1387,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             </div>
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
                         </div>
-                        <!-- Complete the Project -->
-                        <div id="markDoneBtn" class="markDoneBtn" style="text-align: center; flex: 1;cursor:pointer;">
+
+                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
-                                <img src="{{ asset('build/img/thumbp.png') }}" alt="Complete" width="40" height="40">
+                                <img src="{{ asset('build/img/postp.png') }}" alt="Edit" width="40" height="40">
                             </div>
-                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Mark as Done</div>
+                            <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Postpone</div>
                         </div>
+                       
 
 
                         <!-- Remove the Project -->
@@ -1311,8 +1405,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 <img src="{{ asset('build/img/delp.png') }}" alt="Delete" width="40" height="40">
                             </div>
 
-                            <div class="markfail" style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                Mark as Failed
+                            <div class="markfail1" style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
+                                Remove
                             </div>
                         </div>
 
@@ -1387,11 +1481,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
             <!-- Close Button -->
             
-
             <form  id="meetingForm" action="{{ route('meetings.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-            <input type="hidden" name="todo_id" id="todo_id">
+            <input type="hidden" name="meeting_id" id="meeting_id">
                 <input type="hidden" name="start_date" id="startDateHidden">
                 <input type="hidden" name="start_time" id="startTimeHidden">
                 <input type="hidden" name="end_time" id="endTimeHidden">
@@ -1402,7 +1495,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 <input type="hidden" name="priority" id="priorityHidden" >
                 <input type="hidden" name="reminder" id="reminderHidden" >
                 <input type="hidden" name="todaytime" id="timeHidden" >
-                 <input type="hidden" name="todo_type" id="todo_type">
+                <input type="hidden" name="todo_type" id="todo_type">
+                <input type="hidden" name="link_type" id="link_type" />
 
                  <select id="members" name="members[]" multiple style="display:none;"></select>
 
@@ -1427,7 +1521,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     document.getElementById('timeToday').style.display='block';
                     document.getElementById('todo_type').value='today';
                     document.getElementById('timeRow').classList.add('justify-content-center');"
-                                style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
                                 Meeting Today
                             </button>
 
@@ -1640,9 +1734,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
       document.getElementById('btnZoom').style.backgroundColor='white';
+      document.getElementById('link_type').value='Meet';
       document.getElementById('btnZoom').style.color='#64748b';
     "
-                            style="border: none; background-color: #22c55e; color: white; padding: 6px 16px;
+                            style="border: none; background-color: white; color: #64748b; padding: 6px 16px;
            border-radius: 6px; font-size: 13px; font-weight: 500;">
                             Meet Link
                         </button>
@@ -1652,6 +1747,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
       this.style.backgroundColor='#22c55e';
       this.style.color='white';
       document.getElementById('btnMeet').style.backgroundColor='white';
+      document.getElementById('link_type').value='Zoom';
       document.getElementById('btnMeet').style.color='#64748b';
     "
                             style="border: none; background-color: white; color: #64748b; padding: 6px 16px;
@@ -1661,7 +1757,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     </div>
 
 
-                    <input  type="text"
+                    <input  type="text" name="meetinglink" id="meetinglink"
                         placeholder="Past link"
                         style="width: 100%; background-color: white; color: #64748b; border: none;
            border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
@@ -2360,6 +2456,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
            //     }, 150);
            // });
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
         <script>
 
 let timerInterval;
@@ -2489,6 +2589,7 @@ const list = document.getElementById('createPdfList');
             todcomplete.style.display = "none";
             todwaiting.style.display = "none";
             
+            
 
           //  if(owner == "0"){
                 //todfinish.style.display = "block";
@@ -2522,13 +2623,13 @@ const list = document.getElementById('createPdfList');
             
 
 
-            let edivbtn = document.querySelector('.openEditFromView');
-            edivbtn.style.display = "none";
-            let donebtn = document.querySelector('.markDoneBtn');
-            donebtn.style.display = "block";
+            //let edivbtn = document.querySelector('.openEditFromView');
+            //edivbtn.style.display = "none";
+           // let donebtn = document.querySelector('.markDoneBtn');
+            //donebtn.style.display = "block";
 
-            let markfial = document.querySelector('.markfail');
-            markfial.innerText = "Mark as Failed";
+          //  let markfial = document.querySelector('.markfail');
+          //  markfial.innerText = "Mark as Failed";
 
             
 
@@ -2549,6 +2650,14 @@ const list = document.getElementById('createPdfList');
             //let ownerstate = document.querySelector('.owner-state');
 
             let ownedEl = document.querySelector('.owned');
+
+            if(owner == 1){
+                ownedEl.style.display = "flex";
+            }else{
+                ownedEl.style.display = "none";
+            }
+            
+            /*
             if (dataown == "0") {
                 ownedEl.style.display = "none";
                 ownerstate.style.display = "none";
@@ -2590,7 +2699,7 @@ const list = document.getElementById('createPdfList');
                     ownerstate.style.display = "none";
                 }
             }
-
+*/
 
            
             let imgTag = document.querySelector('.user-todo-img');
@@ -2783,9 +2892,21 @@ const list = document.getElementById('createPdfList');
 
             if (members && members.length) {
                 members.forEach(m => {
+
                     let div = document.createElement("div");
                     div.classList.add("col-md-3", "invit-box");
+
+                    let statusImg = '';
+                    if (m.decision == 1) {
+                        statusImg = "membertick.png";
+                    } else if (m.decision == -1) {
+                        statusImg = "membercross.png";
+                    } else if (m.decision == 0) {
+                        statusImg = "memberwaiting.png";
+                    }
+
                     div.innerHTML = `
+                        <img class="statusimg" style="width:15px; right:15px; position:absolute" src="build/img/${statusImg}" />
                         <div class="invit-img">
                             <img src="${m.image}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
                         </div>
@@ -2955,6 +3076,7 @@ document.querySelectorAll('.time-btn').forEach(btn => {
 const titleEl = document.getElementById('meeting_name');
 const projectEl = document.getElementById('select_project');
 const teamEl = document.getElementById('select_team');
+const linkEl = document.getElementById('meetinglink');
 
 
 document.getElementById('saveBtn').addEventListener('click', function (e) {
@@ -2965,11 +3087,13 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
   const title = titleEl.value.trim();
   const project = projectEl.value;
   const team = teamEl.value;
+  const link = linkEl.value;
 
     const priorityHidden = document.getElementById('priorityHidden').value;
     const reminderHidden = document.getElementById('reminderHidden').value;
     const timeHidden = document.getElementById('timeHidden').value;
     const todoType = document.getElementById('todo_type').value;
+    const linkType = document.getElementById('link_type').value;
     
     const startDate = document.getElementById('dateInput')?.value;
     const startTime = document.getElementById('startTimeSelect')?.value;
@@ -2983,6 +3107,8 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
         alert("Please select 'Today Meeting' or 'Scheduled Meeting' before submitting.");
         return;
     }
+
+    
 
    // if (todoVisibility === 'shared') {
         const activeUser = document.querySelector('.user_div.user_active');
@@ -3017,24 +3143,29 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
             return;
     }
 
+    if (!linkType) {
+        alert("Please select 'Meet Link' or 'Zoom Link' before submitting.");
+        return;
+    }
 
 
   // Reset previous error highlights
-  [titleEl, projectEl, teamEl].forEach(el => el.classList.remove('required'));
+  [titleEl, projectEl, teamEl, linkEl].forEach(el => el.classList.remove('required'));
 
   // Add highlight if empty
   if (!title) titleEl.classList.add('required');
   if (!project) projectEl.classList.add('required');
   if (!team) teamEl.classList.add('required');
+  if(!link) linkEl.classList.add('required');
 
   // Stop submission if any field is empty
   if(checkprojteam == 1){
-        if (!title || !project || !team || !priorityHidden || !reminderHidden ) {
+        if (!title || !project || !team || !priorityHidden || !reminderHidden || !link ) {
             alert('Please fill all required fields before submitting.');
             return;
         }
   }else{
-    if (!title || !priorityHidden || !reminderHidden ) {
+    if (!title || !priorityHidden || !reminderHidden || !link ) {
     alert('Please fill all required fields before submitting.');
     return;
   }
@@ -3044,13 +3175,71 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     form.submit();
 });
 
-[titleEl, projectEl, teamEl].forEach(el => {
+[titleEl, projectEl, teamEl, linkEl].forEach(el => {
   el.addEventListener('input', () => {
     if (el.value.trim() !== '') {
       el.classList.remove('required');
     }
   });
 });
+
+function addmeetid(button){
+    let meetdelidngId = button.getAttribute('data-id');
+    document.getElementById("meeting_id").value = meetdelidngId;
+}
+
+function updteid(button){
+    let meetdelidngId = button.getAttribute('data-id');
+    document.getElementById("remid").value = meetdelidngId;
+}
+
+function handleMeetingAction(button, actionType) {
+    const meetingId = button.getAttribute('data-id');
+    const actionText = actionType === 'accept' ? 'Accept' : 'Reject';
+    const actionColor = actionType === 'accept' ? '#22c55e' : '#f87171';
+    const confirmBtnColor = actionType === 'accept' ? '#22c55e' : '#e11d48';
+
+    Swal.fire({
+        title: `${actionText} Meeting`,
+        text: `Are you sure you want to ${actionText.toLowerCase()} this meeting?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: confirmBtnColor,
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: `Yes, ${actionText}`,
+        cancelButtonText: 'Cancel',
+        customClass: {
+            popup: 'rounded-4 shadow-lg'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            
+
+            fetch(`/meetings/${meetingId}/${actionType}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+    },
+})
+.then(res => res.json())
+.then(data => {
+    Swal.fire({
+        title: 'Success!',
+        text: `Meeting ${actionType}ed successfully.`,
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+    }).then(() => location.reload());
+})
+.catch(err => {
+    Swal.fire('Error', 'Something went wrong. Try again.', 'error');
+});
+
+        }
+    });
+}
+
 
         </script>
         @endsection

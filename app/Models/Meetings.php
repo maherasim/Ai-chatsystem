@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use MongoDB\BSON\ObjectId;
 
 class Meetings extends Model
 {
@@ -40,7 +41,9 @@ class Meetings extends Model
         'work_Independently',
         'all_tasks_done',
         'all_tasks_check',
-        'files_upload'
+        'files_upload',
+        'link_type',
+        'meet_link'
     ];
 
     public function user()
@@ -48,5 +51,24 @@ class Meetings extends Model
         return $this->belongsTo(User::class, 'user_id', '_id');
     }
 
-    
+    public function members()
+{
+    return $this->hasMany(MeetingMembers::class, 'meeting_id', '_id');
+}
+
+public function getMembersDataAttribute()
+{
+    return $this->members->map(function ($member) {
+        return [
+            'id' => (string) $member->user->_id,
+            'name' => $member->user->name ?? '',
+            'email' => $member->user->email ?? '',
+            'image' => $member->user->profile_image 
+                ? asset('storage/' . $member->user->profile_image) 
+                : asset('build/img/groups/default.jpg'),
+            'decision' => $member->decision,
+        ];
+    })->toArray();
+}
+
 }
