@@ -41,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/meetings/{id}/accept', [MeetingsController::class, 'acceptMeeting'])->name('meetings.accept');
     Route::post('/meetings/{id}/reject', [MeetingsController::class, 'rejectMeeting'])->name('meetings.reject');
     Route::post('/meetingsremove', [MeetingsController::class, 'remove'])->name('meetings.remove');
+    Route::post('/meetingspostpone', [MeetingsController::class, 'postpone'])->name('meetings.postpone');
+    Route::get('/delmeetings', [MeetingsController::class, 'delmeetings']);
+    Route::get('/getmeeting/{id}', [MeetingsController::class, 'getmeeting'])->name('meetings.view');
+
+    
 
 
 /*

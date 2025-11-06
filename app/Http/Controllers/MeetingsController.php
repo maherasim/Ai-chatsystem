@@ -163,6 +163,11 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
         return view('Chats.meetings', compact('user', 'users', 'todayMeetings', 'upcomingMeetings',  'setting', 'ctime'));
     }
 
+    public function delmeetings(){
+        Meetings::query()->delete(); //
+        die("done");
+    }
+
 
     public function store(Request $request)
     {
@@ -211,6 +216,7 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
         'end_time'    => $endTime,
         'is_private'  => $request->is_private,
         'project'     => $request->project,
+        'team'        => $request->team,
         'priority'    => $request->priority ?? "low",
         'reminder'    => $request->reminder,
         'description' => $request->sections, 
@@ -227,7 +233,8 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
 
     if ($request->filled('members')) {
         // Remove existing entries if updating existing meeting
-        MeetingMembers::where('meeting_id', new ObjectId($todo->_id))->delete();
+        //MeetingMembers::where('meeting_id', new ObjectId($todo->_id))->delete();
+        MeetingMembers::where('meeting_id', $todo->_id)->delete();
 
         foreach ($request->members as $memberId) {
             MeetingMembers::create([
@@ -236,6 +243,7 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
                 'decision'   => 0, // pending by default
             ]);
         }
+            
     }
 
 
@@ -261,6 +269,38 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
 
     return response()->json(['success' => false, 'message' => 'Not authorized or not part of meeting.'], 403);
 }
+
+public function getmeeting( $id){
+    $meeting = Meetings::with(['members.user'])
+        ->where('id', $id)
+        ->first();
+
+    return response()->json([
+        'success' => true,
+        'meeting' => $meeting,
+        
+    ]);
+}
+
+
+public function postpone(Request $request){
+        
+        $user = Auth::user();
+        $remid = $request->postponeid;
+
+        $meeting = Meetings::where('id', $remid)->first();
+       
+        if($meeting){
+
+            $meeting->is_removed = -2;
+            
+            $meeting->save();
+
+            return redirect()->back()->with('success', 'Meeting Postponed successfully.');
+        }
+        return redirect()->back()->with('error', 'Meeting not belonged to user');
+        
+    }
 
 public function remove(Request $request){
         

@@ -446,7 +446,7 @@
                                 style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 7px; max-width: 100%;">
 
                                 <!-- Buttons -->
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
+                                <button onclick="resetMeetingForm();" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#meetingModal"
                                     style="border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px; white-space: nowrap;">
                                     Add Meeting
                                 </button>
@@ -1115,6 +1115,44 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 </div>
 
 
+ 
+<!-- postpone Model -->
+ <div class="modal fade" id="postponeModel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; padding: 15px;">
+
+            <!-- Modal Header -->
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;color:black">
+                Postpone Meeting
+            </div>
+            <div style="font-size: 13px; color:black">
+                Are you sure to postpone Meeting!
+            </div>
+            
+            <form action="{{ route('meetings.postpone') }}" method="POST">
+                @csrf
+                <input type="hidden" name="postponeid" id="postponeid" />
+            <!-- Denied Section -->
+            <div style="border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #f9f9f9;">
+
+            <!-- Save Button -->
+            <div class="text-center" style="margin-top: 15px; display:flex; justify-content: space-around;">
+                <button data-bs-dismiss="modal" type="button" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                     Close
+                </button>
+                <button type="submit" class="btn" 
+                    style="background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                    Postpone & Close
+                </button>
+    </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 <!-- remove model -->
  <div class="modal fade" id="removeModel" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -1381,22 +1419,23 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     <div style="display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 10px;" class="mt-3 owned">
 
                         <!-- Edit the Project -->
-                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
+                        <div class="openEditFromView" id="openEditFromView" data-bs-toggle="modal" data-id="" data-bs-target="#meetingModal" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/editp.png') }}" alt="Edit" width="40" height="40">
                             </div>
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
                         </div>
 
-                        <div class="openEditFromView" id="openEditFromView" data-id="" data-bs-target="#todomodel" style="text-align: center; flex: 1;cursor:pointer;">
+                        <div class="postponeView" id="postponeView" data-bs-toggle="modal" data-bs-target="#postponeModel" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/postp.png') }}" alt="Edit" width="40" height="40">
                             </div>
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Postpone</div>
                         </div>
+
+                        
+                        
                        
-
-
                         <!-- Remove the Project -->
                         <div style="text-align: center; flex: 1; cursor: pointer;"
                             data-bs-toggle="modal" data-bs-target="#removeModel">
@@ -1672,14 +1711,14 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <select id="select_project" class="form-control selection">
+                            <select id="select_project" name="project" class="form-control selection">
                                 <option value="">Select Project</option>
                                 <option value="1">Project1</option>
                                 <option value="2">Project2</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select id="select_team" class="form-control selection">
+                            <select id="select_team" name="team" class="form-control selection">
                                 <option value="">Select Team</option>
                                 <option value="1">Team 1</option>
                                 <option value="2">Team 2</option>
@@ -1757,7 +1796,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     </div>
 
 
-                    <input  type="text" name="meetinglink" id="meetinglink"
+                    <input  type="url" name="meetinglink" id="meetinglink"
                         placeholder="Past link"
                         style="width: 100%; background-color: white; color: #64748b; border: none;
            border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
@@ -2477,6 +2516,7 @@ let customtimer = {{ $ctime }} * 1000;
             let dataid      = this.dataset.id;
 
             //const editBtnInModal = document.getElementById('openEditFromView');
+            document.getElementById("openEditFromView").setAttribute("data-id", dataid);
             const editBtnInModal = document.querySelector('.edit_' + dataid);
             const openModal = document.getElementById('inreject');
 
@@ -2527,6 +2567,9 @@ let customtimer = {{ $ctime }} * 1000;
             }
 
             document.getElementById("remid").value = dataid;
+            document.getElementById("postponeid").value = dataid;
+
+            document.getElementById("meeting_id").value = dataid;
 
             const markDoneBtn = document.getElementById('markDoneBtn');
             if (markDoneBtn) {
@@ -3095,7 +3138,7 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     const todoType = document.getElementById('todo_type').value;
     const linkType = document.getElementById('link_type').value;
     
-    const startDate = document.getElementById('dateInput')?.value;
+    //const startDate = document.getElementById('dateInput')?.value;
     const startTime = document.getElementById('startTimeSelect')?.value;
     const endTime = document.getElementById('endTimeSelect')?.value;
 
@@ -3120,10 +3163,10 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
    // }
 
     if (todoType === 'scheduled') {
-        if (!startDate) {
-            alert('Please select a Start Date.');
-            return;
-        }
+        //if (!startDate) {
+        //    alert('Please select a Start Date.');
+        //    return;
+        //}
         if (!startTime) {
             alert('Please select a Start Time.');
             return;
@@ -3186,11 +3229,209 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
 function addmeetid(button){
     let meetdelidngId = button.getAttribute('data-id');
     document.getElementById("meeting_id").value = meetdelidngId;
+
+    editformapi(meetdelidngId);
 }
+
+document.getElementById("openEditFromView").addEventListener("click", function() {
+    const id = this.getAttribute("data-id");
+    editformapi(id);
+});
+
+async function editformapi(id) {
+    try {
+        const response = await fetch(`/getmeeting/${id}`); // adjust route if needed
+        const data = await response.json();
+
+        if (!data.success) {
+            alert("Failed to load meeting data.");
+            return;
+        }
+
+        const meeting = data.meeting;
+        const members = meeting.members || [];
+
+        // 📝 Fill hidden fields
+        document.getElementById("meeting_id").value = meeting._id || meeting.id;
+        document.getElementById("startDateHidden").value = meeting.start_date || '';
+        document.getElementById("endDateHidden").value = meeting.end_date || '';
+        document.getElementById("startTimeHidden").value = meeting.start_time || '';
+        document.getElementById("endTimeHidden").value = meeting.end_time || '';
+        document.getElementById("link_type").value = meeting.link_type || '';
+
+        document.getElementById("select_project").value = meeting.project;
+        document.getElementById("select_team").value = meeting.team;
+
+        document.querySelector('.priority').classList.remove('active');
+
+            document.getElementById('priorityHidden').value = meeting.priority;
+
+            if(meeting.priority == "low"){
+                document.querySelector('#priorityLow').classList.add('active');
+            }else if(meeting.priority == "middle"){
+                document.querySelector('#priorityMiddle').classList.add('active');
+            }else if(meeting.priority == "high"){
+                document.querySelector('#priorityHigh').classList.add('active');
+            }
+        if(meeting.todo_type == "today"){
+            document.getElementById("btnToday").click();
+        }else{
+            document.getElementById("btnScheduled").click();
+        }
+
+        // 🏷️ Title & Description
+        document.getElementById("meeting_name").value = meeting.title || '';
+        const descInput = document.querySelector('input[name="sections"]');
+        if (descInput) descInput.value = meeting.description || '';
+
+        // 🕓 Date Display UI
+        if (meeting.start_date) {
+            const d = new Date(meeting.start_date);
+            document.getElementById('dateDisplay').innerText =
+                ('0' + d.getDate()).slice(-2) + ':' +
+                ('0' + (d.getMonth() + 1)).slice(-2) + ':' + d.getFullYear();
+        }
+
+        // ⏰ Time Dropdowns
+        document.getElementById("startTimeSelect").value = meeting.start_time || '';
+        document.getElementById("endTimeSelect").value = meeting.end_time || '';
+
+        // 🔗 Meeting link
+        document.getElementById("meetinglink").value = meeting.meet_link || '';
+
+        // 💡 Priority buttons
+        const priorities = ["Low", "Middle", "High"];
+        priorities.forEach(p => {
+            document.getElementById("priority" + p).classList.remove("active1");
+        });
+        if (meeting.priority) {
+            const activeBtn = document.getElementById("priority" + meeting.priority.charAt(0).toUpperCase() + meeting.priority.slice(1));
+            if (activeBtn) activeBtn.classList.add("active1");
+            document.getElementById("priorityHidden").value = meeting.priority;
+        }
+
+        // 🔔 Reminder buttons
+        document.querySelectorAll('.reminder-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.value == meeting.reminder) btn.classList.add('active');
+        });
+        document.getElementById('reminderHidden').value = meeting.reminder || '';
+
+        // 👥 Members
+        const membersSelect = document.getElementById("members");
+        membersSelect.innerHTML = ''; // clear old
+        members.forEach(m => {
+            const option = document.createElement("option");
+            option.value = m.user.id;
+            option.text = m.user.name;
+            option.selected = true;
+            membersSelect.appendChild(option);
+
+            let usrdiv = "user_" + m.user.id; 
+            const el = document.getElementById(usrdiv);
+            if (el) el.click();
+        });
+
+        // 🟢 Link type buttons UI
+        if (meeting.link_type === 'Zoom') {
+            document.getElementById('btnZoom').style.backgroundColor = '#22c55e';
+            document.getElementById('btnZoom').style.color = 'white';
+            document.getElementById('btnMeet').style.backgroundColor = 'white';
+            document.getElementById('btnMeet').style.color = '#64748b';
+        } else {
+            document.getElementById('btnMeet').style.backgroundColor = '#22c55e';
+            document.getElementById('btnMeet').style.color = 'white';
+            document.getElementById('btnZoom').style.backgroundColor = 'white';
+            document.getElementById('btnZoom').style.color = '#64748b';
+        }
+
+        // 🧩 Update “Create” button text
+//document.getElementById("saveBtn").innerText = "Update";
+
+        // 💬 Show modal
+      //  const meetingModal = new bootstrap.Modal(document.getElementById('meetingModal'));
+      //  meetingModal.show();
+
+    } catch (error) {
+        console.error("Error fetching meeting:", error);
+        alert("An error occurred while loading meeting data.");
+    }
+}
+
+function resetMeetingForm() {
+    // Clear text inputs
+    document.getElementById("meeting_id").value = '';
+    document.getElementById("meeting_name").value = '';
+    document.querySelector('input[name="sections"]').value = '';
+
+    // Clear selects
+    document.getElementById("select_project").value = '';
+    document.getElementById("select_team").value = '';
+    document.getElementById("startTimeSelect").value = '';
+    document.getElementById("endTimeSelect").value = '';
+
+    // Clear hidden fields
+    document.getElementById("startDateHidden").value = '';
+    document.getElementById("endDateHidden").value = '';
+    document.getElementById("startTimeHidden").value = '';
+    document.getElementById("endTimeHidden").value = '';
+    document.getElementById("priorityHidden").value = '';
+    document.getElementById("reminderHidden").value = '';
+    document.getElementById("link_type").value = '';
+
+    // Clear meeting link
+    document.getElementById("meetinglink").value = '';
+
+    // Reset date display
+    document.getElementById("dateDisplay").innerText = '';
+
+    // Reset members select
+    const membersSelect = document.getElementById("members");
+    membersSelect.innerHTML = '';
+
+    // Remove active classes from priority buttons
+    ["Low", "Middle", "High"].forEach(p => {
+        document.getElementById("priority" + p).classList.remove("active1");
+    });
+
+    // Remove active reminder buttons
+    document.querySelectorAll('.reminder-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Reset link type buttons color
+    document.getElementById('btnMeet').style.backgroundColor = 'white';
+    document.getElementById('btnMeet').style.color = '#64748b';
+    document.getElementById('btnZoom').style.backgroundColor = 'white';
+    document.getElementById('btnZoom').style.color = '#64748b';
+
+    document.getElementById('btnToday').style.backgroundColor = 'white';
+    document.getElementById('btnToday').style.color = '#64748b';
+
+    document.getElementById('btnScheduled').style.backgroundColor = 'white';
+    document.getElementById('btnScheduled').style.color = '#64748b';
+
+    // Reset todo type buttons
+    document.getElementById("btnToday").classList.remove("active");
+    document.getElementById("btnScheduled").classList.remove("active");
+
+    // Optionally reset priority UI to default
+    document.querySelector('.priority').classList.remove('active');
+
+    document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+    document.querySelectorAll(".time-btn").forEach(d => d.classList.remove("active"));
+
+    
+
+}
+
+
 
 function updteid(button){
     let meetdelidngId = button.getAttribute('data-id');
     document.getElementById("remid").value = meetdelidngId;
+    document.getElementById("postponeid").value = meetdelidngId;
+    
 }
 
 function handleMeetingAction(button, actionType) {
