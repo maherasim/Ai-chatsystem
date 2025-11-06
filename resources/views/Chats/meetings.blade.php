@@ -438,7 +438,7 @@
                         <div class="project-succes pt-1 pb-2 d-flex justify-content-between align-items-center flex-wrap" style="gap:10px;">
 
                             <div>
-                                <h3 style="margin: 0;">TOday's Reminder's</h3>
+                                <h3 style="margin: 0; font-size:18px;">TOday's Reminder's</h3>
                                 <strong>Reminders: {{count($todayMeetings)}}</strong>
                             </div>
 
@@ -718,7 +718,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <!-- meeting todo -->
                         <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center">
                             <div>
-                                <h3 style="margin: 0;">Meetings Events</h3>
+                                <h3 style="margin: 0; font-size:18px;">Meetings Events</h3>
                                 <strong>Events: {{count($upcomingMeetings)}}</strong>
                             </div>
 
@@ -1541,15 +1541,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
             <div class="modal-body p-4" style="background-color: white;">
                 <!-- Header -->
-                <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting</h5>
-                <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
+                <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting
 
-                
-                <!-- Schedule Type Toggle -->
-                <div style="background-color: #f9f9fb; border-radius:10px; padding:0px 5px;">
-                    <!-- Toggle Buttons -->
-                    <div style="display: flex;  padding:10px; margin-bottom: 6px; margin-top: 4px;">
-                        <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; background:#fff;">
+                <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; background-color: #F2F2F2; float: right;">
                             <button type="button" id="btnToday"
                                 onclick="
                     this.style.backgroundColor='#22c55e';
@@ -1578,10 +1572,20 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 Scheduled Meeting
                             </button>
                         </div>
+
+                </h5>
+                <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
+
+                
+                <!-- Schedule Type Toggle -->
+                <div style="background-color: #f9f9fb; border-radius:10px; padding:0px 5px;">
+                    <!-- Toggle Buttons -->
+                    <div style="display: flex;  padding:10px; margin-bottom: 6px; margin-top: 4px;">
+                        
                     </div>
 
                     <!-- Date & Time Fields -->
-                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding-bottom: 4px; display: flex;">
+                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding: 4px; display: flex;">
 
                         <!-- Start Date (hidden by default) -->
 
@@ -1664,47 +1668,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     </div>
                 </div>
 
-                <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-                    <!-- Heading and Subtext -->
-                    <div class="row">
-                        <div style="margin-bottom: 12px;" class="col-md-6">
-                            <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">Meeting Details</p>
-                            <p style="font-size: 12px; color: #64748b; margin: 0;">About the meeting</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
-                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the priority of the Meeting</p>
-                                
-
-                        </div>
-                    </div>
-
-                    <!-- Inputs -->
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <input id="meeting_name" name="title" required type="text" class="form-control" placeholder="Meeting Title"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex1 gap-2 bg-white" style="justify-content:center; display:flex; justify-content: space-between;">
-                                <button class="priority active1" type="button" id="priorityLow" >Low</button>
-                                <button class="priority" type="button" id="priorityMiddle" >Middle</button>
-                                <button class="priority" type="button" id="priorityHigh" >High</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="row g-2 mt-2" id="sectionsWrapper">
-                        <div class="col-md-12 d-flex align-items-center section-item">
-                            <input name="sections" type="text" class="form-control" placeholder="Describe the Meeting"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
-                            
-                        </div>
-                    </div>
-
-
-                </div>
+                
 
                 <!-- shared section starts -->
                 <div class="mb-3" id="selectUsersBox" style="background-color: #f9f9fb; border-radius:10px; padding:16px;">
@@ -1762,10 +1726,50 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
     </div>
 
+<div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <!-- Heading and Subtext -->
+                    <div class="row">
+                        <div style="margin-bottom: 12px;" class="col-md-6">
+                            <p style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">Meeting Details</p>
+                            <p style="font-size: 12px; color: #64748b; margin: 0;">About the meeting</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="font-size: 12px; font-weight: 600; color: #334155;margin-bottom: 2px;">Meeting Priority</p>
+                                <p style="font-size: 11px; color: #6b7280;margin-bottom: 8px;">Set the priority of the Meeting</p>
+                                
 
+                        </div>
+                    </div>
+
+                    <!-- Inputs -->
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input id="meeting_name" name="title" required type="text" class="form-control" placeholder="Meeting Title"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex1 gap-2 bg-white" style="justify-content:center; display:flex; justify-content: space-between;">
+                                <button class="priority active1" type="button" id="priorityLow" >Low</button>
+                                <button class="priority" type="button" id="priorityMiddle" >Middle</button>
+                                <button class="priority" type="button" id="priorityHigh" >High</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row g-2 mt-2" id="sectionsWrapper">
+                        <div class="col-md-12 d-flex align-items-center section-item">
+                            <input name="sections" type="text" class="form-control" placeholder="Describe the Meeting"
+                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                            
+                        </div>
+                    </div>
+
+
+                </div>
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
-                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; margin: auto;margin-bottom: 12px;">
+                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; margin: auto;margin-bottom: 12px;">
 
                     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
                         <button type="button" id="btnMeet"
@@ -3405,10 +3409,10 @@ function resetMeetingForm() {
     document.getElementById('btnZoom').style.backgroundColor = 'white';
     document.getElementById('btnZoom').style.color = '#64748b';
 
-    document.getElementById('btnToday').style.backgroundColor = 'white';
+    document.getElementById('btnToday').style.backgroundColor = 'transparent';
     document.getElementById('btnToday').style.color = '#64748b';
 
-    document.getElementById('btnScheduled').style.backgroundColor = 'white';
+    document.getElementById('btnScheduled').style.backgroundColor = 'transparent';
     document.getElementById('btnScheduled').style.color = '#64748b';
 
     // Reset todo type buttons
