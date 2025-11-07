@@ -1544,129 +1544,23 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 <h5 style="font-weight: 600; color: #1e293b;">Scheduled a Meeting
 
                 <div style="border-radius: 10px; padding: 4px; display: flex; gap: 8px; background-color: #F2F2F2; float: right;">
-                            <button type="button" id="btnToday"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnScheduled').style.backgroundColor='transparent';
-                    document.getElementById('btnScheduled').style.color='#64748b';
-                    document.getElementById('schdule_time').style.display='none';
-                    document.getElementById('timeToday').style.display='block';
-                    document.getElementById('todo_type').value='today';
-                    document.getElementById('timeRow').classList.add('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Meeting Today
-                            </button>
+                            <button type="button" id="btnToday" 
+    onclick="showToday()"
+    style="border: none; background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+    Meeting Today
+  </button>
 
-                            <button type="button" id="btnScheduled"
-                                onclick="
-                    this.style.backgroundColor='#22c55e';
-                    this.style.color='white';
-                    document.getElementById('btnToday').style.backgroundColor='transparent';
-                    document.getElementById('btnToday').style.color='#64748b';
-                    document.getElementById('schdule_time').style.display='flex';
-                    document.getElementById('timeToday').style.display='none';
-                    document.getElementById('todo_type').value='scheduled';
-                    document.getElementById('timeRow').classList.remove('justify-content-center');"
-                                style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
-                                Scheduled Meeting
-                            </button>
-                        </div>
+                            <button type="button" id="btnScheduled" 
+    onclick="showScheduled()"
+    style="border: none; background-color: transparent; color: #64748b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+    Scheduled Meeting
+  </button>
 
                 </h5>
                 <p style="color: #64748b; font-size: 14px;">Connect your Team</p>
 
                 
-                <!-- Schedule Type Toggle -->
-                <div style="background-color: #f9f9fb; border-radius:10px; padding:0px 5px;">
-                    <!-- Toggle Buttons -->
-                    <div style="display: flex;  padding:10px; margin-bottom: 6px; margin-top: 4px;">
-                        
-                    </div>
-
-                    <!-- Date & Time Fields -->
-                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding: 4px; display: flex;">
-
-                        <!-- Start Date (hidden by default) -->
-
-                        <!-- selection of tody section -->
-                    <div class="d-flex1 gap-2 mb-3 bg-white" id="timeToday" style="padding: 8px;";>
-                        <button type="button" class="time-btn time-btn-2 " data-value="2">2 Hour</button>
-                        <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
-                        <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
-                        <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
-                        <button type="button" class="time-btn time-btn-12" data-value="12">12 Hour</button>
-                    </div>
-                    
-                    <div id="schdule_time" class="row" style="display:none;">
-
-                        <div class="col-md-4" id="startDateField" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
-                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('dateInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="date" id="dateInput"
-                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Start Time -->
-                        <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 10px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                
-                            <select name="start_time" id="startTimeSelect" class="timeselect" >
-                                    <option value="">Start Time</option>
-                                    @for ($h = 0; $h < 24; $h++)
-                                        @php $time = sprintf("%02d:00", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                        @php $time = sprintf("%02d:30", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                    @endfor
-                                </select>
-                                <!--
-                            <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Time</div>
-                                <div id="startTimeDisplay" style="font-size: 13px; color: #a0a4ab;">HH:MM</div>
-                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
-                                        onclick="document.getElementById('startTimeInput').showPicker()"
-                                        style="width: 20px; height: 20px; cursor: pointer;" />
-                                    <input type="time" id="startTimeInput"
-                                        onchange="if(this.value)document.getElementById('startTimeDisplay').innerText=this.value;"
-                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
-                                </div>
-                            -->
-
-
-                            </div>
-                        </div>
-                        <!-- End Time -->
-                        <div class="col-md-4" style="position: relative;">
-                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
-                                
-                            
-                                <select name="end_time" id="endTimeSelect" class="timeselect" >
-                                    <option value="">End Time</option>
-                                    @for ($h = 0; $h < 24; $h++)
-                                        @php $time = sprintf("%02d:00", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                        @php $time = sprintf("%02d:30", $h); @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
-                                    @endfor
-                                </select>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                        
-                    </div>
-                </div>
+                
 
                 
 
@@ -1726,6 +1620,87 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
     </div>
 
+    <!-- Schedule Type Toggle -->
+                <div style="background-color: #f9f9fb; border-radius:10px; padding:0px 5px;">
+                    <!-- Toggle Buttons -->
+                    <div style="  padding:10px; margin-bottom: 6px; margin-top: 4px;">
+                        <h5 style="font-weight: 600; font-size: 14px; color: #1e293b; margin: 0;">Meeting Time</h5>
+                        <p class="timeToday" style="margin-bottom:0px;">Meeting should start in:</p>
+                        <p class="schdule_time" style="display:none; margin-bottom:0px;">Connect your Team:</p>
+                    </div>
+
+                    <!-- Date & Time Fields -->
+                    <div class="row g-2 align-items-center mb-3 justify-content-center" id="timeRow" style="padding: 4px; display: flex;">
+
+                        <!-- Start Date (hidden by default) -->
+
+                        <!-- selection of tody section -->
+                    <div class="d-flex1 gap-2 mb-3 bg-white timeToday" id="timeToday" style="padding: 8px; margin-top:0px;";>
+                        
+                        <button type="button" class="time-btn time-btn-2 " data-value="2">2 Hour</button>
+                        <button type="button" class="time-btn time-btn-3" data-value="3">3 Hour</button>
+                        <button type="button" class="time-btn time-btn-6" data-value="6">6 Hour</button>
+                        <button type="button" class="time-btn time-btn-9" data-value="9">9 Hour</button>
+                        <button type="button" class="time-btn time-btn-12" data-value="12">12 Hour</button>
+                    </div>
+                    
+                    <div id="schdule_time" class="row schdule_time" style="display:none; padding:0px;">
+                        
+                        <div class="col-md-4" id="startDateField" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                <div style="font-weight: 600; font-size: 14px; color: #7d7f85;">Start Date</div>
+                                <div id="dateDisplay" style="font-size: 13px; color: #a0a4ab;">DD:MM:YYYY</div>
+                                <div style="position: absolute; top: 50%; right: 16px; transform: translateY(-50%);">
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}"
+                                        onclick="document.getElementById('dateInput').showPicker()"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <input type="date" id="dateInput"
+                                        onchange="let d=new Date(this.value); if(this.value)document.getElementById('dateDisplay').innerText=('0'+d.getDate()).slice(-2)+':' + ('0'+(d.getMonth()+1)).slice(-2)+':'+d.getFullYear();"
+                                        style="opacity:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Start Time -->
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 10px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                
+                            <select name="start_time" id="startTimeSelect" class="timeselect" >
+                                    <option value="">Start Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+                               
+                            </div>
+                        </div>
+                        <!-- End Time -->
+                        <div class="col-md-4" style="position: relative;">
+                            <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
+                                
+                            
+                                <select name="end_time" id="endTimeSelect" class="timeselect" >
+                                    <option value="">End Time</option>
+                                    @for ($h = 0; $h < 24; $h++)
+                                        @php $time = sprintf("%02d:00", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                        @php $time = sprintf("%02d:30", $h); @endphp
+                                        <option value="{{ $time }}">{{ $time }}</option>
+                                    @endfor
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                        
+                    </div>
+                </div>
+
 <div style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
                     <!-- Heading and Subtext -->
                     <div class="row">
@@ -1769,7 +1744,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 </div>
                 <!-- Meeting Links -->
                 <!-- Link Toggle Section -->
-                <div style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; margin: auto;margin-bottom: 12px;">
+                 <div id="meetingContainer">
+                <div id="linkSection"  style="background-color: #f9f9fb; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; width: 100%; margin: auto;margin-bottom: 12px;">
 
                     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 12px;">
                         <button type="button" id="btnMeet"
@@ -1802,13 +1778,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                     <input  type="url" name="meetinglink" id="meetinglink"
                         placeholder="Past link"
-                        style="width: 100%; background-color: white; color: #64748b; border: none;
+                        style="width: 100%; max-width:320px; background-color: white; color: #64748b; border: none;
            border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; text-align: center;">
                 </div>
 
 
                 <!-- ✅ Priority & Reminder Section Styled Box -->
-                <div class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
+                <div id="reminderSection" class="p-3 mb-3 rounded" style="background-color: #f5f7fa; box-shadow: inset 0 0 2px rgba(0,0,0,0.05);">
                     <div class="row g-3">
                         <!-- Meeting Priority -->
                         
@@ -1829,7 +1805,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         </div>
                     </div>
                 </div>
-
+</div>
 
                 <!-- Submit Button -->
                 <div class="text-center">
@@ -3483,6 +3459,58 @@ function handleMeetingAction(button, actionType) {
 
         }
     });
+}
+
+
+function showScheduled() {
+  // button styles
+  document.getElementById('btnScheduled').style.backgroundColor = '#22c55e';
+  document.getElementById('btnScheduled').style.color = 'white';
+  document.getElementById('btnToday').style.backgroundColor = 'transparent';
+  document.getElementById('btnToday').style.color = '#64748b';
+
+  // move the reminder section above the link section
+  const container = document.getElementById('meetingContainer');
+  const reminder = document.getElementById('reminderSection');
+  const link = document.getElementById('linkSection');
+  container.insertBefore(reminder, link);
+
+  // update hidden value
+  document.getElementById('todo_type').value = 'scheduled';
+
+  
+  document.querySelectorAll('.schdule_time').forEach(el => {
+    el.style.display = 'flex';
+  });
+  document.querySelectorAll('.timeToday').forEach(el => {
+    el.style.display = 'none';
+  });
+
+
+}
+
+function showToday() {
+  // button styles
+  document.getElementById('btnToday').style.backgroundColor = '#22c55e';
+  document.getElementById('btnToday').style.color = 'white';
+  document.getElementById('btnScheduled').style.backgroundColor = 'transparent';
+  document.getElementById('btnScheduled').style.color = '#64748b';
+
+  document.querySelectorAll('.schdule_time').forEach(el => {
+    el.style.display = 'none';
+  });
+  document.querySelectorAll('.timeToday').forEach(el => {
+    el.style.display = 'flex';
+  });
+
+  // move link section back to top
+  const container = document.getElementById('meetingContainer');
+  const reminder = document.getElementById('reminderSection');
+  const link = document.getElementById('linkSection');
+  container.insertBefore(link, reminder);
+
+  // update hidden value
+  document.getElementById('todo_type').value = 'today';
 }
 
 
