@@ -52,6 +52,7 @@ use Carbon\Carbon;
 
 .overlap-container {
         display: flex;
+        justify-content: center;
     }
 
     .overlap-container img {
