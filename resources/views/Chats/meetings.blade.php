@@ -600,7 +600,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                         <!-- "Now" Text -->
                                         <span style="color: red; font-weight: 500;">
-                                            <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 20px;height:20px;"> Now</span>
+                                            <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 20px;height:20px;"> </span>
+                                        <span style="color: red; font-weight: 500;"> Now</span>
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -924,7 +925,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     </div>
 
                                     <!-- Status Row -->
-                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
+                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="justify-content: space-evenly; font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
 
                                        
                                         
