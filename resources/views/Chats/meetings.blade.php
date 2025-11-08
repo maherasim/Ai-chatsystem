@@ -930,7 +930,38 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                        
                                         
                                         <!-- Video Icon -->
-                                        <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
+                                                @php
+                                                    $showed = 0;
+                                                @endphp
+
+                                            @if ($meeting->is_removed == "-1")
+                                                    @php
+                                                        $showed = 1;
+                                                    @endphp
+                                                <img src="{{URL::asset('/build/img/cancel.png')}}" alt="Image" style="width: 20px;height:20px;">
+                                            @elseif ($meeting->user_id == Auth::id())
+                                                    @php
+                                                        $showed = 1;
+                                                    @endphp
+                                                <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
+                                            @else
+
+                                                    @foreach ($meeting->members as $member)
+                                                    @if($member->user_id == Auth::id())
+                                                        @if ($member->decision == 0)
+                                                        @php
+                                                            $showed = 1;
+                                                        @endphp
+                                                            <img src="{{URL::asset('/build/img/wait.png')}}" alt="Image" style="width: 20px;height:20px;">
+                                                        @endif
+                                                        @endif
+                                                    @endforeach
+
+                                            @endif
+
+                                            @if($showed == 0)
+                                                    <img src="{{URL::asset('/build/img/watch.svg')}}" alt="Image" style="width: 20px;height:20px;">
+                                            @endif
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -943,6 +974,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                         <!-- Clock + Time -->
                                         <div class="d-flex align-items-center gap-1">
+                                            
                                             <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 16px;height:16px;">
                                             <span style="color: #e53935; font-weight: 500;">{{$meeting->start_time}} - {{$meeting->end_time}}</span>
                                         </div>
