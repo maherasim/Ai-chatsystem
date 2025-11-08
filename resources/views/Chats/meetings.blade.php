@@ -638,10 +638,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                         
     </div>
-
+                            <div style="display:none;">
                                         <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $meeting->id }}">
                                             <span id="asimclic-{{ $index }}"></span>
                                         </div>
+                            </div>
                                     
                                     @if($remaining > 0)
     <script>
@@ -1066,10 +1067,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                             // Combine date and time
                                             $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time);
                                         @endphp
-                                    
+                                    <div style="display:none;">
                                         <div class="counter-div" id="timer-{{ $index }}" data-reminder-active="0" data-todo-id="{{ $meeting->id }}">
                                             <span id="asimclic-{{ $index }}"></span>
-                                        </div>
+                                     </div>
+                                       
+                                    </div>
                                     
                                     @if($remaining > 0)
     <script>
