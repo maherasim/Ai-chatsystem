@@ -194,8 +194,11 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
         if ($request->start_date === null) {
             // If today, calculate based on todaytime input
             $hoursToAdd =  (int) $request->todaytime; // e.g. 2,3,6
-            $startTime = now()->format('H:i');
-            $endTime = now()->addHours($hoursToAdd)->format('H:i');
+            $startTime = now()->addHours($hoursToAdd)->format('H:i'); // now()->format('H:i');
+
+            
+            $newhours = $hoursToAdd * 2;
+            $endTime = now()->addHours($newhours)->format('H:i');
            
             $total_time = $request->todaytime;
             $startDate = date('Y-m-d');

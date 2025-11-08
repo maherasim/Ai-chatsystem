@@ -1,4 +1,7 @@
 <?php $page = 'chat'; ?>
+@php
+use Carbon\Carbon;
+@endphp
 @extends('layout.mainlayout')
 @section('content')
 
@@ -513,7 +516,7 @@
                                     $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
                                 }
 
-                                $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time, 'Europe/Berlin');
+                                $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->start_time, 'Europe/Berlin');
 //$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
 $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 ->diffInSeconds($endDateTime, false));
@@ -533,7 +536,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-start_date="{{ $meeting->start_date }}"
     data-start_time="{{ $meeting->start_time }}"
     data-end_date="{{ $meeting->end_date }}"
-    data-end_time="{{ $meeting->end_time }}"
+    data-end_time="{{ $meeting->start_time }}"
     data-is_private="{{ $meeting->is_private }}"
     data-priority="{{ $meeting->priority }}"
     data-reason="{{$meeting->reason}}"
@@ -609,21 +612,27 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                             <span style="color: #ef4444;">{{$meeting->start_time}} - {{$meeting->end_time}}</span>
                                         </div>
                                     </div>
+                                    
+                                        <!-- Join Now Button -->
+                                        <div data-time="{{$endDateTime}}"  data-url="{{$meeting->meet_link}}" class="text-center py-2 joinbtns" id="joinbtn-{{ $meeting->_id }}" data-start_date="{{ $meeting->start_date }}"
+    data-start_time="{{ $meeting->start_time }}"
+    data-end_date="{{ $meeting->end_date }}"
+    data-end_time="{{ $meeting->start_time }}" style="display:none;" >
+                                            <button class="join-now-btn" onclick="event.stopPropagation();" style=" background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                                                Join now
+                                                <img src="{{ URL::asset('/build/img/Logout1.svg') }}" alt="arrow" style="width: 16px; height: 16px;" />
+                                            </button>
+                                        </div>
 
-                                    <!-- Join Now Button -->
-                                    <div class="text-center py-2">
-                                        <button style=" background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                                            Join now
-                                            <img src="{{ URL::asset('/build/img/Logout1.svg') }}" alt="arrow" style="width: 16px; height: 16px;" />
-                                        </button>
-                                    </div>
+                                        
+                                    
 
                                     <!-- Footer Button -->
                                     <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
                                         
                                         @php
                                             // Combine date and time
-                                            $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time);
+                                            $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->start_time);
                                         @endphp
 
                                         
@@ -638,19 +647,26 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
         (function() {
             let duration = {{ $remaining }};
             let display = document.getElementById('asimclic-{{ $index }}');
-            //let container = document.getElementById('timer-{{ $index }}');
+            let container = document.getElementById('timer-{{ $index }}');
             let part = {{ $part }};
             let reminderSeconds = {{ $reminderSeconds }};
+            let joinBtn = document.getElementById('joinbtn-{{ $meeting->_id }}');
 
             // hide timer initially if not in reminder period yet
             if (duration > reminderSeconds) {
-               // container.style.display = "none";
+                container.style.display = "none";
             }
 
             function updateClock() {
                 let hours = Math.floor(duration / 3600);
                 let minutes = Math.floor((duration % 3600) / 60);
                 let seconds = duration % 60;
+
+                if (duration <= 180) {
+                 //   joinBtn.style.display = "block";
+                } else {
+                  //  joinBtn.style.display = "none";
+                }
 
                 let formatted =
                     String(hours).padStart(2, '0') + ":" +
@@ -661,12 +677,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                 // When countdown enters reminder phase, show container
                 if (duration <= reminderSeconds) {
-                    //container.style.display = "flex"; // or "block" if needed
-                   // container.dataset.reminderActive = "1"; 
+                    container.style.display = "flex"; // or "block" if needed
+                    container.dataset.reminderActive = "1"; 
 
                     // color changes during reminder phase
                     if (duration <= 0) {
-                        //container.style.backgroundColor = "#e74c3c"; // Final stage
+                        container.style.backgroundColor = "#e74c3c"; // Final stage
                         clearInterval(timer);
 
                         let todoCard = document.querySelector('.viewTodo[data-id="{{ $meeting->id }}"]');
@@ -676,11 +692,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         }
 
                     } else if (duration <= part) {
-                        //container.style.backgroundColor = "#e74c3c"; //  last 1/3
+                        container.style.backgroundColor = "#e74c3c"; //  last 1/3
                     } else if (duration <= part * 2) {
-                        //container.style.backgroundColor = "#ff9800"; //  middle 1/3
+                        container.style.backgroundColor = "#ff9800"; //  middle 1/3
                     } else {
-                        //container.style.backgroundColor = "#4CAF50"; //  first 1/3
+                        container.style.backgroundColor = "#4CAF50"; //  first 1/3
                     }
                 }
 
@@ -2486,7 +2502,65 @@ let customtimer = {{ $ctime }} * 1000;
 
     setInterval(() => {
         customtimer += 1000; // decrease by 1 second each tick
+
+
+        const joinButtons = document.querySelectorAll('.joinbtns');
+
+        // Loop through each element
+        joinButtons.forEach(function(btn) {
+            // Example: read data-time attribute
+            const time = btn.getAttribute('data-time');
+            const id = btn.id;
+
+            //let timr = "2025-11-08 18:00:00";
+            //joinbtn-
+
+            let startDate   = btn.dataset.start_date || "";
+            let endDate   = btn.dataset.end_date || "";
+            let startTime   = btn.dataset.start_time || "";
+            let endTime     = btn.dataset.end_time || "";
+
+
+            let [year, month, day] = endDate.split('-').map(Number);
+            let [hour, minute] = endTime.split(':').map(Number);
+            //let endDateTime = Date.UTC(year, month - 1, day, hour, minute);
+            let endDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
+            endDateTime = new Date(endDateTime.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
+
+
+
+            const serverTimestamp = customtimer; // {{ $ctime }} * 1000; // already adjusted from controller
+            
+            const serverDate = new Date(serverTimestamp);
+            const now = serverDate; // your reference time from backend
+            const distance = endDateTime - now;
+
+            
+
+            //let jmetid = 'joinbtn-' + id;
+            //alert(jmetid);
+            let jnbtnshow = document.getElementById(id);
+
+           
+
+            const days1 = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours1 = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes1 = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            if(days1 <= 0 && hours1 <= 0 && minutes1 < 4){
+                jnbtnshow.style.display = "block";
+            }
+            
+        });
+
     }, 1000);
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Select all elements with class 'joinbtns'
+    
+});
 
     const modal = document.getElementById("inreject");
 
@@ -2680,51 +2754,6 @@ const list = document.getElementById('createPdfList');
                 ownedEl.style.display = "none";
             }
             
-            /*
-            if (dataown == "0") {
-                ownedEl.style.display = "none";
-                ownerstate.style.display = "none";
-            } else if (dataown == "private"){
-                ownedEl.style.display = "flex";
-                edivbtn.style.display = "block";
-                donebtn.style.display = "none";
-                markfial.innerText = "Remove";
-                document.getElementById("isremove").value = 1;
-                removals.forEach(el => {
-                    el.style.display = "block";
-                });
-
-                ownerstate.style.display = "none";
-
-                faileds.forEach(el => {
-                    el.style.display = "none";
-                    document.getElementById("iscomplete").value = 0;
-                });
-                //show edit as well
-            } else if (dataown == "today") {
-                //check if timer starts then show otherwise hide it
-
-                let timerDiv = document.querySelector(`.counter-div[data-todo-id="${dataid}"]`);
-                let isReminderActive = timerDiv && timerDiv.dataset.reminderActive === "1";
-
-                let ownedEl = document.querySelector('.owned');
-                
-                if (isReminderActive ) {
-                    ownedEl.style.display = "flex";
-                    if(owner == "1"){
-                        ownerstate.style.display = "block";
-                    }else{
-                        ownerstate.style.display = "none";
-                    }
-                    
-                } else {
-                    ownedEl.style.display = "none";
-                    ownerstate.style.display = "none";
-                }
-            }
-*/
-
-           
             let imgTag = document.querySelector('.user-todo-img');
             imgTag.src = userimg;
 
@@ -2781,6 +2810,8 @@ const list = document.getElementById('createPdfList');
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let meetid = 'joinbtn-' + dataid;
+        let joinBtn = document.getElementById(meetid);
 
         document.getElementById("days").innerText = days;
         document.getElementById("hours").innerText = hours;
@@ -2790,6 +2821,11 @@ const list = document.getElementById('createPdfList');
         document.getElementById("hours1").innerText = hours;
         document.getElementById("minutes1").innerText = minutes;
 
+        if(days == 0 && hours == 0 && minutes < 4){
+            joinBtn.style.display = "block";
+        }
+
+        
         // Animate circle progress
         document.getElementById("days-circle").style.strokeDashoffset = CIRC - (days % 365) / 365 * CIRC;
         document.getElementById("hours-circle").style.strokeDashoffset = CIRC - (hours / 24) * CIRC;
@@ -3513,6 +3549,21 @@ function showToday() {
   document.getElementById('todo_type').value = 'today';
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.join-now-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation(); 
+            
+            const parent = button.closest('.joinbtns');
+            const url = parent?.getAttribute('data-url');
+            
+            if (url) {
+                window.open(url, '_blank'); 
+            } 
+        });
+    });
+});
 
         </script>
         @endsection
