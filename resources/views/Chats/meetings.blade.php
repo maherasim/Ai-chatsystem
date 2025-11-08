@@ -586,12 +586,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     </div>
 
                                     <!-- Status Row -->
-                                    <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
+                                    <div class="d-flex align-items-center gap-2 px-2 py-2 mx-1 mb-2" style="justify-content: space-evenly; font-size: 11px; border-radius: 10px; background: #fff; border: 1px solid #f3f3f3;">
                                         <!-- Green dot -->
                                         
 
-                                        <!-- Divider -->
-                                        <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                         <!-- Bell Icon -->
                                         <img src="{{URL::asset('/build/img/bell.svg')}}" alt="Image" style="width: 20px;height:20px;" class="rounded-circle">
@@ -602,7 +600,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <!-- "Now" Text -->
                                         <span style="color: red; font-weight: 500;">
                                             <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 20px;height:20px;"> </span>
-                                        <span style="color: red; font-weight: 500;"> Now</span>
+                                        <span style="color: red; font-weight: 500;" class="joinbtn-{{$meeting->_id}}"> Today</span>
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
@@ -1479,7 +1477,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">Edit</div>
                         </div>
 
-                        <div class="postponeView" id="postponeView" data-bs-toggle="modal" data-bs-target="#postponeModel" style="text-align: center; flex: 1;cursor:pointer;">
+                        <!--<div class="postponeView" id="postponeView" data-bs-toggle="modal" data-bs-target="#postponeModel" style="text-align: center; flex: 1;cursor:pointer;">-->
+                            <div class="postponeViewedit" id="postponeViewedit" data-bs-toggle="modal" data-bs-target="#meetingModal" style="text-align: center; flex: 1;cursor:pointer;">
                             <div style="padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                                 <img src="{{ asset('build/img/postp.png') }}" alt="Edit" width="40" height="40">
                             </div>
@@ -2564,18 +2563,13 @@ let customtimer = {{ $ctime }} * 1000;
             let endDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
             endDateTime = new Date(endDateTime.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
 
-
-
-            const serverTimestamp = customtimer; // {{ $ctime }} * 1000; // already adjusted from controller
+            const serverTimestamp = customtimer; // {{ $ctime }} * 1000; //  adjusted from controller
             
             const serverDate = new Date(serverTimestamp);
-            const now = serverDate; // your reference time from backend
+            const now = serverDate; // reference time from backend
             const distance = endDateTime - now;
 
             
-
-            //let jmetid = 'joinbtn-' + id;
-            //alert(jmetid);
             let jnbtnshow = document.getElementById(id);
 
            
@@ -2586,6 +2580,14 @@ let customtimer = {{ $ctime }} * 1000;
 
             if(days1 <= 0 && hours1 <= 0 && minutes1 < 4){
                 jnbtnshow.style.display = "block";
+
+                let btnElement = document.querySelector("." + id);
+
+                if (btnElement) {
+                    btnElement.textContent = "Now";  
+                }
+
+                //tdybtn-
             }
             
         });
@@ -2608,6 +2610,9 @@ let customtimer = {{ $ctime }} * 1000;
 
             //const editBtnInModal = document.getElementById('openEditFromView');
             document.getElementById("openEditFromView").setAttribute("data-id", dataid);
+            document.getElementById("postponeViewedit").setAttribute("data-id", dataid);
+            
+
             const editBtnInModal = document.querySelector('.edit_' + dataid);
             const openModal = document.getElementById('inreject');
 
@@ -3290,6 +3295,12 @@ document.getElementById("openEditFromView").addEventListener("click", function()
     const id = this.getAttribute("data-id");
     editformapi(id);
 });
+
+document.getElementById("postponeViewedit").addEventListener("click", function() {
+    const id = this.getAttribute("data-id");
+    editformapi(id);
+});
+
 
 async function editformapi(id) {
     try {
