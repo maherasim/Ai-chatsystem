@@ -544,6 +544,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-reminder="{{ $meeting->reminder }}"
     data-total="{{ $meeting->total_time }}"
     data-owner="{{$owner}}"
+    data-url="{{$meeting->meet_link}}"
     data-complete="{{$meeting->completed}}"
     data-image="{{ $imageUrl }}"
     data-sections="{{$meeting->description}}"
@@ -727,7 +728,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             
                             <!-- End of Card 1 -->
                              @empty
-                             
+                                <div class="alert alert-warning">No Meeting for today.</div>
                              @endforelse
 
                             </div>
@@ -825,6 +826,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-reminder="{{ $meeting->reminder }}"
     data-total="{{ $meeting->total_time }}"
     data-owner="{{$owner}}"
+    data-url="{{$meeting->meet_link}}"
     data-complete="{{$meeting->completed}}"
     data-image="{{ $imageUrl }}"
     data-sections="{{$meeting->description}}"
@@ -1148,7 +1150,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             <!-- End of Card 1 -->
 
                             @empty
-                             
+                                <div class="alert alert-warning">No scheduled Meetings.</div>
                              @endforelse
 
        
@@ -1407,8 +1409,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <div style="background:#fff;justify-content: space-between; border-radius:6px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;">
                                 <img src="/build/img/vidlink.png" width="18" height="18" style="margin-right:10px;">
                                 <span style="color:#667085;font-size:13.5px;" id="vidlink" >Meeting on Zoom</span>
-                                <span style="color:#fff; background: #1BC469; border-radius:5px; padding:5px; cursor:pointer;">
-                                    Join: <span id="days1"></span>D:<span id="hours1"></span>H:<span id="minutes1"></span>M:
+                                <span class="jonlinkcls" data-link="" style="color:#fff; background: #1BC469; border-radius:5px; padding:5px; cursor:pointer;">
+                                    Join <span id="jointimestr"></span>
                                     <img src="/build/img/joinlink.png" width="18" height="18" style="margin-right:10px;">
                                 
                                 </span>
@@ -2710,6 +2712,11 @@ const list = document.getElementById('createPdfList');
             let owner       = this.dataset.owner;
             let reason      = this.dataset.reason;
             let iscomplete  = this.dataset.complete;
+            let meetlink    = this.dataset.url;
+
+            document.querySelectorAll('.jonlinkcls').forEach(el => {
+            el.dataset.link = meetlink;
+            });
 
             let forshared = document.querySelector('.forshared');
             
@@ -2845,6 +2852,8 @@ const list = document.getElementById('createPdfList');
             document.getElementById("hours-circle").style.strokeDashoffset = CIRC;
             document.getElementById("minutes-circle").style.strokeDashoffset = CIRC;
 
+            document.getElementById("jointimestr").innerText = "Now";
+
             clearInterval(timerInterval);
             return;
         }
@@ -2859,9 +2868,35 @@ const list = document.getElementById('createPdfList');
         document.getElementById("hours").innerText = hours;
         document.getElementById("minutes").innerText = minutes;
 
-        document.getElementById("days1").innerText = days;
-        document.getElementById("hours1").innerText = hours;
-        document.getElementById("minutes1").innerText = minutes;
+        let jointimestr = '';
+        if(days > 0 ){
+            jointimestr = 'D' + days;
+        }
+        if(hours > 0){
+            if(jointimestr != ''){
+                jointimestr = jointimestr + ':H' + hours;
+            }else{
+                jointimestr = 'H' + hours;
+            }
+        }
+
+        if(minutes > 0){
+            if(jointimestr != ''){
+                jointimestr = jointimestr + ':M' + minutes;
+            }else{
+                jointimestr = 'M' + minutes;
+            }
+        }
+
+        if(jointimestr == ''){
+            jointimestr = 'Now'
+        }
+
+        //alert(jointimestr);
+
+        document.getElementById("jointimestr").innerText = jointimestr;
+        //document.getElementById("hours1").innerText = hours;
+        //document.getElementById("minutes1").innerText = minutes;
 
         if(days == 0 && hours == 0 && minutes < 4){
             joinBtn.style.display = "block";
@@ -3611,6 +3646,15 @@ document.addEventListener('DOMContentLoaded', function() {
             } 
         });
     });
+});
+
+document.querySelectorAll('.jonlinkcls').forEach(el => {
+  el.addEventListener('click', function() {
+    const link = this.dataset.link; // get value of data-link
+    if (link) {
+      window.open(link, '_blank'); // open in new tab
+    }
+  });
 });
 
         </script>
