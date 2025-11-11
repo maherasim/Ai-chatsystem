@@ -2405,7 +2405,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch(_){}
     }, true);
 
-    // Task edit/delete handlers
+    // Task edit opens the main Create Task modal with prefilled data
     window.taskEdit = function(taskId){
         try {
             fetch(`{{ url('/tasks') }}/${taskId}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
@@ -2413,31 +2413,103 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(function(resp){
                     if (!resp || !resp.success) return;
                     var t = resp.task || {};
-                    document.querySelector('#markerDetailsModal .modal-title').textContent = 'Edit Task';
-                    (document.getElementById('marker-title')||{}).value = t.title || '';
-                    (document.getElementById('marker-description')||{}).value = t.description || '';
-                    (document.getElementById('marker-start')||{}).value = (t.start_date||'').substring(0,10);
-                    (document.getElementById('marker-end')||{}).value = (t.end_date||'').substring(0,10);
-                    var list = document.getElementById('checkpoints-list');
-                    if (list) {
-                        list.innerHTML = '';
-                        var cps = t.checkpoints;
-                        if (typeof cps === 'string') {
-                            try { cps = JSON.parse(cps); } catch(e) { cps = cps ? cps.split(',') : []; }
+
+                    // Switch modal title to Edit
+                    try { (document.querySelector('#createTaskModal .modal-title')||{}).textContent = 'Edit Task'; } catch(_) {}
+
+                    // Prefill project and load/select ticket deterministically
+                    try {
+                        if (projectSelect && t.project_id) {
+                            projectSelect.value = String(t.project_id);
+                            loadTickets(String(t.project_id)).then(function(){
+                                try {
+                                    if (ticketSelect && t.ticket_id) {
+                                        ticketSelect.value = String(t.ticket_id);
+                                        var changeEvent = new Event('change');
+                                        ticketSelect.dispatchEvent(changeEvent);
+                                    }
+                                } catch(_){ }
+                            });
                         }
-                        if (!Array.isArray(cps) || cps.length === 0) cps = [''];
-                        cps.forEach(function(c){ addCheckpointRow((c||'').toString()); });
-                    }
-                    var modalEl = document.getElementById('markerDetailsModal');
-                    if (modalEl && modalEl.parentNode !== document.body) { document.body.appendChild(modalEl); }
-                    new bootstrap.Modal(modalEl, { backdrop: true, focus: true }).show();
-                    // on save, switch to update
-                    var saveBtn = document.getElementById('save-marker');
-                    if (saveBtn) {
-                        saveBtn.dataset.editingId = taskId;
-                    }
+                    } catch(_){ }
+
+                    // Prefill preview image (board preferred, else mark) and render existing issues
+                    try {
+                        var src = null;
+                        if (t.board_image_path) src = '/storage/' + String(t.board_image_path).replace(/^\/+/, '');
+                        else if (t.mark_image_path) src = '/storage/' + String(t.mark_image_path).replace(/^\/+/, '');
+                        if (src && previewImg) {
+                            var renderExistingIssues = function(){
+                                try {
+                                    if (markerLayer) { markerLayer.style.display = 'block'; markerLayer.innerHTML = ''; }
+                                    var mtb = document.getElementById('markerToolbar'); if (mtb) mtb.style.display = 'flex';
+                                    var issues = Array.isArray(t.issues) ? t.issues : [];
+                                    var layerRect = markerLayer ? markerLayer.getBoundingClientRect() : { width: 0, height: 0 };
+                                    var maxNumber = 0;
+                                    issues.forEach(function(iss, idx){
+                                        var pos = iss && iss.position ? iss.position : null;
+                                        if (!pos) return;
+                                        var saved = iss.layer || null;
+                                        var scaleX = 1, scaleY = 1;
+                                        if (saved && saved.width && saved.height && layerRect.width && layerRect.height) {
+                                            scaleX = layerRect.width / saved.width;
+                                            scaleY = layerRect.height / saved.height;
+                                        }
+                                        var left = (pos.left || 0) * scaleX;
+                                        var top = (pos.top || 0) * scaleY;
+                                        var num = Number(iss.number || (idx + 1));
+                                        if (num > maxNumber) maxNumber = num;
+                                        var badge = document.createElement('div');
+                                        badge.className = 'marker-badge';
+                                        badge.textContent = String(num);
+                                        badge.style.position = 'absolute';
+                                        badge.style.left = left + 'px';
+                                        badge.style.top = top + 'px';
+                                        badge.style.transform = 'translate(-50%, -50%)';
+                                        badge.style.color = (iss.color || '#28c76f');
+                                        badge.style.fontWeight = '800';
+                                        badge.style.fontSize = '18px';
+                                        badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+                                        badge.style.cursor = 'pointer';
+                                        badge.style.zIndex = '25';
+                                        badge.addEventListener('mousedown', function(ev){ ev.stopPropagation(); });
+                                        badge.addEventListener('mouseup', function(ev){ ev.stopPropagation(); });
+                                        badge.addEventListener('click', function(ev){ ev.stopPropagation(); });
+                                        if (markerLayer) markerLayer.appendChild(badge);
+                                    });
+                                    try { badgeCounter = Math.max(badgeCounter||0, maxNumber||0); } catch(_){ badgeCounter = maxNumber||0; }
+                                } catch(_){ }
+                            };
+                            if (previewImg.complete) { renderExistingIssues(); } else { previewImg.onload = function(){ renderExistingIssues(); }; }
+                            previewImg.src = src;
+                            previewImg.style.display = 'block';
+                        }
+                    } catch(_){ }
+
+                    // Reset any staged issues for a clean edit state (keep numbering from existing badges)
+                    try { createdTasks = []; } catch(_){ }
+
+                    // Mark Create & Save as editing
+                    try { (document.getElementById('create-task-save')||{}).dataset.editingId = String(taskId); } catch(_){ }
+
+                    // Enter editing guard and close any open small menus
+                    window.__editingTaskMode = true;
+                    // Close any open small menus
+                    try { document.querySelectorAll('.menu-box').forEach(function(m){ m.style.display = 'none'; }); } catch(_) {}
+                    // Close any currently open modal, then open the edit modal
+                    try {
+                        document.querySelectorAll('.modal.show').forEach(function(el){
+                            try { bootstrap.Modal.getInstance(el)?.hide(); } catch(_) {}
+                        });
+                    } catch(_) {}
+                    // Open the main task modal (used for editing)
+                    setTimeout(function(){
+                        var modalEl = document.getElementById('createTaskModal');
+                        if (modalEl && modalEl.parentNode !== document.body) { document.body.appendChild(modalEl); }
+                        new bootstrap.Modal(modalEl, { backdrop: true, focus: true }).show();
+                    }, 150);
                 });
-        } catch(_){}
+        } catch(_){ }
     };
 
     window.taskDelete = function(taskId){
@@ -2517,6 +2589,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var placingActive = false; // only place marker when explicitly activated
     var createdTasks = [];
     var badgeCounter = 0;
+    // editing guard to prevent reset/clears when editing an existing task
+    window.__editingTaskMode = window.__editingTaskMode || false;
 
     // Prevent marker label overlap by nudging new badges to a nearby free spot
     function getExistingBadgePositions(){
@@ -3071,15 +3145,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Projects are rendered server-side; no client-side fetching needed
 
     function loadTickets(projectId) {
-        if (!ticketSelect) return;
+        if (!ticketSelect) return Promise.resolve();
         if (!projectId) {
             ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
-            return;
+            return Promise.resolve();
         }
         setSelectLoading(ticketSelect, true);
         var url = new URL('{{ route('tasks.tickets') }}', window.location.origin);
         url.searchParams.set('project_id', projectId);
-        fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+        return fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
             .then(function (res) { return res.json(); })
             .then(function (resp) {
                 ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
@@ -3096,14 +3170,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 ticketSelect.disabled = false;
                 // reset displayed dates when list refreshes
                 renderTicketDates(null);
+                return items;
             })
             .catch(function () {
                 ticketSelect.innerHTML = '<option value="">Failed to load tickets</option>';
                 ticketSelect.disabled = false;
+                return [];
             });
     }
 
     createTaskModalEl.addEventListener('shown.bs.modal', function () {
+        if (window.__editingTaskMode) return; // don't reset when editing
         if (ticketSelect) {
             ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
             ticketSelect.disabled = true;
@@ -3121,7 +3198,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var selectedId = e.target.value;
             var ticket = ticketCache[selectedId];
             renderTicketDates(ticket || null);
-            // Clear drop areas; keep empty until user uploads
+            if (window.__editingTaskMode) return; // don't clear the image/markers while editing
             try {
                 var p = document.getElementById('previewImage');
                 var t = document.getElementById('uploadText');
@@ -3136,7 +3213,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 var wpi = document.getElementById('web-previewImage'); if (wpi) { wpi.src=''; wpi.style.display='none'; }
                 var wut = document.getElementById('web-uploadText'); if (wut) { wut.style.display='block'; wut.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>'; }
             } catch(_) {}
-            // Removed auto-fetch of ticket board/tasks to avoid interfering with drag & drop
         });
     }
 
@@ -3237,31 +3313,11 @@ document.addEventListener('DOMContentLoaded', function () {
             })(),
             number: badgeCounter + 1
         };
-        // If editing an existing task, update immediately instead of creating an issue
+        // If editing an existing task, do NOT update immediately; accumulate locally
         try {
             var editingId = (document.getElementById('save-marker')||{}).dataset?.editingId;
             if (editingId) {
-                fetch(`{{ url('/tasks') }}/${editingId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify(payload)
-                }).then(function(res){ return res.json(); }).then(function(){
-                    try { delete (document.getElementById('save-marker')||{}).dataset.editingId; } catch(_){ }
-                    try {
-                        var note = document.createElement('div');
-                        note.className = 'position-fixed top-0 end-0 p-3';
-                        note.style.zIndex = '1060';
-                        note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task updated</div>';
-                        document.body.appendChild(note);
-                        setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
-                    } catch(_) {}
-                    try { bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide(); } catch(e) {}
-                });
-                return;
+                // fall through to push into createdTasks and create a badge; final PUT happens on Save & Close
             }
         } catch(_){ }
         // Do not post per-issue; accumulate locally until Save & Close
@@ -3333,6 +3389,47 @@ document.addEventListener('DOMContentLoaded', function () {
         if (createTaskSaveBtn && !createTaskSaveBtn._bound) {
             createTaskSaveBtn.addEventListener('click', function(){
                 try {
+                    // Editing mode: PUT update instead of creating a new task
+                    var editingId = (document.getElementById('create-task-save')||{}).dataset?.editingId;
+                    if (editingId) {
+                        var updatePayload = {
+                            // Use selected ticket title as task title (same as create flow)
+                            title: (function(){ try { var opt = ticketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : 'Task'; } catch(_){ return 'Task'; } })(),
+                            description: '',
+                            start_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date||null) : null; } catch(_){ return null; } })(),
+                            end_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date||null) : null; } catch(_){ return null; } })(),
+                            checkpoints: [],
+                            issues: (Array.isArray(createdTasks) ? createdTasks : []),
+                            mark_image: (function(){ try { var src=(previewImg||{}).src||''; return (src.indexOf('data:image')===0)?src:null; } catch(_){ return null; } })()
+                        };
+                        fetch(`{{ url('/tasks') }}/${editingId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify(updatePayload)
+                        }).then(function(res){ return res.json(); }).then(function(resp){
+                            try { delete (document.getElementById('create-task-save')||{}).dataset.editingId; } catch(_){ }
+                            if (resp && resp.success) {
+                                try {
+                                    var note = document.createElement('div');
+                                    note.className = 'position-fixed top-0 end-0 p-3';
+                                    note.style.zIndex = '1060';
+                                    note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task updated</div>';
+                                    document.body.appendChild(note);
+                                    setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
+                                } catch(_) {}
+                                try { bootstrap.Modal.getOrCreateInstance(document.getElementById('createTaskModal')).hide(); } catch(e) {}
+                                try { createdTasks = []; } catch(_) {}
+                                setTimeout(function(){ window.location.reload(); }, 300);
+                            } else {
+                                alert('Failed to update task');
+                            }
+                        }).catch(function(){ alert('Failed to update task'); });
+                        return;
+                    }
                     if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
                         alert('Please add at least one issue on the image before saving the task.');
                         return;
@@ -3396,6 +3493,114 @@ document.addEventListener('DOMContentLoaded', function () {
                 } catch(_){ }
             });
             createTaskSaveBtn._bound = true;
+        }
+        // Save & add Task: save and keep modal open for another task
+        var createTaskSaveAddBtn = document.getElementById('create-task-save-add');
+        if (createTaskSaveAddBtn && !createTaskSaveAddBtn._bound) {
+            createTaskSaveAddBtn.addEventListener('click', function(){
+                try {
+                    // Do not allow edit mode here; if editing, fall back to simple update but keep open
+                    var editingId = (document.getElementById('create-task-save')||{}).dataset?.editingId;
+                    if (editingId) {
+                        var updatePayload = {
+                            title: (function(){ try { var opt = ticketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : 'Task'; } catch(_){ return 'Task'; } })(),
+                            description: '',
+                            start_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date||null) : null; } catch(_){ return null; } })(),
+                            end_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date||null) : null; } catch(_){ return null; } })(),
+                            checkpoints: [],
+                            issues: (Array.isArray(createdTasks) ? createdTasks : []),
+                            mark_image: (function(){ try { var src=(previewImg||{}).src||''; return (src.indexOf('data:image')===0)?src:null; } catch(_){ return null; } })()
+                        };
+                        fetch(`{{ url('/tasks') }}/${editingId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify(updatePayload)
+                        }).then(function(res){ return res.json(); }).then(function(resp){
+                            if (resp && resp.success) {
+                                try {
+                                    var note = document.createElement('div');
+                                    note.className = 'position-fixed top-0 end-0 p-3';
+                                    note.style.zIndex = '1060';
+                                    note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task updated</div>';
+                                    document.body.appendChild(note);
+                                    setTimeout(function(){ try { note.remove(); } catch(_){} }, 1500);
+                                } catch(_) {}
+                                try { createdTasks = []; badgeCounter = 0; var existing = markerLayer?.querySelectorAll('.marker-badge') || []; existing.forEach?.(function(n){ try { n.remove(); } catch(_){} }); currentMarker = null; } catch(_){ }
+                            } else { alert('Failed to update task'); }
+                        }).catch(function(){ alert('Failed to update task'); });
+                        return;
+                    }
+                    if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
+                        alert('Please add at least one issue on the image before saving the task.');
+                        return;
+                    }
+                    var ticketText = (function(){
+                        try {
+                            var opt = ticketSelect?.selectedOptions?.[0];
+                            return opt ? (opt.textContent||'').trim() : '';
+                        } catch(_){ return ''; }
+                    })();
+                    var taskTitle = ticketText ? ticketText : 'Task';
+                    var payload = {
+                        project_id: (projectSelect||{}).value || null,
+                        ticket_id: (ticketSelect||{}).value || null,
+                        title: taskTitle,
+                        description: '',
+                        start_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date||null) : null; } catch(_){ return null; } })(),
+                        end_date: (function(){ try { var t = ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date||null) : null; } catch(_){ return null; } })(),
+                        issues: createdTasks,
+                        board_image: (function(){ try { var src = (previewImg||{}).src || ''; return (src && src.indexOf('data:image') === 0) ? src : null; } catch(_){ return null; } })()
+                    };
+                    fetch("{{ route('tasks.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(function(res){ return res.json(); }).then(function(resp){
+                        if (resp && resp.success) {
+                            try {
+                                var note = document.createElement('div');
+                                note.className = 'position-fixed top-0 end-0 p-3';
+                                note.style.zIndex = '1060';
+                                note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task added</div>';
+                                document.body.appendChild(note);
+                                setTimeout(function(){ try { note.remove(); } catch(_){} }, 1200);
+                            } catch(_) {}
+                            // Reset for next task: clear selections, dates, image, badges
+                            try {
+                                createdTasks = []; badgeCounter = 0; currentMarker = null;
+                                // clear badges
+                                var existing = markerLayer?.querySelectorAll('.marker-badge') || [];
+                                existing.forEach?.(function(n){ try { n.remove(); } catch(_){} });
+                                // reset ticket select (keep project as is)
+                                if (ticketSelect) {
+                                    try { ticketSelect.value = ''; } catch(_){}
+                                }
+                                // reset dates
+                                try { (startDateSpan||{}).textContent='--'; (endDateSpan||{}).textContent='--'; } catch(_){}
+                                // reset image area
+                                var ut = document.getElementById('uploadText');
+                                var fi = document.getElementById('fileInput');
+                                if (previewImg) { previewImg.src=''; previewImg.style.display='none'; }
+                                if (ut) { ut.style.display='block'; ut.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>'; }
+                                if (markerLayer) { markerLayer.style.display='none'; markerLayer.innerHTML=''; }
+                                var mtb = document.getElementById('markerToolbar'); if (mtb) mtb.style.display='none';
+                                if (fi) fi.value='';
+                            } catch(_) {}
+                        } else {
+                            alert('Failed to create task');
+                        }
+                    }).catch(function(){ alert('Failed to create task'); });
+                } catch(_){ }
+            });
+            createTaskSaveAddBtn._bound = true;
         }
     } catch(_){ }
 });
@@ -3480,6 +3685,37 @@ function webTaskDelete(taskId){
         }
     } catch(_) { /* noop */ }
 }
+
+// Employee tasks: delete with confirm, hitting emptasks.destroy
+function emptaskDelete(taskId){
+    try {
+        var exec = function(){
+            if (!taskId) return;
+            var url = "{{ route('emptasks.destroy', '__ID__') }}".replace('__ID__', encodeURIComponent(taskId));
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            }).then(function(r){ return r.json(); }).then(function(){ window.location.reload(); }).catch(function(){ window.location.reload(); });
+        };
+        if (window.Swal && typeof Swal.fire === 'function') {
+            Swal.fire({
+                title: 'Delete Employee Task?',
+                text: 'This will remove the employee task.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ea5455',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete'
+            }).then(function(result){ if(result.isConfirmed){ exec(); } });
+        } else {
+            if (confirm('Delete Employee Task?')) { exec(); }
+        }
+    } catch(_) { /* noop */ }
+}
 </script>
 
 
@@ -3511,6 +3747,88 @@ function webTaskDelete(taskId){
 
 
                 <!-- Top Controls -->
+                <script>
+                document.addEventListener('DOMContentLoaded', function(){
+                    // Employee Task selectors (separate from mobile/web)
+                    var etProjectSelect = document.getElementById('et-select-project');
+                    var etTicketSelect  = document.getElementById('et-select-ticket');
+                    var etStartSpan     = document.getElementById('et-ticket-start-date');
+                    var etEndSpan       = document.getElementById('et-ticket-end-date');
+                    var etTicketCache   = {};
+
+                    function etFormatDate(iso){
+                        if (!iso) return '--';
+                        var s = (''+iso).substring(0,10);
+                        var p = s.split('-');
+                        if (p.length !== 3) return '--';
+                        return p[2]+':'+p[1]+':'+p[0];
+                    }
+                    function etRenderDates(t){
+                        if (!etStartSpan || !etEndSpan) return;
+                        if (!t){ etStartSpan.textContent='--'; etEndSpan.textContent='--'; return; }
+                        etStartSpan.textContent = etFormatDate(t.start_date);
+                        etEndSpan.textContent   = etFormatDate(t.end_date);
+                    }
+                    function etSetLoading(sel, loading){
+                        if (!sel) return;
+                        sel.disabled = !!loading;
+                        if (loading) sel.innerHTML = '<option>Loading...</option>';
+                    }
+                    function etLoadTickets(projectId){
+                        if (!etTicketSelect) return;
+                        if (!projectId){
+                            etTicketSelect.innerHTML = '<option value=\"\">Select the Ticket</option>';
+                            etRenderDates(null);
+                            return;
+                        }
+                        etSetLoading(etTicketSelect, true);
+                        var url = new URL('{{ route('tasks.tickets') }}', window.location.origin);
+                        url.searchParams.set('project_id', projectId);
+                        fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+                            .then(function(r){ return r.json(); })
+                            .then(function(resp){
+                                etTicketSelect.innerHTML = '<option value=\"\">Select the Ticket</option>';
+                                var items = (resp && Array.isArray(resp.tickets)) ? resp.tickets : [];
+                                etTicketCache = {};
+                                items.forEach(function(t){
+                                    var opt = document.createElement('option');
+                                    opt.value = t.id;
+                                    opt.textContent = t.title || 'Untitled';
+                                    etTicketSelect.appendChild(opt);
+                                    etTicketCache[t.id] = t;
+                                });
+                                etTicketSelect.disabled = false;
+                                etRenderDates(null);
+                            })
+                            .catch(function(){
+                                etTicketSelect.innerHTML = '<option value=\"\">Failed to load tickets</option>';
+                                etTicketSelect.disabled = false;
+                            });
+                    }
+
+                    if (etProjectSelect) etProjectSelect.addEventListener('change', function(e){
+                        etLoadTickets(e.target.value);
+                    });
+                    if (etTicketSelect) etTicketSelect.addEventListener('change', function(e){
+                        var t = etTicketCache[e.target.value];
+                        etRenderDates(t || null);
+                    });
+
+                    // When Employee Task modal opens, reset ticket list and dates
+                    try {
+                        var etModal = document.getElementById('emptask');
+                        if (etModal){
+                            etModal.addEventListener('shown.bs.modal', function(){
+                                if (etTicketSelect){
+                                    etTicketSelect.innerHTML = '<option value=\"\">Select the Ticket</option>';
+                                    etTicketSelect.disabled = true;
+                                }
+                                etRenderDates(null);
+                            });
+                        }
+                    } catch(_) {}
+                });
+                </script>
                 <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
                     <!-- Left: Ticket Details -->
                     <div class="col-md-6">
@@ -3552,6 +3870,33 @@ function webTaskDelete(taskId){
 
                 <!-- Task Container -->
                 <div class="row">
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function(){
+                        // Employee Task secondary controls (unique IDs: et2-*) - kept separate
+                        var et2Project = document.getElementById('et2-select-project');
+                        var et2Ticket  = document.getElementById('et2-select-ticket');
+                        var et2Start   = document.getElementById('et2-ticket-start-date');
+                        var et2End     = document.getElementById('et2-ticket-end-date');
+                        var et2Cache   = {};
+                        try { window.__etCache = et2Cache; } catch(_){}
+                        function et2Fmt(iso){ if(!iso) return '--'; var s=(''+iso).substring(0,10); var p=s.split('-'); return (p.length===3)? (p[2]+':'+p[1]+':'+p[0]) : '--'; }
+                        function et2Dates(t){ if(!et2Start||!et2End) return; if(!t){ et2Start.textContent='--'; et2End.textContent='--'; return;} et2Start.textContent=et2Fmt(t.start_date); et2End.textContent=et2Fmt(t.end_date); }
+                        function et2Load(pid){
+                            if (!et2Ticket) return;
+                            if (!pid){ et2Ticket.innerHTML='<option value=\"\">Select the Ticket</option>'; et2Dates(null); return; }
+                            et2Ticket.disabled = true; et2Ticket.innerHTML = '<option>Loading...</option>';
+                            var url=new URL('{{ route('tasks.tickets') }}', window.location.origin); url.searchParams.set('project_id', pid);
+                            fetch(url.toString(), { headers:{'X-Requested-With':'XMLHttpRequest'} })
+                              .then(function(r){ return r.json(); })
+                              .then(function(resp){ et2Ticket.innerHTML='<option value=\"\">Select the Ticket</option>'; var items=(resp&&Array.isArray(resp.tickets))?resp.tickets:[]; et2Cache={}; try{ window.__etCache = et2Cache; }catch(_){ } items.forEach(function(t){ var opt=document.createElement('option'); opt.value=t.id; opt.textContent=t.title||'Untitled'; et2Ticket.appendChild(opt); et2Cache[t.id]=t; }); et2Ticket.disabled=false; et2Dates(null); })
+                              .catch(function(){ et2Ticket.innerHTML='<option value=\"\">Failed to load tickets</option>'; et2Ticket.disabled=false; });
+                        }
+                        if (et2Project) et2Project.addEventListener('change', function(e){ et2Load(e.target.value); });
+                        if (et2Ticket) et2Ticket.addEventListener('change', function(e){ var t=et2Cache[e.target.value]; et2Dates(t||null); });
+                        // Initialize if pre-filled
+                        try { if (et2Project && et2Project.value) et2Load(et2Project.value); } catch(_){}
+                    });
+                    </script>
                     <!-- Left Upload Area -->
                     <div class="col-md-5">
                         
@@ -3700,7 +4045,7 @@ function webTaskDelete(taskId){
                                                 <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="taskDeleteConfirm('{{ (string)($task->_id ?? $task->id) }}')">
-                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: default; opacity:.4;">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="event.stopPropagation(); taskEdit('{{ (string)($task->_id ?? $task->id) }}')">
                                                 </div>
                                             </div>
                                         </div>
@@ -3755,10 +4100,10 @@ function webTaskDelete(taskId){
 
                 <!-- Save & add Task (Orange) -->
                 <button
+                    id="create-task-save-add"
                     type="button"
                     class="btn text-white"
-                    style="background-color: #f98f3e; border-radius: 6px;"
-                    data-bs-dismiss="modal">
+                    style="background-color: #f98f3e; border-radius: 6px;">
                     Save & add Task
                 </button>
             </div>
@@ -3847,11 +4192,16 @@ function webTaskDelete(taskId){
                         <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                         <small class="text-muted">Ticket Details</small>
                         <div class="d-flex gap-2 mt-2">
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Project</option>
+                            <select id="et-select-project" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Project</option>
+                                @if(isset($projects) && count($projects))
+                                    @foreach($projects as $project)
+                                        <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                    @endforeach
+                                @endif
                             </select>
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Ticket</option>
+                            <select id="et-select-ticket" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Ticket</option>
                             </select>
                         </div>
                     </div>
@@ -3863,11 +4213,11 @@ function webTaskDelete(taskId){
                         <div class="d-flex gap-2 mt-2">
                             <div class="text-center p-2 text-white" style="background: #28c76f; border-radius: 8px; flex: 1;">
                                 <small>Start Date</small><br>
-                                <span class="fw-bold">21.09.2025 – 15:00</span>
+                                <span id="et-ticket-start-date" class="fw-bold">--</span>
                             </div>
                             <div class="text-center p-2 text-white" style="background: #ea5455; border-radius: 8px; flex: 1;">
                                 <small>Deliver Date</small><br>
-                                <span class="fw-bold">27.09.2025 – 15:00</span>
+                                <span id="et-ticket-end-date" class="fw-bold">--</span>
                             </div>
                         </div>
                     </div>
@@ -4333,7 +4683,7 @@ function webTaskDelete(taskId){
                                                 <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                     <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" onclick="webTaskDelete('{{ (string)($task->_id ?? $task->id) }}')">
-                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: default; opacity:.4;">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" onclick="event.stopPropagation(); webTaskEdit('{{ (string)($task->_id ?? $task->id) }}')">
                                                 </div>
                                             </div>
                                         </div>
@@ -4360,7 +4710,7 @@ function webTaskDelete(taskId){
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button id="wt-create-task-save" type="button" class="btn text-white" style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal">Save and Close</button>
-                <button type="button" class="btn text-white" style="background-color: #f98f3e; border-radius: 6px;" data-bs-dismiss="modal">Save & add Task</button>
+                <button id="wt-create-task-save-add" type="button" class="btn text-white" style="background-color: #f98f3e; border-radius: 6px;">Save & add Task </button>
             </div>
         </div>
     </div>
@@ -4432,15 +4782,16 @@ document.addEventListener('DOMContentLoaded', function(){
     var wtPlacing = false;
     var wtIssues = [];
     var wtBadgeCounter = 0;
+    window.__wtEditingMode = window.__wtEditingMode || false;
 
     function wtFormatDate(iso){ if(!iso) return '--'; var s=(''+iso).substring(0,10); var p=s.split('-'); if(p.length!==3) return '--'; return p[2]+':'+p[1]+':'+p[0]; }
     function wtRenderDates(t){ if(!wtStartDateSpan||!wtEndDateSpan) return; if(!t){ wtStartDateSpan.textContent='--'; wtEndDateSpan.textContent='--'; return;} wtStartDateSpan.textContent=wtFormatDate(t.start_date); wtEndDateSpan.textContent=wtFormatDate(t.end_date); }
 
     function wtSetSelectLoading(sel,loading){ if(!sel) return; sel.disabled=!!loading; if(loading){ sel.innerHTML='<option>Loading...</option>'; } }
-    function wtLoadTickets(pid){ if(!wtTicketSelect){return;} if(!pid){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; return;} wtSetSelectLoading(wtTicketSelect,true); var url=new URL('{{ route('webtasks.tickets') }}', window.location.origin); url.searchParams.set('project_id', pid); fetch(url.toString(),{ headers:{'X-Requested-With':'XMLHttpRequest'} }).then(function(r){ return r.json(); }).then(function(resp){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; var items=(resp && Array.isArray(resp.tickets))?resp.tickets:[]; wtTicketCache={}; items.forEach(function(t){ var opt=document.createElement('option'); opt.value=t.id; opt.textContent=t.title||'Untitled'; wtTicketSelect.appendChild(opt); wtTicketCache[t.id]=t; }); wtTicketSelect.disabled=false; wtRenderDates(null); }).catch(function(){ wtTicketSelect.innerHTML='<option value="">Failed to load tickets</option>'; wtTicketSelect.disabled=false; }); }
+    function wtLoadTickets(pid){ if(!wtTicketSelect){return Promise.resolve([]);} if(!pid){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; return Promise.resolve([]);} wtSetSelectLoading(wtTicketSelect,true); var url=new URL('{{ route('webtasks.tickets') }}', window.location.origin); url.searchParams.set('project_id', pid); return fetch(url.toString(),{ headers:{'X-Requested-With':'XMLHttpRequest'} }).then(function(r){ return r.json(); }).then(function(resp){ wtTicketSelect.innerHTML='<option value="">Select the Ticket</option>'; var items=(resp && Array.isArray(resp.tickets))?resp.tickets:[]; wtTicketCache={}; items.forEach(function(t){ var opt=document.createElement('option'); opt.value=t.id; opt.textContent=t.title||'Untitled'; wtTicketSelect.appendChild(opt); wtTicketCache[t.id]=t; }); wtTicketSelect.disabled=false; wtRenderDates(null); return items; }).catch(function(){ wtTicketSelect.innerHTML='<option value="">Failed to load tickets</option>'; wtTicketSelect.disabled=false; return []; }); }
 
     if (wtProjectSelect) wtProjectSelect.addEventListener('change', function(e){ wtLoadTickets(e.target.value); });
-    if (wtTicketSelect) wtTicketSelect.addEventListener('change', function(e){ var t=wtTicketCache[e.target.value]; wtRenderDates(t||null); try{ var p=document.getElementById('wt-previewImage'); var txt=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(p){ p.src=''; p.style.display='none'; } if(txt){ txt.style.display='block'; txt.innerHTML='Upload Or Drag<br><small>PDF, JPG, PNG</small>'; } if(l){ l.style.display='none'; l.innerHTML=''; } if(tb){ tb.style.display='none'; } var fi=document.getElementById('wt-fileInput'); if(fi) fi.value=''; } catch(_){} });
+    if (wtTicketSelect) wtTicketSelect.addEventListener('change', function(e){ var t=wtTicketCache[e.target.value]; wtRenderDates(t||null); if(window.__wtEditingMode) return; try{ var p=document.getElementById('wt-previewImage'); var txt=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(p){ p.src=''; p.style.display='none'; } if(txt){ txt.style.display='block'; txt.innerHTML='Upload Or Drag<br><small>PDF, JPG, PNG</small>'; } if(l){ l.style.display='none'; l.innerHTML=''; } if(tb){ tb.style.display='none'; } var fi=document.getElementById('wt-fileInput'); if(fi) fi.value=''; } catch(_){} });
 
     var wtSq = document.getElementById('wt-marker-shape-square');
     var wtCi = document.getElementById('wt-marker-shape-circle');
@@ -4518,9 +4869,33 @@ document.addEventListener('DOMContentLoaded', function(){
         wtIssues.push(item); var badge=document.createElement('div'); badge.className='marker-badge'; badge.textContent=String(item.number); badge.style.position='absolute'; badge.style.left=item.position.left+'px'; badge.style.top=item.position.top+'px'; badge.style.transform='translate(-50%, -50%)'; badge.style.color=item.color||'#28c76f'; badge.style.fontWeight='800'; badge.style.fontSize='18px'; badge.style.textShadow='0 1px 2px rgba(0,0,0,0.25)'; badge.style.cursor='pointer'; badge.style.zIndex='25'; badge.addEventListener('mousedown', function(ev){ ev.stopPropagation(); }); badge.addEventListener('mouseup', function(ev){ ev.stopPropagation(); }); if (wtLayer) wtLayer.appendChild(badge); if (wtCurrentMarker){ try{ wtCurrentMarker.remove(); }catch(_){} wtCurrentMarker=null; } try{ bootstrap.Modal.getInstance(document.getElementById('wt-markerDetailsModal')).hide(); }catch(e){} });
 
     var wtCreateSave = document.getElementById('wt-create-task-save');
-    if (wtCreateSave) wtCreateSave.addEventListener('click', function(){ if(!Array.isArray(wtIssues) || wtIssues.length===0){ alert('Please add at least one issue on the image before saving the task.'); return; } var ticketText=(function(){ try{ var opt=wtTicketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : ''; }catch(_){ return ''; } })(); var taskTitle = ticketText || 'Task'; var payload={ project_id:(wtProjectSelect||{}).value||null, ticket_id:(wtTicketSelect||{}).value||null, title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), issues: wtIssues, board_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; } })() };
-        fetch("{{ route('webtasks.store') }}", { method:'POST', headers:{ 'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}', 'X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(payload) }).then(function(r){ return r.json(); }).then(function(resp){ if(resp && resp.success){ try{ wtIssues=[]; wtBadgeCounter=0; var existing=wtLayer?.querySelectorAll('.marker-badge')||[]; existing.forEach?.(function(n){ try{ n.remove(); }catch(_){} }); }catch(_){} setTimeout(function(){ window.location.reload(); }, 300); } else { alert('Failed to create web task'); } });
-    });
+    if (wtCreateSave) wtCreateSave.addEventListener('click', function(){ var editingId=(document.getElementById('wt-create-task-save')||{}).dataset?.editingId; var ticketText=(function(){ try{ var opt=wtTicketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : ''; }catch(_){ return ''; } })(); var taskTitle = ticketText || 'Task'; if (editingId){ var updatePayload={ title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), checkpoints:[], issues: (Array.isArray(wtIssues)?wtIssues:[]), mark_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src.indexOf('data:image')===0)?src:null; }catch(_){ return null; } })() }; fetch(`{{ url('/webtasks') }}/${editingId}`, { method:'PUT', headers:{ 'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}', 'X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(updatePayload) }).then(function(r){ return r.json(); }).then(function(resp){ try{ delete (document.getElementById('wt-create-task-save')||{}).dataset.editingId; }catch(_){ } if(resp && resp.success){ try{ wtIssues=[]; }catch(_){ } try{ bootstrap.Modal.getOrCreateInstance(document.getElementById('webtask2')).hide(); }catch(e){} setTimeout(function(){ window.location.reload(); }, 300); } else { alert('Failed to update web task'); } }).catch(function(){ alert('Failed to update web task'); }); return; } if(!Array.isArray(wtIssues) || wtIssues.length===0){ alert('Please add at least one issue on the image before saving the task.'); return; } var payload={ project_id:(wtProjectSelect||{}).value||null, ticket_id:(wtTicketSelect||{}).value||null, title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), issues: wtIssues, board_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; } })() }; fetch("{{ route('webtasks.store') }}", { method:'POST', headers:{ 'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}', 'X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(payload) }).then(function(r){ return r.json(); }).then(function(resp){ if(resp && resp.success){ try{ wtIssues=[]; wtBadgeCounter=0; var existing=wtLayer?.querySelectorAll('.marker-badge')||[]; existing.forEach?.(function(n){ try{ n.remove(); }catch(_){ } }); }catch(_){ } } else { alert('Failed to create web task'); } }); });
+
+    // Save & add Task (web)
+    var wtCreateSaveAdd = document.getElementById('wt-create-task-save-add');
+    if (wtCreateSaveAdd && !wtCreateSaveAdd._bound) {
+        wtCreateSaveAdd.addEventListener('click', function(){ try{
+            var editingId=(document.getElementById('wt-create-task-save')||{}).dataset?.editingId;
+            var ticketText=(function(){ try{ var opt=wtTicketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : ''; }catch(_){ return ''; } })();
+            var taskTitle = ticketText || 'Task';
+            var resetForNext = function(){ try{ wtIssues=[]; wtBadgeCounter=0; var ex=wtLayer?.querySelectorAll('.marker-badge')||[]; ex.forEach?.(function(n){ try{ n.remove(); }catch(_){} }); if (wtTicketSelect){ try{ wtTicketSelect.value=''; }catch(_){} } wtRenderDates(null); var txt=document.getElementById('wt-uploadText'); var fi=document.getElementById('wt-fileInput'); if (wtPreview){ wtPreview.src=''; wtPreview.style.display='none'; } if (txt){ txt.style.display='block'; txt.innerHTML='Upload Or Drag<br><small>PDF, JPG, PNG</small>'; } if (wtLayer){ wtLayer.style.display='none'; wtLayer.innerHTML=''; } if (wtToolbar){ wtToolbar.style.display='none'; } if (fi) fi.value=''; }catch(_){ } };
+            if (editingId){ var updatePayload={ title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), checkpoints:[], issues:(Array.isArray(wtIssues)?wtIssues:[]), mark_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src.indexOf('data:image')===0)?src:null; }catch(_){ return null; } })() }; fetch(`{{ url('/webtasks') }}/${editingId}`, { method:'PUT', headers:{ 'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}','X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(updatePayload) }).then(function(r){ return r.json(); }).then(function(resp){ if(resp&&resp.success){ resetForNext(); } else { alert('Failed to update web task'); } }); return; }
+            if(!Array.isArray(wtIssues) || wtIssues.length===0){ alert('Please add at least one issue on the image before saving the task.'); return; }
+            var payload={ project_id:(wtProjectSelect||{}).value||null, ticket_id:(wtTicketSelect||{}).value||null, title: taskTitle, description:'', start_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; } })(), end_date:(function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; } })(), issues: wtIssues, board_image:(function(){ try{ var src=(wtPreview||{}).src||''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; } })() };
+            fetch("{{ route('webtasks.store') }}", { method:'POST', headers:{ 'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}','X-Requested-With':'XMLHttpRequest' }, body: JSON.stringify(payload) }).then(function(r){ return r.json(); }).then(function(resp){ if(resp&&resp.success){ resetForNext(); } else { alert('Failed to create web task'); } });
+        }catch(_){ } });
+        wtCreateSaveAdd._bound = true;
+    }
+
+    // Web Task Edit entrypoint
+    window.webTaskEdit = function(id){ try { window.__wtEditingMode = true; document.querySelectorAll('.menu-box').forEach(function(m){ m.style.display='none'; }); document.querySelectorAll('.modal.show').forEach(function(el){ try{ bootstrap.Modal.getInstance(el)?.hide(); }catch(_){ } }); } catch(_){ }
+        fetch(`{{ url('/webtasks') }}/${id}`, { headers:{ 'X-Requested-With':'XMLHttpRequest' } }).then(function(r){ return r.json(); }).then(function(resp){ if(!resp || !resp.success) return; var t=resp.task||{}; try{ (document.querySelector('#webtask2 .modal-title')||{}).textContent = 'Edit Web Task'; }catch(_){ }
+            try{ if (wtProjectSelect && t.project_id){ wtProjectSelect.value=String(t.project_id); wtLoadTickets(String(t.project_id)).then(function(){ try{ if (wtTicketSelect && t.ticket_id){ wtTicketSelect.value=String(t.ticket_id); var ev=new Event('change'); wtTicketSelect.dispatchEvent(ev); } }catch(_){ } }); } }catch(_){ }
+            try{ var src=null; if (t.board_image_path) src='/storage/'+String(t.board_image_path).replace(/^\/+/, ''); else if (t.mark_image_path) src='/storage/'+String(t.mark_image_path).replace(/^\/+/, ''); if (src && wtPreview){ var render=function(){ try{ if (wtLayer){ wtLayer.style.display='block'; wtLayer.innerHTML=''; } if (wtToolbar) wtToolbar.style.display='flex'; var issues=Array.isArray(t.issues)?t.issues:[]; var rect= wtLayer ? wtLayer.getBoundingClientRect() : { width:0, height:0 }; var maxNum=0; issues.forEach(function(iss, idx){ var pos=iss && iss.position ? iss.position : null; if(!pos) return; var saved=iss.layer||null; var sx=1, sy=1; if(saved && saved.width && saved.height && rect.width && rect.height){ sx=rect.width / saved.width; sy=rect.height / saved.height; } var left=(pos.left||0)*sx; var top=(pos.top||0)*sy; var num=Number(iss.number || (idx+1)); if (num>maxNum) maxNum=num; var badge=document.createElement('div'); badge.className='marker-badge'; badge.textContent=String(num); badge.style.position='absolute'; badge.style.left=left+'px'; badge.style.top=top+'px'; badge.style.transform='translate(-50%, -50%)'; badge.style.color=(iss.color||'#28c76f'); badge.style.fontWeight='800'; badge.style.fontSize='18px'; badge.style.textShadow='0 1px 2px rgba(0,0,0,0.25)'; badge.style.cursor='pointer'; badge.style.zIndex='25'; badge.addEventListener('mousedown', function(ev){ ev.stopPropagation(); }); badge.addEventListener('mouseup', function(ev){ ev.stopPropagation(); }); if (wtLayer) wtLayer.appendChild(badge); }); try{ wtBadgeCounter = Math.max(wtBadgeCounter||0, maxNum||0); }catch(_){ wtBadgeCounter=maxNum||0; } }catch(_){ } }; if (wtPreview.complete){ render(); } else { wtPreview.onload=function(){ render(); }; } wtPreview.src=src; wtPreview.style.display='block'; } }catch(_){ }
+            try { (document.getElementById('wt-create-task-save')||{}).dataset.editingId = String(id); } catch(_){ }
+            var mdl=document.getElementById('webtask2'); if (mdl && mdl.parentNode!==document.body){ document.body.appendChild(mdl); } new bootstrap.Modal(mdl,{backdrop:true, focus:true}).show();
+        });
+    };
 });
 </script>
 <!-- create  employee task -->
@@ -4540,50 +4915,11 @@ document.addEventListener('DOMContentLoaded', function(){
                     class="d-flex gap-2 p-1 rounded"
                     style="background: #f2f2f2; border-radius: 10px;">
 
-                    <button
-                        id="task-btn-mobile"
-                        class="btn btn-sm"
-                        style="background-color: #28c76f; color: white;"
-                        onclick="
-            document.getElementById('task-btn-mobile').style.backgroundColor = '#28c76f';
-            document.getElementById('task-btn-mobile').style.color = 'white';
-            document.getElementById('task-btn-web').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-web').style.color = '#6c757d';
-            document.getElementById('task-btn-employee').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-employee').style.color = '#6c757d';
-        ">
-                        Mobile Task
-                    </button>
+                     
 
-                    <button
-                        id="task-btn-web"
-                        class="btn btn-sm"
-                        style="background-color: transparent; color: #6c757d;"
-                        onclick="
-            document.getElementById('task-btn-web').style.backgroundColor = '#28c76f';
-            document.getElementById('task-btn-web').style.color = 'white';
-            document.getElementById('task-btn-mobile').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-mobile').style.color = '#6c757d';
-            document.getElementById('task-btn-employee').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-employee').style.color = '#6c757d';
-        ">
-                        Web Task
-                    </button>
+                    
 
-                    <button
-                        id="task-btn-employee"
-                        class="btn btn-sm"
-                        style="background-color: transparent; color: #6c757d;"
-                        onclick="
-            document.getElementById('task-btn-employee').style.backgroundColor = '#28c76f';
-            document.getElementById('task-btn-employee').style.color = 'white';
-            document.getElementById('task-btn-mobile').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-mobile').style.color = '#6c757d';
-            document.getElementById('task-btn-web').style.backgroundColor = 'transparent';
-            document.getElementById('task-btn-web').style.color = '#6c757d';
-        ">
-                        Employee Task
-                    </button>
+                    
                 </div>
 
 
@@ -4597,18 +4933,24 @@ document.addEventListener('DOMContentLoaded', function(){
                 <!-- Task Tabs -->
 
 
-                <!-- Top Controls -->
+                <form action="{{ route('emptasks.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
                 <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
                     <!-- Left: Ticket Details -->
                     <div class="col-md-6">
                         <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                         <small class="text-muted">Ticket Details</small>
                         <div class="d-flex gap-2 mt-2">
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Project</option>
+                            <select id="et2-select-project" name="project_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Project</option>
+                                @if(isset($projects) && count($projects))
+                                    @foreach($projects as $project)
+                                        <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                    @endforeach
+                                @endif
                             </select>
-                            <select class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
-                                <option>Select the Ticket</option>
+                            <select id="et2-select-ticket" name="ticket_id" class="form-select form-select-sm" style="background: #fff; border-radius: 8px;">
+                                <option value="">Select the Ticket</option>
                             </select>
                         </div>
                     </div>
@@ -4620,16 +4962,16 @@ document.addEventListener('DOMContentLoaded', function(){
                         <div class="d-flex gap-2 mt-2">
                             <div class="text-center p-2 text-white" style="background: #28c76f; border-radius: 8px; flex: 1;">
                                 <small>Start Date</small><br>
-                                <span class="fw-bold">21.09.2025 – 15:00</span>
+                                <span id="et2-ticket-start-date" class="fw-bold">--</span>
                             </div>
                             <div class="text-center p-2 text-white" style="background: #ea5455; border-radius: 8px; flex: 1;">
                                 <small>Deliver Date</small><br>
-                                <span class="fw-bold">27.09.2025 – 15:00</span>
+                                <span id="et2-ticket-end-date" class="fw-bold">--</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
+              
 
                 <!-- Task Container -->
                 <div class="row">
@@ -4645,17 +4987,67 @@ document.addEventListener('DOMContentLoaded', function(){
                             <div class="mb-2">
                                 <label class="form-label fw-semibold text-dark">Task Image</label>
                                 <div class="d-flex justify-content-between flex-wrap gap-1 flex-wrap mb-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                    <img id="et-img-1" class="et-image-thumb" data-index="1" data-placeholder="{{ asset('build/img/dooted img.svg') }}"
+                                        src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                        style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
 
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 50px; height: 100%; border-radius: 6px; object-fit: cover;">
+                                    <img id="et-img-2" class="et-image-thumb" data-index="2" data-placeholder="{{ asset('build/img/dooted img.svg') }}"
+                                        src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                        style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
+                                    <img id="et-img-3" class="et-image-thumb" data-index="3" data-placeholder="{{ asset('build/img/dooted img.svg') }}"
+                                        src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                        style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
+                                    <img id="et-img-4" class="et-image-thumb" data-index="4" data-placeholder="{{ asset('build/img/dooted img.svg') }}"
+                                        src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                        style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
 
                                 </div>
+                                <!-- Hidden inputs and viewer modal -->
+                                <input type="file" id="et-file-1" name="images[]" accept=".jpg,.jpeg,.png" style="display:none;">
+                                <input type="file" id="et-file-2" name="images[]" accept=".jpg,.jpeg,.png" style="display:none;">
+                                <input type="file" id="et-file-3" name="images[]" accept=".jpg,.jpeg,.png" style="display:none;">
+                                <input type="file" id="et-file-4" name="images[]" accept=".jpg,.jpeg,.png" style="display:none;">
+
+                                <div class="modal fade" id="etImageViewer" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content" style="border-radius:12px; overflow:hidden;">
+                                            <div class="modal-body p-0">
+                                                <img id="et-viewer-img" src="" alt="Preview" style="width:100%; height:100%; display:block;">
+                                            </div>
+                                            <div class="modal-footer py-2">
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function(){
+                                    function bindETThumb(i){
+                                        var img = document.getElementById('et-img-'+i);
+                                        var input = document.getElementById('et-file-'+i);
+                                        if(!img || !input) return;
+                                        img.addEventListener('click', function(){
+                                            var ph = img.getAttribute('data-placeholder') || '';
+                                            var src = img.getAttribute('src') || '';
+                                            if (src && ph && src !== ph) {
+                                                try { document.getElementById('et-viewer-img').src = src; } catch(_){}
+                                                try { new bootstrap.Modal(document.getElementById('etImageViewer')).show(); } catch(_){}
+                                            } else {
+                                                input.click();
+                                            }
+                                        });
+                                        input.addEventListener('change', function(){
+                                            var f = this.files && this.files[0];
+                                            if(!f || !f.type || !f.type.startsWith('image/')) return;
+                                            var r = new FileReader();
+                                            r.onload = function(e){ try { img.src = e.target.result; } catch(_){ } };
+                                            r.readAsDataURL(f);
+                                        });
+                                    }
+                                    [1,2,3,4].forEach(bindETThumb);
+                                });
+                                </script>
                             </div>
 
                             <!-- About the Task -->
@@ -4663,12 +5055,15 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <p class="m-0 fw-semibold">About the Task</p>
                                 <small class="text-muted">Employee Task details</small>
                                 <div class="d-flex gap-2 my-2">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Task Title">
-                                    <select class="form-select form-select-sm">
-                                        <option>Select Priority</option>
+                                    <input id="et-title" name="title" type="text" class="form-control form-control-sm" placeholder="Task Title">
+                                    <select id="et-priority" name="priority" class="form-select form-select-sm">
+                                        <option value="">Select Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
                                     </select>
                                 </div>
-                                <textarea class="form-control form-control-sm" placeholder="Describe the Task"></textarea>
+                                <textarea id="et-description" name="description" class="form-control form-control-sm" placeholder="Describe the Task"></textarea>
                             </div>
 
                             <!-- Task Execution -->
@@ -4676,7 +5071,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <p class="m-0 fw-semibold">Task execution</p>
                                 <small class="text-muted">Select day of the week</small>
                                 <div class="d-flex gap-2 mt-2">
-                                    <select class="form-select form-select-sm">
+                                    <select id="et-day" name="day" class="form-select form-select-sm">
                                         <option>Set the Day</option>
                                         <option>Monday</option>
                                         <option>Tuesday</option>
@@ -4686,10 +5081,10 @@ document.addEventListener('DOMContentLoaded', function(){
                                         <option>Saturday</option>
                                         <option>Sunday</option>
                                     </select>
-                                    <select class="form-select form-select-sm">
-                                        <option disabled>Select Duration</option>
+                                    <select id="et-duration" name="duration" class="form-select form-select-sm">
+                                        <option value="">Select Duration</option>
                                         <option>One Time Task</option>
-                                        <option>Repeatily Task</option>
+                                        <option>Repeatly Task</option>
                                         <option>Every 2 Weeks</option>
 
                                     </select>
@@ -4701,19 +5096,166 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <p class="m-0 fw-semibold">Expired Reminder</p>
                                 <small class="text-muted">Set a reminder before expired</small>
                                 <div class="d-flex gap-2 mt-2">
-                                    <button type="button" class="btn btn-sm" style="background: #28c76f; color: white; flex: 1;">6 Hour</button>
-                                    <button type="button" class="btn btn-sm" style="background: #e5e5e5; color: #444; flex: 1;">8 Hour</button>
-                                    <button type="button" class="btn btn-sm" style="background: #e5e5e5; color: #444; flex: 1;">12 Hour</button>
+                                    <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;" tabindex="-1">
+                                        <input type="radio" name="reminder_hours" value="6" checked style="display:none;"> 6 Hour
+                                    </label>
+                                    <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;" tabindex="-1">
+                                        <input type="radio" name="reminder_hours" value="8" style="display:none;"> 8 Hour
+                                    </label>
+                                    <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;" tabindex="-1">
+                                        <input type="radio" name="reminder_hours" value="12" style="display:none;"> 12 Hour
+                                    </label>
                                 </div>
                             </div>
 
                             <!-- Save Button -->
-                            <button class="btn w-100 mb-0" style="background: #28c76f; color: white; font-weight: 500;">Save the Task</button>
+                            <button id="et-save" type="submit" class="btn w-100 mb-0" style="background: #28c76f; color: white; font-weight: 500;">Save the Task</button>
                         </div>
 
                     </div>
 
+                </form>
 
+                <script>
+                // Save handler for Employee Task (emptask) - separate backend
+                document.addEventListener('DOMContentLoaded', function(){
+                    // Local styles for reminder buttons (keeps state persistent)
+                    try {
+                        var styleEl = document.getElementById('reminder-hour-inline-style');
+                        if (!styleEl) {
+                            styleEl = document.createElement('style');
+                            styleEl.id = 'reminder-hour-inline-style';
+                            styleEl.textContent = '' +
+                                '.reminder-hour-btn{background:#e5e5e5 !important;color:#444 !important;border:none !important;transition:none !important;}' +
+                                '.reminder-hour-btn.active{background:#28c76f !important;color:#fff !important;border:none !important;}' +
+                                '.reminder-hour-btn:focus,.reminder-hour-btn:active,.reminder-hour-btn:hover,.reminder-hour-btn:focus-visible,.reminder-hour-btn:focus-within{box-shadow:none !important;outline:none !important;border:none !important;background:#e5e5e5 !important;}' +
+                                '.reminder-hour-btn.active:focus,.reminder-hour-btn.active:active,.reminder-hour-btn.active:hover,.reminder-hour-btn.active:focus-visible,.reminder-hour-btn.active:focus-within{background:#28c76f !important;color:#fff !important;box-shadow:none !important;outline:none !important;border:none !important;}' +
+                                '.reminder-hour-btn.btn-check:focus+.btn,.reminder-hour-btn.btn:focus{box-shadow:none !important;}';
+                            document.head.appendChild(styleEl);
+                        }
+                    } catch(_){}
+                    // Reminder hours visual toggle and value handling
+                    try {
+                        var reminderRadios = document.querySelectorAll('input[name="reminder_hours"]');
+                        if (reminderRadios && reminderRadios.length) {
+                            var resetReminderStyles = function() {
+                                reminderRadios.forEach(function(r){
+                                    var lbl = r.closest('label');
+                                    if (lbl) { lbl.classList.remove('active'); }
+                                });
+                            };
+                            var applyActiveStyle = function(radio) {
+                                var lbl = radio && radio.closest('label');
+                                if (lbl) { lbl.classList.add('active'); }
+                            };
+                            // Initialize styles based on current checked
+                            resetReminderStyles();
+                            var initial = Array.prototype.find.call(reminderRadios, function(r){ return r.checked; });
+                            if (!initial && reminderRadios[0]) { reminderRadios[0].checked = true; }
+                            applyActiveStyle(initial || reminderRadios[0]);
+                            // Bind change listeners
+                            var handleSelection = function(radio, lbl) {
+                                // Set this radio as checked
+                                reminderRadios.forEach(function(r){ 
+                                    r.checked = false;
+                                    var l = r.closest('label');
+                                    if (l) l.setAttribute('aria-pressed', 'false');
+                                });
+                                radio.checked = true;
+                                if (lbl) lbl.setAttribute('aria-pressed', 'true');
+                                // Update styles immediately
+                                resetReminderStyles();
+                                applyActiveStyle(radio);
+                                // Remove focus to prevent blue outline
+                                if (lbl && lbl.blur) lbl.blur();
+                                if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+                            };
+                            
+                            reminderRadios.forEach(function(radio){
+                                var lbl = radio.closest('label');
+                                if (lbl) {
+                                    lbl.style.userSelect = 'none';
+                                    lbl.style.webkitTapHighlightColor = 'transparent';
+                                    lbl.setAttribute('role', 'button');
+                                    lbl.setAttribute('aria-pressed', 'false');
+                                    
+                                    // Use mousedown for immediate response
+                                    lbl.addEventListener('mousedown', function(e){
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleSelection(radio, lbl);
+                                        return false;
+                                    });
+                                    // Prevent click default behavior
+                                    lbl.addEventListener('click', function(e){
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        return false;
+                                    });
+                                    // Prevent focus
+                                    lbl.addEventListener('focus', function(e){
+                                        e.preventDefault();
+                                        this.blur();
+                                    });
+                                }
+                            });
+                        }
+                    } catch(_){}
+                    var saveBtn = document.getElementById('et-save');
+                    if (saveBtn && !saveBtn._bound){
+                        saveBtn.addEventListener('click', function(ev){
+                            try { ev.preventDefault(); ev.stopPropagation(); } catch(_){}
+                            try {
+                                var projectEl = document.getElementById('et2-select-project');
+                                var ticketEl  = document.getElementById('et2-select-ticket');
+                                var cache = (window.__etCache || {});
+                                var t = cache[(ticketEl||{}).value];
+                                var imgs = [];
+                                for (var i=1;i<=4;i++){
+                                    var im = document.getElementById('et-img-'+i);
+                                    if (im && im.src && im.src.indexOf('data:image')===0){ imgs.push(im.src); }
+                                }
+                                var payload = {
+                                    project_id: (projectEl||{}).value || null,
+                                    ticket_id: (ticketEl||{}).value || null,
+                                    start_date: t ? (t.start_date||null) : null,
+                                    end_date:   t ? (t.end_date||null) : null,
+                                    title: (document.getElementById('et-title')||{}).value || '',
+                                    priority: (document.getElementById('et-priority')||{}).value || null,
+                                    description: (document.getElementById('et-description')||{}).value || '',
+                                    day: (document.getElementById('et-day')||{}).value || null,
+                                    duration: (document.getElementById('et-duration')||{}).value || null,
+                                    reminder_hours: (function(){ try { var r=document.querySelector('input[name="reminder_hours"]:checked'); return r ? parseInt(r.value,10) : 6; } catch(_){ return 6; } })(),
+                                    images: imgs
+                                };
+                                fetch(\"{{ route('emptasks.store') }}\", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    },
+                                    body: JSON.stringify(payload)
+                                }).then(function(r){ return r.json(); }).then(function(resp){
+                                    if (resp && resp.success){
+                                        try {
+                                            var note = document.createElement('div');
+                                            note.className = 'position-fixed top-0 end-0 p-3';
+                                            note.style.zIndex = '1060';
+                                            note.innerHTML = '<div class=\"alert alert-success shadow\" role=\"alert\" style=\"border-radius:8px;\">Employee Task saved</div>';
+                                            document.body.appendChild(note);
+                                            setTimeout(function(){ try{ note.remove(); }catch(_){ } }, 1500);
+                                        } catch(_){}
+                                    } else {
+                                        alert('Failed to save employee task');
+                                    }
+                                }).catch(function(){ alert('Failed to save employee task'); });
+                            } catch(_){ alert('Failed to save employee task'); }
+                        });
+                        saveBtn._bound = true;
+                    }
+                });
+                </script>
                     <!-- Right Task List -->
                     <div class="col-md-7" style="border: 3px solid #f7f7f7;">
                         <div>
@@ -4732,20 +5274,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
                             <!-- Task Cards -->
+                            @foreach(($emptasks ?? []) as $task)
+                            @php
+                                $logo = optional($task->project)->logo_path ? asset('storage/'.ltrim(optional($task->project)->logo_path,'/')) : asset('build/img/yekbon.svg');
+                                $firstImage = (is_array($task->images) && count($task->images) > 0) ? $task->images[0] : null;
+                                $thumb = $firstImage ? asset('storage/'.ltrim($firstImage,'/')) : asset('build/img/dooted img.svg');
+                            @endphp
                             <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
                                 <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                    <img src="{{ $thumb }}" alt="Task Image"
                                         style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                 </div>
-
-                                <!-- Task Content -->
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
+                                            <img src="{{ $logo }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
+                                            {{ $task->title }}
                                         </div>
                                         <div class="d-flex align-items-center gap-2" style="position: relative;">
                                             <button
@@ -4753,216 +5297,40 @@ document.addEventListener('DOMContentLoaded', function(){
                                                 style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
                                                 <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
                                             </button>
-
                                             <div
                                                 class="menu-box"
                                                 style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
                                                 onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
                                                 <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
                                                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
+                                                    <img src="{{ URL::asset('/build/img/delete1.svg') }}" alt="Delete"
+                                                        style="width: 20px; height: 20px; cursor: pointer;" onclick="emptaskDelete('{{ (string)($task->_id ?? $task->id) }}')">
+                                                    <img src="{{ URL::asset('/build/img/Edit1.svg') }}" alt="Edit"
                                                         style="width: 20px; height: 20px; cursor: default; opacity:.4;">
-
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
+                                    <div style="font-size: 12px; color: #6c757d;">{{ optional($task->ticket)->code ? optional($task->ticket)->code.' - ' : '' }}{{ optional($task->ticket)->title ?? 'Ticket' }}</div>
+                                    <div style="font-size: 13px; margin-top: 2px;">{{ $task->description ?? '-' }}</div>
                                     <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
                                         <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
+                                            <small>Start: {{ $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : (optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : '--') }}</small>
                                         </div>
-
                                         <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
+                                            <small>Deliver: {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : (optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : '--') }}</small>
                                         </div>
-
-                                        <!-- Deadline/Warning -->
                                         <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
                                             <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
+                                            {{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @endforeach
 
-                            <!-- 2 -->
-                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
-                                <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
-                                </div>
-
-                                <!-- Task Content -->
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
-                                            <button
-                                                onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
-                                                style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                                <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
-                                            </button>
-
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
-                                                <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
-                                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
-                                    <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
-                                        </div>
-
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
-                                        </div>
-
-                                        <!-- Deadline/Warning -->
-                                        <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 3 -->
-                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                <!-- Task Image -->
-                                <div class="me-2">
-                                    <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                        style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
-                                </div>
-
-                                <!-- Task Content -->
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="" style="width: 30px; height: 30px; margin-right: 6px;">
-                                            Task Title
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2" style="position: relative;">
-                                            <button
-                                                onclick="event.stopPropagation(); var menu = this.nextElementSibling; menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';"
-                                                style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #a5acc5; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 0;">
-                                                <span style="font-size: 18px; color: #2b2d42;">&#x2022;&#x2022;&#x2022;</span>
-                                            </button>
-
-                                            <div
-                                                class="menu-box"
-                                                style="display: none; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 8px 10px; width: 80px; text-align: center; position: absolute; top: 100%; right: 0; z-index: 1000;"
-                                                onclick="event.stopPropagation();">
-
-                                                <!-- Optional small title -->
-                                                <div style="font-size: 12px; color: #7a7a9d; font-weight: 600; margin-bottom: 6px;">Options</div>
-
-                                                <!-- Icons row -->
-                                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                                        style="width: 20px; height: 20px; cursor: default;" onclick="return false;">
-
-                                                    <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit"
-                                                        style="width: 20px; height: 20px; cursor: default; opacity:.4;">
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sub Text -->
-                                    <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title</div>
-
-                                    <!-- Description -->
-                                    <div style="font-size: 13px; margin-top: 2px;">Task description will be here</div>
-
-                                    <!-- Dates & Badge Row -->
-                                    <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;">
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Start: 22.10.2024</small>
-                                        </div>
-
-                                        <div style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                            <small>Deliver: 22.10.2024</small>
-                                        </div>
-
-                                        <!-- Deadline/Warning -->
-                                        <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
-                                            01
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add Task -->
-                            <!-- Hidden File Input -->
-                            <input type="file" id="fileInput" style="display: none;"
-                                onchange="document.getElementById('addTaskBox').innerText = '+ ' + this.files[0].name">
-
-                            <!-- Clickable Box -->
-                            <div id="addTaskBox"
-                                class="border border-dashed rounded text-center"
-                                style="cursor: pointer; height: 80px; display: flex; justify-content: center; align-items: center;"
-                                onclick="document.getElementById('fileInput').click();">
-                                + Add new Task
-                            </div>
-
-
-                            <div class="mt-3" style="display: flex; justify-content: flex-end;">
-                                <button
-                                    type="button"
-                                    class="btn text-white"
-                                    style="background-color: #28c76f; border-radius: 6px;"
-                                    data-bs-dismiss="modal">
-                                    Save and Close
-                                </button>
-                            </div>
+                            
+ 
 
 
                         </div>

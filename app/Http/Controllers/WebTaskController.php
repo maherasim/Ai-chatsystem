@@ -144,6 +144,69 @@ class WebTaskController extends Controller
         $task->delete();
         return response()->json(['success' => true]);
     }
+
+    public function show($id)
+    {
+        $task = WebTask::findOrFail($id);
+        return response()->json(['success' => true, 'task' => $task]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title'        => 'sometimes|required|string|max:255',
+            'description'  => 'nullable|string',
+            'start_date'   => 'nullable|date',
+            'end_date'     => 'nullable|date|after_or_equal:start_date',
+            'checkpoints'  => 'nullable|array',
+            'checkpoints.*'=> 'nullable|string',
+            'mark_image'   => 'nullable|string',
+            'issues'       => 'nullable|array',
+        ]);
+
+        $task = WebTask::findOrFail($id);
+
+        if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {
+            try {
+                [$meta, $encoded] = explode(',', $validated['mark_image'], 2);
+                $binary = base64_decode($encoded);
+                $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                $filename = 'webtasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                Storage::disk('public')->put($filename, $binary);
+                $validated['mark_image_path'] = $filename;
+            } catch (\Throwable $e) {}
+        }
+
+        $incomingIssues = $validated['issues'] ?? null;
+        unset($validated['mark_image'], $validated['issues']);
+
+        $task->update($validated);
+
+        if (is_array($incomingIssues) && count($incomingIssues)) {
+            $processed = [];
+            foreach ($incomingIssues as $iss) {
+                if (!is_array($iss)) continue;
+                $imgData = $iss['mark_image'] ?? null;
+                if (is_string($imgData) && str_starts_with($imgData, 'data:image')) {
+                    try {
+                        [$meta, $encoded] = explode(',', $imgData, 2);
+                        $binary = base64_decode($encoded);
+                        $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                        $fname = 'webtasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                        Storage::disk('public')->put($fname, $binary);
+                        $iss['mark_image_path'] = $fname;
+                    } catch (\Throwable $e) {}
+                }
+                unset($iss['mark_image']);
+                $processed[] = $iss;
+            }
+            $existing = is_array($task->issues) ? $task->issues : [];
+            $task->issues = array_merge($existing, $processed);
+            $task->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
 }
 
 

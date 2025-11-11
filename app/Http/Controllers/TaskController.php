@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Task;
 use App\Models\WebTask;
+use App\Models\EmployeeTask;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,9 +20,10 @@ class TaskController extends Controller
         $projects = Project::orderBy('title')->get();
         $tasks = Task::orderByDesc('created_at')->limit(50)->get();
         $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
-        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))
+        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
+        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))->merge($emptasks->pluck('project_id'))
             ->filter()->map(fn($v) => (string)$v)->unique()->values();
-        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))
+        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))->merge($emptasks->pluck('ticket_id'))
             ->filter()->map(fn($v) => (string)$v)->unique()->values();
 
         $projectSubset = $projectIds->isNotEmpty()
@@ -43,7 +45,12 @@ class TaskController extends Controller
             $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        return view('Chats.task', compact('headers', 'projects', 'tasks', 'webtasks'));
+        $emptasks = $emptasks->map(function($t) use ($projectMap, $ticketMap){
+            $t->project = $projectMap->get((string)($t->project_id ?? ''));
+            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            return $t;
+        });
+        return view('Chats.task', compact('headers', 'projects', 'tasks', 'webtasks', 'emptasks'));
     }
 
     public function projects()
@@ -212,6 +219,7 @@ class TaskController extends Controller
             'checkpoints'  => 'nullable|array',
             'checkpoints.*'=> 'nullable|string',
             'mark_image'   => 'nullable|string',
+            'issues'       => 'nullable|array',
         ]);
 
         $task = Task::findOrFail($id);
@@ -228,8 +236,38 @@ class TaskController extends Controller
             } catch (\Throwable $e) {}
         }
 
-        unset($validated['mark_image']);
+        // Append new issues if provided (convert base64 to stored paths)
+        $incomingIssues = $validated['issues'] ?? null;
+        unset($validated['mark_image'], $validated['issues']);
+
+        // Update scalar fields first
         $task->update($validated);
+
+        if (is_array($incomingIssues) && count($incomingIssues)) {
+            $processed = [];
+            foreach ($incomingIssues as $iss) {
+                if (!is_array($iss)) continue;
+                $imgData = $iss['mark_image'] ?? null;
+                if (is_string($imgData) && str_starts_with($imgData, 'data:image')) {
+                    try {
+                        [$meta, $encoded] = explode(',', $imgData, 2);
+                        $binary = base64_decode($encoded);
+                        $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
+                        $fname = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                        \Storage::disk('public')->put($fname, $binary);
+                        $iss['mark_image_path'] = $fname;
+                    } catch (\Throwable $e) {}
+                }
+                unset($iss['mark_image']);
+                $processed[] = $iss;
+            }
+            // Merge with existing issues
+            $existing = is_array($task->issues) ? $task->issues : [];
+            $merged = array_merge($existing, $processed);
+            $task->issues = $merged;
+            $task->save();
+        }
+
         return response()->json(['success' => true]);
     }
 

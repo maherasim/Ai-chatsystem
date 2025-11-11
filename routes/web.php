@@ -99,9 +99,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/board', [TaskController::class, 'uploadBoard'])->name('tasks.board.upload');
     Route::get('/tasks/by-ticket', [TaskController::class, 'byTicket'])->name('tasks.by_ticket');
     // WebTasks APIs (separate collection)
+    
     Route::get('/webtasks/tickets', [WebTaskController::class, 'tickets'])->name('webtasks.tickets');
     Route::post('/webtasks/store', [WebTaskController::class, 'store'])->name('webtasks.store');
+    Route::get('/webtasks/{id}', [WebTaskController::class, 'show'])->name('webtasks.show');
+    Route::put('/webtasks/{id}', [WebTaskController::class, 'update'])->name('webtasks.update');
     Route::delete('/webtasks/{id}', [WebTaskController::class, 'destroy'])->name('webtasks.destroy');
+
+    // EmployeeTasks APIs (separate collection)
+    Route::get('/emptasks/tickets', [\App\Http\Controllers\EmployeeTaskController::class, 'tickets'])->name('emptasks.tickets');
+    Route::post('/emptasks/store', [\App\Http\Controllers\EmployeeTaskController::class, 'store'])->name('emptasks.store');
+    Route::delete('/emptasks/{id}', [\App\Http\Controllers\EmployeeTaskController::class, 'destroy'])->name('emptasks.destroy');
 });
 Route::get('/teams', function () {
     $headers = Setting::all();
