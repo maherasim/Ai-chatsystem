@@ -1650,11 +1650,26 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             </style>
 
                             @foreach($users as $cuser)
+
+                            @php
+                            $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
+
+                                if ($isLocal) {
+                                    $imageUrl = asset('storage/' . $cuser->profile_image);
+                                } else {
+                                    $domain = ($cuser->is_admin == 1 || in_array($cuser->type, ['admin', 'subadmin']))
+                                        ? 'https://admin.onlinesystems.info'
+                                        : 'https://team.onlinesystems.info';
+
+                                    $imageUrl = $domain . '/storage/' . $cuser->profile_image;
+                                }
+                            @endphp
+                            
                                 <div class="user_div" 
                                     id="user_{{$cuser->_id}}" 
                                     data-user-id="{{$cuser->_id}}">
                                     <div class="invit-img">
-                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
+                                        <img src="{{ $imageUrl }}" />
                                     </div>
                                     <div class="invit-txt">{{$cuser->name}}</div>
                                 </div>
