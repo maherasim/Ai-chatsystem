@@ -301,7 +301,7 @@
                         <div class="d-flex justify-content-start" style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
                             <button type="button" class="btn"
                                 style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
-                                + Mobile Task
+                                + Mobile Task g
                             </button>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#add_user"
                                 style="background-color:blue ; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer;">
