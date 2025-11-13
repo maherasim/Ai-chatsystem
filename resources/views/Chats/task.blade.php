@@ -258,7 +258,7 @@
                             </button>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#webtask2"
                                 style="background-color:blue ; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 500; cursor:pointer;">
-                                + Web Task
+                                + Web Task as
                             </button>
 
                             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#emptask"
