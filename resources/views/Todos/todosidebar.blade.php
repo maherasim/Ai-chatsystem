@@ -98,12 +98,7 @@
                    </li>
 
 
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Library" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-library') }}" class="nav-link task-icon-link {{ request()->is('library') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Library-White.svg') }}" alt="Library White" class="icon-white">
-                           <img src="{{ asset('/build/img/Library-Black.svg') }}" alt="Library Black" class="icon-black">
-                       </a>
-                   </li>
+            
                    
                </ul>
            </div>

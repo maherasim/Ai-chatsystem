@@ -227,8 +227,17 @@
     }
 
     #lockOverlay[data-step="pin"] #lockBackgroundImage {
-        filter: blur(8px);
+        filter: blur(8px) brightness(0.3);
         transform: scale(1.2);
+    }
+    
+    /* Add dark overlay when PIN section is active */
+    #lockOverlay[data-step="pin"] #lockBackground::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1;
     }
 
     .lock-main {
@@ -569,7 +578,10 @@
     #pinHiddenInput {
         position: absolute;
         opacity: 0;
-        pointer-events: none;
+        pointer-events: auto;
+        width: 1px;
+        height: 1px;
+        left: -9999px;
     }
 
     #pinSection {
@@ -651,17 +663,15 @@
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
         <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
-        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
-        <div class="app-pin-digit"><span class="app-pin-digit-value"></span></div>
       </div>
       <h3 id="app-pin-label">
-        Enter PIN (12345678)
+        Enter PIN
         <span id="app-pin-cancel-text" style="cursor:pointer; text-decoration: underline; opacity:.9;">
           Cancel
         </span>
       </h3>
       <div id="lockError">Incorrect PIN. Try again.</div>
-      <input id="pinHiddenInput" type="tel" inputmode="numeric" maxlength="8" autocomplete="one-time-code" />
+      <input id="pinHiddenInput" type="password" autocomplete="current-password" />
     </div>
     <!-- /pinSection -->
   </div>
@@ -789,6 +799,11 @@
         } catch (e) {}
 
         function resetUI() {
+            // Clear auto-submit timer
+            if (autoSubmitTimer) {
+                clearTimeout(autoSubmitTimer);
+                autoSubmitTimer = null;
+            }
             pinInput.value = '';
             digitVals.forEach(function(s) {
                 s.textContent = '';
@@ -836,34 +851,73 @@
                     try { localStorage.removeItem('appLocked'); } catch(e) {}
                     try { if (window.__lockRestoreUrl) window.__lockRestoreUrl(); } catch(e) {}
                 } else {
+                    // Show error message from server or default message
+                    var errorMsg = (res && res.message) ? res.message : 'Incorrect PIN. Try again.';
+                    errorBox.textContent = errorMsg;
                     errorBox.style.display = 'block';
                     resetUI();
                     pinInput.focus();
                 }
-            }).catch(function() {
+            }).catch(function(err) {
+                // Show error on network failure
+                errorBox.textContent = 'Incorrect PIN. Try again.';
                 errorBox.style.display = 'block';
                 resetUI();
                 pinInput.focus();
             });
         }
 
+        var autoSubmitTimer = null;
         pinInput.addEventListener('input', function() {
-            var raw = pinInput.value.replace(/\D+/g, '').slice(0, PIN_LEN);
-            pinInput.value = raw;
+            // Clear error when user starts typing
+            errorBox.style.display = 'none';
+            
+            // Clear any existing auto-submit timer
+            if (autoSubmitTimer) {
+                clearTimeout(autoSubmitTimer);
+            }
+            
+            // Accept all characters for password (not just numbers)
+            var raw = pinInput.value;
+            // Show first 6 characters in digit boxes, but allow longer passwords
+            var displayLength = Math.min(raw.length, PIN_LEN);
             digitVals.forEach(function(s, i) {
-                s.textContent = raw[i] ? raw[i] : '';
+                if (i < displayLength) {
+                    s.textContent = '*'; // Show asterisk for password characters
+                } else {
+                    s.textContent = '';
+                }
             });
-            focusRing(Math.min(raw.length, PIN_LEN - 1));
-            for (var i = 0; i < raw.length; i++) {
+            focusRing(Math.min(displayLength, PIN_LEN - 1));
+            // Hide digits after entry
+            for (var i = 0; i < displayLength; i++) {
                 if (!digitBoxes[i].classList.contains('hidden')) {
                     maskLater(i);
                 }
             }
-            for (var j = raw.length; j < digitBoxes.length; j++) {
+            for (var j = displayLength; j < digitBoxes.length; j++) {
                 digitBoxes[j].classList.remove('hidden');
             }
-            if (raw.length === PIN_LEN) {
-                submitPin(raw);
+            
+            // Auto-submit after user stops typing for 500ms (if password length >= 6)
+            if (raw.length >= 6) {
+                autoSubmitTimer = setTimeout(function() {
+                    if (pinInput.value.length >= 6) {
+                        submitPin(pinInput.value);
+                    }
+                }, 500);
+            }
+        });
+        
+        // Submit on Enter key
+        pinInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && pinInput.value.length > 0) {
+                e.preventDefault();
+                // Clear auto-submit timer to avoid double submission
+                if (autoSubmitTimer) {
+                    clearTimeout(autoSubmitTimer);
+                }
+                submitPin(pinInput.value);
             }
         });
 
@@ -896,24 +950,66 @@
         if (goBtn) {
             goBtn.addEventListener('click', function() {
                 overlay.setAttribute('data-step', 'pin');
+                // Reset UI first
+                resetUI();
+                // Use multiple methods to ensure focus works
                 setTimeout(function() {
                     pinInput.focus();
-                }, 50);
+                    // Force focus with multiple attempts
+                    if (document.activeElement !== pinInput) {
+                        pinInput.focus();
+                        setTimeout(function() {
+                            if (document.activeElement !== pinInput) {
+                                pinInput.focus();
+                                pinInput.select();
+                            }
+                        }, 50);
+                    }
+                }, 100);
             });
         }
+        
+        // Also handle focus when PIN section becomes visible via CSS transition
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-step') {
+                    if (overlay.getAttribute('data-step') === 'pin') {
+                        setTimeout(function() {
+                            pinInput.focus();
+                            if (document.activeElement !== pinInput) {
+                                pinInput.focus();
+                            }
+                        }, 150);
+                    }
+                }
+            });
+        });
+        observer.observe(overlay, { attributes: true });
         if (cancelText) {
             cancelText.addEventListener('click', function() {
                 overlay.setAttribute('data-step', 'out');
                 resetUI();
                 try { localStorage.setItem(LOCK_KEY, '1'); } catch(e) {}
+                // Ensure input is ready for next time
+                setTimeout(function() {
+                    pinInput.value = '';
+                    pinInput.blur();
+                }, 100);
             });
         }
-        // Ensure if locked flag is set on load, show overlay immediately
+        // Ensure if locked flag is set on load OR session is locked, show overlay immediately
         try {
-            if (localStorage.getItem(LOCK_KEY) === '1') {
+            var isLocked = localStorage.getItem(LOCK_KEY) === '1';
+            var sessionLocked = {{ auth()->check() && session('screen_locked') === true ? 'true' : 'false' }};
+            
+            if (isLocked || sessionLocked) {
                 overlay.style.display = 'flex';
                 overlay.setAttribute('data-step', 'out');
                 resetUI();
+                // Set localStorage to keep in sync
+                if (sessionLocked) {
+                    localStorage.setItem(LOCK_KEY, '1');
+                }
             }
         } catch(e) {}
     })();

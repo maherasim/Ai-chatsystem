@@ -226,28 +226,24 @@ public function unlockScreen(Request $request)
 {
     $request->validate([
         'password' => 'nullable|string',
-        'pin' => 'nullable|string|max:8',
+        'pin' => 'nullable|string',
     ]);
 
-    // If PIN provided and matches 12345678, unlock immediately
-    if ($request->filled('pin')) {
-        $pin = preg_replace('/\D+/', '', (string) $request->pin);
-        if ($pin === '12345678') {
-            // clear server lock flag
-            $request->session()->forget('screen_locked');
-            return response()->json(['ok' => true]);
-        }
-        return response()->json(['ok' => false, 'message' => 'Invalid PIN'], 422);
+    $user = auth()->user();
+    if (!$user) {
+        return response()->json(['ok' => false, 'message' => 'Unauthorized'], 401);
     }
 
-    // Fallback: allow password unlock
-    $user = auth()->user();
-    if ($request->filled('password') && $user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+    // Check password - PIN input is treated as password
+    $passwordToCheck = $request->filled('pin') ? $request->pin : ($request->filled('password') ? $request->password : null);
+    
+    if ($passwordToCheck && \Illuminate\Support\Facades\Hash::check($passwordToCheck, $user->password)) {
+        // clear server lock flag
         $request->session()->forget('screen_locked');
         return response()->json(['ok' => true]);
     }
 
-    return response()->json(['ok' => false, 'message' => 'Invalid credentials'], 422);
+    return response()->json(['ok' => false, 'message' => 'Invalid password'], 422);
 }
 
 public function toggleTwoFactor(Request $request)

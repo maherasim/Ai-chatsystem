@@ -202,9 +202,14 @@ Route::get('/user-status', function () {
     return view('user-status');
 })->name('user-status');
 
-// Locked screen page
+// Locked screen page - redirect to home, overlay will handle the lock screen
 Route::get('/locked', function(){
-    return view('locked');
+    // If session is locked, redirect to home where overlay will show
+    if (auth()->check() && session('screen_locked') === true) {
+        return redirect()->route('home');
+    }
+    // If not locked, also redirect to home
+    return redirect()->route('home');
 })->name('locked.page');
 
 

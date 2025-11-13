@@ -48,10 +48,11 @@ class ScreenLockMiddleware
             return $next($request);
         }
 
-        // Enforce: when locked, redirect to the lock page
+        // Enforce: when locked, redirect to home (overlay will handle lock screen)
         if ($request->session()->get('screen_locked') === true) {
             $request->session()->put('intended_url', $request->fullUrl());
-            return redirect()->route('locked.page');
+            // Redirect to home instead of /locked - overlay will show automatically
+            return redirect()->route('home');
         }
 
         return $next($request);

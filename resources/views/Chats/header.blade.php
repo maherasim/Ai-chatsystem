@@ -29,7 +29,7 @@
      <!-- Right Side Icons -->
      <div class="left-icons d-flex align-items-center gap-5">
 
-         <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
+         {{-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
              <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
                  <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
              </a>
@@ -52,6 +52,6 @@
              <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
                  <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
              </button>
-         </form>
+         </form> --}}
      </div>
  </div>
