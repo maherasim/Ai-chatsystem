@@ -36,6 +36,26 @@
     background-color: transparent !important;
 }
 
+/* Make profile-menu action buttons match main-menu sizing/active styles */
+.sidebar-menu .profile-menu ul li a {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    border-radius: 8px;
+    color: #141B27;
+    font-size: 22px;
+}
+.sidebar-menu .profile-menu ul li a.active,
+.sidebar-menu .profile-menu ul li a:hover {
+    background-color: #6338F6;
+    color: #FFF;
+}
+
 </style>
 @php
 $setting = App\Models\Setting::first();
@@ -107,30 +127,7 @@ $setting = App\Models\Setting::first();
                            <img src="{{ asset('/build/img/Users-Black.svg') }}" alt="User Black" class="icon-black">
                        </a>
                    </li>
-                   
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary" style="margin-top: 30px;">
-                    <a href="{{ route('settings') }}" class="nav-link task-icon-link {{ request()->is('settings') ? 'active' : '' }}">
-                        <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings White" class="icon-white">
-                        <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings Black" class="icon-black">
-                    </a>
-                </li>
-       
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dark Mode" data-bs-custom-class="tooltip-primary">
-                    <a href="#" id="dark-mode-toggle" class="nav-link task-icon-link">
-                        <img src="{{ asset('/build/img/Moon White.svg') }}" alt="Moon White" class="icon-white">
-                        <img src="{{ asset('/build/img/Moon Black.svg') }}" alt="Moon Black" class="icon-black">
-                    </a>
-                </li>
-       
-                <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Logout" data-bs-custom-class="tooltip-primary">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                    <a href="#" id="logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link task-icon-link">
-                        <img src="{{ asset('/build/img/exit.svg') }}" alt="Logout White" class="icon-white">
-                        <img src="{{ asset('/build/img/exit.svg') }}" alt="Logout Black" class="icon-black">
-                    </a>
-                </li>
+                  
                    {{-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="API" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-api') }}" class="nav-link task-icon-link {{ request()->is('Apis') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/API-White.svg') }}" alt="API White" class="icon-white">
@@ -150,7 +147,29 @@ $setting = App\Models\Setting::first();
 
            <div class="profile-menu">
                <ul>
-                   
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary">
+                        <a href="{{ route('settings') }}" class="nav-link task-icon-link {{ request()->is('settings') ? 'active' : '' }}">
+                            <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings White" class="icon-white">
+                            <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings Black" class="icon-black">
+                        </a>
+                    </li>
+
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dark Mode" data-bs-custom-class="tooltip-primary">
+                        <a href="#" id="dark-mode-toggle" class="nav-link task-icon-link">
+                            <img src="{{ asset('/build/img/Moon White.svg') }}" alt="Moon White" class="icon-white">
+                            <img src="{{ asset('/build/img/Moon Black.svg') }}" alt="Moon Black" class="icon-black">
+                        </a>
+                    </li>
+
+                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Logout" data-bs-custom-class="tooltip-primary">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="#" id="logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link task-icon-link">
+                            <img src="{{ asset('/build/img/exit.svg') }}" alt="Logout White" class="icon-white">
+                            <img src="{{ asset('/build/img/exit.svg') }}" alt="Logout Black" class="icon-black">
+                        </a>
+                    </li>
 
                    <!-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="moon" data-bs-custom-class="tooltip-primary">
                        <a href="#" id="dark-mode-toggle" class="dark-mode-toggle active">
