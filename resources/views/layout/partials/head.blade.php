@@ -78,14 +78,14 @@
        align-items: center;
      }
      .chat .chat-header .user-details h6 {
-       font-size: 15px;
+       font-size: 20px;
        font-weight: 600;
        margin-bottom: 4px;
        line-height: 1;
        color: #141B27;
      }
      .chat .chat-header .last-seen {
-       font-size: 12px;
+       font-size: 16px;
        opacity: .85;
      }
      .chat .chat-header .chat-options ul {
