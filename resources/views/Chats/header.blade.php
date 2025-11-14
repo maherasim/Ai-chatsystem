@@ -6,16 +6,31 @@
              </a>
          </div>
          <div class="avatar avatar-lg online flex-shrink-0">
-             @php
-    $header = $headers[0] ?? null;
-   
-@endphp
+			@php
+				$imageUrl = asset('build/img/profiles/avatar-16.jpg');
 
-@if($header)
-    <img src="{{ $header->image ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
-         class="rounded-circle"
-         alt="image">
-@endif
+				$firstHeader = null;
+				if (isset($headers)) {
+					$firstHeader = is_array($headers)
+						? ($headers[0] ?? null)
+						: (method_exists($headers, 'first') ? $headers->first() : null);
+				}
+
+				if ($firstHeader && !empty($firstHeader->image)) {
+					$imageUrl = asset('storage/' . $firstHeader->image);
+				} elseif (auth()->check()) {
+					$userObj = auth()->user();
+					if (!empty($userObj->image)) {
+						$imageUrl = asset('storage/' . $userObj->image);
+					} elseif (!empty($userObj->profile_image)) {
+						$imageUrl = asset('storage/' . $userObj->profile_image);
+					}
+				}
+			@endphp
+
+			<img src="{{ $imageUrl }}"
+				 class="rounded-circle"
+				 alt="image">
 
 
          </div>

@@ -26,6 +26,7 @@ public function index()
         $user = Auth::user();
 
         $setting = Setting::first();
+        $headers = Setting::all();
 
         $users = User::whereIn('type', ['employee', 'developer'])
                  ->where('_id', '!=', $user->_id)->where('completed', '!=', '1')
@@ -156,7 +157,7 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
 
             $ctime = strtotime(date("Y-m-d H:i:s"));
         
-        return view('Chats.meetings', compact('user', 'users', 'todayMeetings', 'upcomingMeetings',  'setting', 'ctime'));
+        return view('Chats.meetings', compact('user', 'users', 'todayMeetings', 'upcomingMeetings',  'setting', 'ctime', 'headers'));
     }
 
     public function delmeetings(){

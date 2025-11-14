@@ -30,7 +30,7 @@
     <title>{{ $setting->app_name ?? '' }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ $setting->favicon ?? asset('/build/img/gallery/gallery-01.jpg') }}"
+	<link rel="icon" href="{{ ($setting && $setting->favicon) ? asset($setting->favicon) : asset('/build/img/gallery/gallery-01.jpg') }}"
         class="rounded-circle">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />

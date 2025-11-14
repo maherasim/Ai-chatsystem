@@ -1,4 +1,4 @@
-o<?php $page = 'chat'; ?>
+<?php $page = 'chat'; ?>
 @php
 use Carbon\Carbon;
 @endphp
