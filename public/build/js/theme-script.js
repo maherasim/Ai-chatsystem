@@ -1,67 +1,50 @@
-	// Dark Mode
-	
-	document.addEventListener("DOMContentLoaded", function() {
-		const darkModeToggle = document.getElementById('dark-mode-toggle');
-		const lightModeToggle = document.getElementById('light-mode-toggle');
-	  
-		function enableDarkMode() {
-		  document.body.classList.add('darkmode');
-		  darkModeToggle.classList.remove('active');
-		  lightModeToggle.classList.add('active');
-		  localStorage.setItem('darkMode', 'enabled');
-		}
-	  
-		function disableDarkMode() {
-		  document.body.classList.remove('darkmode');
-		  darkModeToggle.classList.add('active');
-		  lightModeToggle.classList.remove('active');
-		  localStorage.setItem('darkMode', 'disabled');
-		}
-	  
-		// Set the initial mode based on localStorage
-		if (localStorage.getItem('darkMode') === 'enabled') {
-		  enableDarkMode();
-		} else {
-		  disableDarkMode();
-		}
-	  
-		// Attach event listeners for toggling dark/light mode
-		if (darkModeToggle) {
-		  darkModeToggle.addEventListener('click', enableDarkMode);
-		}
-	  
-		if (lightModeToggle) {
-		  lightModeToggle.addEventListener('click', disableDarkMode);
-		}
-		  }); 
+// Dark Mode
+document.addEventListener("DOMContentLoaded", function() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const lightModeToggle = document.getElementById('light-mode-toggle');
 
-	document.addEventListener("DOMContentLoaded", function() {
-		const darkModeToggle = document.getElementById('dark-mode-toggle');
-		const lightModeToggle = document.getElementById('light-mode-toggle');
+  function enableDarkMode() {
+    document.body.classList.add('darkmode');
+    if (darkModeToggle) darkModeToggle.classList.remove('active');
+    if (lightModeToggle) lightModeToggle.classList.add('active');
+    try { localStorage.setItem('darkMode', 'enabled'); } catch (e) {}
+  }
 
-		function enableDarkMode() {
-			document.body.classList.add('darkmode');
-			darkModeToggle.classList.remove('active');
-			lightModeToggle.classList.add('active');
-			localStorage.setItem('darkMode', 'enabled');
-		}
+  function disableDarkMode() {
+    document.body.classList.remove('darkmode');
+    if (darkModeToggle) darkModeToggle.classList.add('active');
+    if (lightModeToggle) lightModeToggle.classList.remove('active');
+    try { localStorage.setItem('darkMode', 'disabled'); } catch (e) {}
+  }
 
-		function disableDarkMode() {
-			document.body.classList.remove('darkmode');
-			darkModeToggle.classList.add('active');
-			lightModeToggle.classList.remove('active');
-			localStorage.setItem('darkMode', 'disabled');
-		}
+  // Initial state
+  try {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  } catch (e) {
+    disableDarkMode();
+  }
 
-		// Set the initial mode based on localStorage (already applied above)
+  // Toggle on same button if only one exists
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (document.body.classList.contains('darkmode')) {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    });
+  }
 
-		// Attach event listeners for toggling dark/light mode
-		if (darkModeToggle) {
-			darkModeToggle.addEventListener('click', enableDarkMode);
-		}
-
-		if (lightModeToggle) {
-			lightModeToggle.addEventListener('click', disableDarkMode);
-		}
-	});
-	  
+  // Optional separate light toggle
+  if (lightModeToggle) {
+    lightModeToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      disableDarkMode();
+    });
+  }
+});

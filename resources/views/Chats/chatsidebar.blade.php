@@ -30,9 +30,9 @@
     opacity: 0 !important;
 }
 
-/* Prevent active state styling on moon and logout */
-#dark-mode-toggle.task-icon-link.active,
-#logout-link.task-icon-link.active {
+/* Prevent active state styling on moon and logout except on hover */
+#dark-mode-toggle.task-icon-link.active:not(:hover),
+#logout-link.task-icon-link.active:not(:hover) {
     background-color: transparent !important;
 }
 
@@ -54,6 +54,19 @@
 .sidebar-menu .profile-menu ul li a:hover {
     background-color: #6338F6;
     color: #FFF;
+}
+
+/* Ensure moon toggle is always visible (avoid any hidden display rules) */
+.sidebar-menu .profile-menu ul li a#dark-mode-toggle {
+    display: flex !important;
+}
+
+/* In dark mode, keep moon icon visible (use white icon by default) */
+.darkmode #dark-mode-toggle .icon-white {
+    opacity: 1 !important;
+}
+.darkmode #dark-mode-toggle .icon-black {
+    opacity: 0 !important;
 }
 
 </style>
