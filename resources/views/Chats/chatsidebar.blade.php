@@ -1,11 +1,11 @@
 <style>
     .dark-icon {
-  content: url('/build/img/Moon-Balck.svg');
+ content: url('/build/img/Moon Black.svg');
   transition: 0.3s ease;
 }
 
 .dark-mode-toggle:hover .dark-icon {
-  content: url('/build/img/Moon-White.svg');
+ content: url('/build/img/Moon White.svg');
 }
 
 /* Ensure moon and logout icons always show black icon by default (not white like active items) */
@@ -110,15 +110,15 @@ $setting = App\Models\Setting::first();
                    
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Settings" data-bs-custom-class="tooltip-primary" style="margin-top: 30px;">
                     <a href="{{ route('settings') }}" class="nav-link task-icon-link {{ request()->is('settings') ? 'active' : '' }}">
-                        <img src="{{ asset('/build/img/setting.svg') }}" alt="Settings White" class="icon-white">
-                        <img src="{{ asset('/build/img/setting.svg') }}" alt="Settings Black" class="icon-black">
+                        <img src="{{ asset('/build/img/Settings-White.svg') }}" alt="Settings White" class="icon-white">
+                        <img src="{{ asset('/build/img/Settings-Balck.svg') }}" alt="Settings Black" class="icon-black">
                     </a>
                 </li>
        
                 <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dark Mode" data-bs-custom-class="tooltip-primary">
                     <a href="#" id="dark-mode-toggle" class="nav-link task-icon-link">
-                        <img src="{{ asset('/build/img/Moon-White.svg') }}" alt="Moon White" class="icon-white">
-                        <img src="{{ asset('/build/img/Moon-Balck.svg') }}" alt="Moon Black" class="icon-black">
+                        <img src="{{ asset('/build/img/Moon White.svg') }}" alt="Moon White" class="icon-white">
+                        <img src="{{ asset('/build/img/Moon Black.svg') }}" alt="Moon Black" class="icon-black">
                     </a>
                 </li>
        

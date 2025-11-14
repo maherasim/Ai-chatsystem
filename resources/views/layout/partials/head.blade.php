@@ -30,6 +30,8 @@
 
   <!-- Style CSS -->
    <link rel="stylesheet" href="{{ url('/build/css/style.css') }}">
+   <!-- Genos font (for consistent header typography) -->
+   <link href="https://fonts.googleapis.com/css2?family=Genos:wght@400;600;700&display=swap" rel="stylesheet">
    <style>
      /* Global focus/active border override */
      .btn,
@@ -51,5 +53,68 @@
        outline: none !important;
        box-shadow: none !important;
        border-color: transparent !important;
+     }
+
+     /* Standardize chat header across pages and apply Genos font */
+     .chat .chat-header,
+     .chat .chat-header * {
+       font-family: 'Genos', sans-serif;
+     }
+     .chat .chat-header {
+       display: -webkit-flex;
+       display: flex;
+       -webkit-justify-content: space-between;
+       justify-content: space-between;
+       padding: 15px 24px;
+       align-items: center;
+       border-bottom: 1px solid #F8F9FB;
+       background: #FFF;
+       position: relative;
+     }
+     .chat .chat-header .user-details {
+       display: -webkit-flex;
+       display: flex;
+       -webkit-align-items: center;
+       align-items: center;
+     }
+     .chat .chat-header .user-details h6 {
+       font-size: 15px;
+       font-weight: 600;
+       margin-bottom: 4px;
+       line-height: 1;
+       color: #141B27;
+     }
+     .chat .chat-header .last-seen {
+       font-size: 12px;
+       opacity: .85;
+     }
+     .chat .chat-header .chat-options ul {
+       margin-bottom: 0;
+       display: -webkit-flex;
+       display: flex;
+       -webkit-align-items: center;
+       align-items: center;
+     }
+     .chat .chat-header .chat-options ul > li > a {
+       font-size: 14px;
+       color: #141B27;
+       cursor: pointer;
+       width: 40px;
+       height: 40px;
+       padding: 0;
+       border: none;
+       display: -webkit-flex;
+       display: flex;
+       -webkit-align-items: center;
+       align-items: center;
+       -webkit-justify-content: center;
+       justify-content: center;
+     }
+     .chat .chat-header .chat-options ul > li > a i {
+       font-size: 20px;
+     }
+     .chat .chat-header .chat-options ul > li > a:not(.no-bg):hover {
+       background-color: #D0D1D4;
+       border-color: #D0D1D4;
      }
    </style>
