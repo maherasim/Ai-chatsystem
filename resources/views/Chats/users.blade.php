@@ -2709,53 +2709,7 @@ function confirmDelete(deleteUrl, userName) {
                 <div style="font-weight: 600; font-size: 14px; color: #2a2b4c; margin-bottom: 12px;">User Permission</div>
 
                 <!-- Permission Toggles -->
-                <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
-
-                    <!-- Left: AI - Bot -->
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" name="permissions[ai_bot][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                style="opacity: 0; width: 0; height: 0;">
-                            <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                        </label>
-                        <span style="font-weight: 600; font-size: 14px; color: #7a7a7a;">AI - Bot</span>
-                    </div>
-
-                    <!-- Right: Write / Read / Delete -->
-                    <div style="display: flex; align-items: center; gap: 16px;">
-
-                        <!-- Write -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[ai_bot][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Write</span>
-                        </div>
-
-                        <!-- Read -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[ai_bot][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Read</span>
-                        </div>
-
-                        <!-- Delete -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[ai_bot][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Delete</span>
-                        </div>
-
-                    </div>
-                </div>
+                
                 <!-- chat -->
                 <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
 
@@ -3093,102 +3047,7 @@ function confirmDelete(deleteUrl, userName) {
                     </div>
                 </div>
 
-                <!-- AI -APi -->
-                <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
-
-                    <!-- Left: AI - API -->
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" name="permissions[AI-API][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                style="opacity: 0; width: 0; height: 0;">
-                            <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                        </label>
-                        <span style="font-weight: 600; font-size: 14px; color: #7a7a7a;">AI -API</span>
-                    </div>
-
-                    <!-- Right: Write / Read / Delete -->
-                    <div style="display: flex; align-items: center; gap: 16px;">
-
-                        <!-- Write -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[AI-API][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Write</span>
-                        </div>
-
-                        <!-- Read -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[AI-API][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Read</span>
-                        </div>
-
-                        <!-- Delete -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[AI-API][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Delete</span>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- Library -->
-                <div class="mb-2" style="display: flex; justify-content: space-between;background:#fff;border-radius:10px;padding:10px; align-items: center; flex-wrap: wrap;">
-
-                    <!-- Left: Library -->
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                            <input type="checkbox" name="permissions[library][enabled]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                style="opacity: 0; width: 0; height: 0;">
-                            <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                        </label>
-                        <span style="font-weight: 600; font-size: 14px; color: #7a7a7a;">Library</span>
-                    </div>
-
-                    <!-- Right: Write / Read / Delete -->
-                    <div style="display: flex; align-items: center; gap: 16px;">
-
-                        <!-- Write -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[library][write]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Write</span>
-                        </div>
-
-                        <!-- Read -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #ccc; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[library][read]" onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Read</span>
-                        </div>
-
-                        <!-- Delete -->
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <label style="position: relative; display: inline-block; width: 34px; height: 18px; background-color: #10b981; border-radius: 18px;">
-                                <input type="checkbox" name="permissions[library][delete]" checked onchange="this.nextElementSibling.style.left = this.checked ? '18px' : '2px'; this.parentElement.style.backgroundColor = this.checked ? '#10b981' : '#ccc';"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span style="position: absolute; top: 2px; left: 18px; width: 14px; height: 14px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                            </label>
-                            <span style="font-size: 14px; color: #7a7a7a;">Delete</span>
-                        </div>
-
-                    </div>
-                </div>
+                
             </div>
             </div>
 
