@@ -25,7 +25,7 @@ class UserWelcomeMail extends Mailable
         $type = $this->user->type;
         $isSubadmin = $type === 'subadmin';
         $subject = $isSubadmin ? 'Your Subadmin Account Details' : 'Welcome! Your Account Details';
-        $loginLink = $isSubadmin ? 'https://admin.onlinesystems.info/' : 'https://team.onlinesystems.info/';
+        $loginLink = $isSubadmin ? 'https://logiadmin.it-supportline.de/' : 'https://logiteam.it-supportline.de/login/';
 
         return $this->subject($subject)
             ->view('emails.user_welcome')
