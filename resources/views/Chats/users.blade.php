@@ -2609,10 +2609,11 @@ function confirmDelete(deleteUrl, userName) {
                     <input name="image"
                         type="file"
                         id="userImgInput"
-                        accept="image/*" required="required"
+                        accept=".png, .jpg" required="required"
                         style="display: none;"
-                        onchange="(function(event){ const input = event.target; const preview = document.getElementById('userImgPreview'); const placeholder = document.getElementById('userImgPlaceholder'); if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function (e) { preview.src = e.target.result;  preview.style.display = 'block';  placeholder.style.display = 'none'; }; reader.readAsDataURL(input.files[0]); } })(event)" />
+                        onchange="(function(event){ const input = event.target; const preview = document.getElementById('userImgPreview'); const placeholder = document.getElementById('userImgPlaceholder'); const errorEl = document.getElementById('userImgError'); if (input.files && input.files[0]) { const file = input.files[0]; const ext = (file.name.split('.').pop() || '').toLowerCase(); const allowedExt = ['jpg','png']; const allowedMime = ['image/jpeg','image/png']; if (allowedExt.indexOf(ext) === -1 || allowedMime.indexOf(file.type) === -1) { if (errorEl) { errorEl.textContent = 'Only .jpg or .png files are allowed.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value=''; return; } if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; } const reader = new FileReader(); reader.onload = function (e) { preview.src = e.target.result;  preview.style.display = 'block';  if (placeholder) placeholder.style.display = 'none'; }; reader.readAsDataURL(file); } })(event)" />
                 </div>
+                <div id="userImgError" style="color: #ef4444; font-size: 12px; margin-top: 6px; display: none;"></div>
 
                 <!-- Info Fields -->
                 <div style="flex: 1;margin-top: 10px;">
