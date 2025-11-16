@@ -472,13 +472,9 @@ use Carbon\Carbon;
                                         ? asset($meeting->user->image)
                                         : asset('build/img/profile.svg');
                                 } else {
-                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
-                                        ? 'https://admin.onlinesystems.info'
-                                        : 'https://team.onlinesystems.info';
-
                                     $imageUrl = $meeting->user->image
-                                        ? ($domain . '/' . $meeting->user->image)
-                                        : ($domain . '/build/img/profile.svg');
+                                        ? asset($meeting->user->image)
+                                        : asset('build/img/profile.svg');
                                 }
 
                                 $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->start_time, 'Europe/Berlin');
@@ -758,13 +754,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         ? asset($meeting->user->image)
                                         : asset('build/img/profile.svg');
                                 } else {
-                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
-                                        ? 'https://admin.onlinesystems.info'
-                                        : 'https://team.onlinesystems.info';
-
                                     $imageUrl = $meeting->user->image
-                                        ? ($domain . '/' . $meeting->user->image)
-                                        : ($domain . '/build/img/profile.svg');
+                                        ? asset($meeting->user->image)
+                                        : asset('build/img/profile.svg');
                                 }
 
                                 $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time, 'Europe/Berlin');
@@ -840,13 +832,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                             ? asset($member->user->image)
                                                             : asset('build/img/profile.svg');
                                                     } else {
-                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
-                                                            ? 'https://admin.onlinesystems.info'
-                                                            : 'https://team.onlinesystems.info';
-
                                                         $memberimg = $member->user->image
-                                                            ? ($domain . '/' . $member->user->image)
-                                                            : ($domain . '/build/img/profile.svg');
+                                                            ? asset($member->user->image)
+                                                            : asset('build/img/profile.svg');
                                                     }
                                                 @endphp
 
@@ -878,13 +866,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                             ? asset($member->user->image)
                                                             : asset('build/img/profile.svg');
                                                     } else {
-                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
-                                                            ? 'https://admin.onlinesystems.info'
-                                                            : 'https://team.onlinesystems.info';
-
                                                         $memberimg = $member->user->image
-                                                            ? ($domain . '/' . $member->user->image)
-                                                            : ($domain . '/build/img/profile.svg');
+                                                            ? asset($member->user->image)
+                                                            : asset('build/img/profile.svg');
                                                     }
                                                 @endphp
 
@@ -1635,13 +1619,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         ? asset($cuser->image)
                                         : asset('build/img/profile.svg');
                                 } else {
-                                    $domain = ($cuser->is_admin == 1 || in_array($cuser->type, ['admin', 'subadmin']))
-                                        ? 'https://admin.onlinesystems.info'
-                                        : 'https://team.onlinesystems.info';
-
                                     $imageUrl = $cuser->image
-                                        ? ($domain . '/' . $cuser->image)
-                                        : ($domain . '/build/img/profile.svg');
+                                        ? asset($cuser->image)
+                                        : asset('build/img/profile.svg');
                                 }
                             @endphp
                             
