@@ -573,9 +573,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
-                                if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
-                                    $imageUrl = str_replace('admin.', 'team.', $imageUrl);
-                                }
+                                // Use URL from backend as-is (built with asset(APP_URL))
 
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}} {{$todotyp}}">
@@ -758,7 +756,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                     @if($todo->is_private == 0)
                                                         <div class="overlap-container">
                                                             @foreach($todo->members_data as $mem)
-                                                            <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
+                                                            <img src="{{ $mem['image'] }}">
                                                             @endforeach
                                                         </div>
                                                     @endif
@@ -967,9 +965,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
-                                if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
-                                    $imageUrl = str_replace('admin.', 'team.', $imageUrl);
-                                }
+                                // Use URL from backend as-is (built with asset(APP_URL))
 
                             @endphp    
                             <div class="col-12 col-sm-6 col-lg-3 {{$todo->priority}}">
@@ -1147,8 +1143,8 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                     <div style="position: relative; width: 60px; height: 30px;">
                                                         @if($todo->is_private == 0)
                                                             <div class="overlap-container">
-                                                                @foreach($todo->members_data as $mem)
-                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
+                                                            @foreach($todo->members_data as $mem)
+                                                            <img src="{{ $mem['image'] }}">
                                                                 @endforeach
                                                             </div>
                                                         @endif
@@ -1337,9 +1333,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
-                                if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
-                                    $imageUrl = str_replace('admin.', 'team.', $imageUrl);
-                                }
+                                // Use URL from backend as-is (built with asset(APP_URL))
 
                             @endphp  
                             <!-- Start of Card 1 -->
@@ -1472,7 +1466,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                         @if($todo->is_private == 0)
                                                             <div class="overlap-container">
                                                                 @foreach($todo->members_data as $mem)
-                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
+                                                                <img src="{{ $mem['image'] }}">
                                                                 @endforeach
                                                             </div>
                                                         @endif
@@ -1656,9 +1650,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
-                                if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
-                                    $imageUrl = str_replace('admin.', 'team.', $imageUrl);
-                                }
+                                // Use URL from backend as-is (built with asset(APP_URL))
                                 
                             @endphp  
                             <!-- Start of Card 1 -->
@@ -1791,7 +1783,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                         @if($todo->is_private == 0)
                                                             <div class="overlap-container">
                                                                 @foreach($todo->members_data as $mem)
-                                                                <img src="{{ str_replace('admin.', 'team.', $mem['image']) }}">
+                                                                <img src="{{ $mem['image'] }}">
                                                                 @endforeach
                                                             </div>
                                                         @endif
