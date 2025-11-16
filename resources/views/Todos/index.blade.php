@@ -571,7 +571,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
                                 if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
@@ -965,7 +965,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $part = $reminderSeconds / 3;
 
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
                                 if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
@@ -1335,7 +1335,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
                                 if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
@@ -1654,7 +1654,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $reminderSeconds = $reminderMinutes * 60;
                                 $part = $reminderSeconds / 3;
 
-                                $imageUrl = asset('storage/' . $todo->user->profile_image);
+                                $imageUrl = $todo->user->image ? asset($todo->user->image) : asset('build/img/profile.svg');
 
                                 if (!in_array($todo->user->type, ['Admin', 'subadmin'])) {
                                     $imageUrl = str_replace('admin.', 'team.', $imageUrl);
@@ -2188,8 +2188,13 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     id="user_{{$cuser->_id}}" 
                                     data-user-id="{{$cuser->_id}}">
                                     <div class="invit-img">
-                                        <img src="{{ str_replace('admin.onlinesystems.info', 'team.onlinesystems.info', asset('storage/' . $cuser->profile_image)) }}
-" />
+                                        @php
+                                            $img = $cuser->image
+                                                ? asset($cuser->image)
+                                                : asset('build/img/profile.svg');
+                                            $img = str_replace('admin.onlinesystems.info', 'team.onlinesystems.info', $img);
+                                        @endphp
+                                        <img src="{{ $img }}" alt="{{$cuser->name}}" />
                                     </div>
                                     <div class="invit-txt">{{$cuser->name}}</div>
                                 </div>

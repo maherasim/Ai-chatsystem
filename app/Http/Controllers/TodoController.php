@@ -105,14 +105,14 @@ class TodoController extends Controller
     })
     ->get()
     ->map(function ($todo) {
-        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','image']);
         $todo->members_data = $members->map(function ($u) {
             return [
                 'id'    => $u->_id,
                 'name'  => $u->name,
-                'image' => $u->profile_image
-                    ? asset("storage/" . $u->profile_image)
-                    : asset("build/img/default.png"),
+                'image' => $u->image
+                    ? asset($u->image)
+                    : asset("build/img/profile.svg"),
             ];
         });
         return $todo;
@@ -130,14 +130,14 @@ class TodoController extends Controller
     })
     ->get()
     ->map(function ($todo) {
-        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','image']);
         $todo->members_data = $members->map(function ($u) {
             return [
                 'id'    => $u->_id,
                 'name'  => $u->name,
-                'image' => $u->profile_image
-                    ? asset("storage/" . $u->profile_image)
-                    : asset("build/img/default.png"),
+                'image' => $u->image
+                    ? asset($u->image)
+                    : asset("build/img/profile.svg"),
             ];
         });
         return $todo;
@@ -151,15 +151,15 @@ class TodoController extends Controller
     })
             ->get()
             ->map(function ($todo) {
-                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','image']);
 
                 $todo->members_data = $members->map(function ($u) {
                     return [
                         'id'    => $u->_id,
                         'name'  => $u->name,
-                        'image' => $u->profile_image
-                            ? asset("storage/" . $u->profile_image)
-                            : asset("build/img/default.png"),
+                'image' => $u->image
+                    ? asset($u->image)
+                    : asset("build/img/profile.svg"),
                     ];
                 });
 
@@ -173,15 +173,15 @@ class TodoController extends Controller
         $q->where('completed',  0)
           ->orWhereNull('is_removed');
     })->get()->map(function ($todo) {
-                $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','profile_image']);
+        $members = User::whereIn('_id', $todo->members ?? [])->get(['_id','name','image']);
 
                 $todo->members_data = $members->map(function ($u) {
                     return [
                         'id'    => $u->_id,
                         'name'  => $u->name,
-                        'image' => $u->profile_image
-                            ? asset("storage/" . $u->profile_image)
-                            : asset("build/img/default.png"),
+                'image' => $u->image
+                    ? asset($u->image)
+                    : asset("build/img/profile.svg"),
                     ];
                 });
 
