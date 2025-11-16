@@ -64,9 +64,9 @@ public function getMembersDataAttribute()
             'id' => (string) $member->user->_id,
             'name' => $member->user->name ?? '',
             'email' => $member->user->email ?? '',
-            'image' => $member->user->profile_image 
-                ? asset('storage/' . $member->user->profile_image) 
-                : asset('build/img/groups/default.jpg'),
+            'image' => $member->user->image
+                ? asset($member->user->image)
+                : asset('build/img/profile.svg'),
             'decision' => $member->decision,
         ];
     })->toArray();
