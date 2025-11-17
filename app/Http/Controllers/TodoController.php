@@ -17,6 +17,54 @@ use Carbon\Carbon;
 class TodoController extends Controller
 {
 
+    public function checkexpired(){
+
+        $now = Carbon::now();
+
+        $todos = Todo::where(function($query) use ($now) {
+    // expired todos
+    $query->where('end_date', '<', $now->format('Y-m-d'))
+          ->orWhere(function($q) use ($now) {
+              $q->where('end_date', $now->format('Y-m-d'))
+                ->where('end_time', '<=', $now->format('H:i'));
+          });
+})
+->where(function($query) {
+    // either sentmail != "1" or field not exists
+    $query->where('sentmail', '!=', "1")
+          ->orWhereNull('sentmail');
+})->take(2)->get();
+
+        
+        foreach($todos as $todo){
+           
+            foreach ($todo->members as $mem) {
+
+            $tuser = User::where('_id', $mem)->first();
+                if($tuser){
+
+                    $tomail = $tuser->email;
+                   // echo $tomail;
+                        $details = [
+                            'subject' => 'ToDo Expired',
+                            'from'    =>  Auth::user()->name,
+                            'name'      =>  $tuser->name,
+                            'view'    => 'emails.todoexpire',
+                            'todo'    => $todo
+                        ];
+
+                        Mail::to($tomail)->send(new CustomMail($details));
+                    }
+                }
+            $todo->sentmail = 1;
+            $todo->save();
+          //  echo $todo->_id;
+        }
+        
+        return true;
+
+    }
+
 
     public function remove(Request $request){
         $user = Auth::user();
