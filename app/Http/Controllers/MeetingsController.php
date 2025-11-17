@@ -12,6 +12,8 @@ use App\Models\Meetings;
 use App\Models\MeetingMembers;
 use Illuminate\Support\Facades\Storage;
 use MongoDB\BSON\ObjectId;
+use App\Mail\CustomMail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class MeetingsController extends Controller
@@ -21,7 +23,7 @@ class MeetingsController extends Controller
 public function index()
     {
 
-
+        
         
         $user = Auth::user();
 
@@ -245,7 +247,29 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
                 'user_id'    => $memberId,
                 'decision'   => 0, // pending by default
             ]);
+                
+            $tuser = User::where('_id', $memberId)->first();
+                    if($tuser){
+
+                        $tomail = $tuser->email;
+
+                        $details = [
+                            'subject' => 'New Meeting Assigned',
+                            'from'    =>  Auth::user()->name,
+                            'name'      =>  $tuser->name,
+                            'view'    => 'emails.meeting',
+                            'todo'    => $todo
+                        ];
+
+                        Mail::to($tomail)->send(new CustomMail($details));
+                    }
+                
+        
+
+
         }
+
+
             
     }
 

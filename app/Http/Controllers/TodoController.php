@@ -10,6 +10,8 @@ use App\Models\Setting;
 use App\Models\Todo;
 use App\Models\TodoAttachment;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\CustomMail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class TodoController extends Controller
@@ -351,6 +353,29 @@ if ($request->hasFile('attachments')) {
             ]);
         }
     }
+
+    //send email here
+
+        if (!empty($request->members)) {
+            foreach ($request->members as $mem) {
+                    $tuser = User::where('_id', $mem)->first();
+                    if($tuser){
+
+                        $tomail = $tuser->email;
+
+                        $details = [
+                            'subject' => 'New Todo Assigned',
+                            'from'    =>  Auth::user()->name,
+                            'name'      =>  $tuser->name,
+                            'view'    => 'emails.todo',
+                            'todo'    => $todo
+                        ];
+
+                        Mail::to($tomail)->send(new CustomMail($details));
+                    }
+                }
+        }
+        
 
 
 /*
