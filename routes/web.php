@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route as RouteFacade;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WebTaskController;
+use App\Http\Controllers\TeamController;
+use App\Models\Project;
 
 
 use App\Http\Controllers\TaskController;
@@ -111,11 +113,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/emptasks/tickets', [\App\Http\Controllers\EmployeeTaskController::class, 'tickets'])->name('emptasks.tickets');
     Route::post('/emptasks/store', [\App\Http\Controllers\EmployeeTaskController::class, 'store'])->name('emptasks.store');
     Route::delete('/emptasks/{id}', [\App\Http\Controllers\EmployeeTaskController::class, 'destroy'])->name('emptasks.destroy');
+
+    // Team specific APIs (do not reuse tickets.*)
+    Route::get('/team/tickets', [TeamController::class, 'tickets'])->name('team.tickets');
 });
-Route::get('/teams', function () {
-    $headers = Setting::all();
-    return view('Chats.teams', compact('headers'));
-})->middleware('auth')->name('chat-team');
+Route::get('/teams', [TeamController::class, 'index'])->middleware('auth')->name('chat-team');
+Route::post('/teams', [TeamController::class, 'store'])->middleware('auth')->name('teams.store');
 //Route::get('/meetings', function () {
 //    $headers = Setting::all();
 //    return view('Chats.meetings', compact('headers'));

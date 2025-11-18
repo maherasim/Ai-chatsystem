@@ -2474,11 +2474,14 @@
 
                         <!-- Select Project -->
                         <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
+                            <select class="form-select" id="addProjectSelect"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Select Project</option>
-                                <option>Project A</option>
-                                <option>Project B</option>
+                                <option value="" selected>Select Project</option>
+                                @isset($projects)
+                                    @foreach($projects as $project)
+                                        <option value="{{ (string) ($project->_id ?? $project->id) }}" @selected(request('project_id') == (string) ($project->_id ?? $project->id))>{{ $project->title }}</option>
+                                    @endforeach
+                                @endisset
                             </select>
                         </div>
 
@@ -2519,64 +2522,75 @@
                     </div>
 
                     <!-- Ticket Buttons Row -->
-                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #1 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #2 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #3 Ticket Title
-                        </button>
-
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #4 Ticket Title
-                        </button>
-
-                    </div>
+                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="addTicketContainer"></div>
 
                 </div>
 
+                <script>
+                    (function () {
+                        const projectSelect = document.getElementById('addProjectSelect');
+                        const container = document.getElementById('addTicketContainer');
+
+                        function showMessage(msg) {
+                            container.innerHTML = '';
+                            const div = document.createElement('div');
+                            div.style.color = '#7a7a9d';
+                            div.style.fontSize = '12px';
+                            div.textContent = msg;
+                            container.appendChild(div);
+                        }
+
+                        function renderTickets(tickets) {
+                            container.innerHTML = '';
+                            if (!tickets || tickets.length === 0) {
+                                showMessage('No tickets for this project');
+                                return;
+                            }
+                            tickets.forEach(function (t, idx) {
+                                const btn = document.createElement('button');
+                                btn.className = 'btn';
+                                btn.textContent = (t.title || '').trim() || '# Ticket';
+                                btn.style.flex = '1 1 130px';
+                                btn.style.borderRadius = '20px';
+                                btn.style.padding = '6px 12px';
+                                btn.style.fontWeight = '600';
+                                btn.style.fontSize = '11px';
+                                btn.style.backgroundColor = idx === 0 ? '#47ca7a' : 'transparent';
+                                btn.style.color = idx === 0 ? 'white' : '#7a7a9d';
+                                btn.addEventListener('click', function () {
+                                    Array.from(container.children).forEach(function (child) {
+                                        if (child.tagName === 'BUTTON') {
+                                            child.style.backgroundColor = 'transparent';
+                                            child.style.color = '#7a7a9d';
+                                        }
+                                    });
+                                    btn.style.backgroundColor = '#47ca7a';
+                                    btn.style.color = 'white';
+                                });
+                                container.appendChild(btn);
+                            });
+                        }
+
+                        async function fetchTickets(projectId) {
+                            try {
+                                const res = await fetch('{{ url('/team/tickets') }}?project_id=' + encodeURIComponent(projectId), { credentials: 'same-origin' });
+                                if (!res.ok) { renderTickets([]); return; }
+                                const data = await res.json();
+                                const tickets = Array.isArray(data) ? data : (data.tickets || []);
+                                renderTickets(tickets);
+                            } catch (e) {
+                                renderTickets([]);
+                            }
+                        }
+
+                        if (projectSelect) {
+                            projectSelect.addEventListener('change', function () {
+                                const pid = projectSelect.value;
+                                if (pid) fetchTickets(pid); else showMessage('Select a project to view tickets');
+                            });
+                        }
+                    })();
+                </script>
 
                 <!-- task1 -->
                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
@@ -2622,7 +2636,7 @@
 
                         <!-- Description -->
                         <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
+                            Task description will be here  
                         </div>
 
                         <!-- Dates & Status Row -->
@@ -2948,12 +2962,21 @@
 
                         <!-- Select Project -->
                         <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Select Project</option>
-                                <option>Project A</option>
-                                <option>Project B</option>
-                            </select>
+                            <form action="{{ route('chat-team') }}" method="GET">
+                                <select class="form-select" name="project_id" id="editProjectSelect"
+                                    style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                    <option value="" {{ empty($selectedProjectId) ? 'selected' : '' }}>Select Project</option>
+                                    @foreach($projects as $project)
+                                    <option value="{{ (string) ($project->_id ?? $project->id) }}" @selected(($selectedProjectId ?? '') == (string) ($project->_id ?? $project->id))>{{ $project->title }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="mt-2">
+                                    <button type="submit" class="btn"
+                                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 12px; padding: 6px 12px; border: none; border-radius: 8px;">
+                                        Load Tickets
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
                         <!-- Select PM -->
@@ -2993,61 +3016,80 @@
                     </div>
 
                     <!-- Ticket Buttons Row -->
-                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="ticketContainer">
+                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="editTicketContainer"></div>
 
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: #47ca7a; color: white; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #1 Ticket Title
-                        </button>
+                    <script>
+                        (function () {
+                            const projectSelect = document.getElementById('editProjectSelect');
+                            const container = document.getElementById('editTicketContainer');
 
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #2 Ticket Title
-                        </button>
+                            function showMessage(msg) {
+                                container.innerHTML = '';
+                                const div = document.createElement('div');
+                                div.style.color = '#7a7a9d';
+                                div.style.fontSize = '12px';
+                                div.textContent = msg;
+                                container.appendChild(div);
+                            }
 
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px;  background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #3 Ticket Title
-                        </button>
+                            function renderTickets(tickets) {
+                                container.innerHTML = '';
+                                if (!tickets || tickets.length === 0) {
+                                    showMessage('No tickets for this project');
+                                    return;
+                                }
+                                tickets.forEach(function (t, idx) {
+                                    const btn = document.createElement('button');
+                                    btn.className = 'btn';
+                                btn.textContent = (t.title || '').trim() || '# Ticket';
+                                    btn.style.flex = '1 1 130px';
+                                    btn.style.borderRadius = '20px';
+                                    btn.style.padding = '6px 12px';
+                                    btn.style.fontWeight = '600';
+                                    btn.style.fontSize = '11px';
+                                    btn.style.backgroundColor = idx === 0 ? '#47ca7a' : 'transparent';
+                                    btn.style.color = idx === 0 ? 'white' : '#7a7a9d';
+                                    btn.addEventListener('click', function () {
+                                        Array.from(container.children).forEach(function (child) {
+                                            if (child.tagName === 'BUTTON') {
+                                                child.style.backgroundColor = 'transparent';
+                                                child.style.color = '#7a7a9d';
+                                            }
+                                        });
+                                        btn.style.backgroundColor = '#47ca7a';
+                                        btn.style.color = 'white';
+                                    });
+                                    container.appendChild(btn);
+                                });
+                            }
 
-                        <button class="btn"
-                            onclick="
-      Array.from(this.parentNode.children).forEach(btn => {
-        btn.style.backgroundColor = 'transparent';
-        btn.style.color = '#7a7a9d';
-      });
-      this.style.backgroundColor = '#47ca7a';
-      this.style.color = 'white';
-    "
-                            style="flex: 1 1 130px; background-color: transparent; color: #7a7a9d; border-radius: 20px; padding: 6px 12px; font-weight: 600; font-size: 11px;">
-                            #4 Ticket Title
-                        </button>
+                        async function fetchTickets(projectId) {
+                                try {
+                                const res = await fetch('{{ url('/team/tickets') }}?project_id=' + encodeURIComponent(projectId), { credentials: 'same-origin' });
+                                    if (!res.ok) { renderTickets([]); return; }
+                                    const data = await res.json();
+                                    const tickets = Array.isArray(data) ? data : (data.tickets || []);
+                                    renderTickets(tickets);
+                                } catch (e) {
+                                    renderTickets([]);
+                                }
+                            }
 
-                    </div>
+                            // Initial state
+                            if (projectSelect && projectSelect.value) {
+                                fetchTickets(projectSelect.value);
+                            } else {
+                                showMessage('Select a project to view tickets');
+                            }
+
+                            if (projectSelect) {
+                                projectSelect.addEventListener('change', function () {
+                                    const pid = projectSelect.value;
+                                    if (pid) fetchTickets(pid); else showMessage('Select a project to view tickets');
+                                });
+                            }
+                        })();
+                    </script>
 
                 </div>
 
