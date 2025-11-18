@@ -65,7 +65,12 @@ return [
     |
     */
 
+<<<<<<< Updated upstream
     'timezone' => env('APP_TIMEZONE', 'UTEurope/Berlin'),
+=======
+    // 'timezone' => env('APP_TIMEZONE', 'UTEurope/BerlinC'),
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
+>>>>>>> Stashed changes
 
     /*
     |--------------------------------------------------------------------------
