@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/todoss/complete', [TodoController::class, 'complete'])->name('todos.complete');
     Route::get('/download/{id}', [TodoController::class, 'download'])->name('todos.download');
 
+    Route::get('/expired-todo', [TodoController::class, 'checkexpired'])->name('todos.expired');
+    
+
     Route::get('/meetings', [MeetingsController::class, 'index'])->name('chat-meetings');
     Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
     Route::post('/meetings/{id}/accept', [MeetingsController::class, 'acceptMeeting'])->name('meetings.accept');
