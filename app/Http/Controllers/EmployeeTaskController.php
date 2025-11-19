@@ -90,6 +90,7 @@ class EmployeeTaskController extends Controller
             'project_id'     => $validated['project_id'],
             'ticket_id'      => $validated['ticket_id'],
             'title'          => $validated['title'],
+            'status'         => 'new_task',
             'priority'       => $validated['priority'] ?? null,
             'description'    => $validated['description'] ?? null,
             'start_date'     => $validated['start_date'] ?? null,

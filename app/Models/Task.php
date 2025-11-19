@@ -14,6 +14,7 @@ class Task extends Model
         'ticket_id',
         'title',
         'description',
+        'status',
         'start_date',
         'end_date',
         'checkpoints', // array of strings
@@ -33,6 +34,16 @@ class Task extends Model
         'position'    => 'array',
         'issues'      => 'array',
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_id');
+    }
 }
 
 

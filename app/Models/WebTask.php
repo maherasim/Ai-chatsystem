@@ -18,6 +18,7 @@ class WebTask extends Model
         'end_date',
         'checkpoints',
         'shape',
+        'status',
         'color',
         'position',
         'number',

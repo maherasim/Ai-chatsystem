@@ -12,6 +12,11 @@ class Project extends Model
 {
     use HasFactory;
 
+    /**
+     * NOTE: This project model uses MongoDB driver.
+     * Define relations to tickets and tasks so blade can fetch counts directly.
+     */
+
     //protected $connection = 'mongodb';
     //protected $collection = 'projects';
 
@@ -43,6 +48,11 @@ class Project extends Model
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'project_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'project_id');
     }
     public function getRemainingDaysAttribute()
 {

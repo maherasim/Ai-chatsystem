@@ -118,6 +118,7 @@ class WebTaskController extends Controller
             'start_date'     => $validated['start_date'] ?? null,
             'end_date'       => $validated['end_date'] ?? null,
             'checkpoints'    => $validated['checkpoints'] ?? [],
+            'status'         => 'new_task',
             'shape'          => $validated['shape'] ?? null,
             'color'          => $validated['color'] ?? null,
             'position'       => $validated['position'] ?? null,

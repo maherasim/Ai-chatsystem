@@ -20,10 +20,14 @@ class TaskController extends Controller
         $projects = Project::orderBy('title')->get();
         $tasks = Task::orderByDesc('created_at')->limit(50)->get();
         $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
-        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
-        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))->merge($emptasks->pluck('project_id'))
+        $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
+        // Fallback: some records might not have created_at populated in Mongo; sort by _id instead
+        if ($employeeTasks->isEmpty()) {
+            $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(50)->get();
+        }
+        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))->merge($employeeTasks->pluck('project_id'))
             ->filter()->map(fn($v) => (string)$v)->unique()->values();
-        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))->merge($emptasks->pluck('ticket_id'))
+        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))->merge($employeeTasks->pluck('ticket_id'))
             ->filter()->map(fn($v) => (string)$v)->unique()->values();
 
         $projectSubset = $projectIds->isNotEmpty()
@@ -45,12 +49,22 @@ class TaskController extends Controller
             $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        $emptasks = $emptasks->map(function($t) use ($projectMap, $ticketMap){
+        $employeeTasks = $employeeTasks->map(function($t) use ($projectMap, $ticketMap){
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
             $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        return view('Chats.task', compact('headers', 'projects', 'tasks', 'webtasks', 'emptasks'));
+        // Return with both camelCase and snakeCase variants for robustness in blade
+        return view('Chats.task', [
+            'headers'         => $headers,
+            'projects'        => $projects,
+            'tasks'           => $tasks,
+            'webtasks'        => $webtasks,
+            'webTasks'        => $webtasks,
+            'employeeTasks'   => $employeeTasks,
+            'employeetasks'   => $employeeTasks,
+            'employee_tasks'  => $employeeTasks,
+        ]);
     }
 
     public function projects()
@@ -182,6 +196,7 @@ class TaskController extends Controller
             'ticket_id'      => $validated['ticket_id'] ?? null,
             'title'          => $validated['title'],
             'description'    => $validated['description'] ?? null,
+            'status'         => 'new_task',
             'start_date'     => $validated['start_date'] ?? null,
             'end_date'       => $validated['end_date'] ?? null,
             'checkpoints'    => $validated['checkpoints'] ?? [],
