@@ -803,6 +803,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector('.footer-menu .agreement').addEventListener('click', function () {
         showDiv('agreement_div');
     });
+    //new changes
 
     document.querySelector('.footer-menu .profile').addEventListener('click', function () {
         showDiv('profile_div');
