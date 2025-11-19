@@ -67,6 +67,7 @@ return [
 
     'timezone' => env('APP_TIMEZONE', 'UTEurope/Berlin'),
 
+    
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
