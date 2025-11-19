@@ -2294,7 +2294,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             <p>Todo is completed</p>
                         </div>
                     </div>
-
+<!-- changes -->
                 <div class="dev_finish">
                     <p style="font-size: 13px; margin-top:10px;">Provide details on project</p>
 
