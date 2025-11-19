@@ -21,6 +21,7 @@ class TaskController extends Controller
         $tasks = Task::orderByDesc('created_at')->limit(50)->get();
         $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
         $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
+        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
         // Fallback: some records might not have created_at populated in Mongo; sort by _id instead
         if ($employeeTasks->isEmpty()) {
             $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(50)->get();
@@ -59,6 +60,7 @@ class TaskController extends Controller
             'headers'         => $headers,
             'projects'        => $projects,
             'tasks'           => $tasks,
+            'emptasks'        => $emptasks,
             'webtasks'        => $webtasks,
             'webTasks'        => $webtasks,
             'employeeTasks'   => $employeeTasks,

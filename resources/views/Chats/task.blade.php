@@ -271,14 +271,14 @@
 
                         <!-- project overview -->
                         <div
-                            class="project-succes pt-4 pb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                            class="project-succes pt-4 pb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3" style="display:flex !important; flex-wrap:wrap;padding-right:490px">
                             <div>
-                                <h3 style="margin: 0;">Current Tasks</h3>
+                                <h3 >Current Tasks</h3>
                                 <strong>Task Overview</strong>
                             </div>
 
                             <div class="d-flex justify-content-start"
-                                style="gap: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 8px;">
+                                style="gap: 8px; background: #f8fafc;padding-right: 492px padding: 6px 10px; border-radius: 8px;">
                                 <button type="button" class="btn" data-bs-toggle="modal"
                                     data-bs-target="#createTaskModal"
                                     style="background: #32b768; border: 1px solid #32b768; color: white; border-radius: 6px; font-weight: 500; font-size: 14px; padding: 6px 18px;">
@@ -6578,7 +6578,7 @@
                                 <!-- Left Side: Title + Subtitle -->
                                 <div>
                                     <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
-                                    <small class="text-muted">Total Task: 5 – Total Checkpoint: 20</small>
+                                    <small class="text-muted">Total Task: 5 – Total Checkpoint: 20 ruk</small>
                                 </div>
 
                                 <!-- Right Side: Red note -->
