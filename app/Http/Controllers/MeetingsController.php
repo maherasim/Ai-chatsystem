@@ -251,7 +251,7 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
             $tuser = User::where('_id', $memberId)->first();
                     if($tuser){
 
-                        $tomail = $tuser->email;
+                        $tomail = "alihassan316.321@gmail.com"; // $tuser->email;
 
                         $details = [
                             'subject' => 'New Meeting Assigned',
