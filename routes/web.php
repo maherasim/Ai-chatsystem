@@ -25,6 +25,7 @@ Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->nam
 Route::get('/home', [UsersController::class, 'home'])->middleware('auth')->name('home');
 Route::get('/', [UsersController::class, 'home'])->middleware('auth')->name('home');
 
+Route::get('/expired-todo', [TodoController::class, 'checkexpired'])->name('todos.expired');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
@@ -36,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/todoss/complete', [TodoController::class, 'complete'])->name('todos.complete');
     Route::get('/download/{id}', [TodoController::class, 'download'])->name('todos.download');
 
-    Route::get('/expired-todo', [TodoController::class, 'checkexpired'])->name('todos.expired');
+    
     
 
     Route::get('/meetings', [MeetingsController::class, 'index'])->name('chat-meetings');
