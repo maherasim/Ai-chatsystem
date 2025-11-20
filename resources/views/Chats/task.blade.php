@@ -1426,740 +1426,238 @@
                                 }
                             </script>
                         </div>
-                        <!-- cards -->
                         <div class="mb-2">
-                            <div class="row g-1">
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card shadow-sm p-1"
-                                        style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
+                            <div class="d-flex flex-wrap gap-2" style="width: 100%; justify-content: flex-start;">
+                                <!-- static demo: grouping removed -->
+    
+                                <!-- static demo: single project card -->
+    
+                                <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;" class="current-task-card">
+                                    <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                         <!-- Top Section -->
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-
-                                            <!-- Progress Circle (Left) -->
-                                            <div style="width: 50px; height: 50px; position: relative;">
-                                                <svg width="50" height="50">
+                                        <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
+    
+                                            <!-- Progress Circle -->
+                                            <div style="width: 36px; height: 36px; position: relative;">
+                                                <svg width="36" height="36">
                                                     <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%"
-                                                            x2="100%" y2="0%">
+                                                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                                                             <stop offset="0%" stop-color="#ff7f00" />
                                                             <stop offset="100%" stop-color="#fcd34d" />
                                                         </linearGradient>
                                                     </defs>
-                                                    <circle cx="25" cy="25" r="21" stroke="#d1d1d1"
-                                                        stroke-width="6" fill="none" />
-                                                    <circle cx="25" cy="25" r="21" stroke="url(#grad)"
-                                                        stroke-width="6" fill="none" stroke-dasharray="131.88"
-                                                        stroke-dashoffset="39.56" <!-- 70% -->
+                                                    <circle cx="18" cy="18" r="15.12" stroke="#d1d1d1" stroke-width="4.32" fill="none" />
+                                                    <circle
+                                                        cx="18"
+                                                        cy="18"
+                                                        r="15.12"
+                                                        stroke="url(#grad)"
+                                                        stroke-width="4.32"
+                                                        fill="none"
+                                                        stroke-dasharray="95.04"
+                                                        stroke-dashoffset="28.51" <!-- 70% progress -->
                                                         stroke-linecap="round"
-                                                        transform="rotate(-90 25 25)" />
+                                                        transform="rotate(-90 18 18)" />
                                                 </svg>
-                                                <div
-                                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: bold; color: #333;">
-                                                    70%
+                                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:9.5px; font-weight:600;">70%</span>
+                                            </div>
+    
+    
+                                            <!-- Middle Card -->
+                                            <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
+    
+                                                <!-- Static Flag -->
+                                                <div style="background-color:#D1FAE5; border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="Flag" width="18px" height="18px">
                                                 </div>
-                                            </div>
-
-                                            <!-- Logo in center -->
-                                            <div class="text-center" style="flex-grow: 1;">
-                                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                                    class="rounded-circle mb-1"
-                                                    style="height: 55px; width: 55px; object-fit: cover;"
-                                                    alt="Project Logo">
-                                            </div>
-
-                                            <!-- Dropdown (Right) -->
-                                            <div style="flex-shrink: 0;">
-                                                <select
-                                                    style="font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; width: 110px;">
-                                                    <option selected>Select Ticket</option>
-                                                    <option>Ticket 1</option>
-                                                    <option>Ticket 2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Project Title and Up Icon -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div></div>
-                                            <div>
-                                                <h5 class="text-center"
-                                                    style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">Project
-                                                    Title</h5>
-                                            </div>
-                                            <div>
-                                                <img src="{{ URL::asset('/build/img/top_arrow.svg') }}" alt="top"
-                                                    width="20" height="20" style="margin-left: auto;">
-                                            </div>
-                                        </div>
-
-                                        <!-- Description and Status -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                            style="background-color: #f1f5f9; border-radius: 10px;">
-                                            <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16"
-                                                    height="16" alt="flag">
-
-                                            </div>
-                                            <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be
-                                                    here</small>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1">
-                                                <span
-                                                    style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                <small style="font-size: 12px; color: #22c55e;">Low</small>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bottom Stats Row -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                            style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px; padding: 8px 10px;flex-wrap:wrap">
-
-                                            <!-- Tickets -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tickets:</strong> 5
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Tasks -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tasks:</strong> 15
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Start -->
-                                            <div style="color: #10b981; white-space: nowrap;">
-                                                <strong>Start:</strong> 22.10.2024
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- End -->
-                                            <div style="color: #ef4444; white-space: nowrap;">
-                                                <strong>End:</strong> 22.10.2024
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <!-- 2 -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card shadow-sm p-1"
-                                        style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                        <!-- Top Section -->
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-
-                                            <!-- Progress Circle (Left) -->
-                                            <div style="width: 50px; height: 50px; position: relative;">
-                                                <svg width="50" height="50">
-                                                    <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%"
-                                                            x2="100%" y2="0%">
-                                                            <stop offset="0%" stop-color="#ff7f00" />
-                                                            <stop offset="100%" stop-color="#fcd34d" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <circle cx="25" cy="25" r="21" stroke="#d1d1d1"
-                                                        stroke-width="6" fill="none" />
-                                                    <circle cx="25" cy="25" r="21" stroke="url(#grad)"
-                                                        stroke-width="6" fill="none" stroke-dasharray="131.88"
-                                                        stroke-dashoffset="39.56" <!-- 70% -->
-                                                        stroke-linecap="round"
-                                                        transform="rotate(-90 25 25)" />
-                                                </svg>
-                                                <div
-                                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: bold; color: #333;">
-                                                    70%
+    
+                                                <!-- Logo (center) -->
+                                                <div class="text-center" style="flex-grow: 1;">
+                                                    <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
+                                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 45px; width: 45px; object-fit: cover;" class="rounded-cirle">
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="text-center" title="Project Title" style="font-size: 12px !important; margin: 0 auto; font-weight: bold; color: #2e2e5d; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+                                                            Project Title
+                                                        </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            <!-- Logo in center -->
-                                            <div class="text-center" style="flex-grow: 1;">
-                                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                                    class="rounded-circle mb-1"
-                                                    style="height: 55px; width: 55px; object-fit: cover;"
-                                                    alt="Project Logo">
-                                            </div>
-
-                                            <!-- Dropdown (Right) -->
-                                            <div style="flex-shrink: 0;">
-                                                <select
-                                                    style="font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; width: 110px;">
-                                                    <option selected>Select Ticket</option>
-                                                    <option>Ticket 1</option>
-                                                    <option>Ticket 2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Project Title and Up Icon -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div></div>
-                                            <div>
-                                                <h5 class="text-center"
-                                                    style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">Project
-                                                    Title</h5>
-                                            </div>
-                                            <div>
-                                                <img src="{{ URL::asset('/build/img/top_arrow.svg') }}" alt="top"
-                                                    width="20" height="20" style="margin-left: auto;">
-                                            </div>
-                                        </div>
-
-                                        <!-- Description and Status -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                            style="background-color: #f1f5f9; border-radius: 10px;">
-                                            <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16"
-                                                    height="16" alt="flag">
-
-                                            </div>
-                                            <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be
-                                                    here</small>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1">
-                                                <span
-                                                    style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                <small style="font-size: 12px; color: #22c55e;">Low</small>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bottom Stats Row -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                            style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px; padding: 8px 10px;flex-wrap:wrap">
-
-                                            <!-- Tickets -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tickets:</strong> 5
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Tasks -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tasks:</strong> 15
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Start -->
-                                            <div style="color: #10b981; white-space: nowrap;">
-                                                <strong>Start:</strong> 22.10.2024
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- End -->
-                                            <div style="color: #ef4444; white-space: nowrap;">
-                                                <strong>End:</strong> 22.10.2024
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <!-- 3 -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card shadow-sm p-1"
-                                        style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                        <!-- Top Section -->
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-
-                                            <!-- Progress Circle (Left) -->
-                                            <div style="width: 50px; height: 50px; position: relative;">
-                                                <svg width="50" height="50">
-                                                    <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%"
-                                                            x2="100%" y2="0%">
-                                                            <stop offset="0%" stop-color="#ff7f00" />
-                                                            <stop offset="100%" stop-color="#fcd34d" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <circle cx="25" cy="25" r="21" stroke="#d1d1d1"
-                                                        stroke-width="6" fill="none" />
-                                                    <circle cx="25" cy="25" r="21" stroke="url(#grad)"
-                                                        stroke-width="6" fill="none" stroke-dasharray="131.88"
-                                                        stroke-dashoffset="39.56" <!-- 70% -->
-                                                        stroke-linecap="round"
-                                                        transform="rotate(-90 25 25)" />
-                                                </svg>
-                                                <div
-                                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: bold; color: #333;">
-                                                    70%
+    
+                                                <!-- Priority -->
+                                                <div style="background: #ffffff; padding: 3px 4px; border-radius: 2px; display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                                                    <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                                                    <span style="color: #4caf50; font-size: 12px; font-weight: 500;">Low</span>
                                                 </div>
+    
                                             </div>
-
-                                            <!-- Logo in center -->
-                                            <div class="text-center" style="flex-grow: 1;">
-                                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                                    class="rounded-circle mb-1"
-                                                    style="height: 55px; width: 55px; object-fit: cover;"
-                                                    alt="Project Logo">
-                                            </div>
-
-                                            <!-- Dropdown (Right) -->
-                                            <div style="flex-shrink: 0;">
-                                                <select
-                                                    style="font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; width: 110px;">
-                                                    <option selected>Select Ticket</option>
-                                                    <option>Ticket 1</option>
-                                                    <option>Ticket 2</option>
-                                                </select>
-                                            </div>
+    
+    
+                                            <!-- Ticket Icon -->
+                                            <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
+                                                style="height: 40px; width: 38px; cursor: pointer;background:#F5F5F5;padding:5px;border-radius:5px;"
+                                                alt="ticket">
                                         </div>
-
-                                        <!-- Project Title and Up Icon -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div></div>
-                                            <div>
-                                                <h5 class="text-center"
-                                                    style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">Project
-                                                    Title</h5>
-                                            </div>
-                                            <div>
-                                                <img src="{{ URL::asset('/build/img/top_arrow.svg') }}" alt="top"
-                                                    width="20" height="20" style="margin-left: auto;">
-                                            </div>
-                                        </div>
-
-                                        <!-- Description and Status -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                            style="background-color: #f1f5f9; border-radius: 10px;">
-                                            <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16"
-                                                    height="16" alt="flag">
-
-                                            </div>
-                                            <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be
-                                                    here</small>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1">
-                                                <span
-                                                    style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                <small style="font-size: 12px; color: #22c55e;">Low</small>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bottom Stats Row -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 mt-1"
-                                            style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px; padding: 8px 10px;flex-wrap:wrap">
-
-                                            <!-- Tickets -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tickets:</strong> 5
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Tasks -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tasks:</strong> 15
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Start -->
-                                            <div style="color: #10b981; white-space: nowrap;">
-                                                <strong>Start:</strong> 22.10.2024
-                                            </div>
-
-                                            <!-- Divider -->
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- End -->
-                                            <div style="color: #ef4444; white-space: nowrap;">
-                                                <strong>End:</strong> 22.10.2024
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- 4 -->
-                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card shadow-sm p-1"
-                                        style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                                        <!-- Top Section -->
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-
-                                            <!-- Progress Circle (Left) -->
-                                            <div style="width: 50px; height: 50px; position: relative;">
-                                                <svg width="50" height="50">
-                                                    <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%"
-                                                            x2="100%" y2="0%">
-                                                            <stop offset="0%" stop-color="#ff7f00" />
-                                                            <stop offset="100%" stop-color="#fcd34d" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <circle cx="25" cy="25" r="21" stroke="#d1d1d1"
-                                                        stroke-width="6" fill="none" />
-                                                    <circle cx="25" cy="25" r="21" stroke="url(#grad)"
-                                                        stroke-width="6" fill="none" stroke-dasharray="131.88"
-                                                        stroke-dashoffset="39.56" <!-- 70% -->
-                                                        stroke-linecap="round"
-                                                        transform="rotate(-90 25 25)" />
-                                                </svg>
-                                                <div
-                                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: bold; color: #333;">
-                                                    70%
-                                                </div>
-                                            </div>
-
-                                            <!-- Logo in center -->
-                                            <div class="text-center" style="flex-grow: 1;">
-                                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                                    class="rounded-circle mb-1"
-                                                    style="height: 55px; width: 55px; object-fit: cover;"
-                                                    alt="Project Logo">
-                                            </div>
-
-                                            <!-- Dropdown (Right) -->
-                                            <div style="flex-shrink: 0;">
-                                                <select
-                                                    style="font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; width: 110px;">
-                                                    <option selected>Select Ticket</option>
-                                                    <option>Ticket 1</option>
-                                                    <option>Ticket 2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Project Title and Up Icon -->
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div></div>
-                                            <div>
-                                                <h5 class="text-center"
-                                                    style="margin: 0 auto; font-weight: bold; color: #2e2e5d;">Project
-                                                    Title</h5>
-                                            </div>
-                                            <div>
-                                                <img src="{{ URL::asset('/build/img/top_arrow.svg') }}" alt="top"
-                                                    width="20" height="20" style="margin-left: auto;">
-                                            </div>
-                                        </div>
-
-                                        <!-- Description and Status -->
-                                        <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                            style="background-color: #f1f5f9; border-radius: 10px;">
-                                            <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16"
-                                                    height="16" alt="flag">
-
-                                            </div>
-                                            <div>
-                                                <small style="color: #64748b; font-size: 13px;">Description will be
-                                                    here</small>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1">
-                                                <span
-                                                    style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                <small style="font-size: 12px; color: #22c55e;">Low</small>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bottom Stats Row -->
+                                        <!-- Project Stats -->
                                         <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
-                                            style="font-size: 11px; background-color: #f1f5f9; border-radius: 10px; padding: 8px 10px;flex-wrap:wrap">
-
-                                            <!-- Tickets -->
-                                            <div style="color: #1e293b; white-space: wrap;">
-                                                <strong>Tickets:</strong> 5
+                                            style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;margin:7px;">
+                                            <div style="color: #10b981;text-align:center"><strong>Tickets:</strong>
+                                                <p style="color: black;text-align:center">5</p>
                                             </div>
-
-                                            <!-- Divider -->
                                             <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Tasks -->
-                                            <div style="color: #1e293b; white-space: nowrap;">
-                                                <strong>Tasks:</strong> 15
+                                            <div style="color: #10b981;text-align:center"><strong>Tasks:</strong>
+                                                <p style="color: black;text-align:center">10</p>
                                             </div>
-
-                                            <!-- Divider -->
                                             <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- Start -->
-                                            <div style="color: #10b981; white-space: wrap;">
-                                                <strong>Start:</strong> 22.10.2024
+                                            <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
+                                                <p style="color: black;">2024-10-22</p>
                                             </div>
-
-                                            <!-- Divider -->
                                             <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-
-                                            <!-- End -->
-                                            <div style="color: #ef4444; white-space: wrap;">
-                                                <strong>End:</strong> 22.10.2024
+                                            <div style="color: #10b981;text-align:center"><strong>End:</strong>
+                                                <p style="color: black;">2024-10-22</p>
                                             </div>
                                         </div>
-                                        <div class=" mt-2"
-                                            style=" background-color: #f1f5f9; border-radius: 10px;padding:10px;font-size: 12px;">
-
-                                            <!-- Header -->
-                                            <div class="d-flex justify-content-between">
-                                                <div style="color: #1a73e8;"><strong>Tickets</strong><br>#1 - ID</div>
-                                                <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile
+    
+                                        <!-- Progress Bar -->
+                                        <!-- <div class="d-flex align-items-center mb-2" style="flex: 1;">
+                                                <div class="progress"
+                                                    style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: 0%; background-color: #4fc3f7;"></div>
                                                 </div>
-                                                <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>User Profile
-                                                    Bugs</div>
+                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
+                                            </div> -->
+    
+                                        <!-- Title and Toggle -->
+                                        <div class="d-flex justify-content-between align-items-center toggle-btn"
+                                            style="cursor: pointer;">
+    
+    
+    
+                                            <div style="display: flex; align-items: center; width: 100%; margin: 8px 0;">
+                                                <img src="{{ asset('build/img/up_arrow.svg') }}"
+                                                    alt="toggle-icon" width="20" height="20"
+                                                    style="margin-right: 6px; transition: transform 0.3s; transform: rotate(180deg);"
+                                                    class="toggle-icon">
+                                                <hr style="flex: 1; height: 2.5px; border: none; 
+                                                 background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
+                                                   margin: 0;">
                                             </div>
-
-                                            <!-- Task Line -->
-                                            <div class="mt-3 d-flex justify-content-between flex-nowrap"
-                                                style="background-color:#fff;border-radius:10px;">
-                                                <span class="me-3"><strong>5 Tasks</strong></span>
-                                                <span class="me-3 text-success">Start: 22.10.2024</span>
-                                                <span class="text-success">Deliver: 22.10.2024</span>
-                                                <!-- Overlapping Profile Avatars -->
-                                                <div class="ms-auto d-flex">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}"
-                                                        class="rounded-circle"
-                                                        style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;"
-                                                        alt="User">
-                                                    <img src="{{ URL::asset('/build/img/profile.svg') }}"
-                                                        class="rounded-circle"
-                                                        style="width:30px; margin-left: -10px; border: 2px solid #e8ecef;"
-                                                        alt="User">
-
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Progress Bar -->
-                                            <div class="d-flex justify-content-between align-items-center mt-3"
-                                                style="flex-wrap: nowrap;">
-
-                                                <!-- Progress Bar + Percentage -->
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <div class="progress"
-                                                        style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                            style="width: 75%; background-color: #4fc3f7;"></div>
-                                                    </div>
-                                                    <div style="font-size: 12px; color: #4fc3f7; margin-left: 1px;">75%
-                                                    </div>
-                                                </div>
-
-                                                <!-- Status Dots -->
-                                                <div class="d-flex align-items-center ms-3"
-                                                    style="font-size: 11px; gap: 2px;margin-right:4px;">
-                                                    <span style="color: #8BC34A;">● 1</span>
-                                                    <span style="color: #FF9800;">● 3</span>
-                                                    <span style="color: #F44336;">● 0</span>
-                                                    <span style="color: #9C27B0;">● 0</span>
-                                                    <span style="color: #4CAF50;">● 0</span>
-
+    
+                                        </div>
+    
+                                        <!-- Expandable Project Details -->
+                                        <div class="project-details" style="overflow:hidden; max-height:1200px; transition:max-height 0.3s ease;">
+                                            <!-- Description Row -->
+                                            <!-- <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
+                                                style="background-color: #f1f5f9; border-radius: 10px;">
+                                                <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
+                                                    <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16" height="16" alt="flag">
                                                 </div>
                                                 <div>
-                                                    <img src="{{ URL::asset('/build/img/flag.svg') }}"
-                                                        style="width: 20px; background-color: #c8f7dc; border-radius: 5px; padding: 2px; "
-                                                        alt="flag">
+                                                    <small style="color: #64748b; font-size: 14px;">task descirtion </small>
                                                 </div>
-
-                                            </div>
-                                            <!-- tasks -->
-
-
-
-                                        </div>
-                                        <!-- task  -->
-                                        <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                            <!-- Task Image -->
-                                            <div class="me-2">
-                                                <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                    style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
-                                            </div>
-
-                                            <!-- Task Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div
-                                                        style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                                        <img src="{{ asset('build/img/yekbon.svg') }}" alt=""
-                                                            style="width: 30px; height: 30px; margin-right: 6px;">
-                                                        Task Title
-                                                    </div>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <!-- Status Dot -->
-                                                        <span
-                                                            style="width: 12px; height: 12px; background-color: #7ED957; border-radius: 50%; display: inline-block;"></span>
-                                                        <!-- Avatar -->
-                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}"
-                                                            alt="Profile"
-                                                            style="width: 24px; height: 24px; border-radius: 50%;">
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                                                    <small style="font-size: 12px; color: #22c55e;">low prieorry</small>
+                                                </div>
+                                            </div> -->
+    
+    
+    
+                                            <!-- Ticket Items -->
+                                            <!-- Tickets list (static) -->
+                                            <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 13px;margin:7px;">
+                                                <!-- Ticket Header -->
+                                                <div class="d-flex justify-content-between flex-wrap">
+    
+                                                    <div style="color: #1a73e8; margin-left: 8px;"><strong>Tickets</strong><br>TK-001</div>
+                                                    <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
+                                                    <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>Profile Layout Fix</div>
+                                                    <div class="ticket-edit-trigger" title="Edit ticket" style="cursor: pointer;">
+                                                        <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;" height="20px">
                                                     </div>
                                                 </div>
-
-                                                <!-- Sub Text -->
-                                                <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title
-                                                </div>
-
-                                                <!-- Description -->
-                                                <div style="font-size: 13px; margin-top: 2px;">Task description will be
-                                                    here</div>
-
-                                                <!-- Dates & Badge Row -->
-                                                <div class="d-flex justify-content-between mt-2 flex-nowrap"
-                                                    style="background-color: #fff; border-radius: 10px; padding: 4px;gap:3px;">
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Start: 22.10.2024</small>
-                                                    </div>
-
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Deliver: 22.10.2024</small>
-                                                    </div>
-
-                                                    <!-- Deadline/Warning -->
-                                                    <div class="d-flex align-items-center"
-                                                        style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                        <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                            alt="Urgent" style="margin-right: 4px;">
-                                                        01
+    
+                                                <!-- Task Info -->
+                                                <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 14px; color: #333;margin: 7px;">
+                                                    <span style="margin-right: 5px; font-weight: bold;"> Tasks
+                                                        <p style="margin:0;color:#111">5</p></span>
+                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
+                                                    <span style="margin-right: 5px; color: #28a745;">Start:
+                                                        <p style="color: black;">2024-10-22</p>
+                                                    </span>
+                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
+                                                    <span style="margin-right: 5px; color: #28a745;">Deliver:
+                                                        <p style="color: black;">2024-10-22</p>
+                                                    </span>
+                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
+    
+                                                    <!-- Avatars (static dots) -->
+                                                    <div style="display: flex; align-items: center; margin-left: 10px; gap:6px;">
+                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#60a5fa; display:inline-block;"></span>
+                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#a78bfa; display:inline-block;"></span>
+                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#f472b6; display:inline-block;"></span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- task2 -->
-                                        <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                            <!-- Task Image -->
-                                            <div class="me-2">
-                                                <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                    style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
-                                            </div>
-
-                                            <!-- Task Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div
-                                                        style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                                        <img src="{{ asset('build/img/yekbon.svg') }}" alt=""
-                                                            style="width: 30px; height: 30px; margin-right: 6px;">
-                                                        Task Title
+    
+    
+                                                <!-- Task Progress & Status -->
+                                                <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;margin:7px;">
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 12px; color: #4fc3f7;">0%</div>
+                                                        <div class="progress"
+                                                            style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                style="width: 0%; background-color: #4fc3f7;"></div>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <!-- Status Dot -->
-                                                        <span
-                                                            style="width: 12px; height: 12px; background-color: #7ED957; border-radius: 50%; display: inline-block;"></span>
-                                                        <!-- Avatar -->
-                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}"
-                                                            alt="Profile"
-                                                            style="width: 24px; height: 24px; border-radius: 50%;">
+    
+                                                    <!-- Separator -->
+                                                    <div style="color: #ccc;">
+                                                        <p>|</p>
                                                     </div>
-                                                </div>
-
-                                                <!-- Sub Text -->
-                                                <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title
-                                                </div>
-
-                                                <!-- Description -->
-                                                <div style="font-size: 13px; margin-top: 2px;">Task description will be
-                                                    here</div>
-
-                                                <!-- Dates & Badge Row -->
-                                                <div class="d-flex justify-content-between mt-2 flex-nowrap"
-                                                    style="background-color: #fff; border-radius: 10px; padding: 4px;gap:3px;">
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Start: 22.10.2024</small>
+    
+    
+                                                    <!-- Center Section -->
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 26px;">
+                                                            <span style="color: #8BC34A;">●</span>
+                                                            <span style="color: #FF9800;">●</span>
+                                                            <span style="color: #F44336;">●</span>
+                                                            <span style="color: #9C27B0;">●</span>
+                                                            <span style="color: #4CAF50;">●</span>
+                                                        </div>
+                                                    <div style="font-size: 15px; margin-top: 2px; color: #555;">
+                                                            <span>1</span>
+                                                            <span style="margin-left: 9px;">2</span>
+                                                            <span style="margin-left: 9px;">3</span>
+                                                            <span style="margin-left: 9px;">1</span>
+                                                            <span style="margin-left: 9px;">8</span>
+                                                        </div>
                                                     </div>
-
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Deliver: 22.10.2024</small>
+    
+                                                    <!-- Separator -->
+                                                    <div style="color: #ccc;">|</div>
+    
+                                                    <!-- Right Side Flag -->
+                                                    <div style="background-color:#e9f8dd; border-radius: 2px; padding: 6px;margin-right:27px">
+                                                        <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="flag" width="24px" height="24px;">
                                                     </div>
-
-                                                    <!-- Deadline/Warning -->
-                                                    <div class="d-flex align-items-center"
-                                                        style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                        <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                            alt="Urgent" style="margin-right: 4px;">
-                                                        01
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- task3 -->
-                                        <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
-
-                                            <!-- Task Image -->
-                                            <div class="me-2">
-                                                <img src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
-                                                    style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
-                                            </div>
-
-                                            <!-- Task Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div
-                                                        style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                                        <img src="{{ asset('build/img/yekbon.svg') }}" alt=""
-                                                            style="width: 30px; height: 30px; margin-right: 6px;">
-                                                        Task Title
-                                                    </div>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <!-- Status Dot -->
-                                                        <span
-                                                            style="width: 12px; height: 12px; background-color: #7ED957; border-radius: 50%; display: inline-block;"></span>
-                                                        <!-- Avatar -->
-                                                        <img src="{{ URL::asset('/build/img/profile.svg') }}"
-                                                            alt="Profile"
-                                                            style="width: 24px; height: 24px; border-radius: 50%;">
-                                                    </div>
-                                                </div>
-
-                                                <!-- Sub Text -->
-                                                <div style="font-size: 12px; color: #6c757d;">Ticket #1 - Ticket Title
-                                                </div>
-
-                                                <!-- Description -->
-                                                <div style="font-size: 13px; margin-top: 2px;">Task description will be
-                                                    here</div>
-
-                                                <!-- Dates & Badge Row -->
-                                                <div class="d-flex justify-content-between mt-2 flex-nowrap"
-                                                    style="background-color: #fff; border-radius: 10px; padding: 4px;gap:3px;">
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Start: 22.10.2024</small>
-                                                    </div>
-
-                                                    <div
-                                                        style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                        <small>Deliver: 22.10.2024</small>
-                                                    </div>
-
-                                                    <!-- Deadline/Warning -->
-                                                    <div class="d-flex align-items-center"
-                                                        style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                        <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                            alt="Urgent" style="margin-right: 4px;">
-                                                        01
-                                                    </div>
-                                                </div>
+    
+    
+                                                    {{-- <div class="d-flex align-items-center gap-2">
+                                                                <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
+                                                        data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                                        data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                                                        data-project-id="{{ $pt->project_id }}"
+                                                        @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
+                                                        >Edit</button>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
-
-
                             </div>
                         </div>
 
@@ -2169,6 +1667,45 @@
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            if (window.__taskDetailsToggleBound) return;
+            window.__taskDetailsToggleBound = true;
+            document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var details = this.nextElementSibling;
+                    var icon = this.querySelector('.toggle-icon');
+                    if (!details) return;
+
+                    if (details.classList && details.classList.contains('show')) {
+                        // Close current
+                        details.style.maxHeight = details.scrollHeight + 'px';
+                        setTimeout(function () {
+                            details.style.maxHeight = '0';
+                            details.classList.remove('show');
+                        }, 10);
+                        if (icon) icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        // Close others
+                        document.querySelectorAll('.project-details.show').forEach(function (open) {
+                            if (open === details) return;
+                            open.style.maxHeight = open.scrollHeight + 'px';
+                            setTimeout(function () {
+                                open.style.maxHeight = '0';
+                                open.classList.remove('show');
+                            }, 10);
+                            var otherIcon = open.previousElementSibling && open.previousElementSibling.querySelector('.toggle-icon');
+                            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                        });
+                        // Open this
+                        if (details.classList) details.classList.add('show');
+                        details.style.maxHeight = details.scrollHeight + 'px';
+                        if (icon) icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
