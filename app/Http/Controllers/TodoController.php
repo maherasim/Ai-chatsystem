@@ -41,13 +41,15 @@ class TodoController extends Controller
             foreach ($todo->members as $mem) {
 
             $tuser = User::where('_id', $mem)->first();
+            $fuser = User::where('_id', $todo->user_id)->first();
+
                 if($tuser){
 
                     $tomail = $tuser->email;
                    // echo $tomail;
                         $details = [
                             'subject' => 'ToDo Expired',
-                            'from'    =>  Auth::user()->name,
+                            'from'    =>  $fuser->name,
                             'name'      =>  $tuser->name,
                             'view'    => 'emails.todoexpire',
                             'todo'    => $todo
