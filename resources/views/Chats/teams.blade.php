@@ -110,6 +110,19 @@
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
                 <div class="chat-body chat-page-group ">
 
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 10px;">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+                        </div>
+                    @endif
+
                     <!-- members overwiew -->
                     <div class="project-succes pt-2 pb-2 d-flex justify-content-between align-items-center" style="flex-wrap: wrap; gap: 10px;">
 
@@ -136,13 +149,14 @@
                     </div>
                     <!-- users cards -->
                     <div class="row g-2">
-                        <!-- Card 1 -->
+                        <!-- Team Cards -->
+                        @foreach(($teams ?? []) as $team)
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
                                     <!-- Background Image -->
-                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
+                                    <img src="{{ $team->banner_path ? asset('storage/'.$team->banner_path) : URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: 120px; object-fit: cover;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
                                     <!-- 3-Dot Button + Popup -->
@@ -190,18 +204,18 @@
 
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                            <img src="{{ $team->thumb_path ? asset('storage/'.$team->thumb_path) : URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile">
                                         </div>
                                 </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
+                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">{{ $team->title ?? 'Team Name' }}</div>
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            yekbon project
+                                            <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                            Project
                                         </span>
                                     </div>
 
@@ -224,7 +238,7 @@
 
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
+                                            <img src="{{ !empty($team->project_logo_path) ? asset('storage/' . $team->project_logo_path) : URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="height: 32px; width: 32px; object-fit: cover;" />
                                             <div style="background: #c8ede0; padding: 3px 6px;display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
@@ -247,18 +261,24 @@
                                 </div>
 
                                 <!-- Stats -->
+                                @php
+                                    $ticketsArr = is_array($team->tickets) ? $team->tickets : (is_string($team->tickets) ? (json_decode($team->tickets, true) ?? []) : []);
+                                    $tasksArr = is_array($team->tasks) ? $team->tasks : (is_string($team->tasks) ? (json_decode($team->tasks, true) ?? []) : []);
+                                    $ticketsCount = is_array($ticketsArr) ? count($ticketsArr) : 0;
+                                    $tasksCount = is_array($tasksArr) ? count($tasksArr) : 0;
+                                @endphp
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
+                                        <div>{{ $ticketsCount }}</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
+                                        <div>{{ $ticketsCount }}</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
+                                        <div>{{ $tasksCount }}</div>
                                     </div>
                                 </div>
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
@@ -295,7 +315,7 @@
                                 </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
+                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 0%</div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
                                     </div>
@@ -303,508 +323,8 @@
 
                             </div>
                         </div>
-                        <!-- card 2 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <!-- Background Image -->
-                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
-
-                                        <!-- Trigger Button (Styled) -->
-                                        <div
-                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
-                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                                <!-- Your span (not replaced) -->
-                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Popup Menu -->
-                                        <div
-                                            class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 177px; text-align: center;"
-                                            onclick="event.stopPropagation();">
-                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
-
-                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
-
-                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
-
-
-                                        <!-- Profile Image (overlapping bottom center) -->
-                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            yekbon project
-                                        </span>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
-
-                                    <!-- Top Row: Title and Date -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
-                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
-                                            <span>10.09.2025</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bottom Row: Logo + PM + Team -->
-                                    <div class="d-flex justify-content-between align-items-center text-center">
-
-                                        <!-- Left: Logo + Flag -->
-                                        <div class="d-flex flex-column align-items-center gap-2">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 3px 6px;  display: flex; justify-content: center; align-items: center;">
-                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
-
-                                        <!-- Center: PM -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-
-                                        </div>
-
-                                        <!-- Right: Overlapping team members -->
-                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- card 3 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <!-- Background Image -->
-                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
-
-                                        <!-- Trigger Button (Styled) -->
-                                        <div
-                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
-                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                                <!-- Your span (not replaced) -->
-                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Popup Menu -->
-                                        <div
-                                            class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
-                                            onclick="event.stopPropagation();">
-                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
-
-                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
-
-                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
-
-
-                                        <!-- Profile Image (overlapping bottom center) -->
-                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            yekbon project
-                                        </span>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
-
-                                    <!-- Top Row: Title and Date -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
-                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
-                                            <span>10.09.2025</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bottom Row: Logo + PM + Team -->
-                                    <div class="d-flex justify-content-between align-items-center text-center">
-
-                                        <!-- Left: Logo + Flag -->
-                                        <div class="d-flex flex-column align-items-center gap-2">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 3px 6px; display: flex; justify-content: center; align-items: center;">
-                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
-
-                                        <!-- Center: PM -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-
-                                        </div>
-
-                                        <!-- Right: Overlapping team members -->
-                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- card 4 -->
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
-                                <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
-                                    <!-- Background Image -->
-                                    <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
-
-                                    <!-- Top-right overlay group -->
-                                    <!-- 3-Dot Button + Popup -->
-                                    <div class="position-absolute d-flex flex-column align-items-end gap-2" style="top: 7px; right: 10px; z-index: 2;">
-
-                                        <!-- Trigger Button (Styled) -->
-                                        <div
-                                            style="width: 35px; height: 35px; background-color: #dddddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;"
-                                            onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <div style="width: 24px; height: 24px; border: 1.8px solid #7a7a9d; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                                <!-- Your span (not replaced) -->
-                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Popup Menu -->
-                                        <div
-                                            class="menu-box"
-                                            style="display: none; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; width: 176px; text-align: center;"
-                                            onclick="event.stopPropagation();">
-                                            <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
-                                            <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
-
-                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
-
-                                                <!-- Vertical Divider -->
-                                                <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
-
-                                                <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
-
-                                    <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
-
-
-                                        <!-- Profile Image (overlapping bottom center) -->
-                                        <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
-
-                                <!-- Content Below Image -->
-                                <div style="padding-top: 40px;" class="text-center">
-                                    <div style="font-weight: bold; font-size: 16px; cursor: pointer;">Team Name </div>
-
-                                    <!-- Developer Badge -->
-                                    <div style="margin-top: 5px;">
-                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            yekbon project
-                                        </span>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
-
-                                    <!-- Top Row: Title and Date -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
-                                        <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
-                                            <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
-                                            <span>10.09.2025</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bottom Row: Logo + PM + Team -->
-                                    <div class="d-flex justify-content-between align-items-center text-center">
-
-                                        <!-- Left: Logo + Flag -->
-                                        <div class="d-flex flex-column align-items-center gap-2">
-                                            <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
-                                            <div style="background: #c8ede0; padding: 3px 6px; display: flex; justify-content: center; align-items: center;">
-                                                <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
-
-                                        <!-- Center: PM -->
-                                        <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
-                                            <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
-
-                                        </div>
-
-                                        <!-- Right: Overlapping team members -->
-                                        <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Stats -->
-                                <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tickets</div>
-                                        <div>10</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div style="font-weight: bold;">Total Tasks</div>
-                                        <div>10</div>
-                                    </div>
-                                </div>
-                                <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Productivity -->
-                                <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
-                                    <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
-                                    <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
-                                        <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        @endforeach
+                        
 
                     </div>
 
@@ -2425,10 +1945,11 @@
 
 
             <!-- Modal Body -->
+            <form action="{{ route('teams.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
             <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
                 <!-- Upload Banner -->
-                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-                <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
+                <div onclick="document.getElementById('bannerInput').click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
                     <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
                     <div class="text-box" style="text-align: center;">
                         <div style="font-size: 24px; color: #888;">+</div>
@@ -2436,23 +1957,19 @@
                         <div style="font-size: 12px; color: #999;">JPG or PNG</div>
                     </div>
                 </div>
-                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-
+                <input type="file" accept="image/*" id="bannerInput" name="banner" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
                 <!-- Sub Image Upload -->
-                <div onclick="this.nextElementSibling.click();"
+                <div onclick="document.getElementById('thumbInput').click();"
                     style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
                     <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
                     <div class="text-box" style="text-align: center;">
                         <div style="font-size: 20px; color: #888;">+</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG  </div>
                     </div>
                 </div>
+                <input type="file" accept="image/*" id="thumbInput" name="thumb" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
 
-                <!-- Hidden File Input -->
-                <input type="file" accept="image/*" style="display: none;"
-                    onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); 
-             this.previousElementSibling.querySelector('img').style.display='block'; 
-             this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <!-- removed extra hidden file input -->
 
                 <!-- Team Details Section -->
                 <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
@@ -2463,18 +1980,15 @@
                         <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
                     </div>
 
-                    <!-- Inputs Row -->
+                    <!-- Inputs Row (2 fields per row) -->
                     <div class="row g-2">
-
-                        <!-- Team Title -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <input type="text" class="form-control" placeholder="Team Title"
+                        <!-- Row 1 -->
+                        <div class="col-12 col-md-6">
+                            <input type="text" class="form-control" name="title" placeholder="Team Title"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
                         </div>
-
-                        <!-- Select Project -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select" id="addProjectSelect"
+                        <div class="col-12 col-md-6">
+                            <select class="form-select" id="addProjectSelect" name="project_id"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option value="" selected>Select Project</option>
                                 @isset($projects)
@@ -2484,27 +1998,23 @@
                                 @endisset
                             </select>
                         </div>
-
-                        <!-- Select PM -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
+                        <!-- Row 2 -->
+                        <div class="col-12 col-md-6">
+                            <select class="form-select" name="pm_id"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option selected>Select PM</option>
                                 <option>PM A</option>
                                 <option>PM B</option>
                             </select>
                         </div>
-
-                        <!-- Timeline Color -->
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
+                        <div class="col-12 col-md-6">
+                            <select class="form-select" name="timeline_color"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
                                 <option selected>Timeline Color</option>
                                 <option>Red</option>
                                 <option>Blue</option>
                             </select>
                         </div>
-
                     </div>
                     <!-- select tickets -->
 
@@ -2517,7 +2027,7 @@
                     <!-- Title -->
                     <div class="mb-3">
                         <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
-                            Select Ticket & Task
+                            Select Ticket & Task   
                         </h6>
                     </div>
 
@@ -2527,9 +2037,12 @@
                 </div>
 
                 <script>
-                    (function () {
+                    document.addEventListener('DOMContentLoaded', function () {
                         const projectSelect = document.getElementById('addProjectSelect');
                         const container = document.getElementById('addTicketContainer');
+                        const tasksContainer = document.getElementById('taskListContainer');
+                        const selectedTicketInput = document.getElementById('selectedTicketId');
+                        const tasksHiddenContainer = document.getElementById('tasksHiddenContainer');
 
                         function showMessage(msg) {
                             container.innerHTML = '';
@@ -2540,6 +2053,16 @@
                             container.appendChild(div);
                         }
 
+                        function showTasksMessage(msg) {
+                            if (!tasksContainer) return;
+                            tasksContainer.innerHTML = '';
+                            const div = document.createElement('div');
+                            div.style.color = '#7a7a9d';
+                            div.style.fontSize = '12px';
+                            div.textContent = msg;
+                            tasksContainer.appendChild(div);
+                        }
+
                         function renderTickets(tickets) {
                             container.innerHTML = '';
                             if (!tickets || tickets.length === 0) {
@@ -2548,6 +2071,7 @@
                             }
                             tickets.forEach(function (t, idx) {
                                 const btn = document.createElement('button');
+                                btn.type = 'button'; // avoid form submit on click
                                 btn.className = 'btn';
                                 btn.textContent = (t.title || '').trim() || '# Ticket';
                                 btn.style.flex = '1 1 130px';
@@ -2557,7 +2081,9 @@
                                 btn.style.fontSize = '11px';
                                 btn.style.backgroundColor = idx === 0 ? '#47ca7a' : 'transparent';
                                 btn.style.color = idx === 0 ? 'white' : '#7a7a9d';
-                                btn.addEventListener('click', function () {
+                                btn.dataset.ticketId = t.id || t._id || '';
+                                btn.addEventListener('click', function (e) {
+                                    e.preventDefault();
                                     Array.from(container.children).forEach(function (child) {
                                         if (child.tagName === 'BUTTON') {
                                             child.style.backgroundColor = 'transparent';
@@ -2566,8 +2092,152 @@
                                     });
                                     btn.style.backgroundColor = '#47ca7a';
                                     btn.style.color = 'white';
+                                    if (btn.dataset.ticketId) {
+                                        if (selectedTicketInput) selectedTicketInput.value = btn.dataset.ticketId;
+                                        fetchTasks(btn.dataset.ticketId);
+                                    } else {
+                                        showTasksMessage('No ticket id found for this item');
+                                    }
                                 });
                                 container.appendChild(btn);
+                            });
+                            // Auto-load first ticket's tasks if available
+                            const first = container.querySelector('button[data-ticket-id]');
+                            if (first && first.dataset.ticketId) {
+                                if (selectedTicketInput) selectedTicketInput.value = first.dataset.ticketId;
+                                fetchTasks(first.dataset.ticketId);
+                            } else {
+                                showTasksMessage('Select a ticket to view tasks');
+                            }
+                        }
+
+                        function setHiddenTaskIds(tasks) {
+                            if (!tasksHiddenContainer) return;
+                            tasksHiddenContainer.innerHTML = '';
+                            (tasks || []).forEach(function (t) {
+                                const taskId = (t && (t.id || t._id)) ? (t.id || t._id) : null;
+                                if (!taskId) return;
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = 'tasks[]';
+                                input.value = String(taskId);
+                                tasksHiddenContainer.appendChild(input);
+                            });
+                        }
+
+                        function renderTasks(tasks) {
+                            if (!tasksContainer) return;
+                            tasksContainer.innerHTML = '';
+                            if (!tasks || tasks.length === 0) {
+                                showTasksMessage('No tasks for this ticket');
+                                setHiddenTaskIds([]);
+                                return;
+                            }
+                            // store hidden ids for submit
+                            setHiddenTaskIds(tasks);
+                            tasks.forEach(function (task) {
+                                const title = (task.title || 'Task Title');
+                                const description = (task.description || 'Task description will be here');
+                                const start = (task.start_date || '').toString().slice(0, 10);
+                                const end = (task.end_date || '').toString().slice(0, 10);
+                                const ticketTitle = (task.ticket && task.ticket.title) ? task.ticket.title : (task.ticket_title || 'Ticket Title');
+                                const ticketCode = (task.ticket && task.ticket.code) ? task.ticket.code : (task.ticket_code || '#1');
+                                const status = (task.status || '').toLowerCase();
+                                const statusBg = status === 'in_delayed' || status === 'delayed' ? 'red'
+                                                  : status === 'in_hold' || status === 'hold' ? '#F5A623'
+                                                  : status === 'in_done' || status === 'done' ? '#00C853'
+                                                  : status === 'in_progress' || status === 'progress' ? '#10B981'
+                                                  : 'red';
+                                const badgeText = (task.status || '01');
+
+                                const card = `
+                <!-- task1 -->
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        ${task.mark_image_path 
+                            ? `<img src="/storage/${task.mark_image_path}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">`
+                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">`
+                        }
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: nowrap; align-items: center;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left (Project logo if available, else fallback) -->
+                                ${task.project_logo_path 
+                                    ? `<img src="/storage/${task.project_logo_path}" alt="Logo" style="height: 32px; width: 32px; flex-shrink: 0;" />`
+                                    : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="height: 32px; width: 32px; flex-shrink: 0;" />`
+                                }
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">${title}</div>
+                                    <div style="font-size: 12px; color: #999;">${ticketCode} - ${ticketTitle}</div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Dropdowns -->
+                            <div style="display: flex; align-items: center; gap: 5px; margin-left: auto; background: white;border-radius:5px;padding:7px;">
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>${(task.priority || 'Priority')}</option>
+                                </select>
+                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
+                                    <option>${(task.developer_name || 'Developer')}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            ${description}
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: nowrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 12px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">${start || '-'}</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">${end || '-'}</span>
+                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
+                                </div>
+
+                                <!-- Icon + Count (same row) -->
+                                <div style="display: flex; align-items: center; gap: 6px; margin-left: 10px;">
+                                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+                                    <div style="background-color: #ff4d4f; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                                        ${typeof task.issues_count === 'number' ? String(task.issues_count).padStart(2,'0') : '01'}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                `;
+                                tasksContainer.insertAdjacentHTML('beforeend', card);
                             });
                         }
 
@@ -2583,259 +2253,41 @@
                             }
                         }
 
+                        async function fetchTasks(ticketId) {
+                            try {
+                                if (!ticketId) { showTasksMessage('Select a ticket to view tasks'); return; }
+                                const res = await fetch('{{ url('/team/tasks') }}?ticket_id=' + encodeURIComponent(ticketId), { credentials: 'same-origin' });
+                                if (!res.ok) { renderTasks([]); return; }
+                                const data = await res.json();
+                                const tasks = Array.isArray(data) ? data : (data.tasks || []);
+                                renderTasks(tasks);
+                            } catch (e) {
+                                renderTasks([]);
+                            }
+                        }
+
                         if (projectSelect) {
                             projectSelect.addEventListener('change', function () {
                                 const pid = projectSelect.value;
-                                if (pid) fetchTickets(pid); else showMessage('Select a project to view tickets');
+                                if (pid) {
+                                    fetchTickets(pid);
+                                    showTasksMessage('Select a ticket to view tasks');
+                                } else {
+                                    showMessage('Select a project to view tickets');
+                                    showTasksMessage('Select a project to view tasks');
+                                }
                             });
                         }
-                    })();
+                    });
                 </script>
 
-                <!-- task1 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here  
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- task2 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- task3 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; gap: 5px; margin-top: 5px;margin-top: 5px;background: white;border-radius:5px;padding:7px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Priority</option>
-                                </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>Developer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                            <div style="display: flex; align-items: center; gap: 6px;background: #f4f4f4;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-
-                                <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                    01
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- footer -->
+                <!-- Dynamic tasks will render here -->
+                <div id="taskListContainer" class="w-100" style="min-height: 40px;"></div>
+                <!-- Selected ticket hidden field for submit -->
+                <input type="hidden" name="tickets[]" id="selectedTicketId" value="">
+                <!-- Selected tasks (all listed for chosen ticket) -->
+                <div id="tasksHiddenContainer"></div>
+                
 
                 <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
 
@@ -2846,17 +2298,18 @@
                     </div>
 
                     <!-- Right Save Button -->
-                    <button type="button"
+                    <button type="submit"
                         style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
                         + Save and create work flow
                     </button>
 
                 </div>
                 <!-- Modal Body -->
-
+ 
 
 
             </div>
+            </form>
 
         </div>
     </div>
@@ -2932,7 +2385,7 @@
                     <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
                     <div class="text-box" style="text-align: center;">
                         <div style="font-size: 20px; color: #888;">+</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                        <div style="font-size: 12px; color: #999;">JPG or PNG   </div>
                     </div>
                 </div>
 

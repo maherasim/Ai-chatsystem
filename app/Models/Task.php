@@ -33,6 +33,7 @@ class Task extends Model
         'checkpoints' => 'array',
         'position'    => 'array',
         'issues'      => 'array',
+        
     ];
 
     public function project()

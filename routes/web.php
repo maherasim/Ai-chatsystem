@@ -116,6 +116,7 @@ Route::middleware('auth')->group(function () {
 
     // Team specific APIs (do not reuse tickets.*)
     Route::get('/team/tickets', [TeamController::class, 'tickets'])->name('team.tickets');
+    Route::get('/team/tasks', [TeamController::class, 'tasksByTicket'])->name('team.tasks');
 });
 Route::get('/teams', [TeamController::class, 'index'])->middleware('auth')->name('chat-team');
 Route::post('/teams', [TeamController::class, 'store'])->middleware('auth')->name('teams.store');
