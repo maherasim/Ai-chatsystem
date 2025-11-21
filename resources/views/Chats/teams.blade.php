@@ -181,7 +181,7 @@
                                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                                             <div class="d-flex justify-content-center align-items-center px-2" style="gap: 18px;">
 
-                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;">
+                                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete" style="width: 22px; cursor: pointer;" class="team-delete" data-team-id="{{ (string) ($team->_id ?? $team->id) }}">
 
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
@@ -202,6 +202,12 @@
 
                                     <body onclick="document.querySelectorAll('.menu-box').forEach(el => el.style.display = 'none');">
 
+
+                                        <!-- Hidden Delete Form -->
+                                        <form id="delete-team-{{ (string) ($team->_id ?? $team->id) }}" action="{{ route('teams.destroy', ['id' => (string) ($team->_id ?? $team->id)]) }}" method="POST" style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
 
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
@@ -230,7 +236,7 @@
                                         <div style="font-weight: 600; color: #2e3a59; font-size: 14px;">Project & Team</div>
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
                                             <img src="{{ asset('build/img/member1.svg') }}" alt="Green Flag" width="14" height="14">
-                                            <span>10.09.2025</span>
+                                            <span>{{ $team->created_at->format('d.m.Y') }}</span>
                                         </div>
                                     </div>
 
@@ -253,9 +259,17 @@
                                         </div>
 
                                         <!-- Right: Overlapping team members -->
+                                        @php
+                                            $devAvatars = $team->developer_avatar_paths ?? [];
+                                            $firstTwo = array_slice($devAvatars, 0, 2);
+                                        @endphp
                                         <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                            @forelse($firstTwo as $i => $path)
+                                                <img src="{{ asset('/'.$path) }}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; {{ $i>0 ? 'margin-left:-10px;' : '' }} z-index: {{ 2 - $i }};" />
+                                            @empty
+                                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                            @endforelse
                                         </div>
 
                                     </div>
@@ -2960,6 +2974,36 @@
         el.style.backgroundColor = '#22c55e';
         el.style.color = '#ffffff';
     }
+</script>
+
+<!-- SweetAlert2 for delete confirmation -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.team-delete').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var teamId = this.getAttribute('data-team-id');
+                if (!teamId) return;
+                Swal.fire({
+                    title: 'Delete this team?',
+                    text: 'This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete'
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        var form = document.getElementById('delete-team-' + teamId);
+                        if (form) form.submit();
+                    }
+                });
+            });
+        });
+    });
+
 </script>
 
 @endsection

@@ -35,6 +35,54 @@ class TeamController extends Controller
             } catch (\Throwable $e) {
                 // ignore
             }
+
+            // Resolve developer avatars from stored developers (ids or names)
+            try {
+                $devRaw = $t->task_developers ?? [];
+                if (is_string($devRaw)) {
+                    $tmp = json_decode($devRaw, true);
+                    $devRaw = is_array($tmp) ? $tmp : [];
+                }
+                $devIds = [];
+                $devNames = [];
+                foreach ((array) $devRaw as $val) {
+                    if (is_array($val)) {
+                        foreach ($val as $v) {
+                            if (is_string($v)) {
+                                if (preg_match('/^[a-f0-9]{24}$/i', $v)) $devIds[] = $v; else $devNames[] = $v;
+                            }
+                        }
+                    } elseif (is_string($val)) {
+                        if (preg_match('/^[a-f0-9]{24}$/i', $val)) $devIds[] = $val; else $devNames[] = $val;
+                    }
+                }
+                $users = collect();
+                if (!empty($devIds)) {
+                    try {
+                        $users = User::query()->whereIn('_id', $devIds)->get();
+                        if ($users->isEmpty()) {
+                            $users = User::query()->whereIn('id', $devIds)->get();
+                        }
+                    } catch (\Throwable $e) { /* ignore */ }
+                }
+                if (!empty($devNames)) {
+                    try {
+                        $byName = User::query()->whereIn('name', $devNames)->get();
+                        $users = $users->concat($byName);
+                    } catch (\Throwable $e) { /* ignore */ }
+                }
+                // pick an image-like field
+                $avatars = $users->map(function ($u) {
+                    foreach (['avatar_path','photo_path','profile_photo_path','image','avatar','photo','profile_image'] as $field) {
+                        if (!empty($u->{$field})) return (string) $u->{$field};
+                    }
+                    return null;
+                })->filter()->unique()->values()->all();
+                $t->developer_avatar_paths = $avatars;
+            } catch (\Throwable $e) {
+                $t->developer_avatar_paths = [];
+            }
+
             return $t;
         });
         $selectedProjectId = $request->get('project_id');
@@ -212,6 +260,42 @@ class TeamController extends Controller
         }
 
         try {
+            // Flatten priorities to simple list of values like ['low','medium']
+            $priorityInput = (array) $request->input('task_priorities', []);
+            $priorityValues = collect($priorityInput)
+                ->values()
+                ->map(function ($v) { return is_array($v) ? null : $v; })
+                ->filter()
+                ->map(function ($v) { return strtolower((string) $v); })
+                ->filter(function ($v) { return in_array($v, ['low','medium','high'], true); })
+                ->unique()
+                ->values()
+                ->all();
+
+            // Flatten developers to list of developer NAMES (not keyed, no ids)
+            $devInput = (array) $request->input('task_developers', []);
+            $devIds = collect($devInput)
+                ->values()
+                ->flatten()
+                ->filter()
+                ->map(function ($v) { return (string) $v; })
+                ->unique()
+                ->values();
+            $devNames = collect();
+            if ($devIds->isNotEmpty()) {
+                try {
+                    $devNames = User::query()
+                        ->whereIn('_id', $devIds->all())
+                        ->pluck('name');
+                    if ($devNames->isEmpty()) {
+                        $devNames = User::query()->whereIn('id', $devIds->all())->pluck('name');
+                    }
+                } catch (\Throwable $e) {
+                    $devNames = collect();
+                }
+            }
+            $devNames = $devNames->filter()->unique()->values()->all();
+
             Team::create([
                 'title' => $validated['title'] ?? null,
                 'project_id' => $validated['project_id'] ?? null,
@@ -221,8 +305,9 @@ class TeamController extends Controller
                 'thumb_path' => $thumbPath,
                 'tickets' => $ticketIds,
                 'tasks' => $taskIds->values()->all(),
-                'task_priorities' => (array) $request->input('task_priorities', []),
-                'task_developers' => (array) $request->input('task_developers', []),
+                // store compact arrays: priorities as values only, developers as names only
+                'task_priorities' => $priorityValues,
+                'task_developers' => $devNames,
                 'user_id' => Auth::id(),
             ]);
         } catch (\Throwable $e) {
@@ -230,6 +315,27 @@ class TeamController extends Controller
         }
 
         return redirect()->route('chat-team')->with('success', 'Team created successfully.');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $team = Team::find($id);
+            if (!$team) {
+                try {
+                    $team = Team::find(new ObjectId((string) $id));
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
+            if ($team) {
+                $team->delete();
+                return back()->with('success', 'Team deleted successfully.');
+            }
+            return back()->with('error', 'Team not found.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to delete team: ' . $e->getMessage());
+        }
     }
 }
 
