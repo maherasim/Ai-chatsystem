@@ -3013,6 +3013,61 @@
 
 <!-- SweetAlert2 for delete confirmation -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Choices.js for beautiful selects -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<style>
+    /* Priority select compact look */
+    .choices.choices--priority .choices__inner {
+        background: transparent;
+        border: none;
+        min-height: 32px;
+        padding: 2px 6px;
+        font-size: 12px;
+        color: #1b1b3a;
+        box-shadow: none;
+    }
+    .choices.choices--priority[data-type*=select-one]::after {
+        border-color: #9aa3b2 transparent transparent;
+        right: 10px;
+        margin-top: -5px;
+    }
+    .choices.choices--priority .choices__list--single .choices__item {
+        color: #1b1b3a;
+        font-weight: 600;
+    }
+
+    /* Developers multi-select pill chips */
+    .choices.choices--developers .choices__inner {
+        background: transparent;
+        border: none;
+        min-height: 32px;
+        padding: 4px 6px;
+        font-size: 12px;
+        color: #1b1b3a;
+        box-shadow: none;
+    }
+    .choices__list--multiple .choices__item {
+        background-color: #eef7ff;
+        border: 1px solid #cfe6ff;
+        color: #1b1b3a;
+        border-radius: 12px;
+        margin: 2px 4px 2px 0;
+        padding: 2px 8px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .choices__list--dropdown,
+    .choices__list[aria-expanded] {
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+        background-color: #f3f4f6;
+        color: #1b1b3a;
+    }
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Build teams data map for edit prefill
