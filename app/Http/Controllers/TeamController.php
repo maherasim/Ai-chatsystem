@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\Setting;
 use App\Models\Task;
 use MongoDB\BSON\ObjectId;
+use App\Models\User;
 
 class TeamController extends Controller
 {
@@ -143,6 +144,20 @@ class TeamController extends Controller
         return response()->json($result);
     }
 
+    // List developers for assignment
+    public function developers(Request $request)
+    {
+        $developers = User::query()
+            ->where('type', 'developer')
+            ->orderBy('name')
+            ->get(['id','name'])
+            ->map(function ($u) {
+                return ['id' => (string) ($u->_id ?? $u->id), 'name' => $u->name ?? 'Developer'];
+            })
+            ->values();
+        return response()->json($developers);
+    }
+
     public function store(Request $request)
     {
         
@@ -206,6 +221,8 @@ class TeamController extends Controller
                 'thumb_path' => $thumbPath,
                 'tickets' => $ticketIds,
                 'tasks' => $taskIds->values()->all(),
+                'task_priorities' => (array) $request->input('task_priorities', []),
+                'task_developers' => (array) $request->input('task_developers', []),
                 'user_id' => Auth::id(),
             ]);
         } catch (\Throwable $e) {

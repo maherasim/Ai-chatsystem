@@ -87,6 +87,7 @@
     }
 </style>
 
+ 
 
 <!-- content -->
 <div class="content main_content">
@@ -1896,7 +1897,7 @@
 <!-- add team -->
 
 <div class="modal fade" id="add_team" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 630px; width: 98%;">
         <div class="modal-content" style="border-radius: 10px;">
             <!-- Modal Header -->
             <style>
@@ -2043,6 +2044,13 @@
                         const tasksContainer = document.getElementById('taskListContainer');
                         const selectedTicketInput = document.getElementById('selectedTicketId');
                         const tasksHiddenContainer = document.getElementById('tasksHiddenContainer');
+                        let developersList = [];
+
+                        // preload developers for multi-select
+                        fetch('{{ url('/team/developers') }}', { credentials: 'same-origin' })
+                            .then(r => r.ok ? r.json() : [])
+                            .then(json => { developersList = Array.isArray(json) ? json : []; })
+                            .catch(() => { developersList = []; });
 
                         function showMessage(msg) {
                             container.innerHTML = '';
@@ -2187,12 +2195,17 @@
 
 
                             <!-- Dropdowns -->
-                            <div style="display: flex; align-items: center; gap: 5px; margin-left: auto; background: white;border-radius:5px;padding:7px;">
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>${(task.priority || 'Priority')}</option>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-left: auto; background: white;border-radius:5px;padding:7px;">
+                                <!-- Priority (low, medium, high) -->
+                                <select class="priority-select" name="task_priorities[${task.id || task._id}]">
+                                    <option value="" ${!task.priority ? 'selected' : ''}>Priority</option>
+                                    <option value="low" ${(task.priority==='low') ? 'selected' : ''}>Low</option>
+                                    <option value="medium" ${(task.priority==='medium') ? 'selected' : ''}>Medium</option>
+                                    <option value="high" ${(task.priority==='high') ? 'selected' : ''}>High</option>
                                 </select>
-                                <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
-                                    <option>${(task.developer_name || 'Developer')}</option>
+                                <!-- Developers multi-select (Choices.js tag style) -->
+                                <select class="developer-select" multiple name="task_developers[${task.id || task._id}][]">
+                                    ${developersList.map(d => `<option value="${d.id}">${d.name}</option>`).join('')}
                                 </select>
                             </div>
                         </div>
@@ -2237,7 +2250,38 @@
                     </div>
                 </div>
                 `;
-                                tasksContainer.insertAdjacentHTML('beforeend', card);
+                                // append card
+                                const wrapper = document.createElement('div');
+                                wrapper.innerHTML = card;
+                                const node = wrapper.firstElementChild;
+                                tasksContainer.appendChild(node);
+
+                                // Enhance selects with Choices.js
+                                try {
+                                    const priorityEl = node.querySelector('select.priority-select');
+                                    if (priorityEl && !priorityEl.dataset.enhanced) {
+                                        new Choices(priorityEl, {
+                                            removeItemButton: false,
+                                            searchEnabled: false,
+                                            placeholder: true,
+                                            shouldSort: false,
+                                            classNames: { containerOuter: 'choices choices--priority' }
+                                        });
+                                        priorityEl.dataset.enhanced = '1';
+                                    }
+                                    const devEl = node.querySelector('select.developer-select');
+                                    if (devEl && !devEl.dataset.enhanced) {
+                                        new Choices(devEl, {
+                                            removeItemButton: true,
+                                            placeholder: true,
+                                            placeholderValue: 'Developers',
+                                            searchPlaceholderValue: 'Search developer',
+                                            shouldSort: false,
+                                            classNames: { containerOuter: 'choices choices--developers' }
+                                        });
+                                        devEl.dataset.enhanced = '1';
+                                    }
+                                } catch (e) {}
                             });
                         }
 

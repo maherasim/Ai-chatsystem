@@ -21,12 +21,16 @@ class Team extends Model
         'thumb_path',
         'tickets',
         'tasks',
+        'task_priorities',
+        'task_developers',
         'user_id',
     ];
 
     protected $casts = [
         'tickets' => 'array',
         'tasks' => 'array',
+        'task_priorities' => 'array',
+        'task_developers' => 'array',
     ];
 }
 
