@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/teams', [TeamController::class, 'index'])->middleware('auth')->name('chat-team');
 Route::post('/teams', [TeamController::class, 'store'])->middleware('auth')->name('teams.store');
 Route::delete('/teams/{id}', [TeamController::class, 'destroy'])->middleware('auth')->name('teams.destroy');
+Route::put('/teams/{id}', [TeamController::class, 'update'])->middleware('auth')->name('teams.update');
 //Route::get('/meetings', function () {
 //    $headers = Setting::all();
 //    return view('Chats.meetings', compact('headers'));

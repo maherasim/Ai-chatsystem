@@ -186,7 +186,7 @@
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
 
-                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#edit_team">
+                                                <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#add_team" class="team-edit" data-team-id="{{ (string) ($team->_id ?? $team->id) }}" data-update-url="{{ route('teams.update', ['id' => (string) ($team->_id ?? $team->id)]) }}">
 
                                                 <!-- Vertical Divider -->
                                                 <div style="width: 1px; height: 18px; background-color: #ccc;"></div>
@@ -1937,7 +1937,7 @@
 
                 <!-- Title and subtitle -->
                 <div class="title-subtitle" style="flex: 1;">
-                    <h5 class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
+                    <h5 id="teamModalTitle" class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
                         Add Team
                     </h5>
                     <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
@@ -1960,8 +1960,9 @@
 
 
             <!-- Modal Body -->
-            <form action="{{ route('teams.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="teamForm" action="{{ route('teams.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="_method" id="teamFormMethod" value="">
             <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
                 <!-- Upload Banner -->
                 <div onclick="document.getElementById('bannerInput').click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
@@ -2101,9 +2102,10 @@
                                 btn.style.padding = '6px 12px';
                                 btn.style.fontWeight = '600';
                                 btn.style.fontSize = '11px';
-                                btn.style.backgroundColor = idx === 0 ? '#47ca7a' : 'transparent';
-                                btn.style.color = idx === 0 ? 'white' : '#7a7a9d';
                                 btn.dataset.ticketId = t.id || t._id || '';
+                                // default style; we'll set active below based on selectedTicketInput
+                                btn.style.backgroundColor = 'transparent';
+                                btn.style.color = '#7a7a9d';
                                 btn.addEventListener('click', function (e) {
                                     e.preventDefault();
                                     Array.from(container.children).forEach(function (child) {
@@ -2123,11 +2125,18 @@
                                 });
                                 container.appendChild(btn);
                             });
-                            // Auto-load first ticket's tasks if available
-                            const first = container.querySelector('button[data-ticket-id]');
-                            if (first && first.dataset.ticketId) {
-                                if (selectedTicketInput) selectedTicketInput.value = first.dataset.ticketId;
-                                fetchTasks(first.dataset.ticketId);
+                            // Prefer a preselected ticket id (edit mode), else default to first
+                            const preselectedId = selectedTicketInput && selectedTicketInput.value ? selectedTicketInput.value : '';
+                            let targetBtn = preselectedId ? container.querySelector('button[data-ticket-id="' + preselectedId + '"]') : null;
+                            if (!targetBtn) {
+                                targetBtn = container.querySelector('button[data-ticket-id]');
+                            }
+                            if (targetBtn && targetBtn.dataset.ticketId) {
+                                // set active styles
+                                targetBtn.style.backgroundColor = '#47ca7a';
+                                targetBtn.style.color = 'white';
+                                if (selectedTicketInput) selectedTicketInput.value = targetBtn.dataset.ticketId;
+                                fetchTasks(targetBtn.dataset.ticketId);
                             } else {
                                 showTasksMessage('Select a ticket to view tasks');
                             }
@@ -2217,9 +2226,9 @@
                                     <option value="medium" ${(task.priority==='medium') ? 'selected' : ''}>Medium</option>
                                     <option value="high" ${(task.priority==='high') ? 'selected' : ''}>High</option>
                                 </select>
-                                <!-- Developers multi-select (Choices.js tag style) -->
+                                <!-- Developers multi-select (Choices.js tag style). Value is developer NAME -->
                                 <select class="developer-select" multiple name="task_developers[${task.id || task._id}][]">
-                                    ${developersList.map(d => `<option value="${d.id}">${d.name}</option>`).join('')}
+                                    ${developersList.map(d => `<option value="${d.name}">${d.name}</option>`).join('')}
                                 </select>
                             </div>
                         </div>
@@ -2269,6 +2278,28 @@
                                 wrapper.innerHTML = card;
                                 const node = wrapper.firstElementChild;
                                 tasksContainer.appendChild(node);
+
+                                // Preselect values if editing
+                                var currentTeamId = window.currentEditingTeamId || null;
+                                var teamData = currentTeamId && window.teamsData ? window.teamsData[currentTeamId] : null;
+                                var taskId = (task.id || task._id) || null;
+                                var prePriority = teamData && teamData.task_priorities && taskId ? teamData.task_priorities[taskId] : null;
+                                var preDevelopers = teamData && teamData.task_developers && taskId ? (teamData.task_developers[taskId] || []) : [];
+
+                                if (prePriority) {
+                                    const pSel = node.querySelector('select.priority-select');
+                                    if (pSel) pSel.value = prePriority;
+                                }
+                                if (preDevelopers && preDevelopers.length) {
+                                    const dSel = node.querySelector('select.developer-select');
+                                    if (dSel) {
+                                        Array.from(dSel.options).forEach(function(opt) {
+                                            if (preDevelopers.includes(opt.value)) {
+                                                opt.selected = true;
+                                            }
+                                        });
+                                    }
+                                }
 
                                 // Enhance selects with Choices.js
                                 try {
@@ -2424,23 +2455,26 @@
 
 
             <!-- Modal Body -->
+            <form id="editTeamForm" action="" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
             <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
                 <!-- Upload Banner -->
-                <input type="file" accept="image/*" id="bannerInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <input type="file" accept="image/*" id="editBannerInput" name="banner" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
                 <div onclick="this.nextElementSibling.click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <img id="editBannerPreview" style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
                     <div class="text-box" style="text-align: center;">
                         <div style="font-size: 24px; color: #888;">+</div>
                         <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
                         <div style="font-size: 12px; color: #999;">JPG or PNG</div>
                     </div>
                 </div>
-                <input type="file" accept="image/*" id="thumbInput" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                <input type="file" accept="image/*" id="editThumbInput" name="thumb" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
 
                 <!-- Sub Image Upload -->
                 <div onclick="this.nextElementSibling.click();"
                     style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    <img id="editThumbPreview" style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
                     <div class="text-box" style="text-align: center;">
                         <div style="font-size: 20px; color: #888;">+</div>
                         <div style="font-size: 12px; color: #999;">JPG or PNG   </div>
@@ -2467,7 +2501,7 @@
 
                         <!-- Team Title -->
                         <div class="col-12 col-md-6 col-lg-3">
-                            <input type="text" class="form-control" placeholder="Team Title"
+                            <input type="text" class="form-control" name="title" id="editTitle" placeholder="Team Title"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
                         </div>
 
@@ -2492,7 +2526,7 @@
 
                         <!-- Select PM -->
                         <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
+                            <select class="form-select" name="pm_id" id="editPm"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option selected>Select PM</option>
                                 <option>PM A</option>
@@ -2502,7 +2536,7 @@
 
                         <!-- Timeline Color -->
                         <div class="col-12 col-md-6 col-lg-3">
-                            <select class="form-select"
+                            <select class="form-select" name="timeline_color" id="editTimelineColor"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
                                 <option selected>Timeline Color</option>
                                 <option>Red</option>
@@ -2859,9 +2893,9 @@
                     </div>
 
                     <!-- Right Save Button -->
-                    <button type="button"
+                    <button type="submit"
                         style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
-                        + Save and create work flow
+                        Save changes
                     </button>
 
                 </div>
@@ -2870,6 +2904,7 @@
 
 
             </div>
+            </form>
 
         </div>
     </div>
@@ -2980,6 +3015,154 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Build teams data map for edit prefill
+        window.teamsData = window.teamsData || {};
+        @foreach(($teams ?? []) as $t)
+            window.teamsData['{{ (string) ($t->_id ?? $t->id) }}'] = {
+                id: '{{ (string) ($t->_id ?? $t->id) }}',
+                title: {!! json_encode($t->title) !!},
+                project_id: {!! json_encode((string)($t->project_id ?? '')) !!},
+                pm_id: {!! json_encode($t->pm_id) !!},
+                timeline_color: {!! json_encode($t->timeline_color) !!},
+                banner_path: {!! json_encode($t->banner_path ? asset('storage/'.$t->banner_path) : null) !!},
+                thumb_path: {!! json_encode($t->thumb_path ? asset('storage/'.$t->thumb_path) : null) !!},
+                tickets: {!! json_encode((array) ($t->tickets ?? [])) !!},
+                tasks: {!! json_encode((array) ($t->tasks ?? [])) !!},
+                task_priorities: {!! json_encode($t->task_priorities ?? []) !!},
+                task_developers: {!! json_encode($t->task_developers ?? []) !!}
+            };
+        @endforeach
+
+        // Configure create vs edit on the same modal (#add_team)
+        function configureCreateModal() {
+            var form = document.getElementById('teamForm');
+            if (!form) return;
+            form.setAttribute('action', '{{ route('teams.store') }}');
+            var methodInput = document.getElementById('teamFormMethod');
+            if (methodInput) methodInput.value = '';
+            window.currentEditingTeamId = null;
+            var titleEl = document.getElementById('teamModalTitle');
+            if (titleEl) titleEl.textContent = 'Add Team';
+
+            var titleInput = form.querySelector('input[name="title"]');
+            if (titleInput) titleInput.value = '';
+            var projSelect = document.getElementById('addProjectSelect');
+            if (projSelect) projSelect.value = '';
+            var pmSelect = form.querySelector('select[name="pm_id"]');
+            if (pmSelect) pmSelect.value = 'Select PM';
+            var tlSelect = form.querySelector('select[name="timeline_color"]');
+            if (tlSelect) tlSelect.value = 'Timeline Color';
+
+            // Clear previews
+            var bannerPicker = document.getElementById('bannerInput') ? document.getElementById('bannerInput').previousElementSibling : null;
+            if (bannerPicker) {
+                var img = bannerPicker.querySelector('img');
+                var tb = bannerPicker.querySelector('.text-box');
+                if (img) img.style.display = 'none';
+                if (tb) tb.style.display = 'block';
+            }
+            var thumbPicker = document.getElementById('thumbInput') ? document.getElementById('thumbInput').previousElementSibling : null;
+            if (thumbPicker) {
+                var img2 = thumbPicker.querySelector('img');
+                var tb2 = thumbPicker.querySelector('.text-box');
+                if (img2) img2.style.display = 'none';
+                if (tb2) tb2.style.display = 'block';
+            }
+
+            var selectedTicketInput = document.getElementById('selectedTicketId');
+            if (selectedTicketInput) selectedTicketInput.value = '';
+            var tasksHidden = document.getElementById('tasksHiddenContainer');
+            if (tasksHidden) tasksHidden.innerHTML = '';
+        }
+
+        function configureEditModal(teamId, updateUrl) {
+            var data = window.teamsData && window.teamsData[teamId] ? window.teamsData[teamId] : null;
+            window.currentEditingTeamId = teamId;
+            var form = document.getElementById('teamForm');
+            if (!form) return;
+            form.setAttribute('action', updateUrl || '');
+            var methodInput = document.getElementById('teamFormMethod');
+            if (methodInput) methodInput.value = 'PUT';
+            var titleEl = document.getElementById('teamModalTitle');
+            if (titleEl) titleEl.textContent = 'Edit Team';
+
+            var titleInput = form.querySelector('input[name="title"]');
+            if (titleInput) titleInput.value = data && data.title ? data.title : '';
+            var projSelect = document.getElementById('addProjectSelect');
+            if (projSelect) projSelect.value = data && data.project_id ? data.project_id : '';
+            var pmSelect = form.querySelector('select[name="pm_id"]');
+            if (pmSelect) pmSelect.value = data && data.pm_id ? data.pm_id : 'Select PM';
+            var tlSelect = form.querySelector('select[name="timeline_color"]');
+            if (tlSelect) tlSelect.value = data && data.timeline_color ? data.timeline_color : 'Timeline Color';
+
+            // Previews for banner/thumb
+            var bannerPicker = document.getElementById('bannerInput') ? document.getElementById('bannerInput').previousElementSibling : null;
+            if (bannerPicker) {
+                var img = bannerPicker.querySelector('img');
+                var tb = bannerPicker.querySelector('.text-box');
+                if (img && data && data.banner_path) {
+                    img.src = data.banner_path;
+                    img.style.display = 'block';
+                    if (tb) tb.style.display = 'none';
+                } else {
+                    if (img) img.style.display = 'none';
+                    if (tb) tb.style.display = 'block';
+                }
+            }
+            var thumbPicker = document.getElementById('thumbInput') ? document.getElementById('thumbInput').previousElementSibling : null;
+            if (thumbPicker) {
+                var img2 = thumbPicker.querySelector('img');
+                var tb2 = thumbPicker.querySelector('.text-box');
+                if (img2 && data && data.thumb_path) {
+                    img2.src = data.thumb_path;
+                    img2.style.display = 'block';
+                    if (tb2) tb2.style.display = 'none';
+                } else {
+                    if (img2) img2.style.display = 'none';
+                    if (tb2) tb2.style.display = 'block';
+                }
+            }
+
+            var selectedTicketInput = document.getElementById('selectedTicketId');
+            if (selectedTicketInput) {
+                selectedTicketInput.value = (data && Array.isArray(data.tickets) && data.tickets.length) ? String(data.tickets[0]) : '';
+            }
+            var tasksHidden = document.getElementById('tasksHiddenContainer');
+            if (tasksHidden) {
+                tasksHidden.innerHTML = '';
+                if (data && Array.isArray(data.tasks)) {
+                    data.tasks.forEach(function (tid) {
+                        var inp = document.createElement('input');
+                        inp.type = 'hidden';
+                        inp.name = 'tasks[]';
+                        inp.value = String(tid);
+                        tasksHidden.appendChild(inp);
+                    });
+                }
+            }
+
+            // Trigger ticket list refresh to reflect selected project and preferred ticket
+            if (projSelect) {
+                projSelect.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // When clicking any non-edit trigger for the Add Team modal, configure as create
+        document.querySelectorAll('[data-bs-target="#add_team"]:not(.team-edit)').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                configureCreateModal();
+            });
+        });
+
+        // Edit click handler uses the same modal
+        document.querySelectorAll('.team-edit').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var teamId = this.getAttribute('data-team-id');
+                var updateUrl = this.getAttribute('data-update-url');
+                configureEditModal(teamId, updateUrl);
+            });
+        });
+
         document.querySelectorAll('.team-delete').forEach(function (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();

@@ -260,41 +260,33 @@ class TeamController extends Controller
         }
 
         try {
-            // Flatten priorities to simple list of values like ['low','medium']
-            $priorityInput = (array) $request->input('task_priorities', []);
-            $priorityValues = collect($priorityInput)
-                ->values()
-                ->map(function ($v) { return is_array($v) ? null : $v; })
+            // Priorities as per-task map: [taskId => 'low'|'medium'|'high']
+            $priorityValues = collect((array) $request->input('task_priorities', []))
+                ->map(function ($v) {
+                    if (is_array($v)) return null;
+                    $vv = strtolower((string) $v);
+                    return in_array($vv, ['low','medium','high'], true) ? $vv : null;
+                })
                 ->filter()
-                ->map(function ($v) { return strtolower((string) $v); })
-                ->filter(function ($v) { return in_array($v, ['low','medium','high'], true); })
-                ->unique()
-                ->values()
                 ->all();
 
-            // Flatten developers to list of developer NAMES (not keyed, no ids)
+            // Developers as per-task map: [taskId => [developerName, ...]]
             $devInput = (array) $request->input('task_developers', []);
-            $devIds = collect($devInput)
-                ->values()
-                ->flatten()
-                ->filter()
-                ->map(function ($v) { return (string) $v; })
-                ->unique()
-                ->values();
-            $devNames = collect();
-            if ($devIds->isNotEmpty()) {
-                try {
-                    $devNames = User::query()
-                        ->whereIn('_id', $devIds->all())
-                        ->pluck('name');
-                    if ($devNames->isEmpty()) {
-                        $devNames = User::query()->whereIn('id', $devIds->all())->pluck('name');
+            $devMap = collect($devInput)->map(function ($vals) {
+                return collect((array) $vals)->map(function ($val) {
+                    $s = (string) $val;
+                    // If looks like ObjectId, try to resolve to name; else assume it's already a name
+                    if (preg_match('/^[a-f0-9]{24}$/i', $s)) {
+                        $u = null;
+                        try { $u = User::find($s); } catch (\Throwable $e) {}
+                        if (!$u) {
+                            try { $u = User::query()->where('id', $s)->first(); } catch (\Throwable $e) {}
+                        }
+                        return $u && $u->name ? $u->name : null;
                     }
-                } catch (\Throwable $e) {
-                    $devNames = collect();
-                }
-            }
-            $devNames = $devNames->filter()->unique()->values()->all();
+                    return $s; // treat as name
+                })->filter()->unique()->values()->all();
+            })->filter()->all();
 
             Team::create([
                 'title' => $validated['title'] ?? null,
@@ -305,9 +297,9 @@ class TeamController extends Controller
                 'thumb_path' => $thumbPath,
                 'tickets' => $ticketIds,
                 'tasks' => $taskIds->values()->all(),
-                // store compact arrays: priorities as values only, developers as names only
+                // store per-task maps with simple values and names
                 'task_priorities' => $priorityValues,
-                'task_developers' => $devNames,
+                'task_developers' => $devMap,
                 'user_id' => Auth::id(),
             ]);
         } catch (\Throwable $e) {
@@ -335,6 +327,109 @@ class TeamController extends Controller
             return back()->with('error', 'Team not found.');
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to delete team: ' . $e->getMessage());
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $team = Team::find($id);
+            if (!$team) {
+                try {
+                    $team = Team::find(new ObjectId((string) $id));
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
+            if (!$team) {
+                return back()->with('error', 'Team not found.');
+            }
+
+            $validated = $request->validate([
+                'title' => 'nullable|string|max:255',
+                'project_id' => 'nullable|string|max:255',
+                'pm_id' => 'nullable|string|max:255',
+                'timeline_color' => 'nullable|string|max:255',
+                'banner' => 'nullable|image|max:4096',
+                'thumb' => 'nullable|image|max:4096',
+                'tickets' => 'nullable|array',
+                'tasks' => 'nullable|array',
+            ]);
+
+            // Files (optional)
+            if ($request->hasFile('banner')) {
+                $team->banner_path = $request->file('banner')->store('teams', 'public');
+            }
+            if ($request->hasFile('thumb')) {
+                $team->thumb_path = $request->file('thumb')->store('teams', 'public');
+            }
+
+            // Normalize tickets
+            $ticketIds = collect($request->input('tickets', []))
+                ->filter()
+                ->map(function ($t) { return (string) $t; })
+                ->values()
+                ->all();
+
+            // Normalize tasks (or derive from tickets)
+            $taskIds = collect($request->input('tasks', []))
+                ->filter()
+                ->map(function ($t) { return (string) $t; })
+                ->values();
+            if ($taskIds->isEmpty() && !empty($ticketIds)) {
+                try {
+                    $taskIds = \App\Models\Task::query()
+                        ->whereIn('ticket_id', $ticketIds)
+                        ->pluck('_id')
+                        ->map(function ($id) { return (string) $id; });
+                } catch (\Throwable $e) {
+                    $taskIds = collect();
+                }
+            }
+
+            // Priorities per-task map
+            $priorityValues = collect((array) $request->input('task_priorities', []))
+                ->map(function ($v) {
+                    if (is_array($v)) return null;
+                    $vv = strtolower((string) $v);
+                    return in_array($vv, ['low','medium','high'], true) ? $vv : null;
+                })
+                ->filter()
+                ->all();
+
+            // Developers per-task map (names only)
+            $devInput = (array) $request->input('task_developers', []);
+            $devMap = collect($devInput)->map(function ($vals) {
+                return collect((array) $vals)->map(function ($val) {
+                    $s = (string) $val;
+                    if (preg_match('/^[a-f0-9]{24}$/i', $s)) {
+                        $u = null;
+                        try { $u = User::find($s); } catch (\Throwable $e) {}
+                        if (!$u) {
+                            try { $u = User::query()->where('id', $s)->first(); } catch (\Throwable $e) {}
+                        }
+                        return $u && $u->name ? $u->name : null;
+                    }
+                    return $s;
+                })->filter()->unique()->values()->all();
+            })->filter()->all();
+
+            // Update scalar fields
+            $team->title = $validated['title'] ?? $team->title;
+            $team->project_id = $validated['project_id'] ?? $team->project_id;
+            $team->pm_id = $validated['pm_id'] ?? $team->pm_id;
+            $team->timeline_color = $validated['timeline_color'] ?? $team->timeline_color;
+
+            // Update arrays
+            $team->tickets = $ticketIds;
+            $team->tasks = $taskIds->values()->all();
+            $team->task_priorities = $priorityValues;
+            $team->task_developers = $devMap;
+
+            $team->save();
+            return redirect()->route('chat-team')->with('success', 'Team updated successfully.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to update team: ' . $e->getMessage())->withInput();
         }
     }
 }
