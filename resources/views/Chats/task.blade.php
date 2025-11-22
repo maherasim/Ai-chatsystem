@@ -1432,8 +1432,8 @@
     
                                 <!-- static demo: single project card -->
     
-                                <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;" class="current-task-card">
-                                    <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
+                                <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;padding-left: 12px;" class="current-task-card">
+                                    <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 97px;padding-left:10px">
                                         <!-- Top Section -->
                                         <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
     
@@ -1547,6 +1547,9 @@
     
                                         <!-- Expandable Project Details -->
                                         <div class="project-details" style="overflow:hidden; max-height:1200px; transition:max-height 0.3s ease;">
+
+                                     ticket:5
+
                                             <!-- Description Row -->
                                             <!-- <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
                                                 style="background-color: #f1f5f9; border-radius: 10px;">
