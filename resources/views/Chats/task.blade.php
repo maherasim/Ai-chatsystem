@@ -1532,7 +1532,17 @@
             @endphp
             <div class="tickets-tab-scroll">
                 @forelse($__ticketList as $__idx => $__tk)
-                    <button type="button" class="ticket-tab {{ $__idx === 0 ? 'active' : '' }}">
+                    @php $__tid = (string) ($__tk->_id ?? $__tk->id); @endphp
+                    <button
+                        type="button"
+                        class="ticket-tab {{ $__idx === 0 ? 'active' : '' }}"
+                        data-ticket-id="{{ $__tid }}"
+                        data-code="{{ $__tk->code ?? '' }}"
+                        data-title="{{ $__tk->title ?? '' }}"
+                        data-section="{{ $__tk->section_name ?? '' }}"
+                        data-start="{{ optional($__tk->start_date)->toDateString() }}"
+                        data-end="{{ optional($__tk->end_date)->toDateString() }}"
+                    >
                         <div class="title">{{ $__tk->code ?? '' }}</div>
                         <div class="subtitle">{{ $__tk->title ?? '' }}</div>
                     </button>
@@ -1544,6 +1554,7 @@
                 @endforelse
             </div>
             <div class="ticket-indicators"></div>
+            <div class="dynamic-ticket-details" style="margin-top:8px;"></div>
         </div>
         <script>
             (function () {
@@ -1557,6 +1568,115 @@
                 (blocks instanceof NodeList ? blocks : Array.from(blocks)).forEach(function (block) {
                     var tabs = block.querySelectorAll('.ticket-tab');
                     var indicators = block.querySelector('.ticket-indicators');
+                    var detailsPane = block.querySelector('.dynamic-ticket-details');
+                    var cardRoot = block.closest('.card');
+                    var summary = cardRoot ? cardRoot.querySelector('.ticket-summary') : null;
+                    var taskContainer = cardRoot ? cardRoot.querySelector('.task-cards-container') : null;
+
+                    function renderDetailsFromTab(tab) {
+                        if (!detailsPane || !tab) return;
+                        var code = tab.getAttribute('data-code') || '';
+                        var title = tab.getAttribute('data-title') || '';
+                        var section = tab.getAttribute('data-section') || '-';
+                        var start = tab.getAttribute('data-start') || '-';
+                        var end = tab.getAttribute('data-end') || '-';
+                        var ticketId = tab.getAttribute('data-ticket-id') || '';
+                        // Also update the visible ticket-summary block, so tasks area persists
+                        if (summary) {
+                            var c = summary.querySelector('.js-ticket-code'); if (c) c.textContent = code;
+                            var s = summary.querySelector('.js-ticket-section'); if (s) s.textContent = section;
+                            var t = summary.querySelector('.js-ticket-title'); if (t) t.textContent = title;
+                            var sd = summary.querySelector('.js-ticket-start'); if (sd) sd.textContent = start;
+                            var ed = summary.querySelector('.js-ticket-end'); if (ed) ed.textContent = end;
+                        }
+                        detailsPane.innerHTML =
+                            '<div class="d-flex justify-content-between flex-wrap" style="background:#fff;border-radius:10px;padding:6px;">'
+                            + '<div style="color:#1a73e8;margin-left:8px;"><strong>Tickets</strong><br>' + code + '</div>'
+                            + '<div style="color:#1a73e8;"><strong>Section</strong><br>' + section + '</div>'
+                            + '<div style="color:#1a73e8;"><strong>Ticket Title</strong><br>' + title + '</div>'
+                            + '</div>'
+                            + '<div style="margin-top:0.6rem;display:flex;align-items:center;text-align:center;flex-wrap:nowrap;justify-content:space-between;background:#fff;border-radius:10px;padding:6px;font-size:14px;color:#333;">'
+                            +   '<span style="margin-right:5px;font-weight:bold;"> Tasks <p id="__tasksCount" style="margin:0;color:#111">...</p></span>'
+                            +   '<span style="margin-right:5px;color:#ccc;">|</span>'
+                            +   '<span style="margin-right:5px;color:#28a745;">Start:<p style="color:black;margin:0;">' + start + '</p></span>'
+                            +   '<span style="margin-right:5px;color:#ccc;">|</span>'
+                            +   '<span style="margin-right:5px;color:#28a745;">Deliver:<p style="color:black;margin:0;">' + end + '</p></span>'
+                            + '</div>';
+                        if (ticketId) {
+                            fetch('{{ url('/team/tasks') }}?ticket_id=' + encodeURIComponent(ticketId), { credentials: 'same-origin' })
+                                .then(function(res){ return res.ok ? res.json() : []; })
+                                .then(function(data){
+                                    var cnt = Array.isArray(data) ? data.length : (Array.isArray(data.tasks) ? data.tasks.length : 0);
+                                    var el = detailsPane.querySelector('#__tasksCount');
+                                    if (el) el.textContent = String(cnt);
+                                    if (summary) {
+                                        var sc = summary.querySelector('.js-ticket-tasks-count');
+                                        if (sc) sc.textContent = String(cnt);
+                                    }
+
+                                    // Render tasks list below (mute/hide if zero)
+                                    if (taskContainer) {
+                                        var tasks = Array.isArray(data) ? data : (Array.isArray(data.tasks) ? data.tasks : []);
+                                        if (!tasks || tasks.length === 0) {
+                                            taskContainer.style.display = 'none';
+                                            taskContainer.innerHTML = '';
+                                        } else {
+                                            taskContainer.style.display = 'flex';
+                                            var defaultLogo = "{{ URL::asset('/build/img/yekbon.svg') }}";
+                                            var defaultThumb = "{{ URL::asset('/build/img/dooted img.svg') }}";
+                                            var teraSrc = "{{ URL::asset('/build/img/tera.svg') }}";
+                                            function toUrl(p, def) {
+                                                if (!p) return def;
+                                                try { if (/^https?:\/\//i.test(p)) return p; } catch(e) {}
+                                                p = String(p).replace(/^\/+/, '');
+                                                return '/storage/' + p;
+                                            }
+                                            taskContainer.innerHTML = tasks.map(function(t) {
+                                                var tTitle = t.title || 'Task Title';
+                                                var tDesc = t.description || 'Task description will be here';
+                                                var startD = t.start_date || '-';
+                                                var endD = t.end_date || '-';
+                                                var logo = toUrl(t.project_logo_path, defaultLogo);
+                                                var thumb = toUrl(t.mark_image_path, defaultThumb);
+                                                var issues = (typeof t.issues_count === 'number') ? String(t.issues_count).padStart(2,'0') : '01';
+                                                return ''
+                                                    + '<div style="background:#ffffff; border:1px solid #e9ecef; border-radius:12px; padding:10px 12px; display:flex; align-items:center; gap:12px; width:100%;">'
+                                                    +   '<div style="width:70px; height:100px; border-radius:8px; overflow:hidden; background:#ccc; flex-shrink:0;">'
+                                                    +       '<img src="'+ thumb +'" alt="icon" style="width:100%; height:100%; object-fit:cover;">'
+                                                    +   '</div>'
+                                                    +   '<div style="flex:1; display:flex; flex-direction:column; gap:6px;">'
+                                                    +       '<div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:flex-start;">'
+                                                    +           '<div style="display:flex; align-items:center; gap:8px;">'
+                                                    +               '<img src="'+ logo +'" alt="Logo" style="height:32px; width:32px; flex-shrink:0;" />'
+                                                    +               '<div>'
+                                                    +                   '<div style="font-weight:700; font-size:14px; color:#1b1b3a;">'+ tTitle +'</div>'
+                                                    +                   '<div style="font-size:12px; color:#999;">'+ (code || '') +' - '+ (title || '') +'</div>'
+                                                    +               '</div>'
+                                                    +           '</div>'
+                                                    +       '</div>'
+                                                    +       '<div style="font-size:12px; color:#7a7a9d;">'+ tDesc +'</div>'
+                                                    +       '<div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; background:#fff; border-radius:10px; padding:5px;">'
+                                                    +           '<div style="display:flex; gap:5px; align-items:center; flex-wrap:nowrap; white-space:nowrap;">'
+                                                    +               '<div style="font-size:13px; color:#1ca672; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;"><strong>Start:</strong><span style="color:#1b1b3a;">'+ startD +'</span></div>'
+                                                    +               '<div style="width:1px; height:20px; background-color:#ccc;"></div>'
+                                                    +               '<div style="font-size:12px; color:#00cc88; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;"><strong>Deliver:</strong><span style="color:#1b1b3a;">'+ endD +'</span></div>'
+                                                    +           '</div>'
+                                                    +           '<div style="display:flex; align-items:center; gap:6px;">'
+                                                    +               '<div style="background:#ef4444; color:#ffffff; display:flex; align-items:center; gap:6px; border-radius:8px; padding:6px 10px; font-size:12px; font-weight:700;">'
+                                                    +                   '<img src="'+ teraSrc +'" alt="!" style="width:14px; height:14px;">'
+                                                    +                   '<span>'+ issues +'</span>'
+                                                    +               '</div>'
+                                                    +           '</div>'
+                                                    +       '</div>'
+                                                    +   '</div>'
+                                                    + '</div>';
+                                            }).join('');
+                                        }
+                                    }
+                                })
+                                .catch(function(){});
+                        }
+                    }
                     if (indicators) {
                         indicators.innerHTML = '';
                         tabs.forEach(function (t, i) {
@@ -1572,8 +1692,11 @@
                             tab.classList.add('active');
                             var bars = block.querySelectorAll('.ticket-indicators .bar');
                             bars.forEach(function (b, i) { b.classList.toggle('active', i === idx); });
+                            renderDetailsFromTab(tab);
                         });
                     });
+                    var initial = block.querySelector('.ticket-tab.active') || tabs[0];
+                    if (initial) renderDetailsFromTab(initial);
                     var scroller = block.querySelector('.tickets-tab-scroll');
                     if (scroller) {
                         scroller.addEventListener('wheel', function (e) {
@@ -1605,7 +1728,7 @@
 
                 <!-- Ticket Items -->
                 <!-- Tickets list (static) -->
-                <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 13px;margin:7px;">
+                <div class="mt-2 ticket-summary" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 13px;margin:7px;">
                     <!-- Ticket Header -->
                     @php
                         $__pidHeader = isset($__project) ? (string) ($__project->_id ?? $__project->id) : (isset($project) ? (string) ($project->_id ?? $project->id) : null);
@@ -1617,46 +1740,7 @@
                                 ->get();
                         }
                     @endphp
-                    <div style="max-height: 150px; overflow-y: auto; padding-right: 6px;">
-                        @forelse($__ticketsHeader as $__ticket)
-                            @php
-                                $__ticketId = (string) ($__ticket->_id ?? $__ticket->id);
-                                $__tasksForTicket = \App\Models\Task::where('ticket_id', $__ticketId)->count();
-                            @endphp
-                            <div class="d-flex justify-content-between flex-wrap">
-                                <div style="color: #1a73e8; margin-left: 8px;"><strong>Tickets</strong><br>{{ $__ticket->code ?? '' }}</div>
-                                <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $__ticket->section_name ?? '-' }}</div>
-                                <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $__ticket->title ?? '' }}</div>
-                                <div class="ticket-edit-trigger" title="Edit ticket" style="cursor: pointer;">
-                                    <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;" height="20px">
-                                </div>
-                            </div>
-
-                            <!-- Task Info -->
-                            <div style="margin-top: 0.6rem; display: flex; align-items: center; text-align:center; flex-wrap: nowrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 14px; color: #333; margin: 7px;">
-                                <span style="margin-right: 5px; font-weight: bold;"> Tasks
-                                    <p style="margin:0;color:#111">{{ $__tasksForTicket }}</p></span>
-                                <span style="margin-right: 5px; color: #ccc;">|</span>
-                                <span style="margin-right: 5px; color: #28a745;">Start:
-                                    <p style="color: black;">{{ optional($__ticket->start_date)->toDateString() ?? '-' }}</p>
-                                </span>
-                                <span style="margin-right: 5px; color: #ccc;">|</span>
-                                <span style="margin-right: 5px; color: #28a745;">Deliver:
-                                    <p style="color: black;">{{ optional($__ticket->end_date)->toDateString() ?? '-' }}</p>
-                                </span>
-                                <span style="margin-right: 5px; color: #ccc;">|</span>
-
-                                <!-- Avatars (static dots) -->
-                                <div style="display: flex; align-items: center; margin-left: 10px; gap:6px;">
-                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#60a5fa; display:inline-block;"></span>
-                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#a78bfa; display:inline-block;"></span>
-                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#f472b6; display:inline-block;"></span>
-                                </div>
-                            </div>
-                        @empty
-                            <div style="background:#fff; border-radius:10px; padding:8px; margin:7px; color:#64748b;">No tickets found.</div>
-                        @endforelse
-                    </div>
+                   
                    
 
                   
@@ -1719,72 +1803,7 @@
                     </div> --}}
                 </div>  
 
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
-
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
-
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-
-                                <!-- Logo Left -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
-
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
-                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
-
-                            </div>
-
-
-                            
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            Task description will be here
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                        <div style="display: flex; gap: 5px; align-items: center; flex-wrap: nowrap; white-space: nowrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 13px; color: #1ca672; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                     
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">22.10.2024</span>
-                                     
-                                </div>
-                            </div>
-
-                            <!-- Status Badge -->
-                           
-                        </div>
-
-                    </div>
-                </div>
+                <div class="container-fluid mt-2 task-cards-container" data-task-container="1" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: none; gap: 10px; flex-wrap: wrap; align-items: flex-start;"></div>
             </div>
         </div>
     </div> 
