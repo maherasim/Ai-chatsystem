@@ -1383,288 +1383,422 @@
                             <!-- Left Title -->
                             <div>
                                 <h3 style="margin: 0;">Current Tasks</h3>
-                                <strong>Task Overview</strong>
+                                <strong>Task Overview </strong>
                             </div>
 
-                            <!-- Filter + Dropdown -->
-                            <div
-                                style="background: #f8fafc; padding: 6px 10px; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-
-                                <!-- Filter Buttons -->
-                                <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1 1 auto;">
-                                    <button onclick="setActive(this)"
-                                        style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">All</button>
-                                    <button onclick="setActive(this)"
-                                        style="background: #28c76f; color: white; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Low</button>
-                                    <button onclick="setActive(this)"
-                                        style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">Middle</button>
-                                    <button onclick="setActive(this)"
-                                        style="background: transparent; color: #6c757d; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer;">High</button>
-                                </div>
-
-                                <!-- Dropdown -->
-                                <div style="flex-shrink: 0;">
-                                    <select
-                                        style="font-size: 14px; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; color: #6c757d; background-color: #f8f9fa; min-width: 140px;">
-                                        <option selected>Select Projects</option>
-                                        <option>Project 1</option>
-                                        <option>Project 2</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Inline JS -->
-                            <script>
-                                function setActive(el) {
-                                    const buttons = el.parentElement.querySelectorAll('button');
-                                    buttons.forEach(btn => {
-                                        btn.style.background = 'transparent';
-                                        btn.style.color = '#6c757d';
-                                    });
-                                    el.style.background = '#28c76f';
-                                    el.style.color = 'white';
-                                }
-                            </script>
+                           
                         </div>
                         <div class="mb-2">
-                            <div class="d-flex flex-wrap gap-2" style="width: 100%; justify-content: flex-start;">
-                                <!-- static demo: grouping removed -->
-    
-                                <!-- static demo: single project card -->
-    
-                                <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;padding-left: 12px;" class="current-task-card">
-                                    <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 97px;padding-left:10px">
-                                        <!-- Top Section -->
-                                        <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
-    
-                                            <!-- Progress Circle -->
-                                            <div style="width: 36px; height: 36px; position: relative;">
-                                                <svg width="36" height="36">
-                                                    <defs>
-                                                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                            <stop offset="0%" stop-color="#ff7f00" />
-                                                            <stop offset="100%" stop-color="#fcd34d" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <circle cx="18" cy="18" r="15.12" stroke="#d1d1d1" stroke-width="4.32" fill="none" />
-                                                    <circle
-                                                        cx="18"
-                                                        cy="18"
-                                                        r="15.12"
-                                                        stroke="url(#grad)"
-                                                        stroke-width="4.32"
-                                                        fill="none"
-                                                        stroke-dasharray="95.04"
-                                                        stroke-dashoffset="28.51" <!-- 70% progress -->
-                                                        stroke-linecap="round"
-                                                        transform="rotate(-90 18 18)" />
-                                                </svg>
-                                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:9.5px; font-weight:600;">70%</span>
-                                            </div>
-    
-    
-                                            <!-- Middle Card -->
-                                            <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
-    
-                                                <!-- Static Flag -->
-                                                <div style="background-color:#D1FAE5; border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center;">
-                                                    <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="Flag" width="18px" height="18px">
-                                                </div>
-    
-                                                <!-- Logo (center) -->
-                                                <div class="text-center" style="flex-grow: 1;">
-                                                    <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
-                                                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 45px; width: 45px; object-fit: cover;" class="rounded-cirle">
-                                                    </div>
-                                                    <div>
-                                                        <h5 class="text-center" title="Project Title" style="font-size: 12px !important; margin: 0 auto; font-weight: bold; color: #2e2e5d; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
-                                                            Project Title
-                                                        </h5>
-                                                    </div>
-                                                </div>
-    
-                                                <!-- Priority -->
-                                                <div style="background: #ffffff; padding: 3px 4px; border-radius: 2px; display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                                                    <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                                    <span style="color: #4caf50; font-size: 12px; font-weight: 500;">Low</span>
-                                                </div>
-    
-                                            </div>
-    
-    
-                                            <!-- Ticket Icon -->
-                                            <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
-                                                style="height: 40px; width: 38px; cursor: pointer;background:#F5F5F5;padding:5px;border-radius:5px;"
-                                                alt="ticket">
-                                        </div>
+                            <div style="display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto;">
+
+    @foreach ( $projectsdone as $project)
+    <div style="flex: 0 0 calc(33.333% - 8px); min-width: 300px; max-width: 400px;padding-left: 12px;" class="current-task-card">
+        <div class="card shadow-sm p-1" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 97px;padding-left:10px">
+            <!-- Top Section -->
+            <div class="d-flex justify-content-between  mb-2" style="gap: 10px;">
+
+                <!-- Progress Circle -->
+                <div style="width: 36px; height: 36px; position: relative;">
+                    <svg width="36" height="36">
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#ff7f00" />
+                                <stop offset="100%" stop-color="#fcd34d" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="18" cy="18" r="15.12" stroke="#d1d1d1" stroke-width="4.32" fill="none" />
+                        <circle
+                            cx="18"
+                            cy="18"
+                            r="15.12"
+                            stroke="url(#grad)"
+                            stroke-width="4.32"
+                            fill="none"
+                            stroke-dasharray="95.04"
+                            stroke-dashoffset="28.51" <!-- 70% progress -->
+                            stroke-linecap="round"
+                            transform="rotate(-90 18 18)" />
+                    </svg>
+                    <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:9.5px; font-weight:600;">70%</span>
+                </div>
+
+
+                <!-- Middle Card -->
+                <div style="background-color: #f9f9f9; display: flex; justify-content: space-between; align-items: flex-start; width: 220px; border-radius: 10px; padding: 6px 8px; position: relative;">
+
+                    <!-- Static Flag -->
+                    <div style="background-color:#D1FAE5; border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                        <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="Flag" width="18px" height="18px">
+                    </div>
+
+                    <!-- Logo (center) -->
+                    <div class="text-center" style="flex-grow: 1;">
+                        <div style=" display: flex; justify-content: center; height: 55px; width: 55px; margin: 0 auto;">
+                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Project Logo" style="height: 45px; width: 45px; object-fit: cover;" class="rounded-cirle">
+                        </div>
+                        <div>
+                            <h5 class="text-center" title="Project Title" style="font-size: 12px !important; margin: 0 auto; font-weight: bold; color: #2e2e5d; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+                               {{$project->title}}
+                            </h5>
+                        </div>
+                    </div>
+
+                    <!-- Priority -->
+                    <div style="background: #ffffff; padding: 3px 4px; border-radius: 2px; display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                        <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
+                        <span style="color: #4caf50; font-size: 12px; font-weight: 500;">{{ $project->priority }}</span>
+                    </div>
+
+                </div>
+
+
+                <!-- Ticket Icon -->
+                <img src="{{ URL::asset('/build/img/ticket_icon_black.svg') }}"
+                    style="height: 40px; width: 38px; cursor: pointer;background:#F5F5F5;padding:5px;border-radius:5px;"
+                    alt="ticket">
+            </div>
                                         <!-- Project Stats -->
-                                        <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
-                                            style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;margin:7px;">
-                                            <div style="color: #10b981;text-align:center"><strong>Tickets:</strong>
-                                                <p style="color: black;text-align:center">5</p>
-                                            </div>
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                            <div style="color: #10b981;text-align:center"><strong>Tasks:</strong>
-                                                <p style="color: black;text-align:center">10</p>
-                                            </div>
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                            <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
-                                                <p style="color: black;">2024-10-22</p>
-                                            </div>
-                                            <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
-                                            <div style="color: #10b981;text-align:center"><strong>End:</strong>
-                                                <p style="color: black;">2024-10-22</p>
-                                            </div>
-                                        </div>
-    
-                                        <!-- Progress Bar -->
-                                        <!-- <div class="d-flex align-items-center mb-2" style="flex: 1;">
-                                                <div class="progress"
-                                                    style="height: 8px; width: 100px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden;">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: 0%; background-color: #4fc3f7;"></div>
-                                                </div>
-                                                <div style="font-size: 12px; color: #4fc3f7; margin-left: 7px;">0%</div>
-                                            </div> -->
-    
-                                        <!-- Title and Toggle -->
-                                        <div class="d-flex justify-content-between align-items-center toggle-btn"
-                                            style="cursor: pointer;">
-    
-    
-    
-                                            <div style="display: flex; align-items: center; width: 100%; margin: 8px 0;">
-                                                <img src="{{ asset('build/img/up_arrow.svg') }}"
-                                                    alt="toggle-icon" width="20" height="20"
-                                                    style="margin-right: 6px; transition: transform 0.3s; transform: rotate(180deg);"
-                                                    class="toggle-icon">
-                                                <hr style="flex: 1; height: 2.5px; border: none; 
-                                                 background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
-                                                   margin: 0;">
-                                            </div>
-    
-                                        </div>
-    
-                                        <!-- Expandable Project Details -->
-                                        <div class="project-details" style="overflow:hidden; max-height:1200px; transition:max-height 0.3s ease;">
+            <div class="d-flex justify-content-between flex-wrap align-items-center px-2 mt-1"
+                style="font-size: 13px; background-color: #f9f9f9; border-radius: 10px; gap: 3px; padding: 8px 10px;margin:7px;">
+                                            @php
+                                                $___pid = isset($__project) ? (string) ($__project->_id ?? $__project->id) : (isset($project) ? (string) ($project->_id ?? $project->id) : null);
+                                                $___tickets = $___pid ? \App\Models\Ticket::where('project_id', $___pid)->count() : 0;
+                                                $___tasks = $___pid ? \App\Models\Task::where('project_id', $___pid)->count() : 0;
+                                            @endphp
+                <div style="color: #10b981;text-align:center"><strong>Tickets:</strong>
+                                                <p style="color: black;text-align:center">{{ $___tickets }}</p>
+                </div>
+                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                <div style="color: #10b981;text-align:center"><strong>Tasks:</strong>
+                                                <p style="color: black;text-align:center">{{ $___tasks }}</p>
+                </div>
+                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
+                    <p style="color: black;">{{ $project->start_date->format('d.m.Y') }}</p>
+                </div>
+                <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
+                <div style="color: #10b981;text-align:center"><strong>End:</strong>
+                    <p style="color: black;">{{ $project->end_date->format('d.m.Y') }}</p>
+                </div>
+            </div>
 
-                                     ticket:5
+           
+            <div class="d-flex justify-content-between align-items-center toggle-btn"
+                style="cursor: pointer;">
 
-                                            <!-- Description Row -->
-                                            <!-- <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
-                                                style="background-color: #f1f5f9; border-radius: 10px;">
-                                                <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
-                                                    <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16" height="16" alt="flag">
-                                                </div>
-                                                <div>
-                                                    <small style="color: #64748b; font-size: 14px;">task descirtion </small>
-                                                </div>
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                                    <small style="font-size: 12px; color: #22c55e;">low prieorry</small>
-                                                </div>
-                                            </div> -->
-    
-    
-    
-                                            <!-- Ticket Items -->
-                                            <!-- Tickets list (static) -->
-                                            <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 13px;margin:7px;">
-                                                <!-- Ticket Header -->
-                                                <div class="d-flex justify-content-between flex-wrap">
-    
-                                                    <div style="color: #1a73e8; margin-left: 8px;"><strong>Tickets</strong><br>TK-001</div>
-                                                    <div style="color: #1a73e8;"><strong>Section</strong><br>User Profile</div>
-                                                    <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>Profile Layout Fix</div>
-                                                    <div class="ticket-edit-trigger" title="Edit ticket" style="cursor: pointer;">
-                                                        <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;" height="20px">
-                                                    </div>
-                                                </div>
-    
-                                                <!-- Task Info -->
-                                                <div style="margin-top: 1rem; display: flex; align-items: center;text-align:center; flex-wrap: wrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 14px; color: #333;margin: 7px;">
-                                                    <span style="margin-right: 5px; font-weight: bold;"> Tasks
-                                                        <p style="margin:0;color:#111">5</p></span>
-                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                    <span style="margin-right: 5px; color: #28a745;">Start:
-                                                        <p style="color: black;">2024-10-22</p>
-                                                    </span>
-                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
-                                                    <span style="margin-right: 5px; color: #28a745;">Deliver:
-                                                        <p style="color: black;">2024-10-22</p>
-                                                    </span>
-                                                    <span style="margin-right: 5px; color: #ccc;">|</span>
-    
-                                                    <!-- Avatars (static dots) -->
-                                                    <div style="display: flex; align-items: center; margin-left: 10px; gap:6px;">
-                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#60a5fa; display:inline-block;"></span>
-                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#a78bfa; display:inline-block;"></span>
-                                                        <span style="width: 22px; height: 22px; border-radius: 50%; background:#f472b6; display:inline-block;"></span>
-                                                    </div>
-                                                </div>
-    
-    
-                                                <!-- Task Progress & Status -->
-                                                <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;margin:7px;">
-                                                    <div style="text-align: center;">
-                                                        <div style="font-size: 12px; color: #4fc3f7;">0%</div>
-                                                        <div class="progress"
-                                                            style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
-                                                            <div class="progress-bar" role="progressbar"
-                                                                style="width: 0%; background-color: #4fc3f7;"></div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- Separator -->
-                                                    <div style="color: #ccc;">
-                                                        <p>|</p>
-                                                    </div>
-    
-    
-                                                    <!-- Center Section -->
-                                                    <div style="text-align: center;">
-                                                        <div style="font-size: 26px;">
-                                                            <span style="color: #8BC34A;">●</span>
-                                                            <span style="color: #FF9800;">●</span>
-                                                            <span style="color: #F44336;">●</span>
-                                                            <span style="color: #9C27B0;">●</span>
-                                                            <span style="color: #4CAF50;">●</span>
-                                                        </div>
-                                                    <div style="font-size: 15px; margin-top: 2px; color: #555;">
-                                                            <span>1</span>
-                                                            <span style="margin-left: 9px;">2</span>
-                                                            <span style="margin-left: 9px;">3</span>
-                                                            <span style="margin-left: 9px;">1</span>
-                                                            <span style="margin-left: 9px;">8</span>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- Separator -->
-                                                    <div style="color: #ccc;">|</div>
-    
-                                                    <!-- Right Side Flag -->
-                                                    <div style="background-color:#e9f8dd; border-radius: 2px; padding: 6px;margin-right:27px">
-                                                        <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="flag" width="24px" height="24px;">
-                                                    </div>
-    
-    
-                                                    {{-- <div class="d-flex align-items-center gap-2">
-                                                                <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
-                                                    <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
-                                                        data-bs-toggle="modal" data-bs-target="#ticketModal"
-                                                        data-ticket-id="{{ $pt->_id ?? $pt->id }}"
-                                                        data-project-id="{{ $pt->project_id }}"
-                                                        @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
-                                                        >Edit</button>
-                                                </div> --}}
-                                            </div>
-                                        </div>
-                                    </div>
+
+
+                <div style="display: flex; align-items: center; width: 100%; margin: 8px 0;">
+                    <img src="{{ asset('build/img/up_arrow.svg') }}"
+                        alt="toggle-icon" width="20" height="20"
+                        style="margin-right: 6px; transition: transform 0.3s; transform: rotate(180deg);"
+                        class="toggle-icon">
+                    <hr style="flex: 1; height: 2.5px; border: none; 
+                     background: linear-gradient(to right, #b0b7c3, #b0b7c3); 
+                       margin: 0;">
+                </div>
+
+            </div>
+
+            <!-- Expandable Project Details -->
+            <div class="project-details" style="overflow:hidden; max-height:1200px; transition:max-height 0.3s ease;">
+
+        <!-- Tickets header + tabs (optimized) -->
+        <style>
+            .tickets-block { background:#f3f6fa; border-radius:12px; padding:8px 10px; margin:6px; }
+            .tickets-title { font-weight:800; color:#182a4a; font-size:14px; margin-bottom:6px; }
+            .tickets-tab-scroll { display:flex; gap:10px; overflow-x:auto; white-space:nowrap; padding-bottom:6px; -ms-overflow-style:none; scrollbar-width:none; }
+            .tickets-tab-scroll::-webkit-scrollbar { display:none; }
+            .ticket-tab { background:#ffffff; color:#1f2d4a; border:1px solid #e5e7eb; border-radius:10px; padding:8px 12px; min-width:180px; text-align:left; }
+            .ticket-tab .title { font-weight:700; font-size:13px; }
+            .ticket-tab .subtitle { opacity:.6; font-size:12px; }
+            .ticket-tab.active { background:#22c55e; color:#ffffff; border:none; }
+            .ticket-tab.active .subtitle { opacity:.95; }
+            .ticket-indicators { display:flex; justify-content:center; gap:12px; padding:0 6px 4px; }
+            .ticket-indicators .bar { width:38px; height:4px; border-radius:4px; background:#e5e7eb; }
+            .ticket-indicators .bar.active { background:#22c55e; }
+        </style>
+        <div class="tickets-block">
+            <div class="tickets-title">Tickets: {{ $___tickets }}</div>
+            @php
+                $__pidTabs = isset($__project) ? (string) ($__project->_id ?? $__project->id) : (isset($project) ? (string) ($project->_id ?? $project->id) : null);
+                $__ticketList = collect();
+                if ($__pidTabs) {
+                    $__ticketList = \App\Models\Ticket::where('project_id', $__pidTabs)
+                        ->orderByDesc('created_at')
+                        ->limit(10)
+                        ->get();
+                }
+            @endphp
+            <div class="tickets-tab-scroll">
+                @forelse($__ticketList as $__idx => $__tk)
+                    <button type="button" class="ticket-tab {{ $__idx === 0 ? 'active' : '' }}">
+                        <div class="title">{{ $__tk->code ?? '' }}</div>
+                        <div class="subtitle">{{ $__tk->title ?? '' }}</div>
+                    </button>
+                @empty
+                    <button type="button" class="ticket-tab active">
+                        <div class="title">No tickets</div>
+                        <div class="subtitle">Create ticket to see here</div>
+                    </button>
+                @endforelse
+            </div>
+            <div class="ticket-indicators"></div>
+        </div>
+        <script>
+            (function () {
+                var blocks = document.currentScript.previousElementSibling;
+                // If script insertion context changes, fall back to query
+                if (!blocks || !blocks.classList || !blocks.classList.contains('tickets-block')) {
+                    blocks = document.querySelectorAll('.tickets-block');
+                } else {
+                    blocks = [blocks];
+                }
+                (blocks instanceof NodeList ? blocks : Array.from(blocks)).forEach(function (block) {
+                    var tabs = block.querySelectorAll('.ticket-tab');
+                    var indicators = block.querySelector('.ticket-indicators');
+                    if (indicators) {
+                        indicators.innerHTML = '';
+                        tabs.forEach(function (t, i) {
+                            var bar = document.createElement('div');
+                            bar.className = 'bar' + (t.classList.contains('active') ? ' active' : '');
+                            indicators.appendChild(bar);
+                        });
+                    }
+                    tabs.forEach(function (tab, idx) {
+                        tab.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            tabs.forEach(function (t) { t.classList.remove('active'); });
+                            tab.classList.add('active');
+                            var bars = block.querySelectorAll('.ticket-indicators .bar');
+                            bars.forEach(function (b, i) { b.classList.toggle('active', i === idx); });
+                        });
+                    });
+                    var scroller = block.querySelector('.tickets-tab-scroll');
+                    if (scroller) {
+                        scroller.addEventListener('wheel', function (e) {
+                            if (e.deltaY === 0) return;
+                            e.preventDefault();
+                            scroller.scrollLeft += e.deltaY;
+                        }, { passive: false });
+                    }
+                });
+            })();
+        </script>
+
+                <!-- Description Row -->
+                <!-- <div class="d-flex justify-content-between align-items-center px-2 py-1 mb-1"
+                    style="background-color: #f1f5f9; border-radius: 10px;">
+                    <div class="d-flex align-items-center gap-2" style="background: #ecfbdc;">
+                        <img src="{{ URL::asset('/build/img/flag.svg') }}" width="16" height="16" alt="flag">
+                    </div>
+                    <div>
+                        <small style="color: #64748b; font-size: 14px;">task descirtion </small>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <span style="width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                        <small style="font-size: 12px; color: #22c55e;">low prieorry</small>
+                    </div>
+                </div> -->
+
+
+
+                <!-- Ticket Items -->
+                <!-- Tickets list (static) -->
+                <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 13px;margin:7px;">
+                    <!-- Ticket Header -->
+                    @php
+                        $__pidHeader = isset($__project) ? (string) ($__project->_id ?? $__project->id) : (isset($project) ? (string) ($project->_id ?? $project->id) : null);
+                        $__ticketsHeader = collect();
+                        if ($__pidHeader) {
+                            $__ticketsHeader = \App\Models\Ticket::where('project_id', $__pidHeader)
+                                ->orderByDesc('created_at')
+                                ->limit(20)
+                                ->get();
+                        }
+                    @endphp
+                    <div style="max-height: 150px; overflow-y: auto; padding-right: 6px;">
+                        @forelse($__ticketsHeader as $__ticket)
+                            @php
+                                $__ticketId = (string) ($__ticket->_id ?? $__ticket->id);
+                                $__tasksForTicket = \App\Models\Task::where('ticket_id', $__ticketId)->count();
+                            @endphp
+                            <div class="d-flex justify-content-between flex-wrap">
+                                <div style="color: #1a73e8; margin-left: 8px;"><strong>Tickets</strong><br>{{ $__ticket->code ?? '' }}</div>
+                                <div style="color: #1a73e8;"><strong>Section</strong><br>{{ $__ticket->section_name ?? '-' }}</div>
+                                <div style="color: #1a73e8;"><strong>Ticket Title</strong><br>{{ $__ticket->title ?? '' }}</div>
+                                <div class="ticket-edit-trigger" title="Edit ticket" style="cursor: pointer;">
+                                    <img src="{{ URL::asset('/build/img/pen.svg') }}" alt="Edit" width="20px;" height="20px">
                                 </div>
                             </div>
+
+                            <!-- Task Info -->
+                            <div style="margin-top: 0.6rem; display: flex; align-items: center; text-align:center; flex-wrap: nowrap; justify-content:space-between; background-color: #fff; border-radius: 10px; padding: 6px; font-size: 14px; color: #333; margin: 7px;">
+                                <span style="margin-right: 5px; font-weight: bold;"> Tasks
+                                    <p style="margin:0;color:#111">{{ $__tasksForTicket }}</p></span>
+                                <span style="margin-right: 5px; color: #ccc;">|</span>
+                                <span style="margin-right: 5px; color: #28a745;">Start:
+                                    <p style="color: black;">{{ optional($__ticket->start_date)->toDateString() ?? '-' }}</p>
+                                </span>
+                                <span style="margin-right: 5px; color: #ccc;">|</span>
+                                <span style="margin-right: 5px; color: #28a745;">Deliver:
+                                    <p style="color: black;">{{ optional($__ticket->end_date)->toDateString() ?? '-' }}</p>
+                                </span>
+                                <span style="margin-right: 5px; color: #ccc;">|</span>
+
+                                <!-- Avatars (static dots) -->
+                                <div style="display: flex; align-items: center; margin-left: 10px; gap:6px;">
+                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#60a5fa; display:inline-block;"></span>
+                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#a78bfa; display:inline-block;"></span>
+                                    <span style="width: 22px; height: 22px; border-radius: 50%; background:#f472b6; display:inline-block;"></span>
+                                </div>
+                            </div>
+                        @empty
+                            <div style="background:#fff; border-radius:10px; padding:8px; margin:7px; color:#64748b;">No tickets found.</div>
+                        @endforelse
+                    </div>
+                   
+
+                  
+
+                    <!-- Task Progress & Status -->
+                    <div class="d-flex justify-content-between align-items-center mt-1 mb-1 " style="background-color: #fff;padding:5px;border-radius:10px;margin:7px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 12px; color: #4fc3f7;">0%</div>
+                            <div class="progress"
+                                style="height: 8px; width: 90px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+                                <div class="progress-bar" role="progressbar"
+                                    style="width: 0%; background-color: #4fc3f7;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <div style="color: #ccc;">
+                            <p>|</p>
+                        </div>
+
+
+                        <!-- Center Section -->
+                        <div style="text-align: center;">
+                            <div style="font-size: 26px;">
+                                <span style="color: #8BC34A;">●</span>
+                                <span style="color: #FF9800;">●</span>
+                                <span style="color: #F44336;">●</span>
+                                <span style="color: #9C27B0;">●</span>
+                                <span style="color: #4CAF50;">●</span>
+                            </div>
+                        <div style="font-size: 15px; margin-top: 2px; color: #555;">
+                                <span>1</span>
+                                <span style="margin-left: 9px;">2</span>
+                                <span style="margin-left: 9px;">3</span>
+                                <span style="margin-left: 9px;">1</span>
+                                <span style="margin-left: 9px;">8</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <div style="color: #ccc;">|</div>
+
+                        <!-- Right Side Flag -->
+                        <div style="background-color:#e9f8dd; border-radius: 2px; padding: 6px;margin-right:27px">
+                            <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="flag" width="24px" height="24px;">
+                        </div>
+
+                        <!-- Task Card -->
+                      
+
+
+                        {{-- <div class="d-flex align-items-center gap-2">
+                                    <img src="{{ URL::asset('/build/img/yelowflag.svg') }}" style="width: 20px; background-color: #fef3e3; border-radius: 5px; padding: 4px;" alt="flag">
+                        <button type="button" class="btn btn-sm btn-outline-primary ticket-edit-trigger"
+                            data-bs-toggle="modal" data-bs-target="#ticketModal"
+                            data-ticket-id="{{ $pt->_id ?? $pt->id }}"
+                            data-project-id="{{ $pt->project_id }}"
+                            @if(!empty($pt->section_name)) data-section-name="{{ $pt->section_name }}" @endif
+                            >Edit</button>
+                    </div> --}}
+                </div>  
+
+                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+
+                    <!-- Image / Icon -->
+                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                        <!-- Replace with actual image tag -->
+                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+
+                        <!-- Top Row: Title + Dropdowns -->
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-start;">
+
+                            <!-- Titles -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <!-- Logo Left -->
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                                    style="height: 32px; width: 32px; flex-shrink: 0;" />
+
+                                <!-- Title and Subtitle -->
+                                <div>
+                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
+                                    <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
+                                </div>
+
+                            </div>
+
+
+                            
+                        </div>
+
+                        <!-- Description -->
+                        <div style="font-size: 12px; color: #7a7a9d;">
+                            Task description will be here
+                        </div>
+
+                        <!-- Dates & Status Row -->
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
+
+                            <!-- Dates -->
+                        <div style="display: flex; gap: 5px; align-items: center; flex-wrap: nowrap; white-space: nowrap;">
+
+                                <!-- Start Date -->
+                                <div style="font-size: 13px; color: #1ca672; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                    <strong>Start:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                     
+                                </div>
+                                <!-- divider -->
+                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
+                                <!-- Deliver Date -->
+                                <div style="font-size: 12px; color: #00cc88; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                    <strong>Deliver:</strong>
+                                    <span style="color: #1b1b3a;">22.10.2024</span>
+                                     
+                                </div>
+                            </div>
+
+                            <!-- Status Badge -->
+                           
                         </div>
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+</div>     
+    @endforeach()
+                               
+
+                            
+                        </div>  
+                                           
+                    </div>
+
+                    
                 </div>
 
             </div>

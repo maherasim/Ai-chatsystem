@@ -18,6 +18,7 @@ class TaskController extends Controller
         $headers = \App\Models\Setting::all();
         // Always load all projects for the select dropdown
         $projects = Project::orderBy('title')->get();
+        $projectsdone = Project::orderBy('title')->get();
         $tasks = Task::orderByDesc('created_at')->limit(50)->get();
         $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
         $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
@@ -66,6 +67,7 @@ class TaskController extends Controller
             'employeeTasks'   => $employeeTasks,
             'employeetasks'   => $employeeTasks,
             'employee_tasks'  => $employeeTasks,
+            'projectsdone'    => $projectsdone,
         ]);
     }
 

@@ -87,7 +87,7 @@
     }
 </style>
 
- 
+
 
 <!-- content -->
 <div class="content main_content">
@@ -221,7 +221,7 @@
 
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
-                                            <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
+                                        <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             Project
                                         </span>
                                     </div>
@@ -267,8 +267,8 @@
                                             @forelse($firstTwo as $i => $path)
                                                 <img src="{{ asset('/'.$path) }}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; {{ $i>0 ? 'margin-left:-10px;' : '' }} z-index: {{ 2 - $i }};" />
                                             @empty
-                                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
-                                                <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
+                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
                                             @endforelse
                                         </div>
 
@@ -308,7 +308,7 @@
                                             @empty
                                                 <span style="background:#eef2f7; color:#2e3a59; padding:4px 8px; border-radius:10px; display:inline-block; white-space:nowrap;">Section</span>
                                             @endforelse
-                                        </div>
+                                    </div>
                                     </div>
 
                                     <!-- Progress Bars -->
@@ -348,12 +348,12 @@
                         @endforeach
                         
 
-                    </div>
+                                        </div>
 
-                </div>
-            </div>
+                                        </div>
+                                    </div>
 
-        </div>
+                                </div>
 
     </div>
 
@@ -2264,20 +2264,20 @@
                                     <strong>Deliver:</strong>
                                     <span style="color: #1b1b3a;">${end || '-'}</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
+                            </div>
 
                                 <!-- Icon + Count (same row) -->
                                 <div style="display: flex; align-items: center; gap: 6px; margin-left: 10px;">
-                                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
+                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
                                     <div style="background-color: #ff4d4f; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
                                         ${typeof task.issues_count === 'number' ? String(task.issues_count).padStart(2,'0') : '01'}
-                                    </div>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>
+
+                </div>
                 </div>
                 `;
                                 // append card
@@ -2443,7 +2443,7 @@
 
                 </div>
                 <!-- Modal Body -->
- 
+
 
 
             </div>
