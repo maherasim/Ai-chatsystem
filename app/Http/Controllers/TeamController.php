@@ -31,6 +31,55 @@ class TeamController extends Controller
                     if ($project && isset($project->logo_path)) {
                         $t->project_logo_path = $project->logo_path;
                     }
+
+                    // Resolve project sections/addresses for card scroller
+                    try {
+                        $sections = collect();
+                        $candidates = [];
+                        foreach (['sections','section_names','addresses','address_list','address','locations','location_names','location'] as $field) {
+                            if (isset($project->{$field}) && !empty($project->{$field})) {
+                                $candidates[] = $project->{$field};
+                            }
+                        }
+                        foreach ($candidates as $candidate) {
+                            if (is_string($candidate)) {
+                                $sections->push(trim($candidate));
+                                continue;
+                            }
+                            if (is_array($candidate)) {
+                                foreach ($candidate as $item) {
+                                    if (is_string($item)) {
+                                        $sections->push(trim($item));
+                                    } elseif (is_array($item)) {
+                                        foreach (['name','title','label','address'] as $k) {
+                                            if (isset($item[$k]) && is_string($item[$k]) && trim($item[$k]) !== '') {
+                                                $sections->push(trim($item[$k]));
+                                                break;
+                                            }
+                                        }
+                                    } elseif (is_object($item)) {
+                                        $arr = (array) $item;
+                                        foreach (['name','title','label','address'] as $k) {
+                                            if (isset($arr[$k]) && is_string($arr[$k]) && trim($arr[$k]) !== '') {
+                                                $sections->push(trim($arr[$k]));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            } elseif (is_object($candidate)) {
+                                $arr = (array) $candidate;
+                                foreach (['name','title','label','address'] as $k) {
+                                    if (isset($arr[$k]) && is_string($arr[$k]) && trim($arr[$k]) !== '') {
+                                        $sections->push(trim($arr[$k]));
+                                    }
+                                }
+                            }
+                        }
+                        $t->project_sections = $sections->filter()->unique()->values()->all();
+                    } catch (\Throwable $e) {
+                        $t->project_sections = [];
+                    }
                 }
             } catch (\Throwable $e) {
                 // ignore
@@ -95,8 +144,8 @@ class TeamController extends Controller
         } else {
             $tickets = [];
         }
-      //  dd($tickets);
-        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams'));
+     $teamtotalcount = Team::count();
+        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount'));
     }
 
     public function tickets(Request $request)

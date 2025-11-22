@@ -130,7 +130,7 @@
                         <!-- Left Side -->
                         <div>
                             <h3 style="margin: 0;">Our team</h3>
-                            <strong>Our Team:10</strong>
+                            <strong>Our Team:{{ $teamtotalcount }}</strong>
                         </div>
 
                         <!-- Right Side -->
@@ -299,9 +299,16 @@
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="d-flex justify-content-between px-1"
                                         style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
-                                        <span>Section #175%</span>
+                                        <div class="sections-scroll d-flex align-items-center gap-2" style="overflow-x: auto; white-space: nowrap; width: 100%; -ms-overflow-style: none; scrollbar-width: none;">
+                                            @php
+                                                $sections = $team->project_sections ?? [];
+                                            @endphp
+                                            @forelse($sections as $sec)
+                                                <span style="background:#eef2f7; color:#2e3a59; padding:4px 8px; border-radius:10px; display:inline-block; white-space:nowrap;">{{ $sec }}</span>
+                                            @empty
+                                                <span style="background:#eef2f7; color:#2e3a59; padding:4px 8px; border-radius:10px; display:inline-block; white-space:nowrap;">Section</span>
+                                            @endforelse
+                                        </div>
                                     </div>
 
                                     <!-- Progress Bars -->
@@ -2316,15 +2323,57 @@
                                     }
                                     const devEl = node.querySelector('select.developer-select');
                                     if (devEl && !devEl.dataset.enhanced) {
-                                        new Choices(devEl, {
+                                        let devChoices = null;
+                                        try {
+                                            devChoices = new Choices(devEl, {
                                             removeItemButton: true,
                                             placeholder: true,
                                             placeholderValue: 'Developers',
                                             searchPlaceholderValue: 'Search developer',
                                             shouldSort: false,
                                             classNames: { containerOuter: 'choices choices--developers' }
-                                        });
-                                        devEl.dataset.enhanced = '1';
+                                            });
+                                            devEl.dataset.enhanced = '1';
+                                        } catch (errInit) {
+                                            // Choices not available; fallback to native select
+                                        }
+
+                                        // Add 'Select all' and 'Clear' inline action buttons (works for both modes)
+                                        const container = devEl.parentElement;
+                                        if (container && !container.querySelector('.dev-actions')) {
+                                            const actions = document.createElement('div');
+                                            actions.className = 'dev-actions';
+                                            const btnAll = document.createElement('span');
+                                            btnAll.className = 'dev-action-btn';
+                                            btnAll.textContent = 'Select all';
+                                            const btnClear = document.createElement('span');
+                                            btnClear.className = 'dev-action-btn';
+                                            btnClear.textContent = 'Clear';
+                                            actions.appendChild(btnAll);
+                                            actions.appendChild(btnClear);
+                                            container.appendChild(actions);
+
+                                            btnAll.addEventListener('click', function (e) {
+                                                e.preventDefault();
+                                                const allValues = Array.from(devEl.options).map(function (o) { return o.value; });
+                                                if (devChoices) {
+                                                    try { devChoices.setChoiceByValue(allValues); } catch (err) {}
+                                                } else {
+                                                    // native fallback
+                                                    Array.from(devEl.options).forEach(function (o) { o.selected = true; });
+                                                    devEl.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                            });
+                                            btnClear.addEventListener('click', function (e) {
+                                                e.preventDefault();
+                                                if (devChoices) {
+                                                    try { devChoices.removeActiveItems(); } catch (err) {}
+                                                } else {
+                                                    Array.from(devEl.options).forEach(function (o) { o.selected = false; });
+                                                    devEl.dispatchEvent(new Event('change', { bubbles: true }));
+                                                }
+                                            });
+                                        }
                                     }
                                 } catch (e) {}
                             });
@@ -3067,6 +3116,57 @@
         background-color: #f3f4f6;
         color: #1b1b3a;
     }
+
+    /* Hide scrollbar but keep horizontal scrolling for sections list */
+    .sections-scroll {
+        -ms-overflow-style: none; /* IE/Edge */
+        scrollbar-width: none;    /* Firefox */
+    }
+    .sections-scroll::-webkit-scrollbar {
+        display: none;            /* Chrome/Safari */
+    }
+
+    /* Developer multi-select action buttons */
+    .dev-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 4px;
+    }
+    .dev-action-btn {
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        color: #374151;
+        border-radius: 8px;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+    }
+    .dev-action-btn:hover {
+        background: #eaf3ff;
+        border-color: #bfdbfe;
+        color: #1f2937;
+    }
+
+    /* Native select fallback styling (when Choices.js not loaded) */
+    select.priority-select,
+    select.developer-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 6px 28px 6px 10px;
+        font-size: 12px;
+        color: #1b1b3a;
+    }
+    select.developer-select {
+        min-width: 180px;
+    }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -3129,6 +3229,15 @@
             var tasksHidden = document.getElementById('tasksHiddenContainer');
             if (tasksHidden) tasksHidden.innerHTML = '';
         }
+
+        // Smooth horizontal wheel scrolling for hidden-scrollbar sections
+        document.querySelectorAll('.sections-scroll').forEach(function (el) {
+            el.addEventListener('wheel', function (e) {
+                if (e.deltaY === 0) return;
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+            }, { passive: false });
+        });
 
         function configureEditModal(teamId, updateUrl) {
             var data = window.teamsData && window.teamsData[teamId] ? window.teamsData[teamId] : null;
