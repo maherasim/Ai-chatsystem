@@ -14,7 +14,7 @@ use App\Models\User;
 
 class TeamController extends Controller
 {
-git    /**
+    /**
      * Convert a stored relative path (e.g. 'projects/xyz.jpg') to a publicly
      * accessible URL under /storage. Leaves absolute URLs unchanged.
      */
