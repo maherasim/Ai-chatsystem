@@ -245,7 +245,7 @@
 
                                         <!-- Left: Logo + Flag -->
                                         <div class="d-flex flex-column align-items-center gap-2">
-                                            <img src="{{ !empty($team->project_logo_path) ? asset('storage/' . $team->project_logo_path) : URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="height: 32px; width: 32px; object-fit: cover;" />
+                                            <img src="{{ !empty($team->project_logo_path) ? $team->project_logo_path : URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="height: 32px; width: 32px; object-fit: cover;" />
                                             <div style="background: #c8ede0; padding: 3px 6px;display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
                                             </div>
