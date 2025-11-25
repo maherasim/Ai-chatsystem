@@ -118,6 +118,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/team/tickets', [TeamController::class, 'tickets'])->name('team.tickets');
     Route::get('/team/tasks', [TeamController::class, 'tasksByTicket'])->name('team.tasks');
     Route::get('/team/developers', [TeamController::class, 'developers'])->name('team.developers');
+
+    // New workflow endpoint: project → tickets (separate from existing /team/tickets)
+    Route::get('/workflow/project-tickets', [TeamController::class, 'projectTicketsBasic'])->name('workflow.project.tickets');
 });
 Route::get('/teams', [TeamController::class, 'index'])->middleware('auth')->name('chat-team');
 Route::post('/teams', [TeamController::class, 'store'])->middleware('auth')->name('teams.store');

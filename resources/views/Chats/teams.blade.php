@@ -487,22 +487,45 @@
 
                 <!-- Pills / chips -->
                 <div class="d-flex align-items-center flex-nowrap" style="gap:8px; flex:0 0 auto; margin-left:8px;">
-                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
+                    @php
+                        $currentProjectTitle = isset($project) && $project ? ($project->title ?? 'Project') : 'All Projects';
+                        $currentProjectId = isset($selectedProjectId) ? (string) $selectedProjectId : null;
+                        $defaultProjectId = $currentProjectId ?: (isset($projects) && count($projects) ? (string) (($projects[0]->_id ?? $projects[0]->id) ?? '') : '');
+                    @endphp
+                    @php
+                        $allProjectsData = collect($projects ?? [])->map(function($p){
+                            return [
+                                'id' => (string) ($p->_id ?? $p->id),
+                                'title' => $p->title ?? 'Project',
+                                'logo' => (isset($p->logo_path) && $p->logo_path) ? asset('storage/'.ltrim($p->logo_path,'/')) : null,
+                            ];
+                        })->values()->all();
+                    @endphp
+                    <script>
+                        window.currentWorkflowProjectId = '{{ $defaultProjectId }}';
+                        window.allProjects = @json($allProjectsData);
+                    </script>
+                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="{{ $currentProjectId ? "openProjectTickets('{$currentProjectId}')" : 'openAllProjects()' }}"
                         style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
                         <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
-                        <div>Project Title</div>
+                        <div>{{ $currentProjectTitle }}</div>
                     </div>
 
-                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
-                        style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
-                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
-                        <div>Other Projects</div>
-                    </div>
-                    <div class="d-inline-flex align-items-center px-3 py-1" onclick="showProjectView()"
-                        style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
-                        <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
-                        <div>Other Projects</div>
-                    </div>
+                    @if(isset($projects) && $projects)
+                        @php
+                            $otherProjects = collect($projects)->filter(function($p) use ($currentProjectId) {
+                                $pid = (string) ($p->_id ?? $p->id ?? '');
+                                return $currentProjectId ? $pid !== $currentProjectId : true;
+                            })->take(2);
+                        @endphp
+                        @foreach($otherProjects as $op)
+                            <div class="d-inline-flex align-items-center px-3 py-1" onclick="openProjectTickets('{{ (string) ($op->_id ?? $op->id) }}')"
+                                style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; font-size:12px; color:#2e3a59; gap:8px;cursor:pointer">
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Icon" style="width:20px; height:20px;" />
+                                <div>{{ $op->title ?? 'Project' }}</div>
+                            </div>
+                        @endforeach
+                    @endif
 
 
                     <div class="d-inline-flex" style="background:#ffffff; border-radius:9px;">
@@ -534,21 +557,41 @@
                     </div>
 
 
-                    <div class="d-inline-flex" style="gap:8px;background:white">
-                        <div class="px-3 py-1" style="background:#a6f09c; color:#ffffff; border-radius:999px; font-size:12px;">
-                            Start: 01.04.2025 - 22:15
+                    @php
+                        $ticketStarts = collect($tickets ?? [])->pluck('start_date')->filter();
+                        $ticketEnds = collect($tickets ?? [])->pluck('end_date')->filter();
+                        $minStart = $ticketStarts->isNotEmpty() ? \Carbon\Carbon::parse($ticketStarts->min())->format('d.m.Y') : null;
+                        $maxEnd = $ticketEnds->isNotEmpty() ? \Carbon\Carbon::parse($ticketEnds->max())->format('d.m.Y') : null;
+                    @endphp
+                    @if($minStart || $maxEnd)
+                        <div class="d-inline-flex" style="gap:8px;background:white">
+                            @if($minStart)
+                                <div class="px-3 py-1" style="background:#a6f09c; color:#ffffff; border-radius:999px; font-size:12px;">
+                                    Start: {{ $minStart }}
+                                </div>
+                            @endif
+                            @if($maxEnd)
+                                <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">
+                                    Deliver: {{ $maxEnd }}
+                                </div>
+                            @endif
                         </div>
-                        <div class="px-3 py-1" style="background:#22c55e; color:#ffffff; border-radius:999px; font-size:12px;">
-                            Deliver: 07.04.2025 - 22:15
-                        </div>
-                    </div>
+                    @endif
 
 
                     <!-- Avatars -->
                     <div class="d-flex align-items-center" style="gap:6px; margin-left:6px;">
-                        <img src="https://i.pravatar.cc/28?img=3" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
-                        <img src="https://i.pravatar.cc/28?img=5" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
-                        <img src="https://i.pravatar.cc/28?img=8" alt="" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                        @php
+                            $avatarPaths = collect($teams ?? [])->pluck('developer_avatar_paths')->flatten()->filter()->unique()->take(3);
+                        @endphp
+                        @forelse($avatarPaths as $ap)
+                            <img src="{{ $ap }}" alt="avatar" style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff;">
+                        @empty
+                            <div class="d-inline-flex align-items-center justify-content-center"
+                                 style="width:28px; height:28px; border-radius:50%; border:2px solid #ffffff; background:#e5e7eb; color:#111827; font-size:12px; font-weight:600;">
+                                {{ strtoupper(substr($currentProjectTitle, 0, 1)) }}
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -874,238 +917,70 @@
 
                     <!-- Day labels (sticky, exactly above lines) -->
                     <div class="d-grid" style="grid-template-columns:repeat(30,1fr); position:sticky; top:0; z-index:2; background:#f6f6f8;">
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 1</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 2</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 3</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 4</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 5</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 6</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 7</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 8</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 9</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 10</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 11</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 12</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 13</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 14</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 15</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 16</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 17</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 18</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 19</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 20</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 21</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 22</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 23</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Thu 24</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Fri 25</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sat 26</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Sun 27</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Mon 28</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Tue 29</div>
-                        <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
+                        @php
+                            $baseDate = \Carbon\Carbon::now()->startOfMonth();
+                        @endphp
+                        @for ($i = 0; $i < 30; $i++)
+                            @php $d = $baseDate->copy()->addDays($i); @endphp
+                            <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">
+                                {{ $d->format('D j') }}
+                            </div>
+                        @endfor
                     </div>
 
                     <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
                     <div style="position:relative;">
-                        <!-- Pink task around 21:00 spanning 3 cols -->
-
-                        <div onclick="showProjectView()"
-                            style="position:absolute; top:80px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Yellow task around 18:00 spanning 4 cols -->
-                        <div onclick="showProjectView()"
-                            style="position:absolute; top:208px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#f59e0b; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- yellow -->
-                        <div onclick="showProjectView()"
-                            style="position:absolute; top:80px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Blue task around 13:00 spanning 4 cols -->
-                        <div onclick="showProjectView()"
-                            style="position:absolute; top:550px; left:calc((2 - 1) * (100%/6) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#3578a8; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- White task around 17:00 spanning 5 cols -->
-                        <div onclick="showProjectView()" style="position:absolute; top:816px; left:calc((16 - 1) * (100%/30) + 8px); width:calc((5 * (100%/18)) - 16px); background:#ffffff; color:#374151; padding:6px 8px; border-radius:10px; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,.08); border:1px solid #e5e7eb; display:flex; overflow:hidden;cursor:pointer">
-
-                            <!-- Left blue border -->
-                            <div style="width:4px; background:#3b82f6; border-radius:4px; margin-right:8px;"></div>
-
-                            <!-- Main content (title + % + avatars) -->
-                            <div class="d-flex flex-grow-1 justify-content-between align-items-center" style="width:100%; gap:6px;">
-
-                                <!-- Title + Icon -->
-                                <!-- Left Pink Section -->
-                                <div class="d-flex align-items-center">
-
-                                    <!-- Icon on Left -->
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}"
-                                        style="width:24px; height:24px; flex-shrink:0;" />
-
-                                    <!-- Text content stacked vertically -->
-                                    <div class="d-flex flex-column ms-3" style="line-height:1;">
-                                        <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                        <div style="font-size:11px; opacity:0.8;">Ticket #1 - #4</div>
+                        @php
+                            $rowIndex = 0;
+                            $ticketItems = collect($tickets ?? []);
+                            $sourceItems = $ticketItems->count() ? $ticketItems : collect($projects ?? [])->take(3);
+                        @endphp
+                        @foreach($sourceItems as $tk)
+                            @php
+                                $sd = isset($tk->start_date) && $tk->start_date ? \Carbon\Carbon::parse($tk->start_date) : null;
+                                $ed = isset($tk->end_date) && $tk->end_date ? \Carbon\Carbon::parse($tk->end_date) : $sd;
+                                $dayStart = $sd ? max(1, min(30, (int) $sd->day)) : max(1, min(30, ($loop->index % 5) + 1));
+                                $dayEnd = $ed ? max($dayStart, min(30, (int) $ed->day)) : $dayStart + 2;
+                                $span = max(1, min(30, $dayEnd) - $dayStart + 1);
+                                $topPx = 80 + ($rowIndex * 128);
+                                $rowIndex++;
+                                $status = strtolower((string)($tk->status ?? ''));
+                                $barColor = '#ec4899';
+                                if (in_array($status, ['in_progress','progress','ongoing'])) { $barColor = '#f59e0b'; }
+                                if (in_array($status, ['done','completed','complete'])) { $barColor = '#3578a8'; }
+                                $titleText = $tk->title ?? ($tk->project_title ?? ($project->title ?? 'Ticket'));
+                                $codeText = $tk->code ?? ('Ticket #' . ($loop->iteration));
+                                $tid = (string) ($tk->_id ?? $tk->id ?? '');
+                            @endphp
+                            @php
+                                // For the main timeline (overview), clicking any bar should open the Tickets view for the project
+                                $pid = (string) ($tk->project_id ?? ($project?->_id ?? $project->id ?? $selectedProjectId ?? ''));
+                            @endphp
+                            <div onclick="openProjectTickets('{{ $pid }}')"
+                                 style="position:absolute; top:{{ $topPx }}px; left:calc(({{ $dayStart }} - 1) * (100%/30) + 8px); width:calc(({{ $span }} * (100%/30)) - 16px);
+                                        display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px; cursor:pointer;">
+                                <div class="d-flex align-items-center justify-content-between"
+                                     style="background:{{ $barColor }}; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
+                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon" style="width:22px; height:22px; margin-right:8px;" />
+                                    <div class="d-flex flex-column" style="line-height:1;">
+                                        <div class="fw-semibold" style="font-size:13px;">{{ $titleText }}</div>
+                                        <div style="font-size:10px; opacity:0.9;">{{ $codeText }}</div>
                                     </div>
-
-
-                                </div>
-
-
-                                <!-- % Progress -->
-                                <div class="fw-semibold" style="white-space:nowrap;">0%</div>
-
-                                <!-- Avatars -->
-                                <div class="d-flex align-items-center" style="margin-left:8px;">
-                                    <div style="position:relative;">
-                                        <img src="https://i.pravatar.cc/24?img=1" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                        <img src="https://i.pravatar.cc/24?img=2" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                        <img src="https://i.pravatar.cc/24?img=3" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
+                                    <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">
+                                        {{ $tk->progress ?? ' ' }}
                                     </div>
                                 </div>
-
+                                <div class="d-flex align-items-center justify-content-end"
+                                     style="background:#ffffff; padding:0 12px; min-width:120px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+                                    @php $evAvatars = $avatarPaths ?? collect(); @endphp
+                                    <div style="display:flex; align-items:center;">
+                                        @foreach($evAvatars->take(3) as $ap)
+                                            <img src="{{ $ap }}" style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; {{ !$loop->first ? 'margin-left:-8px;' : '' }} position:relative; z-index:{{ 3 - $loop->index }};" />
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
+                        @endforeach
                     </div>
 
                 </div>
@@ -1403,130 +1278,7 @@
                     </div>
 
                     <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
-                    <div style="position:relative;">
-                        <!-- Pink task around 21:00 spanning 3 cols -->
-                        <div onclick="showTaskView()"
-                            style="position:absolute; top:90px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- pink task around 18:00 spanning 4 cols -->
-                        <div onclick="showTaskView()"
-                            style="position:absolute; top:170px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-                        <!--yyello  -->
-                        <div onclick="showTaskView()"
-                            style="position:absolute; top:250px; left:calc((2 - 1) * (100%/25) + 8px); width:calc((4 * (100%/13)) - 16px); 
-                            display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;cursor:pointer;">
-
-                            <!-- Pink Section -->
-                            <div class="d-flex align-items-center justify-content-between"
-                                style="background:#ec4899; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;">
-
-                                <!-- Icon -->
-                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="icon"
-                                    style="width:22px; height:22px; margin-right:8px;" />
-
-                                <!-- Text Content -->
-                                <div class="d-flex flex-column" style="line-height:1;">
-                                    <div class="fw-semibold" style="font-size:13px;">Project Title</div>
-                                    <div style="font-size:10px; opacity:0.9;">Ticket #3</div>
-                                </div>
-
-                                <!-- Percent -->
-                                <div class="fw-semibold ms-auto" style="font-size:14px; padding-left:15px;">45%</div>
-                            </div>
-
-                            <!-- White Section with Avatars -->
-                            <div class="d-flex align-items-center justify-content-end"
-                                style="background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
-
-                                <!-- Avatars (Close together) -->
-                                <div style="display:flex; align-items:center;">
-                                    <img src="https://i.pravatar.cc/24?img=1"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; position:relative; z-index:3;" />
-                                    <img src="https://i.pravatar.cc/24?img=2"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:2;" />
-                                    <img src="https://i.pravatar.cc/24?img=3"
-                                        style="width:24px; height:24px; border-radius:50%; border:2px solid #fff; margin-left:-8px; position:relative; z-index:1;" />
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-                    </div>
+                    <div id="projectTicketsEvents" style="position:relative;"></div>
 
                 </div>
             </div>
@@ -1821,91 +1573,8 @@
                         <div class="text-center" style="padding:8px 0; font-size:11px; color:#6b7280;">Wed 30</div>
                     </div>
 
-                    <!-- EVENTS: sample positions mimic screenshot (absolute coords) -->
-                    <div style="position:relative;">
-                        <!-- Pink task around 21:00 spanning 3 cols -->
-                        <div style="position:absolute; top:90px; left:calc((2 - 1) * (100%/96) + 8px); 
-            display:flex; border-radius:12px; overflow:hidden; 
-            box-shadow:0 2px 6px rgba(0,0,0,0.08); font-size:13px; font-family: Arial, sans-serif; width: 500px;">
-
-                            <!-- Left (Pink) Section -->
-                            <div style="background:#f43f7f; padding: 8px 10px; display:flex; align-items:center; gap:10px; width:160px;border-radius:10px;">
-
-                                <!-- Avatar -->
-                                <img src="https://i.pravatar.cc/40?img=12"
-                                    style="width:36px; height:36px; border-radius:6px; object-fit:cover;" />
-
-                                <!-- Text -->
-                                <div class="d-flex flex-column" style="color:#ffffff;">
-                                    <div style="font-weight:600; font-size:13px;">Task Title</div>
-                                    <div style="font-size:11px; opacity:0.8;">Task ID - Ticket #1</div>
-                                </div>
-                            </div>
-
-                            <!-- Right (White) Section -->
-                            <div class="d-flex align-items-center justify-content-end px-3"
-                                style="background:#ffffff; flex:1;">
-                                <div style="font-weight:600; font-size:13px; color:#1e293b;">25%</div>
-                            </div>
-                        </div>
-
-
-                        <!-- pink task around 18:00 spanning 4 cols -->
-                        <div style="position:absolute; top:217px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-                            <div style="display: flex; align-items: center; background: #fff; border-radius: 10px; padding: 8px 12px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); width: 260px; border-left: 6px solid #f43f5e;">
-
-                                <!-- Avatar -->
-                                <div style="margin-right: 10px;">
-                                    <img src="https://i.pravatar.cc/32?img=3" alt="Avatar"
-                                        style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff;" />
-                                </div>
-
-                                <!-- Text Content -->
-                                <div style="flex-grow: 1;">
-                                    <div style="font-weight: 600; font-size: 14px; color: #1e293b;">Task Title</div>
-                                    <div style="font-size: 12px; color: #64748b;">Task ID - Ticket #1</div>
-                                </div>
-
-                                <!-- Percentage -->
-                                <div style="font-weight: 600; font-size: 13px; color: #1e293b;">0%</div>
-                            </div>
-
-
-                        </div>
-                        <!--yyello  -->
-                        <div style="position:absolute; top:350px; left:calc((2 - 1) * (100%/96) + 8px); width:calc((4 * (100%/19)) - 16px); display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-                            <div class="d-flex align-items-center"
-                                style="width:280px; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px;">
-
-                                <!-- Left Pink Section -->
-                                <div class="d-flex justify-content-center align-items-center"
-                                    style="background:#ec4899; padding:6px; width:55px; height:55px;">
-                                    <img src="https://i.pravatar.cc/48?img=5"
-                                        style="width:42px; height:42px; border-radius:8px; object-fit:cover;" />
-                                </div>
-
-                                <!-- Right White Section -->
-                                <div class="d-flex flex-column justify-content-center flex-grow-1"
-                                    style="background:#ffffff; padding:6px 10px; position:relative;">
-
-                                    <!-- Top row (title + percentage) -->
-                                    <div class="d-flex align-items-center">
-                                        <div style="font-weight:600; color:#2e3a59; font-size:13px;">Task Title</div>
-                                        <div class="ms-auto" style="font-weight:600; font-size:13px; color:#2e3a59;">15%</div>
-                                    </div>
-
-                                    <!-- Bottom row (subtitle) -->
-                                    <div style="font-size:11px; color:#6b7280;">Task ID - Ticket #1</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-
-
-                    </div>
+                    <!-- EVENTS: dynamic tasks injected below -->
+                    <div id="taskCardsContainer" style="position:relative;"></div>
 
                 </div>
             </div>
@@ -3004,7 +2673,7 @@
 </script>
 
 <script>
-    function showProjectView() {
+    function showProjectView(autofetch = true) {
         // Show project header & details
         document.getElementById("mainHeader").style.display = "block";
 
@@ -3019,6 +2688,11 @@
         // Inactive button styles
         document.getElementById("viewTasks").style.background = "";
         document.getElementById("viewTasks").style.color = "#9ca3af";
+
+        // If triggered from the toggle, try auto-fetch tickets for current project
+        if (autofetch && window.currentWorkflowProjectId) {
+            fetchProjectTickets(window.currentWorkflowProjectId);
+        }
     }
 
     function goBack() {
@@ -3058,6 +2732,311 @@
         el.style.backgroundColor = '#22c55e';
         el.style.color = '#ffffff';
     }
+</script>
+
+<script>
+    // Provide a small pool of developer avatars for task cards (from teams collection)
+    window.teamDeveloperAvatars = @json(collect($teams ?? [])->pluck('developer_avatar_paths')->flatten()->filter()->unique()->values()->take(5));
+
+    function taskStatusToPercent(status) {
+        if (!status) return '0%';
+        const s = ('' + status).toLowerCase();
+        if (['done', 'completed', 'complete','new_task'].includes(s)) return '100%';
+        if (['in_progress', 'progress', 'ongoing','new_task'].includes(s)) return '45%';
+        return '0%';
+    }
+
+    function priorityToColor(priority) {
+        const p = ('' + (priority || '')).toLowerCase();
+        if (p === 'high') return '#f43f5e';
+        if (p === 'medium') return '#f59e0b';
+        if (p === 'low') return '#22c55e';
+        return '#f43f7f'; // default pink
+    }
+
+    async function openTicketTasks(ticketId) {
+        // toggle to Task view
+        showTaskView();
+        const container = document.getElementById('taskCardsContainer');
+        if (!container) return;
+        container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#6b7280;">Loading tasks...</div>';
+        try {
+            const res = await fetch('{{ url('/team/tasks') }}?ticket_id=' + encodeURIComponent(ticketId), { credentials: 'same-origin' });
+            const tasks = res.ok ? await res.json() : [];
+            renderTaskCards(tasks);
+        } catch (e) {
+            container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#ef4444;">Failed to load tasks</div>';
+        }
+    }
+
+    function renderTaskCards(tasks) {
+        const container = document.getElementById('taskCardsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!Array.isArray(tasks) || tasks.length === 0) {
+            container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#6b7280;">No tasks found for this ticket</div>';
+            return;
+        }
+        const avatars = (window.teamDeveloperAvatars || []).slice(0, 3);
+        tasks.forEach(function(t, idx) {
+            const topPx = 90 + (idx * 120);
+            const barColor = priorityToColor(t.priority);
+            const percent = taskStatusToPercent(t.status);
+            const projectLogo = t.project_logo_path || null;
+            const code = (t.ticket && t.ticket.code) ? t.ticket.code : '';
+
+            // Card wrapper
+            const card = document.createElement('div');
+            card.setAttribute('style',
+                'position:absolute; top:' + topPx + 'px; left:calc((2 - 1) * (100%/96) + 8px);' +
+                'display:flex; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08);' +
+                'font-size:13px; width:520px; background:#ffffff;');
+
+            // Left colored block with logo/avatar and text
+            const left = document.createElement('div');
+            left.setAttribute('style', 'background:' + barColor + '; padding:8px 10px; display:flex; align-items:center; gap:10px; width:180px; border-radius:10px;');
+
+            const logo = document.createElement('img');
+            logo.setAttribute('src', projectLogo ? projectLogo : '{{ URL::asset('/build/img/yekbon.svg') }}');
+            logo.setAttribute('style', 'width:36px; height:36px; border-radius:6px; object-fit:cover; background:#fff;');
+
+            const textWrap = document.createElement('div');
+            textWrap.setAttribute('class', 'd-flex flex-column');
+            textWrap.setAttribute('style', 'color:#ffffff;');
+            const titleEl = document.createElement('div');
+            titleEl.setAttribute('style', 'font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px;');
+            titleEl.textContent = t.title || 'Task';
+            const subEl = document.createElement('div');
+            subEl.setAttribute('style', 'font-size:11px; opacity:0.85;');
+            subEl.textContent = (t.id ? ('#' + String(t.id).slice(-6)) : '') + (code ? ' - ' + code : '');
+            textWrap.appendChild(titleEl);
+            textWrap.appendChild(subEl);
+
+            left.appendChild(logo);
+            left.appendChild(textWrap);
+
+            // Right white area with percent and avatars
+            const right = document.createElement('div');
+            right.setAttribute('class', 'd-flex align-items-center justify-content-end');
+            right.setAttribute('style', 'background:#ffffff; flex:1; padding:0 12px; gap:12px; border-top-right-radius:12px; border-bottom-right-radius:12px;');
+
+            const pct = document.createElement('div');
+            pct.setAttribute('style', 'font-weight:600; font-size:13px; color:#1e293b;');
+            pct.textContent = percent;
+
+            const avatarWrap = document.createElement('div');
+            avatarWrap.setAttribute('style', 'display:flex; align-items:center;');
+            avatars.forEach(function(src, aIdx) {
+                const av = document.createElement('img');
+                av.setAttribute('src', src);
+                av.setAttribute('style', 'width:24px; height:24px; border-radius:50%; border:2px solid #fff; ' + (aIdx > 0 ? 'margin-left:-8px;' : '') + ' position:relative; z-index:' + (3 - aIdx) + ';');
+                avatarWrap.appendChild(av);
+            });
+
+            right.appendChild(pct);
+            right.appendChild(avatarWrap);
+
+            card.appendChild(left);
+            card.appendChild(right);
+
+            container.appendChild(card);
+        });
+    }
+
+    async function openProjectTickets(projectId) {
+        if (!projectId) { showProjectView(); return; }
+        // remember selection for future toggles
+        window.currentWorkflowProjectId = projectId;
+        // show project view without triggering autofetch here (we will fetch explicitly)
+        showProjectView(false);
+        await fetchProjectTickets(projectId);
+    }
+
+    async function fetchProjectTickets(projectId) {
+        const container = document.getElementById('projectTicketsEvents');
+        if (!container) return;
+        container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#6b7280;">Loading tickets...</div>';
+        try {
+            const res = await fetch('{{ url('/workflow/project-tickets') }}?project_id=' + encodeURIComponent(projectId), { credentials: 'same-origin' });
+            const ticks = res.ok ? await res.json() : [];
+            renderProjectTickets(ticks);
+        } catch (e) {
+            container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#ef4444;">Failed to load tickets</div>';
+        }
+    }
+
+    function renderProjectTickets(tickets) {
+        const container = document.getElementById('projectTicketsEvents');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!Array.isArray(tickets) || tickets.length === 0) {
+            container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#6b7280;">No tickets for this project</div>';
+            return;
+        }
+        let rowIndex = 0;
+        tickets.forEach(function(tk, idx) {
+            const sd = tk.start_date ? new Date(tk.start_date) : null;
+            const ed = tk.end_date ? new Date(tk.end_date) : sd;
+            const dayStart = sd ? Math.max(1, Math.min(30, sd.getDate())) : Math.max(1, Math.min(30, (idx % 5) + 1));
+            const endDay = ed ? Math.max(dayStart, Math.min(30, ed.getDate())) : Math.min(30, dayStart + 2);
+            const span = Math.max(1, endDay - dayStart + 1);
+            const topPx = 90 + (rowIndex * 128);
+            rowIndex++;
+
+            const s = ('' + (tk.status || '')).toLowerCase();
+            let barColor = '#ec4899';
+            if (['in_progress','progress','ongoing'].includes(s)) barColor = '#f59e0b';
+            if (['done','completed','complete'].includes(s)) barColor = '#3578a8';
+
+            const outer = document.createElement('div');
+            outer.setAttribute('onclick', "openTicketTasks('" + (tk.id || '') + "')");
+            outer.setAttribute('style',
+                'position:absolute; top:' + topPx + 'px; left:calc((' + dayStart + ' - 1) * (100%/30) + 8px); width:calc((' + span + ' * (100%/30)) - 16px);' +
+                'display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px; cursor:pointer;');
+
+            const left = document.createElement('div');
+            left.setAttribute('class','d-flex align-items-center justify-content-between');
+            left.setAttribute('style','background:' + barColor + '; color:#ffffff; padding:6px 10px; flex:1; border-radius:7px;');
+
+            const icon = document.createElement('img');
+            icon.setAttribute('src', (tk.project_logo || '{{ URL::asset('/build/img/yekbon.svg') }}'));
+            icon.setAttribute('style','width:22px; height:22px; margin-right:8px;');
+
+            const text = document.createElement('div');
+            text.setAttribute('class','d-flex flex-column');
+            text.setAttribute('style','line-height:1;');
+            const title = document.createElement('div');
+            title.setAttribute('class','fw-semibold');
+            title.setAttribute('style','font-size:13px;');
+            title.textContent = tk.title || tk.code || 'Ticket';
+            const code = document.createElement('div');
+            code.setAttribute('style','font-size:10px; opacity:0.9;');
+            code.textContent = tk.code || ('Ticket #' + (idx + 1));
+            text.appendChild(title);
+            text.appendChild(code);
+
+            const pct = document.createElement('div');
+            pct.setAttribute('class','fw-semibold ms-auto');
+            pct.setAttribute('style','font-size:14px; padding-left:15px;');
+            pct.textContent = tk.progress ? String(tk.progress) : ' ';
+
+            left.appendChild(icon);
+            left.appendChild(text);
+            left.appendChild(pct);
+
+            const right = document.createElement('div');
+            right.setAttribute('class','d-flex align-items-center justify-content-end');
+            right.setAttribute('style','background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;');
+
+            const avatarWrap = document.createElement('div');
+            avatarWrap.setAttribute('style','display:flex; align-items:center;');
+            (window.teamDeveloperAvatars || []).slice(0,3).forEach(function(src, aIdx) {
+                const av = document.createElement('img');
+                av.setAttribute('src', src);
+                av.setAttribute('style','width:24px; height:24px; border-radius:50%; border:2px solid #fff; ' + (aIdx > 0 ? 'margin-left:-8px;' : '') + ' position:relative; z-index:' + (3 - aIdx) + ';');
+                avatarWrap.appendChild(av);
+            });
+            right.appendChild(avatarWrap);
+
+            outer.appendChild(left);
+            outer.appendChild(right);
+            container.appendChild(outer);
+        });
+    }
+
+    function openAllProjects() {
+        // Show project view and render list of all projects
+        showProjectView(false);
+        renderProjectList(Array.isArray(window.allProjects) ? window.allProjects : []);
+    }
+
+    function renderProjectList(projects) {
+        const container = document.getElementById('projectTicketsEvents');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!Array.isArray(projects) || projects.length === 0) {
+            container.innerHTML = '<div style="position:absolute; top:60px; left:16px; font-size:12px; color:#6b7280;">No projects found</div>';
+            return;
+        }
+
+        // Render stacked project bars similar to timeline ticket cards
+        const colors = ['#ec4899', '#f59e0b', '#3578a8', '#22c55e', '#8b5cf6'];
+        let rowIndex = 0;
+
+        projects.forEach(function(p, idx){
+            const topPx = 90 + (rowIndex * 128);
+            rowIndex++;
+            const barColor = colors[idx % colors.length];
+
+            const outer = document.createElement('div');
+            outer.setAttribute('style',
+                'position:absolute; top:' + topPx + 'px; left:8px; width:520px;' +
+                'display:flex; border-radius:10px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08); font-size:12px; cursor:pointer;');
+            outer.onclick = function(){ openProjectTickets(p.id); };
+
+            const left = document.createElement('div');
+            left.setAttribute('class','d-flex align-items-center justify-content-between');
+            left.setAttribute('style','background:' + barColor + '; color:#ffffff; padding:6px 10px; flex: 1; border-radius:7px;');
+
+            const icon = document.createElement('img');
+            icon.setAttribute('src', p.logo || '{{ URL::asset('/build/img/yekbon.svg') }}');
+            icon.setAttribute('style','width:22px; height:22px; margin-right:8px; border-radius:6px; background:#fff;');
+
+            const text = document.createElement('div');
+            text.setAttribute('class','d-flex flex-column');
+            text.setAttribute('style','line-height:1;');
+            const title = document.createElement('div');
+            title.setAttribute('class','fw-semibold');
+            title.setAttribute('style','font-size:13px;');
+            title.textContent = p.title || 'Project Title';
+            const code = document.createElement('div');
+            code.setAttribute('style','font-size:10px; opacity:0.9;');
+            code.textContent = 'Tickets';
+            text.appendChild(title);
+            text.appendChild(code);
+
+            const pct = document.createElement('div');
+            pct.setAttribute('class','fw-semibold ms-auto');
+            pct.setAttribute('style','font-size:14px; padding-left:15px;');
+            pct.textContent = '45%';
+
+            left.appendChild(icon);
+            left.appendChild(text);
+            left.appendChild(pct);
+
+            const right = document.createElement('div');
+            right.setAttribute('class','d-flex align-items-center justify-content-end');
+            right.setAttribute('style','background:#ffffff; padding:0 12px; min-width:140px; border-top-right-radius:10px; border-bottom-right-radius:10px;');
+
+            const avatarWrap = document.createElement('div');
+            avatarWrap.setAttribute('style','display:flex; align-items:center;');
+            (window.teamDeveloperAvatars || []).slice(0,3).forEach(function(src, aIdx) {
+                const av = document.createElement('img');
+                av.setAttribute('src', src);
+                av.setAttribute('style','width:24px; height:24px; border-radius:50%; border:2px solid #fff; ' + (aIdx > 0 ? 'margin-left:-8px;' : '') + ' position:relative; z-index:' + (3 - aIdx) + ';');
+                avatarWrap.appendChild(av);
+            });
+            right.appendChild(avatarWrap);
+
+            outer.appendChild(left);
+            outer.appendChild(right);
+            container.appendChild(outer);
+        });
+    }
+
+    // Show All Projects by default the first time the workflow offcanvas opens
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            var oc = document.getElementById('offcanvasRight');
+            if (!oc) return;
+            oc.addEventListener('shown.bs.offcanvas', function () {
+                if (!window.workflowInitDone) {
+                    window.workflowInitDone = true;
+                    openAllProjects();
+                }
+            });
+        } catch (_) {}
+    });
 </script>
 
 <!-- SweetAlert2 for delete confirmation -->

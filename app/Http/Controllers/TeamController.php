@@ -14,6 +14,23 @@ use App\Models\User;
 
 class TeamController extends Controller
 {
+git    /**
+     * Convert a stored relative path (e.g. 'projects/xyz.jpg') to a publicly
+     * accessible URL under /storage. Leaves absolute URLs unchanged.
+     */
+    private function toPublicUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+        $p = (string) $path;
+        // Already absolute (http/https) or already points to /storage or /build
+        if (preg_match('#^https?://#i', $p) || str_starts_with($p, '/storage/') || str_starts_with($p, '/build/')) {
+            return $p;
+        }
+        return asset('storage/' . ltrim($p, '/'));
+    }
+
     public function index(Request $request)
     {
         $headers = Setting::all();
@@ -29,7 +46,7 @@ class TeamController extends Controller
                         } catch (\Throwable $e) {}
                     }
                     if ($project && isset($project->logo_path)) {
-                        $t->project_logo_path = $project->logo_path;
+                        $t->project_logo_path = $this->toPublicUrl((string) $project->logo_path);
                     }
 
                     // Resolve project sections/addresses for card scroller
@@ -212,7 +229,7 @@ class TeamController extends Controller
                     $project = \App\Models\Project::find((string)($t->project_id));
                 }
                 if ($project && isset($project->logo_path)) {
-                    $projectLogo = $project->logo_path;
+                    $projectLogo = $this->toPublicUrl((string) $project->logo_path);
                 }
             } catch (\Throwable $e) {
                 // ignore resolution errors
@@ -253,6 +270,60 @@ class TeamController extends Controller
             })
             ->values();
         return response()->json($developers);
+    }
+
+    // New, dedicated tickets endpoint for workflow → project → tickets flow
+    public function projectTicketsBasic(Request $request)
+    {
+        $projectId = (string) $request->string('project_id');
+        if ($projectId === '') {
+            return response()->json([]);
+        }
+
+        // Resolve project logo once
+        $projectLogoUrl = null;
+        try {
+            $proj = Project::find($projectId);
+            if (!$proj) {
+                try { $proj = Project::find(new ObjectId($projectId)); } catch (\Throwable $e) {}
+            }
+            if ($proj && isset($proj->logo_path)) {
+                $projectLogoUrl = $this->toPublicUrl((string) $proj->logo_path);
+            }
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
+        // Fetch tickets strictly by project_id without reusing existing method,
+        // return minimal fields needed by the workflow UI
+        $tickets = Ticket::query()
+            ->where('project_id', $projectId)
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'id' => (string) ($t->_id ?? $t->id),
+                    'title' => $t->title ?? null,
+                    'code' => $t->code ?? null,
+                    'project_id' => (string) ($t->project_id ?? ''),
+                    'project_title' => $t->project_title ?? null,
+                    'project_logo' => null, // filled below
+                    'status' => $t->status ?? null,
+                    'start_date' => optional($t->start_date)?->toDateString(),
+                    'end_date' => optional($t->end_date)?->toDateString(),
+                ];
+            })
+            ->values();
+
+        // Attach resolved logo to all items
+        if ($tickets->isNotEmpty() && $projectLogoUrl) {
+            $tickets = $tickets->map(function ($row) use ($projectLogoUrl) {
+                $row['project_logo'] = $projectLogoUrl;
+                return $row;
+            });
+        }
+
+        return response()->json($tickets);
     }
 
     public function store(Request $request)
