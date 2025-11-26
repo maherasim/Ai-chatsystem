@@ -142,7 +142,7 @@
     }
 
     .employee-grid small {
-        color: #888;
+        color: #F2F2F280;
         font-size: 12px;
     }
 
@@ -170,7 +170,7 @@
     }
 
     .offcanvas-body::-webkit-scrollbar-thumb {
-        background-color: #ccc;
+        background-color: #F2F2F280;
         border-radius: 10px;
         border: 1px solid transparent;
     }
@@ -519,33 +519,31 @@
                                                 Days Left
                                             </strong>
                                             <div
-                                                style="color: #1e60a1; font-weight: 600; font-size: 12px;margin-left:13px;">
+                                                style="font-weight: 600; font-size: 12px;margin-left:13px;">
                                                 @php
-                                                    $daysLeft = null;
-                                                    $isOverdue = false;
-                                                    
+                                                    $daysDiff = null;
                                                     if (!empty($project->end_date)) {
                                                         try {
                                                             $endDate = $project->end_date instanceof \Carbon\Carbon ? $project->end_date : \Carbon\Carbon::parse($project->end_date);
                                                             $today = \Carbon\Carbon::today();
-                                                            
-                                                            // Calculate days left (positive) or days overdue (negative)
-                                                            $daysLeft = $today->diffInDays($endDate, false);
-                                                            
-                                                            // Check if project is overdue
-                                                            if ($endDate->isPast()) {
-                                                                $isOverdue = true;
-                                                            }
+                                                            // Positive => days left, 0 => due today, Negative => overdue
+                                                            $daysDiff = $today->diffInDays($endDate, false);
                                                         } catch (\Throwable $e) {
-                                                            $daysLeft = null;
+                                                            $daysDiff = null;
                                                         }
                                                     }
                                                 @endphp
-                                                @if($daysLeft !== null)
-                                                    @if($isOverdue)
-                                                        <span style="color: #dc3545;">{{ abs($daysLeft) }} Days Overdue</span>
+                                                @if($daysDiff !== null)
+                                                    @if($daysDiff < 0)
+                                                        <span style="color:#dc3545;">
+                                                            {{ abs($daysDiff) }} {{ \Illuminate\Support\Str::plural('day', abs($daysDiff)) }} overdue
+                                                        </span>
+                                                    @elseif($daysDiff === 0)
+                                                        <span style="color:#f59e0b;">Due today</span>
                                                     @else
-                                                        {{ $daysLeft }} Days Left
+                                                        <span style="color:#198754;">
+                                                            {{ $daysDiff }} {{ \Illuminate\Support\Str::plural('day', $daysDiff) }} left
+                                                        </span>
                                                     @endif
                                                 @else
                                                     -
@@ -768,6 +766,7 @@
 
         <!-- Body -->
         <div class="offcanvas-body pt-5" style="font-family: 'Segoe UI', sans-serif; background-color: #fff;">
+            <input type="hidden" id="offcanvasProjectRealId" value="">
 
             <!-- Project Title & ID -->
             <div class="d-flex align-items-center" style="margin-top: 0px;">
@@ -1026,7 +1025,7 @@
                 class="mt-3">
 
                 <!-- Edit the Project -->
-                <div style="text-align: center; flex: 1;cursor:pointer;" onclick="openEditModal()">
+                <div class="js-open-edit" onclick="openEditModal()" style="text-align: center; flex: 1;cursor:pointer;">
                     <div
                         style="background: #316b9e; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
                         <img src="{{ asset('build/img/editp.svg') }}" alt="Edit" width="30"
@@ -1253,33 +1252,304 @@
 
                     <!-- Task Priority -->
                 </div>
-                <!-- add project section -->
-                <div class="row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px; padding: 15px;">
-                    <!-- Heading -->
-                    <div class="mb-3">
-                        <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                <!-- EDIT: Project Phases -->
+                
+                <!-- Project Phases -->
+                <div class="row mt-2 p-3" style="background-color:#f7f9fc; border-radius: 12px;">
+                    <div class="mb-2">
+                        <label class="fw-semibold" style="font-size: 14px;">Project Phase</label>
+                        <div style="font-size: 12px; color: #7d7f85;">How many phases this project has</div>
                     </div>
-
-                    <!-- Section Wrapper -->
-                    <div id="sections-wrapper" class="w-100">
-                        <div class="row mb-2 section-row">
-                            <div class="col-4">
-                                <input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name"
-                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                    <div id="phases-wrapper-edit" class="w-100">
+                        <div class="phase-row-edit row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
+                            <div class="col-12 col-md-3">
+                                <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
                             </div>
-                            <div class="col-7">
-                                <input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description"
-                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            <div class="col-12 col-md-5">
+                                <input type="text" name="phases[0][description]" class="form-control" placeholder="Phase Description" style="background:#fff;"/>
                             </div>
-                            <div class="col-1 d-flex align-items-center">
-                                <img src="{{ asset('build/img/addfiled.svg') }}" alt="Add"
-                                    style="cursor:pointer; width:35px;" onclick="addSection(this)">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-2 flex-nowrap">
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
+                                            <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
+                                            <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <select name="phases[0][reminder_days]" class="form-select" style="background:#fff; min-width:160px; height:45px; border-radius:12px; border:1px solid #e0e0e0;">
+                                        <option value="">Select Reminder</option>
+                                        <option value="2">2 days</option>
+                                        <option value="3">3 days</option>
+                                        <option value="5">5 days</option>
+                                        <option value="7">7 days</option>
+                                        <option value="10">10 days</option>
+                                        <option value="15">15 days</option>
+                                    </select>
+                                    <div class="d-flex align-items-center gap-2" style="min-width:68px;">
+                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRowEdit(this)">
+                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRowEdit(this)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- add project section (grouped by phase) -->
+                <div class="row mt-2 p-3" style="background-color:#f7f9fc; border-radius: 12px;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
+                            <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <select id="globalPhaseSelect" class="form-select for m-select-sm" style="min-width:200px;">
+                                <option value="">Select Phase</option>
+                            </select>
+                            <button type="button" class="btn btn-sm" onclick="addSectionGroup()"
+                                    style="background:#22c55e; color:#fff; border:none; border-radius:8px; padding:6px 10px; font-weight:600;">
+                                    <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" >
 
+                            </button>
+                        </div>
+                    </div>
+                    <div id="section-groups-wrapper" class="w-100">
+                        <!-- group template injected by JS on load -->
+                    </div>
+                </div>
+
+                <script>
+                    function addPhaseRow(el) {
+                        const wrapper = document.getElementById('phases-wrapper');
+                        const rows = wrapper.querySelectorAll('.phase-row');
+                        const lastIndex = rows.length ? parseInt(rows[rows.length - 1].getAttribute('data-index'), 10) : 0;
+                        const next = isNaN(lastIndex) ? rows.length : (lastIndex + 1);
+                        const template = document.createElement('div');
+                        template.className = 'phase-row row g-2 align-items-center mb-2';
+                        template.setAttribute('data-index', String(next));
+                        template.setAttribute('style', 'background:#eef2f7; border-radius:10px; padding:10px;');
+                        template.innerHTML = `
+                            <div class="col-12 col-md-3">
+                                <input type="text" name="phases[${next}][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
+                            </div>
+                            <div class="col-12 col-md-5">
+                                <input type="text" name="phases[${next}][description]" class="form-control" placeholder="Phase Description" style="background:#fff;"/>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-2 flex-nowrap">
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
+                                            <div id="phaseStartDisplay-${next}" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInput-${next}').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInput-${next}" name="phases[${next}][start_date]" onchange="updatePhaseDateDisplay(${next}, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
+                                            <div id="phaseEndDisplay-${next}" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInput-${next}').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInput-${next}" name="phases[${next}][end_date]" onchange="updatePhaseDateDisplay(${next}, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <select name="phases[${next}][reminder_days]" class="form-select" style="background:#fff; min-width:160px; height:45px; border-radius:12px; border:1px solid #e0e0e0;">
+                                        <option value="">Select Reminder</option>
+                                        <option value="2">2 days</option>
+                                        <option value="3">3 days</option>
+                                        <option value="5">5 days</option>
+                                        <option value="7">7 days</option>
+                                        <option value="10">10 days</option>
+                                        <option value="15">15 days</option>
+                                    </select>
+                                    <div class="d-flex align-items-center gap-2" style="min-width:68px;">
+                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRow(this)">
+                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRow(this)">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        wrapper.appendChild(template);
+                        refreshPhaseOptions();
+                    }
+                    function removePhaseRow(el) {
+                        const row = el.closest('.phase-row');
+                        const wrapper = document.getElementById('phases-wrapper');
+                        if (wrapper && row) {
+                            if (wrapper.querySelectorAll('.phase-row').length === 1) {
+                                // keep at least one row; just clear
+                                row.querySelectorAll('input').forEach(i => i.value = '');
+                                row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+                                return;
+                            }
+                            row.remove();
+                        }
+                    }
+                    // Build phase options from entered phase titles
+                    function getPhaseTitles() {
+                        const titles = [];
+                        document.querySelectorAll('#phases-wrapper input[name^="phases"][name$="[title]"]').forEach(function(inp){
+                            const t = (inp.value || '').trim();
+                            if (t !== '') titles.push(t);
+                        });
+                        return titles;
+                    }
+                    function refreshPhaseOptions() {
+                        const titles = getPhaseTitles();
+                        const sel = document.getElementById('globalPhaseSelect');
+                        if (!sel) return;
+                        const current = sel.value;
+                        sel.innerHTML = '<option value="">Select Phase</option>' + titles.map(t => `<option value="${t}">${t}</option>`).join('');
+                        if (current && titles.includes(current)) sel.value = current;
+                        const val = sel.value || '';
+                        document.querySelectorAll('#section-groups-wrapper .section-phase-title').forEach(function(h){ h.value = val; });
+                    }
+                    document.addEventListener('input', function(e){
+                        if (e.target && e.target.matches('#phases-wrapper input[name^="phases"][name$="[title]"]')) {
+                            refreshPhaseOptions();
+                        }
+                        if (e.target && e.target.id === 'globalPhaseSelect') {
+                            const val = e.target.value || '';
+                            document.querySelectorAll('#section-groups-wrapper .section-phase-title').forEach(function(h){ h.value = val; });
+                        }
+                    });
+                    function addSectionGroup() {
+                        const wrapper = document.getElementById('section-groups-wrapper');
+                        const index = wrapper.querySelectorAll('.section-group').length;
+                        const div = document.createElement('div');
+                        div.className = 'section-group';
+                        div.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+                        div.innerHTML = `
+                            <div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;">
+                                <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" class="group-delete" style="width:24px; height:24px; cursor:pointer; ${index === 0 ? 'display:none;' : ''}" onclick="removeSectionGroup(this)">
+                            </div>
+                            <div class="mt-4" data-rows>
+                                ${sectionRowTemplate(index, 0)}
+                                ${sectionRowTemplate(index, 1)}
+                            </div>
+                        `;
+                        wrapper.appendChild(div);
+                        refreshPhaseOptions();
+                        refreshGroupDeleteIcons();
+                        // ensure first row shows plus only
+                        refreshRowIcons(div);
+                    }
+                    function removeSectionGroup(btn) {
+                        const g = btn.closest('.section-group');
+                        if (g) g.remove();
+                        refreshGroupDeleteIcons();
+                    }
+                    function addSectionRow(btn) {
+                        const group = btn.closest('.section-group');
+                        const rowsWrap = group.querySelector('[data-rows]');
+                        const gIdx = Array.prototype.indexOf.call(document.getElementById('section-groups-wrapper').children, group);
+                        const rIdx = rowsWrap.querySelectorAll('.section-row').length;
+                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplate(gIdx, rIdx));
+                        // set hidden phase title from global select
+                        const selVal = (document.getElementById('globalPhaseSelect')?.value || '');
+                        rowsWrap.lastElementChild.querySelector('input.section-phase-title').value = selVal;
+                        refreshRowIcons(group);
+                    }
+                    function removeSectionRow(btn) {
+                        const row = btn.closest('.section-row');
+                        const rowsWrap = row.parentElement;
+                        if (rowsWrap.querySelectorAll('.section-row').length === 1) {
+                            // clear instead of remove
+                            row.querySelectorAll('input[type="text"]').forEach(i => i.value='');
+                            return;
+                        }
+                        row.remove();
+                        const group = rowsWrap.closest('.section-group');
+                        if (group) refreshRowIcons(group);
+                    }
+                    function sectionRowTemplate(gIdx, rIdx) {
+                        return `
+                        <div class="row section-row g-2 align-items-center mb-2" style="background:#eef2f7; border-radius:10px; padding:10px;">
+                            <div class="col-12 col-md-4">
+                                <input type="text" name="sections[${gIdx}_${rIdx}][name]" class="form-control" placeholder="Section Name" style="background:#fff; font-size:13px; color:#7d7f85;"/>
+                                <input type="hidden" class="section-phase-title" name="sections[${gIdx}_${rIdx}][phase_title]" value=""/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="text" name="sections[${gIdx}_${rIdx}][description]" class="form-control" placeholder="Section Description" style="background:#fff; font-size:13px; color:#7d7f85;"/>
+                            </div>
+                            <div class="col-12 col-md-2 d-flex align-items-center gap-2 justify-content-end">
+                                <img src="{{ asset('build/img/plus.svg') }}" class="row-plus" alt="Add" style="width:24px; height:24px; cursor:pointer; display:${rIdx === 0 ? 'inline' : 'none'};" onclick="addSectionRow(this)">
+                                <img src="{{ asset('build/img/trash.svg') }}" class="row-trash" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:${rIdx === 0 ? 'none' : 'inline'};" onclick="removeSectionRow(this)">
+                            </div>
+                        </div>`;
+                    }
+                    // init one group on load
+                    document.addEventListener('DOMContentLoaded', function(){
+                        addSectionGroup();
+                        refreshPhaseOptions();
+                        refreshGroupDeleteIcons();
+                    });
+
+                    // helper: update display text for phase dates
+                    function updatePhaseDateDisplay(idx, which, value) {
+                        if (!value) return;
+                        try {
+                            var d = new Date(value);
+                            var text = ('0' + d.getDate()).slice(-2) + ':' + ('0' + (d.getMonth() + 1)).slice(-2) + ':' + d.getFullYear();
+                            if (which === 'start') {
+                                var el = document.getElementById('phaseStartDisplay-' + idx);
+                                if (el) el.innerText = text;
+                            } else {
+                                var el2 = document.getElementById('phaseEndDisplay-' + idx);
+                                if (el2) el2.innerText = text;
+                            }
+                        } catch (_) {}
+                    }
+
+                    // Show group delete only when more than one group exists
+                    function refreshGroupDeleteIcons() {
+                        const groups = document.querySelectorAll('#section-groups-wrapper .section-group');
+                        groups.forEach(function(g, idx){
+                            const del = g.querySelector('.group-delete');
+                            if (!del) return;
+                            if (groups.length <= 1 && idx === 0) {
+                                del.style.display = 'none';
+                            } else {
+                                del.style.display = 'inline';
+                            }
+                        });
+                    }
+
+                    // Toggle icons so first row shows only plus; subsequent rows show trash
+                    function refreshRowIcons(group) {
+                        if (!group) return;
+                        const rows = group.querySelectorAll('.section-row');
+                        rows.forEach(function(row, idx){
+                            const plus = row.querySelector('.row-plus');
+                            const trash = row.querySelector('.row-trash');
+                            if (!plus || !trash) return;
+                            if (idx === 0) {
+                                plus.style.display = 'inline';
+                                trash.style.display = 'none';
+                            } else {
+                                plus.style.display = 'none';
+                                trash.style.display = 'inline';
+                            }
+                        });
+                    }
+                </script>
 
 
                 <!-- Footer Buttons -->
@@ -1486,7 +1756,7 @@
 
                     <!-- Expired Reminder -->
                     <div class="col-12 col-md-6">
-                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder  </label>
+                        <label class="fw-semibold" style="font-size: 14px;">Expired Reminder  nice</label>
                         <div style="font-size: 12px; color: #7d7f85;">Set a reminder before expired</div>
 
                         <!-- Reminder Buttons -->
@@ -1524,34 +1794,81 @@
                             </div>
                         </div>
                     </div>
-
+                 
                     <!-- Task Priority -->
                 </div>
-                <!-- add project section -->
-                <div class="row mt-2 p-3" style="background-color: #f7f9fc; border-radius: 12px; padding: 15px;">
-                    <!-- Heading -->
-                    <div class="mb-3">
-                        <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
-                        <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                <div class="row mt-2 p-3" style="background-color:#f7f9fc; border-radius: 12px;">
+                    <div class="mb-2">
+                        <label class="fw-semibold" style="font-size: 14px;">Project Phase</label>
+                        <div style="font-size: 12px; color: #7d7f85;">How many phases this project has</div>
                     </div>
-
-                    <!-- Section Wrapper -->
-                    <div id="sections-wrapper1" class="w-100">
-                        <div class="row mb-2 section-row1">
-                            <div class="col-4">
-                                <input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name"
-                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                    <div id="phases-wrapper-edit" class="w-100">
+                        <div class="phase-row-edit row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
+                            <div class="col-12 col-md-3">
+                                <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
                             </div>
-                            <div class="col-7">
-                                <input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description"
-                                    style="background-color: #fff; font-size: 13px; color: #7d7f85;" />
+                            <div class="col-12 col-md-5">
+                                <input type="text" name="phases[0][description]" class="form-control" placeholder="Phase Description" style="background:#fff;"/>
                             </div>
-                            <div class="col-1 d-flex align-items-center">
-                                <img src="{{ asset('build/img/addfiled.svg') }}" alt="Add"
-                                    style="cursor:pointer; width:35px;" onclick="editSection(this)">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-2 flex-nowrap">
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
+                                            <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="position: relative; min-width: 220px;">
+                                        <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
+                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
+                                            <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <select name="phases[0][reminder_days]" class="form-select" style="background:#fff; min-width:160px; height:45px; border-radius:12px; border:1px solid #e0e0e0;">
+                                        <option value="">Select Reminder</option>
+                                        <option value="2">2 days</option>
+                                        <option value="3">3 days</option>
+                                        <option value="5">5 days</option>
+                                        <option value="7">7 days</option>
+                                        <option value="10">10 days</option>
+                                        <option value="15">15 days</option>
+                                    </select>
+                                    <div class="d-flex align-items-center gap-2" style="min-width:68px;">
+                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRowEdit(this)">
+                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRowEdit(this)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- edit: add project section (grouped by phase, same design as create) -->
+                <div class="row mt-2 p-3" style="background-color:#f7f9fc; border-radius: 12px;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <label class="fw-semibold" style="font-size: 14px;">Add Project Section</label>
+                            <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <select id="globalPhaseSelectEdit" class="form-select form-select-sm" style="min-width:200px;">
+                                <option value="">Select Phase</option>
+                            </select>
+                            <button type="button" class="btn btn-sm" onclick="addSectionGroupEdit()"
+                                    style="background:#22c55e; color:#fff; border:none; border-radius:8px; padding:6px 10px; font-weight:600;">
+                                    <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRow(this)">
+
+                            </button>
+                        </div>
+                    </div>
+                    <div id="section-groups-wrapper-edit" class="w-100"></div>
                 </div>
 
 
@@ -1569,7 +1886,7 @@
                         <button class="btn" type="submit"
                             style="background:transparent; color:#7d7f85; border:none; font-weight:500;"
                             >
-                            Save & Close
+                            Save & Close 
                         </button>
                     </div>
                 </div>
@@ -1770,6 +2087,10 @@
 
     function populateProjectOffcanvas(project) {
         if (!project) return;
+        try {
+            var hid = document.getElementById('offcanvasProjectRealId');
+            if (hid) hid.value = String(project.id || project._id || '');
+        } catch (_) {}
         setImgById('offcanvasProjectLogo', project.logo_url, "{{ URL::asset('/build/img/yekbon.svg') }}");
         setTextById('offcanvasProjectTitle', project.title || 'Project Title');
         setTextById('offcanvasProjectId', (project.code && String(project.code).trim()) ? project.code : (project.id ? String(project.id) : 'Project ID'));
@@ -1953,6 +2274,11 @@
     // Build a lightweight map of projects rendered on this page for quick prefill
     window.projectMap = window.projectMap || {};
     @foreach (($projects ?? []) as $p)
+        @php
+            $pPhases = is_array($p->phases) ? $p->phases : (is_string($p->phases) ? (json_decode($p->phases, true) ?: []) : []);
+            $pSections = is_array($p->sections) ? $p->sections : (is_string($p->sections) ? (json_decode($p->sections, true) ?: []) : []);
+            $pAttachments = is_array($p->attachments) ? $p->attachments : (is_string($p->attachments) ? (json_decode($p->attachments, true) ?: []) : []);
+        @endphp
         window.projectMap["{{ (string) ($p->_id ?? $p->id) }}"] = {
             id: "{{ (string) ($p->_id ?? $p->id) }}",
             code: @json($p->code),
@@ -1965,8 +2291,9 @@
             progress_percent: {!! (int) ($p->progress_percent ?? 0) !!},
             status: @json($p->status),
             logo_url: "{{ $p->logo_path ? asset('storage/' . $p->logo_path) . '?v=' . (optional($p->updated_at)->timestamp ?? time()) : '' }}",
-            sections: @json($p->sections ?? []),
-            attachments: @json($p->attachments ?? [])
+            phases: @json($pPhases),
+            sections: @json($pSections),
+            attachments: @json($pAttachments)
         };
     @endforeach
 
@@ -2070,28 +2397,46 @@
                 renderEditAttachments(attachments);
             } catch (e) { }
 
-            // Sections
+            // ---- Phases (render first so dependent UI can use titles) ----
             try {
-                var wrapper = document.getElementById('sections-wrapper1');
-                if (wrapper) {
-                    wrapper.innerHTML = '';
-                    var sections = Array.isArray(project.sections) ? project.sections : [];
+                var phasesNorm = Array.isArray(project.phases) ? project.phases :
+                    (typeof project.phases === 'string' ? (function(){ try { return JSON.parse(project.phases) || []; } catch(_) { return []; } })() : []);
+                renderEditPhases(phasesNorm);
+                var titlesForSelect = Array.isArray(phasesNorm)
+                    ? phasesNorm.map(function(p){ return (p && p.title) ? String(p.title) : ''; }).filter(Boolean)
+                    : [];
+                setEditPhaseOptions(titlesForSelect);
+            } catch (_) {}
+
+            // Sections (edit - same design as create)
+            try {
+                var wrap = document.getElementById('section-groups-wrapper-edit');
+                if (wrap) {
+                    wrap.innerHTML = '';
+                    // Build one group initially
+                    var g = document.createElement('div');
+                    g.className = 'section-group-edit';
+                    g.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+                    g.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows></div>';
+                    wrap.appendChild(g);
+                    var rowsWrap = g.querySelector('[data-rows]');
+                    var sections = Array.isArray(project.sections) ? project.sections :
+                        (typeof project.sections === 'string' ? (function(){ try { return JSON.parse(project.sections) || []; } catch(_) { return []; } })() : []);
                     if (sections.length === 0) {
-                        var row = document.createElement('div');
-                        row.className = 'row mb-2 section-row1';
-                        row.innerHTML = '<div class="col-4"><input type="text" name="sections[0][name]" class="form-control" placeholder="Section Name" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-7"><input type="text" name="sections[0][description]" class="form-control" placeholder="Section Description" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-1 d-flex align-items-center"><img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="editSection(this)"></div>';
-                        wrapper.appendChild(row);
+                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, 0));
                     } else {
                         sections.forEach(function(sec, idx){
-                            var row = document.createElement('div');
-                            row.className = 'row mb-2 section-row1';
-                            row.innerHTML = '<div class="col-4"><input type="text" name="sections['+idx+'][name]" class="form-control" placeholder="Section Name" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-7"><input type="text" name="sections['+idx+'][description]" class="form-control" placeholder="Section Description" style="background-color: #fff; font-size: 13px; color: #7d7f85;" /></div><div class="col-1 d-flex align-items-center"><img src="{{ asset('build/img/addfiled.svg') }}" alt="Add" style="cursor:pointer; width:35px;" onclick="editSection(this)"></div>';
-                            wrapper.appendChild(row);
-                            var inputs = row.querySelectorAll('input');
-                            if (inputs[0]) inputs[0].value = (sec && sec.name) ? sec.name : '';
-                            if (inputs[1]) inputs[1].value = (sec && sec.description) ? sec.description : '';
+                            rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
+                            var row = rowsWrap.lastElementChild;
+                            var nameInput = row.querySelector('input[name="sections[0_'+idx+'][name]"]');
+                            var descInput = row.querySelector('input[name="sections[0_'+idx+'][description]"]');
+                            var phaseHidden = row.querySelector('input.section-phase-title-edit');
+                            if (nameInput) nameInput.value = (sec && sec.name) ? sec.name : '';
+                            if (descInput) descInput.value = (sec && sec.description) ? sec.description : '';
+                            if (phaseHidden) phaseHidden.value = (sec && sec.phase_title) ? sec.phase_title : '';
                         });
                     }
+                    refreshRowIconsEdit(g);
                 }
             } catch (ignored) {}
 
@@ -2104,7 +2449,14 @@
 </script>
 <!-- edit model pop-up -->
 <script>
-    function openEditModal() {
+    function openEditModal(id) {
+        try { console.debug('[Edit] openEditModal called with id:', id); } catch(_) {}
+        if (!id) {
+            var hid = document.getElementById('offcanvasProjectRealId');
+            if (hid && hid.value) { id = hid.value; }
+        }
+        if (id) { currentProjectId = id; }
+        try { console.debug('[Edit] using currentProjectId:', currentProjectId, 'title:', window.projectMap && window.projectMap[currentProjectId] ? window.projectMap[currentProjectId].title : '(unknown)'); } catch(_) {}
         var offcanvasElement = document.getElementById('offcanvasRight');
         if (offcanvasElement) {
             var offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
@@ -2121,21 +2473,346 @@
                     console.warn('No currentProjectId set');
                 }
                 document.getElementById('projectEditForm').setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
-                // Prefill by fetching current project JSON (fallback when projectMap missing or stale)
-                fetch('/api/tickets/projects', { credentials: 'same-origin' })
-                    .then(r => r.json())
-                    .then(list => {
-                        var found = Array.isArray(list) ? list.find(p => String(p.id) === String(currentProjectId)) : null;
-                        // list from tickets.projects only has id/title; so we still need a detailed endpoint.
-                    })
-                    .catch(() => {});
+                // Prefill from cached map if present
                 if (window.projectMap && window.projectMap[currentProjectId]) {
+                    try { console.debug('[Edit] prefill from cache:', window.projectMap[currentProjectId]); } catch(_) {}
                     prefillEditForm(window.projectMap[currentProjectId]);
                 }
+                // Explicitly load phases and sections into edit modal from in-page data
+                try {
+                    var pObj = (window.projectMap && window.projectMap[currentProjectId]) ? window.projectMap[currentProjectId] : null;
+                    if (pObj) {
+                        loadProjectIntoEditModal(pObj);
+                        loadSectionsIntoEditModal(pObj);
+                    }
+                } catch (_) {}
             } catch (e) { console.error(e); }
             pauseModal.show();
         }, 400);
     }
+</script>
+<script>
+    // Explicit loaders per user's flow - ensure phases and sections appear reliably in edit modal
+    function loadProjectIntoEditModal(project) {
+        if (!project) return;
+        try {
+            var wrap = document.getElementById('phases-wrapper-edit');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            // Normalize phases to array
+            var phases = Array.isArray(project.phases) ? project.phases :
+                (typeof project.phases === 'string' ? (function(){ try { return JSON.parse(project.phases) || []; } catch(_) { return []; } })() : []);
+
+            if (!phases.length) {
+                // Add a single empty row
+                addPhaseRowEdit();
+                return;
+            }
+
+            // Create a row for each phase and fill values
+            phases.forEach(function(p, idx) {
+                addPhaseRowEdit();
+                var titleInput = document.querySelector('#phases-wrapper-edit input[name="phases['+idx+'][title]"]');
+                var descInput  = document.querySelector('#phases-wrapper-edit input[name="phases['+idx+'][description]"]');
+                var startInput = document.getElementById('phaseStartInputEdit-' + idx);
+                var endInput   = document.getElementById('phaseEndInputEdit-' + idx);
+                var remSel     = document.querySelector('#phases-wrapper-edit select[name="phases['+idx+'][reminder_days]"]');
+
+                if (titleInput) titleInput.value = p && p.title ? String(p.title) : '';
+                if (descInput)  descInput.value  = p && p.description ? String(p.description) : '';
+                if (startInput && p && p.start_date) {
+                    startInput.value = String(p.start_date);
+                    if (typeof updatePhaseDateDisplayEdit === 'function') updatePhaseDateDisplayEdit(idx, 'start', startInput.value);
+                }
+                if (endInput && p && p.end_date) {
+                    endInput.value = String(p.end_date);
+                    if (typeof updatePhaseDateDisplayEdit === 'function') updatePhaseDateDisplayEdit(idx, 'end', endInput.value);
+                }
+                if (remSel && p && p.reminder_days != null) {
+                    remSel.value = String(p.reminder_days);
+                }
+            });
+
+            // Also refresh the global phase dropdown from titles
+            try {
+                var titles = phases.map(function(pp){ return (pp && pp.title) ? String(pp.title) : ''; }).filter(Boolean);
+                if (typeof setEditPhaseOptions === 'function') setEditPhaseOptions(titles);
+            } catch (_) {}
+        } catch (_) {}
+    }
+
+    function loadSectionsIntoEditModal(project) {
+        if (!project) return;
+        try {
+            var wrap = document.getElementById('section-groups-wrapper-edit');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            // Normalize sections to array
+            var sections = Array.isArray(project.sections) ? project.sections :
+                (typeof project.sections === 'string' ? (function(){ try { return JSON.parse(project.sections) || []; } catch(_) { return []; } })() : []);
+
+            // Build one group and populate rows
+            var group = document.createElement('div');
+            group.className = 'section-group-edit';
+            group.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+            group.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows></div>';
+            wrap.appendChild(group);
+            var rowsWrap = group.querySelector('[data-rows]');
+
+            if (!sections.length) {
+                rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, 0));
+            } else {
+                sections.forEach(function(sec, idx){
+                    rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
+                    var row = rowsWrap.lastElementChild;
+                    var nameInput = row.querySelector('input[name="sections[0_'+idx+'][name]"]');
+                    var descInput = row.querySelector('input[name="sections[0_'+idx+'][description]"]');
+                    var phaseHidden = row.querySelector('input.section-phase-title-edit');
+                    if (nameInput) nameInput.value = (sec && sec.name) ? String(sec.name) : '';
+                    if (descInput) descInput.value = (sec && sec.description) ? String(sec.description) : '';
+                    if (phaseHidden) phaseHidden.value = (sec && sec.phase_title) ? String(sec.phase_title) : '';
+                });
+            }
+
+            if (typeof refreshRowIconsEdit === 'function') refreshRowIconsEdit(group);
+
+            // Populate phase dropdown from saved phases
+            try {
+                var phaseTitles = Array.isArray(project.phases) ? project.phases.map(function(p){ return p && p.title ? String(p.title) : ''; }).filter(Boolean) : [];
+                if (typeof setEditPhaseOptions === 'function') setEditPhaseOptions(phaseTitles);
+            } catch (_) {}
+        } catch (_) {}
+    }
+</script>
+<script>
+    // ---- Edit modal helpers (same design as create) ----
+    function renderEditPhases(phases) {
+        const wrap = document.getElementById('phases-wrapper-edit');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        const list = Array.isArray(phases) && phases.length ? phases : [null];
+        list.forEach(function(p, idx){
+            addPhaseRowEdit();
+            // fill values
+            const rowIdx = idx;
+            // title/description
+            const titleInput = wrap.querySelector('input[name="phases['+rowIdx+'][title]"]');
+            const descInput = wrap.querySelector('input[name="phases['+rowIdx+'][description]"]');
+            const startInput = document.getElementById('phaseStartInputEdit-' + rowIdx);
+            const endInput = document.getElementById('phaseEndInputEdit-' + rowIdx);
+            if (titleInput) titleInput.value = p && p.title ? p.title : '';
+            if (descInput) descInput.value = p && p.description ? p.description : '';
+            if (startInput && p && p.start_date) {
+                startInput.value = String(p.start_date);
+                updatePhaseDateDisplayEdit(rowIdx, 'start', startInput.value);
+            }
+            if (endInput && p && p.end_date) {
+                endInput.value = String(p.end_date);
+                updatePhaseDateDisplayEdit(rowIdx, 'end', endInput.value);
+            }
+            const remSel = wrap.querySelector('select[name="phases['+rowIdx+'][reminder_days]"]');
+            if (remSel && p && p.reminder_days != null) {
+                remSel.value = String(p.reminder_days);
+            }
+        });
+    }
+    function addSectionGroupEdit() {
+        const wrap = document.getElementById('section-groups-wrapper-edit');
+        if (!wrap) return;
+        const index = wrap.querySelectorAll('.section-group-edit').length;
+        const div = document.createElement('div');
+        div.className = 'section-group-edit';
+        div.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+        div.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; '+(index===0 ? 'display:none;' : '')+'" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows>'+sectionRowTemplateEdit(index,0)+sectionRowTemplateEdit(index,1)+'</div>';
+        wrap.appendChild(div);
+        refreshRowIconsEdit(div);
+        // set hidden phase from global select
+        const selVal = (document.getElementById('globalPhaseSelectEdit')?.value || '');
+        div.querySelectorAll('input.section-phase-title-edit').forEach(function(h){ h.value = selVal; });
+        refreshGroupDeleteIconsEdit();
+    }
+    function removeSectionGroupEdit(img) {
+        const g = img.closest('.section-group-edit');
+        if (g) g.remove();
+        refreshGroupDeleteIconsEdit();
+    }
+    function addSectionRowEdit(btn) {
+        const group = btn.closest('.section-group-edit');
+        const rowsWrap = group.querySelector('[data-rows]');
+        const gIdx = Array.prototype.indexOf.call(document.getElementById('section-groups-wrapper-edit').children, group);
+        const rIdx = rowsWrap.querySelectorAll('.section-row-edit').length;
+        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(gIdx, rIdx));
+        const selVal = (document.getElementById('globalPhaseSelectEdit')?.value || '');
+        rowsWrap.lastElementChild.querySelector('input.section-phase-title-edit').value = selVal;
+        refreshRowIconsEdit(group);
+    }
+    function removeSectionRowEdit(btn) {
+        const row = btn.closest('.section-row-edit');
+        const rowsWrap = row.parentElement;
+        if (rowsWrap.querySelectorAll('.section-row-edit').length === 1) {
+            row.querySelectorAll('input[type="text"]').forEach(i => i.value='');
+            return;
+        }
+        row.remove();
+        const group = rowsWrap.closest('.section-group-edit');
+        refreshRowIconsEdit(group);
+    }
+    function sectionRowTemplateEdit(gIdx, rIdx) {
+        return '\
+        <div class="row section-row-edit g-2 align-items-center mb-2" style="background:#eef2f7; border-radius:10px; padding:10px;">\
+          <div class="col-12 col-md-4">\
+            <input type="text" name="sections['+gIdx+'_'+rIdx+'][name]" class="form-control" placeholder="Section Name" style="background:#fff; font-size:13px; color:#7d7f85;"/>\
+            <input type="hidden" class="section-phase-title-edit" name="sections['+gIdx+'_'+rIdx+'][phase_title]" value=""/>\
+          </div>\
+          <div class="col-12 col-md-6">\
+            <input type="text" name="sections['+gIdx+'_'+rIdx+'][description]" class="form-control" placeholder="Section Description" style="background:#fff; font-size:13px; color:#7d7f85;"/>\
+          </div>\
+          <div class="col-12 col-md-2 d-flex align-items-center gap-2 justify-content-end">\
+            <img src="{{ asset('build/img/plus.svg') }}" class="row-plus-edit" alt="Add" style="width:24px; height:24px; cursor:pointer; '+(rIdx===0?'display:inline':'display:none')+';" onclick="addSectionRowEdit(this)">\
+            <img src="{{ asset('build/img/trash.svg') }}" class="row-trash-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; '+(rIdx===0?'display:none':'display:inline')+';" onclick="removeSectionRowEdit(this)">\
+          </div>\
+        </div>';
+    }
+    function refreshRowIconsEdit(group) {
+        if (!group) return;
+        const rows = group.querySelectorAll('.section-row-edit');
+        rows.forEach(function(row, idx){
+            const plus = row.querySelector('.row-plus-edit');
+            const trash = row.querySelector('.row-trash-edit');
+            if (!plus || !trash) return;
+            plus.style.display = (idx===0) ? 'inline' : 'none';
+            trash.style.display = (idx===0) ? 'none' : 'inline';
+        });
+    }
+    function refreshGroupDeleteIconsEdit() {
+        const groups = document.querySelectorAll('#section-groups-wrapper-edit .section-group-edit');
+        groups.forEach(function(g, idx){
+            const del = g.querySelector('.group-delete-edit');
+            if (!del) return;
+            del.style.display = (groups.length <=1 && idx===0) ? 'none' : 'inline';
+        });
+    }
+    function setEditPhaseOptions(titles) {
+        const sel = document.getElementById('globalPhaseSelectEdit');
+        if (!sel) return;
+        const current = sel.value;
+        sel.innerHTML = '<option value=\"\">Select Phase</option>' + (titles||[]).map(function(t){return '<option value=\"'+t+'\">'+t+'</option>';}).join('');
+        if (current && titles.includes(current)) sel.value = current;
+        const val = sel.value || '';
+        document.querySelectorAll('#section-groups-wrapper-edit .section-phase-title-edit').forEach(function(h){ h.value = val; });
+    }
+    document.addEventListener('input', function(e){
+        if (e.target && e.target.id === 'globalPhaseSelectEdit') {
+            const val = e.target.value || '';
+            document.querySelectorAll('#section-groups-wrapper-edit .section-phase-title-edit').forEach(function(h){ h.value = val; });
+        }
+    });
+
+    // ---- Edit phases dynamic handling ----
+    function addPhaseRowEdit(el) {
+        const wrap = document.getElementById('phases-wrapper-edit');
+        if (!wrap) return;
+        const rows = wrap.querySelectorAll('.phase-row-edit');
+        const next = rows.length;
+        const template = document.createElement('div');
+        template.className = 'phase-row-edit row g-2 align-items-center mb-2';
+        template.setAttribute('data-index', String(next));
+        template.setAttribute('style','background:#eef2f7; border-radius:10px; padding:10px;');
+        template.innerHTML = '\
+            <div class="col-12 col-md-3">\
+              <input type="text" name="phases['+next+'][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>\
+            </div>\
+            <div class="col-12 col-md-5">\
+              <input type="text" name="phases['+next+'][description]" class="form-control" placeholder="Phase Description" style="background:#fff;"/>\
+            </div>\
+            <div class="col-12">\
+              <div class="d-flex align-items-center gap-2 flex-nowrap">\
+                <div style="position: relative; min-width: 220px;">\
+                  <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">\
+                    <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>\
+                    <div id="phaseStartDisplayEdit-'+next+'" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>\
+                    <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">\
+                      <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById(\'phaseStartInputEdit-'+next+'\').showPicker()" style="width:20px; height:20px; cursor:pointer;" />\
+                      <input type="date" id="phaseStartInputEdit-'+next+'" name="phases['+next+'][start_date]" onchange="updatePhaseDateDisplayEdit('+next+', \\'start\\', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />\
+                    </div>\
+                  </div>\
+                </div>\
+                <div style="position: relative; min-width: 220px;">\
+                  <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">\
+                    <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>\
+                    <div id="phaseEndDisplayEdit-'+next+'" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>\
+                    <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">\
+                      <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById(\'phaseEndInputEdit-'+next+'\').showPicker()" style="width:20px; height:20px; cursor:pointer;" />\
+                      <input type="date" id="phaseEndInputEdit-'+next+'" name="phases['+next+'][end_date]" onchange="updatePhaseDateDisplayEdit('+next+', \\'end\\', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />\
+                    </div>\
+                  </div>\
+                </div>\
+                <select name="phases['+next+'][reminder_days]" class="form-select" style="background:#fff; min-width:160px; height:45px; border-radius:12px; border:1px solid #e0e0e0;">\
+                  <option value=\"\">Select Reminder</option>\
+                  <option value=\"2\">2 days</option>\
+                  <option value=\"3\">3 days</option>\
+                  <option value=\"5\">5 days</option>\
+                  <option value=\"7\">7 days</option>\
+                  <option value=\"10\">10 days</option>\
+                  <option value=\"15\">15 days</option>\
+                </select>\
+                <div class="d-flex align-items-center gap-2" style="min-width:68px;">\
+                  <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRowEdit(this)">\
+                  <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRowEdit(this)">\
+                </div>\
+              </div>\
+            </div>';
+        wrap.appendChild(template);
+        refreshEditPhaseOptionsFromTitles();
+    }
+    function removePhaseRowEdit(el) {
+        const row = el.closest('.phase-row-edit');
+        const wrap = document.getElementById('phases-wrapper-edit');
+        if (!row || !wrap) return;
+        if (wrap.querySelectorAll('.phase-row-edit').length === 1) {
+            // clear rather than remove
+            row.querySelectorAll('input[type="text"]').forEach(i => i.value='');
+            row.querySelectorAll('input[type="date"]').forEach(i => i.value='');
+            row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+            document.getElementById('phaseStartDisplayEdit-0').innerText = 'DD:MM:YYYY';
+            document.getElementById('phaseEndDisplayEdit-0').innerText = 'DD:MM:YYYY';
+            return;
+        }
+        row.remove();
+        refreshEditPhaseOptionsFromTitles();
+    }
+    function updatePhaseDateDisplayEdit(idx, which, value) {
+        if (!value) return;
+        try {
+            var d = new Date(value);
+            var text = ('0' + d.getDate()).slice(-2) + ':' + ('0' + (d.getMonth() + 1)).slice(-2) + ':' + d.getFullYear();
+            if (which === 'start') {
+                var el = document.getElementById('phaseStartDisplayEdit-' + idx);
+                if (el) el.innerText = text;
+            } else {
+                var el2 = document.getElementById('phaseEndDisplayEdit-' + idx);
+                if (el2) el2.innerText = text;
+            }
+        } catch (_) {}
+    }
+    function refreshEditPhaseOptionsFromTitles() {
+        try {
+            var titles = [];
+            document.querySelectorAll('#phases-wrapper-edit input[name^=\"phases\"][name$=\"[title]\"]').forEach(function(inp){
+                var t = (inp.value || '').trim();
+                if (t) titles.push(t);
+            });
+            setEditPhaseOptions(titles);
+        } catch (_) {}
+    }
+    document.addEventListener('input', function(e){
+        if (e.target && e.target.matches('#phases-wrapper-edit input[name^=\"phases\"][name$=\"[title]\"]')) {
+            refreshEditPhaseOptionsFromTitles();
+        }
+    });
+</script>
 </script>
 <!-- remove project pop-up and delete logic -->
 <script>
@@ -2143,6 +2820,8 @@
     function setCurrentProjectId(id) {
         currentProjectId = id;
     }
+    // Note: edit buttons now call openEditModal() without passing card ids;
+    // openEditModal will read current id from the offcanvas hidden input.
 
     function opendeleteModel() {
         var offcanvasElement = document.getElementById('offcanvasRight');

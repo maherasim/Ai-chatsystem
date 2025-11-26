@@ -3,22 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-//use Illuminate\Database\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\Model;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
     use HasFactory;
-
-    /**
-     * NOTE: This project model uses MongoDB driver.
-     * Define relations to tickets and tasks so blade can fetch counts directly.
-     */
-
-    //protected $connection = 'mongodb';
-    //protected $collection = 'projects';
 
     protected $connection = 'mongodb';
     protected $collection = 'projects';
@@ -35,16 +25,24 @@ class Project extends Model
         'progress_percent',
         'logo_path',
         'user_id',
+
+        // Arrays (full arrays, NOT nested keys)
+        'phases',
         'sections',
         'attachments',
-    ];    
+    ];
+
     protected $casts = [
         'start_date' => 'datetime',
         'end_date'   => 'datetime',
+
+        // Cast arrays correctly
         'sections'   => 'array',
+        'phases'     => 'array',
         'attachments'=> 'array',
     ];
-    
+
+    // Relations
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'project_id');
@@ -54,25 +52,19 @@ class Project extends Model
     {
         return $this->hasMany(Task::class, 'project_id');
     }
+
+    // Virtual attribute: remaining days
     public function getRemainingDaysAttribute()
-{
-    if (!$this->end_date) {
-        return null;
+    {
+        if (!$this->end_date) {
+            return null;
+        }
+
+        $end = Carbon::parse($this->end_date)->startOfDay();
+        $today = now()->startOfDay();
+
+        $days = $today->diffInDays($end, false);
+
+        return $days > 0 ? $days : 0;
     }
-
-    $end = Carbon::parse($this->end_date)->startOfDay();
-    $today = Carbon::now()->startOfDay();
-
-    $days = $today->diffInDays($end, false);
-
-    return $days > 0 ? $days : 0;
 }
-
-}
-
-    
-
-    
-
-
-
