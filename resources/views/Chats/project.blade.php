@@ -2237,6 +2237,48 @@
             if (p) populateProjectOffcanvas(p);
         } catch (e) { console.error(e); }
     }
+
+    async function fetchProjectDetailsForEdit(id) {
+        if (!id) return null;
+        try {
+            var response = await fetch('/api/projects/' + encodeURIComponent(id), {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            });
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            var data = await response.json();
+            return normalizeProjectForEdit(data);
+        } catch (err) {
+            try { console.error('[Edit] fetchProjectDetailsForEdit failed', err); } catch (_) {}
+            return null;
+        }
+    }
+
+    function normalizeProjectForEdit(project) {
+        if (!project || typeof project !== 'object') return null;
+        var clone = Object.assign({}, project);
+        function ensureArray(val) {
+            if (Array.isArray(val)) return val;
+            if (typeof val === 'string' && val.trim() !== '') {
+                try {
+                    var parsed = JSON.parse(val);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (_) {
+                    return [];
+                }
+            }
+            return [];
+        }
+        clone.phases = ensureArray(clone.phases);
+        clone.sections = ensureArray(clone.sections);
+        clone.attachments = ensureArray(clone.attachments);
+        return clone;
+    }
 </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
@@ -2465,27 +2507,32 @@
             }
         }
 
-        setTimeout(function() {
+        setTimeout(async function() {
             var pauseModal = new bootstrap.Modal(document.getElementById('edit_project'));
             // Prefill form from last selected project id
             try {
                 if (!currentProjectId) {
                     console.warn('No currentProjectId set');
                 }
-                document.getElementById('projectEditForm').setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
-                // Prefill from cached map if present
-                if (window.projectMap && window.projectMap[currentProjectId]) {
-                    try { console.debug('[Edit] prefill from cache:', window.projectMap[currentProjectId]); } catch(_) {}
-                    prefillEditForm(window.projectMap[currentProjectId]);
+                var formEl = document.getElementById('projectEditForm');
+                if (formEl && currentProjectId) {
+                    formEl.setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
                 }
-                // Explicitly load phases and sections into edit modal from in-page data
-                try {
-                    var pObj = (window.projectMap && window.projectMap[currentProjectId]) ? window.projectMap[currentProjectId] : null;
-                    if (pObj) {
-                        loadProjectIntoEditModal(pObj);
-                        loadSectionsIntoEditModal(pObj);
+                var hydrated = null;
+                if (currentProjectId) {
+                    hydrated = await fetchProjectDetailsForEdit(currentProjectId);
+                    if (hydrated) {
+                        window.projectMap = window.projectMap || {};
+                        window.projectMap[currentProjectId] = hydrated;
+                    } else if (window.projectMap && window.projectMap[currentProjectId]) {
+                        hydrated = window.projectMap[currentProjectId];
                     }
-                } catch (_) {}
+                }
+                if (hydrated) {
+                    try { prefillEditForm(hydrated); } catch (_) {}
+                    try { loadProjectIntoEditModal(hydrated); } catch (_) {}
+                    try { loadSectionsIntoEditModal(hydrated); } catch (_) {}
+                }
             } catch (e) { console.error(e); }
             pauseModal.show();
         }, 400);
