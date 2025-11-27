@@ -1260,8 +1260,8 @@
                         <label class="fw-semibold" style="font-size: 14px;">Project Phase</label>
                         <div style="font-size: 12px; color: #7d7f85;">How many phases this project has</div>
                     </div>
-                    <div id="phases-wrapper" class="w-100">
-                        <div class="phase-row row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
+                    <div id="phases-wrapper-edit" class="w-100">
+                        <div class="phase-row-edit row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
                             <div class="col-12 col-md-3">
                                 <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
                             </div>
@@ -1273,20 +1273,20 @@
                                     <div style="position: relative; min-width: 220px;">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
-                                            <div id="phaseStartDisplay-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInput-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseStartInput-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplay(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
                                     <div style="position: relative; min-width: 220px;">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
-                                            <div id="phaseEndDisplay-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInput-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseEndInput-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplay(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -1300,8 +1300,8 @@
                                         <option value="15">15 days</option>
                                     </select>
                                     <div class="d-flex align-items-center gap-2" style="min-width:68px;">
-                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRow(this)">
-                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRow(this)">
+                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRowEdit(this)">
+                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRowEdit(this)">
                                     </div>
                                 </div>
                             </div>
@@ -2237,48 +2237,6 @@
             if (p) populateProjectOffcanvas(p);
         } catch (e) { console.error(e); }
     }
-
-    async function fetchProjectDetailsForEdit(id) {
-        if (!id) return null;
-        try {
-            var response = await fetch('/api/projects/' + encodeURIComponent(id), {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                credentials: 'same-origin'
-            });
-            if (!response.ok) {
-                throw new Error('HTTP ' + response.status);
-            }
-            var data = await response.json();
-            return normalizeProjectForEdit(data);
-        } catch (err) {
-            try { console.error('[Edit] fetchProjectDetailsForEdit failed', err); } catch (_) {}
-            return null;
-        }
-    }
-
-    function normalizeProjectForEdit(project) {
-        if (!project || typeof project !== 'object') return null;
-        var clone = Object.assign({}, project);
-        function ensureArray(val) {
-            if (Array.isArray(val)) return val;
-            if (typeof val === 'string' && val.trim() !== '') {
-                try {
-                    var parsed = JSON.parse(val);
-                    return Array.isArray(parsed) ? parsed : [];
-                } catch (_) {
-                    return [];
-                }
-            }
-            return [];
-        }
-        clone.phases = ensureArray(clone.phases);
-        clone.sections = ensureArray(clone.sections);
-        clone.attachments = ensureArray(clone.attachments);
-        return clone;
-    }
 </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
@@ -2439,6 +2397,49 @@
                 renderEditAttachments(attachments);
             } catch (e) { }
 
+            // ---- Phases (render first so dependent UI can use titles) ----
+            try {
+                var phasesNorm = Array.isArray(project.phases) ? project.phases :
+                    (typeof project.phases === 'string' ? (function(){ try { return JSON.parse(project.phases) || []; } catch(_) { return []; } })() : []);
+                renderEditPhases(phasesNorm);
+                var titlesForSelect = Array.isArray(phasesNorm)
+                    ? phasesNorm.map(function(p){ return (p && p.title) ? String(p.title) : ''; }).filter(Boolean)
+                    : [];
+                setEditPhaseOptions(titlesForSelect);
+            } catch (_) {}
+
+            // Sections (edit - same design as create)
+            try {
+                var wrap = document.getElementById('section-groups-wrapper-edit');
+                if (wrap) {
+                    wrap.innerHTML = '';
+                    // Build one group initially
+                    var g = document.createElement('div');
+                    g.className = 'section-group-edit';
+                    g.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+                    g.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows></div>';
+                    wrap.appendChild(g);
+                    var rowsWrap = g.querySelector('[data-rows]');
+                    var sections = Array.isArray(project.sections) ? project.sections :
+                        (typeof project.sections === 'string' ? (function(){ try { return JSON.parse(project.sections) || []; } catch(_) { return []; } })() : []);
+                    if (sections.length === 0) {
+                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, 0));
+                    } else {
+                        sections.forEach(function(sec, idx){
+                            rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
+                            var row = rowsWrap.lastElementChild;
+                            var nameInput = row.querySelector('input[name="sections[0_'+idx+'][name]"]');
+                            var descInput = row.querySelector('input[name="sections[0_'+idx+'][description]"]');
+                            var phaseHidden = row.querySelector('input.section-phase-title-edit');
+                            if (nameInput) nameInput.value = (sec && sec.name) ? sec.name : '';
+                            if (descInput) descInput.value = (sec && sec.description) ? sec.description : '';
+                            if (phaseHidden) phaseHidden.value = (sec && sec.phase_title) ? sec.phase_title : '';
+                        });
+                    }
+                    refreshRowIconsEdit(g);
+                }
+            } catch (ignored) {}
+
             // Recompute total days for edit section
             calculateTotalDays('#projectDurationSectionEdit');
         } catch (e) {
@@ -2464,32 +2465,27 @@
             }
         }
 
-        setTimeout(async function() {
+        setTimeout(function() {
             var pauseModal = new bootstrap.Modal(document.getElementById('edit_project'));
             // Prefill form from last selected project id
             try {
                 if (!currentProjectId) {
                     console.warn('No currentProjectId set');
                 }
-                var formEl = document.getElementById('projectEditForm');
-                if (formEl && currentProjectId) {
-                    formEl.setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
+                document.getElementById('projectEditForm').setAttribute('action', '/project/' + encodeURIComponent(currentProjectId));
+                // Prefill from cached map if present
+                if (window.projectMap && window.projectMap[currentProjectId]) {
+                    try { console.debug('[Edit] prefill from cache:', window.projectMap[currentProjectId]); } catch(_) {}
+                    prefillEditForm(window.projectMap[currentProjectId]);
                 }
-                var hydrated = null;
-                if (currentProjectId) {
-                    hydrated = await fetchProjectDetailsForEdit(currentProjectId);
-                    if (hydrated) {
-                        window.projectMap = window.projectMap || {};
-                        window.projectMap[currentProjectId] = hydrated;
-                    } else if (window.projectMap && window.projectMap[currentProjectId]) {
-                        hydrated = window.projectMap[currentProjectId];
+                // Explicitly load phases and sections into edit modal from in-page data
+                try {
+                    var pObj = (window.projectMap && window.projectMap[currentProjectId]) ? window.projectMap[currentProjectId] : null;
+                    if (pObj) {
+                        loadProjectIntoEditModal(pObj);
+                        loadSectionsIntoEditModal(pObj);
                     }
-                }
-                if (hydrated) {
-                    try { prefillEditForm(hydrated); } catch (_) {}
-                    try { loadProjectIntoEditModal(hydrated); } catch (_) {}
-                    try { loadSectionsIntoEditModal(hydrated); } catch (_) {}
-                }
+                } catch (_) {}
             } catch (e) { console.error(e); }
             pauseModal.show();
         }, 400);

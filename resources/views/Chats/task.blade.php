@@ -267,7 +267,18 @@
                                 </div>
                             </div>
                         </div>
-
+                        @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 10px;">
+                            {{ session('success') }}
+                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+                        @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 10px;">
+                            {{ session('error') }}
+                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
 
                         <!-- project overview -->
                         <div
@@ -5932,33 +5943,26 @@
                                         <label class="form-label fw-semibold text-dark">Task Image</label>
                                         <div class="d-flex justify-content-between flex-wrap gap-1 flex-wrap mb-2">
                                             <img id="et-img-1" class="et-image-thumb" data-index="1"
-                                                data-placeholder="{{ asset('build/img/dooted img.svg') }}"
-                                                src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                                data-value="build/img/image1.jpeg"
+                                                src="{{ asset('build/img/image1.jpeg') }}" alt="Task Image 1"
                                                 style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
 
                                             <img id="et-img-2" class="et-image-thumb" data-index="2"
-                                                data-placeholder="{{ asset('build/img/dooted img.svg') }}"
-                                                src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                                data-value="build/img/imagw2.jpeg"
+                                                src="{{ asset('build/img/imagw2.jpeg') }}" alt="Task Image 2"
                                                 style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
                                             <img id="et-img-3" class="et-image-thumb" data-index="3"
-                                                data-placeholder="{{ asset('build/img/dooted img.svg') }}"
-                                                src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                                data-value="build/img/image3.jpeg"
+                                                src="{{ asset('build/img/image3.jpeg') }}" alt="Task Image 3"
                                                 style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
                                             <img id="et-img-4" class="et-image-thumb" data-index="4"
-                                                data-placeholder="{{ asset('build/img/dooted img.svg') }}"
-                                                src="{{ asset('build/img/dooted img.svg') }}" alt="Task Image"
+                                                data-value="build/img/image4.jpeg"
+                                                src="{{ asset('build/img/image4.jpeg') }}" alt="Task Image 4"
                                                 style="width: 60px; height: 60px; border-radius: 6px; object-fit: contain; cursor:pointer;">
 
                                         </div>
-                                        <!-- Hidden inputs and viewer modal -->
-                                        <input type="file" id="et-file-1" name="images[]"
-                                            accept=".jpg,.jpeg,.png" style="display:none;">
-                                        <input type="file" id="et-file-2" name="images[]"
-                                            accept=".jpg,.jpeg,.png" style="display:none;">
-                                        <input type="file" id="et-file-3" name="images[]"
-                                            accept=".jpg,.jpeg,.png" style="display:none;">
-                                        <input type="file" id="et-file-4" name="images[]"
-                                            accept=".jpg,.jpeg,.png" style="display:none;">
+                                        <!-- Hidden selected image input -->
+                                        <input type="hidden" id="et-selected-image" name="selected_image" value="">
 
                                         <div class="modal fade" id="etImageViewer" tabindex="-1"
                                             aria-hidden="true">
@@ -5978,37 +5982,16 @@
 
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
-                                                function bindETThumb(i) {
-                                                    var img = document.getElementById('et-img-' + i);
-                                                    var input = document.getElementById('et-file-' + i);
-                                                    if (!img || !input) return;
+                                                var selectedInput = document.getElementById('et-selected-image');
+                                                var thumbs = document.querySelectorAll('.et-image-thumb');
+                                                thumbs.forEach(function(img) {
                                                     img.addEventListener('click', function() {
-                                                        var ph = img.getAttribute('data-placeholder') || '';
-                                                        var src = img.getAttribute('src') || '';
-                                                        if (src && ph && src !== ph) {
-                                                            try {
-                                                                document.getElementById('et-viewer-img').src = src;
-                                                            } catch (_) {}
-                                                            try {
-                                                                new bootstrap.Modal(document.getElementById('etImageViewer')).show();
-                                                            } catch (_) {}
-                                                        } else {
-                                                            input.click();
-                                                        }
+                                                        thumbs.forEach(function(el){ el.style.outline = 'none'; });
+                                                        img.style.outline = '2px solid #28c76f';
+                                                        var val = img.getAttribute('data-value') || '';
+                                                        if (selectedInput) selectedInput.value = val;
                                                     });
-                                                    input.addEventListener('change', function() {
-                                                        var f = this.files && this.files[0];
-                                                        if (!f || !f.type || !f.type.startsWith('image/')) return;
-                                                        var r = new FileReader();
-                                                        r.onload = function(e) {
-                                                            try {
-                                                                img.src = e.target.result;
-                                                            } catch (_) {}
-                                                        };
-                                                        r.readAsDataURL(f);
-                                                    });
-                                                }
-                                                [1, 2, 3, 4].forEach(bindETThumb);
+                                                });
                                             });
                                         </script>
                                     </div>
@@ -6059,28 +6042,40 @@
                                     </div>
 
                                     <!-- Expired Reminder -->
-                                    <div class="mb-2 p-2" style="background: #f7f7f7; border-radius: 10px;">
+                                    <div class="mb-2 p-2" style="background: #f7f7f7; border-radius: 10px;"> 
                                         <p class="m-0 fw-semibold">Expired Reminder</p>
                                         <small class="text-muted">Set a reminder before expired</small>
                                         <div class="d-flex gap-2 mt-2">
-                                            <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;"
-                                                tabindex="-1">
-                                                <input type="radio" name="reminder_hours" value="6" checked
-                                                    style="display:none;"> 6 Hour
+                                            <label class="reminder-hour-btn" style="flex:1; cursor:pointer; display:block; text-align:center; border-radius:5px; padding:5px 10px; background:#f0f0f0; color:#000;" onclick="selectReminder(this)">
+                                                <input type="radio" name="reminder_hours" value="6" checked style="display:none;">
+                                                6 Hour
                                             </label>
-                                            <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;"
-                                                tabindex="-1">
-                                                <input type="radio" name="reminder_hours" value="8"
-                                                    style="display:none;"> 8 Hour
+                                            <label class="reminder-hour-btn" style="flex:1; cursor:pointer; display:block; text-align:center; border-radius:5px; padding:5px 10px; background:#f0f0f0; color:#000;" onclick="selectReminder(this)">
+                                                <input type="radio" name="reminder_hours" value="8" style="display:none;">
+                                                8 Hour
                                             </label>
-                                            <label class="btn btn-sm reminder-hour-btn" style="flex:1; cursor:pointer;"
-                                                tabindex="-1">
-                                                <input type="radio" name="reminder_hours" value="12"
-                                                    style="display:none;"> 12 Hour
+                                            <label class="reminder-hour-btn" style="flex:1; cursor:pointer; display:block; text-align:center; border-radius:5px; padding:5px 10px; background:#f0f0f0; color:#000;" onclick="selectReminder(this)">
+                                                <input type="radio" name="reminder_hours" value="12" style="display:none;">
+                                                12 Hour
                                             </label>
                                         </div>
                                     </div>
-
+                                    
+                                    <script>
+                                    function selectReminder(label) {
+                                        // Unselect all
+                                        document.querySelectorAll('.reminder-hour-btn').forEach(l => {
+                                            l.style.background = '#f0f0f0';
+                                            l.style.color = '#000';
+                                        });
+                                    
+                                        // Select current
+                                        label.style.background = 'rgb(52, 211, 153)';
+                                        label.style.color = '#fff';
+                                        label.querySelector('input').checked = true;
+                                    }
+                                    </script>
+                                    
                                     <!-- Save Button -->
                                     <button id="et-save" type="submit" class="btn w-100 mb-0"
                                         style="background: #28c76f; color: white; font-weight: 500;">Save the
@@ -6223,7 +6218,8 @@
                                                         return 6;
                                                     }
                                                 })(),
-                                                images: imgs
+                                                images: imgs,
+                                                selected_image: (document.getElementById('et-selected-image') || {}).value || null
                                             };
                                             fetch(\"{{ route('emptasks.store') }}\", {
                                                 method: 'POST',
@@ -6238,17 +6234,14 @@
                                         }).then(function(resp) {
                                             if (resp && resp.success) {
                                                 try {
-                                                    var note = document.createElement('div');
-                                                    note.className = 'position-fixed top-0 end-0 p-3';
-                                                    note.style.zIndex = '1060';
-                                                    note.innerHTML =
-                                                        '<div class=\"alert alert-success shadow\" role=\"alert\" style=\"border-radius:8px;\">Employee Task saved</div>';
-                                                    document.body.appendChild(note);
-                                                    setTimeout(function() {
-                                                        try {
-                                                            note.remove();
-                                                        } catch (_) {}
-                                                    }, 1500);
+                                                    var successBox = document.getElementById('emptask-success');
+                                                    if (successBox) {
+                                                        successBox.style.display = 'block';
+                                                        successBox.innerHTML = '<div class=\"alert alert-success\" role=\"alert\" style=\"margin:0;border-radius:8px;\">Employee Task saved successfully.</div>';
+                                                        setTimeout(function() {
+                                                            try { successBox.style.display = 'none'; successBox.innerHTML = ''; } catch(_) {}
+                                                        }, 2500);
+                                                    }
                                                 } catch (_) {}
                                             } else {
                                                 alert('Failed to save employee task');
@@ -6280,8 +6273,11 @@
                                 </div>
                             </div>
 
+                            <!-- Inline success message placeholder -->
+                            <div id="emptask-success" style="display:none; margin-bottom:8px;"></div>
 
                             <!-- Task Cards -->
+                            <div id="emptask-list" style="overflow-y: auto; max-height: 420px;">
                             @foreach ($emptasks ?? [] as $task)
                                 @php
                                     $logo = optional($task->project)->logo_path
@@ -6289,11 +6285,13 @@
                                         : asset('build/img/yekbon.svg');
                                     $firstImage =
                                         is_array($task->images) && count($task->images) > 0 ? $task->images[0] : null;
-                                    $thumb = $firstImage
-                                        ? asset('storage/' . ltrim($firstImage, '/'))
-                                        : asset('build/img/dooted img.svg');
+                                            $thumb = $firstImage
+                                                ? (preg_match('/^(build\\/|https?:\\/\\/)/', $firstImage)
+                                                    ? asset($firstImage)
+                                                    : asset('storage/' . ltrim($firstImage, '/')))
+                                                : asset('build/img/dooted img.svg');
                                 @endphp
-                                <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;">
+                                <div class="d-flex p-2 rounded mt-2 emptask-card" style="background-color: #ebebeb;">
                                     <div class="me-2">
                                         <img src="{{ $thumb }}" alt="Task Image"
                                             style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
@@ -6359,6 +6357,7 @@
                                     </div>
                                 </div>
                             @endforeach
+                            </div>
 
 
 

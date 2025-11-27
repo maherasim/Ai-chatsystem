@@ -55,6 +55,7 @@ class EmployeeTaskController extends Controller
             'duration'        => 'nullable|string',
             'reminder_hours'  => 'nullable|integer|min:0|max:720',
             'images'          => 'nullable',
+            'selected_image'  => 'nullable|string',
         ]);
 
         // Persist up to 4 images (base64 data URLs)
@@ -85,6 +86,19 @@ class EmployeeTaskController extends Controller
                 } catch (\Throwable $e) {}
             }
         }
+        // Or accept a predefined static image selection from public/build/img
+        $selected = $request->input('selected_image');
+        if (is_string($selected)) {
+            $allowed = [
+                'build/img/image1.jpeg',
+                'build/img/imagw2.jpeg',
+                'build/img/image3.jpeg',
+                'build/img/image4.jpeg',
+            ];
+            if (in_array($selected, $allowed, true)) {
+                $imagePaths[] = $selected;
+            }
+        }
 
         $task = EmployeeTask::create([
             'project_id'     => $validated['project_id'],
@@ -102,8 +116,7 @@ class EmployeeTaskController extends Controller
             'created_by'     => Auth::id(),
         ]);
 
-        return response()->json([ 'success' => true, 'id' => (string)($task->_id ?? $task->id) ]);
-    }
+return redirect()->back()->with('success', 'Employee Task created successfully');    }
 
     public function destroy($id)
     {
