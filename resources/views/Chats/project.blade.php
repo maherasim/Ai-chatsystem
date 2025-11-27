@@ -1412,9 +1412,15 @@
                     // Build phase options from entered phase titles
                     function getPhaseTitles() {
                         const titles = [];
+                        // collect from create wrapper
                         document.querySelectorAll('#phases-wrapper input[name^="phases"][name$="[title]"]').forEach(function(inp){
                             const t = (inp.value || '').trim();
                             if (t !== '') titles.push(t);
+                        });
+                        // collect from edit wrapper
+                        document.querySelectorAll('#phases-wrapper-edit input[name^="phases"][name$="[title]"]').forEach(function(inp){
+                            const t = (inp.value || '').trim();
+                            if (t !== '' && !titles.includes(t)) titles.push(t);
                         });
                         return titles;
                     }
@@ -1429,7 +1435,8 @@
                         document.querySelectorAll('#section-groups-wrapper .section-phase-title').forEach(function(h){ h.value = val; });
                     }
                     document.addEventListener('input', function(e){
-                        if (e.target && e.target.matches('#phases-wrapper input[name^="phases"][name$="[title]"]')) {
+                        if (e.target && (e.target.matches('#phases-wrapper input[name^="phases"][name$="[title]"]')
+                            || e.target.matches('#phases-wrapper-edit input[name^="phases"][name$="[title]"]'))) {
                             refreshPhaseOptions();
                         }
                         if (e.target && e.target.id === 'globalPhaseSelect') {
