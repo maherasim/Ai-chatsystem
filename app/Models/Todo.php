@@ -40,7 +40,8 @@ class Todo extends Model
         'work_Independently',
         'all_tasks_done',
         'all_tasks_check',
-        'files_upload'
+        'files_upload',
+        'sentmail'
     ];
 
     public function user()
