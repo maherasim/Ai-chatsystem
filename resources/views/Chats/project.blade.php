@@ -2439,49 +2439,6 @@
                 renderEditAttachments(attachments);
             } catch (e) { }
 
-            // ---- Phases (render first so dependent UI can use titles) ----
-            try {
-                var phasesNorm = Array.isArray(project.phases) ? project.phases :
-                    (typeof project.phases === 'string' ? (function(){ try { return JSON.parse(project.phases) || []; } catch(_) { return []; } })() : []);
-                renderEditPhases(phasesNorm);
-                var titlesForSelect = Array.isArray(phasesNorm)
-                    ? phasesNorm.map(function(p){ return (p && p.title) ? String(p.title) : ''; }).filter(Boolean)
-                    : [];
-                setEditPhaseOptions(titlesForSelect);
-            } catch (_) {}
-
-            // Sections (edit - same design as create)
-            try {
-                var wrap = document.getElementById('section-groups-wrapper-edit');
-                if (wrap) {
-                    wrap.innerHTML = '';
-                    // Build one group initially
-                    var g = document.createElement('div');
-                    g.className = 'section-group-edit';
-                    g.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
-                    g.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows></div>';
-                    wrap.appendChild(g);
-                    var rowsWrap = g.querySelector('[data-rows]');
-                    var sections = Array.isArray(project.sections) ? project.sections :
-                        (typeof project.sections === 'string' ? (function(){ try { return JSON.parse(project.sections) || []; } catch(_) { return []; } })() : []);
-                    if (sections.length === 0) {
-                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, 0));
-                    } else {
-                        sections.forEach(function(sec, idx){
-                            rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
-                            var row = rowsWrap.lastElementChild;
-                            var nameInput = row.querySelector('input[name="sections[0_'+idx+'][name]"]');
-                            var descInput = row.querySelector('input[name="sections[0_'+idx+'][description]"]');
-                            var phaseHidden = row.querySelector('input.section-phase-title-edit');
-                            if (nameInput) nameInput.value = (sec && sec.name) ? sec.name : '';
-                            if (descInput) descInput.value = (sec && sec.description) ? sec.description : '';
-                            if (phaseHidden) phaseHidden.value = (sec && sec.phase_title) ? sec.phase_title : '';
-                        });
-                    }
-                    refreshRowIconsEdit(g);
-                }
-            } catch (ignored) {}
-
             // Recompute total days for edit section
             calculateTotalDays('#projectDurationSectionEdit');
         } catch (e) {
