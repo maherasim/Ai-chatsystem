@@ -1260,8 +1260,8 @@
                         <label class="fw-semibold" style="font-size: 14px;">Project Phase</label>
                         <div style="font-size: 12px; color: #7d7f85;">How many phases this project has</div>
                     </div>
-                    <div id="phases-wrapper-edit" class="w-100">
-                        <div class="phase-row-edit row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
+                    <div id="phases-wrapper" class="w-100">
+                        <div class="phase-row row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
                             <div class="col-12 col-md-3">
                                 <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
                             </div>
@@ -1273,20 +1273,20 @@
                                     <div style="position: relative; min-width: 220px;">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
-                                            <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div id="phaseStartDisplay-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInput-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInput-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplay(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
                                     <div style="position: relative; min-width: 220px;">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
-                                            <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                            <div id="phaseEndDisplay-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInput-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInput-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplay(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -1300,8 +1300,8 @@
                                         <option value="15">15 days</option>
                                     </select>
                                     <div class="d-flex align-items-center gap-2" style="min-width:68px;">
-                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRowEdit(this)">
-                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRowEdit(this)">
+                                        <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" onclick="addPhaseRow(this)">
+                                        <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" style="width:28px; height:28px; cursor:pointer;" onclick="removePhaseRow(this)">
                                     </div>
                                 </div>
                             </div>
