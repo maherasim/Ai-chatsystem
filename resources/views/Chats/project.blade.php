@@ -1270,26 +1270,33 @@
                             </div>
                             <div class="col-12">
                                 <div class="d-flex align-items-center gap-2 flex-nowrap">
-                                    <div style="position: relative; min-width: 220px;">
+                                    <div style="position: relative; min-width: 220px; cursor:pointer;" onclick="document.getElementById('phaseStartInputEdit-0').click();">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
-                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
-                                            <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
-                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
-                                            </div>
+                                          <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
+                                          <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                          <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                            <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width:20px; height:20px;" />
+                                            <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" 
+                                                   style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0;" 
+                                                   onchange="document.getElementById('phaseStartDisplayEdit-0').innerText=this.value;" />
+                                          </div>
                                         </div>
-                                    </div>
-                                    <div style="position: relative; min-width: 220px;">
+                                      </div>
+                                      
+                                      <div style="position: relative; min-width: 220px; margin-left:8px; cursor:pointer;" onclick="document.getElementById('phaseEndInputEdit-0').click();">
                                         <div style="background-color:#fff; border-radius:12px; padding:2px 16px; width:220px; position:relative; border:1px solid #e0e0e0; height:45px; display:flex; flex-direction:column; justify-content:center;">
-                                            <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
-                                            <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
-                                            <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
-                                            </div>
+                                          <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
+                                          <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
+                                          <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
+                                            <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width:20px; height:20px;" />
+                                            <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" 
+                                                   style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0;" 
+                                                   onchange="document.getElementById('phaseEndDisplayEdit-0').innerText=this.value;" />
+                                          </div>
                                         </div>
-                                    </div>
+                                      </div>
+                                      
+                                      
                                     <select name="phases[0][reminder_days]" class="form-select" style="background:#fff; min-width:160px; height:45px; border-radius:12px; border:1px solid #e0e0e0;">
                                         <option value="">Select Reminder</option>
                                         <option value="2">2 days</option>
