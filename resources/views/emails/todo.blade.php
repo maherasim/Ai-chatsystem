@@ -57,7 +57,7 @@
 
                             <!-- Button -->
                             <div style="text-align:center; margin:30px 0;">
-                                <a href="https://teams.it-supportline.de/todos" style="background:#4361ee; color:#fff; padding:12px 24px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">
+                                <a href="https://logiteam.it-supportline.de/todos" style="background:#4361ee; color:#fff; padding:12px 24px; text-decoration:none; border-radius:6px; font-weight:bold; display:inline-block;">
                                     View All Tasks
                                 </a>
                             </div>
@@ -74,7 +74,7 @@
                     <tr>
                         <td style="background:#f8f9fa; text-align:center; padding:20px; font-size:14px; color:#6c757d;">
                             © 2025 Logiteam. All rights reserved.<br>
-                            <a href="https://teams.it-supportline.de/" style="color:#4361ee; text-decoration:none;">Unsubscribe</a>
+                            <a href="https://logiteam.it-supportline.de/" style="color:#4361ee; text-decoration:none;">Unsubscribe</a>
                         </td>
                     </tr>
 
