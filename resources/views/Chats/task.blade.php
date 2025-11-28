@@ -3774,6 +3774,25 @@
                         <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
                         <small class="text-muted">Create Task</small>
                     </div>
+                    
+                    <!--  -->
+                     <div>
+                       <!-- <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
+                                Date</label><br>
+                            <small class="text-muted">Tasks must be done in this duration</small> -->
+                            <div class="d-flex gap-2 mt-0">
+                                <div class="text-center p-2 text-white"
+                                    style="background: #28c76f; border-radius: 8px;">
+                                    <small>Start Date</small><br>
+                                    <span id="ticket-start-date" class="fw-bold">--</span>
+                                </div>
+                                <div class="text-center p-2 text-white"
+                                    style="background: #ea5455; border-radius: 8px;">
+                                    <small>Deliver Date</small><br>
+                                    <span id="ticket-end-date" class="fw-bold">--</span>
+                                </div>
+                            </div>
+                             </div>
 
 
 
@@ -3881,48 +3900,7 @@
                             } catch (_) {}
                         });
                     </script>
-                    <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
-                        <!-- Left: Ticket Details -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
-                            <small class="text-muted">Ticket Details</small>
-                            <div class="d-flex gap-2 mt-2">
-                                <select id="select-project" name="project_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
-                                    <option value="">Select the Project</option>
-                                    @if (isset($projects) && count($projects))
-                                        @foreach ($projects as $project)
-                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">
-                                                {{ $project->title }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <select id="select-ticket" name="ticket_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
-                                    <option value="">Select the Ticket</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Right: Start & Delivery Dates -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
-                                Date</label><br>
-                            <small class="text-muted">Tasks must be done in this duration</small>
-                            <div class="d-flex gap-2 mt-2">
-                                <div class="text-center p-2 text-white"
-                                    style="background: #28c76f; border-radius: 8px; flex: 1;">
-                                    <small>Start Date</small><br>
-                                    <span id="ticket-start-date" class="fw-bold">--</span>
-                                </div>
-                                <div class="text-center p-2 text-white"
-                                    style="background: #ea5455; border-radius: 8px; flex: 1;">
-                                    <small>Deliver Date</small><br>
-                                    <span id="ticket-end-date" class="fw-bold">--</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
 
 
                     <!-- Task Container -->
@@ -4102,6 +4080,26 @@
 
                         <!-- Right Task List -->
                         <div class="col-md-7" style="border: 3px solid #f7f7f7;">
+                            <div class="mt-1 mb-2">
+                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
+                            <small class="text-muted">Ticket Details</small>
+                            <div class="d-flex gap-2 mt-2">
+                                <select id="select-project" name="project_id" class="form-select form-select-sm"
+                                    style="background: #fff; border-radius: 8px;">
+                                    <option value="">Select the Project</option>
+                                    @if (isset($projects) && count($projects))
+                                        @foreach ($projects as $project)
+                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">
+                                                {{ $project->title }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <select id="select-ticket" name="ticket_id" class="form-select form-select-sm"
+                                    style="background: #fff; border-radius: 8px;">
+                                    <option value="">Select the Ticket</option>
+                                </select>
+                            </div>
+                        </div>
                             <div>
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <!-- Left Side: Title + Subtitle -->
@@ -4725,53 +4723,38 @@
     <div class="modal fade" id="webtask2" tabindex="-1" aria-hidden="true" data-bs-focus="false">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" style="border-radius: 12px;">
-                <div class="modal-header d-flex justify-content-between flex-wrap align-items-start"
-                    style="background: #fff;">
-                    <div>
-                        <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Web Task</h5>
-                        <small class="text-muted">Create Task</small>
-                    </div>
-                </div>
+               <div class="modal-header d-flex justify-content-between align-items-start flex-wrap" style="background:#fff;">
+
+    <!-- LEFT SECTION -->
+    <div class="mb-2">
+        <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Web Task</h5>
+        <small class="text-muted">Create Task</small>
+    </div>
+
+
+    <!-- RIGHT SECTION -->
+    <div >
+    
+
+        <div class="d-flex gap-2 mt-0">
+            <div class="text-center p-2 text-white"
+                style="background: #28c76f; border-radius: 8px;">
+                <small>Start Date</small><br>
+                <span id="wt-ticket-start-date" class="fw-bold">--</span>
+            </div>
+
+            <div class="text-center p-2 text-white"
+                style="background: #ea5455; border-radius: 8px;">
+                <small>Deliver Date</small><br>
+                <span id="wt-ticket-end-date" class="fw-bold">--</span>
+            </div>
+        </div>
+    </div>
+     
+</div>
+
                 <div class="modal-body">
-                    <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
-                            <small class="text-muted">Ticket Details</small>
-                            <div class="d-flex gap-2 mt-2">
-                                <select id="wt-select-project" name="project_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
-                                    <option value="">Select the Project</option>
-                                    @if (isset($projects) && count($projects))
-                                        @foreach ($projects as $project)
-                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">
-                                                {{ $project->title }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <select id="wt-select-ticket" name="ticket_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
-                                    <option value="">Select the Ticket</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
-                                Date</label><br>
-                            <small class="text-muted">Tasks must be done in this duration</small>
-                            <div class="d-flex gap-2 mt-2">
-                                <div class="text-center p-2 text-white"
-                                    style="background: #28c76f; border-radius: 8px; flex: 1;">
-                                    <small>Start Date</small><br>
-                                    <span id="wt-ticket-start-date" class="fw-bold">--</span>
-                                </div>
-                                <div class="text-center p-2 text-white"
-                                    style="background: #ea5455; border-radius: 8px; flex: 1;">
-                                    <small>Deliver Date</small><br>
-                                    <span id="wt-ticket-end-date" class="fw-bold">--</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
 
                     <div class="row">
                         <div class="col-md-5">
@@ -4817,8 +4800,28 @@
                                 onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ p.src=e.target.result; p.style.display='block'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; }; r.readAsDataURL(f);} else { p.style.display='none'; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; }" />
                         </div>
                         <div class="col-md-7" style="border: 3px solid #f7f7f7;">
+                                <!-- <label class="form-label fw-bold mb-0" style="color: #2b2d42;margin-right:40px">Ticket Start & Deliver Date</label><br>
+            <small class="text-muted" style="margin-right:30px;">Tasks must be done in this duration</small>   -->
+                            <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
+                            <small class="text-muted">Ticket Details</small>
+                            <div class="d-flex gap-2 mt-2">
+                                <select id="wt-select-project" name="project_id" class="form-select form-select-sm"
+                                    style="background: #fff; border-radius: 8px;">
+                                    <option value="">Select the Project</option>
+                                    @if (isset($projects) && count($projects))
+                                        @foreach ($projects as $project)
+                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">
+                                                {{ $project->title }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <select id="wt-select-ticket" name="ticket_id" class="form-select form-select-sm"
+                                    style="background: #fff; border-radius: 8px;">
+                                    <option value="">Select the Ticket</option>
+                                </select>
+                            </div>
                             <div>
-                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="d-flex justify-content-between align-items-start mb-2 mt-2">
                                     <div>
                                         <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
                                         <small class="text-muted">Total Task:
@@ -4843,7 +4846,7 @@
                                                 ? asset('storage/' . ltrim($task->mark_image_path, '/'))
                                                 : asset('build/img/dooted img.svg'));
                                     @endphp
-                                    <div class="d-flex p-2 rounded mt-2 task-card"
+                                    <div class="d-flex p-2 rounded mt-2 task-card mb-1"
                                         style="background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
                                         data-board="{{ $viewerImg }}" data-issues='@json($task->issues ?? [])'
                                         data-title="{{ e($task->title) }}"
@@ -5858,15 +5861,28 @@
                         <small class="text-muted">Create a Task</small>
                     </div>
 
-                    <!-- Task Type Buttons -->
-                    <div class="d-flex gap-2 p-1 rounded" style="background: #f2f2f2; border-radius: 10px;">
-
-
-
-
-
-
+                    <div>
+                              <!-- <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
+                                    Date</label><br>
+                                <small class="text-muted">Tasks must be done in this duration</small> -->
+                                <div class="d-flex gap-2 ">
+                                    <div class="text-center p-2 text-white"
+                                        style="background: #28c76f; border-radius: 8px; flex: 1;">
+                                        <small>Start Date</small><br>
+                                        <span id="et2-ticket-start-date" class="fw-bold">--</span>
+                                    </div>
+                                    <div class="text-center p-2 text-white"
+                                        style="background: #ea5455; border-radius: 8px; flex: 1;">
+                                        <small>Deliver Date</small><br>
+                                        <span id="et2-ticket-end-date" class="fw-bold">--</span>
+                                    </div>
+                                </div>
                     </div>
+                    
+                    
+                    <!-- Task Type Buttons -->
+                    <!-- <div class="d-flex gap-2 p-1 rounded" style="background: #f2f2f2; border-radius: 10px;">
+                    </div> -->
 
 
 
@@ -5881,50 +5897,7 @@
 
                     <form action="{{ route('emptasks.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="row mb-3" style="background: #f9f9f9; padding: 15px; border-radius: 12px;">
-                            <!-- Left: Ticket Details -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket
-                                    Details</label><br>
-                                <small class="text-muted">Ticket Details</small>
-                                <div class="d-flex gap-2 mt-2">
-                                    <select id="et2-select-project" name="project_id"
-                                        class="form-select form-select-sm"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <option value="">Select the Project</option>
-                                        @if (isset($projects) && count($projects))
-                                            @foreach ($projects as $project)
-                                                <option value="{{ (string) ($project->_id ?? $project->id) }}">
-                                                    {{ $project->title }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <select id="et2-select-ticket" name="ticket_id" class="form-select form-select-sm"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <option value="">Select the Ticket</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Right: Start & Delivery Dates -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
-                                    Date</label><br>
-                                <small class="text-muted">Tasks must be done in this duration</small>
-                                <div class="d-flex gap-2 mt-2">
-                                    <div class="text-center p-2 text-white"
-                                        style="background: #28c76f; border-radius: 8px; flex: 1;">
-                                        <small>Start Date</small><br>
-                                        <span id="et2-ticket-start-date" class="fw-bold">--</span>
-                                    </div>
-                                    <div class="text-center p-2 text-white"
-                                        style="background: #ea5455; border-radius: 8px; flex: 1;">
-                                        <small>Deliver Date</small><br>
-                                        <span id="et2-ticket-end-date" class="fw-bold">--</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
 
 
                         <!-- Task Container -->
@@ -6259,7 +6232,31 @@
                     </script>
                     <!-- Right Task List -->
                     <div class="col-md-7" style="border: 3px solid #f7f7f7;">
+                        
                         <div>
+                            <div class="mt-1 mb-2">
+                                <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket
+                                    Details</label><br>
+                                <small class="text-muted">Ticket Details</small>
+                                <div class="d-flex gap-2 mt-2">
+                                    <select id="et2-select-project" name="project_id"
+                                        class="form-select form-select-sm"
+                                        style="background: #fff; border-radius: 8px;">
+                                        <option value="">Select the Project</option>
+                                        @if (isset($projects) && count($projects))
+                                            @foreach ($projects as $project)
+                                                <option value="{{ (string) ($project->_id ?? $project->id) }}">
+                                                    {{ $project->title }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <select id="et2-select-ticket" name="ticket_id" class="form-select form-select-sm"
+                                        style="background: #fff; border-radius: 8px;">
+                                        <option value="">Select the Ticket</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <!-- Left Side: Title + Subtitle -->
                                 <div>
