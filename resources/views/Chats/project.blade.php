@@ -1603,8 +1603,6 @@
             </button>
             <div class="modal-body px-4 py-4">
                 <form id="projectEditForm" method="POST" action="/project/__ID__" enctype="multipart/form-data">
-
-                
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                 <h5>Edit Project</h5>
@@ -1819,10 +1817,10 @@
                     <div id="phases-wrapper-edit" class="w-100">
                         <div class="phase-row-edit row g-2 align-items-center mb-2" data-index="0" style="background:#eef2f7; border-radius:10px; padding:10px;">
                             <div class="col-12 col-md-3">
-                                <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" style="background:#fff;"/>
+                                <input type="text" name="phases[0][title]" class="form-control" placeholder="Phase Title" id="editPaseTitle" style="background:#fff;"/>
                             </div>
                             <div class="col-12 col-md-5">
-                                <input type="text" name="phases[0][description]" class="form-control" placeholder="Phase Description" style="background:#fff;"/>
+                                <input type="text" name="phases[0][description]" class="form-control" placeholder="Phase Description" id="editphasedes" style="background:#fff;"/>
                             </div>
                             <div class="col-12">
                                 <div class="d-flex align-items-center gap-2 flex-nowrap">
@@ -1831,8 +1829,8 @@
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Start Date</div>
                                             <div id="phaseStartDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseStartInputEdit-0" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseStartInputEdit-1').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseStartInputEdit-1" name="phases[0][start_date]" onchange="updatePhaseDateDisplayEdit(0, 'start', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -1841,8 +1839,8 @@
                                             <div style="font-weight:600; font-size:14px; color:#7d7f85;">Deliver Date</div>
                                             <div id="phaseEndDisplayEdit-0" style="font-size:13px; color:#a0a4ab;">DD:MM:YYYY</div>
                                             <div style="position:absolute; top:50%; right:16px; transform:translateY(-50%);">
-                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-0').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
-                                                <input type="date" id="phaseEndInputEdit-0" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
+                                                <img src="{{ URL::asset('/build/img/timeicon.svg') }}" onclick="document.getElementById('phaseEndInputEdit-1').showPicker()" style="width:20px; height:20px; cursor:pointer;" />
+                                                <input type="date" id="phaseEndInputEdit-1" name="phases[0][end_date]" onchange="updatePhaseDateDisplayEdit(0, 'end', this.value)" style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" />
                                             </div>
                                         </div>
                                     </div>
@@ -2312,154 +2310,218 @@
     @endforeach
 
     function prefillEditForm(project) {
-        try {
-            if (!project) return;
+      try {
+        if (!project) return;
 
-            var titleEl = document.getElementById('editTitle');
-            if (titleEl) titleEl.value = project.title || '';
+        // Project title
+        var titleEl = document.getElementById('editTitle');
+        if (titleEl) titleEl.value = project.title || '';
 
-            // Priority
-            var hiddenPriority = document.getElementById('priorityInputEdit');
-            var priorityValue = project.priority || 'low';
-            if (hiddenPriority) hiddenPriority.value = priorityValue;
-            var pBtns = document.querySelectorAll('.priority-btn-edit');
-            pBtns.forEach(function(btn){
-                var isActive = btn.getAttribute('data-priority') === priorityValue;
-                var colorMap = { low: '#34d399', medium: '#f59e0b', high: '#ef4444' };
-                var pri = btn.getAttribute('data-priority');
-                btn.style.backgroundColor = isActive ? (colorMap[pri] || '#34d399') : 'transparent';
-                btn.style.color = isActive ? 'white' : '#6c757d';
-            });
+        // Priority
+        var hiddenPriority = document.getElementById('priorityInputEdit');
+        var priorityValue = project.priority || 'low';
+        if (hiddenPriority) hiddenPriority.value = priorityValue;
+        var pBtns = document.querySelectorAll('.priority-btn-edit');
+        pBtns.forEach(function(btn){
+            var isActive = btn.getAttribute('data-priority') === priorityValue;
+            var colorMap = { low: '#34d399', medium: '#f59e0b', high: '#ef4444' };
+            var pri = btn.getAttribute('data-priority');
+            btn.style.backgroundColor = isActive ? (colorMap[pri] || '#34d399') : 'transparent';
+            btn.style.color = isActive ? 'white' : '#6c757d';
+        });
 
-            // Dates
-            var s = document.getElementById('editStartDateInput');
-            var e = document.getElementById('editEndDateInput');
-            if (s) s.value = project.start_date || '';
-            if (e) e.value = project.end_date || '';
-            function fmt(d){
-                if(!d) return 'DD:MM:YYYY';
-                var dt = new Date(d);
-                if (isNaN(dt.getTime())) return 'DD:MM:YYYY';
-                return ('0'+dt.getDate()).slice(-2)+':' + ('0'+(dt.getMonth()+1)).slice(-2)+':'+dt.getFullYear();
-            }
-            var sd = document.getElementById('editStartDateDisplay');
-            var ed = document.getElementById('editEndDateDisplay');
-            if (sd) sd.innerText = fmt(project.start_date);
-            if (ed) ed.innerText = fmt(project.end_date);
-
-            // Reminder days
-            var remHidden = document.getElementById('reminderDaysInputEdit');
-            var remVal = (project.reminder_days === null || project.reminder_days === undefined) ? '7' : String(project.reminder_days);
-            if (remHidden) remHidden.value = remVal;
-            if (remHidden && remHidden.parentElement) {
-                var remBtns = remHidden.parentElement.querySelectorAll('button');
-                remBtns.forEach(function(b){
-                    b.style.backgroundColor = 'transparent';
-                    b.style.color = '#6c757d';
-                    var label = (b.textContent || '').trim();
-                    if (label.startsWith(remVal)) {
-                        b.style.backgroundColor = '#1cc375';
-                        b.style.color = 'white';
-                    }
-                });
-            }
-
-            // Description
-            var desc = document.getElementById('editDescription');
-            if (desc) {
-                if (typeof $ !== 'undefined' && $.fn && $.fn.summernote) {
-                    if (!$(desc).data('summernote')) {
-                        $(desc).summernote({
-                            placeholder: 'Describe the project...',
-                            tabsize: 2,
-                            height: 220
-                        });
-                    }
-                    $(desc).summernote('code', project.description || '');
-                } else {
-                    desc.value = project.description || '';
-                }
-            }
-
-            // Logo preview (edit modal)
-            var logoImg = document.getElementById('editLogoPreview');
-            var uploadIconText = document.getElementById('editUploadIconText');
-            var fileInput = document.getElementById('editUploadLogo');
-            if (logoImg) {
-                if (logoImg.getAttribute('data-dirty') === '1') {
-                    // keep user-chosen preview if already set during this session
-                    logoImg.style.display = 'block';
-                    if (uploadIconText) uploadIconText.style.display = 'none';
-                } else if (project.logo_url) {
-                    // bust cache so latest uploaded image shows
-                    var bust = 'v=' + Date.now();
-                    var base = project.logo_url.split('?')[0];
-                    logoImg.src = base + '?' + bust;
-                    logoImg.style.display = 'block';
-                    if (uploadIconText) uploadIconText.style.display = 'none';
-                } else {
-                    logoImg.style.display = 'none';
-                    if (uploadIconText) uploadIconText.style.display = 'block';
-                }
-                // reset file input so selecting same file re-triggers change
-                if (fileInput) fileInput.value = '';
-            }
-
-            // Attachments render (edit modal)
-            try {
-                var attachments = Array.isArray(project.attachments) ? project.attachments : [];
-                renderEditAttachments(attachments);
-            } catch (e) { }
-
-            // ---- Phases (render first so dependent UI can use titles) ----
-            try {
-                var phasesNorm = Array.isArray(project.phases) ? project.phases :
-                    (typeof project.phases === 'string' ? (function(){ try { return JSON.parse(project.phases) || []; } catch(_) { return []; } })() : []);
-                renderEditPhases(phasesNorm);
-                var titlesForSelect = Array.isArray(phasesNorm)
-                    ? phasesNorm.map(function(p){ return (p && p.title) ? String(p.title) : ''; }).filter(Boolean)
-                    : [];
-                setEditPhaseOptions(titlesForSelect);
-            } catch (_) {}
-
-            // Sections (edit - same design as create)
-            try {
-                var wrap = document.getElementById('section-groups-wrapper-edit');
-                if (wrap) {
-                    wrap.innerHTML = '';
-                    // Build one group initially
-                    var g = document.createElement('div');
-                    g.className = 'section-group-edit';
-                    g.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
-                    g.innerHTML = '<div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;"><img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)"></div><div class="mt-4" data-rows></div>';
-                    wrap.appendChild(g);
-                    var rowsWrap = g.querySelector('[data-rows]');
-                    var sections = Array.isArray(project.sections) ? project.sections :
-                        (typeof project.sections === 'string' ? (function(){ try { return JSON.parse(project.sections) || []; } catch(_) { return []; } })() : []);
-                    if (sections.length === 0) {
-                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, 0));
-                    } else {
-                        sections.forEach(function(sec, idx){
-                            rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
-                            var row = rowsWrap.lastElementChild;
-                            var nameInput = row.querySelector('input[name="sections[0_'+idx+'][name]"]');
-                            var descInput = row.querySelector('input[name="sections[0_'+idx+'][description]"]');
-                            var phaseHidden = row.querySelector('input.section-phase-title-edit');
-                            if (nameInput) nameInput.value = (sec && sec.name) ? sec.name : '';
-                            if (descInput) descInput.value = (sec && sec.description) ? sec.description : '';
-                            if (phaseHidden) phaseHidden.value = (sec && sec.phase_title) ? sec.phase_title : '';
-                        });
-                    }
-                    refreshRowIconsEdit(g);
-                }
-            } catch (ignored) {}
-
-            // Recompute total days for edit section
-            calculateTotalDays('#projectDurationSectionEdit');
-        } catch (e) {
-            // no-op
+        // Project Dates
+        var s = document.getElementById('editStartDateInput');
+        var e = document.getElementById('editEndDateInput');
+        if (s) s.value = project.start_date || '';
+        if (e) e.value = project.end_date || '';
+        function fmt(d){
+            if(!d) return 'DD:MM:YYYY';
+            var dt = new Date(d);
+            if (isNaN(dt.getTime())) return 'DD:MM:YYYY';
+            return ('0'+dt.getDate()).slice(-2)+':' + ('0'+(dt.getMonth()+1)).slice(-2)+':'+dt.getFullYear();
         }
+        var sd = document.getElementById('editStartDateDisplay');
+        var ed = document.getElementById('editEndDateDisplay');
+        if (sd) sd.innerText = fmt(project.start_date);
+        if (ed) ed.innerText = fmt(project.end_date);
+
+        // Reminder days
+        var remHidden = document.getElementById('reminderDaysInputEdit');
+        var remVal = (project.reminder_days === null || project.reminder_days === undefined) ? '7' : String(project.reminder_days);
+        if (remHidden) remHidden.value = remVal;
+        if (remHidden && remHidden.parentElement) {
+            var remBtns = remHidden.parentElement.querySelectorAll('button');
+            remBtns.forEach(function(b){
+                b.style.backgroundColor = 'transparent';
+                b.style.color = '#6c757d';
+                var label = (b.textContent || '').trim();
+                if (label.startsWith(remVal)) {
+                    b.style.backgroundColor = '#1cc375';
+                    b.style.color = 'white';
+                }
+            });
+        }
+
+        // Description
+        var desc = document.getElementById('editDescription');
+        if (desc) {
+            if (typeof $ !== 'undefined' && $.fn && $.fn.summernote) {
+                if (!$(desc).data('summernote')) {
+                    $(desc).summernote({
+                        placeholder: 'Describe the project...',
+                        tabsize: 2,
+                        height: 220
+                    });
+                }
+                $(desc).summernote('code', project.description || '');
+            } else {
+                desc.value = project.description || '';
+            }
+        }
+
+        // ----- PHASES -----
+        if (project.phases && project.phases.length > 0) {
+            var firstPhase = project.phases[0];
+
+            // Title & Description
+            var phaseTitleEl = document.getElementById('editPaseTitle');
+            var phaseDescEl = document.getElementById('editphasedes');
+            if (phaseTitleEl) phaseTitleEl.value = firstPhase.title || '';
+            if (phaseDescEl) phaseDescEl.value = firstPhase.description || '';
+
+            // Start Date
+            var startInput = document.getElementById('phaseStartInputEdit-1');
+            var startDisplay = document.getElementById('phaseStartDisplayEdit-0');
+            if (startInput) startInput.value = firstPhase.start_date || '';
+            if (startDisplay) startDisplay.innerText = firstPhase.start_date ? fmt(firstPhase.start_date) : 'DD:MM:YYYY';
+
+            // End Date
+            var endInput = document.getElementById('phaseEndInputEdit-1');
+            var endDisplay = document.getElementById('phaseEndDisplayEdit-0');
+            if (endInput) endInput.value = firstPhase.end_date || '';
+            if (endDisplay) endDisplay.innerText = firstPhase.end_date ? fmt(firstPhase.end_date) : 'DD:MM:YYYY';
+
+            // Reminder Days
+            var reminderSelect = document.querySelector('select[name="phases[0][reminder_days]"]');
+            if (reminderSelect) reminderSelect.value = firstPhase.reminder_days || '';
+        }
+
+        // Populate Global Phase Select
+        function populateAllPhases() {
+            var selectEl = document.getElementById('globalPhaseSelectEdit');
+            if (!selectEl) return;
+
+            selectEl.innerHTML = '<option value="">Select Phase</option>';
+            project.phases.forEach((phase, index) => {
+                var option = document.createElement('option');
+                option.value = index;
+                option.text = phase.title || `Phase ${index+1}`;
+                selectEl.appendChild(option);
+            });
+        }
+        populateAllPhases();
+
+        // ----- LOGO -----
+        var logoImg = document.getElementById('editLogoPreview');
+        var uploadIconText = document.getElementById('editUploadIconText');
+        var fileInput = document.getElementById('editUploadLogo');
+        if (logoImg) {
+            if (logoImg.getAttribute('data-dirty') === '1') {
+                logoImg.style.display = 'block';
+                if (uploadIconText) uploadIconText.style.display = 'none';
+            } else if (project.logo_url) {
+                var bust = 'v=' + Date.now();
+                var base = project.logo_url.split('?')[0];
+                logoImg.src = `${base}?${bust}`;
+                logoImg.style.display = 'block';
+                if (uploadIconText) uploadIconText.style.display = 'none';
+            } else {
+                logoImg.style.display = 'none';
+                if (uploadIconText) uploadIconText.style.display = 'block';
+            }
+            if (fileInput) fileInput.value = '';
+        }
+
+        // ----- ATTACHMENTS -----
+        try {
+            var attachments = Array.isArray(project.attachments) ? project.attachments : [];
+            renderEditAttachments(attachments);
+        } catch(e){}
+
+        // ----- SECTIONS -----
+        try {
+            var wrap = document.getElementById('section-groups-wrapper-edit');
+            if (wrap) {
+                wrap.innerHTML = '';
+                var g = document.createElement('div');
+                g.className = 'section-group-edit';
+                g.setAttribute('style', 'background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+                g.innerHTML = `
+                    <div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;">
+                        <img src="{{ asset('build/img/trash.svg') }}" class="group-delete-edit" alt="Remove" style="width:24px; height:24px; cursor:pointer; display:none;" onclick="removeSectionGroupEdit(this)">
+                    </div>
+                    <div class="mt-4" data-rows></div>
+                `;
+                wrap.appendChild(g);
+
+                var rowsWrap = g.querySelector('[data-rows]');
+                var sections = Array.isArray(project.sections) ? project.sections :
+                    (typeof project.sections === 'string' ? (()=>{ try { return JSON.parse(project.sections)||[] } catch(_){ return [] } })() : []);
+                if (sections.length === 0) {
+                    rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0,0));
+                } else {
+                    sections.forEach((sec, idx)=>{
+                        rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplateEdit(0, idx));
+                        var row = rowsWrap.lastElementChild;
+                        var nameInput = row.querySelector(`input[name="sections[0_${idx}][name]"]`);
+                        var descInput = row.querySelector(`input[name="sections[0_${idx}][description]"]`);
+                        var phaseHidden = row.querySelector('input.section-phase-title-edit');
+                        if (nameInput) nameInput.value = sec.name || '';
+                        if (descInput) descInput.value = sec.description || '';
+                        if (phaseHidden) phaseHidden.value = sec.phase_title || '';
+                    });
+                }
+                refreshRowIconsEdit(g);
+            }
+        } catch(e){}
+
+        // Recompute total project days
+        calculateTotalDays('#projectDurationSectionEdit');
+
+    } catch(e) {
+        console.error("prefillEditForm error:", e);
     }
+}
+function updatePhaseDateDisplayEdit(index, type, value) {
+    // Format date for display (DD:MM:YYYY)
+    function fmt(d) {
+        if (!d) return 'DD:MM:YYYY';
+        const dt = new Date(d);
+        if (isNaN(dt.getTime())) return 'DD:MM:YYYY';
+        return (
+            ('0' + dt.getDate()).slice(-2) + ':' +
+            ('0' + (dt.getMonth() + 1)).slice(-2) + ':' +
+            dt.getFullYear()
+        );
+    }
+
+    if (type === 'start') {
+        var input = document.getElementById(`phaseStartInputEdit-${index}`);
+        var display = document.getElementById(`phaseStartDisplayEdit-${index}`);
+        if (input) input.value = value;
+        if (display) display.innerText = fmt(value);
+    }
+
+    if (type === 'end') {
+        var input = document.getElementById(`phaseEndInputEdit-${index}`);
+        var display = document.getElementById(`phaseEndDisplayEdit-${index}`);
+        if (input) input.value = value;
+        if (display) display.innerText = fmt(value);
+    }
+}
+
+     
 </script>
 <!-- edit model pop-up -->
 <script>

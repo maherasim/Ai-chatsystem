@@ -2183,6 +2183,208 @@
             var currentShape = 'square';
             var currentColor = '#ea5455';
             var placingActive = false; // only place marker when explicitly activated
+
+            // Ensure visible resize handles when jQuery UI resizable is used
+            function ensureResizableHandleStyles() {
+                try {
+                    if (document.getElementById('ui-resizable-handle-styles')) return;
+                    var styleEl = document.createElement('style');
+                    styleEl.id = 'ui-resizable-handle-styles';
+                    styleEl.textContent = '\
+                        .ui-resizable-handle{position:absolute;display:block;background:transparent}\
+                        .ui-resizable-n,.ui-resizable-s,.ui-resizable-e,.ui-resizable-w{display:none!important}\
+                        /* Professional, minimal handles - always visible for clarity */\
+                        .ui-resizable-se,.ui-resizable-sw,.ui-resizable-ne,.ui-resizable-nw{width:16px;height:16px;border-radius:50%;background:#98a2b3;border:2px solid #fff;box-shadow:0 0 0 1px rgba(16,24,40,.12);z-index:1000;opacity:1;}\
+                        .ui-resizable-se{right:-10px;bottom:-10px;cursor:nwse-resize}\
+                        .ui-resizable-sw{left:-10px;bottom:-10px;cursor:nesw-resize}\
+                        .ui-resizable-ne{right:-10px;top:-10px;cursor:nesw-resize}\
+                        .ui-resizable-nw{left:-10px;top:-10px;cursor:nwse-resize}\
+                    ';
+                    (document.head || document.body).appendChild(styleEl);
+                } catch (_) {}
+            }
+
+            // Vanilla drag/resize fallback when jQuery UI is unavailable
+            function enableVanillaResizable(el, shape, container) {
+                try {
+                    var minSize = 24;
+                    function makeHandle(pos) {
+                        var handle = document.createElement('div');
+                        handle.className = 'vanilla-resize-handle ' + pos;
+                        handle.style.position = 'absolute';
+                        handle.style.width = '20px';
+                        handle.style.height = '20px';
+                        handle.style.borderRadius = '50%';
+                        handle.style.zIndex = '1005';
+                        handle.style.opacity = '0';
+                        handle.style.transition = 'opacity .12s ease, transform .12s ease';
+                        handle.style.transform = 'scale(.92)';
+                        if (pos.indexOf('n') !== -1) handle.style.top = '-12px';
+                        if (pos.indexOf('s') !== -1) handle.style.bottom = '-12px';
+                        if (pos.indexOf('w') !== -1) handle.style.left = '-12px';
+                        if (pos.indexOf('e') !== -1) handle.style.right = '-12px';
+                        handle.style.cursor = (pos === 'se' || pos === 'nw') ? 'nwse-resize' : 'nesw-resize';
+                        var dot = document.createElement('div');
+                        dot.style.position = 'absolute';
+                        dot.style.left = '50%';
+                        dot.style.top = '50%';
+                        dot.style.transform = 'translate(-50%, -50%)';
+                        dot.style.width = '12px';
+                        dot.style.height = '12px';
+                        dot.style.borderRadius = '50%';
+                        dot.style.background = '#98a2b3';
+                        dot.style.border = '2px solid #fff';
+                        dot.style.boxShadow = '0 0 0 1px rgba(16,24,40,.12)';
+                        handle.appendChild(dot);
+                        el.appendChild(handle);
+                        return handle;
+                    }
+                    function revealOnHover(handle) {
+                        handle.style.opacity = '1';
+                        handle.style.transform = 'scale(1)';
+                    }
+                    function attachPointerResize(handle, pos) {
+                        var resizing = false;
+                        var startX = 0, startY = 0, startW = 0, startH = 0, startLeft = 0, startTop = 0, pointerId = null;
+                        handle.addEventListener('pointerdown', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            resizing = true;
+                            pointerId = e.pointerId;
+                            try { handle.setPointerCapture(pointerId); } catch (_) {}
+                            var rect = el.getBoundingClientRect();
+                            startX = e.clientX;
+                            startY = e.clientY;
+                            startW = rect.width;
+                            startH = rect.height;
+                            startLeft = el.offsetLeft;
+                            startTop = el.offsetTop;
+                        });
+                        handle.addEventListener('pointermove', function(e) {
+                            if (!resizing || (pointerId !== null && e.pointerId !== pointerId)) return;
+                            var dx = e.clientX - startX;
+                            var dy = e.clientY - startY;
+                            var newW = startW, newH = startH, newLeft = startLeft, newTop = startTop;
+                            if (pos.indexOf('e') !== -1) newW = startW + dx;
+                            if (pos.indexOf('s') !== -1) newH = (shape === 'circle' ? newW : startH + dy);
+                            if (pos.indexOf('w') !== -1) { newW = startW - dx; newLeft = startLeft + dx; }
+                            if (pos.indexOf('n') !== -1) { newH = (shape === 'circle' ? newW : startH - dy); newTop = startTop + dy; }
+                            newW = Math.max(minSize, newW);
+                            newH = Math.max(minSize, (shape === 'circle' ? newW : newH));
+                            try {
+                                var cRect = container.getBoundingClientRect();
+                                if (newLeft < 0) { newW += newLeft; newLeft = 0; }
+                                if (newTop < 0) { newH += newTop; newTop = 0; }
+                                if (newLeft + newW > cRect.width) newW = cRect.width - newLeft;
+                                if (newTop + newH > cRect.height) newH = cRect.height - newTop;
+                            } catch (_) {}
+                            el.style.width = newW + 'px';
+                            el.style.height = newH + 'px';
+                            el.style.left = newLeft + 'px';
+                            el.style.top = newTop + 'px';
+                        });
+                        function endResize() {
+                            if (!resizing) return;
+                            resizing = false;
+                            try { if (pointerId != null) handle.releasePointerCapture(pointerId); } catch (_) {}
+                            pointerId = null;
+                        }
+                        handle.addEventListener('pointerup', function(){ endResize(); });
+                        handle.addEventListener('pointercancel', function(){ endResize(); });
+                        window.addEventListener('blur', endResize);
+                    }
+                    var handlePositions = (shape === 'circle') ? ['nw','ne','sw','se'] : ['nw','ne','sw','se'];
+                    handlePositions.forEach(function(pos){
+                        var h = makeHandle(pos);
+                        revealOnHover(h);
+                        attachPointerResize(h, pos);
+                    });
+                } catch (_) {}
+            }
+            function enableVanillaDraggable(el, container) {
+                var dragging = false;
+                var offsetX = 0;
+                var offsetY = 0;
+                var pointerId = null;
+
+                el.addEventListener('pointerdown', function(e) {
+                    if (e.button !== 0) return;
+                    if (e.target && e.target.closest && e.target.closest('.vanilla-resize-handle')) return;
+                    dragging = true;
+                    pointerId = e.pointerId;
+                    try { el.setPointerCapture(pointerId); } catch (_) {}
+                    var rect = el.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                });
+                el.addEventListener('pointermove', function(e) {
+                    if (!dragging || (pointerId !== null && e.pointerId !== pointerId)) return;
+                    var c = container.getBoundingClientRect();
+                    var x = e.clientX - c.left - offsetX;
+                    var y = e.clientY - c.top - offsetY;
+                    x = Math.max(0, Math.min(x, c.width - el.offsetWidth));
+                    y = Math.max(0, Math.min(y, c.height - el.offsetHeight));
+                    el.style.left = x + 'px';
+                    el.style.top = y + 'px';
+                });
+                function stopDrag() {
+                    if (!dragging) return;
+                    dragging = false;
+                    try { if (pointerId != null) el.releasePointerCapture(pointerId); } catch (_) {}
+                    pointerId = null;
+                }
+                el.addEventListener('pointerup', function(e){ stopDrag(); });
+                el.addEventListener('pointercancel', function(e){ stopDrag(); });
+                window.addEventListener('blur', stopDrag);
+            }
+function enableSingleHandleResize(el, handle, position) {
+    let resizing = false;
+    let startX, startY, startW, startH, startLeft, startTop;
+
+    handle.addEventListener("mousedown", function (e) {
+        e.stopPropagation();
+        resizing = true;
+
+        const rect = el.getBoundingClientRect();
+
+        startX = e.clientX;
+        startY = e.clientY;
+        startW = rect.width;
+        startH = rect.height;
+        startLeft = el.offsetLeft;
+        startTop = el.offsetTop;
+
+        document.addEventListener("mousemove", resize);
+        document.addEventListener("mouseup", stop);
+    });
+
+    function resize(e) {
+        if (!resizing) return;
+
+        let dx = e.clientX - startX;
+        let dy = e.clientY - startY;
+
+        if (position.includes("e")) el.style.width = startW + dx + "px";
+        if (position.includes("s")) el.style.height = startH + dy + "px";
+
+        if (position.includes("w")) {
+            el.style.width = startW - dx + "px";
+            el.style.left = startLeft + dx + "px";
+        }
+        if (position.includes("n")) {
+            el.style.height = startH - dy + "px";
+            el.style.top = startTop + dy + "px";
+        }
+    }
+
+    function stop() {
+        resizing = false;
+        document.removeEventListener("mousemove", resize);
+        document.removeEventListener("mouseup", stop);
+    }
+}
+
+
             var createdTasks = [];
             var badgeCounter = 0;
             // editing guard to prevent reset/clears when editing an existing task
@@ -2611,6 +2813,7 @@
                 plus.style.alignItems = 'center';
                 plus.style.justifyContent = 'center';
                 plus.style.cursor = 'pointer';
+                plus.style.zIndex = '1010';
                 marker.appendChild(plus);
 
                 // prevent marker interactions from bubbling to upload box (which opens file chooser)
@@ -2631,12 +2834,13 @@
                 if (typeof $ === 'function' && typeof $.fn.draggable === 'function' && typeof $.fn.resizable ===
                     'function') {
                     $(marker).draggable({
-                        containment: markerLayer
+                        containment: markerLayer,
+                        cancel: '.ui-resizable-handle'
                     });
                     $(marker).resizable({
                         aspectRatio: currentShape === 'circle',
                         containment: markerLayer,
-                        handles: 'n, e, s, w, ne, se, sw, nw',
+                        handles: 'ne, se, sw, nw',
                         resize: function() {
                             if (currentShape === 'circle') {
                                 var w = $(this).width();
@@ -2644,6 +2848,11 @@
                             }
                         }
                     });
+                    ensureResizableHandleStyles();
+                } else {
+                    // Vanilla fallback
+                    enableVanillaResizable(marker, currentShape, markerLayer);
+                    enableVanillaDraggable(marker, markerLayer);
                 }
 
                 function removeInlineColorRows() {
@@ -5183,6 +5392,7 @@
                 plus.style.alignItems = 'center';
                 plus.style.justifyContent = 'center';
                 plus.style.cursor = 'pointer';
+                plus.style.zIndex = '1010';
                 m.appendChild(plus);
                 m.addEventListener('mousedown', function(ev) {
                     ev.stopPropagation();
@@ -5197,12 +5407,13 @@
                 wtCurrentMarker = m;
                 if (typeof $ === 'function' && $.fn.draggable && $.fn.resizable) {
                     $(m).draggable({
-                        containment: wtLayer
+                        containment: wtLayer,
+                        cancel: '.ui-resizable-handle'
                     });
                     $(m).resizable({
                         aspectRatio: wtCurrentShape === 'circle',
                         containment: wtLayer,
-                        handles: 'n, e, s, w, ne, se, sw, nw',
+                        handles: 'ne, se, sw, nw',
                         resize: function() {
                             if (wtCurrentShape === 'circle') {
                                 var w = $(this).width();
@@ -5210,6 +5421,11 @@
                             }
                         }
                     });
+                    ensureResizableHandleStyles();
+                } else {
+                    // Vanilla fallback
+                    enableVanillaResizable(m, wtCurrentShape, wtLayer);
+                    enableVanillaDraggable(m, wtLayer);
                 }
                 plus.addEventListener('click', function(ev) {
                     ev.stopPropagation();
