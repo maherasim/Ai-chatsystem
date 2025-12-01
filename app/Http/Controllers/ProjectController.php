@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Ticket;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -377,6 +381,95 @@ class ProjectController extends Controller
             $attachments = [];
         }
 
+        // Teams for this project
+        $makeUrl = function ($path) {
+            if (!$path) return null;
+            $p = ltrim((string) $path, '/');
+            if (Str::startsWith($p, ['http://', 'https://'])) {
+                return $p;
+            }
+            if (Str::startsWith($p, ['upload/', 'storage/'])) {
+                return asset($p);
+            }
+            // default: assume stored via storage/app/public
+            return asset('storage/' . $p);
+        };
+        $teams = Team::where('project_id', (string) ($project->_id ?? $project->id))->get();
+        $teamsPayload = [];
+        foreach ($teams as $team) {
+            $taskDevelopers = [];
+            $raw = $team->task_developers;
+            if (is_string($raw)) {
+                $decoded = json_decode($raw, true);
+                $raw = is_array($decoded) ? $decoded : [];
+            } elseif (!is_array($raw)) {
+                $raw = [];
+            }
+            // Flatten unique developer names from values
+            $names = [];
+            foreach ($raw as $arr) {
+                if (is_array($arr)) {
+                    foreach ($arr as $nm) {
+                        $t = trim((string) $nm);
+                        if ($t !== '' && !in_array($t, $names, true)) $names[] = $t;
+                    }
+                }
+            }
+            // Fetch users by name
+            $users = empty($names) ? collect() : User::whereIn('name', $names)->get();
+            $devs = [];
+            foreach ($users as $u) {
+                $img = $u->image ?? null;
+                $url = $makeUrl($img);
+                $devs[] = [
+                    'id' => (string) ($u->_id ?? $u->id),
+                    'name' => $u->name,
+                    'avatar_url' => $url,
+                ];
+            }
+            $teamsPayload[] = [
+                'id' => (string) ($team->_id ?? $team->id),
+                'title' => $team->title ?? 'Team',
+                'developers' => $devs,
+                'banner_url' => $makeUrl($team->banner_path),
+                'thumb_url' => $makeUrl($team->thumb_path),
+            ];
+        }
+
+        // Tickets for this project
+        $ticketsQuery = Ticket::where('project_id', (string) ($project->_id ?? $project->id))->orderByDesc('created_at');
+        $ticketsTotal = (int) $ticketsQuery->count();
+        $ticketsList = $ticketsQuery->limit(20)->get();
+        $ticketsPayload = [];
+        foreach ($ticketsList as $t) {
+            $start = $t->start_date ? Carbon::parse($t->start_date) : null;
+            $end = $t->end_date ? Carbon::parse($t->end_date) : null;
+            $today = Carbon::today();
+            $daysLeft = null;
+            if ($end) {
+                $daysLeft = $today->diffInDays($end, false);
+            }
+            // compute timeline progress percent based on dates
+            $progress = 0;
+            if ($start && $end && $end->greaterThanOrEqualTo($start)) {
+                $total = max(1, $start->diffInSeconds($end));
+                $elapsed = max(0, min($total, $start->diffInSeconds(min($today, $end))));
+                $progress = (int) round(($elapsed / $total) * 100);
+            }
+            $ticketsPayload[] = [
+                'id' => (string) ($t->_id ?? $t->id),
+                'code' => $t->code,
+                'title' => $t->title,
+                'status' => $t->status,
+                'priority' => $t->priority,
+                'section_name' => $t->section_name,
+                'start_date' => $t->start_date ? Carbon::parse($t->start_date)->format('Y-m-d') : null,
+                'end_date' => $t->end_date ? Carbon::parse($t->end_date)->format('Y-m-d') : null,
+                'days_left' => $daysLeft,
+                'progress_percent' => $progress,
+            ];
+        }
+
         return response()->json([
             'id' => (string) ($project->_id ?? $project->id),
             'code' => $project->code,
@@ -392,6 +485,9 @@ class ProjectController extends Controller
             'phases' => $phases,
             'sections' => $sections,
             'attachments' => $attachments,
+            'teams' => $teamsPayload,
+            'tickets' => $ticketsPayload,
+            'tickets_total' => $ticketsTotal,
         ]);
     }
     public function destroy(string $id)

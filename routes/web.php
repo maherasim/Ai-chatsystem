@@ -161,6 +161,8 @@ Route::get('/project', [App\Http\Controllers\ProjectController::class, 'index'])
 Route::post('/project', [App\Http\Controllers\ProjectController::class, 'store'])->name('project.store');
 Route::delete('/project/{id}', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('project.destroy');
 Route::put('/project/{id}', [App\Http\Controllers\ProjectController::class, 'update'])->name('project.update');
+// Lightweight JSON details for offcanvas (phases, sections, attachments, etc.)
+Route::get('/project/{id}/json', [App\Http\Controllers\ProjectController::class, 'showApi'])->name('project.show.json');
 
 Route::get('/Apis', function () {
     $headers = Setting::all();
