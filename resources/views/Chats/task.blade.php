@@ -2179,6 +2179,8 @@
             var endDateSpan = document.getElementById('ticket-end-date');
             var markerLayer = document.getElementById('markerLayer');
             var previewImg = document.getElementById('previewImage');
+            var markerActions = document.getElementById('markerActions');
+            var markerCancelBtn = document.getElementById('marker-cancel');
             var currentMarker = null;
             var currentShape = 'square';
             var currentColor = '#ea5455';
@@ -2293,11 +2295,13 @@
             // marker controls
             var shapeSquareBtn = document.getElementById('marker-shape-square');
             var shapeCircleBtn = document.getElementById('marker-shape-circle');
+            var shapeTriangleBtn = document.getElementById('marker-shape-triangle');
             if (shapeSquareBtn) shapeSquareBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 currentShape = 'square';
                 this.style.background = '#e9ecef';
                 if (shapeCircleBtn) shapeCircleBtn.style.background = '#f8f9fa';
+                if (shapeTriangleBtn) shapeTriangleBtn.style.background = '#f8f9fa';
                 // enter place mode; do not auto-create marker
                 placingActive = true;
                 if (markerLayer) {
@@ -2313,7 +2317,23 @@
                 currentShape = 'circle';
                 this.style.background = '#e9ecef';
                 if (shapeSquareBtn) shapeSquareBtn.style.background = '#f8f9fa';
+                if (shapeTriangleBtn) shapeTriangleBtn.style.background = '#f8f9fa';
                 // enter place mode; do not auto-create marker
+                placingActive = true;
+                if (markerLayer) {
+                    try {
+                        previewImg.style.display = 'block';
+                        markerLayer.style.display = 'block';
+                    } catch (_) {}
+                    markerLayer.style.cursor = 'crosshair';
+                }
+            });
+            if (shapeTriangleBtn) shapeTriangleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                currentShape = 'triangle';
+                this.style.background = '#e9ecef';
+                if (shapeSquareBtn) shapeSquareBtn.style.background = '#f8f9fa';
+                if (shapeCircleBtn) shapeCircleBtn.style.background = '#f8f9fa';
                 placingActive = true;
                 if (markerLayer) {
                     try {
@@ -2327,6 +2347,33 @@
             if (markerToolbarEl) {
                 markerToolbarEl.addEventListener('click', function(e) {
                     e.stopPropagation();
+                });
+            }
+            if (markerCancelBtn && !markerCancelBtn._bound) {
+                markerCancelBtn._bound = true;
+                markerCancelBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    try {
+                        if (previewImg) {
+                            previewImg.src = '';
+                            previewImg.style.display = 'none';
+                        }
+                        var text = document.getElementById('uploadText');
+                        if (text) {
+                            text.style.display = 'block';
+                            text.innerHTML = 'Upload Or Drag <br><small>PDF, JPG, PNG</small>';
+                        }
+                        if (markerLayer) {
+                            markerLayer.style.display = 'none';
+                            markerLayer.innerHTML = '';
+                        }
+                        var tb = document.getElementById('markerToolbar');
+                        if (tb) tb.style.display = 'none';
+                        if (markerActions) markerActions.style.display = 'none';
+                        var fi = document.getElementById('fileInput');
+                        if (fi) fi.value = '';
+                    } catch (_) {}
                 });
             }
             document.querySelectorAll('.marker-color').forEach(function(btn) {
@@ -2594,7 +2641,38 @@
                 marker.style.cursor = 'move';
                 marker.style.userSelect = 'none';
                 marker.style.pointerEvents = 'auto';
-                marker.style.borderRadius = currentShape === 'circle' ? '50%' : '6px';
+                marker.dataset.shape = currentShape;
+                // shape style
+                if (currentShape === 'circle') {
+                    marker.style.borderRadius = '50%';
+                    marker.style.clipPath = 'none';
+                } else if (currentShape === 'triangle') {
+                    marker.style.borderRadius = '0';
+                    marker.style.clipPath = 'none'; // avoid clipping the plus/handles
+                    marker.style.border = '0';
+                    // SVG stroke for crisp triangle border
+                    try {
+                        var triSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        triSvg.setAttribute('viewBox', '0 0 100 100');
+                        triSvg.style.position = 'absolute';
+                        triSvg.style.inset = '0';
+                        triSvg.style.width = '100%';
+                        triSvg.style.height = '100%';
+                        triSvg.style.pointerEvents = 'none';
+                        triSvg.style.zIndex = '1';
+                        var triPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                        triPoly.setAttribute('points', '50,5 5,95 95,95');
+                        triPoly.setAttribute('fill', 'rgba(0,0,0,0)');
+                        triPoly.setAttribute('stroke', currentColor);
+                        triPoly.setAttribute('stroke-width', '4');
+                        triSvg.appendChild(triPoly);
+                        marker.appendChild(triSvg);
+                        marker._triangleSvg = { svg: triSvg, polygon: triPoly };
+                    } catch (_) {}
+                } else {
+                    marker.style.borderRadius = '6px';
+                    marker.style.clipPath = 'none';
+                }
 
                 var plus = document.createElement('div');
                 plus.textContent = '+';
@@ -2611,7 +2689,48 @@
                 plus.style.alignItems = 'center';
                 plus.style.justifyContent = 'center';
                 plus.style.cursor = 'pointer';
+                plus.style.zIndex = '10';
+                plus.style.boxShadow = '0 0 0 2px #ffffff, 0 2px 6px rgba(0,0,0,0.15)';
                 marker.appendChild(plus);
+
+                // rotation handle
+                var rotateHandle = document.createElement('div');
+                rotateHandle.title = 'Rotate';
+                rotateHandle.style.position = 'absolute';
+                rotateHandle.style.left = '50%';
+                rotateHandle.style.top = '-20px';
+                rotateHandle.style.transform = 'translateX(-50%)';
+                rotateHandle.style.width = '16px';
+                rotateHandle.style.height = '16px';
+                rotateHandle.style.borderRadius = '50%';
+                rotateHandle.style.background = '#ffffff';
+                rotateHandle.style.border = '2px solid ' + currentColor;
+                rotateHandle.style.boxShadow = '0 2px 6px rgba(0,0,0,0.15)';
+                rotateHandle.style.cursor = 'grab';
+                rotateHandle.style.zIndex = '15';
+                marker.appendChild(rotateHandle);
+                rotateHandle.addEventListener('mousedown', function(ev) {
+                    ev.stopPropagation();
+                    ev.preventDefault();
+                    rotateHandle.style.cursor = 'grabbing';
+                    function onMove(e2) {
+                        var r = marker.getBoundingClientRect();
+                        var cx = r.left + r.width / 2;
+                        var cy = r.top + r.height / 2;
+                        var angle = Math.atan2(e2.clientY - cy, e2.clientX - cx) * 180 / Math.PI;
+                        var deg = angle + 90;
+                        marker.dataset.rotation = String(deg);
+                        marker.style.transformOrigin = 'center center';
+                        marker.style.transform = 'rotate(' + deg + 'deg)';
+                    }
+                    function onUp() {
+                        rotateHandle.style.cursor = 'grab';
+                        document.removeEventListener('mousemove', onMove, true);
+                        document.removeEventListener('mouseup', onUp, true);
+                    }
+                    document.addEventListener('mousemove', onMove, true);
+                    document.addEventListener('mouseup', onUp, true);
+                });
 
                 // prevent marker interactions from bubbling to upload box (which opens file chooser)
                 marker.addEventListener('mousedown', function(e) {
@@ -2634,16 +2753,142 @@
                         containment: markerLayer
                     });
                     $(marker).resizable({
-                        aspectRatio: currentShape === 'circle',
+                        aspectRatio: (marker.dataset.shape !== 'square'),
                         containment: markerLayer,
                         handles: 'n, e, s, w, ne, se, sw, nw',
                         resize: function() {
-                            if (currentShape === 'circle') {
+                            var shape = this.dataset ? (this.dataset.shape || 'square') : 'square';
+                            if (shape !== 'square') {
                                 var w = $(this).width();
                                 $(this).height(w);
                             }
                         }
                     });
+                } else {
+                    // Fallback: pure JS drag + resize handles
+                    (function() {
+                        var isDragging = false;
+                        var dragStartX = 0, dragStartY = 0;
+                        var startLeft = 0, startTop = 0;
+
+                        function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+                        function onDragMove(ev) {
+                            if (!isDragging) return;
+                            var dx = ev.clientX - dragStartX;
+                            var dy = ev.clientY - dragStartY;
+                            var newLeft = startLeft + dx;
+                            var newTop = startTop + dy;
+                            var maxLeft = (markerLayer.clientWidth - marker.offsetWidth);
+                            var maxTop = (markerLayer.clientHeight - marker.offsetHeight);
+                            marker.style.left = clamp(newLeft, 0, maxLeft) + 'px';
+                            marker.style.top = clamp(newTop, 0, maxTop) + 'px';
+                        }
+                        function onDragEnd() {
+                            isDragging = false;
+                            document.removeEventListener('mousemove', onDragMove, true);
+                            document.removeEventListener('mouseup', onDragEnd, true);
+                        }
+                        marker.addEventListener('mousedown', function(ev) {
+                            if (ev.target.classList && ev.target.classList.contains('marker-resize-handle')) return;
+                            if (ev.target === plus) return;
+                            isDragging = true;
+                            dragStartX = ev.clientX;
+                            dragStartY = ev.clientY;
+                            startLeft = parseFloat(marker.style.left || '0') || 0;
+                            startTop = parseFloat(marker.style.top || '0') || 0;
+                            document.addEventListener('mousemove', onDragMove, true);
+                            document.addEventListener('mouseup', onDragEnd, true);
+                        });
+
+                        // Build resize handles
+                        var handleDefs = [
+                            { dir: 'n',  cursor: 'n-resize',  pos: { left: '50%', top: '-6px',  tx: '-50%', ty: '0' } },
+                            { dir: 'e',  cursor: 'e-resize',  pos: { left: 'calc(100% - 2px)', top: '50%', tx: '0', ty: '-50%' } },
+                            { dir: 's',  cursor: 's-resize',  pos: { left: '50%', top: 'calc(100% - 2px)', tx: '-50%', ty: '0' } },
+                            { dir: 'w',  cursor: 'w-resize',  pos: { left: '-6px', top: '50%', tx: '0', ty: '-50%' } },
+                            { dir: 'ne', cursor: 'ne-resize', pos: { left: 'calc(100% - 2px)', top: '-6px', tx: '0', ty: '0' } },
+                            { dir: 'se', cursor: 'se-resize', pos: { left: 'calc(100% - 2px)', top: 'calc(100% - 2px)', tx: '0', ty: '0' } },
+                            { dir: 'sw', cursor: 'sw-resize', pos: { left: '-6px', top: 'calc(100% - 2px)', tx: '0', ty: '0' } },
+                            { dir: 'nw', cursor: 'nw-resize', pos: { left: '-6px', top: '-6px', tx: '0', ty: '0' } }
+                        ];
+
+                        function addHandle(def) {
+                            var h = document.createElement('div');
+                            h.className = 'marker-resize-handle marker-resize-' + def.dir;
+                            h.style.position = 'absolute';
+                            h.style.width = '10px';
+                            h.style.height = '10px';
+                            h.style.background = '#ffffff';
+                            h.style.border = '2px solid ' + currentColor;
+                            h.style.borderRadius = '2px';
+                            h.style.boxSizing = 'border-box';
+                            h.style.left = def.pos.left;
+                            h.style.top = def.pos.top;
+                            if (def.pos.tx || def.pos.ty) {
+                                h.style.transform = 'translate(' + (def.pos.tx || '0') + ',' + (def.pos.ty || '0') + ')';
+                            }
+                            h.style.cursor = def.cursor;
+                            h.style.zIndex = '2';
+
+                            h.addEventListener('mousedown', function(ev) {
+                                ev.stopPropagation();
+                                var startX = ev.clientX;
+                                var startY = ev.clientY;
+                                var initW = marker.offsetWidth;
+                                var initH = marker.offsetHeight;
+                                var initL = parseFloat(marker.style.left || '0') || 0;
+                                var initT = parseFloat(marker.style.top || '0') || 0;
+
+                                function onMove(e2) {
+                                    var dx = e2.clientX - startX;
+                                    var dy = e2.clientY - startY;
+                                    var newW = initW;
+                                    var newH = initH;
+                                    var newL = initL;
+                                    var newT = initT;
+
+                                    if (def.dir.indexOf('e') >= 0) newW = initW + dx;
+                                    if (def.dir.indexOf('s') >= 0) newH = initH + dy;
+                                    if (def.dir.indexOf('w') >= 0) { newW = initW - dx; newL = initL + dx; }
+                                    if (def.dir.indexOf('n') >= 0) { newH = initH - dy; newT = initT + dy; }
+
+                                    newW = Math.max(24, newW);
+                                    newH = Math.max(24, newH);
+
+                                    var shape = marker.dataset.shape || 'square';
+                                    if (shape !== 'square') {
+                                        var s = Math.max(newW, newH);
+                                        // Anchor position when resizing from north/west
+                                        if (def.dir.indexOf('w') >= 0) newL = initL + (initW - s);
+                                        if (def.dir.indexOf('n') >= 0) newT = initT + (initH - s);
+                                        newW = s;
+                                        newH = s;
+                                    }
+
+                                    var maxLeft = markerLayer.clientWidth - newW;
+                                    var maxTop = markerLayer.clientHeight - newH;
+                                    newL = clamp(newL, 0, Math.max(0, maxLeft));
+                                    newT = clamp(newT, 0, Math.max(0, maxTop));
+
+                                    marker.style.left = newL + 'px';
+                                    marker.style.top = newT + 'px';
+                                    marker.style.width = newW + 'px';
+                                    marker.style.height = newH + 'px';
+                                }
+                                function onUp() {
+                                    document.removeEventListener('mousemove', onMove, true);
+                                    document.removeEventListener('mouseup', onUp, true);
+                                }
+                                document.addEventListener('mousemove', onMove, true);
+                                document.addEventListener('mouseup', onUp, true);
+                            });
+
+                            marker.appendChild(h);
+                        }
+
+                        handleDefs.forEach(addHandle);
+                    })();
                 }
 
                 function removeInlineColorRows() {
@@ -2684,8 +2929,13 @@
                         b.addEventListener('click', function(ev) {
                             ev.stopPropagation();
                             currentColor = c;
-                            marker.style.border = '2px solid ' + currentColor;
+                            if ((marker.dataset.shape || '') === 'triangle' && marker._triangleSvg && marker._triangleSvg.polygon) {
+                                try { marker._triangleSvg.polygon.setAttribute('stroke', currentColor); } catch (_) {}
+                            } else {
+                                marker.style.border = '2px solid ' + currentColor;
+                            }
                             plus.style.background = currentColor;
+                            if (rotateHandle) rotateHandle.style.border = '2px solid ' + currentColor;
                             // update selection borders
                             row.querySelectorAll('button').forEach(function(btn) {
                                 if (btn !== createBtn) btn.style.borderColor =
@@ -2699,10 +2949,11 @@
                     var createBtn = document.createElement('button');
                     createBtn.type = 'button';
                     createBtn.className = 'btn btn-sm';
-                    createBtn.textContent = 'Create Issue';
+                    createBtn.textContent = '+task';
                     createBtn.style.background = '#28c76f';
                     createBtn.style.color = '#fff';
                     createBtn.style.borderRadius = '6px';
+                    createBtn.style.whiteSpace = 'nowrap';
                     createBtn.addEventListener('click', function(ev) {
                         ev.stopPropagation();
                         removeInlineColorRows();
@@ -3995,7 +4246,7 @@
                             <div id="uploadBox" onclick="document.getElementById('fileInput').click();"
                                 ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
                                 ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } }"
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
                                 style="background-color: #f7f7f7;
       height: 100%;
       min-height: 250px;
@@ -4010,14 +4261,14 @@
       position: relative;
     ">
                                 <p id="uploadText" class="text-muted m-0">
-                                    Upload Or Drag<br><small>PDF, JPG, PNG</small>
+                                    Upload Or Drag <br><small>PDF, JPG, PNG</small>
                                 </p>
                                 <img id="previewImage" src=""
                                     style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); " />
                                 <div id="markerLayer"
                                     style="display:none; position:absolute; inset:10px; pointer-events:auto;"
                                     ondragover="event.preventDefault();"
-                                    ondrop="event.preventDefault(); var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); if(previewImg){ previewImg.style.display='none'; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } }">
+                                    ondrop="event.preventDefault(); var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
                                 </div>
                                 <div id="markerToolbar"
                                     style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
@@ -4033,6 +4284,16 @@
                                             <circle cx="19" cy="19" r="2" fill="#1f2a57" />
                                         </svg>
                                     </button>
+                                    <button id="marker-shape-triangle" type="button" class="btn btn-sm"
+                                        style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <polygon points="12,5 5,19 19,19" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                            <circle cx="12" cy="5" r="2" fill="#1f2a57" />
+                                            <circle cx="5" cy="19" r="2" fill="#1f2a57" />
+                                            <circle cx="19" cy="19" r="2" fill="#1f2a57" />
+                                        </svg>
+                                    </button>
                                     <button id="marker-shape-circle" type="button" class="btn btn-sm"
                                         style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                         <svg width="24" height="24" viewBox="0 0 24 24"
@@ -4041,6 +4302,16 @@
                                                 stroke="#1f2a57" stroke-width="2" />
                                             <path d="M15 6 A8 8 0 0 1 18 12" fill="none" stroke="#8fa3bf"
                                                 stroke-linecap="round" stroke-width="2" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="markerActions"
+                                    style="display:none; position:absolute; top:10px; right:10px; z-index:12; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                    <button id="marker-cancel" type="button" class="btn btn-sm"
+                                        title="Cancel and upload new"
+                                        style="width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#ffffff; border:2px solid #ea5455;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="#ea5455" stroke-width="2" stroke-linecap="round"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -4054,6 +4325,7 @@
       var text = document.getElementById('uploadText');
       var markerLayer = document.getElementById('markerLayer');
       var markerToolbar = document.getElementById('markerToolbar');
+      var markerActions = document.getElementById('markerActions');
 
       if (!file) return;
 
@@ -4065,6 +4337,7 @@
           text.style.display = 'none';
           markerLayer.style.display = 'block';
           if (markerToolbar) markerToolbar.style.display = 'flex';
+          if (markerActions) markerActions.style.display = 'flex';
           // Removed auto-persist to server to avoid 404 GET on preview
         };
         reader.readAsDataURL(file);
@@ -4073,6 +4346,7 @@
         text.innerHTML = '📄 ' + file.name;
         markerLayer.style.display = 'none';
         if (markerToolbar) markerToolbar.style.display = 'none';
+        if (markerActions) markerActions.style.display = 'none';
       }
     " />
                         </div>
@@ -4762,7 +5036,7 @@
                             <div id="wt-uploadBox" onclick="document.getElementById('wt-fileInput').click();"
                                 ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
                                 ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; } if(tb){ tb.style.display='none'; } }"
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } }"
                                 style="background-color: #f7f7f7; height: 100%; min-height: 250px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
                                 <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG,
                                         PNG</small></p>
@@ -4784,6 +5058,16 @@
                                             <circle cx="19" cy="19" r="2" fill="#1f2a57" />
                                         </svg>
                                     </button>
+                                    <button id="wt-marker-shape-triangle" type="button" class="btn btn-sm"
+                                        style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <polygon points="12,5 5,19 19,19" fill="none" stroke="#1f2a57" stroke-width="2"/>
+                                            <circle cx="12" cy="5" r="2" fill="#1f2a57" />
+                                            <circle cx="5" cy="19" r="2" fill="#1f2a57" />
+                                            <circle cx="19" cy="19" r="2" fill="#1f2a57" />
+                                        </svg>
+                                    </button>
                                     <button id="wt-marker-shape-circle" type="button" class="btn btn-sm"
                                         style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                         <svg width="24" height="24" viewBox="0 0 24 24"
@@ -4795,10 +5079,20 @@
                                         </svg>
                                     </button>
                                 </div>
+                                <div id="wt-markerActions"
+                                    style="display:none; position:absolute; top:10px; right:10px; z-index:12; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                    <button id="wt-marker-cancel" type="button" class="btn btn-sm"
+                                        title="Cancel and upload new"
+                                        style="width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#ffffff; border:2px solid #ea5455;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="#ea5455" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <input type="file" id="wt-fileInput" accept=".jpg,.jpeg,.png,.pdf"
                                 style="display:none;"
-                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ p.src=e.target.result; p.style.display='block'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; }; r.readAsDataURL(f);} else { p.style.display='none'; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; }" />
+                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ p.src=e.target.result; p.style.display='block'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; }; r.readAsDataURL(f);} else { p.style.display='none'; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; }" />
                         </div>
                         <div class="col-md-7">
                              <div style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
@@ -5024,11 +5318,39 @@
             var wtLayer = document.getElementById('wt-markerLayer');
             var wtPreview = document.getElementById('wt-previewImage');
             var wtToolbar = document.getElementById('wt-markerToolbar');
+            var wtActions = document.getElementById('wt-markerActions');
+            var wtCancelBtn = document.getElementById('wt-marker-cancel');
             var wtCurrentMarker = null;
             var wtCurrentShape = 'square';
             var wtCurrentColor = '#ea5455';
             var wtPlacing = false;
             var wtIssues = [];
+            if (wtCancelBtn && !wtCancelBtn._bound) {
+                wtCancelBtn._bound = true;
+                wtCancelBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    try {
+                        if (wtPreview) {
+                            wtPreview.src = '';
+                            wtPreview.style.display = 'none';
+                        }
+                        var txt = document.getElementById('wt-uploadText');
+                        if (txt) {
+                            txt.style.display = 'block';
+                            txt.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>';
+                        }
+                        if (wtLayer) {
+                            wtLayer.style.display = 'none';
+                            wtLayer.innerHTML = '';
+                        }
+                        if (wtToolbar) wtToolbar.style.display = 'none';
+                        if (wtActions) wtActions.style.display = 'none';
+                        var fi = document.getElementById('wt-fileInput');
+                        if (fi) fi.value = '';
+                    } catch (_) {}
+                });
+            }
             var wtBadgeCounter = 0;
             window.__wtEditingMode = window.__wtEditingMode || false;
 
@@ -5109,6 +5431,7 @@
                     var txt = document.getElementById('wt-uploadText');
                     var l = document.getElementById('wt-markerLayer');
                     var tb = document.getElementById('wt-markerToolbar');
+                    var act = document.getElementById('wt-markerActions');
                     if (p) {
                         p.src = '';
                         p.style.display = 'none';
@@ -5124,6 +5447,9 @@
                     if (tb) {
                         tb.style.display = 'none';
                     }
+                    if (act) {
+                        act.style.display = 'none';
+                    }
                     var fi = document.getElementById('wt-fileInput');
                     if (fi) fi.value = '';
                 } catch (_) {}
@@ -5131,11 +5457,13 @@
 
             var wtSq = document.getElementById('wt-marker-shape-square');
             var wtCi = document.getElementById('wt-marker-shape-circle');
+            var wtTr = document.getElementById('wt-marker-shape-triangle');
             if (wtSq) wtSq.addEventListener('click', function(e) {
                 e.stopPropagation();
                 wtCurrentShape = 'square';
                 this.style.background = '#e9ecef';
                 if (wtCi) wtCi.style.background = '#f8f9fa';
+                if (wtTr) wtTr.style.background = '#f8f9fa';
                 wtPlacing = true;
                 if (wtLayer) {
                     try {
@@ -5150,6 +5478,22 @@
                 wtCurrentShape = 'circle';
                 this.style.background = '#e9ecef';
                 if (wtSq) wtSq.style.background = '#f8f9fa';
+                if (wtTr) wtTr.style.background = '#f8f9fa';
+                wtPlacing = true;
+                if (wtLayer) {
+                    try {
+                        wtPreview.style.display = 'block';
+                        wtLayer.style.display = 'block';
+                    } catch (_) {}
+                    wtLayer.style.cursor = 'crosshair';
+                }
+            });
+            if (wtTr) wtTr.addEventListener('click', function(e) {
+                e.stopPropagation();
+                wtCurrentShape = 'triangle';
+                this.style.background = '#e9ecef';
+                if (wtSq) wtSq.style.background = '#f8f9fa';
+                if (wtCi) wtCi.style.background = '#f8f9fa';
                 wtPlacing = true;
                 if (wtLayer) {
                     try {
@@ -5178,7 +5522,36 @@
                 m.style.cursor = 'move';
                 m.style.userSelect = 'none';
                 m.style.pointerEvents = 'auto';
-                m.style.borderRadius = (wtCurrentShape === 'circle' ? '50%' : '6px');
+                m.dataset.shape = wtCurrentShape;
+                if (wtCurrentShape === 'circle') {
+                    m.style.borderRadius = '50%';
+                    m.style.clipPath = 'none';
+                } else if (wtCurrentShape === 'triangle') {
+                    m.style.borderRadius = '0';
+                    m.style.clipPath = 'none'; // avoid clipping the plus/handles
+                    m.style.border = '0';
+                    try {
+                        var wtTriSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        wtTriSvg.setAttribute('viewBox', '0 0 100 100');
+                        wtTriSvg.style.position = 'absolute';
+                        wtTriSvg.style.inset = '0';
+                        wtTriSvg.style.width = '100%';
+                        wtTriSvg.style.height = '100%';
+                        wtTriSvg.style.pointerEvents = 'none';
+                        wtTriSvg.style.zIndex = '1';
+                        var wtTriPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                        wtTriPoly.setAttribute('points', '50,5 5,95 95,95');
+                        wtTriPoly.setAttribute('fill', 'rgba(0,0,0,0)');
+                        wtTriPoly.setAttribute('stroke', wtCurrentColor);
+                        wtTriPoly.setAttribute('stroke-width', '4');
+                        wtTriSvg.appendChild(wtTriPoly);
+                        m.appendChild(wtTriSvg);
+                        m._triangleSvg = { svg: wtTriSvg, polygon: wtTriPoly };
+                    } catch (_) {}
+                } else {
+                    m.style.borderRadius = '6px';
+                    m.style.clipPath = 'none';
+                }
                 var plus = document.createElement('div');
                 plus.textContent = '+';
                 plus.title = 'Add details';
@@ -5194,7 +5567,47 @@
                 plus.style.alignItems = 'center';
                 plus.style.justifyContent = 'center';
                 plus.style.cursor = 'pointer';
+                plus.style.zIndex = '10';
+                plus.style.boxShadow = '0 0 0 2px #ffffff, 0 2px 6px rgba(0,0,0,0.15)';
                 m.appendChild(plus);
+                // rotation handle (web)
+                var wtRotateHandle = document.createElement('div');
+                wtRotateHandle.title = 'Rotate';
+                wtRotateHandle.style.position = 'absolute';
+                wtRotateHandle.style.left = '50%';
+                wtRotateHandle.style.top = '-20px';
+                wtRotateHandle.style.transform = 'translateX(-50%)';
+                wtRotateHandle.style.width = '16px';
+                wtRotateHandle.style.height = '16px';
+                wtRotateHandle.style.borderRadius = '50%';
+                wtRotateHandle.style.background = '#ffffff';
+                wtRotateHandle.style.border = '2px solid ' + wtCurrentColor;
+                wtRotateHandle.style.boxShadow = '0 2px 6px rgba(0,0,0,0.15)';
+                wtRotateHandle.style.cursor = 'grab';
+                wtRotateHandle.style.zIndex = '15';
+                m.appendChild(wtRotateHandle);
+                wtRotateHandle.addEventListener('mousedown', function(ev) {
+                    ev.stopPropagation();
+                    ev.preventDefault();
+                    wtRotateHandle.style.cursor = 'grabbing';
+                    function onMove(e2) {
+                        var r = m.getBoundingClientRect();
+                        var cx = r.left + r.width / 2;
+                        var cy = r.top + r.height / 2;
+                        var angle = Math.atan2(e2.clientY - cy, e2.clientX - cx) * 180 / Math.PI;
+                        var deg = angle + 90;
+                        m.dataset.rotation = String(deg);
+                        m.style.transformOrigin = 'center center';
+                        m.style.transform = 'rotate(' + deg + 'deg)';
+                    }
+                    function onUp() {
+                        wtRotateHandle.style.cursor = 'grab';
+                        document.removeEventListener('mousemove', onMove, true);
+                        document.removeEventListener('mouseup', onUp, true);
+                    }
+                    document.addEventListener('mousemove', onMove, true);
+                    document.addEventListener('mouseup', onUp, true);
+                });
                 m.addEventListener('mousedown', function(ev) {
                     ev.stopPropagation();
                 });
@@ -5211,16 +5624,140 @@
                         containment: wtLayer
                     });
                     $(m).resizable({
-                        aspectRatio: wtCurrentShape === 'circle',
+                        aspectRatio: (m.dataset.shape !== 'square'),
                         containment: wtLayer,
                         handles: 'n, e, s, w, ne, se, sw, nw',
                         resize: function() {
-                            if (wtCurrentShape === 'circle') {
+                            var shp = this.dataset ? (this.dataset.shape || 'square') : 'square';
+                            if (shp !== 'square') {
                                 var w = $(this).width();
                                 $(this).height(w);
                             }
                         }
                     });
+                } else {
+                    // Fallback: pure JS drag + resize handles (web variant)
+                    (function() {
+                        var isDragging = false;
+                        var dragStartX = 0, dragStartY = 0;
+                        var startLeft = 0, startTop = 0;
+
+                        function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+                        function onDragMove(ev) {
+                            if (!isDragging) return;
+                            var dx = ev.clientX - dragStartX;
+                            var dy = ev.clientY - dragStartY;
+                            var newLeft = startLeft + dx;
+                            var newTop = startTop + dy;
+                            var maxLeft = (wtLayer.clientWidth - m.offsetWidth);
+                            var maxTop = (wtLayer.clientHeight - m.offsetHeight);
+                            m.style.left = clamp(newLeft, 0, maxLeft) + 'px';
+                            m.style.top = clamp(newTop, 0, maxTop) + 'px';
+                        }
+                        function onDragEnd() {
+                            isDragging = false;
+                            document.removeEventListener('mousemove', onDragMove, true);
+                            document.removeEventListener('mouseup', onDragEnd, true);
+                        }
+                        m.addEventListener('mousedown', function(ev) {
+                            if (ev.target.classList && ev.target.classList.contains('marker-resize-handle')) return;
+                            if (ev.target === plus) return;
+                            isDragging = true;
+                            dragStartX = ev.clientX;
+                            dragStartY = ev.clientY;
+                            startLeft = parseFloat(m.style.left || '0') || 0;
+                            startTop = parseFloat(m.style.top || '0') || 0;
+                            document.addEventListener('mousemove', onDragMove, true);
+                            document.addEventListener('mouseup', onDragEnd, true);
+                        });
+
+                        var handleDefs = [
+                            { dir: 'n',  cursor: 'n-resize',  pos: { left: '50%', top: '-6px',  tx: '-50%', ty: '0' } },
+                            { dir: 'e',  cursor: 'e-resize',  pos: { left: 'calc(100% - 2px)', top: '50%', tx: '0', ty: '-50%' } },
+                            { dir: 's',  cursor: 's-resize',  pos: { left: '50%', top: 'calc(100% - 2px)', tx: '-50%', ty: '0' } },
+                            { dir: 'w',  cursor: 'w-resize',  pos: { left: '-6px', top: '50%', tx: '0', ty: '-50%' } },
+                            { dir: 'ne', cursor: 'ne-resize', pos: { left: 'calc(100% - 2px)', top: '-6px', tx: '0', ty: '0' } },
+                            { dir: 'se', cursor: 'se-resize', pos: { left: 'calc(100% - 2px)', top: 'calc(100% - 2px)', tx: '0', ty: '0' } },
+                            { dir: 'sw', cursor: 'sw-resize', pos: { left: '-6px', top: 'calc(100% - 2px)', tx: '0', ty: '0' } },
+                            { dir: 'nw', cursor: 'nw-resize', pos: { left: '-6px', top: '-6px', tx: '0', ty: '0' } }
+                        ];
+
+                        function addHandle(def) {
+                            var h = document.createElement('div');
+                            h.className = 'marker-resize-handle marker-resize-' + def.dir;
+                            h.style.position = 'absolute';
+                            h.style.width = '10px';
+                            h.style.height = '10px';
+                            h.style.background = '#ffffff';
+                            h.style.border = '2px solid ' + wtCurrentColor;
+                            h.style.borderRadius = '2px';
+                            h.style.boxSizing = 'border-box';
+                            h.style.left = def.pos.left;
+                            h.style.top = def.pos.top;
+                            if (def.pos.tx || def.pos.ty) {
+                                h.style.transform = 'translate(' + (def.pos.tx || '0') + ',' + (def.pos.ty || '0') + ')';
+                            }
+                            h.style.cursor = def.cursor;
+                            h.style.zIndex = '2';
+
+                            h.addEventListener('mousedown', function(ev) {
+                                ev.stopPropagation();
+                                var startX = ev.clientX;
+                                var startY = ev.clientY;
+                                var initW = m.offsetWidth;
+                                var initH = m.offsetHeight;
+                                var initL = parseFloat(m.style.left || '0') || 0;
+                                var initT = parseFloat(m.style.top || '0') || 0;
+
+                                function onMove(e2) {
+                                    var dx = e2.clientX - startX;
+                                    var dy = e2.clientY - startY;
+                                    var newW = initW;
+                                    var newH = initH;
+                                    var newL = initL;
+                                    var newT = initT;
+
+                                    if (def.dir.indexOf('e') >= 0) newW = initW + dx;
+                                    if (def.dir.indexOf('s') >= 0) newH = initH + dy;
+                                    if (def.dir.indexOf('w') >= 0) { newW = initW - dx; newL = initL + dx; }
+                                    if (def.dir.indexOf('n') >= 0) { newH = initH - dy; newT = initT + dy; }
+
+                                    newW = Math.max(24, newW);
+                                    newH = Math.max(24, newH);
+
+                                    var shp = m.dataset.shape || 'square';
+                                    if (shp !== 'square') {
+                                        var s = Math.max(newW, newH);
+                                        if (def.dir.indexOf('w') >= 0) newL = initL + (initW - s);
+                                        if (def.dir.indexOf('n') >= 0) newT = initT + (initH - s);
+                                        newW = s;
+                                        newH = s;
+                                    }
+
+                                    var maxLeft = wtLayer.clientWidth - newW;
+                                    var maxTop = wtLayer.clientHeight - newH;
+                                    newL = clamp(newL, 0, Math.max(0, maxLeft));
+                                    newT = clamp(newT, 0, Math.max(0, maxTop));
+
+                                    m.style.left = newL + 'px';
+                                    m.style.top = newT + 'px';
+                                    m.style.width = newW + 'px';
+                                    m.style.height = newH + 'px';
+                                }
+                                function onUp() {
+                                    document.removeEventListener('mousemove', onMove, true);
+                                    document.removeEventListener('mouseup', onUp, true);
+                                }
+                                document.addEventListener('mousemove', onMove, true);
+                                document.addEventListener('mouseup', onUp, true);
+                            });
+
+                            m.appendChild(h);
+                        }
+
+                        handleDefs.forEach(addHandle);
+                    })();
                 }
                 plus.addEventListener('click', function(ev) {
                     ev.stopPropagation();
@@ -5263,8 +5800,13 @@
                         b.addEventListener('click', function(e2) {
                             e2.stopPropagation();
                             wtCurrentColor = c;
-                            m.style.border = '2px solid ' + wtCurrentColor;
+                            if ((m.dataset.shape || '') === 'triangle' && m._triangleSvg && m._triangleSvg.polygon) {
+                                try { m._triangleSvg.polygon.setAttribute('stroke', wtCurrentColor); } catch (_) {}
+                            } else {
+                                m.style.border = '2px solid ' + wtCurrentColor;
+                            }
                             plus.style.background = wtCurrentColor;
+                            if (wtRotateHandle) wtRotateHandle.style.border = '2px solid ' + wtCurrentColor;
                             row.querySelectorAll('button').forEach(function(btn) {
                                 if (btn !== createBtn) btn.style.borderColor =
                                     '#e0e6ed';
@@ -5276,10 +5818,11 @@
                     var createBtn = document.createElement('button');
                     createBtn.type = 'button';
                     createBtn.className = 'btn btn-sm';
-                    createBtn.textContent = 'Create Issue';
+                    createBtn.textContent = '+task';
                     createBtn.style.background = '#28c76f';
                     createBtn.style.color = '#fff';
                     createBtn.style.borderRadius = '6px';
+                    createBtn.style.whiteSpace = 'nowrap';
                     createBtn.addEventListener('click', function(e2) {
                         e2.stopPropagation();
                         try {
@@ -5562,6 +6105,12 @@
                                 } catch (_) {}
                             });
                         } catch (_) {}
+                        try {
+                            bootstrap.Modal.getOrCreateInstance(document.getElementById('webtask2')).hide();
+                        } catch (e) {}
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 300);
                     } else {
                         alert('Failed to create web task');
                     }
