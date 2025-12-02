@@ -7,6 +7,8 @@ use App\Http\Controllers\TodoController;
 use App\Http\Controllers\MeetingsController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\TicketController;
+
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -48,8 +50,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/meetingspostpone', [MeetingsController::class, 'postpone'])->name('meetings.postpone');
     Route::get('/delmeetings', [MeetingsController::class, 'delmeetings']);
     Route::get('/getmeeting/{id}', [MeetingsController::class, 'getmeeting'])->name('meetings.view');
+  // Page View
 
-    
+// Ticket Routes - Read-only access
+Route::get('/ticket', [TicketController::class, 'index'])->name('chat-ticket');
+
+// API Routes needed for the page to load data
+Route::get('/tickets/stats', [TicketController::class, 'getDashboardStats'])->name('tickets.stats');
+Route::get('/tickets/by-status', [TicketController::class, 'getTicketsByStatus'])->name('tickets.filter');
+Route::get('/tickets/projects', [TicketController::class, 'projects'])->name('tickets.projects');
+
+
+
+
+    });
 
 
 /*
@@ -58,7 +72,7 @@ Route::get('/meetings', function () {
 })->middleware('auth')->name('chat-meetings');
 */
 
-});
+
 
 
 Route::get('/login', function () {
@@ -135,13 +149,22 @@ Route::get('/chat', function () {
 Route::get('/Ai', function () {
     return view('Chats.Ai');
 })->middleware('auth')->name('chat-ai');
-Route::get('/tasks', function () {
-    return view('Chats.task');
-})->middleware('auth')->name('chat-task');
+use App\Http\Controllers\TaskController;
 
-Route::get('/ticket', function () {
-    return view('Chats.ticket');
-})->middleware('auth')->name('chat-ticket');
+Route::get('/tasks', [TaskController::class, 'index'])->middleware('auth')->name('chat-task');
+
+// Task API Routes
+Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');
+Route::get('/webtasks/tickets', [TaskController::class, 'tickets'])->name('webtasks.tickets'); // Reusing same logic
+
+// Dummy routes for actions to prevent RouteNotFoundException in view (Read-only)
+Route::post('/tasks/store', function() { abort(403); })->name('tasks.store');
+Route::delete('/tasks/{id}', function() { abort(403); })->name('tasks.destroy');
+Route::post('/webtasks/store', function() { abort(403); })->name('webtasks.store');
+Route::delete('/webtasks/{id}', function() { abort(403); })->name('webtasks.destroy');
+Route::post('/emptasks/store', function() { abort(403); })->name('emptasks.store');
+Route::delete('/emptasks/{id}', function() { abort(403); })->name('emptasks.destroy');
+
 Route::get('/teams', function () {
     return view('Chats.teams');
 })->middleware('auth')->name('chat-team');
