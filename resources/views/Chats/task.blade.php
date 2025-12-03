@@ -277,7 +277,7 @@
                                 <h3 >Current Tasks</h3>
                                 <strong>Task Overview</strong>
                             </div>
-
+                       <!---
                             <div class="d-flex justify-content-start"
                                 style="gap: 8px; background: #f8fafc;padding-right: 492px padding: 6px 10px; border-radius: 8px;">
                                 <button type="button" class="btn" data-bs-toggle="modal"
@@ -297,6 +297,7 @@
 
 
                             </div>
+    -->
                         </div>
                         <div
                             style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">

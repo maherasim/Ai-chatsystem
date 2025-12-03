@@ -320,9 +320,9 @@ class TicketController extends Controller
         // Get tickets count by status
         $inProgressCount = Ticket::where('status', 'in_progress')->count();
         $inHoldCount = Ticket::where('status', 'in_hold')->count();
-        $inDelayedCount = Ticket::where('status', 'in_delayed')->count();
+        $inDelayedCount = Ticket::where('status', 'delayed')->count();
         $newTicketCount = Ticket::where('status', 'new_ticket')->count();
-        $inDoneCount = Ticket::where('status', 'in_done')->count();
+        $inDoneCount = Ticket::where('status', 'completed')->count();
         
         // Calculate percentage changes (you can modify this logic based on your needs)
         // For now, we'll use static percentages, but you can implement actual calculations

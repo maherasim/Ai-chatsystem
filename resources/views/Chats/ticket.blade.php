@@ -245,7 +245,7 @@
                                 <strong>Total Tickets: <span id="total-tickets-count">0</span></strong>
                             </div>
                         
-                            <!-- Right Side -->
+                            <!-- Right Side 
                             <div style="padding-left: 1000px;">
                                 <button
                                     type="button"
@@ -258,8 +258,7 @@
                         </div>
                         
 
-                        <!-- Right Side -->
-                      
+                      -->
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
@@ -3645,7 +3644,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_delayed', 'in_delayed', projectId);
+            const url = buildFilteredUrl('/tickets/by-status?status=delayed', 'delayed', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -4178,7 +4177,7 @@
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
 
-            const url = buildFilteredUrl('/tickets/by-status?status=in_done', 'in_done', projectId);
+            const url = buildFilteredUrl('/tickets/by-status?status=completed', 'completed', projectId);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
