@@ -255,10 +255,11 @@
                                     + Create Ticket
                                 </button>
                             </div>
+                      -->
+
                         </div>
                         
 
-                      -->
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
@@ -3350,7 +3351,7 @@
     // Function to load dashboard statistics
     async function loadDashboardStats() {
         try {
-            const response = await fetch('/tickets/dashboard-stats', {
+            const response = await fetch('/tickets/stats', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

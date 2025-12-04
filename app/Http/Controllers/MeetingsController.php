@@ -76,7 +76,7 @@ $todayMeetings = Meetings::where(function ($q) use ($user) {
                 'id'    => $u->_id,
                 'name'  => $u->name,
                 'image' => $u->profile_image
-                    ? asset("storage/" . $u->profile_image)
+                    ? asset($u->profile_image)
                     : asset("build/img/default.png"),
             ];
         });
@@ -100,7 +100,7 @@ $todayMeetings = Meetings::where(function ($q) use ($user) {
                         'id'    => $u->_id,
                         'name'  => $u->name,
                         'image' => $u->profile_image
-                            ? asset("storage/" . $u->profile_image)
+                            ? asset($u->profile_image)
                             : asset("build/img/default.png"),
                     ];
                 });
