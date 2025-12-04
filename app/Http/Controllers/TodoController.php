@@ -175,7 +175,7 @@ class TodoController extends Controller
                 'id'    => $u->_id,
                 'name'  => $u->name,
                 'image' => $u->profile_image
-                    ? asset($u->profile_image)
+                    ? asset("storage/" . $u->profile_image)
                     : asset("build/img/default.png"),
             ];
         });
@@ -204,7 +204,7 @@ class TodoController extends Controller
                 'id'    => $u->_id,
                 'name'  => $u->name,
                 'image' => $u->profile_image
-                    ? asset($u->profile_image)
+                    ? asset("storage/" . $u->profile_image)
                     : asset("build/img/default.png"),
             ];
         });
@@ -228,7 +228,7 @@ class TodoController extends Controller
                         'id'    => $u->_id,
                         'name'  => $u->name,
                         'image' => $u->profile_image
-                            ? asset($u->profile_image)
+                            ? asset("storage/" . $u->profile_image)
                             : asset("build/img/default.png"),
                     ];
                 });
@@ -257,7 +257,7 @@ class TodoController extends Controller
                         'id'    => $u->_id,
                         'name'  => $u->name,
                         'image' => $u->profile_image
-                            ? asset($u->profile_image)
+                            ? asset("storage/" . $u->profile_image)
                             : asset("build/img/default.png"),
                     ];
                 });

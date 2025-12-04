@@ -17,13 +17,13 @@
 				}
 
 				if ($firstHeader && !empty($firstHeader->image)) {
-					$imageUrl = asset($firstHeader->image);
+					$imageUrl = asset('storage/' . $firstHeader->image);
 				} elseif (auth()->check()) {
 					$userObj = auth()->user();
 					if (!empty($userObj->image)) {
-						$imageUrl = asset($userObj->image);
+						$imageUrl = asset('storage/' . $userObj->image);
 					} elseif (!empty($userObj->profile_image)) {
-						$imageUrl = asset($userObj->profile_image);
+						$imageUrl = asset('storage/' . $userObj->profile_image);
 					}
 				}
 			@endphp
