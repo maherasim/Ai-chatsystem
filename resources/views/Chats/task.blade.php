@@ -1132,7 +1132,7 @@
                                                             <small>Deliver: {{ optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--') }}</small>
                                                         </div>
                                                         <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                            <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
+                                                            {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;"> --}}
                                                             01
                                                         </div>
                                                     </div>
@@ -2308,6 +2308,7 @@
                     try {
                         previewImg.style.display = 'block';
                         markerLayer.style.display = 'block';
+                        previewImg.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     markerLayer.style.cursor = 'crosshair';
                 }
@@ -2324,6 +2325,7 @@
                     try {
                         previewImg.style.display = 'block';
                         markerLayer.style.display = 'block';
+                        previewImg.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     markerLayer.style.cursor = 'crosshair';
                 }
@@ -2339,6 +2341,7 @@
                     try {
                         previewImg.style.display = 'block';
                         markerLayer.style.display = 'block';
+                        previewImg.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     markerLayer.style.cursor = 'crosshair';
                 }
@@ -2358,6 +2361,7 @@
                         if (previewImg) {
                             previewImg.src = '';
                             previewImg.style.display = 'none';
+                            previewImg.style.filter = '';
                         }
                         var text = document.getElementById('uploadText');
                         if (text) {
@@ -2558,6 +2562,12 @@
                         };
                     })();
                     createdTasks.push(taskData);
+                // Auto-save the task after adding an issue, without closing the main modal
+                setTimeout(function() {
+                    try {
+                        if (typeof saveTaskSilently === 'function') saveTaskSilently();
+                    } catch (_) {}
+                }, 10);
 
                     var badge = document.createElement('div');
                     badge.className = 'marker-badge';
@@ -3362,6 +3372,12 @@
                     taskData.layer = null;
                 }
                 createdTasks.push(taskData);
+                // Auto-save the task after adding an issue via modal, without closing the main modal
+                setTimeout(function() {
+                    try {
+                        if (typeof saveTaskSilently === 'function') saveTaskSilently();
+                    } catch (_) {}
+                }, 10);
 
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
@@ -3417,10 +3433,7 @@
                     currentMarker = null;
                 }
 
-                // No immediate backend request here; task will be created on Save & Close
-                try {
-                    bootstrap.Modal.getInstance(document.getElementById('markerDetailsModal')).hide();
-                } catch (e) {}
+                // Keep the Issue modal open so user can add more without closing
             });
             // Save aggregated issues into a single task on main modal Save & Close
             try {
@@ -3604,14 +3617,41 @@
                                             } catch (_) {}
                                         });
                                     } catch (_) {}
-                                    // Close modal and reload the page to reflect the new task
+                                    // Keep main modal open; just append card without reloading
                                     try {
-                                        bootstrap.Modal.getOrCreateInstance(document.getElementById(
-                                            'createTaskModal')).hide();
+                                        var list = document.getElementById('taskList');
+                                        if (list) {
+                                            var card = document.createElement('div');
+                                            card.className = 'd-flex p-2 rounded mt-2 task-card';
+                                            card.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
+                                            var imgSrc = (previewImg && previewImg.src) ? previewImg.src : '';
+                                            var urgent = String((createdTasks || []).length || 1).padStart(2,'0');
+                                            var startStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                            var endStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                            card.setAttribute('data-board', imgSrc);
+                                            try { card.setAttribute('data-issues', JSON.stringify(createdTasks||[])); } catch (_) {}
+                                            card.setAttribute('data-title', taskTitle || 'Task');
+                                            card.onclick = function(){ try{ openTaskViewer(card); }catch(_){ } };
+                                            card.innerHTML =
+                                                '<div class=\"me-2\">'
+                                                +   '<img src=\"'+ imgSrc +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
+                                                + '</div>'
+                                                + '<div class=\"flex-grow-1\">'
+                                                +   '<div class=\"d-flex justify-content-between align-items-center\">'
+                                                +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'
+                                                +       (taskTitle || 'Task')
+                                                +     '</div>'
+                                                +   '</div>'
+                                                +   '<div style=\"font-size:12px;color:#6c757d;\">'+ (ticketSelect?.selectedOptions?.[0]?.text || '') +'</div>'
+                                                +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                                +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ startStr +'</small></div>'
+                                                +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ endStr +'</small></div>'
+                                                +     '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+ urgent +'</div>'
+                                                +   '</div>'
+                                                + '</div>';
+                                            list.prepend(card);
+                                        }
                                     } catch (_) {}
-                                    setTimeout(function() {
-                                        window.location.reload();
-                                    }, 300);
                                 } else {
                                     alert('Failed to create task');
                                 }
@@ -3622,6 +3662,106 @@
                     });
                     createTaskSaveBtn._bound = true;
                 }
+
+                // Silent save (no modal close) used by auto-save on issue creation
+                window.saveTaskSilently = function() {
+                    try {
+                        var editingId = (document.getElementById('create-task-save') || {}).dataset?.editingId;
+                        // Build common fields
+                        var ticketText = (function() {
+                            try {
+                                var opt = ticketSelect?.selectedOptions?.[0];
+                                return opt ? (opt.textContent || '').trim() : '';
+                            } catch (_) { return ''; }
+                        })();
+                        var taskTitle = ticketText ? ticketText : 'Task';
+                        if (editingId) {
+                            var updatePayload = {
+                                title: taskTitle,
+                                description: '',
+                                start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
+                                end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
+                                checkpoints: [],
+                                issues: (Array.isArray(createdTasks) ? createdTasks : []),
+                                mark_image: (function(){ try{ var src=(previewImg||{}).src||''; return (src.indexOf('data:image')===0)?src:null; }catch(_){ return null; }})()
+                            };
+                            fetch(`{{ url('/tasks') }}/${editingId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify(updatePayload)
+                            }).then(function(r){ return r.json(); }).then(function(resp){
+                                if (resp && resp.success) {
+                                    // leave modal open; show a brief toast
+                                    try {
+                                        var note=document.createElement('div'); note.className='position-fixed top-0 end-0 p-3'; note.style.zIndex='1060';
+                                        note.innerHTML='<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task updated</div>';
+                                        document.body.appendChild(note); setTimeout(function(){ try{ note.remove(); }catch(_){ } },1200);
+                                    } catch(_){}
+                                }
+                            });
+                            return;
+                        }
+                        if (!Array.isArray(createdTasks) || createdTasks.length === 0) return;
+                        var payload = {
+                            project_id: (projectSelect || {}).value || null,
+                            ticket_id: (ticketSelect || {}).value || null,
+                            title: taskTitle,
+                            description: '',
+                            start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
+                            end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
+                            issues: createdTasks,
+                            board_image: (function(){ try{ var src=(previewImg||{}).src||''; return (src && src.indexOf('data:image')===0)?src:null; }catch(_){ return null; }})()
+                        };
+                        fetch("{{ route('tasks.store') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify(payload)
+                        }).then(function(r){ return r.json(); }).then(function(resp){
+                            if (resp && resp.success) {
+                                try {
+                                    var list=document.getElementById('taskList');
+                                    if (list) {
+                                        var card=document.createElement('div');
+                                        card.className='d-flex p-2 rounded mt-2 task-card';
+                                        card.style.cssText='background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
+                                        var imgSrc=(previewImg&&previewImg.src)?previewImg.src:'';
+                                        var urgent=String((createdTasks||[]).length||1).padStart(2,'0');
+                                        var startStr=(function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.start_date?(''+t.start_date).substring(0,10):'--'; }catch(_){ return '--'; }})();
+                                        var endStr=(function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.end_date?(''+t.end_date).substring(0,10):'--'; }catch(_){ return '--'; }})();
+                                        card.setAttribute('data-board', imgSrc);
+                                        try{ card.setAttribute('data-issues', JSON.stringify(createdTasks||[])); }catch(_){}
+                                        card.setAttribute('data-title', taskTitle||'Task');
+                                        card.onclick=function(){ try{ openTaskViewer(card); }catch(_){ } };
+                                        card.innerHTML=
+                                            '<div class=\"me-2\">'
+                                            +'<img src=\"'+imgSrc+'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
+                                            +'</div>'
+                                            +'<div class=\"flex-grow-1\">'
+                                            +  '<div class=\"d-flex justify-content-between align-items-center\">'
+                                            +    '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'+(taskTitle||'Task')+'</div>'
+                                            +  '</div>'
+                                            +  '<div style=\"font-size:12px;color:#6c757d;\">'+(ticketSelect?.selectedOptions?.[0]?.text||'')+'</div>'
+                                            +  '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                            +    '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+startStr+'</small></div>'
+                                            +    '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+endStr+'</small></div>'
+                                            +    '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+urgent+'</div>'
+                                            +  '</div>'
+                                            +'</div>';
+                                        list.prepend(card);
+                                    }
+                                } catch(_){}
+                            }
+                        });
+                    } catch(_){}
+                };
                 // Save & add Task: save and keep modal open for another task
                 var createTaskSaveAddBtn = document.getElementById('create-task-save-add');
                 if (createTaskSaveAddBtn && !createTaskSaveAddBtn._bound) {
@@ -4241,34 +4381,35 @@
                             });
                         </script>
                         <!-- Left Upload Area -->
-                        <div class="col-md-5">
+                        <div class="col-md-7">
 
-                            <div id="uploadBox" onclick="document.getElementById('fileInput').click();"
+                            <div id="uploadBox" onclick="var p=document.getElementById('select-project'); var t=document.getElementById('select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('fileInput').click();"
                                 ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
                                 ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
                                 style="background-color: #f7f7f7;
-      height: 100%;
-      min-height: 250px;
+      height: 640px;
+      min-height: 640px;
       cursor: pointer;
       border: 2px dashed #ccc;
       border-radius: 10px;
       display: flex;
+      width:440px;
       justify-content: center;
       align-items: center;
       text-align: center;
       flex-direction: column;
       position: relative;
     ">
-                                <p id="uploadText" class="text-muted m-0">
+                                <p id="uploadText" class="text-muted m-0"> 
                                     Upload Or Drag <br><small>PDF, JPG, PNG</small>
                                 </p>
                                 <img id="previewImage" src=""
-                                    style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px); " />
+                                    style="display:none; position:absolute; top:56px; right:0; bottom:0; left:0; width:100%; height:calc(100% - 56px); object-fit: contain;" />
                                 <div id="markerLayer"
-                                    style="display:none; position:absolute; inset:10px; pointer-events:auto;"
+                                    style="display:none; position:absolute; top:56px; right:0; bottom:0; left:0; pointer-events:auto;"
                                     ondragover="event.preventDefault();"
-                                    ondrop="event.preventDefault(); var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
+                                    ondrop="event.preventDefault(); var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; previewImg.style.filter=''; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
                                 </div>
                                 <div id="markerToolbar"
                                     style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
@@ -4326,7 +4467,10 @@
       var markerLayer = document.getElementById('markerLayer');
       var markerToolbar = document.getElementById('markerToolbar');
       var markerActions = document.getElementById('markerActions');
+      var selProj = document.getElementById('select-project');
+      var selTick = document.getElementById('select-ticket');
 
+      if (!(selProj && selProj.value && selTick && selTick.value)) { try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; }
       if (!file) return;
 
       if (file.type.startsWith('image/')) {
@@ -4334,6 +4478,7 @@
         reader.onload = function(e) {
           previewImg.src = e.target.result;
           previewImg.style.display = 'block';
+          previewImg.style.filter = 'brightness(0.65)';
           text.style.display = 'none';
           markerLayer.style.display = 'block';
           if (markerToolbar) markerToolbar.style.display = 'flex';
@@ -4353,7 +4498,7 @@
 
 
                         <!-- Right Task List -->
-                        <div class="col-md-7" >
+                        <div class="col-md-5" >
                             <div class="mt-1 mb-2" style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
                             <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                             <small class="text-muted">Ticket Details</small>
@@ -4379,7 +4524,7 @@
                                     <!-- Left Side: Title + Subtitle -->
                                     <div>
                                         <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
-                                        <small class="text-muted">Total Task: 5 – Total Checkpoint: 20</small>
+                                        <small class="text-muted">Total Task: 5 – Total Checkpoint: 20 </small>
                                     </div>
 
                                     <!-- Right Side: Red note -->
@@ -4390,6 +4535,7 @@
 
 
                                 <!-- Task Cards -->
+                                <div id="taskList" style="max-height: 380px; overflow-y: auto; padding-right: 4px;">
                                 @foreach ($tasks ?? [] as $task)
                                     @php
                                         $logo = optional($task->project)->logo_path
@@ -4480,14 +4626,15 @@
                                                 </div>
                                                 <div class="d-flex align-items-center"
                                                     style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                    <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                        alt="Urgent" style="margin-right: 4px;">
+                                                    {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                        alt="Urgent" style="margin-right: 4px;"> --}}
                                                     {{ str_pad((string) ($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
+                                </div>
 
                                 <!-- 2 -->
 
@@ -4501,11 +4648,7 @@
                                     onchange="document.getElementById('addTaskBox').innerText = '+ ' + this.files[0].name">
 
                                 <!-- Clickable Box -->
-                                <div id="addTaskBox" class="border border-dashed p-2 text-center rounded"
-                                   style="cursor: pointer; margin:5px; height:60px;display:flex; align-items:center; justify-content:center;background:#ECECEC80"
-                                    onclick="document.getElementById('addTaskFileInput').click();">
-                                    + Add new Task
-                                </div>
+                                
                         </div>
                     </div>
                 </div>
@@ -4529,7 +4672,7 @@
     </div>
     <!--create web modale -->
     <div class="modal fade" id="webtask" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 1200px; width: 95%;">
             <div class="modal-content" style="border-radius: 12px;">
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between flex-wrap align-items-start"
@@ -4787,8 +4930,8 @@
                                             <!-- Deadline/Warning -->
                                             <div class="d-flex align-items-center"
                                                 style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                    alt="Urgent" style="margin-right: 4px;">
+                                                {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                    alt="Urgent" style="margin-right: 4px;"> --}}
                                                 01
                                             </div>
                                         </div>
@@ -4869,8 +5012,8 @@
                                             <!-- Deadline/Warning -->
                                             <div class="d-flex align-items-center"
                                                 style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                    alt="Urgent" style="margin-right: 4px;">
+                                                {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                    alt="Urgent" style="margin-right: 4px;"> --}}
                                                 01
                                             </div>
                                         </div>
@@ -4952,8 +5095,8 @@
                                             <!-- Deadline/Warning -->
                                             <div class="d-flex align-items-center"
                                                 style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                    alt="Urgent" style="margin-right: 4px;">
+                                                {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                    alt="Urgent" style="margin-right: 4px;"> --}}
                                                 01
                                             </div>
                                         </div>
@@ -5032,18 +5175,20 @@
                    
 
                     <div class="row">
-                        <div class="col-md-5">
-                            <div id="wt-uploadBox" onclick="document.getElementById('wt-fileInput').click();"
+                        <div class="col-md-7">
+                            <div id="wt-uploadBox" onclick="var p=document.getElementById('wt-select-project'); var t=document.getElementById('wt-select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('wt-fileInput').click();"
                                 ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
                                 ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); previewImg.style.display='none'; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } }"
-                                style="background-color: #f7f7f7; height: 100%; min-height: 250px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('wt-select-project'); var T=document.getElementById('wt-select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); var _src=e.target.result; previewImg.src=_src; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } if(bar){ bar.style.display='flex'; } var adj=function(){ try{ var top=84; var w=box.clientWidth; var natW=previewImg.naturalWidth||w; var natH=previewImg.naturalHeight||(w*0.5625); var h=Math.round(Math.max(360, Math.min(720, w*(natH/natW)))); previewImg.style.top=top+'px'; previewImg.style.height=h+'px'; layer.style.top=top+'px'; layer.style.height=h+'px'; box.style.height=(h+top)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; layer.style.height=''; layer.style.top='84px'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } if(bar){ bar.style.display='none'; } if(box){ box.style.height='640px'; } }"
+                                style="background-color: #f7f7f7; height: 640px; min-height: 640px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
                                 <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG,
                                         PNG</small></p>
+                                <!-- Browser-like top bar for desktop screenshots -->
+                                
                                 <img id="wt-previewImage" src=""
-                                    style="display:none; position:absolute; inset:10px; width:calc(100% - 20px); height:calc(100% - 20px);  " />
+                                    style="display:none; position:absolute; top:84px; right:0; left:0; width:100%; height:auto; object-fit:contain;" />
                                 <div id="wt-markerLayer"
-                                    style="display:none; position:absolute; inset:10px; pointer-events:auto;"></div>
+                                    style="display:none; position:absolute; top:84px; right:0; bottom:0; left:0; pointer-events:auto;"></div>
                                 <div id="wt-markerToolbar"
                                     style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                                     <button id="wt-marker-shape-square" type="button" class="btn btn-sm"
@@ -5092,9 +5237,9 @@
                             </div>
                             <input type="file" id="wt-fileInput" accept=".jpg,.jpeg,.png,.pdf"
                                 style="display:none;"
-                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ p.src=e.target.result; p.style.display='block'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; }; r.readAsDataURL(f);} else { p.style.display='none'; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; }" />
+                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var selProj=document.getElementById('wt-select-project'); var selTick=document.getElementById('wt-select-ticket'); var box=document.getElementById('wt-uploadBox'); var bar=document.getElementById('wt-browserBar'); if(!(selProj&&selProj.value&&selTick&&selTick.value)){ try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; } if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ var _src=e.target.result; p.src=_src; p.style.display='block'; p.style.filter='brightness(0.65)'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; if(bar) bar.style.display='flex'; var adj=function(){ try{ var top=84; var w=box.clientWidth; var natW=p.naturalWidth||w; var natH=p.naturalHeight||(w*0.5625); var h=Math.round(Math.max(360, Math.min(720, w*(natH/natW)))); p.style.top=top+'px'; p.style.height=h+'px'; l.style.top=top+'px'; l.style.height=h+'px'; box.style.height=(h+top)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; r.readAsDataURL(f);} else { p.style.display='none'; p.style.filter=''; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; if(bar) bar.style.display='none'; box.style.height='640px'; }" />
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                              <div style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
                             <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                             <small class="text-muted">Ticket Details</small>
@@ -5125,6 +5270,7 @@
                                     <div style="color: #ea5455; font-size: 12px;">Max. 4 Tasks each Ticket</div>
                                 </div>
 
+                                <div id="wtTaskList" style="max-height: 380px; overflow-y: auto; padding-right: 4px;">
                                 @foreach ($webtasks ?? [] as $task)
                                     @php
                                         $logo = optional($task->project)->logo_path
@@ -5215,8 +5361,8 @@
                                                 </div>
                                                 <div class="d-flex align-items-center"
                                                     style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                    <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                        alt="Urgent" style="margin-right: 4px;">
+                                                    {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                        alt="Urgent" style="margin-right: 4px;"> --}}
                                                     {{ str_pad((string) ($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                             </div>
@@ -5224,15 +5370,12 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                </div>
                             </div>
                             <input type="file" id="addwebFileInput" style="display: none;"
                                     onchange="document.getElementById('addwebBox').innerText = '+ ' + this.files[0].name">
                              <!-- Clickable Box -->
-                                <div id="addwebBox" class="border border-dashed p-2 text-center rounded"
-                                    style="cursor: pointer;margin:5px;height:60px; display:flex; align-items:center; justify-content:center;background:#ECECEC80"
-                                    onclick="document.getElementById('addwebFileInput').click();">
-                                    + Add new Task
-                                </div>
+                               
                             <!--  -->
                         </div>
                     </div>
@@ -5247,6 +5390,26 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Ensure issues saved from the "Add Issue" modal are listed immediately on the right
+        (function() {
+            try {
+                var saver = document.getElementById('wt-save-marker');
+                if (saver && !saver.dataset.autolist) {
+                    saver.dataset.autolist = '1';
+                    saver.addEventListener('click', function() {
+                        // Allow the issue creation handler to push into wtIssues first, then save
+                        setTimeout(function() {
+                            try {
+                                if (typeof wtSaveTaskSilently === 'function') wtSaveTaskSilently();
+                            } catch (_) {}
+                        }, 0);
+                    });
+                }
+            } catch (_) {}
+        })();
+    </script>
 
     <!-- Web Task Issue Modal -->
     <div class="modal fade" id="wt-markerDetailsModal" tabindex="-1" aria-hidden="true">
@@ -5334,6 +5497,7 @@
                         if (wtPreview) {
                             wtPreview.src = '';
                             wtPreview.style.display = 'none';
+                            wtPreview.style.filter = '';
                         }
                         var txt = document.getElementById('wt-uploadText');
                         if (txt) {
@@ -5435,6 +5599,7 @@
                     if (p) {
                         p.src = '';
                         p.style.display = 'none';
+                        p.style.filter = '';
                     }
                     if (txt) {
                         txt.style.display = 'block';
@@ -5469,6 +5634,7 @@
                     try {
                         wtPreview.style.display = 'block';
                         wtLayer.style.display = 'block';
+                        wtPreview.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     wtLayer.style.cursor = 'crosshair';
                 }
@@ -5484,6 +5650,7 @@
                     try {
                         wtPreview.style.display = 'block';
                         wtLayer.style.display = 'block';
+                        wtPreview.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     wtLayer.style.cursor = 'crosshair';
                 }
@@ -5499,6 +5666,7 @@
                     try {
                         wtPreview.style.display = 'block';
                         wtLayer.style.display = 'block';
+                        wtPreview.style.filter = 'brightness(0.65)';
                     } catch (_) {}
                     wtLayer.style.cursor = 'crosshair';
                 }
@@ -5883,21 +6051,32 @@
                 }
             }
 
-            // Prefill dates when the modal is shown as a fallback
+            // Reset fields when the issue modal opens/closes and prefill dates from ticket
             try {
                 var wtDetailsModalEl = document.getElementById('wt-markerDetailsModal');
+                function wtResetIssueModal() {
+                    try {
+                        ['wt-marker-title','wt-marker-description','wt-marker-start','wt-marker-end'].forEach(function(id){
+                            var el = document.getElementById(id);
+                            if (el) el.value = '';
+                        });
+                    } catch(_){}
+                }
                 if (wtDetailsModalEl) {
+                    wtDetailsModalEl.addEventListener('hidden.bs.modal', function() {
+                        wtResetIssueModal();
+                    });
                     wtDetailsModalEl.addEventListener('shown.bs.modal', function() {
                         try {
+                            // Clear previous values
+                            wtResetIssueModal();
+                            // Prefill dates from currently selected ticket, if any
                             var sEl = document.getElementById('wt-marker-start');
                             var eEl = document.getElementById('wt-marker-end');
-                            if (wtTicketSelect && wtTicketSelect.value && wtTicketCache[wtTicketSelect
-                                    .value]) {
+                            if (wtTicketSelect && wtTicketSelect.value && wtTicketCache[wtTicketSelect.value]) {
                                 var t = wtTicketCache[wtTicketSelect.value];
-                                if (sEl && !sEl.value && t.start_date) sEl.value = ('' + t.start_date)
-                                    .substring(0, 10);
-                                if (eEl && !eEl.value && t.end_date) eEl.value = ('' + t.end_date)
-                                    .substring(0, 10);
+                                if (sEl && t.start_date) sEl.value = ('' + t.start_date).substring(0, 10);
+                                if (eEl && t.end_date) eEl.value = ('' + t.end_date).substring(0, 10);
                             }
                         } catch (_) {}
                     });
@@ -5940,6 +6119,12 @@
                     }
                 };
                 wtIssues.push(item);
+                // Auto-save the web task after adding an issue, without closing the modal
+                setTimeout(function() {
+                    try {
+                        if (typeof wtSaveTaskSilently === 'function') wtSaveTaskSilently();
+                    } catch (_) {}
+                }, 10);
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
                 badge.textContent = String(item.number);
@@ -5966,11 +6151,98 @@
                     } catch (_) {}
                     wtCurrentMarker = null;
                 }
+                // Close the Add Issue modal after saving
                 try {
-                    bootstrap.Modal.getInstance(document.getElementById('wt-markerDetailsModal')).hide();
-                } catch (e) {}
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('wt-markerDetailsModal')).hide();
+                } catch (_) {}
             });
 
+            // Silent save for web flow (no modal close), used by auto-save
+            window.wtSaveTaskSilently = function() {
+                try {
+                    var editingId = (document.getElementById('wt-create-task-save') || {}).dataset?.editingId;
+                    var ticketText = (function(){ try{ var opt=wtTicketSelect?.selectedOptions?.[0]; return opt ? (opt.textContent||'').trim() : ''; }catch(_){ return ''; }})();
+                    var taskTitle = ticketText || 'Task';
+                    if (editingId) {
+                        var updatePayload = {
+                            title: taskTitle,
+                            description: '',
+                            start_date: (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; }})(),
+                            end_date: (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; }})(),
+                            checkpoints: [],
+                            issues: (Array.isArray(wtIssues) ? wtIssues : []),
+                            mark_image: (function(){ try{ var src=(wtPreview||{}).src||''; return (src.indexOf('data:image')===0)?src:null; }catch(_){ return null; }})()
+                        };
+                        fetch(`{{ url('/webtasks') }}/${editingId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify(updatePayload)
+                        });
+                        return;
+                    }
+                    if (!Array.isArray(wtIssues) || wtIssues.length === 0) return;
+                    var payload = {
+                        project_id: (wtProjectSelect || {}).value || null,
+                        ticket_id: (wtTicketSelect || {}).value || null,
+                        title: taskTitle,
+                        description: '',
+                        start_date: (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.start_date||null) : null; }catch(_){ return null; }})(),
+                        end_date: (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t ? (t.end_date||null) : null; }catch(_){ return null; }})(),
+                        issues: wtIssues,
+                        board_image: (function(){ try{ var src=(wtPreview||{}).src||''; return (src && src.indexOf('data:image')===0) ? src : null; }catch(_){ return null; }})()
+                    };
+                    fetch("{{ route('webtasks.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(function(r){ return r.json(); }).then(function(resp){
+                        if (resp && resp.success) {
+                            try {
+                                var wlist = document.getElementById('wtTaskList');
+                                if (wlist) {
+                                    var wcard = document.createElement('div');
+                                    wcard.className = 'd-flex p-2 rounded mt-2 task-card mb-1';
+                                    wcard.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
+                                    var imgSrc = (wtPreview && wtPreview.src) ? wtPreview.src : '';
+                                    var urgent = String((wtIssues || []).length || 1).padStart(2,'0');
+                                    var sStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                    var eStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                    wcard.setAttribute('data-board', imgSrc);
+                                    try { wcard.setAttribute('data-issues', JSON.stringify(wtIssues||[])); } catch (_) {}
+                                    wcard.setAttribute('data-title', taskTitle || 'Task');
+                                    wcard.onclick = function(){ try{ openTaskViewer(wcard); }catch(_){ } };
+                                    wcard.innerHTML =
+                                        '<div class=\"me-2\">'
+                                        +   '<img src=\"'+ imgSrc +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
+                                        + '</div>'
+                                        + '<div class=\"flex-grow-1\">'
+                                        +   '<div class=\"d-flex justify-content-between align-items-center\">'
+                                        +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'
+                                        +       (taskTitle || 'Task')
+                                        +     '</div>'
+                                        +   '</div>'
+                                        +   '<div style=\"font-size:12px;color:#6c757d;\">'+ (wtTicketSelect?.selectedOptions?.[0]?.text || '') +'</div>'
+                                        +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                        +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ sStr +'</small></div>'
+                                        +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ eStr +'</small></div>'
+                                        +     '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+ urgent +'</div>'
+                                        +   '</div>'
+                                        + '</div>';
+                                    wlist.prepend(wcard);
+                                }
+                            } catch(_) {}
+                        }
+                    });
+                } catch(_){}
+            };
             var wtCreateSave = document.getElementById('wt-create-task-save');
             if (wtCreateSave) wtCreateSave.addEventListener('click', function() {
                 var editingId = (document.getElementById('wt-create-task-save') || {}).dataset?.editingId;
@@ -6105,12 +6377,41 @@
                                 } catch (_) {}
                             });
                         } catch (_) {}
+                        // Keep main web modal open; append to list without reload
                         try {
-                            bootstrap.Modal.getOrCreateInstance(document.getElementById('webtask2')).hide();
-                        } catch (e) {}
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 300);
+                            var wlist = document.getElementById('wtTaskList');
+                            if (wlist) {
+                                var wcard = document.createElement('div');
+                                wcard.className = 'd-flex p-2 rounded mt-2 task-card mb-1';
+                                wcard.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
+                                var imgSrc = (wtPreview && wtPreview.src) ? wtPreview.src : '';
+                                var urgent = String((wtIssues || []).length || 1).padStart(2,'0');
+                                var sStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                var eStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                wcard.setAttribute('data-board', imgSrc);
+                                try { wcard.setAttribute('data-issues', JSON.stringify(wtIssues||[])); } catch (_) {}
+                                wcard.setAttribute('data-title', taskTitle || 'Task');
+                                wcard.onclick = function(){ try{ openTaskViewer(wcard); }catch(_){ } };
+                                wcard.innerHTML =
+                                    '<div class=\"me-2\">'
+                                    +   '<img src=\"'+ imgSrc +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
+                                    + '</div>'
+                                    + '<div class=\"flex-grow-1\">'
+                                    +   '<div class=\"d-flex justify-content-between align-items-center\">'
+                                    +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'
+                                    +       (taskTitle || 'Task')
+                                    +     '</div>'
+                                    +   '</div>'
+                                    +   '<div style=\"font-size:12px;color:#6c757d;\">'+ (wtTicketSelect?.selectedOptions?.[0]?.text || '') +'</div>'
+                                    +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                    +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ sStr +'</small></div>'
+                                    +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ eStr +'</small></div>'
+                                    +     '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+ urgent +'</div>'
+                                    +   '</div>'
+                                    + '</div>';
+                                wlist.prepend(wcard);
+                            }
+                        } catch (_) {}
                     } else {
                         alert('Failed to create web task');
                     }
@@ -6927,8 +7228,8 @@
                                             </div>
                                             <div class="d-flex align-items-center"
                                                 style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                    alt="Urgent" style="margin-right: 4px;">
+                                                {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
+                                                    alt="Urgent" style="margin-right: 4px;"> --}}
                                                 {{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}
                                             </div>
                                         </div>
@@ -6989,44 +7290,43 @@
     </div>
     <!-- Task Viewer Modal (Progress-style copy) -->
     <div class="modal fade" id="taskProgressViewerModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-sm modal-dialog-centered" style="max-width: 420px;">
             <div class="modal-content" style="border-radius: 15px;">
-                <div class="modal-body p-0" style="max-height: calc(100vh - 120px); overflow-y: auto;">
+                <div class="modal-body p-0" style="max-height: calc(100vh - 96px); overflow-y: auto;">
                     <div
-                        style="background: linear-gradient(to right, #74b749, #c5e1a5); color: white; padding: 25px 20px; position: relative;">
+                        style="background: linear-gradient(to right, #74b749, #c5e1a5); color: white; padding: 16px; position: relative;">
                         <div style="text-align: left;">
-                            <h5 id="tpvProject" style="margin: 0;">Project Name aim</h5>
+                            <h5 id="tpvProject" style="margin: 0;">Project Name</h5>
                             <small id="tpvTicket">Ticket #1 - Ticket Title</small>
                         </div>
                         <div
-                            style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
+                            style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 4px;">
                             <img id="tpvLogo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                style="width: 60px; height: 60px; border-radius: 50%;">
+                                style="width: 48px; height: 48px; border-radius: 50%;">
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             style="position:absolute; top:12px; right:12px; filter:invert(1);"></button>
                     </div>
                     <div class="p-2">
                         <div
-                            style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
-                            <h5 id="tpvTaskTitle" class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title
-                            </h5>
+                            style="background-color: #f8f9fa; border-radius: 12px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:22px;">
+                            <h6 id="tpvTaskTitle" class="text-center fw-bold mb-2" style="color: #1c2233;">Task Title</h6>
                             <div class="text-center mb-3">
                                 <span id="tpvChipStatus" class="badge rounded-pill"
-                                    style="background-color: #e4f1d8; color: #0d6efd; font-size: 13px; padding: 8px 12px;">
+                                    style="background-color: #e4f1d8; color: #0d6efd; font-size: 12px; padding: 6px 10px;">
                                     <img src="{{ URL::asset('/build/img/greenflag.svg') }}" alt="Logo"
-                                        style="width: 16px; height: 16px;"> in progress
+                                        style="width: 14px; height: 14px;"> in progress
                                 </span>
                                 <span id="tpvChipCount" class="badge rounded-pill"
-                                    style="background-color: #ff4d4d; color: white; font-size: 13px; padding: 8px 12px;">
+                                    style="background-color: #ff4d4d; color: white; font-size: 12px; padding: 6px 10px;">
                                     <i class="bi bi-lightning-fill me-1"></i> 01
                                 </span>
                                 <span id="tpvChipLevel" class="badge rounded-pill"
-                                    style="background-color: #f1fdf5; color: #22c55e; font-size: 13px; padding: 8px 12px;">
+                                    style="background-color: #f1fdf5; color: #22c55e; font-size: 12px; padding: 6px 10px;">
                                     <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
                                 </span>
                             </div>
-                            <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 14px;">
+                            <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 13px;">
                                 <div>
                                     <div class="text-muted" id="tpvTaskId">Task ID</div>
                                 </div>
@@ -7041,15 +7341,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
+                        <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:8px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p id="tpvIssueDesc" style="font-size: 14px; margin-top: 5px;">-</p>
+                            <p id="tpvIssueDesc" style="font-size: 13px; margin-top: 5px;">-</p>
                         </div>
                         <!-- Image Canvas (replaces sign-in box) -->
                         <div id="tpvCanvas" class="mx-auto my-4"
-                            style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #fefefe; text-align: center; overflow:hidden; background-image: linear-gradient(45deg, #e6e6e6 25%, transparent 25%), linear-gradient(-45deg, #e6e6e6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e6e6e6 75%), linear-gradient(-45deg, transparent 75%, #e6e6e6 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
+                            style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; text-align: center; overflow:hidden;">
                             <img id="tpvImage" src="" alt="Task Board"
-                                style="width:100%; border-radius:8px; display:block;">
+                                style="width:100%; height:auto; max-height:220px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; filter:brightness(0.8);">
                             <div id="tpvLayer" style="position:absolute; inset:0; pointer-events:auto;"></div>
                             <div id="tpvFocus"
                                 style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;">
@@ -7269,21 +7569,27 @@
                                         title: '',
                                         html: (
                                             '<div style="text-align:left;">' +
-                                            '<div style="font-weight:700; font-size:16px; margin-bottom:8px; color:' +
-                                            accent + ';">' + titleText + '</div>' +
-                                            '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px;">' +
-                                            desc + '</div>' +
-                                            '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">' +
-                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600;">Start: ' +
-                                            start + '</span>' +
-                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600;">End: ' +
-                                            end + '</span>' +
-                                            '</div>' +
+                                                '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                                    '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                                    '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
+                                                '</div>' +
+                                                '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
+                                                    (String(desc||'').trim() || '-') +
+                                                '</div>' +
+                                                '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                                    '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                                    '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span>' +
+                                                '</div>' +
                                             '</div>'
                                         ),
-                                        width: 620,
+                                        width: 420,
                                         showCloseButton: true,
-                                        confirmButtonText: 'Close'
+                                        focusConfirm: false,
+                                        confirmButtonText: 'Close',
+                                        confirmButtonColor: '#28c76f',
+                                        customClass: {
+                                            popup: 'swal-compact'
+                                        }
                                     });
                                 } else {
                                     var msg = (it && it.title ? (it.title + '\n') : '') +
