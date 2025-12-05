@@ -316,7 +316,7 @@
                                                 <div class="d-flex align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
                                                     <!-- Logo -->
                                                     @if(!empty($project->logo_path))
-                                                        <img src="{{ asset('storage/' . $project->logo_path) }}" alt="Logo" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;">
+                                                        <img src="{{ project_logo_url($project) }}" alt="Logo" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;">
                                                     @else
                                                         <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 30px; height: 30px;">
                                                     @endif
