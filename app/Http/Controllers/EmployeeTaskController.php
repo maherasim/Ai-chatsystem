@@ -116,7 +116,13 @@ class EmployeeTaskController extends Controller
             'created_by'     => Auth::id(),
         ]);
 
-return redirect()->back()->with('success', 'Employee Task created successfully');    }
+        return response()->json([
+            'success' => true,
+            'message' => 'Employee Task created successfully',
+            'task' => $task
+        ]);
+
+    }
 
     public function destroy($id)
     {

@@ -6932,7 +6932,7 @@
                                     </script>
                                     
                                     <!-- Save Button -->
-                                    <button id="et-save" type="button" class="btn w-100 mb-0"
+                                    <button data-emp-save="1" type="button" class="btn w-100 mb-0"
                                         style="background: #28c76f; color: white; font-weight: 500;">Save the
                                         Task</button>
                                 </div>
@@ -7035,67 +7035,94 @@
                                     });
                                 }
                             } catch (_) {}
-                            var saveBtn = document.getElementById('et-save');
-                            if (saveBtn && !saveBtn._bound) {
+                            var saveBtns = document.querySelectorAll('[data-emp-save=\"1\"]');
+                            saveBtns.forEach(function(saveBtn) {
+                                if (!saveBtn || saveBtn._bound) return;
+                                saveBtn._bound = true;
                                 saveBtn.addEventListener('click', function(ev) {
-                                        try {
-                                            ev.preventDefault();
-                                            ev.stopPropagation();
-                                        } catch (_) {}
-                                        try {
-                                            var projectEl = document.getElementById('et2-select-project');
-                                            var ticketEl = document.getElementById('et2-select-ticket');
-                                            var cache = (window.__etCache || {});
-                                            var t = cache[(ticketEl || {}).value];
-                                            var imgs = [];
-                                            for (var i = 1; i <= 4; i++) {
-                                                var im = document.getElementById('et-img-' + i);
-                                                if (im && im.src && im.src.indexOf('data:image') === 0) {
-                                                    imgs.push(im.src);
-                                                }
+                                    try { ev.preventDefault(); ev.stopPropagation(); } catch (_) {}
+                                    try {
+                                        var projectEl = document.getElementById('et2-select-project');
+                                        var ticketEl = document.getElementById('et2-select-ticket');
+                                        var cache = (window.__etCache || {});
+                                        var t = cache[(ticketEl || {}).value];
+                                        var imgs = [];
+                                        for (var i = 1; i <= 4; i++) {
+                                            var im = document.getElementById('et-img-' + i);
+                                            if (im && im.src && im.src.indexOf('data:image') === 0) {
+                                                imgs.push(im.src);
                                             }
-                                            var payload = {
-                                                project_id: (projectEl || {}).value || null,
-                                                ticket_id: (ticketEl || {}).value || null,
-                                                start_date: t ? (t.start_date || null) : null,
-                                                end_date: t ? (t.end_date || null) : null,
-                                                title: (document.getElementById('et-title') || {}).value || '',
-                                                priority: (document.getElementById('et-priority') || {}).value || null,
-                                                description: (document.getElementById('et-description') || {}).value || '',
-                                                day: (document.getElementById('et-day') || {}).value || null,
-                                                duration: (document.getElementById('et-duration') || {}).value || null,
-                                                reminder_hours: (function() {
-                                                    try {
-                                                        var r = document.querySelector(
-                                                            'input[name="reminder_hours"]:checked');
-                                                        return r ? parseInt(r.value, 10) : 6;
-                                                    } catch (_) {
-                                                        return 6;
-                                                    }
-                                                })(),
-                                                images: imgs,
-                                                selected_image: (document.getElementById('et-selected-image') || {}).value || null
-                                            };
-                                            fetch(\"{{ route('emptasks.store') }}\", {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                    'X-Requested-With': 'XMLHttpRequest'
-                                                },
-                                                body: JSON.stringify(payload)
-                                            }).then(function(r) {
-                                            return r.json();
-                                        }).then(function(resp) {
+                                        }
+                                        var payload = {
+                                            project_id: (projectEl || {}).value || null,
+                                            ticket_id: (ticketEl || {}).value || null,
+                                            start_date: t ? (t.start_date || null) : null,
+                                            end_date: t ? (t.end_date || null) : null,
+                                            title: (document.getElementById('et-title') || {}).value || '',
+                                            priority: (document.getElementById('et-priority') || {}).value || null,
+                                            description: (document.getElementById('et-description') || {}).value || '',
+                                            day: (document.getElementById('et-day') || {}).value || null,
+                                            duration: (document.getElementById('et-duration') || {}).value || null,
+                                            reminder_hours: (function() {
+                                                try {
+                                                    var r = document.querySelector('input[name=\"reminder_hours\"]:checked');
+                                                    return r ? parseInt(r.value, 10) : 6;
+                                                } catch (_) { return 6; }
+                                            })(),
+                                            images: imgs,
+                                            selected_image: (document.getElementById('et-selected-image') || {}).value || null
+                                        };
+                                        fetch("{{ route('emptasks.store') }}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            },
+                                            body: JSON.stringify(payload)
+                                        }).then(function(r){ return r.json(); }).then(function(resp){
                                             if (resp && resp.success) {
                                                 try {
                                                     var successBox = document.getElementById('emptask-success');
                                                     if (successBox) {
                                                         successBox.style.display = 'block';
-                                                        successBox.innerHTML = '<div class=\"alert alert-success\" role=\"alert\" style=\"margin:0;border-radius:8px;\">Employee Task saved successfully.</div>';
-                                                        setTimeout(function() {
-                                                            try { successBox.style.display = 'none'; successBox.innerHTML = ''; } catch(_) {}
-                                                        }, 2500);
+                                                        successBox.innerHTML = '<div class="alert alert-success" role="alert" style="margin:0;border-radius:8px;">Employee Task saved successfully.</div>';
+                                                        setTimeout(function(){ try { successBox.style.display = 'none'; successBox.innerHTML = ''; } catch(_) {} }, 2500);
+                                                    }
+                                                } catch (_) {}
+                                                // Append new employee task card to the list without reload
+                                                try {
+                                                    var list = document.getElementById('emptask-list');
+                                                    if (list) {
+                                                        var selectedId = (document.getElementById('et-selected-image') || {}).value || null;
+                                                        var selSrc = null;
+                                                        if (selectedId) {
+                                                            var el = document.getElementById(selectedId);
+                                                            if (el && el.src) selSrc = el.src;
+                                                        }
+                                                        var displayImg = selSrc || (imgs && imgs.length ? imgs[0] : "{{ asset('build/img/dooted img.svg') }}");
+                                                        var titleTxt = payload.title || 'Task';
+                                                        var descTxt = (payload.description || '').trim();
+                                                        var startTxt = payload.start_date ? String(payload.start_date).substring(0,10) : '--';
+                                                        var endTxt = payload.end_date ? String(payload.end_date).substring(0,10) : '--';
+                                                        var card = document.createElement('div');
+                                                        card.className = 'd-flex p-2 rounded mt-2 emptask-card';
+                                                        card.style.backgroundColor = '#ebebeb';
+                                                        card.innerHTML =
+                                                            '<div class=\"me-2\">'
+                                                            + '<img src=\"'+ displayImg +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;object-fit:contain;background:transparent;border:none;padding:0;display:block;\">'
+                                                            + '</div>'
+                                                            + '<div class=\"flex-grow-1\">'
+                                                            +   '<div class=\"d-flex justify-content-between align-items-center\">'
+                                                            +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'+ titleTxt +'</div>'
+                                                            +   '</div>'
+                                                            +   '<div style=\"font-size:13px;margin-top:2px;\">'+ (descTxt || '-') +'</div>'
+                                                            +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                                            +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ startTxt +'</small></div>'
+                                                            +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ endTxt +'</small></div>'
+                                                            +   '</div>'
+                                                            + '</div>';
+                                                        list.prepend(card);
                                                     }
                                                 } catch (_) {}
                                             } else {
@@ -7108,8 +7135,7 @@
                                         alert('Failed to save employee task');
                                     }
                                 });
-                            saveBtn._bound = true;
-                        }
+                            });
                         });
                     </script>
                     <!-- Right Task List -->
@@ -7243,7 +7269,7 @@
 
                         </div>
                         <div class="mt-2 text-end">
-                           <button id="et-save" type="submit" class="btn btn-sm"
+                           <button data-emp-save="1" type="button" class="btn btn-sm"
                                 style="background:#28c76f; color:white; font-weight:500; padding:4px 10px;">
                                 Save and Close
                             </button>
