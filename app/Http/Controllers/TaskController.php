@@ -19,13 +19,13 @@ class TaskController extends Controller
         // Always load all projects for the select dropdown
         $projects = Project::orderBy('title')->get();
         $projectsdone = Project::orderBy('title')->get();
-        $tasks = Task::orderByDesc('created_at')->limit(50)->get();
-        $webtasks = WebTask::orderByDesc('created_at')->limit(50)->get();
-        $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
-        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(50)->get();
+        $tasks = Task::orderByDesc('created_at')->limit(200)->get();
+        $webtasks = WebTask::orderByDesc('created_at')->limit(200)->get();
+        $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(200)->get();
+        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(200)->get();
         // Fallback: some records might not have created_at populated in Mongo; sort by _id instead
         if ($employeeTasks->isEmpty()) {
-            $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(50)->get();
+            $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(200)->get();
         }
         $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))->merge($employeeTasks->pluck('project_id'))
             ->filter()->map(fn($v) => (string)$v)->unique()->values();
@@ -57,17 +57,34 @@ class TaskController extends Controller
             return $t;
         });
         // Return with both camelCase and snakeCase variants for robustness in blade
+        // Merge all tasks for counting stats
+        $allTasks = collect($tasks)->merge($webtasks)->merge($employeeTasks);
+        
+        // Helper to normalize status strings
+        $norm = fn($s) => strtolower(str_replace([' ', '-'], '_', $s ?? ''));
+
+        $stats = [
+            'total'       => $allTasks->count(),
+            'new'         => $allTasks->filter(fn($t) => in_array($norm($t->status), ['new', 'new_task']))->count(),
+            'in_progress' => $allTasks->filter(fn($t) => in_array($norm($t->status), ['in_progress', 'progress']))->count(),
+            'on_hold'     => $allTasks->filter(fn($t) => in_array($norm($t->status), ['on_hold', 'hold', 'in_hold']))->count(),
+            'checked'     => $allTasks->filter(fn($t) => in_array($norm($t->status), ['checked', 'in_checked']))->count(),
+            'delayed'     => $allTasks->filter(fn($t) => in_array($norm($t->status), ['delayed', 'in_delayed']))->count(),
+            'rejected'    => $allTasks->filter(fn($t) => in_array($norm($t->status), ['rejected', 'in_rejected']))->count(),
+            'done'        => $allTasks->filter(fn($t) => in_array($norm($t->status), ['done', 'completed', 'in_done']))->count(),
+        ];
+
         return view('Chats.task', [
             'headers'         => $headers,
             'projects'        => $projects,
             'tasks'           => $tasks,
-            'emptasks'        => $emptasks,
+            'emptasks'        => $emptasks, // Keep for backward compatibility if view uses it
             'webtasks'        => $webtasks,
             'webTasks'        => $webtasks,
             'employeeTasks'   => $employeeTasks,
             'employeetasks'   => $employeeTasks,
-            'employee_tasks'  => $employeeTasks,
             'projectsdone'    => $projectsdone,
+            'stats'           => $stats, // Pass the calculated stats
         ]);
     }
 
