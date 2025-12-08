@@ -161,6 +161,7 @@
     .stat-done .stats-icon-wrapper { background-color: #ecfccb; color: #84cc16; } /* Lime */
 
 
+
     /* Ticket In Progress Section */
     .section-container {
         max-width: 800px;
@@ -170,242 +171,184 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        background: #fff;
+        padding: 15px 20px;
+        border-radius: 20px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
     .section-title {
         color: #22c55e; /* Green title */
-        font-weight: 600;
-        font-size: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        font-family: 'Outfit', sans-serif;
     }
     .section-subtitle {
         color: #64748b;
-        font-size: 13px;
-        font-weight: normal;
-        margin-left: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        display: block;
+        margin-top: 2px;
     }
     
     .project-select-btn {
         background: #f1f5f9;
         border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 13px;
-        color: #64748b;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Task Card Design */
-    .task-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 15px;
-        margin-bottom: 15px;
-        display: flex;
-        gap: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        border: 1px solid #f1f5f9;
-        position: relative;
-    }
-    .task-number-badge {
-        position: absolute;
-        top: -6px;
-        left: -6px;
-        background: #ef4444;
-        color: white;
-        font-size: 10px;
-        font-weight: bold;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        z-index: 2;
-    }
-    
-    .task-img-placeholder {
-        width: 60px;
-        height: 60px;
-        background: #cbd5e1;
+        padding: 8px 16px;
         border-radius: 12px;
-        flex-shrink: 0;
-    }
-    
-    .task-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .task-header-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-    
-    .task-title-group {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 600;
         display: flex;
         align-items: center;
         gap: 8px;
-        flex-wrap: wrap;
+        transition: all 0.2s;
     }
-    
-    .task-title {
-        font-weight: 700;
+    .project-select-btn:hover {
+        background: #e2e8f0;
         color: #334155;
-        font-size: 15px;
-    }
-    
-    .id-badge {
-        font-size: 10px;
-        background: #e0f2fe;
-        color: #0ea5e9;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-    
-    .task-desc {
-        font-size: 13px;
-        color: #94a3b8;
-        margin-bottom: 12px;
-    }
-    
-    .task-meta-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 12px;
-        color: #22c55e; /* Green text for dates */
-        font-weight: 600;
-        background: #f0fdf4;
-        padding: 4px 10px;
-        border-radius: 6px;
-        width: fit-content;
     }
 
-    .status-indicator {
-        width: 12px;
     /* New Task Card Design */
     .new-task-card {
         background: #fff;
-        border-radius: 20px;
-        padding: 5px; /* Minimal padding container */
+        border-radius: 24px;
+        padding: 10px;
         margin-bottom: 20px;
         display: flex;
-        gap: 0;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        gap: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         border: 1px solid #f0f0f0;
         position: relative;
-        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        align-items: center;
+    }
+    .new-task-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
     }
     
     .task-image-col {
-        width: 140px;
+        width: 100px;
+        height: 100px;
         position: relative;
-        /* Grey placeholder background pattern */
+        /* Custom placeholder pattern similar to screenshot */
         background-color: #e5e5e5;
-        background-image: radial-gradient(#cdcdcd 1px, transparent 1px);
-        background-size: 8px 8px;
-        border-radius: 15px;
-        margin: 5px;
-        min-height: 100px;
+        background-image: 
+            linear-gradient(45deg, #d4d4d4 25%, transparent 25%), 
+            linear-gradient(-45deg, #d4d4d4 25%, transparent 25%), 
+            linear-gradient(45deg, transparent 75%, #d4d4d4 75%), 
+            linear-gradient(-45deg, transparent 75%, #d4d4d4 75%);
+        background-size: 10px 10px;
+        background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+        border-radius: 18px;
+        flex-shrink: 0;
     }
 
     .red-index-badge {
         position: absolute;
-        top: -5px;
-        left: -5px;
-        width: 28px;
-        height: 28px;
+        top: -8px;
+        left: -8px;
+        width: 32px;
+        height: 32px;
         background-color: #ef4444; /* Red */
         color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: bold;
-        font-size: 12px;
+        font-weight: 800;
+        font-size: 14px;
         z-index: 10;
-        border: 2px solid white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        border: 3px solid white;
+        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
     }
 
     .task-info-col {
         flex: 1;
-        padding: 10px 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        gap: 10px;
+        padding-right: 10px;
     }
 
     .task-header-new {
         display: flex;
-        justify-content: space-between; 
+        justify-content: center; 
         align-items: center;
-        margin-bottom: 5px;
+        position: relative;
     }
 
     .task-title-new {
         font-weight: 700;
         color: #334155;
-        font-size: 15px;
+        font-size: 18px;
         text-align: center;
-        flex: 1;
+        letter-spacing: -0.5px;
+    }
+    
+    .status-dot-large {
+        width: 20px;
+        height: 20px;
+        background-color: #bef264; /* Lime base */
+        border: 4px solid #ecfccb; /* Lighter ring */
+        border-radius: 50%;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        box-shadow: 0 0 0 1px #d9f99d;
     }
 
     .task-ids-row {
         display: flex;
-        gap: 10px;
-        margin-bottom: 12px;
+        gap: 12px;
         justify-content: center;
+        margin-top: -5px;
     }
 
     .id-pill {
         background-color: #e0f2fe; /* Light Blue */
         color: #3b82f6;
-        padding: 4px 14px;
+        padding: 4px 12px;
         border-radius: 20px;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     
     .task-desc-new {
-        font-size: 12px;
-        color: #94a3b8;
+        font-size: 13px;
+        color: #64748b;
         text-align: center;
-        margin-bottom: 15px;
+        font-weight: 500;
     }
 
     .date-row-pill {
         background-color: #ecfdf5; /* Light Green */
         color: #10b981; /* Green Text */
-        border-radius: 8px;
-        padding: 8px 15px;
+        border-radius: 12px;
+        padding: 8px 20px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 15px;
-        font-size: 11px;
+        justify-content: space-between;
+        font-size: 13px;
         font-weight: 700;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Outfit', sans-serif;
+        max-width: 400px;
+        margin: 0 auto;
+        width: 100%;
     }
     
-    .status-dot-large {
-        width: 18px;
-        height: 18px;
-        background-color: #bef264; /* Lime */
-        border: 3px solid #f7fee7;
-        border-radius: 50%;
-        box-shadow: 0 0 0 1px #d9f99d;
+    .date-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
+
 </style>
 
 <div class="content main_content">
@@ -514,11 +457,12 @@
                         </div>
                     </div>
                     
+
                     <!-- Central Content: Ticket In Progress -->
                     <div class="section-container">
                         <div class="section-header">
                             <div>
-                                <span class="section-title">Ticket in Progress</span>
+                                <h2 class="section-title">Ticket in Progress</h2>
                                 <span class="section-subtitle">Total Tickets: {{ $stats['in_progress'] + $stats['new'] }}</span>
                             </div>
                             
@@ -541,17 +485,12 @@
                                 // Combine and sort tasks to show relevant ones first
                                 $mergedTasks = collect($tasks)->merge($webtasks)->merge($employeeTasks)->sortByDesc('created_at');
                                 
-                                // normalize helper re-definition for view scope if needed (though accessible from controller pass-in usually better, 
-                                // but let's be safe for blade loop)
                                 $normView = fn($s) => strtolower(str_replace([' ', '-'], '_', $s ?? ''));
                             @endphp
 
                             @forelse($mergedTasks as $index => $task)
                                 @php
                                     $taskStatus = $normView($task->status);
-                                    // Mapping strict status to filter categories if needed, 
-                                    // or just use the normalized status key directly.
-                                    // Categories: general (all), in_progress, delayed, on_hold (hold), ckecked, rejected, done
                                     
                                     // Map specific status to generic filter classes
                                     $filterClass = 'status-general';
@@ -571,24 +510,25 @@
                                     <!-- Left Col: Image + Index -->
                                     <div class="task-image-col">
                                         <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
-                                        <!-- Dynamic Image or Fallback -->
-                                         <img src="{{ asset('build/img/bgractangle.svg') }}" 
-                                              alt="Task Image" 
-                                              style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; opacity: 0.6;">
+                                        @if(!empty($task->mark_image_path))
+                                            <img src="{{ asset('storage/' . $task->mark_image_path) }}" 
+                                                 alt="Task" 
+                                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
+                                        @else
+                                            <!-- Transparent/Placeholder controlled by CSS pattern -->
+                                        @endif
                                     </div>
 
                                     <!-- Right Col: Info -->
                                     <div class="task-info-col">
                                         <!-- Header: Title + Dot -->
                                         <div class="task-header-new">
-                                             <div style="width: 20px;"></div> <!-- Spacer for centering if needed -->
                                              <div class="task-title-new">{{ $task->title ?? 'Untitled Task' }}</div>
                                              <div class="status-dot-large" title="{{ $taskStatus }}"></div>
                                         </div>
 
                                         <!-- IDs Row -->
                                         <div class="task-ids-row">
-                                            <!-- Using ID suffix for display -->
                                             <span class="id-pill">Task ID {{ substr((string)($task->_id ?? $task->id), -4) }}</span>
                                             <span class="id-pill">Ticket ID {{ substr((string)($task->ticket_id ?? '---'), -4) }}</span>
                                         </div>
@@ -600,21 +540,20 @@
 
                                         <!-- Footer: Dates -->
                                         <div class="date-row-pill">
-                                            <span>
-                                                <i class="bi bi-calendar-check me-1"></i> 
+                                            <div class="date-item">
+                                                <i class="ti ti-calendar me-1"></i> 
                                                 {{ isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025' }}
-                                            </span>
-                                            <span class="mx-1" style="color: #10b981;">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </span>
-                                            <span>
+                                            </div>
+                                            <div class="date-item">
+                                                <i class="ti ti-arrow-right"></i>
+                                            </div>
+                                            <div class="date-item">
                                                 {{ isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025' }}
-                                            </span>
-                                            <span class="mx-2" style="opacity: 0.3;">|</span>
-                                            <span>
-                                                <i class="bi bi-clock me-1"></i> 
+                                            </div>
+                                            <div style="opacity: 0.3;">|</div>
+                                            <div class="date-item">
                                                 15:30
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -639,7 +578,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const tasksContainer = document.getElementById('tasksListContainer');
-        const tasks = document.querySelectorAll('.task-card');
+        const tasks = document.querySelectorAll('.new-task-card');
         const filterTabs = document.querySelectorAll('.filter-tab');
         const statsCards = document.querySelectorAll('.stats-card');
         const countSubtitle = document.querySelector('.section-subtitle');
@@ -672,6 +611,7 @@
                 countSubtitle.textContent = filterName + ' Tickets: ' + visibleCount;
             }
         }
+
 
         // 1. Tab Filters
         filterTabs.forEach(tab => {
