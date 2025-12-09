@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Team;
 use App\Models\Project;
 use App\Models\Ticket;
@@ -11,6 +12,7 @@ use App\Models\Setting;
 use App\Models\Task;
 use MongoDB\BSON\ObjectId;
 use App\Models\User;
+use App\Mail\TaskAssignmentMail;
 
 class TeamController extends Controller
 {
@@ -408,7 +410,7 @@ class TeamController extends Controller
                 })->filter()->unique()->values()->all();
             })->filter()->all();
 
-            Team::create([
+            $team = Team::create([
                 'title' => $validated['title'] ?? null,
                 'project_id' => $validated['project_id'] ?? null,
                 'pm_id' => $validated['pm_id'] ?? null,
@@ -422,6 +424,10 @@ class TeamController extends Controller
                 'task_developers' => $devMap,
                 'user_id' => Auth::id(),
             ]);
+
+            // Send email notifications to assigned developers
+            $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '');
+
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to create team: ' . $e->getMessage())->withInput();
         }
@@ -540,6 +546,9 @@ class TeamController extends Controller
             $team->pm_id = $validated['pm_id'] ?? $team->pm_id;
             $team->timeline_color = $validated['timeline_color'] ?? $team->timeline_color;
 
+            // Store old developers before updating (for comparison)
+            $oldDevMap = $team->task_developers ?? [];
+
             // Update arrays
             $team->tickets = $ticketIds;
             $team->tasks = $taskIds->values()->all();
@@ -547,9 +556,115 @@ class TeamController extends Controller
             $team->task_developers = $devMap;
 
             $team->save();
+
+            // Send email notifications to newly assigned developers
+            $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '', $oldDevMap);
+
             return redirect()->route('chat-team')->with('success', 'Team updated successfully.');
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to update team: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    /**
+     * Send email notifications to developers assigned to tasks
+     * 
+     * @param array $devMap Map of taskId => [developerName, ...]
+     * @param array $priorityValues Map of taskId => priority
+     * @param array $taskIds Array of task IDs
+     * @param string $teamTitle Team title
+     * @param array $oldDevMap Previous developer assignments (for update, to only notify new assignments)
+     */
+    private function sendTaskAssignmentEmails(array $devMap, array $priorityValues, array $taskIds, string $teamTitle = '', array $oldDevMap = [])
+    {
+        try {
+            // Get all unique developer names
+            $allDeveloperNames = [];
+            foreach ($devMap as $taskId => $developerNames) {
+                if (is_array($developerNames)) {
+                    foreach ($developerNames as $devName) {
+                        if (!empty($devName) && !in_array($devName, $allDeveloperNames)) {
+                            $allDeveloperNames[] = $devName;
+                        }
+                    }
+                }
+            }
+
+            if (empty($allDeveloperNames)) {
+                return; // No developers to notify
+            }
+
+            // Fetch all developers by name to get their emails
+            $developers = User::where('type', 'developer')
+                ->whereIn('name', $allDeveloperNames)
+                ->get()
+                ->keyBy('name');
+
+            // Process each task
+            foreach ($devMap as $taskId => $developerNames) {
+                if (!is_array($developerNames) || empty($developerNames)) {
+                    continue;
+                }
+
+                // Get task details with relationships
+                $task = null;
+                try {
+                    $task = Task::with('ticket')->find($taskId);
+                    if (!$task) {
+                        try {
+                            $task = Task::with('ticket')->find(new ObjectId($taskId));
+                        } catch (\Throwable $e) {
+                            continue; // Skip if task not found
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    continue; // Skip if task not found
+                }
+
+                if (!$task) {
+                    continue;
+                }
+
+                // Get priority for this task
+                $priority = $priorityValues[$taskId] ?? '';
+
+                // Get old developers for this task (for update scenario)
+                $oldDevelopers = [];
+                if (!empty($oldDevMap) && isset($oldDevMap[$taskId]) && is_array($oldDevMap[$taskId])) {
+                    $oldDevelopers = $oldDevMap[$taskId];
+                }
+
+                // Send email to each assigned developer
+                foreach ($developerNames as $devName) {
+                    if (empty($devName)) {
+                        continue;
+                    }
+
+                    // For update: only send email if developer is newly assigned
+                    if (!empty($oldDevMap) && in_array($devName, $oldDevelopers)) {
+                        continue; // Developer was already assigned, skip
+                    }
+
+                    // Find developer by name
+                    $developer = $developers->get($devName);
+                    if (!$developer || empty($developer->email)) {
+                        continue; // Developer not found or no email
+                    }
+
+                    // Send email notification
+                    try {
+                        Mail::to($developer->email)->send(
+                            new TaskAssignmentMail($developer, $task, $priority, $teamTitle)
+                        );
+                    } catch (\Throwable $e) {
+                        // Log error but don't fail the entire operation
+                        \Log::error('Failed to send task assignment email to ' . $developer->email . ': ' . $e->getMessage());
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Log error but don't fail the entire operation
+            \Log::error('Failed to send task assignment emails: ' . $e->getMessage());
         }
     }
 }
