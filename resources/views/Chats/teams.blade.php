@@ -1613,17 +1613,16 @@
 
                 <!-- Title and subtitle -->
                 <div class="title-subtitle" style="flex: 1;">
-                    <h5 id="teamModalTitle" class="modal-title" style="font-weight: 700; font-size: 16px; color: #1b1b3a; margin: 0;">
-                        Add Team
+                    <h5 id="teamModalTitle" class="modal-title" style="font-weight: 700; font-size: 18px; color: #1b1b3a; margin: 0;">
+                        Edit the Team
                     </h5>
-                    <p style="margin: 0; font-size: 12px; color: #666;">Manage your Projects</p>
+                    <p style="margin: 0; font-size: 13px; color: #64748b;">Manage your Projects</p>
                 </div>
 
                 <!-- Warning box -->
-                <div class="warning-box" style="background-color: #ffe6e6; color: red; font-size: 12px; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; max-width: 260px;">
-
-                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 25px; height: 25px;">
-                    <span>Please Note! Projects, Ticket and Task must be created before add a Team</span>
+                <div class="warning-box" style="background-color: #ffe4e6; color: #be123c; font-size: 11px; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; max-width: 320px; line-height: 1.3;">
+                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 18px; height: 18px; margin-right: 8px;">
+                    <span>PLease Note ! Projects, Ticket and Task must be created before add a Team</span>
                 </div>
 
                 <!-- Close button -->
@@ -1639,24 +1638,26 @@
             <form id="teamForm" action="{{ route('teams.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="_method" id="teamFormMethod" value="">
-            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px;">
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px 40px; background: #fff;">
+                
                 <!-- Upload Banner -->
-                <div onclick="document.getElementById('bannerInput').click();" style="width: 100%; height: 120px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                <div onclick="document.getElementById('bannerInput').click();" style="width: 100%; height: 160px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute; object-fit: cover; width:100%; height:100%;" />
                     <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 24px; color: #888;">+</div>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">Upload banner</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG</div>
+                        <div style="font-size: 40px; color: #94a3b8; font-weight: 300; line-height: 1;">+</div>
+                        <div style="font-size: 18px; color: #64748b; font-weight: 600; margin-top: 10px;">Upload banner</div>
+                        <div style="font-size: 14px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
                     </div>
                 </div>
                 <input type="file" accept="image/*" id="bannerInput" name="banner" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-                <!-- Sub Image Upload -->
+                
+                <!-- Thumbnail Upload -->
                 <div onclick="document.getElementById('thumbInput').click();"
-                    style="width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;background:#FAFAFA">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute;" />
+                    style="width: 120px; height: 120px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column; margin-bottom: 30px;">
+                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute; object-fit: cover; width:100%; height:100%;" />
                     <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 20px; color: #888;">+</div>
-                        <div style="font-size: 12px; color: #999;">JPG or PNG  </div>
+                        <div style="font-size: 32px; color: #94a3b8; font-weight: 300; line-height: 1;">+</div>
+                        <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
                     </div>
                 </div>
                 <input type="file" accept="image/*" id="thumbInput" name="thumb" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
@@ -1664,24 +1665,24 @@
                 <!-- removed extra hidden file input -->
 
                 <!-- Team Details Section -->
-                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 20px;">
+                <div class="container-fluid mt-2" style="background-color: #fcfcfc; border-radius: 20px; padding: 25px; margin-bottom: 20px;">
 
                     <!-- Title & Subtitle -->
-                    <div class="mb-3">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">Team Details</h6>
-                        <p style="margin: 0; font-size: 12px; color: #888;">Manage your team</p>
+                    <div class="mb-4">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 16px; color: #1e293b;">Team Details</h6>
+                        <p style="margin: 0; font-size: 13px; color: #64748b;">Manage your time</p>
                     </div>
 
                     <!-- Inputs Row (2 fields per row) -->
-                    <div class="row g-2">
+                    <div class="row g-3">
                         <!-- Row 1 -->
                         <div class="col-12 col-md-6">
                             <input type="text" class="form-control" name="title" placeholder="Team Title"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;">
+                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #1e293b; box-shadow: none;">
                         </div>
                         <div class="col-12 col-md-6">
                             <select class="form-select" id="addProjectSelect" name="project_id"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
                                 <option value="" selected>Select Project</option>
                                 @isset($projects)
                                     @foreach($projects as $project)
@@ -1693,7 +1694,7 @@
                         <!-- Row 2 -->
                         <div class="col-12 col-md-6">
                             <select class="form-select" name="pm_id"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
                                 <option selected>Select PM</option>
                                 <option>PM A</option>
                                 <option>PM B</option>
@@ -1701,30 +1702,29 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <select class="form-select" name="timeline_color"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none;-moz-appearance: none; background-position: right 10px center;">
+                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
                                 <option selected>Timeline Color</option>
                                 <option>Red</option>
                                 <option>Blue</option>
                             </select>
                         </div>
                     </div>
-                    <!-- select tickets -->
 
 
                 </div>
 
                 <!-- tasks -->
-                <div class="container-fluid mt-2" style="background-color: #FAFAFA; border-radius: 10px; padding: 10px;">
+                <div class="container-fluid mt-2" style="background-color: #fcfcfc; border-radius: 20px; padding: 25px; min-height: 200px;">
 
                     <!-- Title -->
                     <div class="mb-3">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
+                        <h6 style="margin: 0; font-weight: 700; font-size: 16px; color: #1e293b;">
                             Select Ticket & Task   
                         </h6>
                     </div>
 
                     <!-- Ticket Buttons Row -->
-                    <div class="d-flex justify-content-start gap-2 p-2" style="background: #fff; border-radius: 10px;" id="addTicketContainer"></div>
+                    <div class="d-flex align-items-center gap-3 mb-4" style="overflow-x: auto; padding-bottom: 5px;" id="addTicketContainer"></div>
 
                 </div>
 
@@ -1770,28 +1770,35 @@
                             }
                             tickets.forEach(function (t, idx) {
                                 const btn = document.createElement('button');
-                                btn.type = 'button'; // avoid form submit on click
-                                btn.className = 'btn';
-                                btn.textContent = (t.title || '').trim() || '# Ticket';
-                                btn.style.flex = '1 1 130px';
-                                btn.style.borderRadius = '20px';
-                                btn.style.padding = '6px 12px';
+                                btn.type = 'button'; 
+                                btn.className = 'btn ticket-tab-btn';
+                                btn.textContent = (t.title || '').trim() || ('Ticket #' + (idx + 1));
+                                btn.style.borderRadius = '8px';
+                                btn.style.padding = '8px 16px';
                                 btn.style.fontWeight = '600';
-                                btn.style.fontSize = '11px';
+                                btn.style.fontSize = '14px';
+                                btn.style.whiteSpace = 'nowrap';
+                                btn.style.border = 'none';
                                 btn.dataset.ticketId = t.id || t._id || '';
-                                // default style; we'll set active below based on selectedTicketInput
+                                
+                                // Default inactive style
                                 btn.style.backgroundColor = 'transparent';
-                                btn.style.color = '#7a7a9d';
+                                btn.style.color = '#94a3b8';
+
                                 btn.addEventListener('click', function (e) {
                                     e.preventDefault();
                                     Array.from(container.children).forEach(function (child) {
-                                        if (child.tagName === 'BUTTON') {
+                                        if (child.classList.contains('ticket-tab-btn')) {
                                             child.style.backgroundColor = 'transparent';
-                                            child.style.color = '#7a7a9d';
+                                            child.style.color = '#94a3b8';
+                                            child.style.boxShadow = 'none';
                                         }
                                     });
-                                    btn.style.backgroundColor = '#47ca7a';
-                                    btn.style.color = 'white';
+                                    // Active styling
+                                    btn.style.backgroundColor = '#22c55e'; // Green
+                                    btn.style.color = '#ffffff';
+                                    btn.style.boxShadow = '0 4px 12px rgba(34, 197, 94, 0.2)';
+
                                     if (btn.dataset.ticketId) {
                                         if (selectedTicketInput) selectedTicketInput.value = btn.dataset.ticketId;
                                         fetchTasks(btn.dataset.ticketId);
@@ -1800,6 +1807,11 @@
                                     }
                                 });
                                 container.appendChild(btn);
+                                
+                                // Auto-select first ticket
+                                if (idx === 0) {
+                                    btn.click();
+                                }
                             });
                             // Prefer a preselected ticket id (edit mode), else default to first
                             const preselectedId = selectedTicketInput && selectedTicketInput.value ? selectedTicketInput.value : '';
@@ -1842,7 +1854,7 @@
                             }
                             // store hidden ids for submit
                             setHiddenTaskIds(tasks);
-                            tasks.forEach(function (task) {
+                            tasks.forEach(function (task, idx) {
                                 const title = (task.title || 'Task Title');
                                 const description = (task.description || 'Task description will be here');
                                 const start = (task.start_date || '').toString().slice(0, 10);
@@ -1858,97 +1870,85 @@
                                 const badgeText = (task.status || '01');
 
                                 const card = `
-                <!-- task1 -->
-                <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
+                <!-- Task Card (New Design) -->
+                <div class="d-flex align-items-start position-relative mb-4" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                    
+                    <!-- Red Badge -->
+                    <div style="position: absolute; top: 15px; left: -10px; background: #ff0000; color: white; width: 40px; height: 40px; border-bottom-right-radius: 12px; border-top-left-radius: 12px; border-top-right-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+                        ${String(idx + 1).padStart(2, '0')}
+                    </div>
 
-                    <!-- Image / Icon -->
-                    <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
+                    <!-- Image (Left) -->
+                    <div style="width: 130px; height: 130px; background: #e0e0e0; border-radius: 15px; flex-shrink: 0; overflow: hidden; margin-right: 25px; margin-left: 10px;">
                         ${task.mark_image_path 
-                            ? `<img src="/storage/${task.mark_image_path}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">`
-                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">`
+                            ? `<img src="/storage/${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
+                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
                         }
                     </div>
 
-                    <!-- Content Area -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <!-- Center Content -->
+                    <div style="flex: 1; min-width: 0;">
+                        
+                        <!-- Header Row -->
+                        <div class="d-flex align-items-center mb-3">
+                             <!-- Logo -->
+                           ${task.project_logo_path 
+                               ? `<img src="/storage/${task.project_logo_path}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
+                               : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
+                           }
+                           <div>
+                               <div style="font-weight: 700; font-size: 18px; color: #1b1b3a;">${title}</div>
+                               <div class="d-flex gap-2 mt-1">
+                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Task ID</span>
+                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">${ticketCode}</span>
+                               </div>
+                           </div>
+                           
+                           <!-- Status Dot -->
+                           <div style="margin-left: auto; width: 18px; height: 18px; background: #a3e635; border-radius: 50%; border: 4px solid #f0fdf4;"></div>
+                        </div>
 
-                        <!-- Top Row: Title + Dropdowns -->
-                        <div style="display: flex; justify-content: space-between; flex-wrap: nowrap; align-items: center;">
+                        <!-- Description -->
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
+                            ${description}
+                        </div>
 
-                            <!-- Titles -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Bottom Date Banner -->
+                        <div style="background: #ecfdf5; border-radius: 10px; padding: 10px 15px; display: inline-flex; align-items: center; gap: 15px; color: #10b981; font-weight: 600; font-size: 13px;">
+                             <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width: 18px; height: 18px;">
+                             <span>${start}</span>
+                             <span>&rarr;</span>
+                             <span>${end}</span>
+                             <span>&rarr;</span>
+                             <span>15:30</span>
+                        </div>
 
-                                <!-- Logo Left (Project logo if available, else fallback) -->
-                                ${task.project_logo_path 
-                                    ? `<img src="/storage/${task.project_logo_path}" alt="Logo" style="height: 32px; width: 32px; flex-shrink: 0;" />`
-                                    : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="height: 32px; width: 32px; flex-shrink: 0;" />`
-                                }
+                    </div>
 
-                                <!-- Title and Subtitle -->
-                                <div>
-                                    <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">${title}</div>
-                                    <div style="font-size: 12px; color: #999;">${ticketCode} - ${ticketTitle}</div>
-                                </div>
-
-                            </div>
-
-
-                            <!-- Dropdowns -->
-                            <div style="display: flex; align-items: center; gap: 8px; margin-left: auto; background: white;border-radius:5px;padding:7px;">
-                                <!-- Priority (low, medium, high) -->
-                                <select class="priority-select" name="task_priorities[${task.id || task._id}]">
+                    <!-- Right Side Dropdowns -->
+                    <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 15px; width: 160px; padding-top: 60px;">
+                        
+                        <!-- Priority -->
+                        <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
+                             <select class="priority-select" name="task_priorities[${task.id || task._id}]">
                                     <option value="" ${!task.priority ? 'selected' : ''}>Priority</option>
                                     <option value="low" ${(task.priority==='low') ? 'selected' : ''}>Low</option>
                                     <option value="medium" ${(task.priority==='medium') ? 'selected' : ''}>Medium</option>
                                     <option value="high" ${(task.priority==='high') ? 'selected' : ''}>High</option>
-                                </select>
-                                <!-- Developers multi-select (Choices.js tag style). Value is developer NAME -->
-                                <select class="developer-select" multiple name="task_developers[${task.id || task._id}][]">
+                             </select>
+                        </div>
+                        
+                        <!-- Developer -->
+                         <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
+                             <select class="developer-select" name="task_developers[${task.id || task._id}]">
+                                    <option value="">Developer</option>
                                     ${developersList.map(d => `<option value="${d.name}">${d.name}</option>`).join('')}
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div style="font-size: 12px; color: #7a7a9d;">
-                            ${description}
-                        </div>
-
-                        <!-- Dates & Status Row -->
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;background:#fff;border-radius:10px;padding:5px;">
-
-                            <!-- Dates -->
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: nowrap;">
-
-                                <!-- Start Date -->
-                                <div style="font-size: 12px; color: #1ca672; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Start:</strong>
-                                    <span style="color: #1b1b3a;">${start || '-'}</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
-                                <!-- divider -->
-                                <div style="width: 1px; height: 20px; background-color: #ccc;"></div>
-                                <!-- Deliver Date -->
-                                <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
-                                    <strong>Deliver:</strong>
-                                    <span style="color: #1b1b3a;">${end || '-'}</span>
-                                    <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                            </div>
-
-                                <!-- Icon + Count (same row) -->
-                                <div style="display: flex; align-items: center; gap: 6px; margin-left: 10px;">
-                                <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
-                                    <div style="background-color: #ff4d4f; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
-                                        ${typeof task.issues_count === 'number' ? String(task.issues_count).padStart(2,'0') : '01'}
-                                </div>
-                            </div>
+                             </select>
                         </div>
 
                     </div>
-
                 </div>
-                </div>
-                `;
+                                `;
                                 // append card
                                 const wrapper = document.createElement('div');
                                 wrapper.innerHTML = card;
@@ -1992,57 +1992,15 @@
                                     }
                                     const devEl = node.querySelector('select.developer-select');
                                     if (devEl && !devEl.dataset.enhanced) {
-                                        let devChoices = null;
-                                        try {
-                                            devChoices = new Choices(devEl, {
-                                            removeItemButton: true,
+                                        new Choices(devEl, {
+                                            removeItemButton: false,
                                             placeholder: true,
-                                            placeholderValue: 'Developers',
+                                            placeholderValue: 'Developer',
                                             searchPlaceholderValue: 'Search developer',
                                             shouldSort: false,
                                             classNames: { containerOuter: 'choices choices--developers' }
-                                            });
-                                            devEl.dataset.enhanced = '1';
-                                        } catch (errInit) {
-                                            // Choices not available; fallback to native select
-                                        }
-
-                                        // Add 'Select all' and 'Clear' inline action buttons (works for both modes)
-                                        const container = devEl.parentElement;
-                                        if (container && !container.querySelector('.dev-actions')) {
-                                            const actions = document.createElement('div');
-                                            actions.className = 'dev-actions';
-                                            const btnAll = document.createElement('span');
-                                            btnAll.className = 'dev-action-btn';
-                                            btnAll.textContent = 'Select all';
-                                            const btnClear = document.createElement('span');
-                                            btnClear.className = 'dev-action-btn';
-                                            btnClear.textContent = 'Clear';
-                                            actions.appendChild(btnAll);
-                                            actions.appendChild(btnClear);
-                                            container.appendChild(actions);
-
-                                            btnAll.addEventListener('click', function (e) {
-                                                e.preventDefault();
-                                                const allValues = Array.from(devEl.options).map(function (o) { return o.value; });
-                                                if (devChoices) {
-                                                    try { devChoices.setChoiceByValue(allValues); } catch (err) {}
-                                                } else {
-                                                    // native fallback
-                                                    Array.from(devEl.options).forEach(function (o) { o.selected = true; });
-                                                    devEl.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                            });
-                                            btnClear.addEventListener('click', function (e) {
-                                                e.preventDefault();
-                                                if (devChoices) {
-                                                    try { devChoices.removeActiveItems(); } catch (err) {}
-                                                } else {
-                                                    Array.from(devEl.options).forEach(function (o) { o.selected = false; });
-                                                    devEl.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-                                            });
-                                        }
+                                        });
+                                        devEl.dataset.enhanced = '1';
                                     }
                                 } catch (e) {}
                             });
@@ -2602,18 +2560,20 @@
                 </div>
                 <!-- footer -->
 
-                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
+                <!-- footer -->
+
+                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 15px; margin-top: 30px; width: 100%;">
 
                     <!-- Left Warning Box -->
-                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 12px;">
-                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
-                        There some section not asigned yet
+                    <div style="background-color: #ffe4e6; color: #be123c; border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; font-size: 12px; flex: 1;">
+                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 20px; height: 20px; margin-right: 10px;">
+                        There some section not asigend yet
                     </div>
 
                     <!-- Right Save Button -->
                     <button type="submit"
-                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
-                        Save changes
+                        style="background-color: #22c55e; color: white; font-weight: 600; font-size: 14px; padding: 12px 24px; border: none; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
+                        + Save and create work flow
                     </button>
 
                 </div>
