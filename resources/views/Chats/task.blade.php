@@ -164,7 +164,7 @@
 
     /* Ticket In Progress Section */
     .section-container {
-        max-width: 800px;
+        max-width: 550px;
         margin: 0 auto;
     }
     .section-header {
