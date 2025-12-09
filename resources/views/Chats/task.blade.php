@@ -358,6 +358,244 @@
         gap: 6px;
     }
 
+    /* ... existing styles ... */
+    
+    /* NEW: Task Detail Modal Specific Styles */
+    .task-modal-content {
+        border-radius: 20px;
+        overflow: hidden;
+        border: none;
+        font-family: 'Outfit', sans-serif;
+    }
+    .task-modal-header {
+        background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%); /* Blue gradient */
+        padding: 20px;
+        position: relative;
+        color: white;
+        height: 120px; /* Space for content + overlap */
+    }
+    .task-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: white;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 20;
+    }
+    .task-project-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 2px;
+    }
+    .task-ticket-name {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    .logo-circle {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        padding: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .task-modal-body {
+        padding: 40px 20px 20px; /* Top padding for logo overlap */
+        background: #f8fafc;
+    }
+    
+    .modal-task-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+    
+    .modal-tags {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    .badge-custom {
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .badge-new { background: #e0f2fe; color: #0ea5e9; }
+    .badge-id { background: #fee2e2; color: #ef4444; }
+    .badge-low { background: #dcfce7; color: #22c55e; } /* Assuming Low priority from screenshot */
+
+    .meta-row {
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        border: 1px solid #f1f5f9;
+    }
+    .meta-item span {
+        font-weight: 700;
+        color: #334155;
+    }
+    
+    .desc-box {
+        background: #fff;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        font-size: 13px;
+        color: #475569;
+        border: 1px solid #f1f5f9;
+    }
+    .desc-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 5px;
+        display: block;
+        text-transform: uppercase;
+    }
+    
+    .image-preview-area {
+        width: 100%;
+        height: 200px;
+        background: #e2e8f0;
+        border-radius: 16px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+    }
+    
+    /* Notes List */
+    .notes-section {
+        margin-bottom: 20px;
+    }
+    .notes-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .note-item {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #f1f5f9;
+    }
+    .note-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+    .note-icon {
+        color: #fca5a5; /* Light Red */
+        font-size: 16px;
+    }
+    
+    /* Form Switch Override */
+    .form-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+        cursor: pointer;
+    }
+    
+    .footer-alert {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #ef4444;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .start-btn-container {
+        text-align: center;
+        position: relative;
+        padding-top: 10px;
+    }
+    /* Thread line */
+    .timeline-line {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        right: 50%;
+        height: 2px;
+        background: #fecaca;
+        z-index: 0;
+    }
+    .start-task-btn {
+        position: relative;
+        z-index: 1;
+        background: #fff;
+        border: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        color: #1e293b;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    .start-btn-icon {
+        width: 40px;
+        height: 40px;
+        background: #22c55e;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    }
+
 </style>
 
 <div class="content main_content">
@@ -514,7 +752,18 @@
                                 
                                 <div class="new-task-card {{ $filterClass }}" 
                                      data-status="{{ $taskStatus }}" 
-                                     data-project-id="{{ $task->project_id ?? '' }}">
+                                     data-project-id="{{ $task->project_id ?? '' }}"
+                                     data-task-id="{{ substr((string)($task->_id ?? $task->id), -4) }}"
+                                     data-ticket-id="{{ substr((string)($task->ticket_id ?? '---'), -4) }}"
+                                     data-title="{{ $task->title ?? 'Untitled Task' }}"
+                                     data-description="{{ $task->description ?? 'No description available.' }}"
+                                     data-start-date="{{ isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025' }}"
+                                     data-end-date="{{ isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025' }}"
+                                     data-image="{{ !empty($task->mark_image_path) ? asset('storage/' . $task->mark_image_path) : '' }}"
+                                     data-index="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}"
+                                     data-project-name="{{ $task->project->title ?? 'Project Name' }}"
+                                     style="cursor: pointer;"
+                                     onclick="openTaskModal(this)">
                                      
                                     <!-- Left Col: Image + Index -->
                                     <div class="task-image-col">
@@ -580,6 +829,128 @@
     </div>
     </div>
 </div>
+
+
+<!-- Task Detail Modal (High Fidelity) -->
+<div class="modal fade" id="taskDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;"> <!-- Mobile like width -->
+        <div class="modal-content task-modal-content">
+            
+            <!-- Custom Header -->
+            <div class="task-modal-header">
+                <button type="button" class="task-modal-close" data-bs-dismiss="modal">
+                    <i class="ti ti-x"></i>
+                </button>
+                <div class="task-project-name" id="modalProjectName">Project Name</div>
+                <div class="task-ticket-name">Ticket #<span id="modalTicketNum">1</span> - Ticket Title</div>
+                
+                <!-- Logo Circle -->
+                <div class="logo-circle">
+                    <!-- Standard Logo or B icon -->
+                    <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="task-modal-body">
+                
+                <h3 class="modal-task-title" id="modalTaskTitleDisplay">Task Title</h3>
+                
+                <!-- Badges -->
+                <div class="modal-tags">
+                    <div class="badge-custom badge-new">
+                        <i class="ti ti-flag"></i> New Task
+                    </div>
+                    <div class="badge-custom badge-id">
+                        <i class="ti ti-bolt"></i> <span id="modalIndexDisplay">-01-</span>
+                    </div>
+                    <div class="badge-custom badge-low">
+                        <i class="ti ti-circle"></i> Low
+                    </div>
+                </div>
+
+                <!-- Meta Row -->
+                <div class="meta-row">
+                    <div class="meta-item">Task ID <span id="modalTaskIdDisplay">E5B4</span></div>
+                    <div class="meta-item">|</div>
+                    <div class="meta-item">Section <span id="modalSectionDisplay">Dev</span></div>
+                    <div class="meta-item">|</div>
+                    <div class="meta-item">Start <span id="modalStartDateDisplay">22.10</span></div>
+                    <div class="meta-item">|</div>
+                    <div class="meta-item">Deliver <span id="modalEndDateDisplay">23.10</span></div>
+                </div>
+
+                <!-- Issue Description -->
+                <div class="desc-box">
+                    <span class="desc-label">Issue Description</span>
+                    <p id="modalTaskDescriptionDisplay" style="margin:0; line-height:1.4;">
+                        Move the close button more down due is to near on the popup.
+                    </p>
+                </div>
+
+                <!-- Image Area -->
+                <div class="image-preview-area" id="modalImageArea">
+                    <img id="modalTaskImageFull" src="" style="width:100%; height:100%; object-fit:contain; display:none;" alt="Proof">
+                    <div id="modalImagePlaceholder" style="text-align:center;">
+                        <i class="ti ti-photo-off fs-1"></i>
+                        <br>No Image
+                    </div>
+                </div>
+
+                <!-- Notes / Toggles -->
+                <div class="notes-section">
+                    <span class="desc-label">Notes</span>
+                    <div class="notes-list">
+                        <!-- Static Checklist for demo/default, could be dynamic later -->
+                        <div class="note-item">
+                            <div class="note-content">
+                                <i class="ti ti-bolt note-icon"></i> Take Backup before start Development
+                            </div>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input" type="checkbox" checked>
+                            </div>
+                        </div>
+                         <div class="note-item">
+                            <div class="note-content">
+                                <i class="ti ti-bolt note-icon"></i> Work on your Local Server
+                            </div>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="note-item">
+                            <div class="note-content">
+                                <i class="ti ti-bolt note-icon"></i> Check your work before u deliver the work
+                            </div>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Alert -->
+                <div class="footer-alert">
+                    <i class="ti ti-bolt"></i>
+                    You can Start this Project on <span id="modalStartFull">23.12.2025</span>
+                </div>
+
+                <!-- Start Button (Mock functionality) -->
+                <div class="start-btn-container">
+                    <div class="timeline-line"></div>
+                    <button class="start-task-btn">
+                        <div class="start-btn-icon">
+                            <i class="ti ti-rocket"></i>
+                        </div>
+                        Start the Task
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->
 @include('Chats.partials.modals') 
@@ -690,4 +1061,48 @@
             loader.style.display = 'none';
         }
     });
+
+    // Function to Open Task Modal
+    function openTaskModal(element) {
+        // Retrieve data
+        const title = element.getAttribute('data-title');
+        const desc = element.getAttribute('data-description');
+        const taskId = element.getAttribute('data-task-id');
+        const ticketId = element.getAttribute('data-ticket-id');
+        const startDate = element.getAttribute('data-start-date');
+        const endDate = element.getAttribute('data-end-date');
+        const imageSrc = element.getAttribute('data-image');
+        const index = element.getAttribute('data-index');
+        const projectName = element.getAttribute('data-project-name');
+
+        // Populate Fields
+        document.getElementById('modalTaskTitleDisplay').textContent = title;
+        document.getElementById('modalTaskDescriptionDisplay').textContent = desc ? desc : "No description provided.";
+        document.getElementById('modalTaskIdDisplay').textContent = taskId;
+        // document.getElementById('modalTicketId').textContent = ticketId; // Optional usage
+        document.getElementById('modalStartDateDisplay').textContent = startDate.slice(0, 5); // Just dd.mm
+        document.getElementById('modalEndDateDisplay').textContent = endDate.slice(0, 5);
+        document.getElementById('modalIndexDisplay').textContent = "-" + index + "-";
+        
+        document.getElementById('modalProjectName').textContent = projectName;
+        document.getElementById('modalTicketNum').textContent = ticketId;
+        
+        document.getElementById('modalStartFull').textContent = startDate;
+
+        // Image
+        const imgEl = document.getElementById('modalTaskImageFull');
+        const placeholderEl = document.getElementById('modalImagePlaceholder');
+        
+        if (imageSrc) {
+            imgEl.src = imageSrc;
+            imgEl.style.display = 'block';
+            placeholderEl.style.display = 'none';
+        } else {
+            imgEl.style.display = 'none';
+            placeholderEl.style.display = 'block';
+        }
+
+        const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
+        myModal.show();
+    }
 </script>
