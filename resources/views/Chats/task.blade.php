@@ -1,6 +1,10 @@
 <?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
+    <!-- Page Loader -->
+    <div id="page-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div class="spinner" style="border:4px solid #f3f3f3;border-top:4px solid #22c55e;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;"></div>
+    </div>
 
 <style>
     /* Global Overrides */
@@ -10,7 +14,7 @@
     }
     
     .main_content {
-        padding-bottom: 30px;
+        padding-bottom: 0px;
     }
 
     /* Scrollbar */
@@ -62,6 +66,11 @@
         padding: 4px;
         border-radius: 8px;
         border: 1px solid #eee;
+    }
+    /* Loader spinner animation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
     .filter-tab {
         padding: 6px 16px;
@@ -358,7 +367,7 @@
     @include('Chats.notification')
     
     <div class="chat chat-messages show" id="middle">
-        <div style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+        <div style="display: flex; flex-direction: column; height: calc(100vh - 80px); overflow: hidden;">
             <div style="flex: 1; overflow-y: auto; background-color: #f4f6f8; display: flex; flex-direction: column;">
                 <div class="chat-body chat-page-group p-4" style="max-width: 1400px; margin: 0 auto; width: 100%;">
                     <div class="page-header-custom">
@@ -674,5 +683,11 @@
             });
         });
     });
-</script>
 
+    window.addEventListener('load', function() {
+        var loader = document.getElementById('page-loader');
+        if(loader) {
+            loader.style.display = 'none';
+        }
+    });
+</script>
