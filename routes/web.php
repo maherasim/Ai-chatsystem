@@ -152,6 +152,7 @@ Route::get('/Ai', function () {
 use App\Http\Controllers\TaskController;
 
 Route::get('/tasks', [TaskController::class, 'index'])->middleware('auth')->name('chat-task');
+Route::post('/tasks/update/{id}', [TaskController::class, 'update'])->middleware('auth')->name('tasks.update');
 
 // Task API Routes
 Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');

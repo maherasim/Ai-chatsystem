@@ -256,9 +256,51 @@ class TaskController extends Controller
             'checkpoints.*'=> 'nullable|string',
             'mark_image'   => 'nullable|string',
             'issues'       => 'nullable|array',
+            'status'       => 'sometimes|nullable|string',
         ]);
+        
+        \Illuminate\Support\Facades\Log::info("Task Update Hit. ID: " . $id);
 
-        $task = Task::findOrFail($id);
+        // Try direct finding or explicit ID query for Mongo
+        $task = Task::find($id);
+        if (!$task) {
+             $task = Task::where('_id', $id)->first();
+        }
+        
+        if (!$task) {
+             // Fallback: Check WebTask
+             $task = WebTask::find($id) ?? WebTask::where('_id', $id)->first();
+        }
+        if (!$task) {
+             // Fallback: Check EmployeeTask
+             $task = EmployeeTask::find($id) ?? EmployeeTask::where('_id', $id)->first();
+        }
+
+        if (!$task) {
+             // Final Fallback: Iterating to match string ID across all types
+             $allTasks = collect(Task::all())
+                ->merge(WebTask::all())
+                ->merge(EmployeeTask::all());
+             
+             foreach ($allTasks as $t) {
+                 if ((string)$t->_id === $id || (string)$t->id === $id) {
+                     $task = $t;
+                     break;
+                 }
+             }
+        }
+        
+        if (!$task) {
+             \Illuminate\Support\Facades\Log::error("Task not found (in any collection) for ID: " . $id);
+             return response()->json(['success' => false, 'message' => 'Task not found in any collection.'], 404);
+        }
+
+        // Force Status Update
+        if (!empty($validated['status'])) {
+            $task->status = $validated['status'];
+            $task->save();
+            \Illuminate\Support\Facades\Log::info("Task status updated to: " . $validated['status']);
+        }
 
         // Optional new image
         if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {

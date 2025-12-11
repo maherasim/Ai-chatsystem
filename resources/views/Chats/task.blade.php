@@ -596,6 +596,115 @@
         box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
     }
 
+    /* In Progress State Override */
+    .task-modal-header.in-progress {
+        background: linear-gradient(180deg, #84cc16 0%, #22c55e 100%) !important;
+    }
+
+    .action-buttons-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding-top: 20px;
+        margin-top: 10px;
+        border-top: 1px solid #f1f5f9;
+    }
+    .action-btn {
+        flex: 1;
+        background: #fff;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #1e293b;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+    .action-btn:hover {
+        background: #f8fafc;
+    }
+    .action-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 16px;
+    }
+    .icon-hold { background: #f59e0b; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); } /* Orange */
+    .icon-check { background: #a855f7; box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3); } /* Purple */
+
+    /* Hold Modal Styles */
+    .modal-header.hold-header {
+        background: #f97316; /* Orange */
+        color: white;
+    }
+    
+    /* Check Modal Styles */
+    .modal-header.check-header {
+        background: #a855f7; /* Purple */
+        color: white;
+    }
+
+    /* Common Alert Box */
+    .alert-box-red {
+        background: #ef4444;
+        color: white;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    /* Toggle Customization */
+    .form-check-input:checked {
+        background-color: #22c55e;
+        border-color: #22c55e;
+    }
+    .check-list-item {
+        background: white;
+        border: 1px solid #f1f5f9;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .check-list-icon {
+        color: #ef4444; /* Red icon color */
+        margin-right: 10px;
+    }
+
+    /* On Hold State Override */
+    .task-modal-header.on-hold {
+        background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%) !important; /* Yellow/Gold */
+    }
+
+    .hold-reason-box {
+        background: #fefce8; /* Light yellow */
+        border: 1px solid #fef08a;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        margin-top: 20px;
+        color: #854d0e;
+        font-size: 13px;
+        font-weight: 600;
+        display: none; /* Hidden by default */
+    }
+
 </style>
 
 <div class="content main_content">
@@ -753,6 +862,7 @@
                                 <div class="new-task-card {{ $filterClass }}" 
                                      data-status="{{ $taskStatus }}" 
                                      data-project-id="{{ $task->project_id ?? '' }}"
+                                     data-full-task-id="{{ $task->_id ?? $task->id }}"
                                      data-task-id="{{ substr((string)($task->_id ?? $task->id), -4) }}"
                                      data-ticket-id="{{ substr((string)($task->ticket_id ?? '---'), -4) }}"
                                      data-title="{{ $task->title ?? 'Untitled Task' }}"
@@ -935,10 +1045,10 @@
                     You can Start this Project on <span id="modalStartFull">23.12.2025</span>
                 </div>
 
-                <!-- Start Button (Mock functionality) -->
-                <div class="start-btn-container">
+                <!-- Start Button (Initial State) -->
+                <div class="start-btn-container" id="startBtnContainer">
                     <div class="timeline-line"></div>
-                    <button class="start-task-btn">
+                    <button class="start-task-btn" onclick="openStartConfirmationModal()">
                         <div class="start-btn-icon">
                             <i class="ti ti-rocket"></i>
                         </div>
@@ -946,6 +1056,256 @@
                     </button>
                 </div>
 
+                <!-- Action Buttons (In Progress State) -->
+                <div class="action-buttons-container" id="actionButtonsContainer" style="display: none;">
+                    <button class="action-btn" onclick="openHoldModal()">
+                        <div class="action-icon icon-hold">
+                            <i class="ti ti-hand-stop"></i>
+                        </div>
+                        Move to in Hold
+                    </button>
+                     <button class="action-btn" onclick="openCheckModal()">
+                        <div class="action-icon icon-check">
+                            <i class="ti ti-check"></i>
+                        </div>
+                        Move to in Check
+                    </button>
+                </div>
+
+                <!-- Hold Reason Display (On Hold State) -->
+                <div class="hold-reason-box" id="holdReasonContainer">
+                    <div style="margin-bottom: 5px;">
+                        <i class="ti ti-hand-stop" style="font-size: 24px; color: #f59e0b;"></i>
+                    </div>
+                    The Hold Reason will be here
+                </div>
+
+                <!-- Go To Task Button (On Hold State) -->
+                <div class="start-btn-container" id="goToTaskBtnContainer" style="display: none;">
+                    <div class="timeline-line"></div>
+                    <button class="start-task-btn" onclick="openStartConfirmationModal()">
+                        <div class="start-btn-icon">
+                            <i class="ti ti-rocket"></i>
+                        </div>
+                        Go to the task
+                    </button>
+                </div>
+
+                <!-- Continue Task Button (Checked State) -->
+                <div id="continueTaskBtnContainer" style="display: none; text-align: center; margin-top: 20px;">
+                    <div class="timeline-line"></div>
+                    <button type="button" onclick="continueTask()" style="background: white; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-radius: 12px; padding: 15px 30px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
+                        <div style="background: #22c55e; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                             <i class="ti ti-rocket" style="font-size: 24px; color: white;"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 14px; color: #334155;">continue the task</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start Confirmation Modal -->
+<div class="modal fade" id="startConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content task-modal-content">
+            <div class="modal-header border-0 pb-0">
+                 <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Start the Task</h5>
+                 <!-- Close button is hidden in design or handled below -->
+            </div>
+            <div class="modal-body pt-2 text-center" style="font-family: 'Outfit', sans-serif;">
+                
+                <!-- Rocket Icon -->
+                <div style="width: 80px; height: 80px; background: #22c55e; border-radius: 12px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                    <i class="ti ti-rocket" style="font-size: 40px; color: white;"></i>
+                </div>
+
+                <!-- Date Box -->
+                <div class="p-3 mb-3" style="background: #f8fafc; border-radius: 12px;">
+                    <div class="mb-2" style="color: #64748b; font-weight: 600; font-size: 13px;">Task Start Date and Time</div>
+                    
+                    <div class="d-flex align-items-center justify-content-between px-3 py-2 bg-white border border-light rounded-3 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                             <div style="background: #bef264; padding: 4px; border-radius: 6px;">
+                                 <i class="ti ti-clock" style="color: #475569;"></i>
+                             </div>
+                             <span style="font-size: 13px; font-weight: 700; color: #22c55e;">Started: <span class="text-dark" id="confirmStartDate">23.10.2024</span></span>
+                        </div>
+                        <div style="border-left: 1px solid #e2e8f0; height: 20px;"></div>
+                         <span style="font-size: 13px; font-weight: 700; color: #22c55e;">Time: <span class="text-dark">12:45</span></span>
+                    </div>
+
+                    <div class="mt-3" style="font-size: 13px; color: #64748b; font-weight: 500;">
+                        Task will move to the Section "<span style="color: #84cc16; font-weight: 700;">In Progress</span>"
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="d-flex gap-3 justify-content-center mt-4">
+                     <button type="button" class="btn btn-light text-muted fw-bold px-4" data-bs-dismiss="modal" style="background:#f1f5f9; border:none;">Close</button>
+                     <button type="button" onclick="confirmStartTask()" class="btn btn-light text-muted fw-bold px-4" style="background:#f1f5f9; border:none;">Move on</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- --------------------------
+     HOLD CONFIRMATION MODAL
+     -------------------------- -->
+<div class="modal fade" id="holdConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content task-modal-content">
+            <!-- Orange Header -->
+            <div class="modal-header border-0 pb-0">
+                 <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Task to In Hold</h5>
+            </div>
+            <div class="modal-body pt-2 text-center" style="font-family: 'Outfit', sans-serif;">
+                
+                <!-- Orange Custom Icon -->
+                <div style="margin: 0 auto 15px; width: 60px; height: 60px; background: #f97316; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                     <i class="ti ti-hand-stop" style="font-size: 30px; color: white;"></i>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-start w-100 text-muted" style="font-size: 12px;">Select the reason for why to move the Task to <strong style="color:#f97316">'In Hold'</strong></label>
+                    <select class="form-select border-0 bg-light" style="font-size: 13px;">
+                        <option>Select the reason</option>
+                        <option>Pending Dependencies</option>
+                        <option>Client Feedback</option>
+                        <option>Internal Review</option>
+                    </select>
+                </div>
+
+                <div class="text-muted mb-3" style="font-size: 12px;">Task will move to the Section <strong style="color:#f97316">"In Hold"</strong></div>
+
+                <!-- Date Time Display -->
+                <div class="d-flex align-items-center justify-content-center gap-3 py-2 mb-3" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 12px;">
+                     <div class="d-flex align-items-center gap-1 text-success fw-bold">
+                         <i class="ti ti-clock-pause"></i> Moved: <span id="holdDateDisplay">23.10.2024</span>
+                     </div>
+                     <div class="text-success fw-bold">Time: <span id="holdTimeDisplay">12:45</span></div>
+                </div>
+
+                <!-- Red Alert -->
+                <div class="alert-box-red text-start">
+                    <i class="ti ti-bolt" style="font-size: 18px;"></i>
+                    <div>
+                        The task will be listed "In Hold" Section.<br>
+                        Duration 12 Hours, Task will be moved to "In Delayed"
+                    </div>
+                     <div class="form-check form-switch ms-auto">
+                        <input class="form-check-input" type="checkbox" checked>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 justify-content-center mt-4">
+                     <button type="button" class="btn btn-light text-muted fw-bold px-4" data-bs-dismiss="modal" style="background:#f1f5f9; border:none;">Close</button>
+                     <button type="button" onclick="confirmMoveToHold()" class="btn btn-light text-muted fw-bold px-4" style="background:#f1f5f9; border:none;">Move on</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- --------------------------
+     CHECK CONFIRMATION MODAL
+     -------------------------- -->
+<div class="modal fade" id="checkConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content task-modal-content">
+            <!-- Purple Header -->
+             <div class="modal-header border-0 pb-0">
+                 <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Task to Checked</h5>
+            </div>
+            
+            <div class="modal-body pt-2 text-center" style="font-family: 'Outfit', sans-serif;">
+                
+                <!-- Purple Icon -->
+               <div style="margin: 0 auto 15px; width: 60px; height: 60px; background: #a855f7; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                     <i class="ti ti-check" style="font-size: 30px; color: white;"></i>
+                </div>
+
+                 <!-- Date Time Display -->
+                <div class="d-flex align-items-center justify-content-center gap-3 py-2 mb-3" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 12px;">
+                     <div class="d-flex align-items-center gap-1 text-success fw-bold">
+                         <i class="ti ti-check"></i> Moved: <span id="checkDateDisplay">23.10.2024</span>
+                     </div>
+                     <div class="text-success fw-bold">Time: <span id="checkTimeDisplay">12:45</span></div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="text-start mb-3">
+                    <label class="fw-bold mb-2" style="font-size: 12px;">Notes</label>
+                    
+                    <div class="check-list-item">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-bolt check-list-icon"></i>
+                            <span style="font-size: 12px;">Did u solve the issue ?</span>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" checked>
+                        </div>
+                    </div>
+
+                    <div class="check-list-item">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-bolt check-list-icon"></i>
+                            <span style="font-size: 12px;">Did u checked your work</span>
+                        </div>
+                         <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                    </div>
+                     <div class="check-list-item">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-bolt check-list-icon"></i>
+                            <span style="font-size: 12px;">Show us Video and Images about the work</span>
+                        </div>
+                         <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- Attachments Placeholders -->
+                 <div class="text-start mb-3">
+                     <label class="fw-bold mb-2" style="font-size: 12px;">Share work Attachments</label>
+                     <input type="text" class="form-control" placeholder="Video Link will be here to check the work" style="font-size: 12px; background: #f8fafc; border:none; padding: 10px;">
+                 </div>
+                 
+                 <div class="text-start mb-3">
+                     <label class="fw-bold mb-2" style="font-size: 12px;">File Attachments</label>
+                     <div class="d-flex gap-2">
+                         <!-- File Mockup -->
+                         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 10px; display: flex; align-items: center; gap: 5px;">
+                             <i class="ti ti-file-type-pdf text-danger"></i>
+                             <div style="font-size: 10px;">File Title.pdf<br><span class="text-muted">94 KB</span></div>
+                         </div>
+                     </div>
+                 </div>
+
+
+                <!-- Red Alert -->
+                <div class="alert-box-red text-start">
+                    <i class="ti ti-bolt" style="font-size: 18px;"></i>
+                    <div>
+                         The project manager will review the attachments and<br>
+                         get back to you within max. 12 hours.
+                    </div>
+                     <div class="form-check form-switch ms-auto">
+                        <input class="form-check-input" type="checkbox" checked>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 justify-content-center mt-4">
+                     <button type="button" class="btn btn-light text-muted fw-bold px-4" data-bs-dismiss="modal" style="background:#f1f5f9; border:none;">Close</button>
+                     <button type="button" onclick="confirmMoveToCheck()" class="btn btn-light text-muted fw-bold px-4" style="background:#f1f5f9; border:none;">Move on</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1068,19 +1428,26 @@
         const title = element.getAttribute('data-title');
         const desc = element.getAttribute('data-description');
         const taskId = element.getAttribute('data-task-id');
+        const fullTaskId = element.getAttribute('data-full-task-id');
         const ticketId = element.getAttribute('data-ticket-id');
         const startDate = element.getAttribute('data-start-date');
         const endDate = element.getAttribute('data-end-date');
         const imageSrc = element.getAttribute('data-image');
         const index = element.getAttribute('data-index');
         const projectName = element.getAttribute('data-project-name');
+        
+        // Status Handling
+        const status = element.getAttribute('data-status');
+        const isInProgress = ['in_progress', 'progress'].includes(status);
+        const isOnHold = ['on_hold', 'hold'].includes(status);
+        const isChecked = ['checked', 'check'].includes(status);
 
         // Populate Fields
         document.getElementById('modalTaskTitleDisplay').textContent = title;
         document.getElementById('modalTaskDescriptionDisplay').textContent = desc ? desc : "No description provided.";
         document.getElementById('modalTaskIdDisplay').textContent = taskId;
-        // document.getElementById('modalTicketId').textContent = ticketId; // Optional usage
-        document.getElementById('modalStartDateDisplay').textContent = startDate.slice(0, 5); // Just dd.mm
+        // document.getElementById('modalTicketId').textContent = ticketId;
+        document.getElementById('modalStartDateDisplay').textContent = startDate.slice(0, 5); 
         document.getElementById('modalEndDateDisplay').textContent = endDate.slice(0, 5);
         document.getElementById('modalIndexDisplay').textContent = "-" + index + "-";
         
@@ -1088,6 +1455,46 @@
         document.getElementById('modalTicketNum').textContent = ticketId;
         
         document.getElementById('modalStartFull').textContent = startDate;
+
+        // Store full task ID globally
+        window.currentTaskIdForStart = fullTaskId;
+
+        // --- Toggle UI State ---
+        const header = document.querySelector('.task-modal-header');
+        const startBtn = document.getElementById('startBtnContainer');
+        const actionBtns = document.getElementById('actionButtonsContainer');
+
+        const holdReason = document.getElementById('holdReasonContainer');
+        const goToTaskBtn = document.getElementById('goToTaskBtnContainer');
+        const continueTaskBtn = document.getElementById('continueTaskBtnContainer');
+
+        // Reset all specific classes first
+        header.classList.remove('in-progress', 'on-hold');
+        
+        // Hide all action areas by default
+        startBtn.style.display = 'none';
+        actionBtns.style.display = 'none';
+        holdReason.style.display = 'none';
+        goToTaskBtn.style.display = 'none';
+        continueTaskBtn.style.display = 'none';
+
+        if (isOnHold) {
+            header.classList.add('on-hold');
+            holdReason.style.display = 'block';
+            goToTaskBtn.style.display = 'block';
+        } 
+        else if (isChecked) {
+            header.classList.add('check-header');
+            continueTaskBtn.style.display = 'block';
+        }
+        else if (isInProgress) {
+            header.classList.add('in-progress');
+            actionBtns.style.display = 'flex';
+        } 
+        else {
+            // Default / New
+            startBtn.style.display = 'block';
+        }
 
         // Image
         const imgEl = document.getElementById('modalTaskImageFull');
@@ -1104,5 +1511,136 @@
 
         const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
         myModal.show();
+    }
+
+    // New Functions for Start Task Flow
+    function openStartConfirmationModal() {
+        // Close detail modal
+        const detailModalEl = document.getElementById('taskDetailModal');
+        const detailModal = bootstrap.Modal.getInstance(detailModalEl);
+        if (detailModal) {
+            detailModal.hide();
+        }
+
+        // Set date in confirmation modal
+        const today = new Date();
+        const formattedDate = today.getDate() + '.' + (today.getMonth() + 1) + '.' + today.getFullYear();
+        document.getElementById('confirmStartDate').textContent = formattedDate;
+
+        // Open confirmation modal
+        const confirmModal = new bootstrap.Modal(document.getElementById('startConfirmationModal'));
+        confirmModal.show();
+    }
+
+    function confirmStartTask() {
+        if (!window.currentTaskIdForStart) return;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                status: 'in_progress'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Success - Reload page (standard practice here as requested to "move" task)
+                // Or we could update UI locally, but reloading ensures full state sync
+                window.location.reload(); 
+            } else {
+                alert('Failed to start task. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        });
+    }
+
+    function updateTaskStatus(newStatus) {
+        // Reuse for explicit calls if needed
+        executeStatusUpdate(newStatus);
+    }
+
+    // --- Hold Flow ---
+    function openHoldModal() {
+        // Close detail modal first
+        const detailModalEl = document.getElementById('taskDetailModal');
+        const detailModal = bootstrap.Modal.getInstance(detailModalEl);
+        if (detailModal) {
+            detailModal.hide();
+        }
+
+        const now = new Date();
+        document.getElementById('holdDateDisplay').textContent = now.toLocaleDateString('de-DE'); // format dd.mm.yyyy
+        document.getElementById('holdTimeDisplay').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        const holdModal = new bootstrap.Modal(document.getElementById('holdConfirmationModal'));
+        holdModal.show();
+    }
+
+    function confirmMoveToHold() {
+         executeStatusUpdate('on_hold');
+    }
+
+    // --- Check Flow ---
+    function openCheckModal() {
+        // Close detail modal first
+        const detailModalEl = document.getElementById('taskDetailModal');
+        const detailModal = bootstrap.Modal.getInstance(detailModalEl);
+        if (detailModal) {
+            detailModal.hide();
+        }
+
+        const now = new Date();
+        document.getElementById('checkDateDisplay').textContent = now.toLocaleDateString('de-DE');
+        document.getElementById('checkTimeDisplay').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        const checkModal = new bootstrap.Modal(document.getElementById('checkConfirmationModal'));
+        checkModal.show();
+    }
+
+    function confirmMoveToCheck() {
+         executeStatusUpdate('checked');
+    }
+
+    function continueTask() {
+         executeStatusUpdate('in_progress');
+    }
+
+    // Core AJAX function
+    function executeStatusUpdate(newStatus) {
+        if (!window.currentTaskIdForStart) return;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                status: newStatus
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload(); 
+            } else {
+                alert('Failed to update task status.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred updating status.');
+        });
     }
 </script>
