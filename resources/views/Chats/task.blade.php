@@ -1076,7 +1076,7 @@
                                                 @php
                                                     $holdTasks = ($allTasks ?? collect())->filter(function ($t) use ($get, $norm) {
                                                         $status = $norm($get($t,'status'));
-                                                        return in_array($status, ['in_hold', 'hold', 'inhold'], true);
+                                                        return in_array($status, ['in_hold', 'hold', 'inhold','on_hold'], true);
                                                     });
                                                 @endphp
                                                 <div style="font-size: 13px; color: yellow;">Total Tasks: {{ $holdTasks->count() }}</div>
