@@ -1856,7 +1856,7 @@
                             setHiddenTaskIds(tasks);
                             tasks.forEach(function (task, idx) {
                                 const title = (task.title || 'Task Title');
-                                const description = (task.description || 'Task description will be heredddd');
+                                const description = (task.description || 'Task description will be here');
                                 const start = (task.start_date || '').toString().slice(0, 10);
                                 const end = (task.end_date || '').toString().slice(0, 10);
                                 const ticketTitle = (task.ticket && task.ticket.title) ? task.ticket.title : (task.ticket_title || 'Ticket Title');
@@ -1871,179 +1871,83 @@
 
                                 const card = `
                 <!-- Task Card (New Design) -->
- <div style="width:100%; max-width:850px; margin:20px auto; font-family:Arial, sans-serif;">
+                <div class="d-flex align-items-start position-relative mb-4" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                    
+                    <!-- Red Badge -->
+                    <div style="position: absolute; top: 15px; left: -10px; background: #ff0000; color: white; width: 40px; height: 40px; border-bottom-right-radius: 12px; border-top-left-radius: 12px; border-top-right-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+                        ${String(idx + 1).padStart(2, '0')}
+                    </div>
 
-                      <!-- TASK CARD -->
-                         <div style="
-                       display:flex;
-                       background:#f7f7f7;
-                       border-radius:18px;
-                       padding:15px;
-                       margin-bottom:18px;
-                       align-items:center;
-                     gap:18px;
-                   ">
+                    <!-- Image (Left) -->
+                    <div style="width: 130px; height: 130px; background: #e0e0e0; border-radius: 15px; flex-shrink: 0; overflow: hidden; margin-right: 25px; margin-left: 10px;">
+                        ${task.mark_image_path 
+                            ? `<img src="/storage/${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
+                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
+                        }
+                    </div>
 
-                <!-- LEFT BADGE + IMAGE -->
-                          <div style="
-                      display: flex; 
-                      flex-direction: column; 
-                      align-items: center; 
-                      gap: 10px;
-                      position: relative; /* CRITICAL: Sets coordinate system for children */
-                      margin-top: -15px; /* Pull up to align badge with card top edge */
-                      margin-left: -15px; /* Pull left to align image with card left edge */
-                      height: 140px; /* CRITICAL: Define the size of the overall area */
-                      width: 140px; /* CRITICAL: Define the size of the overall area */
-                      min-width: 140px;
-                  ">
-    
-    <svg viewBox="0 0 140 140" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-        <defs>
-            <clipPath id="corner-cut">
-                <path d="M 140 0 H 15 C 6.716 0 0 6.716 0 15 V 140 H 140 V 0 Z" fill="none"/>
-            </clipPath>
-        </defs>
-    </svg>
+                    <!-- Center Content -->
+                    <div style="flex: 1; min-width: 0;">
+                        
+                        <!-- Header Row -->
+                        <div class="d-flex align-items-center mb-3">
+                             <!-- Logo -->
+                           ${task.project_logo_path 
+                               ? `<img src="/storage/${task.project_logo_path}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
+                               : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
+                           }
+                           <div>
+                               <div style="font-weight: 700; font-size: 18px; color: #1b1b3a;">${title}</div>
+                               <div class="d-flex gap-2 mt-1">
+                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Task ID</span>
+                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">${ticketCode}</span>
+                               </div>
+                           </div>
+                           
+                           <!-- Status Dot -->
+                           <div style="margin-left: auto; width: 18px; height: 18px; background: #a3e635; border-radius: 50%; border: 4px solid #f0fdf4;"></div>
+                        </div>
 
-    <div style="
-        width: 140px; 
-        height: 140px; 
-        background: #ccc; 
-        border-radius: 18px; 
-        position: absolute; /* CRITICAL: Positions image inside the relative parent */
-        top: 0;
-        left: 0;
-        /* Apply the SVG clip-path for the corner-cut effect */
-        clip-path: url(#corner-cut);
-        -webkit-clip-path: url(#corner-cut);
-        overflow: hidden; /* Ensure image doesn't bleed outside the shape */
-    ">
-        ${task.mark_image_path 
-            ? `<img src="/storage/${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
-            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
-        }
-    </div>
+                        <!-- Description -->
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
+                            ${description}
+                        </div>
 
-    <div style="
-        position: absolute;
-        top: 0; /* Aligned to the top edge of the card (due to parent margin-top) */
-        left: 0; /* Aligned to the left edge of the card (due to parent margin-left) */
-        width: 36px; 
-        height: 36px; 
-        background: #ff3d3d; /* Red color */
-        color: white; 
-        border-radius: 0 0 18px 0; /* Rounded only at the bottom-right corner of the badge */
-        font-size: 14px; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        font-weight: bold;
-        z-index: 10; /* Ensure it's above the image */
-    ">${String(idx + 1).padStart(2, '0')}</div>
-     </div>
+                        <!-- Bottom Date Banner -->
+                        <div style="background: #ecfdf5; border-radius: 10px; padding: 10px 15px; display: inline-flex; align-items: center; gap: 15px; color: #10b981; font-weight: 600; font-size: 13px;">
+                             <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width: 18px; height: 18px;">
+                             <span>${start}</span>
+                             <span>&rarr;</span>
+                             <span>${end}</span>
+                             <span>&rarr;</span>
+                             <span>15:30</span>
+                        </div>
 
-        <!-- CENTER CONTENT -->
-        <div style="flex:1;background-color:#fff;padding:5px;border-radius:8px; border-top-right-radius:30px;">
-            
-            <!-- Task Title + Tags -->
-           <div style=" padding:5px; text-align:center; margin:auto;">
-    
-    <!-- Task Title -->
-    <h3 style="margin:0 0 10px; font-size:20px; font-weight:700; color:#333;">
-        Task Title
-    </h3>
+                    </div>
 
-    <!-- IDs Section -->
-    <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-        <div style="
-            background:#e8f2ff;
-            padding:4px 10px;
-            border-radius:8px;
-            font-size:12px;
-            color:#3b7dff;
-        ">
-            Task ID
-        </div>
+                    <!-- Right Side Dropdowns -->
+                    <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 15px; width: 160px; padding-top: 60px;">
+                        
+                        <!-- Priority -->
+                        <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
+                             <select class="priority-select" name="task_priorities[${task.id || task._id}]">
+                                    <option value="" ${!task.priority ? 'selected' : ''}>Priority</option>
+                                    <option value="low" ${(task.priority==='low') ? 'selected' : ''}>Low</option>
+                                    <option value="medium" ${(task.priority==='medium') ? 'selected' : ''}>Medium</option>
+                                    <option value="high" ${(task.priority==='high') ? 'selected' : ''}>High</option>
+                             </select>
+                        </div>
+                        
+                        <!-- Developer -->
+                         <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
+                             <select class="developer-select" name="task_developers[${task.id || task._id}]">
+                                    <option value="">Developer</option>
+                                    ${developersList.map(d => `<option value="${d.name}">${d.name}</option>`).join('')}
+                             </select>
+                        </div>
 
-        <div style="
-            background:#e8f2ff;
-            padding:4px 10px;
-            border-radius:8px;
-            font-size:12px;
-            color:#3b7dff;
-         ">
-            Ticket ID
-        </div>
-    </div>
-</div>
- <hr style="background-color:black;border-color:black;">
-
-            <!-- Description -->
-            <p style="margin:10px 0 12px; color:#666; font-size:14px;">
-                Task description will be here
-            </p>
-
-            <!-- DATE ROW -->
-            <div style="
-                display:flex; 
-                align-items:center; 
-                gap:10px;
-                background:#e8ffee;
-                padding:8px 12px;
-                border-radius:10px;
-                width:max-content;
-            ">
-                <span style="font-size:18px;">
-                 <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width: 18px; height: 18px;"></span>
-
-                <span style="color:#00a36f; font-weight:600; font-size:14px;">
-                    12.10.2025 ➜ 15.10.2025 ➜ 15:30
-                </span>
-            </div>
-
-        </div>
-
-        <!-- RIGHT SECTION -->
-        <div style="display:flex; flex-direction:column; gap:15px; align-items:flex-end; min-width:120px;">
-
-            <!-- Status Icon -->
-            <div style=" width:18px;  height:18px;  background:#90ee90;  border-radius:50%;"></div>
-
-            <!-- Priority Dropdown -->
-            <select style="
-                padding:6px 10px; 
-                border-radius:8px; 
-                border:1px solid #ccc;
-                font-size:13px;
-                width:90px;
-                color:#666;
-            ">
-            <option value="low">🟢 Low</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="high">🔴 High</option>
-
-            </select>
-
-            <!-- User Dropdown -->
-            <select style="
-                padding:6px 10px; 
-                border-radius:8px; 
-                border:1px solid #ccc;
-                font-size:13px;
-                width:90px;
-                 color:#666;
-            ">
-                <option>Name</option>
-                <option>User A</option>
-                <option>User B</option>
-            </select>
-
-        </div>
-
-    </div>
-</div>
-
+                    </div>
+                </div>
                                 `;
                                 // append card
                                 const wrapper = document.createElement('div');
@@ -2143,7 +2047,7 @@
                 </script>
 
                 <!-- Dynamic tasks will render here -->
-                <div id="taskListContainer"  style="min-height: 40px;"></div>
+                <div id="taskListContainer" class="w-100" style="min-height: 40px;"></div>
                 <!-- Selected ticket hidden field for submit -->
                 <input type="hidden" name="tickets[]" id="selectedTicketId" value="">
                 <!-- Selected tasks (all listed for chosen ticket) -->
