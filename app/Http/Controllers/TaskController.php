@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\Task;
 use App\Models\WebTask;
 use App\Models\EmployeeTask;
+use App\Models\Teams;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,51 +16,91 @@ class TaskController extends Controller
 {
     public function index()
     {
+        $authId = Auth::id(); // Get authenticated user ID
+
         $headers = \App\Models\Setting::all();
-        // Always load all projects for the select dropdown
         $projects = Project::orderBy('title')->get();
         $projectsdone = Project::orderBy('title')->get();
-        $tasks = Task::orderByDesc('created_at')->limit(200)->get();
-        $webtasks = WebTask::orderByDesc('created_at')->limit(200)->get();
-        $employeeTasks = EmployeeTask::orderByDesc('created_at')->limit(200)->get();
-        $emptasks = EmployeeTask::orderByDesc('created_at')->limit(200)->get();
-        // Fallback: some records might not have created_at populated in Mongo; sort by _id instead
+
+        // Fetch all teams to check task_developers
+        $teams = Teams::all();
+        $userTaskIds = [];
+
+        foreach ($teams as $team) {
+            $taskDevelopers = json_decode($team->task_developers, true); // decode JSON to array
+            if (is_array($taskDevelopers)) {
+                foreach ($taskDevelopers as $taskId => $developerIds) {
+                    if (in_array($authId, $developerIds)) { // check if user is assigned
+                        $userTaskIds[] = $taskId;
+                    }
+                }
+            }
+        }
+
+        $userTaskIds = array_unique($userTaskIds);
+
+        // Fetch only tasks assigned to authenticated user
+        $tasks = Task::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
+        $webtasks = WebTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
+        $employeeTasks = EmployeeTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
+        $emptasks = $employeeTasks;
+
+        // Fallback if no employee tasks
         if ($employeeTasks->isEmpty()) {
             $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(200)->get();
         }
-        $projectIds = $tasks->pluck('project_id')->merge($webtasks->pluck('project_id'))->merge($employeeTasks->pluck('project_id'))
-            ->filter()->map(fn($v) => (string)$v)->unique()->values();
-        $ticketIds  = $tasks->pluck('ticket_id')->merge($webtasks->pluck('ticket_id'))->merge($employeeTasks->pluck('ticket_id'))
-            ->filter()->map(fn($v) => (string)$v)->unique()->values();
+
+        // Collect unique project and ticket IDs
+        $projectIds = $tasks->pluck('project_id')
+            ->merge($webtasks->pluck('project_id'))
+            ->merge($employeeTasks->pluck('project_id'))
+            ->filter()
+            ->map(fn($v) => (string)$v)
+            ->unique()
+            ->values();
+
+        $ticketIds = $tasks->pluck('ticket_id')
+            ->merge($webtasks->pluck('ticket_id'))
+            ->merge($employeeTasks->pluck('ticket_id'))
+            ->filter()
+            ->map(fn($v) => (string)$v)
+            ->unique()
+            ->values();
 
         $projectSubset = $projectIds->isNotEmpty()
             ? $projects->whereIn('_id', $projectIds)->values()
             : collect();
-        $tickets  = $ticketIds->isNotEmpty()
+
+        $tickets = $ticketIds->isNotEmpty()
             ? Ticket::whereIn('_id', $ticketIds)->get()
             : collect();
-        $projectMap = ($projectSubset->isNotEmpty() ? $projectSubset : $projects)->keyBy(fn($p) => (string)($p->_id ?? $p->id));
-        $ticketMap  = $tickets->keyBy(fn($t) => (string)($t->_id ?? $t->id));
 
-        $tasks = $tasks->map(function($t) use ($projectMap, $ticketMap){
+        $projectMap = ($projectSubset->isNotEmpty() ? $projectSubset : $projects)
+            ->keyBy(fn($p) => (string)($p->_id ?? $p->id));
+        $ticketMap = $tickets->keyBy(fn($t) => (string)($t->_id ?? $t->id));
+
+        // Map projects and tickets to tasks
+        $tasks = $tasks->map(function ($t) use ($projectMap, $ticketMap) {
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        $webtasks = $webtasks->map(function($t) use ($projectMap, $ticketMap){
+
+        $webtasks = $webtasks->map(function ($t) use ($projectMap, $ticketMap) {
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        $employeeTasks = $employeeTasks->map(function($t) use ($projectMap, $ticketMap){
+
+        $employeeTasks = $employeeTasks->map(function ($t) use ($projectMap, $ticketMap) {
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
             return $t;
         });
-        // Return with both camelCase and snakeCase variants for robustness in blade
-        // Merge all tasks for counting stats
+
+        // Merge all tasks for stats
         $allTasks = collect($tasks)->merge($webtasks)->merge($employeeTasks);
-        
+
         // Helper to normalize status strings
         $norm = fn($s) => strtolower(str_replace([' ', '-'], '_', $s ?? ''));
 
@@ -75,18 +116,19 @@ class TaskController extends Controller
         ];
 
         return view('Chats.task', [
-            'headers'         => $headers,
-            'projects'        => $projects,
-            'tasks'           => $tasks,
-            'emptasks'        => $emptasks, // Keep for backward compatibility if view uses it
-            'webtasks'        => $webtasks,
-            'webTasks'        => $webtasks,
-            'employeeTasks'   => $employeeTasks,
-            'employeetasks'   => $employeeTasks,
-            'projectsdone'    => $projectsdone,
-            'stats'           => $stats, // Pass the calculated stats
+            'headers'       => $headers,
+            'projects'      => $projects,
+            'tasks'         => $tasks,
+            'emptasks'      => $emptasks,
+            'webtasks'      => $webtasks,
+            'webTasks'      => $webtasks,
+            'employeeTasks' => $employeeTasks,
+            'employeetasks' => $employeeTasks,
+            'projectsdone'  => $projectsdone,
+            'stats'         => $stats,
         ]);
     }
+
 
     public function projects()
     {
@@ -101,40 +143,40 @@ class TaskController extends Controller
     }
 
     public function tickets(Request $request)
-{
-    $projectId = $request->input('project_id'); // ✅ plain string
+    {
+        $projectId = $request->input('project_id'); // ✅ plain string
 
-    $query = Ticket::query();
+        $query = Ticket::query();
 
-    if (!empty($projectId)) {
-        $query->where('project_id', $projectId);
+        if (!empty($projectId)) {
+            $query->where('project_id', $projectId);
+        }
+
+        $tickets = $query->orderByDesc('created_at')->limit(100)->get();
+
+        // ✅ Transform data for clean frontend response
+        $data = $tickets->map(function ($t) {
+            return [
+                'id' => (string) ($t->_id ?? $t->id),
+                'code' => $t->code,
+                'project_id' => $t->project_id,
+                'title' => $t->title,
+                'section_name' => $t->section_name,
+                'title' => $t->title,
+                'description' => $t->description,
+                'status' => $t->status,
+                'priority' => $t->priority,
+                'start_date' => optional($t->start_date)->toDateString(),
+                'end_date' => optional($t->end_date)->toDateString(),
+            ];
+        })->values();
+
+        return response()->json([
+            'success' => true,
+            'count' => $data->count(),
+            'tickets' => $data
+        ]);
     }
-
-    $tickets = $query->orderByDesc('created_at')->limit(100)->get();
-
-    // ✅ Transform data for clean frontend response
-    $data = $tickets->map(function ($t) {
-        return [
-            'id' => (string) ($t->_id ?? $t->id),
-            'code' => $t->code,
-            'project_id' => $t->project_id,
-            'title' => $t->title,
-            'section_name' => $t->section_name,
-            'title' => $t->title,
-            'description' => $t->description,
-            'status' => $t->status,
-            'priority' => $t->priority,
-            'start_date' => optional($t->start_date)->toDateString(),
-            'end_date' => optional($t->end_date)->toDateString(),
-        ];
-    })->values();
-
-    return response()->json([
-        'success' => true,
-        'count' => $data->count(),
-        'tickets' => $data
-    ]);
-}
 
     public function store(Request $request)
     {
@@ -146,11 +188,11 @@ class TaskController extends Controller
             'start_date'   => 'nullable|date',
             'end_date'     => 'nullable|date|after_or_equal:start_date',
             'checkpoints'  => 'nullable|array',
-            'checkpoints.*'=> 'nullable|string',
+            'checkpoints.*' => 'nullable|string',
             'shape'        => 'nullable|string',
             'color'        => 'nullable|string',
             'position'     => 'nullable|array',
-            'position.left'=> 'nullable|numeric',
+            'position.left' => 'nullable|numeric',
             'position.top' => 'nullable|numeric',
             'number'       => 'nullable|integer',
             'mark_image'   => 'nullable|string', // base64 data URL
@@ -165,7 +207,7 @@ class TaskController extends Controller
                 [$meta, $encoded] = explode(',', $dataUrl, 2);
                 $binary = base64_decode($encoded);
                 $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
-                $filename = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                $filename = 'tasks/marks/' . uniqid('mark_', true) . '.' . $ext;
                 Storage::disk('public')->put($filename, $binary);
                 $path = $filename;
             } catch (\Throwable $e) {
@@ -179,7 +221,7 @@ class TaskController extends Controller
                 [$meta, $encoded] = explode(',', $validated['board_image'], 2);
                 $binary = base64_decode($encoded);
                 $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
-                $boardPath = 'tasks/boards/'.uniqid('board_', true).'.'.$ext;
+                $boardPath = 'tasks/boards/' . uniqid('board_', true) . '.' . $ext;
                 Storage::disk('public')->put($boardPath, $binary);
                 if (!empty($validated['ticket_id'])) {
                     $ticket = Ticket::find($validated['ticket_id']);
@@ -188,7 +230,8 @@ class TaskController extends Controller
                         $ticket->save();
                     }
                 }
-            } catch (\Throwable $e) {}
+            } catch (\Throwable $e) {
+            }
         }
 
         // Persist issue images if provided and set first as preview path
@@ -202,13 +245,14 @@ class TaskController extends Controller
                         [$meta, $encoded] = explode(',', $imgData, 2);
                         $binary = base64_decode($encoded);
                         $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
-                        $fname = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                        $fname = 'tasks/marks/' . uniqid('mark_', true) . '.' . $ext;
                         Storage::disk('public')->put($fname, $binary);
                         $issues[$i]['mark_image_path'] = $fname;
                         unset($issues[$i]['mark_image']);
                         if ($firstIssueImagePath === null) $firstIssueImagePath = $fname;
                     }
-                } catch (\Throwable $e) {}
+                } catch (\Throwable $e) {
+                }
             }
         }
 
@@ -225,7 +269,7 @@ class TaskController extends Controller
             'color'          => $validated['color'] ?? null,
             'position'       => $validated['position'] ?? null,
             'number'         => $validated['number'] ?? null,
-            'mark_image_path'=> $firstIssueImagePath ?: $path,
+            'mark_image_path' => $firstIssueImagePath ?: $path,
             'issues'         => $issues,
             'created_by'     => Auth::id(),
         ]);
@@ -253,46 +297,46 @@ class TaskController extends Controller
             'start_date'   => 'nullable|date',
             'end_date'     => 'nullable|date|after_or_equal:start_date',
             'checkpoints'  => 'nullable|array',
-            'checkpoints.*'=> 'nullable|string',
+            'checkpoints.*' => 'nullable|string',
             'mark_image'   => 'nullable|string',
             'issues'       => 'nullable|array',
             'status'       => 'sometimes|nullable|string',
         ]);
-        
+
         \Illuminate\Support\Facades\Log::info("Task Update Hit. ID: " . $id);
 
         // Try direct finding or explicit ID query for Mongo
         $task = Task::find($id);
         if (!$task) {
-             $task = Task::where('_id', $id)->first();
-        }
-        
-        if (!$task) {
-             // Fallback: Check WebTask
-             $task = WebTask::find($id) ?? WebTask::where('_id', $id)->first();
-        }
-        if (!$task) {
-             // Fallback: Check EmployeeTask
-             $task = EmployeeTask::find($id) ?? EmployeeTask::where('_id', $id)->first();
+            $task = Task::where('_id', $id)->first();
         }
 
         if (!$task) {
-             // Final Fallback: Iterating to match string ID across all types
-             $allTasks = collect(Task::all())
+            // Fallback: Check WebTask
+            $task = WebTask::find($id) ?? WebTask::where('_id', $id)->first();
+        }
+        if (!$task) {
+            // Fallback: Check EmployeeTask
+            $task = EmployeeTask::find($id) ?? EmployeeTask::where('_id', $id)->first();
+        }
+
+        if (!$task) {
+            // Final Fallback: Iterating to match string ID across all types
+            $allTasks = collect(Task::all())
                 ->merge(WebTask::all())
                 ->merge(EmployeeTask::all());
-             
-             foreach ($allTasks as $t) {
-                 if ((string)$t->_id === $id || (string)$t->id === $id) {
-                     $task = $t;
-                     break;
-                 }
-             }
+
+            foreach ($allTasks as $t) {
+                if ((string)$t->_id === $id || (string)$t->id === $id) {
+                    $task = $t;
+                    break;
+                }
+            }
         }
-        
+
         if (!$task) {
-             \Illuminate\Support\Facades\Log::error("Task not found (in any collection) for ID: " . $id);
-             return response()->json(['success' => false, 'message' => 'Task not found in any collection.'], 404);
+            \Illuminate\Support\Facades\Log::error("Task not found (in any collection) for ID: " . $id);
+            return response()->json(['success' => false, 'message' => 'Task not found in any collection.'], 404);
         }
 
         // Force Status Update
@@ -308,10 +352,11 @@ class TaskController extends Controller
                 [$meta, $encoded] = explode(',', $validated['mark_image'], 2);
                 $binary = base64_decode($encoded);
                 $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
-                $filename = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                $filename = 'tasks/marks/' . uniqid('mark_', true) . '.' . $ext;
                 Storage::disk('public')->put($filename, $binary);
                 $validated['mark_image_path'] = $filename;
-            } catch (\Throwable $e) {}
+            } catch (\Throwable $e) {
+            }
         }
 
         // Append new issues if provided (convert base64 to stored paths)
@@ -331,10 +376,11 @@ class TaskController extends Controller
                         [$meta, $encoded] = explode(',', $imgData, 2);
                         $binary = base64_decode($encoded);
                         $ext = str_contains($meta, 'png') ? 'png' : 'jpg';
-                        $fname = 'tasks/marks/'.uniqid('mark_', true).'.'.$ext;
+                        $fname = 'tasks/marks/' . uniqid('mark_', true) . '.' . $ext;
                         \Storage::disk('public')->put($fname, $binary);
                         $iss['mark_image_path'] = $fname;
-                    } catch (\Throwable $e) {}
+                    } catch (\Throwable $e) {
+                    }
                 }
                 unset($iss['mark_image']);
                 $processed[] = $iss;
@@ -422,7 +468,4 @@ class TaskController extends Controller
             'tasks' => $items,
         ]);
     }
-
 }
-
-
