@@ -11,44 +11,109 @@ use App\Models\EmployeeTask;
 use App\Models\Teams;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
     public function index()
     {
         $authId = Auth::id(); // Get authenticated user ID
+        $authIdString = (string) $authId; // Convert to string for comparison
+        
+        // DEBUG: Log authenticated user info
+        Log::info('=== TASK FILTERING DEBUG START ===');
+        Log::info('Authenticated User ID (raw): ' . $authId);
+        Log::info('Authenticated User ID (string): ' . $authIdString);
+        Log::info('Authenticated User Name: ' . (Auth::user()->name ?? 'N/A'));
 
         $headers = \App\Models\Setting::all();
         $projects = Project::orderBy('title')->get();
         $projectsdone = Project::orderBy('title')->get();
 
-        // Fetch all teams to check task_developers
+        // Fetch all teams to check task_developers - only get tasks where user is assigned
         $teams = Teams::all();
         $userTaskIds = [];
+        
+        // DEBUG: Log teams count
+        Log::info('Total Teams Found: ' . $teams->count());
 
         foreach ($teams as $team) {
-            $taskDevelopers = json_decode($team->task_developers, true); // decode JSON to array
-            if (is_array($taskDevelopers)) {
-                foreach ($taskDevelopers as $taskId => $developerIds) {
-                    if (in_array($authId, $developerIds)) { // check if user is assigned
-                        $userTaskIds[] = $taskId;
+            $teamId = (string) ($team->_id ?? $team->id ?? 'unknown');
+            Log::info("--- Processing Team: {$teamId} (Title: " . ($team->title ?? 'N/A') . ") ---");
+            
+            // Check task_developers - KEY is user ID, VALUE is developer names
+            // Handle both JSON string and array formats
+            $taskDevelopers = is_string($team->task_developers) 
+                ? json_decode($team->task_developers, true) 
+                : $team->task_developers;
+            
+            // DEBUG: Log raw task_developers data
+            Log::info('Team task_developers (raw): ' . json_encode($team->task_developers));
+            Log::info('Team task_developers (decoded): ' . json_encode($taskDevelopers));
+            Log::info('Is task_developers array? ' . (is_array($taskDevelopers) ? 'Yes' : 'No'));
+            
+            // Check if authenticated user ID exists as a KEY in task_developers
+            if (is_array($taskDevelopers) && $authIdString && isset($taskDevelopers[$authIdString])) {
+                Log::info("  ✓ User ID {$authIdString} found in task_developers");
+                Log::info("  Developer names: " . json_encode($taskDevelopers[$authIdString]));
+                
+                // Get tasks array - this contains the actual task IDs
+                $teamTasks = is_string($team->tasks) 
+                    ? json_decode($team->tasks, true) 
+                    : $team->tasks;
+                
+                Log::info('Team tasks (raw): ' . json_encode($team->tasks));
+                Log::info('Team tasks (decoded): ' . json_encode($teamTasks));
+                
+                if (is_array($teamTasks)) {
+                    foreach ($teamTasks as $taskId) {
+                        if (!empty($taskId)) {
+                            $userTaskIds[] = $taskId;
+                            Log::info("  ✓ Added Task ID: {$taskId}");
+                        }
                     }
+                } else {
+                    Log::info("  Team tasks is not an array or is empty");
+                }
+            } else {
+                if (!is_array($taskDevelopers)) {
+                    Log::info("  Skipping: task_developers is not an array");
+                } elseif (!$authIdString) {
+                    Log::info("  Skipping: authIdString is empty");
+                } else {
+                    Log::info("  User ID {$authIdString} NOT found in task_developers keys");
+                    Log::info("  Available keys: " . json_encode(array_keys($taskDevelopers)));
                 }
             }
         }
 
-        $userTaskIds = array_unique($userTaskIds);
+        $userTaskIds = array_unique(array_filter($userTaskIds)); // Remove duplicates and empty values
+        
+        // DEBUG: Log final task IDs
+        Log::info('=== FINAL RESULTS ===');
+        Log::info('Total Task IDs Found: ' . count($userTaskIds));
+        Log::info('Task IDs: ' . json_encode($userTaskIds));
 
         // Fetch only tasks assigned to authenticated user
-        $tasks = Task::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
-        $webtasks = WebTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
-        $employeeTasks = EmployeeTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get();
+        $tasks = !empty($userTaskIds) 
+            ? Task::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+            : collect();
+            
+        $webtasks = !empty($userTaskIds)
+            ? WebTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+            : collect();
+            
+        $employeeTasks = !empty($userTaskIds)
+            ? EmployeeTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+            : collect();
+            
         $emptasks = $employeeTasks;
-
-        // Fallback if no employee tasks
-        if ($employeeTasks->isEmpty()) {
-            $employeeTasks = EmployeeTask::orderByDesc('_id')->limit(200)->get();
-        }
+        
+        // DEBUG: Log fetched tasks count
+        Log::info('Tasks fetched from Task model: ' . $tasks->count());
+        Log::info('Tasks fetched from WebTask model: ' . $webtasks->count());
+        Log::info('Tasks fetched from EmployeeTask model: ' . $employeeTasks->count());
+        Log::info('=== TASK FILTERING DEBUG END ===');
 
         // Collect unique project and ticket IDs
         $projectIds = $tasks->pluck('project_id')
@@ -469,3 +534,4 @@ class TaskController extends Controller
         ]);
     }
 }
+
