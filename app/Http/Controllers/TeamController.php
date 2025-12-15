@@ -392,23 +392,44 @@ class TeamController extends Controller
                 ->filter()
                 ->all();
 
-            // Developers as per-task map: [taskId => [developerName, ...]]
+            // Restructure task_developers: from [taskId => [developerName, ...]] to [userId => [developerName]]
             $devInput = (array) $request->input('task_developers', []);
-            $devMap = collect($devInput)->map(function ($vals) {
-                return collect((array) $vals)->map(function ($val) {
-                    $s = (string) $val;
-                    // If looks like ObjectId, try to resolve to name; else assume it's already a name
-                    if (preg_match('/^[a-f0-9]{24}$/i', $s)) {
-                        $u = null;
-                        try { $u = User::find($s); } catch (\Throwable $e) {}
-                        if (!$u) {
-                            try { $u = User::query()->where('id', $s)->first(); } catch (\Throwable $e) {}
-                        }
-                        return $u && $u->name ? $u->name : null;
+            $devMap = [];
+            
+            // Collect all unique developer names/IDs from all tasks
+            $allDevelopers = collect($devInput)->flatten()->unique()->filter()->values();
+            
+            // For each developer (could be name or ID), find the user and create the map
+            foreach ($allDevelopers as $developer) {
+                $developerStr = trim((string) $developer);
+                if (empty($developerStr)) continue;
+                
+                $user = null;
+                
+                // Check if it's an ObjectId (user ID)
+                if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
+                    try { 
+                        $user = User::find($developerStr); 
+                    } catch (\Throwable $e) {}
+                    
+                    if (!$user) {
+                        try { 
+                            $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); 
+                        } catch (\Throwable $e) {}
                     }
-                    return $s; // treat as name
-                })->filter()->unique()->values()->all();
-            })->filter()->all();
+                } else {
+                    // It's a name, look up by name
+                    try {
+                        $user = User::where('name', $developerStr)->first();
+                    } catch (\Throwable $e) {}
+                }
+                
+                if ($user && $user->name) {
+                    $userIdString = (string) ($user->_id ?? $user->id);
+                    // Store as {user_id: [developer_name]}
+                    $devMap[$userIdString] = [$user->name];
+                }
+            }
 
             $team = Team::create([
                 'title' => $validated['title'] ?? null,
@@ -523,22 +544,44 @@ class TeamController extends Controller
                 ->filter()
                 ->all();
 
-            // Developers per-task map (names only)
+            // Restructure task_developers: from [taskId => [developerName, ...]] to [userId => [developerName]]
             $devInput = (array) $request->input('task_developers', []);
-            $devMap = collect($devInput)->map(function ($vals) {
-                return collect((array) $vals)->map(function ($val) {
-                    $s = (string) $val;
-                    if (preg_match('/^[a-f0-9]{24}$/i', $s)) {
-                        $u = null;
-                        try { $u = User::find($s); } catch (\Throwable $e) {}
-                        if (!$u) {
-                            try { $u = User::query()->where('id', $s)->first(); } catch (\Throwable $e) {}
-                        }
-                        return $u && $u->name ? $u->name : null;
+            $devMap = [];
+            
+            // Collect all unique developer names/IDs from all tasks
+            $allDevelopers = collect($devInput)->flatten()->unique()->filter()->values();
+            
+            // For each developer (could be name or ID), find the user and create the map
+            foreach ($allDevelopers as $developer) {
+                $developerStr = trim((string) $developer);
+                if (empty($developerStr)) continue;
+                
+                $user = null;
+                
+                // Check if it's an ObjectId (user ID)
+                if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
+                    try { 
+                        $user = User::find($developerStr); 
+                    } catch (\Throwable $e) {}
+                    
+                    if (!$user) {
+                        try { 
+                            $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); 
+                        } catch (\Throwable $e) {}
                     }
-                    return $s;
-                })->filter()->unique()->values()->all();
-            })->filter()->all();
+                } else {
+                    // It's a name, look up by name
+                    try {
+                        $user = User::where('name', $developerStr)->first();
+                    } catch (\Throwable $e) {}
+                }
+                
+                if ($user && $user->name) {
+                    $userIdString = (string) ($user->_id ?? $user->id);
+                    // Store as {user_id: [developer_name]}
+                    $devMap[$userIdString] = [$user->name];
+                }
+            }
 
             // Update scalar fields
             $team->title = $validated['title'] ?? $team->title;
