@@ -6,18 +6,18 @@
   14 => 'view',
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'Logicon',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost',
+    'url' => 'http://127.0.0.1:8000/public/"',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Berlin',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:uDstW0NgzgsV81jL35WVNIE6IVkjNag1Y704EgX/Opk=',
+    'key' => 'base64:wP/mFX5dwgZ8zPiFvZBzsnpdIy4vPwcpBWcmgAGQuEU=',
     'previous_keys' => 
     array (
     ),
@@ -52,6 +52,7 @@
       21 => 'Illuminate\\Validation\\ValidationServiceProvider',
       22 => 'Illuminate\\View\\ViewServiceProvider',
       23 => 'App\\Providers\\AppServiceProvider',
+      24 => 'App\\Providers\\ViewServiceProvider',
     ),
     'aliases' => 
     array (
@@ -207,7 +208,7 @@
         'driver' => 'octane',
       ),
     ),
-    'prefix' => '',
+    'prefix' => 'logicon_cache_',
   ),
   'database' => 
   array (
@@ -218,7 +219,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'chatsystem_online',
+        'database' => 'E:\\Ai-chatsystem\\database\\database.sqlite',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -228,8 +229,8 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'chatsystem_online',
-        'username' => 'root',
+        'database' => 'forge',
+        'username' => 'forge',
         'password' => '',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
@@ -248,7 +249,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'chatsystem_online',
+        'database' => 'laravel',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -267,9 +268,9 @@
         'driver' => 'pgsql',
         'url' => NULL,
         'host' => '127.0.0.1',
-        'port' => '3306',
-        'database' => 'chatsystem_online',
-        'username' => 'root',
+        'port' => '5432',
+        'database' => 'forge',
+        'username' => 'forge',
         'password' => '',
         'charset' => 'utf8',
         'prefix' => '',
@@ -281,10 +282,10 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
-        'port' => '3306',
-        'database' => 'chatsystem_online',
-        'username' => 'root',
+        'host' => 'localhost',
+        'port' => '1433',
+        'database' => 'forge',
+        'username' => 'forge',
         'password' => '',
         'charset' => 'utf8',
         'prefix' => '',
@@ -296,8 +297,8 @@
         'host' => '127.0.0.1',
         'port' => 27017,
         'database' => 'chatsystem_online',
-        'username' => NULL,
-        'password' => NULL,
+        'username' => '',
+        'password' => '',
         'options' => 
         array (
           'database' => 'chatsystem_online',
@@ -311,7 +312,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'laravel_database_',
+        'prefix' => 'logicon_database_',
       ),
       'default' => 
       array (
@@ -346,7 +347,7 @@
       array (
         'driver' => 'local',
         'root' => 'E:\\Ai-chatsystem\\storage\\app/public',
-        'url' => 'http://localhost/storage',
+        'url' => 'http://127.0.0.1:8000/public/"/storage',
         'visibility' => 'public',
         'throw' => false,
       ),
@@ -468,7 +469,7 @@
   ),
   'mail' => 
   array (
-    'default' => 'log',
+    'default' => 'smtp',
     'mailers' => 
     array (
       'smtp' => 
@@ -478,10 +479,10 @@
         'host' => 'smtp.gmail.com',
         'port' => '587',
         'encryption' => 'tls',
-        'username' => 'asimsahirgithub68@gmail.com',
-        'password' => 'hubjxwzxnvtbahwf',
+        'username' => 'frobsterhan@gmail.com',
+        'password' => 'fupk iqnz fbsk chot',
         'timeout' => NULL,
-        'local_domain' => NULL,
+        'local_domain' => 'it-supportline.de',
       ),
       'ses' => 
       array (
@@ -530,8 +531,8 @@
     ),
     'from' => 
     array (
-      'address' => 'asimsahirgithub68@gmail.com',
-      'name' => 'Laravel',
+      'address' => 'frobsterhan@gmail.com',
+      'name' => 'Logicon',
     ),
     'markdown' => 
     array (
@@ -544,7 +545,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'database',
+    'default' => 'redis',
     'connections' => 
     array (
       'sync' => 
@@ -592,13 +593,13 @@
     ),
     'batching' => 
     array (
-      'database' => 'mongodb',
+      'database' => 'sqlite',
       'table' => 'job_batches',
     ),
     'failed' => 
     array (
       'driver' => 'database-uuids',
-      'database' => 'mongodb',
+      'database' => 'sqlite',
       'table' => 'failed_jobs',
     ),
   ),
@@ -642,7 +643,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'logicon_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -652,7 +653,7 @@
   ),
   'broadcasting' => 
   array (
-    'default' => 'log',
+    'default' => 'null',
     'connections' => 
     array (
       'reverb' => 
@@ -743,7 +744,7 @@
     'driver' => 'bcrypt',
     'bcrypt' => 
     array (
-      'rounds' => '12',
+      'rounds' => 12,
       'verify' => true,
     ),
     'argon' => 
@@ -772,7 +773,7 @@
       2 => '127.0.0.1',
       3 => '127.0.0.1:8000',
       4 => '::1',
-      5 => 'localhost',
+      5 => '127.0.0.1:8000',
     ),
     'guard' => 
     array (

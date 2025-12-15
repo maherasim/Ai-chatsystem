@@ -79,6 +79,7 @@
 
     .task-icon-link:hover:not(.active) .icon-white {
         opacity: 1;
+        display:block;
     }
 
     /* Active state (white icon always shown) */

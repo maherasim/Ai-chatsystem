@@ -9,7 +9,13 @@ body, html {
     margin: 0;
     font-family: 'Genos', sans-serif;
 }
-
+hr{
+border-color: #c0c0c0;
+  margin: 10px;
+}
+.modal-header{
+    padding-bottom:0px !important;
+}
 .login-container {
     display: flex;
     height: 100vh;
@@ -224,10 +230,11 @@ body, html {
             <!-- Header -->
             <div class="modal-header border-0">
                 <h5 class="modal-title fw-bold" >Hello & Welcome<br>
-                    Admin or Developer name
+                    <span id="dev_name"></span>
                 </h5>
                 
             </div>
+            <hr />
          
             <!-- Sub-header -->
 
@@ -275,7 +282,7 @@ body, html {
 
         <div id="profile_div" style="display:none;">
             <div class="px-4">
-                <h6 class="fw-semibold mb-3">Update Your Profile</h6>
+                <h6 class="fw-semibold ">Update Your Profile</h6>
             </div>
             <div class="row">
                 <div class="col-md-9">
@@ -505,8 +512,8 @@ body, html {
 
             <div class="mt-3" style="background-color: #f9f9fb; border-radius: 12px; padding: 16px; margin-bottom: 16px">
                 <!-- Title -->
-                <div style="font-weight: 600; font-size: 15px; color: #2a2b4c;">User E-Mail</div>
-                <div style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Type the User Mail here</div>
+                <div style="font-weight: 600; font-size: 15px; color: #2a2b4c;">Password</div>
+                <div style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Set a New Password</div>
 
                 <!-- Input Row -->
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -514,17 +521,17 @@ body, html {
                     <!-- Email Input -->
                     <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
                         <span style="color: #9ca3af; margin-right: 8px;">
-                            <img src="http://127.0.0.1:8000/build/img/Letter.svg" alt="" style="width: 20px;">
+                            <img src="http://127.0.0.1:8000/build/img/password.svg" alt="" style="width: 20px;">
                         </span>
-                        <input name="email" required="required" type="email" placeholder="Type mail here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input name="password" id="password" required="required" type="password" placeholder="Type your password here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                     </div>
 
                     <!-- Confirm Email Input -->
                     <div style="flex: 1; display: flex; align-items: center; background-color: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px;">
                         <span style="color: #9ca3af; margin-right: 8px;">
-                            <img src="http://127.0.0.1:8000/build/img/calling.svg" alt="" style="width: 20px;">
+                            <img src="https://admin.onlinesystems.info/build/img/password.svg" alt="" style="width: 20px;">
                         </span>
-                        <input type="text" name="phone" required="required" placeholder="Type Mobile here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
+                        <input type="password" id="repassword" name="password_confirmation" required="required" placeholder="Re enter password here" style="border: none; outline: none; font-size: 13px; color: #333; flex: 1; background: transparent;">
                     </div>
 
                 </div>
@@ -632,7 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-     
+     /*
         if (!emailInput.value.trim()) {
             alert("Please enter your email.");
             emailInput.focus();
@@ -645,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mobileInput.focus();
             return;
         }
-
+*/
         
         if (!countrySel.value) {
             alert("Please select a country.");
@@ -659,12 +666,24 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-     
         if (cardImgInput && !cardImgInput.files.length) {
             alert("Please upload your card image.");
             return;
         }
 
+        const password = document.getElementById("password").value.trim();
+        const repassword = document.getElementById("repassword").value.trim();
+
+        if (!password || !repassword) {
+            alert("Please enter and confirm your password.");
+            return;
+        }
+
+        if (password !== repassword) {
+            alert("Passwords do not match. Please re-enter.");
+            document.getElementById("repassword").focus();
+            return;
+        }
         // Submit via normal POST (full page reload)
         profileForm.submit();
     });
@@ -694,6 +713,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Show policy & extra info modal
                 var myModal = new bootstrap.Modal(document.getElementById('policyModal'));
                 myModal.show();
+                
+                let username = data.user.name;
+                document.getElementById("dev_name").innerText = username;
+
+
             } else {
                 alert(data.message || "Login failed");
             }
@@ -779,6 +803,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector('.footer-menu .agreement').addEventListener('click', function () {
         showDiv('agreement_div');
     });
+    //new changes
 
     document.querySelector('.footer-menu .profile').addEventListener('click', function () {
         showDiv('profile_div');

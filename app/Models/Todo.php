@@ -21,13 +21,27 @@ class Todo extends Model
         'is_schduled',
         'start_date',
         'start_time',
+        'end_date',
         'end_time',
         'is_private',
         'project',        
         'priority',
         'reminder',
         'completed',
-        'members'
+        'members',
+        'is_removed',
+        'reason',
+        'total_time',
+        'ratings',
+        'reliability',
+        'punctuality',
+        'accuracy',
+        'quality',
+        'work_Independently',
+        'all_tasks_done',
+        'all_tasks_check',
+        'files_upload',
+        'sentmail'
     ];
 
     public function user()
@@ -38,6 +52,10 @@ class Todo extends Model
     public function assignedUsers()
     {
         return $this->belongsToMany(User::class, null, 'todo_ids', 'user_ids');
+    }
+    public function attachments()
+    {
+        return $this->hasMany(TodoAttachment::class, 'todo_id');
     }
     
 }

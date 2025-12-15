@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +19,6 @@ class UsersController extends Controller
   public function index()
     {
      $users = User::where('email', '!=', 'admin@gmail.com')->get();
-
 
         $totalUsers = User::where('is_admin', '!=', true)
             ->where(function ($q) {
@@ -56,8 +53,6 @@ class UsersController extends Controller
 
   public function store(Request $request)
 {
-    //
-    // 
     //  Step 1: Validation
     $validated = $request->validate([
         'name' => 'required|string|max:255',
@@ -85,10 +80,8 @@ class UsersController extends Controller
         if (!file_exists($fullPath)) {
             $file->move($destinationPath, $fileName);
         }
-
         $imagePath = 'upload/users/' . $fileName;
     }
-
     // Step 3: Extract Permissions
     $permissions = $request->input('permissions', []); // default is empty array if nothing checked
     // It will look like: ['clients' => ['read' => 'on', 'write' => 'on'], 'projects' => ['read' => 'on'], ...]
@@ -98,8 +91,7 @@ class UsersController extends Controller
         foreach ($actions as $action => $value) {
             $actions[$action] = true;
         }
-    }
-       
+    }  
     // Step 4: Store in database
     $user=User::create([
         'name' => $validated['name'],
@@ -118,7 +110,6 @@ class UsersController extends Controller
     else{
         return redirect()->back()->with('error', 'User registered failed!!'); 
     }
-
 }
 public function destroy($id){
      $user=User::find($id);

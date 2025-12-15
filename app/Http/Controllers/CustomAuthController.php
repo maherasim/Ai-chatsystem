@@ -21,13 +21,13 @@ public function customLogin(Request $request)
    // $credentials = $request->only( 'email', 'password');
 
     if (!Auth::attempt($credentials)) {
-        return response()->json(['success' => false, 'message' => 'Invalid credentials2']);
+        return response()->json(['success' => false, 'message' => 'Invalid credentials']);
     }
 
     $user = Auth::user();
 
     //Check if user already completed profile & accepted policy
-    if ($user->policy_accepted && $user->phone && $user->image && $user->card_image) {
+    if ($user->policy_accepted  && $user->profile_image && $user->card_image) {
         return response()->json(['success' => true, 'redirect' => route('home')]);
     }
 
@@ -43,7 +43,7 @@ public function completeprofile(Request $request)
     $user = Auth::user();
 
     $request->validate([
-        'phone' => 'required',
+        'password' => 'required|min:6|confirmed',
         'image' => 'required|image',
         'cardImgInput' => 'required|image',
     ]);
@@ -56,11 +56,12 @@ public function completeprofile(Request $request)
         $user->card_image = $request->file('cardImgInput')->store('cards', 'public');
     }
 
-    $user->phone = $request->phone;
+   // $user->phone = $request->phone;
     $user->name = $request->name;
-    $user->email = $request->email;
+   // $user->email = $request->email;
     $user->country = $request->country;
     $user->policy_accepted = true;
+    $user->password = Hash::make($request->password);
     $user->agreement_accepted = true;
     $user->save();
 

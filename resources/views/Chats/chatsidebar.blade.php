@@ -1,79 +1,123 @@
 <style>
     .dark-icon {
-  content: url('/build/img/Moon-Balck.svg');
-  transition: 0.3s ease;
-}
+      content: url('/build/img/Moon-Balck.svg');
+      transition: 0.3s ease;
+    }
 
-.dark-mode-toggle:hover .dark-icon {
-  content: url('/build/img/Moon-White.svg');
-}
+    .dark-mode-toggle:hover .dark-icon {
+      content: url('/build/img/Moon-White.svg');
+    }
 
+    /* Sidebar Icon Fixes */
+    .task-icon-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .task-icon-link img {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+        position: absolute;
+    }
+    
+    /* Active State: White Icon Only */
+    .nav-link.active .icon-white {
+        display: block !important;
+    }
+    .nav-link.active .icon-black {
+        display: none !important;
+    }
+
+    /* Inactive State: Black Icon Only */
+    .nav-link:not(.active) .icon-white {
+        display: none !important;
+    }
+    .nav-link:not(.active) .icon-black {
+        display: block !important;
+    }
+    
+    /* Hover State: Show White, Hide Black (Like Active) */
+    .task-icon-link:hover:not(.active) .icon-white {
+        opacity: 1;
+        display: block !important;
+    }
+    .task-icon-link:hover:not(.active) .icon-black {
+        display: none !important;
+    }
 </style>
 <div class="sidebar-menu">
        <div class="logo">
            <a href="{{ url('/home') }}" class="logo-normal">
-               <img src="{{ $setting && $setting->app_logo 
-                ? asset($setting->app_logo) 
-                : asset('build/img/AI-Logo.svg') }}" alt="Logo" style="max-width: 70% !important;">
+               <img src="https://admin.onlinesystems.info/storage/uploads/settings/app_logo_1758731350.png" alt="Logo" width="50" height="auto" style="object-fit: contain; width: 50px; height: auto;">
            </a>
        </div>
        <div class="menu-wrap">
            <div class="main-menu">
                <ul class="nav">
-
-               <!--
+   
+                  <!--
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="AI" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-ai') }}" class="nav-link task-icon-link {{ request()->is('Ai') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/AI-White.svg') }}" alt="AI Icon" class="icon-white">
                            <img src="{{ asset('/build/img/AI-Black.svg') }}" alt="AI Icon" class="icon-black">
                        </a>
                    </li>
-
+  
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat.index') }}" class="nav-link task-icon-link {{ request()->is('chat') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white">
-                           <img src="{{ asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
+                           <img src="{{ asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white" style="width: 30px !important; height: 30px !important;">
+                           <img src="{{ asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black" style="display: none !important;">
                        </a>
                    </li>
 
                    <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Project" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-project') }}" class="nav-link task-icon-link {{ request()->is('project') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Project-White.svg') }}" alt="Project White" class="icon-white">
-                           <img src="{{ asset('/build/img/Project-Black.svg') }}" alt="Project Black" class="icon-black">
+                           <img src="{{ asset('/build/img/Project-White.svg') }}" alt="Project White" class="icon-white" style="width: 30px !important; height: 30px !important;">
+                           <img src="{{ asset('/build/img/Project-Black.svg') }}" alt="Project Black" class="icon-black" style="display: none !important;">
                        </a>
                    </li>
+
                    
-                   <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Ticket" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-ticket') }}" class="nav-link task-icon-link {{ request()->is('ticket') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/ticket_icon_white.svg') }}" alt="Task White" class="icon-white">
-                           <img src="{{ asset('/build/img/ticket_icon_black.svg') }}" alt="Task Black" class="icon-black">
-                       </a>
-                   </li>
-                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('chat-task') }}" class="nav-link task-icon-link {{ request()->is('tasks') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Tasks_icon_white.svg') }}" alt="Task White" class="icon-white">
-                           <img src="{{ asset('/build/img/Tasks_icon_Balck.svg') }}" alt="Task Black" class="icon-black">
-                       </a>
-                   </li>
+                   
+                 
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Teams" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-team') }}" class="nav-link task-icon-link {{ request()->is('teams') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/Teams_Icon_White.svg') }}" alt="User White" class="icon-white">
                            <img src="{{ asset('/build/img/Teams_Icon_Black.svg') }}" alt="User Black" class="icon-black">
                        </a>
                    </li>
+                   -->
+
+
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="meeting" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-meetings') }}" class="nav-link task-icon-link {{ request()->is('meetings') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white">
+                           <img src="{{ asset('/build/img/Meeting - White.svg') }}" alt="White Icon" class="icon-white" style="width: 30px !important; height: 30px !important;">
                            <img src="{{ asset('/build/img/Meeting - Black.svg') }}" alt="Black Icon" class="icon-black">
                        </a>
                    </li>
--->
+
                      <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Todo" data-bs-custom-class="tooltip-primary">
-                       <a href="{{ route('todos.index') }}" class="nav-link task-icon-link {{ request()->is('todo') ? 'active' : '' }}">
-                           <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white">
+                       <a href="{{ route('todos.index') }}" class="nav-link task-icon-link {{ request()->is('todos') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/ToDo - White.svg') }}" alt="todo White" class="icon-white" style="width: 30px !important; height: 30px !important;">
                            <img src="{{ asset('/build/img/ToDo - Black.svg') }}" alt="todo Black" class="icon-black">
                        </a>
                    </li>
+
+                         <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Ticket" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-ticket') }}" class="nav-link task-icon-link {{ request()->is('ticket') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/ticket_icon_white.svg') }}" alt="Task White" class="icon-white" style="width: 30px !important; height: 30px !important;">
+                           <img src="{{ asset('/build/img/ticket_icon_black.svg') }}" alt="Task Black" class="icon-black">
+                       </a>
+                   </li>
+                   
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat-task') }}" class="nav-link task-icon-link {{ request()->is('tasks') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Tasks_icon_white.svg') }}" alt="Task White" class="icon-white">
+                           <img src="{{ asset('/build/img/Tasks_icon_Balck.svg') }}" alt="Task Black" class="icon-black">
+                       </a>
+                   </li>
+                   
                    <!--
                       <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-users') }}" class="nav-link task-icon-link {{ request()->is('users') ? 'active' : '' }}">

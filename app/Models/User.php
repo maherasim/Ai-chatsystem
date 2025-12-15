@@ -46,7 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'policy_accepted',
         'agreement_accepted',
         'country',
-        'card_image'
+        'card_image',
+        'description'
     ];
 
  

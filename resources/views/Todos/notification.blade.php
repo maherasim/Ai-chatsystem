@@ -378,7 +378,7 @@
                                 <img src="{{ asset('storage/' . $todo->user->profile_image) }}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
                                 <div>
                                     <div style="font-weight: bold;">{{$todo->user->name}}</div>
-                                    <small style="color: gray;">{{$todo->created_at}}</small>
+                                    <small style="color: gray;">{{ $todo->created_at->format('d:m:y - H:i') }}</small>
                                 </div>
                             </div>
                             <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
@@ -389,7 +389,6 @@
                             <!-- Title & Avatars -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
                                     <div>
                                         <h6 class="mb-0 fw-bold" style="font-size: 14px;">{{$todo->title}}</h6>
                                         @if($todo->is_private == 0)
@@ -414,7 +413,7 @@
 
                             <!-- Description -->
                             <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                {{$todo->description}}
+                                
                             </p>
 
                             <!-- Date & Priority Row -->
