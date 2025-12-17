@@ -9166,6 +9166,10 @@
                     const taskType = this.getAttribute('data-task-type') || 'task';
                     document.getElementById('rejectTaskId').value = taskId;
                     document.getElementById('rejectTaskType').value = taskType;
+                    
+                    // Also store task ID and type for move to done functionality
+                    document.getElementById('doneTaskId').value = taskId;
+                    document.getElementById('doneTaskType').value = taskType;
                 });
             });
             
@@ -9187,19 +9191,107 @@
             }
         });
         
-        // Function to convert numeric rating (0-5) to star display
-        function getStarRating(rating) {
+        // Function to update rating display with clickable stars
+        function updateRatingDisplay(ratingId, rating) {
             const numRating = parseInt(rating) || 0;
-            const filledStars = Math.min(Math.max(numRating, 0), 5);
-            const emptyStars = 5 - filledStars;
-            return '⭐'.repeat(filledStars) + '☆'.repeat(emptyStars);
+            const ratingContainer = document.getElementById(ratingId);
+            if (!ratingContainer) return;
+            
+            const stars = ratingContainer.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < numRating) {
+                    star.textContent = '⭐';
+                    star.classList.add('active');
+                } else {
+                    star.textContent = '☆';
+                    star.classList.remove('active');
+                }
+            });
         }
+        
+        // Initialize clickable rating stars
+        function initializeRatingStars() {
+            const ratingGroups = document.querySelectorAll('.rating-group-done');
+            ratingGroups.forEach(group => {
+                const stars = group.querySelectorAll('.star');
+                
+                stars.forEach((star, index) => {
+                    // Set styles
+                    star.style.cursor = 'pointer';
+                    star.style.userSelect = 'none';
+                    
+                    // Check if already initialized
+                    if (star.hasAttribute('data-initialized')) {
+                        return;
+                    }
+                    star.setAttribute('data-initialized', 'true');
+                    
+                    // Add hover effect
+                    star.addEventListener('mouseenter', () => {
+                        const allStars = group.querySelectorAll('.star');
+                        allStars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.style.opacity = '1';
+                            } else {
+                                s.style.opacity = '0.3';
+                            }
+                        });
+                    });
+                    
+                    // Click to set rating
+                    star.addEventListener('click', () => {
+                        const rating = index + 1;
+                        group.setAttribute('data-current-rating', rating);
+                        
+                        // Update all stars in this group
+                        const allStars = group.querySelectorAll('.star');
+                        allStars.forEach((s, i) => {
+                            if (i < rating) {
+                                s.textContent = '⭐';
+                                s.classList.add('active');
+                            } else {
+                                s.textContent = '☆';
+                                s.classList.remove('active');
+                            }
+                            s.style.opacity = '1';
+                        });
+                    });
+                });
+                
+                // Remove hover when mouse leaves the group (only add once)
+                if (!group.hasAttribute('data-leave-listener')) {
+                    group.setAttribute('data-leave-listener', 'true');
+                    group.addEventListener('mouseleave', () => {
+                        const allStars = group.querySelectorAll('.star');
+                        allStars.forEach(s => {
+                            s.style.opacity = '1';
+                        });
+                    });
+                }
+            });
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRatingStars();
+        });
         
         // Handle moveToDoneModal population when "Mark as Done" button is clicked
         document.addEventListener('DOMContentLoaded', function() {
             const moveToDoneModal = document.getElementById('moveToDoneModal');
             if (moveToDoneModal) {
                 moveToDoneModal.addEventListener('show.bs.modal', function() {
+                    // Task ID should already be set when task item was clicked, but verify
+                    const taskId = document.getElementById('doneTaskId').value;
+                    if (!taskId) {
+                        // Fallback: try to get from active task item
+                        const activeTaskItem = document.querySelector('.task-checked-item.active');
+                        if (activeTaskItem) {
+                            document.getElementById('doneTaskId').value = activeTaskItem.getAttribute('data-task-id') || '';
+                            document.getElementById('doneTaskType').value = activeTaskItem.getAttribute('data-task-type') || 'task';
+                        }
+                    }
+                    
                     // Get ratings from stored data or from active task item
                     let ratings = window.currentTaskRatings;
                     
@@ -9229,14 +9321,119 @@
                     }
                     
                     // Update rating displays
-                    document.getElementById('rating-reliability').textContent = getStarRating(ratings.reliability);
-                    document.getElementById('rating-punctuality').textContent = getStarRating(ratings.punctuality);
-                    document.getElementById('rating-accuracy').textContent = getStarRating(ratings.accuracy);
-                    document.getElementById('rating-quality').textContent = getStarRating(ratings.quality);
-                    document.getElementById('rating-work-independently').textContent = getStarRating(ratings.workIndependently);
+                    updateRatingDisplay('rating-reliability', ratings.reliability);
+                    updateRatingDisplay('rating-punctuality', ratings.punctuality);
+                    updateRatingDisplay('rating-accuracy', ratings.accuracy);
+                    updateRatingDisplay('rating-quality', ratings.quality);
+                    updateRatingDisplay('rating-work-independently', ratings.workIndependently);
+                    
+                    // Set current rating attributes for retrieval
+                    const reliabilityGroup = document.querySelector('[data-rating-type="reliability"]');
+                    const punctualityGroup = document.querySelector('[data-rating-type="punctuality"]');
+                    const accuracyGroup = document.querySelector('[data-rating-type="accuracy"]');
+                    const qualityGroup = document.querySelector('[data-rating-type="quality"]');
+                    const workIndependentlyGroup = document.querySelector('[data-rating-type="workIndependently"]');
+                    
+                    if (reliabilityGroup) reliabilityGroup.setAttribute('data-current-rating', ratings.reliability);
+                    if (punctualityGroup) punctualityGroup.setAttribute('data-current-rating', ratings.punctuality);
+                    if (accuracyGroup) accuracyGroup.setAttribute('data-current-rating', ratings.accuracy);
+                    if (qualityGroup) qualityGroup.setAttribute('data-current-rating', ratings.quality);
+                    if (workIndependentlyGroup) workIndependentlyGroup.setAttribute('data-current-rating', ratings.workIndependently);
+                });
+            }
+            
+            // Also handle "Mark as Done" button click to ensure task ID is set
+            const markAsDoneBtn = document.querySelector('[data-bs-target="#moveToDoneModal"]');
+            if (markAsDoneBtn) {
+                markAsDoneBtn.addEventListener('click', function(e) {
+                    // Task ID should already be set from task item click, but double-check
+                    const taskId = document.getElementById('doneTaskId').value;
+                    if (!taskId) {
+                        // Try to get from the last clicked task item
+                        const lastClicked = document.querySelector('.task-checked-item.active');
+                        if (lastClicked) {
+                            document.getElementById('doneTaskId').value = lastClicked.getAttribute('data-task-id') || '';
+                            document.getElementById('doneTaskType').value = lastClicked.getAttribute('data-task-type') || 'task';
+                        }
+                    }
                 });
             }
         });
+        
+        // Submit move to done
+        function submitMoveToDone() {
+            const taskId = document.getElementById('doneTaskId').value;
+            const taskType = document.getElementById('doneTaskType').value;
+            
+            if (!taskId) {
+                alert('Task ID is missing. Please close and reopen the modal.');
+                return;
+            }
+            
+            // Disable button during submission
+            const saveBtn = document.getElementById('saveDoneBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
+            // Determine the route based on task type
+            let route = '/tasks/' + taskId;
+            if (taskType === 'webtask') {
+                route = '/webtasks/' + taskId;
+            } else if (taskType === 'employeetask') {
+                route = '/emptasks/' + taskId;
+            }
+            
+            // Get ratings from the display
+            const ratings = {
+                reliability: parseInt(document.querySelector('[data-rating-type="reliability"]').getAttribute('data-current-rating')) || 0,
+                punctuality: parseInt(document.querySelector('[data-rating-type="punctuality"]').getAttribute('data-current-rating')) || 0,
+                accuracy: parseInt(document.querySelector('[data-rating-type="accuracy"]').getAttribute('data-current-rating')) || 0,
+                quality: parseInt(document.querySelector('[data-rating-type="quality"]').getAttribute('data-current-rating')) || 0,
+                workIndependently: parseInt(document.querySelector('[data-rating-type="workIndependently"]').getAttribute('data-current-rating')) || 0
+            };
+            
+            // Update task status to done
+            fetch(route, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    status: 'done',
+                    ratings: ratings
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close both modals
+                    const moveToDoneModal = bootstrap.Modal.getInstance(document.getElementById('moveToDoneModal'));
+                    if (moveToDoneModal) moveToDoneModal.hide();
+                    const incheckModal = bootstrap.Modal.getInstance(document.getElementById('incheck'));
+                    if (incheckModal) incheckModal.hide();
+                    
+                    // Reset form
+                    document.getElementById('moveToDoneForm').reset();
+                    document.getElementById('doneTaskId').value = '';
+                    document.getElementById('doneTaskType').value = '';
+                    
+                    // Reload page to reflect changes
+                    location.reload();
+                } else {
+                    alert(data.message || 'Error marking task as done. Please try again.');
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save & Close';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save & Close';
+            });
+        }
+        
         
         // Handle inhold modal population when hold task is clicked
         document.addEventListener('DOMContentLoaded', function() {
@@ -9757,38 +9954,74 @@
 
                     <!-- Rating Rows (Dynamic) -->
                     <div class="mt-2" style="font-size: 13px;">
-                        <div class="d-flex align-items-center justify-content-between mb-2"
-                            style="background: #fff; padding: 9px;border-radius:10px;">
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group-done"
+                            style="background: #fff; padding: 9px;border-radius:10px;" data-rating-type="reliability">
                             <span>Reliability</span>
-                            <span id="rating-reliability">⭐⭐⭐☆☆</span>
+                            <span class="rating-stars" id="rating-reliability">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </span>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mb-2"
-                            style="background: #fff; padding: 9px;border-radius:10px;">
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group-done"
+                            style="background: #fff; padding: 9px;border-radius:10px;" data-rating-type="punctuality">
                             <span>Punctuality</span>
-                            <span id="rating-punctuality">⭐⭐⭐☆☆</span>
+                            <span class="rating-stars" id="rating-punctuality">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </span>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mb-2"
-                            style="background: #fff; padding: 9px;border-radius:10px;">
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group-done"
+                            style="background: #fff; padding: 9px;border-radius:10px;" data-rating-type="accuracy">
                             <span>Accuracy</span>
-                            <span id="rating-accuracy">⭐⭐⭐☆☆</span>
+                            <span class="rating-stars" id="rating-accuracy">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </span>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mb-2"
-                            style="background: #fff; padding: 9px;border-radius:10px;">
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group-done"
+                            style="background: #fff; padding: 9px;border-radius:10px;" data-rating-type="quality">
                             <span>Quality</span>
-                            <span id="rating-quality">⭐⭐⭐☆☆</span>
+                            <span class="rating-stars" id="rating-quality">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </span>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mb-2"
-                            style="background: #fff; padding: 9px;border-radius:10px;">
+                        <div class="d-flex align-items-center justify-content-between mb-2 rating-group-done"
+                            style="background: #fff; padding: 9px;border-radius:10px;" data-rating-type="workIndependently">
                             <span>Work Independently</span>
-                            <span id="rating-work-independently">⭐⭐⭐☆☆</span>
+                            <span class="rating-stars" id="rating-work-independently">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Form for marking as done -->
+                <form id="moveToDoneForm">
+                    <input type="hidden" id="doneTaskId" name="task_id" value="">
+                    <input type="hidden" id="doneTaskType" name="task_type" value=""> <!-- task, webtask, or employeetask -->
+                </form>
+
                 <!-- Modal Buttons -->
                 <div class="d-flex justify-content-between mt-3">
                     <button class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 8px;">Close</button>
-                    <button class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 8px;">Save &
+                    <button class="btn btn-success" id="saveDoneBtn" onclick="submitMoveToDone()" style="border-radius: 8px;">Save &
                         Close</button>
                 </div>
 

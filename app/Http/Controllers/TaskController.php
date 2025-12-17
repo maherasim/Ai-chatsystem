@@ -233,12 +233,14 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title'        => 'sometimes|required|string|max:255',
             'description'  => 'nullable|string',
+            'status'       => 'nullable|string',
             'start_date'   => 'nullable|date',
             'end_date'     => 'nullable|date|after_or_equal:start_date',
             'checkpoints'  => 'nullable|array',
             'checkpoints.*'=> 'nullable|string',
             'mark_image'   => 'nullable|string',
             'issues'       => 'nullable|array',
+            'ratings'      => 'nullable|array',
         ]);
 
         $task = Task::findOrFail($id);

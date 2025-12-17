@@ -124,6 +124,23 @@ class EmployeeTaskController extends Controller
 
     }
 
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title'        => 'sometimes|required|string|max:255',
+            'description'  => 'nullable|string',
+            'status'       => 'nullable|string',
+            'start_date'   => 'nullable|date',
+            'end_date'     => 'nullable|date|after_or_equal:start_date',
+            'ratings'      => 'nullable|array',
+        ]);
+
+        $task = EmployeeTask::findOrFail($id);
+        $task->update($validated);
+
+        return response()->json(['success' => true]);
+    }
+
     public function destroy($id)
     {
         $task = EmployeeTask::findOrFail($id);

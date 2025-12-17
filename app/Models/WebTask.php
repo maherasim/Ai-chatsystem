@@ -28,6 +28,7 @@ class WebTask extends Model
         'video_link', // video link for checking tasks
         'attachments', // file attachments array
         'rejections', // array of rejection history
+        'ratings', // array of ratings (reliability, punctuality, accuracy, quality, workIndependently)
         'created_by',
     ];
 
@@ -39,6 +40,7 @@ class WebTask extends Model
         'issues'      => 'array',
         'attachments' => 'array',
         'rejections'  => 'array',
+        'ratings'     => 'array',
     ];
 }
 

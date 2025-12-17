@@ -114,6 +114,7 @@ Route::middleware('auth')->group(function () {
     // EmployeeTasks APIs (separate collection)
     Route::get('/emptasks/tickets', [\App\Http\Controllers\EmployeeTaskController::class, 'tickets'])->name('emptasks.tickets');
     Route::post('/emptasks/store', [\App\Http\Controllers\EmployeeTaskController::class, 'store'])->name('emptasks.store');
+    Route::put('/emptasks/{id}', [\App\Http\Controllers\EmployeeTaskController::class, 'update'])->name('emptasks.update');
     Route::delete('/emptasks/{id}', [\App\Http\Controllers\EmployeeTaskController::class, 'destroy'])->name('emptasks.destroy');
     Route::post('/emptasks/reject', [\App\Http\Controllers\EmployeeTaskController::class, 'reject'])->name('emptasks.reject');
 
