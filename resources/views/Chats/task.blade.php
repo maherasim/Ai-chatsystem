@@ -2,6 +2,10 @@
 @extends('layout.mainlayout')
 @section('content')
 
+@php
+    $staticBaseUrl = 'https://logiadmin.it-supportline.de';
+@endphp
+
 <style>
     /* Global Overrides */
     body {
@@ -443,6 +447,7 @@
     .badge-new { background: #e0f2fe; color: #0ea5e9; }
     .badge-id { background: #fee2e2; color: #ef4444; }
     .badge-low { background: #dcfce7; color: #22c55e; } /* Assuming Low priority from screenshot */
+    .badge-checked { background: #f3e8ff; color: #a855f7; } /* Purple for checking status */
 
     .meta-row {
         background: #fff;
@@ -672,9 +677,31 @@
         color: #22c55e;
     }
     
+    /* Badge for Rejected */
+    .badge-rejected {
+        background: #fce7f3;
+        color: #ec4899;
+    }
+
+    /* Badge for Done */
+    .badge-done {
+        background: #dcfce7;
+        color: #22c55e;
+    }
+    
+    /* Done header styling */
+    .task-modal-header.done {
+        background: linear-gradient(180deg, #84cc16 0%, #22c55e 100%) !important;
+    }
+    
     /* In Progress header styling */
     .task-modal-header.in-progress {
         background: #22c55e;
+    }
+    
+    /* Rejected header styling */
+    .task-modal-header.rejected {
+        background: linear-gradient(180deg, #f472b6 0%, #ec4899 100%);
     }
 
     /* Hold Modal Styles */
@@ -753,6 +780,97 @@
         display: none; /* Hidden by default */
     }
 
+    .rejection-reason-box {
+        background: #fdf2f8; /* Light pink */
+        border: 1px solid #fbcfe8;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        margin-top: 20px;
+        color: #9f1239;
+        font-size: 13px;
+        font-weight: 600;
+        display: none; /* Hidden by default */
+    }
+
+    /* Sign In Popup Modal Styles */
+    .signin-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1060;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .signin-popup-modal {
+        background: #fff;
+        border-radius: 20px;
+        padding: 30px 25px;
+        max-width: 320px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        animation: fadeInScale 0.3s ease-out;
+    }
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    .signin-popup-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        position: relative;
+    }
+    .signin-popup-icon svg {
+        width: 100%;
+        height: 100%;
+    }
+    .signin-popup-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 10px;
+        font-family: 'Outfit', sans-serif;
+    }
+    .signin-popup-text {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 30px;
+        line-height: 1.5;
+        font-weight: 500;
+    }
+    .signin-popup-close-btn {
+        background: #22c55e;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 40px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+        transition: all 0.2s;
+        font-family: 'Outfit', sans-serif;
+    }
+    .signin-popup-close-btn:hover {
+        background: #16a34a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    }
+
 </style>
 
 <div class="content main_content">
@@ -800,7 +918,7 @@
                         <!-- New Task -->
                         <div class="stats-card stat-new">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/newtask.svg') }}" alt="New" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/newtask.svg" alt="New" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">New Task</div>
                             <div class="stats-count">{{ $stats['new'] ?? 0 }}</div>
@@ -809,7 +927,7 @@
                         <!-- In Progress -->
                         <div class="stats-card stat-progress">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/progress.svg') }}" alt="Progress" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/progress.svg" alt="Progress" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Progress</div>
                             <div class="stats-count">{{ $stats['in_progress'] ?? 0 }}</div>
@@ -818,7 +936,7 @@
                         <!-- In Hold -->
                         <div class="stats-card stat-hold">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/inhold.svg') }}" alt="Hold" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/inhold.svg" alt="Hold" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Hold</div>
                             <div class="stats-count">{{ $stats['on_hold'] ?? 0 }}</div>
@@ -827,7 +945,7 @@
                         <!-- In Checked -->
                         <div class="stats-card stat-checked">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/incheck.svg') }}" alt="Checked" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/incheck.svg" alt="Checked" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Checked</div>
                             <div class="stats-count">{{ $stats['checked'] ?? 0 }}</div>
@@ -836,7 +954,7 @@
                         <!-- In Delayed -->
                         <div class="stats-card stat-delayed">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/delayed.svg') }}" alt="Delayed" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/delayed.svg" alt="Delayed" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In delayed</div>
                             <div class="stats-count">{{ $stats['delayed'] ?? 0 }}</div>
@@ -845,7 +963,7 @@
                         <!-- In Rejected -->
                         <div class="stats-card stat-rejected">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/rejected.svg') }}" alt="Rejected" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/rejected.svg" alt="Rejected" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Rejected</div>
                             <div class="stats-count">{{ $stats['rejected'] ?? 0 }}</div>
@@ -854,7 +972,7 @@
                         <!-- In Done -->
                         <div class="stats-card stat-done">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/indone.svg') }}" alt="Done" style="width: 24px; height: 24px;">
+                                <img src="{{ $staticBaseUrl }}/build/img/indone.svg" alt="Done" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Done</div>
                             <div class="stats-count">{{ $stats['done'] ?? 0 }}</div>
@@ -919,7 +1037,22 @@
                                     $issueStartDate = isset($firstIssue['start_date']) ? \Carbon\Carbon::parse($firstIssue['start_date'])->format('d.m.Y') : (isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025');
                                     $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
                                     $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
-                                    $markImagePath = !empty($issueImagePath) ? asset('storage/' . $issueImagePath) : (!empty($task->mark_image_path) ? asset('storage/' . $task->mark_image_path) : '');
+                                    $markImagePath = !empty($issueImagePath) ? $staticBaseUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticBaseUrl . '/storage/' . $task->mark_image_path : '');
+                                    
+                                    // Extract rejection reason from rejections array
+                                    $rejectionReason = '';
+                                    $rejections = $task->rejections ?? [];
+                                    if (is_string($rejections)) {
+                                        $decodedRejections = json_decode($rejections, true);
+                                        $rejections = is_array($decodedRejections) ? $decodedRejections : [];
+                                    }
+                                    if (!empty($rejections) && is_array($rejections)) {
+                                        // Get the most recent rejection (last in array)
+                                        $latestRejection = end($rejections);
+                                        if (isset($latestRejection['reason'])) {
+                                            $rejectionReason = $latestRejection['reason'];
+                                        }
+                                    }
                                 @endphp
                                 <div class="new-task-card {{ $filterClass }}" 
                                      data-status="{{ $taskStatus }}" 
@@ -937,6 +1070,9 @@
                                      data-index="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}"
                                      data-project-name="{{ $task->project->title ?? 'Project Name' }}"
                                      data-hold-reason="{{ $task->hold_reason ?? '' }}"
+                                     data-rejection-reason="{{ $rejectionReason }}"
+                                     data-video-link="{{ $task->video_link ?? '' }}"
+                                     data-attachments="{{ json_encode($task->attachments ?? []) }}"
                                      style="cursor: pointer;"
                                      onclick="openTaskModal(this)">
                                      
@@ -944,8 +1080,8 @@
                                     <div class="task-image-col">
                                         <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                         @if(!empty($task->mark_image_path))
-                                            <img src="{{ asset('storage/' . $task->mark_image_path) }}" 
-                                                 alt="Task" 
+                                            <img src="{{ $staticBaseUrl }}/storage/{{ $task->mark_image_path }}"
+                                                 alt="Task"
                                                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
                                         @else
                                             <!-- Transparent/Placeholder controlled by CSS pattern -->
@@ -1022,7 +1158,7 @@
                 <!-- Logo Circle -->
                 <div class="logo-circle">
                     <!-- Standard Logo or B icon -->
-                    <img src="{{ URL::asset('/build/img/AI-Logo.svg') }}" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
+                    <img src="{{ $staticBaseUrl }}/build/img/AI-Logo.svg" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
                 </div>
             </div>
 
@@ -1072,8 +1208,8 @@
                     </div>
                 </div>
 
-                <!-- Notes / Toggles -->
-                <div class="notes-section">
+                <!-- Notes / Toggles (Default State) -->
+                <div class="notes-section" id="defaultNotesSection">
                     <span class="desc-label">Notes</span>
                     <div class="notes-list">
                         <!-- Static Checklist for demo/default, could be dynamic later -->
@@ -1104,10 +1240,45 @@
                     </div>
                 </div>
 
-                <!-- Footer Alert -->
-                <div class="footer-alert">
+                <!-- Admin Notes Section (In Checking Status) -->
+                <div class="notes-section" id="adminNotesSection" style="display: none;">
+                    <span class="desc-label">Admin Notes</span>
+                    <div class="note-item">
+                        <div class="note-content">
+                            <i class="ti ti-bolt note-icon"></i> Please check the Task Attachment before take action
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Attachments Section (In Checking Status) -->
+                <div class="notes-section" id="videoAttachmentsSection" style="display: none;">
+                    <span class="desc-label">Video Attachments</span>
+                    <div style="background: #fff; border: 1px solid #f1f5f9; border-radius: 12px; padding: 15px; position: relative;">
+                        <i class="ti ti-video" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 18px;"></i>
+                        <div id="modalVideoLinkDisplay" style="color: #64748b; font-size: 13px; padding-left: 40px; min-height: 24px; display: flex; align-items: center;">
+                            Video Link will be here to check the work
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Attachments Section (In Checking Status) -->
+                <div class="notes-section" id="fileAttachmentsSection" style="display: none;">
+                    <span class="desc-label">File Attachments</span>
+                    <div id="modalFileAttachmentsList" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Files will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Footer Alert (Default) -->
+                <div class="footer-alert" id="defaultFooterAlert">
                     <i class="ti ti-bolt"></i>
                     You can Start this Project on <span id="modalStartFull">23.12.2025</span>
+                </div>
+
+                <!-- Footer Alert (In Checking Status) -->
+                <div class="footer-alert" id="checkingFooterAlert" style="display: none;">
+                    <i class="ti ti-bolt"></i>
+                    Task Under view through the Project Manager Duration Time: <span id="modalCheckingDuration">24.10.2025 - 12:30</span>
                 </div>
 
                 <!-- Start Button (Initial State) -->
@@ -1143,6 +1314,14 @@
                         <i class="ti ti-hand-stop" style="font-size: 24px; color: #f59e0b;"></i>
                     </div>
                     <div id="holdReasonText">The Hold Reason will be here</div>
+                </div>
+
+                <!-- Rejection Reason Display (Rejected State) -->
+                <div class="rejection-reason-box" id="rejectionReasonContainer">
+                    <div style="margin-bottom: 5px;">
+                        <i class="ti ti-x-circle" style="font-size: 24px; color: #ec4899;"></i>
+                    </div>
+                    <div id="rejectionReasonText">The Rejection Reason will be here</div>
                 </div>
 
                 <!-- Go To Task Button (On Hold State) -->
@@ -1420,6 +1599,36 @@
 </div>
 
 
+<!-- Sign In Popup Modal -->
+<div id="signInPopupModal" class="signin-popup-overlay" style="display: none;">
+    <div class="signin-popup-modal">
+        <!-- Green Arrow Icon -->
+        <div class="signin-popup-icon">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 20 30 Q 50 20, 60 40 Q 70 55, 70 70" 
+                      stroke="#22c55e" 
+                      stroke-width="6" 
+                      fill="none" 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round"/>
+                <path d="M 65 65 L 70 70 L 65 75" 
+                      stroke="#22c55e" 
+                      stroke-width="6" 
+                      fill="none" 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <h3 class="signin-popup-title">Sign in</h3>
+        <p class="signin-popup-text">Please use your Login Details for Access.</p>
+        
+        <button type="button" class="signin-popup-close-btn" onclick="closeSignInPopup()">
+            Close
+        </button>
+    </div>
+</div>
+
 <!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->
 @include('Chats.partials.modals') 
 
@@ -1543,7 +1752,10 @@
         const status = element.getAttribute('data-status');
         const isInProgress = ['in_progress', 'progress'].includes(status);
         const isOnHold = ['on_hold', 'hold'].includes(status);
-        const isChecked = ['checked', 'check'].includes(status);
+        const isChecked = ['checked', 'check', 'checking', 'in_checking'].includes(status);
+        const isRejected = ['rejected', 'in_rejected'].includes(status);
+        const isDone = ['done', 'completed', 'in_done'].includes(status);
+        const isNewTask = ['new', 'new_task'].includes(status);
 
         // Populate Fields
         document.getElementById('modalTaskTitleDisplay').textContent = title;
@@ -1575,8 +1787,16 @@
         const goToTaskBtn = document.getElementById('goToTaskBtnContainer');
         const continueTaskBtn = document.getElementById('continueTaskBtnContainer');
 
+        // Section visibility controls for "in checking" status
+        const defaultNotesSection = document.getElementById('defaultNotesSection');
+        const adminNotesSection = document.getElementById('adminNotesSection');
+        const videoAttachmentsSection = document.getElementById('videoAttachmentsSection');
+        const fileAttachmentsSection = document.getElementById('fileAttachmentsSection');
+        const defaultFooterAlert = document.getElementById('defaultFooterAlert');
+        const checkingFooterAlert = document.getElementById('checkingFooterAlert');
+
         // Reset all specific classes first
-        header.classList.remove('in-progress', 'on-hold');
+        header.classList.remove('in-progress', 'on-hold', 'rejected', 'done');
         
         // Hide all action areas by default
         startBtn.style.display = 'none';
@@ -1584,6 +1804,14 @@
         holdReason.style.display = 'none';
         goToTaskBtn.style.display = 'none';
         continueTaskBtn.style.display = 'none';
+
+        // Reset all section visibility
+        if (defaultNotesSection) defaultNotesSection.style.display = 'block';
+        if (adminNotesSection) adminNotesSection.style.display = 'none';
+        if (videoAttachmentsSection) videoAttachmentsSection.style.display = 'none';
+        if (fileAttachmentsSection) fileAttachmentsSection.style.display = 'none';
+        if (defaultFooterAlert) defaultFooterAlert.style.display = 'flex';
+        if (checkingFooterAlert) checkingFooterAlert.style.display = 'none';
 
         if (isOnHold) {
             header.classList.add('on-hold');
@@ -1610,26 +1838,184 @@
         } 
         else if (isChecked) {
             header.classList.add('check-header');
-            continueTaskBtn.style.display = 'block';
+            // Don't show continue button for checking status - will show sign-in popup instead
+            // continueTaskBtn.style.display = 'block';
             
-            // Reset badge to default
+            // Update badge to show "In Checking"
             const badgeStatus = document.getElementById('badgeStatus');
             if (badgeStatus) {
-                badgeStatus.className = 'badge-custom badge-new';
-                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> New Task';
+                badgeStatus.className = 'badge-custom badge-checked';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Project is in Checking';
+            }
+
+            // Show "in checking" specific sections
+            if (defaultNotesSection) defaultNotesSection.style.display = 'none';
+            if (adminNotesSection) adminNotesSection.style.display = 'block';
+            if (videoAttachmentsSection) videoAttachmentsSection.style.display = 'block';
+            if (fileAttachmentsSection) fileAttachmentsSection.style.display = 'block';
+            if (defaultFooterAlert) defaultFooterAlert.style.display = 'none';
+            if (checkingFooterAlert) checkingFooterAlert.style.display = 'flex';
+
+            // Populate video link and file attachments from task data
+            const videoLink = element.getAttribute('data-video-link') || '';
+            const attachmentsJson = element.getAttribute('data-attachments') || '[]';
+            let attachmentFiles = [];
+            
+            try {
+                attachmentFiles = JSON.parse(attachmentsJson);
+                if (!Array.isArray(attachmentFiles)) {
+                    attachmentFiles = [];
+                }
+            } catch (e) {
+                attachmentFiles = [];
+            }
+
+            // Display video link
+            const videoLinkDisplay = document.getElementById('modalVideoLinkDisplay');
+            if (videoLinkDisplay) {
+                if (videoLink && videoLink.trim() !== '') {
+                    videoLinkDisplay.innerHTML = `<a href="${videoLink}" target="_blank" style="color: #3b82f6; text-decoration: none; word-break: break-all;">${videoLink}</a>`;
+                } else {
+                    videoLinkDisplay.textContent = 'Video Link will be here to check the work';
+                }
+            }
+
+            // Display file attachments
+            const fileAttachmentsList = document.getElementById('modalFileAttachmentsList');
+            if (fileAttachmentsList) {
+                fileAttachmentsList.innerHTML = '';
+                
+                if (attachmentFiles && attachmentFiles.length > 0) {
+                    attachmentFiles.forEach((filePath, index) => {
+                        // filePath is a string path, need to get filename from it
+                        const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
+                        const fullPath = filePath.startsWith('http') ? filePath : 'https://logiadmin.it-supportline.de/storage/' + filePath;
+                        
+                        // Determine file type from extension
+                        const fileExt = fileName.split('.').pop().toLowerCase();
+                        let iconClass = 'ti-file-type-pdf';
+                        let iconColor = '#ef4444';
+                        
+                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
+                            iconClass = 'ti-photo';
+                            iconColor = '#3b82f6';
+                        } else if (fileExt === 'mp4' || fileExt === 'mov') {
+                            iconClass = 'ti-video';
+                            iconColor = '#8b5cf6';
+                        }
+                        
+                        const fileItem = document.createElement('div');
+                        fileItem.style.cssText = 'background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;';
+                        fileItem.innerHTML = `
+                            <i class="ti ${iconClass}" style="font-size: 20px; color: ${iconColor};"></i>
+                            <div style="font-size: 10px; flex: 1;">
+                                <div style="font-weight: 600; color: #1e293b; word-break: break-word;">${fileName}</div>
+                                <div style="color: #64748b;">File Attachment</div>
+                            </div>
+                            <a href="${fullPath}" target="_blank" style="color: #3b82f6; text-decoration: none;" title="Download">
+                                <i class="ti ti-download" style="font-size: 16px;"></i>
+                            </a>
+                        `;
+                        fileAttachmentsList.appendChild(fileItem);
+                    });
+                } else {
+                    // Show placeholder if no files
+                    fileAttachmentsList.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 20px;">No file attachments</div>';
+                }
+            }
+            
+            // Set checking duration time (if available, otherwise use placeholder)
+            const checkingDurationEl = document.getElementById('modalCheckingDuration');
+            if (checkingDurationEl) {
+                // You can get this from task data if available, for now using placeholder
+                checkingDurationEl.textContent = endDate ? endDate + ' - 12:30' : '24.10.2025 - 12:30';
             }
         }
-        else if (isInProgress) {
-            header.classList.add('in-progress');
-            actionBtns.style.display = 'flex';
+        else if (isRejected) {
+            header.classList.add('rejected');
             
-            // Update badge to show "In Progress"
+            // Update badge to show "Rejected"
             const badgeStatus = document.getElementById('badgeStatus');
             if (badgeStatus) {
-                badgeStatus.className = 'badge-custom badge-progress';
-                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Progress';
+                badgeStatus.className = 'badge-custom badge-rejected';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Rejected';
             }
-        } 
+        }
+        else if (isDone) {
+            header.classList.add('done');
+            
+            // Update badge to show "In Done"
+            const badgeStatus = document.getElementById('badgeStatus');
+            if (badgeStatus) {
+                badgeStatus.className = 'badge-custom badge-done';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Done';
+            }
+
+            // Show done-specific sections
+            if (defaultNotesSection) defaultNotesSection.style.display = 'none';
+            if (fileAttachmentsSection) {
+                fileAttachmentsSection.style.display = 'block';
+                // Populate file attachments for done status
+                const attachmentsJson = element.getAttribute('data-attachments') || '[]';
+                let attachmentFiles = [];
+                
+                try {
+                    attachmentFiles = JSON.parse(attachmentsJson);
+                    if (!Array.isArray(attachmentFiles)) {
+                        attachmentFiles = [];
+                    }
+                } catch (e) {
+                    attachmentFiles = [];
+                }
+
+                const fileAttachmentsList = document.getElementById('modalFileAttachmentsList');
+                if (fileAttachmentsList) {
+                    fileAttachmentsList.innerHTML = '';
+                    
+                    if (attachmentFiles && attachmentFiles.length > 0) {
+                        attachmentFiles.forEach((filePath, index) => {
+                            const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
+                            const fullPath = filePath.startsWith('http') ? filePath : '/storage/' + filePath;
+                            
+                            const fileExt = fileName.split('.').pop().toLowerCase();
+                            let iconClass = 'ti-file-type-pdf';
+                            let iconColor = '#ef4444';
+                            
+                            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
+                                iconClass = 'ti-photo';
+                                iconColor = '#3b82f6';
+                            } else if (fileExt === 'mp4' || fileExt === 'mov') {
+                                iconClass = 'ti-video';
+                                iconColor = '#8b5cf6';
+                            }
+                            
+                            const fileItem = document.createElement('div');
+                            fileItem.style.cssText = 'background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px;';
+                            fileItem.innerHTML = `
+                                <i class="ti ${iconClass}" style="font-size: 20px; color: ${iconColor};"></i>
+                                <div style="font-size: 10px; flex: 1;">
+                                    <div style="font-weight: 600; color: #1e293b; word-break: break-word;">${fileName}</div>
+                                    <div style="color: #64748b;">94 KB of 94 KB</div>
+                                </div>
+                                <a href="${fullPath}" target="_blank" style="color: #3b82f6; text-decoration: none;" title="Download">
+                                    <i class="ti ti-download" style="font-size: 16px;"></i>
+                                </a>
+                            `;
+                            fileAttachmentsList.appendChild(fileItem);
+                        });
+                    } else {
+                        fileAttachmentsList.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 20px;">No file attachments</div>';
+                    }
+                }
+            }
+            if (defaultFooterAlert) defaultFooterAlert.style.display = 'none';
+            
+            // Show developer card section (if it exists, we'll add it)
+            const developerCardSection = document.getElementById('developerCardSection');
+            if (developerCardSection) {
+                developerCardSection.style.display = 'block';
+            }
+        }
         else {
             // Default / New
             startBtn.style.display = 'block';
@@ -1660,9 +2046,42 @@
             placeholderEl.style.display = 'block';
         }
 
+        // Show task detail modal
         const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
         myModal.show();
+
+        // Show Sign In popup ONLY for "new task" or "in checking" status (NOT for done, rejected, etc.)
+        if ((isNewTask || isChecked) && !isDone && !isRejected && !isOnHold && !isInProgress) {
+            // Wait a bit for the task modal to appear, then show sign-in popup
+            setTimeout(() => {
+                showSignInPopup();
+            }, 300);
+        }
     }
+
+    // Function to show Sign In Popup
+    function showSignInPopup() {
+        const signInPopup = document.getElementById('signInPopupModal');
+        if (signInPopup) {
+            signInPopup.style.display = 'flex';
+        }
+    }
+
+    // Function to close Sign In Popup
+    function closeSignInPopup() {
+        const signInPopup = document.getElementById('signInPopupModal');
+        if (signInPopup) {
+            signInPopup.style.display = 'none';
+        }
+    }
+
+    // Close popup when clicking outside
+    document.addEventListener('click', function(event) {
+        const signInPopup = document.getElementById('signInPopupModal');
+        if (signInPopup && event.target === signInPopup) {
+            closeSignInPopup();
+        }
+    });
 
     // New Functions for Start Task Flow
     function openStartConfirmationModal() {
