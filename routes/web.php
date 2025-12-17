@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::post('/tasks/board', [TaskController::class, 'uploadBoard'])->name('tasks.board.upload');
     Route::get('/tasks/by-ticket', [TaskController::class, 'byTicket'])->name('tasks.by_ticket');
+    Route::post('/tasks/reject', [TaskController::class, 'reject'])->name('tasks.reject');
     // WebTasks APIs (separate collection)
     
     Route::get('/webtasks/tickets', [WebTaskController::class, 'tickets'])->name('webtasks.tickets');
@@ -108,11 +109,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/webtasks/{id}', [WebTaskController::class, 'show'])->name('webtasks.show');
     Route::put('/webtasks/{id}', [WebTaskController::class, 'update'])->name('webtasks.update');
     Route::delete('/webtasks/{id}', [WebTaskController::class, 'destroy'])->name('webtasks.destroy');
+    Route::post('/webtasks/reject', [WebTaskController::class, 'reject'])->name('webtasks.reject');
 
     // EmployeeTasks APIs (separate collection)
     Route::get('/emptasks/tickets', [\App\Http\Controllers\EmployeeTaskController::class, 'tickets'])->name('emptasks.tickets');
     Route::post('/emptasks/store', [\App\Http\Controllers\EmployeeTaskController::class, 'store'])->name('emptasks.store');
     Route::delete('/emptasks/{id}', [\App\Http\Controllers\EmployeeTaskController::class, 'destroy'])->name('emptasks.destroy');
+    Route::post('/emptasks/reject', [\App\Http\Controllers\EmployeeTaskController::class, 'reject'])->name('emptasks.reject');
 
     // Team specific APIs (do not reuse tickets.*)
     Route::get('/team/tickets', [TeamController::class, 'tickets'])->name('team.tickets');

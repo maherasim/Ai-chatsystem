@@ -24,6 +24,9 @@ class Task extends Model
         'number',
         'mark_image_path', // saved file path in storage
         'issues', // array of embedded issue objects
+        'video_link', // video link for checking tasks
+        'attachments', // file attachments array
+        'rejections', // array of rejection history
         'created_by',
     ];
 
@@ -33,7 +36,8 @@ class Task extends Model
         'checkpoints' => 'array',
         'position'    => 'array',
         'issues'      => 'array',
-        
+        'attachments' => 'array',
+        'rejections'  => 'array',
     ];
 
     public function project()

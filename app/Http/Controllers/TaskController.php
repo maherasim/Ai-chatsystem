@@ -364,6 +364,62 @@ class TaskController extends Controller
         ]);
     }
 
+    public function reject(Request $request)
+    {
+        $validated = $request->validate([
+            'task_id' => 'required|string',
+            'reason' => 'required|string',
+            'other_reason' => 'nullable|string',
+            'reject_files' => 'nullable|array',
+            'reject_files.*' => 'file|max:10240', // 10MB max per file
+        ]);
+
+        $task = Task::find($validated['task_id']);
+        if (!$task) {
+            return response()->json(['success' => false, 'message' => 'Task not found'], 404);
+        }
+
+        // Handle file uploads
+        $rejectAttachments = [];
+        if ($request->hasFile('reject_files')) {
+            foreach ($request->file('reject_files') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('tasks/rejections', 'public');
+                    $rejectAttachments[] = $path;
+                }
+            }
+        }
+
+        // Build rejection reason
+        $rejectionReason = $validated['reason'];
+        if ($validated['reason'] === 'Other' && !empty($validated['other_reason'])) {
+            $rejectionReason = $validated['other_reason'];
+        }
+
+        // Update task status to rejected
+        $task->status = 'rejected';
+        
+        // Store rejection data
+        $rejectionData = [
+            'reason' => $rejectionReason,
+            'rejected_at' => now()->toDateTimeString(),
+            'rejected_by' => Auth::id(),
+            'attachments' => $rejectAttachments,
+        ];
+        
+        // Store rejection history (you might want to add a rejections array field)
+        $rejections = is_array($task->rejections) ? $task->rejections : [];
+        $rejections[] = $rejectionData;
+        $task->rejections = $rejections;
+        
+        $task->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task rejected successfully',
+        ]);
+    }
+
 }
 
 

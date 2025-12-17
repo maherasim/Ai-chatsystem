@@ -23,6 +23,9 @@ class EmployeeTask extends Model
         'duration',
         'reminder_hours',
         'images',
+        'video_link', // video link for checking tasks
+        'attachments', // file attachments array
+        'rejections', // array of rejection history
         'created_by',
     ];
 
@@ -30,6 +33,8 @@ class EmployeeTask extends Model
         'images' => 'array',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'attachments' => 'array',
+        'rejections' => 'array',
     ];
 
     public function project()

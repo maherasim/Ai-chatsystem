@@ -208,6 +208,57 @@ class WebTaskController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function reject(Request $request)
+    {
+        $validated = $request->validate([
+            'task_id' => 'required|string',
+            'reason' => 'required|string',
+            'other_reason' => 'nullable|string',
+            'reject_files' => 'nullable|array',
+            'reject_files.*' => 'file|max:10240',
+        ]);
+
+        $task = WebTask::find($validated['task_id']);
+        if (!$task) {
+            return response()->json(['success' => false, 'message' => 'Task not found'], 404);
+        }
+
+        $rejectAttachments = [];
+        if ($request->hasFile('reject_files')) {
+            foreach ($request->file('reject_files') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('webtasks/rejections', 'public');
+                    $rejectAttachments[] = $path;
+                }
+            }
+        }
+
+        $rejectionReason = $validated['reason'];
+        if ($validated['reason'] === 'Other' && !empty($validated['other_reason'])) {
+            $rejectionReason = $validated['other_reason'];
+        }
+
+        $task->status = 'rejected';
+        
+        $rejectionData = [
+            'reason' => $rejectionReason,
+            'rejected_at' => now()->toDateTimeString(),
+            'rejected_by' => Auth::id(),
+            'attachments' => $rejectAttachments,
+        ];
+        
+        $rejections = is_array($task->rejections) ? $task->rejections : [];
+        $rejections[] = $rejectionData;
+        $task->rejections = $rejections;
+        
+        $task->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task rejected successfully',
+        ]);
+    }
 }
 
 

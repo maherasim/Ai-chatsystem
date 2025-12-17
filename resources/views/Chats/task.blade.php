@@ -462,6 +462,50 @@
 
 
                             <!-- Task Status Cards -->
+                            @php
+                                use App\Models\Task;
+                                use App\Models\WebTask;
+                                use App\Models\EmployeeTask;
+                                
+                                // Calculate total count from all three models
+                                $totalCount = Task::count() + WebTask::count() + EmployeeTask::count();
+                                
+                                // Calculate counts for each status from all three models
+                                // New tasks
+                                $newCount = Task::whereIn('status', ['new', 'new_task', 'newtask'])->count()
+                                    + WebTask::whereIn('status', ['new', 'new_task', 'newtask'])->count()
+                                    + EmployeeTask::whereIn('status', ['new', 'new_task', 'newtask'])->count();
+                                
+                                // Progress tasks
+                                $progressCount = Task::whereIn('status', ['in_progress', 'progress', 'inprogress'])->count()
+                                    + WebTask::whereIn('status', ['in_progress', 'progress', 'inprogress'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_progress', 'progress', 'inprogress'])->count();
+                                
+                                // Hold tasks
+                                $holdCount = Task::whereIn('status', ['in_hold', 'hold', 'inhold', 'on_hold'])->count()
+                                    + WebTask::whereIn('status', ['in_hold', 'hold', 'inhold', 'on_hold'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_hold', 'hold', 'inhold', 'on_hold'])->count();
+                                
+                                // Checked tasks
+                                $checkedCount = Task::whereIn('status', ['in_checked', 'checked', 'inchecked'])->count()
+                                    + WebTask::whereIn('status', ['in_checked', 'checked', 'inchecked'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_checked', 'checked', 'inchecked'])->count();
+                                
+                                // Delayed tasks
+                                $delayedCount = Task::whereIn('status', ['in_delayed', 'delayed', 'indelayed'])->count()
+                                    + WebTask::whereIn('status', ['in_delayed', 'delayed', 'indelayed'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_delayed', 'delayed', 'indelayed'])->count();
+                                
+                                // Rejected tasks
+                                $rejectedCount = Task::whereIn('status', ['in_rejected', 'rejected', 'inrejected'])->count()
+                                    + WebTask::whereIn('status', ['in_rejected', 'rejected', 'inrejected'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_rejected', 'rejected', 'inrejected'])->count();
+                                
+                                // Done tasks
+                                $doneCount = Task::whereIn('status', ['in_done', 'done', 'indone'])->count()
+                                    + WebTask::whereIn('status', ['in_done', 'done', 'indone'])->count()
+                                    + EmployeeTask::whereIn('status', ['in_done', 'done', 'indone'])->count();
+                            @endphp
                             <div id="taskStatusSlider" class="task-status-slider"
                                 style="background:#fff; border-radius:10px; padding:1px;">
                                 <div class="task-status-slider-container">
@@ -474,9 +518,7 @@
                                     <img src="{{ asset('build/img/totaltask.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">Total Tasks</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $totalCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -491,9 +533,7 @@
                                     <img src="{{ asset('build/img/newtask.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">New Task</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $newCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -508,9 +548,7 @@
                                     <img src="{{ asset('build/img/progress.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Progress</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $progressCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -525,9 +563,7 @@
                                     <img src="{{ asset('build/img/inhold.svg') }}" style="width:26px; margin-bottom:6px;"
                                         alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Hold</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $holdCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -542,9 +578,7 @@
                                     <img src="{{ asset('build/img/incheck.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Checked</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $checkedCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -559,9 +593,7 @@
                                     <img src="{{ asset('build/img/delayed.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Delayed</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $delayedCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -576,9 +608,7 @@
                                     <img src="{{ asset('build/img/rejected.svg') }}"
                                         style="width:26px; margin-bottom:6px;" alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Rejected</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $rejectedCount }}</div>
                                 </div>
 
                                 <!-- Divider -->
@@ -593,9 +623,7 @@
                                     <img src="{{ asset('build/img/indone.svg') }}" style="width:26px; margin-bottom:6px;"
                                         alt="">
                                     <div style="font-size:13px; color:#4b5c74; font-weight:500;">In Done</div>
-                                    <div style="font-weight:700; font-size:14px; color:#1e293b;"><img
-                                            src="{{ asset('assets/spin-loader.gif') }}" alt="Loading"
-                                            style="height: 24px;"></div>
+                                    <div style="font-weight:700; font-size:14px; color:#1e293b;">{{ $doneCount }}</div>
                                 </div>
 
                                 </div>
@@ -853,7 +881,11 @@
                                         @endphp
                                         <script></script>
                                         @forelse ($progressTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#progressmodel">
+                                            @php
+                                                $markImagePath = $task->mark_image_path ?? '';
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2 task-progress-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#progressmodel"
+                                                data-mark-image-path="{{ $markImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -933,7 +965,64 @@
                                         </div>
 
                                         @forelse ($checkedTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#incheck">
+                                            @php
+                                                // Get attachments and video_link
+                                                // attachments is cast to array in model, but handle both array and JSON string for robustness
+                                                $attachments = $task->attachments ?? [];
+                                                if (is_string($attachments)) {
+                                                    $attachments = json_decode($attachments, true) ?? [];
+                                                }
+                                                if (!is_array($attachments)) {
+                                                    $attachments = [];
+                                                }
+                                                $videoLink = $task->video_link ?? null;
+                                            
+                                                $projectName = optional($task->project)->name ?? 'Project Name';
+                                                $ticketCode = optional($task->ticket)->code ?? '—';
+                                                $ticketTitle = $task->ticket_title ?? ($task->title ?? 'Ticket Title');
+                                                $taskTitle = $task->title ?? 'Task Title';
+                                                $projectLogo = optional($task->project)->logo_path;
+                                                $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
+                                                $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
+                                                $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                                
+                                                // Determine task type and ID
+                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskType = 'task'; // default
+                                                if ($task instanceof \App\Models\WebTask) {
+                                                    $taskType = 'webtask';
+                                                } elseif ($task instanceof \App\Models\EmployeeTask) {
+                                                    $taskType = 'employeetask';
+                                                }
+                                            @endphp
+                                            @php
+                                                // Get rating data for modal
+                                                $reliability = $task->reliability ?? 0;
+                                                $punctuality = $task->punctuality ?? 0;
+                                                $accuracy = $task->accuracy ?? 0;
+                                                $quality = $task->quality ?? 0;
+                                                $workIndependently = $task->work_Independently ?? $task->work_independently ?? 0;
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2 task-checked-item" style="background-color: #ebebeb;cursor:pointer" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#incheck"
+                                                data-task-id="{{ $taskId }}"
+                                                data-task-type="{{ $taskType }}"
+                                                data-task-title="{{ $taskTitle }}"
+                                                data-project-name="{{ $projectName }}"
+                                                data-ticket-code="{{ $ticketCode }}"
+                                                data-ticket-title="{{ $ticketTitle }}"
+                                                data-project-logo="{{ $projectLogoUrl }}"
+                                                data-start-date="{{ $startDate }}"
+                                                data-end-date="{{ $endDate }}"
+                                                data-video-link="{{ $videoLink }}"
+                                                data-attachments="{{ json_encode($attachments) }}"
+                                                data-reliability="{{ $reliability }}"
+                                                data-punctuality="{{ $punctuality }}"
+                                                data-accuracy="{{ $accuracy }}"
+                                                data-quality="{{ $quality }}"
+                                                data-work-independently="{{ $workIndependently }}"
+                                                onclick="this.classList.add('active'); setTimeout(() => this.classList.remove('active'), 1000);">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -1013,7 +1102,48 @@
                                         </div>
 
                                         @forelse ($rejectedTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inreject">
+                                            @php
+                                                // Get rejection data
+                                                $rejections = $task->rejections ?? [];
+                                                if (is_string($rejections)) {
+                                                    $rejections = json_decode($rejections, true) ?? [];
+                                                }
+                                                if (!is_array($rejections)) {
+                                                    $rejections = [];
+                                                }
+                                                // Get the most recent rejection
+                                                $latestRejection = !empty($rejections) ? (is_array($rejections[count($rejections) - 1]) ? $rejections[count($rejections) - 1] : []) : [];
+                                                $rejectionReason = $latestRejection['reason'] ?? 'No rejection reason provided';
+                                                
+                                                // Get task info for modal
+                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskType = 'task';
+                                                if ($task instanceof \App\Models\WebTask) {
+                                                    $taskType = 'webtask';
+                                                } elseif ($task instanceof \App\Models\EmployeeTask) {
+                                                    $taskType = 'employeetask';
+                                                }
+                                                $projectName = optional($task->project)->name ?? 'Project Name';
+                                                $ticketCode = optional($task->ticket)->code ?? '—';
+                                                $ticketTitle = $task->ticket_title ?? ($task->title ?? 'Ticket Title');
+                                                $taskTitle = $task->title ?? 'Task Title';
+                                                $projectLogo = optional($task->project)->logo_path;
+                                                $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
+                                                $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
+                                                $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2 task-rejected-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inreject"
+                                                data-task-id="{{ $taskId }}"
+                                                data-task-type="{{ $taskType }}"
+                                                data-task-title="{{ $taskTitle }}"
+                                                data-project-name="{{ $projectName }}"
+                                                data-ticket-code="{{ $ticketCode }}"
+                                                data-ticket-title="{{ $ticketTitle }}"
+                                                data-project-logo="{{ $projectLogoUrl }}"
+                                                data-start-date="{{ $startDate }}"
+                                                data-end-date="{{ $endDate }}"
+                                                data-rejection-reason="{{ $rejectionReason }}"
+                                                data-mark-image-path="{{ $task->mark_image_path ?? '' }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -1092,7 +1222,39 @@
                                         </div>
 
                                         @forelse ($holdTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inhold">
+                                            @php
+                                                // Get hold reason and task info for modal
+                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskType = 'task';
+                                                if ($task instanceof \App\Models\WebTask) {
+                                                    $taskType = 'webtask';
+                                                } elseif ($task instanceof \App\Models\EmployeeTask) {
+                                                    $taskType = 'employeetask';
+                                                }
+                                                $projectName = optional($task->project)->name ?? optional($task->project)->title ?? 'Project Name';
+                                                $ticketCode = optional($task->ticket)->code ?? '—';
+                                                $ticketTitle = $task->ticket_title ?? ($task->title ?? 'Ticket Title');
+                                                $taskTitle = $task->title ?? 'Task Title';
+                                                $projectLogo = optional($task->project)->logo_path;
+                                                $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
+                                                $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
+                                                $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                                $holdReason = $task->hold_reason ?? 'No hold reason provided';
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2 task-hold-item" style="background-color: #ebebeb;cursor:pointer" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#inhold"
+                                                data-task-id="{{ $taskId }}"
+                                                data-task-type="{{ $taskType }}"
+                                                data-task-title="{{ $taskTitle }}"
+                                                data-project-name="{{ $projectName }}"
+                                                data-ticket-code="{{ $ticketCode }}"
+                                                data-ticket-title="{{ $ticketTitle }}"
+                                                data-project-logo="{{ $projectLogoUrl }}"
+                                                data-start-date="{{ $startDate }}"
+                                                data-end-date="{{ $endDate }}"
+                                                data-hold-reason="{{ $holdReason }}"
+                                                data-mark-image-path="{{ $task->mark_image_path ?? '' }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -1172,7 +1334,11 @@
                                         </div>
 
                                         @forelse ($delayedTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#indelayed">
+                                            @php
+                                                $markImagePath = $task->mark_image_path ?? '';
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2 task-delayed-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#indelayed"
+                                                data-mark-image-path="{{ $markImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -7853,14 +8019,14 @@
 
                         <!-- Text Left-Aligned -->
                         <div style="text-align: left;">
-                            <h5 style="margin: 0;">Project Name</h5>
-                            <small>Ticket #1 - Ticket Title</small>
+                            <h5 style="margin: 0;" id="inreject-project-name">Project Name</h5>
+                            <small id="inreject-ticket-info">Ticket #1 - Ticket Title</small>
                         </div>
 
                         <!-- Logo Centered, Half Outside -->
                         <div
                             style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                            <img id="inreject-project-logo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
                                 style="width: 60px; height: 60px; border-radius: 50%;">
                         </div>
 
@@ -7871,7 +8037,7 @@
                             style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
 
                             <!-- Title -->
-                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title</h5>
+                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;" id="inreject-task-title">Task Title</h5>
 
                             <!-- Badges Row -->
                             <div class="text-center mb-3">
@@ -7904,10 +8070,10 @@
                                     <div class="text-muted">Section</div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Start:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Start:</span> <span id="inreject-start-date">22.10.2024</span></div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Deliver:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Deliver:</span> <span id="inreject-end-date">22.10.2024</span></div>
                                 </div>
                             </div>
 
@@ -8045,14 +8211,14 @@
 
                         <!-- Text Left-Aligned -->
                         <div style="text-align: left;">
-                            <h5 style="margin: 0;">Project Name</h5>
-                            <small>Ticket #1 - Ticket Title</small>
+                            <h5 style="margin: 0;" id="inhold-project-name">Project Name</h5>
+                            <small id="inhold-ticket-info">Ticket #1 - Ticket Title</small>
                         </div>
 
                         <!-- Logo Centered, Half Outside -->
                         <div
                             style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                            <img id="inhold-project-logo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
                                 style="width: 60px; height: 60px; border-radius: 50%;">
                         </div>
 
@@ -8063,7 +8229,7 @@
                             style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
 
                             <!-- Title -->
-                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title</h5>
+                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;" id="inhold-task-title">Task Title</h5>
 
                             <!-- Badges Row -->
                             <div class="text-center mb-3">
@@ -8096,10 +8262,10 @@
                                     <div class="text-muted">Section</div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Start:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Start:</span> <span id="inhold-start-date">22.10.2024</span></div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Deliver:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Deliver:</span> <span id="inhold-end-date">22.10.2024</span></div>
                                 </div>
                             </div>
 
@@ -8168,7 +8334,7 @@
                             </div>
 
                             <!-- Text -->
-                            <div style="color: #1c2b48; font-size: 14px; font-weight: 600;">
+                            <div id="inhold-hold-reason" style="color: #1c2b48; font-size: 14px; font-weight: 600;">
                                 The Hold Reason will be here
                             </div>
 
@@ -8670,14 +8836,14 @@
 
                         <!-- Text Left-Aligned -->
                         <div style="text-align: left;">
-                            <h5 style="margin: 0;">Project Name</h5>
-                            <small>Ticket #1 - Ticket Title</small>
+                            <h5 style="margin: 0;" id="incheck-project-name">Project Name</h5>
+                            <small id="incheck-ticket-info">Ticket #1 - Ticket Title</small>
                         </div>
 
                         <!-- Logo Centered, Half Outside -->
                         <div
                             style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                            <img id="incheck-project-logo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
                                 style="width: 60px; height: 60px; border-radius: 50%;">
                         </div>
 
@@ -8688,7 +8854,7 @@
                             style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
 
                             <!-- Title -->
-                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title</h5>
+                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;" id="incheck-task-title">Task Title</h5>
 
                             <!-- Badges Row -->
                             <div class="text-center mb-3">
@@ -8721,10 +8887,10 @@
                                     <div class="text-muted">Section</div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Start:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Start:</span> <span id="incheck-start-date">22.10.2024</span></div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Deliver:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Deliver:</span> <span id="incheck-end-date">22.10.2024</span></div>
                                 </div>
                             </div>
 
@@ -8736,19 +8902,12 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
+                        <!-- Task Status Image -->
                         <div class="mx-auto my-4"
-                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
-
-                            <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
-
+                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center; overflow: hidden;">
+                            <img id="incheck-mark-image" src="{{ asset('build/img/dooted img.svg') }}"
+                                style="width: 100%; max-width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 8px; display: block; margin: 0 auto;"
+                                alt="Task Status Image">
                         </div>
                         <!-- Notes -->
                         <!-- Notes Section-->
@@ -8775,20 +8934,9 @@
                                 • Video Attachments •
                             </div>
 
-                            <!-- Attachment Input Box -->
-                            <div
-                                style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
-
-                                <!-- Icon -->
-                                <div
-                                    style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                    <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon"
-                                        style="width: 16px; height: 16px;">
-                                </div>
-
-                                <!-- Input -->
-                                <input type="text" placeholder="Video Link will be here to check the work"
-                                    style="border: none; outline: none; width: 100%; font-size: 14px; color: #1c2b48; background-color: transparent;" />
+                            <!-- Video Link Display -->
+                            <div id="incheck-video-container">
+                                <!-- Video link will be populated here -->
                             </div>
 
                         </div>
@@ -8797,42 +8945,8 @@
                             <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 15px;">• File
                                 Attachments •</div>
 
-                            <div class="d-flex flex-wrap gap-3">
-
-                                <!-- File Box -->
-                                <div
-                                    style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                    <img src="#" alt="PDF" style="width: 32px; height: 32px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf
-                                        </div>
-                                        <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
-                                    </div>
-                                    <img src="#" alt="D" style="width: 16px; height: 16px;">
-                                </div>
-
-                                <!-- File Box Copy 2 -->
-                                <div
-                                    style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                    <img src="pdf-icon.svg" alt="PDF" style="width: 32px; height: 32px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf
-                                        </div>
-                                        <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
-                                    </div>
-                                    <img src="download-icon.svg" alt="d" style="width: 16px; height: 16px;">
-                                </div>
-
-                                <!-- File Box Copy 3 -->
-                                <!-- <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                    <img src="pdf-icon.svg" alt="PDF" style="width: 32px; height: 32px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf</div>
-                                        <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
-                                    </div>
-                                    <img src="download-icon.svg" alt="Download" style="width: 16px; height: 16px;">
-                                </div> -->
-
+                            <div class="d-flex flex-wrap gap-3" id="incheck-attachments-container">
+                                <!-- File attachments will be populated here -->
                             </div>
                         </div>
 
@@ -8852,7 +8966,7 @@
                                     Task</div>
                             </div>
                             <!-- reject the task -->
-                            <div style="text-align: center; flex: 1;cursor:pointer;" data-bs-toggle="modal"
+                            <div class="reject-task-btn" style="text-align: center; flex: 1;cursor:pointer;" data-bs-toggle="modal"
                                 data-bs-target="#moveToRejectModal">
                                 <div
                                     style="background: #d86a89; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
@@ -8896,6 +9010,418 @@
 
         </div>
     </div>
+    <!-- incheck -->
+
+    <script>
+        // Handle incheck modal population when task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('incheck');
+            const taskItems = document.querySelectorAll('.task-checked-item');
+            
+            taskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    // Get task data from data attributes
+                    const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
+                    const projectName = this.getAttribute('data-project-name') || 'Project Name';
+                    const ticketCode = this.getAttribute('data-ticket-code') || '—';
+                    const ticketTitle = this.getAttribute('data-ticket-title') || 'Ticket Title';
+                    const projectLogo = this.getAttribute('data-project-logo') || '{{ URL::asset('/build/img/yekbon.svg') }}';
+                    const startDate = this.getAttribute('data-start-date') || '--';
+                    const endDate = this.getAttribute('data-end-date') || '--';
+                    const videoLink = this.getAttribute('data-video-link') || '';
+                    const attachmentsJson = this.getAttribute('data-attachments') || '[]';
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    
+                    // Get rating data
+                    const reliability = parseInt(this.getAttribute('data-reliability')) || 0;
+                    const punctuality = parseInt(this.getAttribute('data-punctuality')) || 0;
+                    const accuracy = parseInt(this.getAttribute('data-accuracy')) || 0;
+                    const quality = parseInt(this.getAttribute('data-quality')) || 0;
+                    const workIndependently = parseInt(this.getAttribute('data-work-independently')) || 0;
+                    
+                    // Store rating data in a global variable or data attribute for moveToDoneModal
+                    window.currentTaskRatings = {
+                        reliability: reliability,
+                        punctuality: punctuality,
+                        accuracy: accuracy,
+                        quality: quality,
+                        workIndependently: workIndependently
+                    };
+                    
+                    // Update mark image
+                    const markImageElement = document.getElementById('incheck-mark-image');
+                    if (markImageElement) {
+                        if (markImagePath && markImagePath.trim() !== '') {
+                            const imageUrl = markImagePath.startsWith('http') 
+                                ? markImagePath 
+                                : '/storage/' + markImagePath.replace(/^\/+/, '');
+                            markImageElement.src = imageUrl;
+                        } else {
+                            markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                        }
+                    }
+                    
+                    try {
+                        const attachments = JSON.parse(attachmentsJson);
+                        
+                        // Update modal header
+                        document.getElementById('incheck-project-name').textContent = projectName;
+                        document.getElementById('incheck-ticket-info').textContent = 'Ticket ' + ticketCode + ' - ' + ticketTitle;
+                        document.getElementById('incheck-project-logo').src = projectLogo;
+                        
+                        // Update task title
+                        document.getElementById('incheck-task-title').textContent = taskTitle;
+                        
+                        // Update dates
+                        document.getElementById('incheck-start-date').textContent = startDate;
+                        document.getElementById('incheck-end-date').textContent = endDate;
+                        
+                        // Update video container
+                        const videoContainer = document.getElementById('incheck-video-container');
+                        if (videoLink && videoLink.trim() !== '') {
+                            // Check if it's a Google Meet link or other video link
+                            if (videoLink.includes('meet.google.com') || videoLink.includes('google.com/meet')) {
+                                videoContainer.innerHTML = `
+                                    <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                        <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                            <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                        </div>
+                                        <a href="${videoLink}" target="_blank" style="flex: 1; color: #1c2b48; text-decoration: none; font-size: 14px;">
+                                            ${videoLink}
+                                        </a>
+                                    </div>
+                                `;
+                            } else {
+                                // For other video links, show as clickable link
+                                videoContainer.innerHTML = `
+                                    <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                        <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                            <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                        </div>
+                                        <a href="${videoLink}" target="_blank" style="flex: 1; color: #1c2b48; text-decoration: none; font-size: 14px;">
+                                            ${videoLink}
+                                        </a>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            videoContainer.innerHTML = `
+                                <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                    <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                        <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                    </div>
+                                    <span style="flex: 1; color: #9ca3af; font-size: 14px;">No video link available</span>
+                                </div>
+                            `;
+                        }
+                        
+                        // Update file attachments
+                        const attachmentsContainer = document.getElementById('incheck-attachments-container');
+                        if (attachments && Array.isArray(attachments) && attachments.length > 0) {
+                            let attachmentsHtml = '';
+                            attachments.forEach(function(attachment) {
+                                if (attachment) {
+                                    // Get file name from path
+                                    const fileName = attachment.split('/').pop() || 'File';
+                                    const fileExtension = fileName.split('.').pop().toLowerCase() || 'file';
+                                    
+                                    // Get download URL - assuming files are in storage
+                                    const downloadUrl = attachment.startsWith('http') ? attachment : '{{ asset("storage") }}/' + attachment.replace(/^\/+/, '');
+                                    
+                                    // Determine icon based on file extension
+                                    let iconSrc = '{{ URL::asset("/build/img/file-icon.svg") }}';
+                                    if (fileExtension === 'pdf') {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/pdf.png';
+                                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/image.png';
+                                    } else if (['doc', 'docx'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/ms-word.png';
+                                    } else if (['xls', 'xlsx'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/ms-excel.png';
+                                    }
+                                    
+                                    attachmentsHtml += `
+                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px; cursor: pointer;" onclick="window.open('${downloadUrl}', '_blank')">
+                                            <img src="${iconSrc}" alt="${fileExtension.toUpperCase()}" style="width: 32px; height: 32px; object-fit: contain;">
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 13px; font-weight: 500; color: #374151;">${fileName}</div>
+                                            </div>
+                                            <a href="${downloadUrl}" download="${fileName}" onclick="event.stopPropagation();" style="text-decoration: none;">
+                                                <img src="https://img.icons8.com/ios-filled/16/000000/download.png" alt="Download" style="width: 16px; height: 16px;">
+                                            </a>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            attachmentsContainer.innerHTML = attachmentsHtml;
+                        } else {
+                            attachmentsContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No file attachments available</div>';
+                        }
+                    } catch (e) {
+                        console.error('Error parsing task data:', e);
+                    }
+                    
+                    // Store task ID and type for reject functionality
+                    const taskId = this.getAttribute('data-task-id') || '';
+                    const taskType = this.getAttribute('data-task-type') || 'task';
+                    document.getElementById('rejectTaskId').value = taskId;
+                    document.getElementById('rejectTaskType').value = taskType;
+                });
+            });
+            
+            // Also handle reject button click to ensure task ID is set
+            const rejectBtn = document.querySelector('.reject-task-btn');
+            if (rejectBtn) {
+                rejectBtn.addEventListener('click', function(e) {
+                    // Task ID should already be set from modal open, but double-check
+                    const taskId = document.getElementById('rejectTaskId').value;
+                    if (!taskId) {
+                        // Try to get from the last clicked task item
+                        const lastClicked = document.querySelector('.task-checked-item.active');
+                        if (lastClicked) {
+                            document.getElementById('rejectTaskId').value = lastClicked.getAttribute('data-task-id') || '';
+                            document.getElementById('rejectTaskType').value = lastClicked.getAttribute('data-task-type') || 'task';
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Function to convert numeric rating (0-5) to star display
+        function getStarRating(rating) {
+            const numRating = parseInt(rating) || 0;
+            const filledStars = Math.min(Math.max(numRating, 0), 5);
+            const emptyStars = 5 - filledStars;
+            return '⭐'.repeat(filledStars) + '☆'.repeat(emptyStars);
+        }
+        
+        // Handle moveToDoneModal population when "Mark as Done" button is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const moveToDoneModal = document.getElementById('moveToDoneModal');
+            if (moveToDoneModal) {
+                moveToDoneModal.addEventListener('show.bs.modal', function() {
+                    // Get ratings from stored data or from active task item
+                    let ratings = window.currentTaskRatings;
+                    
+                    // Fallback: try to get from active task item
+                    if (!ratings) {
+                        const activeTaskItem = document.querySelector('.task-checked-item.active');
+                        if (activeTaskItem) {
+                            ratings = {
+                                reliability: parseInt(activeTaskItem.getAttribute('data-reliability')) || 0,
+                                punctuality: parseInt(activeTaskItem.getAttribute('data-punctuality')) || 0,
+                                accuracy: parseInt(activeTaskItem.getAttribute('data-accuracy')) || 0,
+                                quality: parseInt(activeTaskItem.getAttribute('data-quality')) || 0,
+                                workIndependently: parseInt(activeTaskItem.getAttribute('data-work-independently')) || 0
+                            };
+                        }
+                    }
+                    
+                    // Default to zeros if still no ratings found
+                    if (!ratings) {
+                        ratings = {
+                            reliability: 0,
+                            punctuality: 0,
+                            accuracy: 0,
+                            quality: 0,
+                            workIndependently: 0
+                        };
+                    }
+                    
+                    // Update rating displays
+                    document.getElementById('rating-reliability').textContent = getStarRating(ratings.reliability);
+                    document.getElementById('rating-punctuality').textContent = getStarRating(ratings.punctuality);
+                    document.getElementById('rating-accuracy').textContent = getStarRating(ratings.accuracy);
+                    document.getElementById('rating-quality').textContent = getStarRating(ratings.quality);
+                    document.getElementById('rating-work-independently').textContent = getStarRating(ratings.workIndependently);
+                });
+            }
+        });
+        
+        // Handle inhold modal population when hold task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const holdTaskItems = document.querySelectorAll('.task-hold-item');
+            
+            holdTaskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    // Get task data from data attributes
+                    const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
+                    const projectName = this.getAttribute('data-project-name') || 'Project Name';
+                    const ticketCode = this.getAttribute('data-ticket-code') || '—';
+                    const ticketTitle = this.getAttribute('data-ticket-title') || 'Ticket Title';
+                    const projectLogo = this.getAttribute('data-project-logo') || '{{ URL::asset('/build/img/yekbon.svg') }}';
+                    const startDate = this.getAttribute('data-start-date') || '--';
+                    const endDate = this.getAttribute('data-end-date') || '--';
+                    const holdReason = this.getAttribute('data-hold-reason') || 'No hold reason provided';
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    
+                    // Update modal header
+                    document.getElementById('inhold-project-name').textContent = projectName;
+                    document.getElementById('inhold-ticket-info').textContent = 'Ticket ' + ticketCode + ' - ' + ticketTitle;
+                    document.getElementById('inhold-project-logo').src = projectLogo;
+                    
+                    // Update task title
+                    document.getElementById('inhold-task-title').textContent = taskTitle;
+                    
+                    // Update dates
+                    document.getElementById('inhold-start-date').textContent = startDate;
+                    document.getElementById('inhold-end-date').textContent = endDate;
+                    
+                    // Update hold reason
+                    document.getElementById('inhold-hold-reason').textContent = holdReason;
+                    
+                    // Update mark image
+                    const markImageElement = document.getElementById('inhold-mark-image');
+                    if (markImageElement) {
+                        if (markImagePath && markImagePath.trim() !== '') {
+                            const imageUrl = markImagePath.startsWith('http') 
+                                ? markImagePath 
+                                : '/storage/' + markImagePath.replace(/^\/+/, '');
+                            markImageElement.src = imageUrl;
+                        } else {
+                            markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Handle inreject modal population when rejected task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const rejectedTaskItems = document.querySelectorAll('.task-rejected-item');
+            
+            rejectedTaskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    // Get task data from data attributes
+                    const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
+                    const projectName = this.getAttribute('data-project-name') || 'Project Name';
+                    const ticketCode = this.getAttribute('data-ticket-code') || '—';
+                    const ticketTitle = this.getAttribute('data-ticket-title') || 'Ticket Title';
+                    const projectLogo = this.getAttribute('data-project-logo') || '{{ URL::asset('/build/img/yekbon.svg') }}';
+                    const startDate = this.getAttribute('data-start-date') || '--';
+                    const endDate = this.getAttribute('data-end-date') || '--';
+                    const rejectionReason = this.getAttribute('data-rejection-reason') || 'No rejection reason provided';
+                    
+                    // Update modal header
+                    document.getElementById('inreject-project-name').textContent = projectName;
+                    document.getElementById('inreject-ticket-info').textContent = 'Ticket ' + ticketCode + ' - ' + ticketTitle;
+                    document.getElementById('inreject-project-logo').src = projectLogo;
+                    
+                    // Update task title
+                    document.getElementById('inreject-task-title').textContent = taskTitle;
+                    
+                    // Update dates
+                    document.getElementById('inreject-start-date').textContent = startDate;
+                    document.getElementById('inreject-end-date').textContent = endDate;
+                    
+                    // Update rejection reason
+                    document.getElementById('inreject-rejection-reason').textContent = rejectionReason;
+                });
+            });
+        });
+        
+        // Preview file function for reject modal
+        function previewRejectFile(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                if (file.type.startsWith('image/')) {
+                    reader.onload = function(e) {
+                        preview.innerHTML = '<img src="' + e.target.result + '" style="max-width: 100%; max-height: 60px; border-radius: 4px;">';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = '<div style="font-size: 20px; color: #4CAF50;">✓</div><div style="font-size: 10px; color: #7f8ea3;">' + file.name.substring(0, 10) + '...</div>';
+                }
+            }
+        }
+        
+        // Reset reject form
+        function resetRejectForm() {
+            document.getElementById('rejectTaskForm').reset();
+            document.getElementById('rejectTaskId').value = '';
+            document.getElementById('rejectTaskType').value = '';
+            document.getElementById('otherReason').style.display = 'none';
+            document.getElementById('preview1').innerHTML = '+';
+            document.getElementById('preview2').innerHTML = '+';
+            document.getElementById('preview3').innerHTML = '+';
+        }
+        
+        // Submit reject task
+        function submitRejectTask() {
+            const form = document.getElementById('rejectTaskForm');
+            const taskId = document.getElementById('rejectTaskId').value;
+            const taskType = document.getElementById('rejectTaskType').value;
+            const reason = document.getElementById('reasonSelect').value;
+            
+            if (!taskId) {
+                alert('Task ID is missing. Please close and reopen the modal.');
+                return;
+            }
+            
+            if (!reason) {
+                alert('Please select a rejection reason.');
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const otherReason = document.getElementById('otherReasonText').value;
+            if (reason === 'Other' && !otherReason.trim()) {
+                alert('Please describe the issue.');
+                return;
+            }
+            
+            // Disable button during submission
+            const saveBtn = document.getElementById('saveRejectBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
+            // Determine the route based on task type
+            let route = '/tasks/reject';
+            if (taskType === 'webtask') {
+                route = '/webtasks/reject';
+            } else if (taskType === 'employeetask') {
+                route = '/emptasks/reject';
+            }
+            
+            fetch(route, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close both modals
+                    const rejectModal = bootstrap.Modal.getInstance(document.getElementById('moveToRejectModal'));
+                    if (rejectModal) rejectModal.hide();
+                    const incheckModal = bootstrap.Modal.getInstance(document.getElementById('incheck'));
+                    if (incheckModal) incheckModal.hide();
+                    
+                    // Reset form
+                    resetRejectForm();
+                    
+                    // Reload page to reflect changes
+                    location.reload();
+                } else {
+                    alert(data.message || 'Error rejecting task. Please try again.');
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save & Close';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save & Close';
+            });
+        }
+    </script>
+
     <!-- in done -->
     <div class="modal fade" id="totaltask" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
@@ -9229,32 +9755,32 @@
                 <div class="mt-3 text-left" style="background: #f9f9fb; padding: 16px; border-radius: 16px;">
                     <strong style="font-size: 13px;">Rate the Developer</strong>
 
-                    <!-- Rating Rows (No PHP) -->
+                    <!-- Rating Rows (Dynamic) -->
                     <div class="mt-2" style="font-size: 13px;">
                         <div class="d-flex align-items-center justify-content-between mb-2"
                             style="background: #fff; padding: 9px;border-radius:10px;">
                             <span>Reliability</span>
-                            <span>⭐⭐⭐☆☆</span>
+                            <span id="rating-reliability">⭐⭐⭐☆☆</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2"
                             style="background: #fff; padding: 9px;border-radius:10px;">
                             <span>Punctuality</span>
-                            <span>⭐⭐⭐☆☆</span>
+                            <span id="rating-punctuality">⭐⭐⭐☆☆</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2"
                             style="background: #fff; padding: 9px;border-radius:10px;">
                             <span>Accuracy</span>
-                            <span>⭐⭐⭐☆☆</span>
+                            <span id="rating-accuracy">⭐⭐⭐☆☆</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2"
                             style="background: #fff; padding: 9px;border-radius:10px;">
                             <span>Quality</span>
-                            <span>⭐⭐⭐☆☆</span>
+                            <span id="rating-quality">⭐⭐⭐☆☆</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2"
                             style="background: #fff; padding: 9px;border-radius:10px;">
                             <span>Work Independently</span>
-                            <span>⭐⭐⭐☆☆</span>
+                            <span id="rating-work-independently">⭐⭐⭐☆☆</span>
                         </div>
                     </div>
                 </div>
@@ -9493,75 +10019,83 @@
                         Please select the reason to Reject the Task
                     </div>
 
-                    <!-- Dropdown -->
-                    <div class="text-center mb-3">
-                        <select class="form-select text-center" id="reasonSelect"
-                            onchange="document.getElementById('otherReason').style.display = this.value === 'Other' ? 'block' : 'none';"
-                            style="max-width: 300px; margin: auto; background-color: #f1f1f1; border: none; border-radius: 8px; padding: 10px 12px; color: #7f8ea3; font-weight: 500; font-size: 14px;">
-                            <option selected disabled>Select the reason</option>
-                            <option value="Incomplete">Incomplete Work</option>
-                            <option value="Wrong">Wrong Implementation</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <!-- Conditional Input -->
-                    <div id="otherReason" style="display: none;">
-                        <label style="font-size: 13px; color: #2c3e50;">Describe the issue</label>
-                        <textarea class="form-control mb-3" placeholder="Describe the issue"
-                            style="border-radius: 8px; background: white; resize: none;"></textarea>
-                    </div>
-
-                    <!-- Upload Boxes -->
-                    <div class="d-flex justify-content-between flex-wrap gap-2">
-                        <!-- Upload 1 -->
-                        <div style="flex: 1; min-width: 100px; text-align: center;">
-                            <label style="cursor: pointer;">
-                                <input type="file" accept="image/*,video/*,.pdf" style="display: none;"
-                                    onchange="previewFile(this, 'preview1')">
-                                <div style="background: white; border-radius: 8px; padding: 16px;">
-                                    <div id="preview1" style="font-size: 24px; color: #888;">+</div>
-                                    <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
-                                </div>
-                            </label>
+                    <!-- Form for rejection -->
+                    <form id="rejectTaskForm">
+                        <input type="hidden" id="rejectTaskId" name="task_id" value="">
+                        <input type="hidden" id="rejectTaskType" name="task_type" value=""> <!-- task, webtask, or employeetask -->
+                        
+                        <!-- Dropdown -->
+                        <div class="text-center mb-3">
+                            <select class="form-select text-center" id="reasonSelect" name="reason" required
+                                onchange="document.getElementById('otherReason').style.display = this.value === 'Other' ? 'block' : 'none';"
+                                style="max-width: 300px; margin: auto; background-color: #f1f1f1; border: none; border-radius: 8px; padding: 10px 12px; color: #7f8ea3; font-weight: 500; font-size: 14px;">
+                                <option value="" selected disabled>Select the reason</option>
+                                <option value="Incomplete">Incomplete Work</option>
+                                <option value="Wrong">Wrong Implementation</option>
+                                <option value="Quality">Quality Issues</option>
+                                <option value="Requirements">Does Not Meet Requirements</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
-                        <!-- Upload 2 -->
-                        <div style="flex: 1; min-width: 100px; text-align: center;">
-                            <label style="cursor: pointer;">
-                                <input type="file" accept="image/*,video/*,.pdf" style="display: none;"
-                                    onchange="previewFile(this, 'preview2')">
-                                <div style="background: white; border-radius: 8px; padding: 16px;">
-                                    <div id="preview2" style="font-size: 24px; color: #888;">+</div>
-                                    <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
-                                </div>
-                            </label>
+                        <!-- Conditional Input -->
+                        <div id="otherReason" style="display: none;">
+                            <label style="font-size: 13px; color: #2c3e50;">Describe the issue</label>
+                            <textarea class="form-control mb-3" id="otherReasonText" name="other_reason" placeholder="Describe the issue"
+                                style="border-radius: 8px; background: white; resize: none;"></textarea>
                         </div>
 
-                        <!-- Upload 3 -->
-                        <div style="flex: 1; min-width: 100px; text-align: center;">
-                            <label style="cursor: pointer;">
-                                <input type="file" accept="image/*,video/*,.pdf" style="display: none;"
-                                    onchange="previewFile(this, 'preview3')">
-                                <div style="background: white; border-radius: 8px; padding: 16px;">
-                                    <div id="preview3" style="font-size: 24px; color: #888;">+</div>
-                                    <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+                        <!-- Upload Boxes -->
+                        <div class="d-flex justify-content-between flex-wrap gap-2" id="rejectFileUploads">
+                            <!-- Upload 1 -->
+                            <div style="flex: 1; min-width: 100px; text-align: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="file" name="reject_files[]" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx" style="display: none;"
+                                        onchange="previewRejectFile(this, 'preview1')">
+                                    <div style="background: white; border-radius: 8px; padding: 16px;">
+                                        <div id="preview1" style="font-size: 24px; color: #888;">+</div>
+                                        <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
+                                    </div>
+                                </label>
+                            </div>
 
+                            <!-- Upload 2 -->
+                            <div style="flex: 1; min-width: 100px; text-align: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="file" name="reject_files[]" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx" style="display: none;"
+                                        onchange="previewRejectFile(this, 'preview2')">
+                                    <div style="background: white; border-radius: 8px; padding: 16px;">
+                                        <div id="preview2" style="font-size: 24px; color: #888;">+</div>
+                                        <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Upload 3 -->
+                            <div style="flex: 1; min-width: 100px; text-align: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="file" name="reject_files[]" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx" style="display: none;"
+                                        onchange="previewRejectFile(this, 'preview3')">
+                                    <div style="background: white; border-radius: 8px; padding: 16px;">
+                                        <div id="preview3" style="font-size: 24px; color: #888;">+</div>
+                                        <div style="font-size: 11px; color: #7f8ea3;">MP4 - JPG - PDF - PNG</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
                 <div class="d-flex justify-content-center gap-3"
                     style="background-color: #f2f2f2; padding: 12px; border-radius: 12px;">
                     <button type="button" class="btn"
                         style="background-color: #f2f2f2; color: #8a9aa7; border: none; font-weight: 600; padding: 8px 20px; border-radius: 8px;"
-                        data-bs-dismiss="modal">
+                        data-bs-dismiss="modal" onclick="resetRejectForm()">
                         Close
                     </button>
-                    <button type="button" class="btn"
-                        style="background-color: #f2f2f2; color: #8a9aa7; border: none; font-weight: 600; padding: 8px 20px; border-radius: 8px;"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn" id="saveRejectBtn"
+                        style="background-color: #d86a89; color: white; border: none; font-weight: 600; padding: 8px 20px; border-radius: 8px;"
+                        onclick="submitRejectTask()">
                         Save & Close
                     </button>
                 </div>
