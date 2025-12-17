@@ -356,17 +356,43 @@ class TaskController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'title'        => 'sometimes|required|string|max:255',
-            'description'  => 'nullable|string',
-            'start_date'   => 'nullable|date',
-            'end_date'     => 'nullable|date|after_or_equal:start_date',
-            'checkpoints'  => 'nullable|array',
-            'checkpoints.*' => 'nullable|string',
-            'mark_image'   => 'nullable|string',
-            'issues'       => 'nullable|array',
-            'status'       => 'sometimes|nullable|string',
-        ]);
+        // Handle both JSON and FormData requests
+        $contentType = $request->header('Content-Type', '');
+        $isJson = str_contains($contentType, 'application/json') || $request->isJson();
+        
+        if ($isJson) {
+            $validated = $request->validate([
+                'title'        => 'sometimes|required|string|max:255',
+                'description'  => 'nullable|string',
+                'start_date'   => 'nullable|date',
+                'end_date'     => 'nullable|date|after_or_equal:start_date',
+                'checkpoints'  => 'nullable|array',
+                'checkpoints.*' => 'nullable|string',
+                'mark_image'   => 'nullable|string',
+                'issues'       => 'nullable|array',
+                'status'       => 'sometimes|nullable|string',
+                'hold_reason'  => 'nullable|string|max:255',
+                'video_link'   => 'nullable|string|max:500',
+                'attachments'  => 'nullable|array',
+                'attachments.*' => 'nullable|string', // file paths
+            ]);
+        } else {
+            // FormData request
+            $validated = $request->validate([
+                'title'        => 'sometimes|required|string|max:255',
+                'description'  => 'nullable|string',
+                'start_date'   => 'nullable|date',
+                'end_date'     => 'nullable|date|after_or_equal:start_date',
+                'checkpoints'  => 'nullable|array',
+                'checkpoints.*' => 'nullable|string',
+                'mark_image'   => 'nullable|string',
+                'issues'       => 'nullable|array',
+                'status'       => 'sometimes|nullable|string',
+                'hold_reason'  => 'nullable|string|max:255',
+                'video_link'   => 'nullable|string|max:500',
+                'attachment_files.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,mp4|max:10240', // 10MB max
+            ]);
+        }
 
         \Illuminate\Support\Facades\Log::info("Task Update Hit. ID: " . $id);
 
@@ -407,9 +433,60 @@ class TaskController extends Controller
         // Force Status Update
         if (!empty($validated['status'])) {
             $task->status = $validated['status'];
-            $task->save();
             \Illuminate\Support\Facades\Log::info("Task status updated to: " . $validated['status']);
         }
+        
+        // Update hold reason if provided
+        if (isset($validated['hold_reason'])) {
+            $task->hold_reason = $validated['hold_reason'];
+            \Illuminate\Support\Facades\Log::info("Task hold reason updated to: " . $validated['hold_reason']);
+        }
+        
+        // Update video link if provided
+        if (isset($validated['video_link'])) {
+            $task->video_link = $validated['video_link'];
+            \Illuminate\Support\Facades\Log::info("Task video link updated");
+        }
+        
+        // Handle file uploads if provided (FormData)
+        $attachmentPaths = [];
+        if (!$isJson && $request->hasFile('attachment_files')) {
+            $files = $request->file('attachment_files');
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    if ($file && $file->isValid()) {
+                        try {
+                            $path = $file->store('tasks/attachments', 'public');
+                            $attachmentPaths[] = $path;
+                        } catch (\Throwable $e) {
+                            \Illuminate\Support\Facades\Log::error("Failed to upload attachment: " . $e->getMessage());
+                        }
+                    }
+                }
+            } elseif ($files) {
+                // Single file
+                try {
+                    $path = $files->store('tasks/attachments', 'public');
+                    $attachmentPaths[] = $path;
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error("Failed to upload attachment: " . $e->getMessage());
+                }
+            }
+        }
+        
+        // Update attachments - merge with existing or set new
+        if (!empty($attachmentPaths)) {
+            $existingAttachments = is_array($task->attachments) ? $task->attachments : [];
+            $task->attachments = array_merge($existingAttachments, $attachmentPaths);
+            \Illuminate\Support\Facades\Log::info("Task attachments updated: " . count($attachmentPaths) . " new files");
+        } elseif (isset($validated['attachments']) && is_array($validated['attachments'])) {
+            // If attachments are provided as paths (from JSON)
+            $task->attachments = $validated['attachments'];
+            \Illuminate\Support\Facades\Log::info("Task attachments updated: " . count($validated['attachments']) . " files");
+        }
+        
+        // Save the task
+        $task->save();
 
         // Optional new image
         if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {

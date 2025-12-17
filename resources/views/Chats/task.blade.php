@@ -1,10 +1,6 @@
 <?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
-    <!-- Page Loader -->
-    <div id="page-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;">
-        <div class="spinner" style="border:4px solid #f3f3f3;border-top:4px solid #22c55e;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;"></div>
-    </div>
 
 <style>
     /* Global Overrides */
@@ -66,11 +62,6 @@
         padding: 4px;
         border-radius: 8px;
         border: 1px solid #eee;
-    }
-    /* Loader spinner animation */
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
     }
     .filter-tab {
         padding: 6px 16px;
@@ -421,6 +412,7 @@
     .task-modal-body {
         padding: 40px 20px 20px; /* Top padding for logo overlap */
         background: #f8fafc;
+        overflow: visible;
     }
     
     .modal-task-title {
@@ -603,44 +595,87 @@
 
     .action-buttons-container {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        gap: 15px;
-        padding-top: 20px;
-        margin-top: 10px;
-        border-top: 1px solid #f1f5f9;
+        gap: 20px;
+        padding-top: 30px;
+        margin-top: 20px;
+        position: relative;
+        overflow: visible;
     }
     .action-btn {
         flex: 1;
-        background: #fff;
+        background: transparent;
         border: none;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
-        font-size: 11px;
+        gap: 10px;
+        font-size: 12px;
         font-weight: 700;
         color: #1e293b;
         cursor: pointer;
-        padding: 5px;
-        border-radius: 8px;
-        transition: background 0.2s;
+        padding: 0;
+        position: relative;
+        transition: transform 0.2s;
     }
     .action-btn:hover {
-        background: #f8fafc;
+        transform: translateY(-2px);
     }
     .action-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 16px;
+        font-size: 24px;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .icon-hold { background: #f59e0b; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); } /* Orange */
-    .icon-check { background: #a855f7; box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3); } /* Purple */
+    .action-icon i {
+        position: relative;
+        z-index: 1;
+    }
+    .icon-hold { 
+        background: #f97316; 
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4); 
+    } /* Orange */
+    .icon-check { 
+        background: #a855f7; 
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4); 
+    } /* Purple */
+    
+    /* Red timeline lines for action buttons */
+    /* .action-buttons-container::before,
+    .action-buttons-container::after {
+        content: '';
+        position: absolute;
+        top: 48px;
+        height: 2px;
+        background: #ef4444;
+        z-index: 0;
+    } */
+    .action-buttons-container::before {
+        left: 0;
+        width: calc(50% - 34px);
+    }
+    .action-buttons-container::after {
+        right: 0;
+        width: calc(50% - 34px);
+    }
+    
+    /* Badge for In Progress */
+    .badge-progress {
+        background: #dcfce7;
+        color: #22c55e;
+    }
+    
+    /* In Progress header styling */
+    .task-modal-header.in-progress {
+        background: #22c55e;
+    }
 
     /* Hold Modal Styles */
     .modal-header.hold-header {
@@ -656,14 +691,15 @@
 
     /* Common Alert Box */
     .alert-box-red {
-        background: #ef4444;
-        color: white;
-        border-radius: 8px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        border-radius: 10px;
         padding: 12px;
         font-size: 11px;
         display: flex;
-        align-items: center;
-        gap: 10px;
+        align-items: flex-start;
+        gap: 12px;
         margin-top: 15px;
     }
 
@@ -675,16 +711,28 @@
     .check-list-item {
         background: white;
         border: 1px solid #f1f5f9;
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 8px;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        transition: all 0.2s;
+    }
+    .check-list-item:hover {
+        border-color: #e2e8f0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .check-list-icon {
         color: #ef4444; /* Red icon color */
         margin-right: 10px;
+        font-size: 16px;
+    }
+    
+    /* Add file box hover effect */
+    .add-file-box:hover {
+        background: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
     }
 
     /* On Hold State Override */
@@ -984,8 +1032,8 @@
                 <h3 class="modal-task-title" id="modalTaskTitleDisplay">Task Title</h3>
                 
                 <!-- Badges -->
-                <div class="modal-tags">
-                    <div class="badge-custom badge-new">
+                <div class="modal-tags" id="modalBadgesContainer">
+                    <div class="badge-custom badge-new" id="badgeStatus">
                         <i class="ti ti-flag"></i> New Task
                     </div>
                     <div class="badge-custom badge-id">
@@ -1077,15 +1125,15 @@
                 <div class="action-buttons-container" id="actionButtonsContainer" style="display: none;">
                     <button class="action-btn" onclick="openHoldModal()">
                         <div class="action-icon icon-hold">
-                            <i class="ti ti-hand-stop"></i>
+                            <i class="ti ti-folder-pause"></i>
                         </div>
-                        Move to in Hold
+                        <span>Move to in Hold</span>
                     </button>
-                     <button class="action-btn" onclick="openCheckModal()">
+                    <button class="action-btn" onclick="openCheckModal()">
                         <div class="action-icon icon-check">
-                            <i class="ti ti-check"></i>
+                            <i class="ti ti-folder-clock"></i>
                         </div>
-                        Move to in Check
+                        <span>Move to in Check</span>
                     </button>
                 </div>
 
@@ -1235,36 +1283,51 @@
 <div class="modal fade" id="checkConfirmationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
         <div class="modal-content task-modal-content">
-            <!-- Purple Header -->
+            <!-- Header -->
              <div class="modal-header border-0 pb-0">
                  <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Task to Checked</h5>
             </div>
             
-            <div class="modal-body pt-2 text-center" style="font-family: 'Outfit', sans-serif;">
+            <div class="modal-body pt-2" style="font-family: 'Outfit', sans-serif;">
                 
-                <!-- Purple Icon -->
-               <div style="margin: 0 auto 15px; width: 60px; height: 60px; background: #a855f7; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                     <i class="ti ti-check" style="font-size: 30px; color: white;"></i>
+                <!-- Purple Folder Icon with Exclamation -->
+                <div class="text-center mb-3">
+                    <div style="margin: 0 auto; width: 80px; height: 80px; background: #a855f7; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <i class="ti ti-folder" style="font-size: 40px; color: white;"></i>
+                        <div style="position: absolute; top: -5px; right: -5px; width: 24px; height: 24px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #a855f7;">
+                            <i class="ti ti-alert-circle" style="font-size: 14px; color: #a855f7;"></i>
+                        </div>
+                    </div>
                 </div>
 
-                 <!-- Date Time Display -->
-                <div class="d-flex align-items-center justify-content-center gap-3 py-2 mb-3" style="background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 12px;">
-                     <div class="d-flex align-items-center gap-1 text-success fw-bold">
-                         <i class="ti ti-check"></i> Moved: <span id="checkDateDisplay">23.10.2024</span>
+                 <!-- Date Time Display Bar -->
+                <div class="d-flex align-items-center justify-content-center gap-2 py-2 mb-4" style="background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; padding: 10px 15px;">
+                     <div style="width: 24px; height: 24px; background: #a855f7; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                         <i class="ti ti-folder" style="font-size: 12px; color: white;"></i>
+                         <div style="position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; margin-top: -8px; margin-left: 8px;"></div>
                      </div>
-                     <div class="text-success fw-bold">Time: <span id="checkTimeDisplay">12:45</span></div>
+                     <div class="d-flex align-items-center gap-1" style="color: #22c55e; font-weight: 700;">
+                         <span>Moved: <span id="checkDateDisplay" style="color: #1e293b;">23.10.2024</span></span>
+                     </div>
+                     <div style="width: 1px; height: 20px; background: #e2e8f0;"></div>
+                     <div style="color: #22c55e; font-weight: 700;">
+                         <span>Time: <span id="checkTimeDisplay" style="color: #1e293b;">12:45</span></span>
+                     </div>
                 </div>
 
                 <!-- Notes Section -->
-                <div class="text-start mb-3">
-                    <label class="fw-bold mb-2" style="font-size: 12px;">Notes</label>
+                <div class="text-start mb-4">
+                    <label class="fw-bold mb-3 d-flex align-items-center" style="font-size: 12px; color: #64748b;">
+                        <span style="width: 6px; height: 6px; background: #64748b; border-radius: 50%; margin-right: 8px;"></span>
+                        Notes
+                    </label>
                     
                     <div class="check-list-item">
                         <div class="d-flex align-items-center">
                             <i class="ti ti-bolt check-list-icon"></i>
-                            <span style="font-size: 12px;">Did u solve the issue ?</span>
+                            <span style="font-size: 12px; color: #334155;">Did u solve the issue ?</span>
                         </div>
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch m-0">
                             <input class="form-check-input" type="checkbox" checked>
                         </div>
                     </div>
@@ -1272,56 +1335,84 @@
                     <div class="check-list-item">
                         <div class="d-flex align-items-center">
                             <i class="ti ti-bolt check-list-icon"></i>
-                            <span style="font-size: 12px;">Did u checked your work</span>
+                            <span style="font-size: 12px; color: #334155;">Did u Chekcked your work</span>
                         </div>
-                         <div class="form-check form-switch">
+                        <div class="form-check form-switch m-0">
                             <input class="form-check-input" type="checkbox">
                         </div>
                     </div>
-                     <div class="check-list-item">
+                    <div class="check-list-item">
                         <div class="d-flex align-items-center">
                             <i class="ti ti-bolt check-list-icon"></i>
-                            <span style="font-size: 12px;">Show us Video and Images about the work</span>
+                            <span style="font-size: 12px; color: #334155;">Show us Video and Images about the work</span>
                         </div>
-                         <div class="form-check form-switch">
+                        <div class="form-check form-switch m-0">
                             <input class="form-check-input" type="checkbox">
                         </div>
                     </div>
                 </div>
                 
-                 <!-- Attachments Placeholders -->
-                 <div class="text-start mb-3">
-                     <label class="fw-bold mb-2" style="font-size: 12px;">Share work Attachments</label>
-                     <input type="text" class="form-control" placeholder="Video Link will be here to check the work" style="font-size: 12px; background: #f8fafc; border:none; padding: 10px;">
+                 <!-- Share work Attachments -->
+                 <div class="text-start mb-4">
+                     <label class="fw-bold mb-3 d-flex align-items-center" style="font-size: 12px; color: #64748b;">
+                         <span style="width: 6px; height: 6px; background: #64748b; border-radius: 50%; margin-right: 8px;"></span>
+                         Share work Attachments
+                     </label>
+                     <div class="position-relative">
+                         <i class="ti ti-video" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 18px; z-index: 1;"></i>
+                         <input type="text" id="checkVideoLink" class="form-control" placeholder="Video Link will be here to check the work" style="font-size: 12px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 10px 10px 40px; border-radius: 8px;">
+                     </div>
                  </div>
                  
-                 <div class="text-start mb-3">
-                     <label class="fw-bold mb-2" style="font-size: 12px;">File Attachments</label>
-                     <div class="d-flex gap-2">
-                         <!-- File Mockup -->
-                         <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 10px; display: flex; align-items: center; gap: 5px;">
-                             <i class="ti ti-file-type-pdf text-danger"></i>
-                             <div style="font-size: 10px;">File Title.pdf<br><span class="text-muted">94 KB</span></div>
+                 <!-- File Attachments -->
+                 <div class="text-start mb-4">
+                     <label class="fw-bold mb-3 d-flex align-items-center" style="font-size: 12px; color: #64748b;">
+                         <span style="width: 6px; height: 6px; background: #64748b; border-radius: 50%; margin-right: 8px;"></span>
+                         File Attachments
+                     </label>
+                     <div class="d-flex gap-2 flex-wrap">
+                         <!-- Existing File -->
+                         <div id="existingFileBox" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; min-width: 140px;">
+                             <i class="ti ti-file-type-pdf" style="font-size: 20px; color: #ef4444;"></i>
+                             <div style="font-size: 10px; flex: 1;">
+                                 <div style="font-weight: 600; color: #1e293b;">File Title.pdf</div>
+                                 <div style="color: #64748b;">94 KB of 94 KB</div>
+                             </div>
+                             <i class="ti ti-trash" style="font-size: 16px; color: #ef4444; cursor: pointer;" onclick="removeFile(this)"></i>
+                         </div>
+                         
+                         <!-- Add File Box 1 -->
+                         <div class="add-file-box" style="background: #f8fafc; border: 1px dashed #e2e8f0; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 140px; cursor: pointer; transition: all 0.2s;" onclick="triggerFileUpload(this)">
+                             <i class="ti ti-plus" style="font-size: 24px; color: #94a3b8; margin-bottom: 8px;"></i>
+                             <div style="font-size: 9px; color: #94a3b8; text-align: center; line-height: 1.3;">MP4 - JPG<br>PDF - PNG</div>
+                             <input type="file" class="file-upload-input" style="display: none;" accept=".mp4,.jpg,.jpeg,.pdf,.png" onchange="handleFileUpload(this, event)">
+                         </div>
+                         
+                         <!-- Add File Box 2 -->
+                         <div class="add-file-box" style="background: #f8fafc; border: 1px dashed #e2e8f0; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 140px; cursor: pointer; transition: all 0.2s;" onclick="triggerFileUpload(this)">
+                             <i class="ti ti-plus" style="font-size: 24px; color: #94a3b8; margin-bottom: 8px;"></i>
+                             <div style="font-size: 9px; color: #94a3b8; text-align: center; line-height: 1.3;">MP4 - JPG<br>PDF - PNG</div>
+                             <input type="file" class="file-upload-input" style="display: none;" accept=".mp4,.jpg,.jpeg,.pdf,.png" onchange="handleFileUpload(this, event)">
                          </div>
                      </div>
                  </div>
 
-
-                <!-- Red Alert -->
-                <div class="alert-box-red text-start">
-                    <i class="ti ti-bolt" style="font-size: 18px;"></i>
-                    <div>
+                <!-- Pink/Red Alert Box -->
+                <div class="alert-box-red text-start d-flex align-items-start gap-3 mb-4" style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px;">
+                    <i class="ti ti-bolt" style="font-size: 18px; color: #ef4444; flex-shrink: 0; margin-top: 2px;"></i>
+                    <div style="flex: 1; font-size: 11px; color: #991b1b; line-height: 1.4;">
                          The project manager will review the attachments and<br>
                          get back to you within max. 12 hours.
                     </div>
-                     <div class="form-check form-switch ms-auto">
+                    <div class="form-check form-switch m-0" style="flex-shrink: 0;">
                         <input class="form-check-input" type="checkbox" checked>
                     </div>
                 </div>
 
+                <!-- Action Buttons -->
                 <div class="d-flex gap-3 justify-content-center mt-4">
-                     <button type="button" class="btn btn-light text-muted fw-bold px-4" data-bs-dismiss="modal" style="background:#f1f5f9; border:none;">Close</button>
-                     <button type="button" onclick="confirmMoveToCheck()" class="btn btn-light text-muted fw-bold px-4" style="background:#f1f5f9; border:none;">Move on</button>
+                     <button type="button" class="btn fw-bold px-4" data-bs-dismiss="modal" style="background: #fff; color: #64748b; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 20px;">Close</button>
+                     <button type="button" onclick="confirmMoveToCheck()" class="btn fw-bold px-4" style="background: #fff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 20px;">Move on</button>
                 </div>
             </div>
         </div>
@@ -1432,13 +1523,6 @@
         });
     });
 
-    window.addEventListener('load', function() {
-        var loader = document.getElementById('page-loader');
-        if(loader) {
-            loader.style.display = 'none';
-        }
-    });
-
     // Function to Open Task Modal
     function openTaskModal(element) {
         // Retrieve data
@@ -1513,17 +1597,49 @@
                 holdReasonTextEl.textContent = holdReasonText || 'No reason provided';
             }
         } 
+        else if (isInProgress) {
+            header.classList.add('in-progress');
+            actionBtns.style.display = 'flex';
+            
+            // Update badge to show "In Progress"
+            const badgeStatus = document.getElementById('badgeStatus');
+            if (badgeStatus) {
+                badgeStatus.className = 'badge-custom badge-progress';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Progress';
+            }
+        } 
         else if (isChecked) {
             header.classList.add('check-header');
             continueTaskBtn.style.display = 'block';
+            
+            // Reset badge to default
+            const badgeStatus = document.getElementById('badgeStatus');
+            if (badgeStatus) {
+                badgeStatus.className = 'badge-custom badge-new';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> New Task';
+            }
         }
         else if (isInProgress) {
             header.classList.add('in-progress');
             actionBtns.style.display = 'flex';
+            
+            // Update badge to show "In Progress"
+            const badgeStatus = document.getElementById('badgeStatus');
+            if (badgeStatus) {
+                badgeStatus.className = 'badge-custom badge-progress';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Progress';
+            }
         } 
         else {
             // Default / New
             startBtn.style.display = 'block';
+            
+            // Reset badge to default
+            const badgeStatus = document.getElementById('badgeStatus');
+            if (badgeStatus) {
+                badgeStatus.className = 'badge-custom badge-new';
+                badgeStatus.innerHTML = '<i class="ti ti-flag"></i> New Task';
+            }
         }
 
         // Image - Use the image path that PHP already prepared (from issue or task)
@@ -1645,12 +1761,117 @@
         document.getElementById('checkDateDisplay').textContent = now.toLocaleDateString('de-DE');
         document.getElementById('checkTimeDisplay').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
+        // Reset video link input
+        const videoLinkInput = document.getElementById('checkVideoLink');
+        if (videoLinkInput) {
+            videoLinkInput.value = '';
+        }
+
         const checkModal = new bootstrap.Modal(document.getElementById('checkConfirmationModal'));
         checkModal.show();
     }
 
     function confirmMoveToCheck() {
-         executeStatusUpdate('checked');
+        // Get video link
+        const videoLink = document.getElementById('checkVideoLink')?.value || '';
+        
+        // Collect all uploaded files from file inputs
+        const fileInputs = document.querySelectorAll('#checkConfirmationModal .file-upload-input');
+        const uploadedFiles = [];
+        fileInputs.forEach(input => {
+            if (input.files && input.files.length > 0) {
+                uploadedFiles.push(input.files[0]);
+            }
+        });
+        
+        // Execute update with files
+        executeStatusUpdateWithFiles('checked', { 
+            video_link: videoLink
+        }, uploadedFiles);
+    }
+    
+    // File upload functions
+    function triggerFileUpload(box) {
+        const input = box.querySelector('.file-upload-input');
+        if (input) {
+            input.click();
+        }
+    }
+    
+    function handleFileUpload(input, event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const box = input.closest('.add-file-box');
+        if (!box) return;
+        
+        // Validate file type
+        const allowedTypes = ['pdf', 'jpg', 'jpeg', 'png', 'mp4'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!allowedTypes.includes(fileExtension)) {
+            alert('Invalid file type. Allowed: PDF, JPG, PNG, MP4');
+            input.value = ''; // Clear the input
+            return;
+        }
+        
+        // Validate file size (10MB max)
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        if (file.size > maxSize) {
+            alert('File size too large. Maximum size is 10MB');
+            input.value = ''; // Clear the input
+            return;
+        }
+        
+        // Convert box to file display box
+        const fileSize = (file.size / 1024).toFixed(0);
+        const fileName = file.name.length > 15 ? file.name.substring(0, 15) + '...' : file.name;
+        
+        // Determine icon based on file type
+        let iconClass = 'ti-file';
+        let iconColor = '#64748b';
+        if (fileExtension === 'pdf') {
+            iconClass = 'ti-file-type-pdf';
+            iconColor = '#ef4444';
+        } else if (['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+            iconClass = 'ti-photo';
+            iconColor = '#3b82f6';
+        } else if (fileExtension === 'mp4') {
+            iconClass = 'ti-video';
+            iconColor = '#8b5cf6';
+        }
+        
+        // Store the file reference in the box for later upload
+        box.dataset.fileName = file.name;
+        box.dataset.fileSize = fileSize;
+        
+        box.innerHTML = `
+            <i class="ti ${iconClass}" style="font-size: 20px; color: ${iconColor};"></i>
+            <div style="font-size: 10px; flex: 1;">
+                <div style="font-weight: 600; color: #1e293b;">${fileName}</div>
+                <div style="color: #64748b;">${fileSize} KB</div>
+            </div>
+            <i class="ti ti-trash" style="font-size: 16px; color: #ef4444; cursor: pointer;" onclick="removeFile(this)"></i>
+        `;
+        box.style.background = '#fff';
+        box.style.border = '1px solid #e2e8f0';
+        box.style.borderStyle = 'solid';
+        box.style.padding = '8px 12px';
+        box.style.flexDirection = 'row';
+        box.style.gap = '8px';
+        box.style.minWidth = '140px';
+        box.classList.remove('add-file-box');
+        box.classList.add('uploaded-file-box');
+        
+        // Keep the input element for file access
+        box.appendChild(input);
+        input.style.display = 'none';
+    }
+    
+    function removeFile(icon) {
+        const box = icon.closest('.uploaded-file-box, #existingFileBox');
+        if (box) {
+            box.remove();
+        }
     }
 
     function continueTask() {
@@ -1688,5 +1909,54 @@
             console.error('Error:', error);
             alert('An error occurred updating status.');
         });
+    }
+    
+    // AJAX function with file uploads
+    function executeStatusUpdateWithFiles(newStatus, extraData = {}, files = []) {
+        if (!window.currentTaskIdForStart) return;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Use FormData if files are present, otherwise use JSON
+        if (files && files.length > 0) {
+            const formData = new FormData();
+            formData.append('status', newStatus);
+            
+            // Add extra data
+            Object.keys(extraData).forEach(key => {
+                if (extraData[key] !== null && extraData[key] !== undefined) {
+                    formData.append(key, extraData[key]);
+                }
+            });
+            
+            // Add files
+            files.forEach((file, index) => {
+                formData.append(`attachment_files[${index}]`, file);
+            });
+
+            fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                    // Don't set Content-Type for FormData, browser will set it with boundary
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload(); 
+                } else {
+                    alert('Failed to update task status.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred updating status.');
+            });
+        } else {
+            // No files, use regular JSON request
+            executeStatusUpdate(newStatus, extraData);
+        }
     }
 </script>

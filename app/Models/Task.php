@@ -26,6 +26,8 @@ class Task extends Model
         'issues', // array of embedded issue objects
         'created_by',
         'hold_reason', // reason for putting task on hold
+        'video_link', // video link for checked tasks
+        'attachments', // array of file paths for checked tasks
     ];
 
     protected $casts = [
@@ -34,7 +36,7 @@ class Task extends Model
         'checkpoints' => 'array',
         'position'    => 'array',
         'issues'      => 'array',
-        
+        'attachments' => 'array',
     ];
 
     public function project()
