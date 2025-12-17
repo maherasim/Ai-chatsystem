@@ -612,7 +612,7 @@ class TeamController extends Controller
     /**
      * Send email notifications to developers assigned to tasks
      * 
-     * @param array $devMap Map of taskId => [developerName, ...]
+     * @param array $devMap Map of userId => [developerName] (keys are user IDs, not task IDs)
      * @param array $priorityValues Map of taskId => priority
      * @param array $taskIds Array of task IDs
      * @param string $teamTitle Team title
@@ -621,31 +621,50 @@ class TeamController extends Controller
     private function sendTaskAssignmentEmails(array $devMap, array $priorityValues, array $taskIds, string $teamTitle = '', array $oldDevMap = [])
     {
         try {
-            // Get all unique developer names
-            $allDeveloperNames = [];
-            foreach ($devMap as $taskId => $developerNames) {
-                if (is_array($developerNames)) {
-                    foreach ($developerNames as $devName) {
-                        if (!empty($devName) && !in_array($devName, $allDeveloperNames)) {
-                            $allDeveloperNames[] = $devName;
-                        }
-                    }
-                }
+            if (empty($devMap) || empty($taskIds)) {
+                return; // No developers or tasks to notify
             }
 
-            if (empty($allDeveloperNames)) {
+            // Get all user IDs from devMap (keys are user IDs)
+            $userIds = array_keys($devMap);
+            
+            if (empty($userIds)) {
                 return; // No developers to notify
             }
 
-            // Fetch all developers by name to get their emails
-            $developers = User::where('type', 'developer')
-                ->whereIn('name', $allDeveloperNames)
-                ->get()
-                ->keyBy('name');
+            // Fetch all developers by ID to get their emails
+            $developers = collect();
+            foreach ($userIds as $userId) {
+                try {
+                    $user = User::find($userId);
+                    if (!$user) {
+                        try {
+                            $user = User::query()->where('id', $userId)->orWhere('_id', $userId)->first();
+                        } catch (\Throwable $e) {
+                            continue;
+                        }
+                    }
+                    if ($user && $user->type === 'developer' && !empty($user->email)) {
+                        $developers->put($userId, $user);
+                    }
+                } catch (\Throwable $e) {
+                    continue;
+                }
+            }
 
-            // Process each task
-            foreach ($devMap as $taskId => $developerNames) {
-                if (!is_array($developerNames) || empty($developerNames)) {
+            if ($developers->isEmpty()) {
+                return; // No developers found with emails
+            }
+
+            // Get old developer user IDs for comparison (for update scenario)
+            $oldUserIds = [];
+            if (!empty($oldDevMap)) {
+                $oldUserIds = array_keys($oldDevMap);
+            }
+
+            // Process each task and send email to assigned developers
+            foreach ($taskIds as $taskId) {
+                if (empty($taskId)) {
                     continue;
                 }
 
@@ -671,27 +690,15 @@ class TeamController extends Controller
                 // Get priority for this task
                 $priority = $priorityValues[$taskId] ?? '';
 
-                // Get old developers for this task (for update scenario)
-                $oldDevelopers = [];
-                if (!empty($oldDevMap) && isset($oldDevMap[$taskId]) && is_array($oldDevMap[$taskId])) {
-                    $oldDevelopers = $oldDevMap[$taskId];
-                }
-
                 // Send email to each assigned developer
-                foreach ($developerNames as $devName) {
-                    if (empty($devName)) {
-                        continue;
-                    }
-
+                foreach ($developers as $userId => $developer) {
                     // For update: only send email if developer is newly assigned
-                    if (!empty($oldDevMap) && in_array($devName, $oldDevelopers)) {
+                    if (!empty($oldDevMap) && in_array($userId, $oldUserIds)) {
                         continue; // Developer was already assigned, skip
                     }
 
-                    // Find developer by name
-                    $developer = $developers->get($devName);
-                    if (!$developer || empty($developer->email)) {
-                        continue; // Developer not found or no email
+                    if (empty($developer->email)) {
+                        continue; // No email address
                     }
 
                     // Send email notification
