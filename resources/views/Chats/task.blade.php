@@ -859,6 +859,20 @@
                                     if (in_array($taskStatus, ['done', 'completed', 'in_done'])) $filterClass .= ' status-done';
                                 @endphp
                                 
+                                @php
+                                    // Decode issues if it's a JSON string
+                                    $issues = $task->issues ?? [];
+                                    if (is_string($issues)) {
+                                        $decodedIssues = json_decode($issues, true);
+                                        $issues = is_array($decodedIssues) ? $decodedIssues : [];
+                                    }
+                                    $firstIssue = !empty($issues) && is_array($issues) ? $issues[0] : null;
+                                    $issueDescription = $firstIssue['description'] ?? $task->description ?? 'No description available.';
+                                    $issueStartDate = isset($firstIssue['start_date']) ? \Carbon\Carbon::parse($firstIssue['start_date'])->format('d.m.Y') : (isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025');
+                                    $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
+                                    $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
+                                    $markImagePath = !empty($issueImagePath) ? asset('storage/' . $issueImagePath) : (!empty($task->mark_image_path) ? asset('storage/' . $task->mark_image_path) : '');
+                                @endphp
                                 <div class="new-task-card {{ $filterClass }}" 
                                      data-status="{{ $taskStatus }}" 
                                      data-project-id="{{ $task->project_id ?? '' }}"
@@ -867,11 +881,14 @@
                                      data-ticket-id="{{ substr((string)($task->ticket_id ?? '---'), -4) }}"
                                      data-title="{{ $task->title ?? 'Untitled Task' }}"
                                      data-description="{{ $task->description ?? 'No description available.' }}"
-                                     data-start-date="{{ isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025' }}"
-                                     data-end-date="{{ isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025' }}"
-                                     data-image="{{ !empty($task->mark_image_path) ? asset('storage/' . $task->mark_image_path) : '' }}"
+                                     data-issue-description="{{ $issueDescription }}"
+                                     data-issues="{{ json_encode($issues) }}"
+                                     data-start-date="{{ $issueStartDate }}"
+                                     data-end-date="{{ $issueEndDate }}"
+                                     data-image="{{ $markImagePath }}"
                                      data-index="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}"
                                      data-project-name="{{ $task->project->title ?? 'Project Name' }}"
+                                     data-hold-reason="{{ $task->hold_reason ?? '' }}"
                                      style="cursor: pointer;"
                                      onclick="openTaskModal(this)">
                                      
@@ -1077,7 +1094,7 @@
                     <div style="margin-bottom: 5px;">
                         <i class="ti ti-hand-stop" style="font-size: 24px; color: #f59e0b;"></i>
                     </div>
-                    The Hold Reason will be here
+                    <div id="holdReasonText">The Hold Reason will be here</div>
                 </div>
 
                 <!-- Go To Task Button (On Hold State) -->
@@ -1173,11 +1190,11 @@
 
                 <div class="mb-3">
                     <label class="form-label text-start w-100 text-muted" style="font-size: 12px;">Select the reason for why to move the Task to <strong style="color:#f97316">'In Hold'</strong></label>
-                    <select class="form-select border-0 bg-light" style="font-size: 13px;">
-                        <option>Select the reason</option>
-                        <option>Pending Dependencies</option>
-                        <option>Client Feedback</option>
-                        <option>Internal Review</option>
+                    <select id="holdReasonSelect" class="form-select border-0 bg-light" style="font-size: 13px;">
+                        <option value="">Select the reason</option>
+                        <option value="Pending Dependencies">Pending Dependencies</option>
+                        <option value="Client Feedback">Client Feedback</option>
+                        <option value="Internal Review">Internal Review</option>
                     </select>
                 </div>
 
@@ -1427,6 +1444,8 @@
         // Retrieve data
         const title = element.getAttribute('data-title');
         const desc = element.getAttribute('data-description');
+        const issueDesc = element.getAttribute('data-issue-description');
+        const issuesJson = element.getAttribute('data-issues');
         const taskId = element.getAttribute('data-task-id');
         const fullTaskId = element.getAttribute('data-full-task-id');
         const ticketId = element.getAttribute('data-ticket-id');
@@ -1444,17 +1463,21 @@
 
         // Populate Fields
         document.getElementById('modalTaskTitleDisplay').textContent = title;
-        document.getElementById('modalTaskDescriptionDisplay').textContent = desc ? desc : "No description provided.";
+        
+        // Use issue description if available, otherwise fall back to task description
+        const descriptionToShow = issueDesc && issueDesc !== 'No description available.' ? issueDesc : (desc || "No description provided.");
+        document.getElementById('modalTaskDescriptionDisplay').textContent = descriptionToShow;
+        
         document.getElementById('modalTaskIdDisplay').textContent = taskId;
         // document.getElementById('modalTicketId').textContent = ticketId;
-        document.getElementById('modalStartDateDisplay').textContent = startDate.slice(0, 5); 
-        document.getElementById('modalEndDateDisplay').textContent = endDate.slice(0, 5);
+        document.getElementById('modalStartDateDisplay').textContent = startDate ? startDate.slice(0, 5) : 'N/A'; 
+        document.getElementById('modalEndDateDisplay').textContent = endDate ? endDate.slice(0, 5) : 'N/A';
         document.getElementById('modalIndexDisplay').textContent = "-" + index + "-";
         
         document.getElementById('modalProjectName').textContent = projectName;
         document.getElementById('modalTicketNum').textContent = ticketId;
         
-        document.getElementById('modalStartFull').textContent = startDate;
+        document.getElementById('modalStartFull').textContent = startDate || 'N/A';
 
         // Store full task ID globally
         window.currentTaskIdForStart = fullTaskId;
@@ -1482,6 +1505,13 @@
             header.classList.add('on-hold');
             holdReason.style.display = 'block';
             goToTaskBtn.style.display = 'block';
+            
+            // Display hold reason if available
+            const holdReasonText = element.getAttribute('data-hold-reason') || '';
+            const holdReasonTextEl = document.getElementById('holdReasonText');
+            if (holdReasonTextEl) {
+                holdReasonTextEl.textContent = holdReasonText || 'No reason provided';
+            }
         } 
         else if (isChecked) {
             header.classList.add('check-header');
@@ -1496,13 +1526,18 @@
             startBtn.style.display = 'block';
         }
 
-        // Image
+        // Image - Use the image path that PHP already prepared (from issue or task)
         const imgEl = document.getElementById('modalTaskImageFull');
         const placeholderEl = document.getElementById('modalImagePlaceholder');
         
-        if (imageSrc) {
+        if (imageSrc && imageSrc.trim() !== '') {
             imgEl.src = imageSrc;
             imgEl.style.display = 'block';
+            imgEl.onerror = function() {
+                // If image fails to load, show placeholder
+                this.style.display = 'none';
+                placeholderEl.style.display = 'block';
+            };
             placeholderEl.style.display = 'none';
         } else {
             imgEl.style.display = 'none';
@@ -1586,7 +1621,15 @@
     }
 
     function confirmMoveToHold() {
-         executeStatusUpdate('on_hold');
+        const holdReasonSelect = document.getElementById('holdReasonSelect');
+        const holdReason = holdReasonSelect ? holdReasonSelect.value : '';
+        
+        if (!holdReason || holdReason === '') {
+            alert('Please select a hold reason');
+            return;
+        }
+        
+        executeStatusUpdate('on_hold', { hold_reason: holdReason });
     }
 
     // --- Check Flow ---
@@ -1615,10 +1658,15 @@
     }
 
     // Core AJAX function
-    function executeStatusUpdate(newStatus) {
+    function executeStatusUpdate(newStatus, extraData = {}) {
         if (!window.currentTaskIdForStart) return;
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const requestBody = {
+            status: newStatus,
+            ...extraData
+        };
 
         fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
             method: 'POST',
@@ -1626,9 +1674,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify({
-                status: newStatus
-            })
+            body: JSON.stringify(requestBody)
         })
         .then(response => response.json())
         .then(data => {

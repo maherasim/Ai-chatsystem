@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
+    
     public function index()
     {
         $headers = \App\Models\Setting::all();

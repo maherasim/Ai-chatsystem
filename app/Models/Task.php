@@ -25,6 +25,7 @@ class Task extends Model
         'mark_image_path', // saved file path in storage
         'issues', // array of embedded issue objects
         'created_by',
+        'hold_reason', // reason for putting task on hold
     ];
 
     protected $casts = [

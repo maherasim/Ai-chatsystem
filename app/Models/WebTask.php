@@ -25,6 +25,7 @@ class WebTask extends Model
         'mark_image_path',
         'issues',
         'created_by',
+        'hold_reason', // reason for putting task on hold
     ];
 
     protected $casts = [
