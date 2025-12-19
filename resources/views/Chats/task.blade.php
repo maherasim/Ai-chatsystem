@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $staticBaseUrl = 'https://logiadmin.it-supportline.de';
+    $baseUrl = config('app.url');
 @endphp
 
 <style>
@@ -793,84 +793,6 @@
         display: none; /* Hidden by default */
     }
 
-    /* Sign In Popup Modal Styles */
-    .signin-popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1060;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .signin-popup-modal {
-        background: #fff;
-        border-radius: 20px;
-        padding: 30px 25px;
-        max-width: 320px;
-        width: 90%;
-        text-align: center;
-        position: relative;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        animation: fadeInScale 0.3s ease-out;
-    }
-    @keyframes fadeInScale {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-    .signin-popup-icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 20px;
-        position: relative;
-    }
-    .signin-popup-icon svg {
-        width: 100%;
-        height: 100%;
-    }
-    .signin-popup-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 10px;
-        font-family: 'Outfit', sans-serif;
-    }
-    .signin-popup-text {
-        font-size: 14px;
-        color: #64748b;
-        margin-bottom: 30px;
-        line-height: 1.5;
-        font-weight: 500;
-    }
-    .signin-popup-close-btn {
-        background: #22c55e;
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 12px 40px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 10px;
-        transition: all 0.2s;
-        font-family: 'Outfit', sans-serif;
-    }
-    .signin-popup-close-btn:hover {
-        background: #16a34a;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-    }
-
 </style>
 
 <div class="content main_content">
@@ -909,7 +831,7 @@
                         <!-- Total Tasks -->
                         <div class="stats-card stat-total">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ URL::asset('/build/img/totaltask.svg') }}" alt="Total" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/totaltask.svg" alt="Total" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">Total Tasks</div>
                             <div class="stats-count">{{ $stats['total'] ?? 0 }}</div>
@@ -918,7 +840,7 @@
                         <!-- New Task -->
                         <div class="stats-card stat-new">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/newtask.svg" alt="New" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/newtask.svg" alt="New" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">New Task</div>
                             <div class="stats-count">{{ $stats['new'] ?? 0 }}</div>
@@ -927,7 +849,7 @@
                         <!-- In Progress -->
                         <div class="stats-card stat-progress">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/progress.svg" alt="Progress" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/progress.svg" alt="Progress" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Progress</div>
                             <div class="stats-count">{{ $stats['in_progress'] ?? 0 }}</div>
@@ -936,7 +858,7 @@
                         <!-- In Hold -->
                         <div class="stats-card stat-hold">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/inhold.svg" alt="Hold" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/inhold.svg" alt="Hold" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Hold</div>
                             <div class="stats-count">{{ $stats['on_hold'] ?? 0 }}</div>
@@ -945,7 +867,7 @@
                         <!-- In Checked -->
                         <div class="stats-card stat-checked">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/incheck.svg" alt="Checked" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/incheck.svg" alt="Checked" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Checked</div>
                             <div class="stats-count">{{ $stats['checked'] ?? 0 }}</div>
@@ -954,7 +876,7 @@
                         <!-- In Delayed -->
                         <div class="stats-card stat-delayed">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/delayed.svg" alt="Delayed" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/delayed.svg" alt="Delayed" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In delayed</div>
                             <div class="stats-count">{{ $stats['delayed'] ?? 0 }}</div>
@@ -963,7 +885,7 @@
                         <!-- In Rejected -->
                         <div class="stats-card stat-rejected">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/rejected.svg" alt="Rejected" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/rejected.svg" alt="Rejected" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Rejected</div>
                             <div class="stats-count">{{ $stats['rejected'] ?? 0 }}</div>
@@ -972,7 +894,7 @@
                         <!-- In Done -->
                         <div class="stats-card stat-done">
                             <div class="stats-icon-wrapper">
-                                <img src="{{ $staticBaseUrl }}/build/img/indone.svg" alt="Done" style="width: 24px; height: 24px;">
+                                <img src="{{ $baseUrl }}/build/img/indone.svg" alt="Done" style="width: 24px; height: 24px;">
                             </div>
                             <div class="stats-title">In Done</div>
                             <div class="stats-count">{{ $stats['done'] ?? 0 }}</div>
@@ -1037,7 +959,7 @@
                                     $issueStartDate = isset($firstIssue['start_date']) ? \Carbon\Carbon::parse($firstIssue['start_date'])->format('d.m.Y') : (isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025');
                                     $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
                                     $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
-                                    $markImagePath = !empty($issueImagePath) ? $staticBaseUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticBaseUrl . '/storage/' . $task->mark_image_path : '');
+                                    $markImagePath = !empty($issueImagePath) ? $baseUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $baseUrl . '/storage/' . $task->mark_image_path : '');
                                     
                                     // Extract rejection reason from rejections array
                                     $rejectionReason = '';
@@ -1080,7 +1002,7 @@
                                     <div class="task-image-col">
                                         <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                         @if(!empty($task->mark_image_path))
-                                            <img src="{{ $staticBaseUrl }}/storage/{{ $task->mark_image_path }}"
+                                            <img src="{{ $baseUrl }}/storage/{{ $task->mark_image_path }}"
                                                  alt="Task"
                                                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
                                         @else
@@ -1158,7 +1080,7 @@
                 <!-- Logo Circle -->
                 <div class="logo-circle">
                     <!-- Standard Logo or B icon -->
-                    <img src="{{ $staticBaseUrl }}/build/img/AI-Logo.svg" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
+                    <img src="{{ $baseUrl }}/build/img/AI-Logo.svg" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
                 </div>
             </div>
 
@@ -1599,36 +1521,6 @@
 </div>
 
 
-<!-- Sign In Popup Modal -->
-<div id="signInPopupModal" class="signin-popup-overlay" style="display: none;">
-    <div class="signin-popup-modal">
-        <!-- Green Arrow Icon -->
-        <div class="signin-popup-icon">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 20 30 Q 50 20, 60 40 Q 70 55, 70 70" 
-                      stroke="#22c55e" 
-                      stroke-width="6" 
-                      fill="none" 
-                      stroke-linecap="round" 
-                      stroke-linejoin="round"/>
-                <path d="M 65 65 L 70 70 L 65 75" 
-                      stroke="#22c55e" 
-                      stroke-width="6" 
-                      fill="none" 
-                      stroke-linecap="round" 
-                      stroke-linejoin="round"/>
-            </svg>
-        </div>
-        
-        <h3 class="signin-popup-title">Sign in</h3>
-        <p class="signin-popup-text">Please use your Login Details for Access.</p>
-        
-        <button type="button" class="signin-popup-close-btn" onclick="closeSignInPopup()">
-            Close
-        </button>
-    </div>
-</div>
-
 <!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->
 @include('Chats.partials.modals') 
 
@@ -1889,7 +1781,8 @@
                     attachmentFiles.forEach((filePath, index) => {
                         // filePath is a string path, need to get filename from it
                         const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
-                        const fullPath = filePath.startsWith('http') ? filePath : 'https://logiadmin.it-supportline.de/storage/' + filePath;
+                        const baseUrl = '{{ config("app.url") }}';
+                        const fullPath = filePath.startsWith('http') ? filePath : baseUrl + '/storage/' + filePath;
                         
                         // Determine file type from extension
                         const fileExt = fileName.split('.').pop().toLowerCase();
@@ -1973,9 +1866,10 @@
                     fileAttachmentsList.innerHTML = '';
                     
                     if (attachmentFiles && attachmentFiles.length > 0) {
+                        const baseUrl = '{{ config("app.url") }}';
                         attachmentFiles.forEach((filePath, index) => {
                             const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
-                            const fullPath = filePath.startsWith('http') ? filePath : '/storage/' + filePath;
+                            const fullPath = filePath.startsWith('http') ? filePath : baseUrl + '/storage/' + filePath;
                             
                             const fileExt = fileName.split('.').pop().toLowerCase();
                             let iconClass = 'ti-file-type-pdf';
@@ -2049,39 +1943,7 @@
         // Show task detail modal
         const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
         myModal.show();
-
-        // Show Sign In popup ONLY for "new task" or "in checking" status (NOT for done, rejected, etc.)
-        if ((isNewTask || isChecked) && !isDone && !isRejected && !isOnHold && !isInProgress) {
-            // Wait a bit for the task modal to appear, then show sign-in popup
-            setTimeout(() => {
-                showSignInPopup();
-            }, 300);
-        }
     }
-
-    // Function to show Sign In Popup
-    function showSignInPopup() {
-        const signInPopup = document.getElementById('signInPopupModal');
-        if (signInPopup) {
-            signInPopup.style.display = 'flex';
-        }
-    }
-
-    // Function to close Sign In Popup
-    function closeSignInPopup() {
-        const signInPopup = document.getElementById('signInPopupModal');
-        if (signInPopup) {
-            signInPopup.style.display = 'none';
-        }
-    }
-
-    // Close popup when clicking outside
-    document.addEventListener('click', function(event) {
-        const signInPopup = document.getElementById('signInPopupModal');
-        if (signInPopup && event.target === signInPopup) {
-            closeSignInPopup();
-        }
-    });
 
     // New Functions for Start Task Flow
     function openStartConfirmationModal() {
