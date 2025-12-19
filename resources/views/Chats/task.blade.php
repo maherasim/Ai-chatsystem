@@ -507,6 +507,53 @@
         object-fit: cover;
     }
     
+    /* Issue Badge Styles */
+    .issue-badge {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        background-color: #22c55e; /* Green */
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 10;
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .issue-badge:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.6);
+    }
+    
+    .issue-badge-highlight {
+        position: absolute;
+        border: 2px solid #f97316; /* Orange */
+        border-radius: 8px;
+        pointer-events: none;
+        z-index: 9;
+    }
+    
+    #issueBadgesContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 8;
+        pointer-events: none;
+    }
+    
+    #issueBadgesContainer .issue-badge-wrapper {
+        pointer-events: all;
+    }
+    
     /* Notes List */
     .notes-section {
         margin-bottom: 20px;
@@ -1134,7 +1181,8 @@
 
                 <!-- Image Area -->
                 <div class="image-preview-area" id="modalImageArea">
-                    <img id="modalTaskImageFull" src="" style="display:none; cursor: pointer;" alt="Proof" onclick="openModalIssuesPopup()">
+                    <img id="modalTaskImageFull" src="" style="display:none;" alt="Proof">
+                    <div id="issueBadgesContainer"></div>
                     <div id="modalImagePlaceholder" style="text-align:center;">
                         <i class="ti ti-photo-off fs-1"></i>
                         <br>No Image
@@ -1740,8 +1788,22 @@
         window.currentTaskIdForStart = fullTaskId;
         
         // Store issues and task ID for issue popup
-        window.currentTaskIssues = issuesJson ? JSON.parse(issuesJson) : [];
+        if (issuesJson) {
+            try {
+                window.currentTaskIssues = JSON.parse(issuesJson);
+            } catch (e) {
+                window.currentTaskIssues = [];
+            }
+        } else {
+            window.currentTaskIssues = [];
+        }
         window.currentFullTaskId = fullTaskId;
+        
+        // Clear issue badges container
+        const badgesContainer = document.getElementById('issueBadgesContainer');
+        if (badgesContainer) {
+            badgesContainer.innerHTML = '';
+        }
 
         // --- Toggle UI State ---
         const header = document.querySelector('.task-modal-header');
@@ -2031,7 +2093,16 @@
                 this.style.display = 'none';
                 placeholderEl.style.display = 'block';
             };
+            imgEl.onload = function() {
+                // Create issue badges on image load
+                createIssueBadges();
+            };
             placeholderEl.style.display = 'none';
+            
+            // Also create badges if image is already loaded
+            if (imgEl.complete && imgEl.naturalHeight !== 0) {
+                setTimeout(createIssueBadges, 100);
+            }
         } else {
             imgEl.style.display = 'none';
             placeholderEl.style.display = 'block';
@@ -2423,7 +2494,7 @@
         
         const issue = window.currentTaskIssues[issueIndex];
         
-        // Close issues selection modal
+        // Close issues selection modal if open
         const issuesModalEl = document.getElementById('issuesSelectionModal');
         const issuesModal = bootstrap.Modal.getInstance(issuesModalEl);
         if (issuesModal) {
@@ -2461,5 +2532,67 @@
         // Show issue detail modal
         const detailModal = new bootstrap.Modal(document.getElementById('issueDetailModal'));
         detailModal.show();
+    }
+    
+    function createIssueBadges() {
+        const badgesContainer = document.getElementById('issueBadgesContainer');
+        const imageArea = document.getElementById('modalImageArea');
+        
+        if (!badgesContainer || !imageArea || !window.currentTaskIssues || window.currentTaskIssues.length === 0) {
+            return;
+        }
+        
+        // Clear existing badges
+        badgesContainer.innerHTML = '';
+        
+        const issues = window.currentTaskIssues;
+        const containerWidth = imageArea.offsetWidth;
+        const containerHeight = imageArea.offsetHeight;
+        
+        // Calculate positions for badges (distribute evenly if no position data)
+        issues.forEach((issue, index) => {
+            const badgeWrapper = document.createElement('div');
+            badgeWrapper.className = 'issue-badge-wrapper';
+            
+            // Check if issue has position data
+            let topPercent = 20;
+            let leftPercent = 20;
+            
+            if (issue.position) {
+                // Use position from issue if available
+                topPercent = issue.position.top || topPercent;
+                leftPercent = issue.position.left || leftPercent;
+            } else if (issue.x !== undefined && issue.y !== undefined) {
+                // Use x, y coordinates if available
+                leftPercent = issue.x;
+                topPercent = issue.y;
+            } else {
+                // Default pattern: distribute badges across the image
+                const totalIssues = issues.length;
+                const row = Math.floor(index / 3); // 3 badges per row
+                const col = index % 3;
+                topPercent = 20 + (row * 30); // Start at 20%, space every 30%
+                leftPercent = 20 + (col * 25); // Start at 20%, space every 25%
+                
+                // Clamp to reasonable values
+                if (topPercent > 80) topPercent = 80;
+                if (leftPercent > 80) leftPercent = 80;
+            }
+            
+            // Create badge
+            const badge = document.createElement('div');
+            badge.className = 'issue-badge';
+            badge.textContent = index + 1;
+            badge.style.top = topPercent + '%';
+            badge.style.left = leftPercent + '%';
+            badge.style.transform = 'translate(-50%, -50%)'; // Center the badge
+            badge.onclick = function(e) {
+                e.stopPropagation();
+                openIssueDetail(index);
+            };
+            
+            badgeWrapper.appendChild(badge);
+            badgesContainer.appendChild(badgeWrapper);
+        });
     }
 </script>
