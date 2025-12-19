@@ -510,8 +510,8 @@
     /* Issue Badge Styles */
     .issue-badge {
         position: absolute;
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
         background-color: #22c55e; /* Green */
         color: white;
         border-radius: 50%;
@@ -519,16 +519,16 @@
         align-items: center;
         justify-content: center;
         font-weight: 800;
-        font-size: 16px;
+        font-size: 13px;
         cursor: pointer;
         z-index: 1000 !important;
-        border: 3px solid white;
+        border: 2px solid white;
         box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
         transition: transform 0.2s, box-shadow 0.2s;
     }
     
     .issue-badge:hover {
-        transform: translate(-50%, -50%) scale(1.1) !important;
+        transform: translate(-50%, -50%) scale(1.15) !important;
         box-shadow: 0 4px 12px rgba(34, 197, 94, 0.6);
     }
     
@@ -558,6 +558,19 @@
         left: 0;
         width: 100%;
         height: 100%;
+    }
+    
+    /* Issue Detail Modal Backdrop - Light Gray */
+    .modal-backdrop.show {
+        opacity: 0.5;
+        transition: background-color 0.15s linear;
+    }
+    
+    /* Custom backdrop for issue detail modal - light gray */
+    .issue-modal-backdrop,
+    body.modal-open .modal-backdrop.show.issue-modal-backdrop {
+        background-color: rgba(148, 163, 184, 0.75) !important;
+        opacity: 1 !important;
     }
     
     /* Notes List */
@@ -1614,9 +1627,9 @@
 </div>
 
 <!-- Issue Detail Popup -->
-<div class="modal fade" id="issueDetailModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="issueDetailModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
-        <div class="modal-content task-modal-content">
+        <div class="modal-content task-modal-content" style="box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
             <div class="modal-header border-0 pb-0">
                 <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Issue Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -2572,8 +2585,35 @@
         document.getElementById('issueDetailEndDate').textContent = endDate;
         document.getElementById('issueDetailTaskId').textContent = window.currentFullTaskId || '-';
         
-        // Show issue detail modal
-        const detailModal = new bootstrap.Modal(document.getElementById('issueDetailModal'));
+        // Show issue detail modal with backdrop
+        const detailModalEl = document.getElementById('issueDetailModal');
+        const detailModal = new bootstrap.Modal(detailModalEl, {
+            backdrop: true,
+            keyboard: true
+        });
+        
+        // Enhance backdrop after modal is shown - light gray
+        detailModalEl.addEventListener('shown.bs.modal', function() {
+            setTimeout(function() {
+                const backdrop = document.querySelector('.modal-backdrop.show');
+                if (backdrop) {
+                    backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
+                    backdrop.style.opacity = '1';
+                    backdrop.classList.add('issue-modal-backdrop');
+                }
+            }, 10);
+        });
+        
+        // Also update backdrop before modal shows
+        detailModalEl.addEventListener('show.bs.modal', function() {
+            setTimeout(function() {
+                const backdrop = document.querySelector('.modal-backdrop.show');
+                if (backdrop) {
+                    backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
+                }
+            }, 10);
+        });
+        
         detailModal.show();
     }
     
