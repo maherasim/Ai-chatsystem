@@ -959,7 +959,8 @@
                                     $issueStartDate = isset($firstIssue['start_date']) ? \Carbon\Carbon::parse($firstIssue['start_date'])->format('d.m.Y') : (isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025');
                                     $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
                                     $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
-                                    $markImagePath = !empty($issueImagePath) ? $baseUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $baseUrl . '/storage/' . $task->mark_image_path : '');
+                                    $staticImageUrl = 'https://logiadmin.it-supportline.de';
+                                    $markImagePath = !empty($issueImagePath) ? $staticImageUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticImageUrl . '/storage/' . $task->mark_image_path : '');
                                     
                                     // Extract rejection reason from rejections array
                                     $rejectionReason = '';
@@ -1002,7 +1003,7 @@
                                     <div class="task-image-col">
                                         <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                         @if(!empty($task->mark_image_path))
-                                            <img src="{{ $baseUrl }}/storage/{{ $task->mark_image_path }}"
+                                            <img src="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}"
                                                  alt="Task"
                                                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
                                         @else
