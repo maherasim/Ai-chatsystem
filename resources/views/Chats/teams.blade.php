@@ -1881,7 +1881,7 @@
                     <!-- Image (Left) -->
                     <div style="width: 130px; height: 130px; background: #e0e0e0; border-radius: 15px; flex-shrink: 0; overflow: hidden; margin-right: 25px; margin-left: 10px;">
                         ${task.mark_image_path 
-                            ? `<img src="/storage/${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
+                            ? `<img src="${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
                             : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
                         }
                     </div>
@@ -1893,7 +1893,7 @@
                         <div class="d-flex align-items-center mb-3">
                              <!-- Logo -->
                            ${task.project_logo_path 
-                               ? `<img src="/storage/${task.project_logo_path}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
+                               ? `<img src="${task.project_logo_path}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
                                : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
                            }
                            <div>

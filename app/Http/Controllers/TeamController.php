@@ -10,6 +10,8 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Setting;
 use App\Models\Task;
+use App\Models\WebTask;
+use App\Models\EmployeeTask;
 use MongoDB\BSON\ObjectId;
 use App\Models\User;
 use App\Mail\TaskAssignmentMail;
@@ -31,6 +33,62 @@ class TeamController extends Controller
             return $p;
         }
         return asset('storage/' . ltrim($p, '/'));
+    }
+
+    /**
+     * Get the correct image URL for a task based on its type and image storage method
+     */
+    private function getTaskImageUrl($task): ?string
+    {
+        // For Task and WebTask - use mark_image_path (storage path)
+        if (isset($task->mark_image_path) && !empty($task->mark_image_path)) {
+            return asset('storage/' . ltrim($task->mark_image_path, '/'));
+        }
+        
+        // For EmployeeTask - use images array
+        if (isset($task->images)) {
+            $images = $task->images;
+            
+            // Handle case where images might be stored as JSON string
+            if (is_string($images)) {
+                try {
+                    $images = json_decode($images, true);
+                } catch (\Throwable $e) {
+                    $images = [];
+                }
+            }
+            
+            // Get first image if available
+            if (is_array($images) && !empty($images)) {
+                $firstImage = trim($images[0]);
+                
+                // Remove leading slash if present and normalize path separators
+                $firstImage = ltrim($firstImage, '/');
+                $firstImage = str_replace('\\', '/', $firstImage); // Handle escaped slashes from JSON
+                
+                // Check if it's a public path (build/img/...) - these are in public directory, not storage
+                // These paths should be accessed directly via asset() without storage prefix
+                // Normalize and check the path
+                $isPublicPath = str_starts_with($firstImage, 'build/img/') 
+                    || str_starts_with($firstImage, 'build/')
+                    || (strpos($firstImage, 'build') === 0);
+                
+                if ($isPublicPath) {
+                    // Public path - use asset() helper directly (no storage prefix)
+                    // asset('build/img/imagw2.jpeg') generates: http://127.0.0.1:8000/build/img/imagw2.jpeg
+                    // NOT: http://127.0.0.1:8000/storage/build/img/imagw2.jpeg
+                    return asset($firstImage);
+                } elseif (str_starts_with($firstImage, 'emptasks/')) {
+                    // Storage path - use asset() with storage prefix
+                    return asset('storage/' . $firstImage);
+                } else {
+                    // Default: assume it's a storage path
+                    return asset('storage/' . $firstImage);
+                }
+            }
+        }
+        
+        return null;
     }
 
     public function index(Request $request)
@@ -204,52 +262,83 @@ class TeamController extends Controller
             return response()->json([]);
         }
 
-        // Try both ObjectId and string matching for safety
-        $tasks = collect();
-        try {
-            $oid = new ObjectId($ticketId);
-            $tasks = Task::where('ticket_id', $oid)->orderByDesc('created_at')->get();
-        } catch (\Throwable $e) {
-            // ignore
-        }
-        if ($tasks->isEmpty()) {
-            $tasks = Task::where('ticket_id', $ticketId)->orderByDesc('created_at')->get();
-        }
+        $allTasks = collect();
 
-        $result = $tasks->map(function ($t) {
-            // Resolve project logo path (if any)
-            $projectLogo = null;
+        // Helper function to fetch tasks from a model
+        $fetchTasks = function($model, $modelName) use ($ticketId) {
+            $tasks = collect();
             try {
-                $project = null;
-                // Try fetch by ObjectId first
-                try {
-                    $project = \App\Models\Project::find(new ObjectId((string)($t->project_id)));
-                } catch (\Throwable $e) {
-                    // ignore
-                }
-                if (!$project) {
-                    $project = \App\Models\Project::find((string)($t->project_id));
-                }
-                if ($project && isset($project->logo_path)) {
-                    $projectLogo = $this->toPublicUrl((string) $project->logo_path);
-                }
+                $oid = new ObjectId($ticketId);
+                $tasks = $model::where('ticket_id', $oid)->orderByDesc('created_at')->get();
             } catch (\Throwable $e) {
-                // ignore resolution errors
+                // ignore
+            }
+            if ($tasks->isEmpty()) {
+                $tasks = $model::where('ticket_id', $ticketId)->orderByDesc('created_at')->get();
+            }
+            
+            // Add task type to each task
+            return $tasks->map(function($t) use ($modelName) {
+                $t->task_type = $modelName;
+                return $t;
+            });
+        };
+
+        // Fetch from Task model
+        $regularTasks = $fetchTasks(Task::class, 'task');
+        $allTasks = $allTasks->merge($regularTasks);
+
+        // Fetch from WebTask model
+        $webTasks = $fetchTasks(WebTask::class, 'webtask');
+        $allTasks = $allTasks->merge($webTasks);
+
+        // Fetch from EmployeeTask model
+        $employeeTasks = $fetchTasks(EmployeeTask::class, 'employeetask');
+        $allTasks = $allTasks->merge($employeeTasks);
+
+        $result = $allTasks->map(function ($t) {
+            // Resolve project logo path from Project model based on project_id
+            $projectLogo = null;
+            if (!empty($t->project_id)) {
+                try {
+                    $project = null;
+                    $projectId = (string)($t->project_id);
+                    
+                    // Try fetch by ObjectId first
+                    try {
+                        $project = Project::find(new ObjectId($projectId));
+                    } catch (\Throwable $e) {
+                        // ignore
+                    }
+                    
+                    // If not found, try string match
+                    if (!$project) {
+                        $project = Project::find($projectId);
+                    }
+                    
+                    // Get project logo path if available
+                    if ($project && !empty($project->logo_path)) {
+                        $projectLogo = $this->toPublicUrl((string) $project->logo_path);
+                    }
+                } catch (\Throwable $e) {
+                    // ignore resolution errors
+                }
             }
 
             return [
                 'id' => (string) ($t->_id ?? $t->id),
                 'ticket_id' => (string) ($t->ticket_id ?? ''),
                 'title' => $t->title,
-                'description' => $t->description,
-                'status' => $t->status,
+                'description' => $t->description ?? null,
+                'status' => $t->status ?? null,
                 'priority' => $t->priority ?? null,
                 'developer_name' => $t->developer_name ?? null,
-                'issues_count' => is_array($t->issues) ? count($t->issues) : 0,
+                'issues_count' => is_array($t->issues ?? null) ? count($t->issues) : 0,
                 'start_date' => optional($t->start_date)?->toDateString(),
                 'end_date' => optional($t->end_date)?->toDateString(),
-                'mark_image_path' => $t->mark_image_path ?? null,
+                'mark_image_path' => $this->getTaskImageUrl($t),
                 'project_logo_path' => $projectLogo,
+                'task_type' => $t->task_type ?? 'task', // Include task type for frontend
                 'ticket' => [
                     'title' => optional($t->ticket)->title,
                     'code' => optional($t->ticket)->code,
