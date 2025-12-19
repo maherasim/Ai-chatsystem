@@ -1788,14 +1788,18 @@
         window.currentTaskIdForStart = fullTaskId;
         
         // Store issues and task ID for issue popup
-        if (issuesJson) {
+        if (issuesJson && issuesJson !== '[]' && issuesJson !== 'null') {
             try {
-                window.currentTaskIssues = JSON.parse(issuesJson);
+                const parsed = JSON.parse(issuesJson);
+                window.currentTaskIssues = Array.isArray(parsed) ? parsed : [];
+                console.log('Parsed issues:', window.currentTaskIssues);
             } catch (e) {
+                console.error('Error parsing issues JSON:', e, 'Raw:', issuesJson);
                 window.currentTaskIssues = [];
             }
         } else {
             window.currentTaskIssues = [];
+            console.log('No issues JSON provided or empty');
         }
         window.currentFullTaskId = fullTaskId;
         
@@ -2075,14 +2079,33 @@
         const placeholderEl = document.getElementById('modalImagePlaceholder');
         
         // Store issues for modal image click
-        if (issuesJson) {
+        console.log('=== Storing issues ===');
+        console.log('Raw issuesJson:', issuesJson);
+        console.log('Type:', typeof issuesJson);
+        
+        if (issuesJson && issuesJson !== '[]' && issuesJson !== 'null' && issuesJson.trim() !== '') {
             try {
-                window.currentTaskIssues = JSON.parse(issuesJson);
+                // Handle case where it might be double-encoded
+                let parsed = issuesJson;
+                if (typeof issuesJson === 'string') {
+                    parsed = JSON.parse(issuesJson);
+                    // If still a string, parse again
+                    if (typeof parsed === 'string') {
+                        parsed = JSON.parse(parsed);
+                    }
+                }
+                window.currentTaskIssues = Array.isArray(parsed) ? parsed : [];
                 window.currentFullTaskId = fullTaskId;
+                console.log('✅ Successfully stored issues:', window.currentTaskIssues);
+                console.log('Number of issues:', window.currentTaskIssues.length);
             } catch (e) {
-                console.error('Error parsing issues:', e);
+                console.error('❌ Error parsing issues:', e);
+                console.error('Raw value:', issuesJson);
                 window.currentTaskIssues = [];
             }
+        } else {
+            console.log('⚠️ No issues JSON or empty');
+            window.currentTaskIssues = [];
         }
         
         if (imageSrc && imageSrc.trim() !== '') {
@@ -2095,13 +2118,17 @@
             };
             imgEl.onload = function() {
                 // Create issue badges on image load
-                createIssueBadges();
+                setTimeout(function() {
+                    createIssueBadges();
+                }, 300);
             };
             placeholderEl.style.display = 'none';
             
             // Also create badges if image is already loaded
             if (imgEl.complete && imgEl.naturalHeight !== 0) {
-                setTimeout(createIssueBadges, 100);
+                setTimeout(function() {
+                    createIssueBadges();
+                }, 300);
             }
         } else {
             imgEl.style.display = 'none';
@@ -2110,6 +2137,16 @@
 
         // Show task detail modal
         const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
+        
+        // Listen for modal shown event
+        const modalElement = document.getElementById('taskDetailModal');
+        modalElement.addEventListener('shown.bs.modal', function() {
+            // Create badges after modal is fully shown
+            setTimeout(function() {
+                createIssueBadges();
+            }, 200);
+        }, { once: true });
+        
         myModal.show();
     }
 
@@ -2538,7 +2575,36 @@
         const badgesContainer = document.getElementById('issueBadgesContainer');
         const imageArea = document.getElementById('modalImageArea');
         
-        if (!badgesContainer || !imageArea || !window.currentTaskIssues || window.currentTaskIssues.length === 0) {
+        console.log('=== createIssueBadges called ===');
+        console.log('badgesContainer:', badgesContainer);
+        console.log('imageArea:', imageArea);
+        console.log('window.currentTaskIssues:', window.currentTaskIssues);
+        console.log('Type:', typeof window.currentTaskIssues);
+        console.log('Is Array:', Array.isArray(window.currentTaskIssues));
+        console.log('Length:', window.currentTaskIssues ? window.currentTaskIssues.length : 'N/A');
+        
+        if (!badgesContainer) {
+            console.error('❌ Badges container not found');
+            return;
+        }
+        
+        if (!imageArea) {
+            console.error('❌ Image area not found');
+            return;
+        }
+        
+        if (!window.currentTaskIssues) {
+            console.warn('⚠️ window.currentTaskIssues is not defined');
+            return;
+        }
+        
+        if (!Array.isArray(window.currentTaskIssues)) {
+            console.warn('⚠️ window.currentTaskIssues is not an array:', window.currentTaskIssues);
+            return;
+        }
+        
+        if (window.currentTaskIssues.length === 0) {
+            console.log('ℹ️ No issues to display (empty array)');
             return;
         }
         
@@ -2548,6 +2614,9 @@
         const issues = window.currentTaskIssues;
         const containerWidth = imageArea.offsetWidth;
         const containerHeight = imageArea.offsetHeight;
+        
+        console.log('✅ Creating badges for', issues.length, 'issues');
+        console.log('Issues data:', issues);
         
         // Calculate positions for badges (distribute evenly if no position data)
         issues.forEach((issue, index) => {
@@ -2586,6 +2655,7 @@
             badge.style.top = topPercent + '%';
             badge.style.left = leftPercent + '%';
             badge.style.transform = 'translate(-50%, -50%)'; // Center the badge
+            badge.style.position = 'absolute';
             badge.onclick = function(e) {
                 e.stopPropagation();
                 openIssueDetail(index);
@@ -2593,6 +2663,11 @@
             
             badgeWrapper.appendChild(badge);
             badgesContainer.appendChild(badgeWrapper);
+            
+            console.log(`Created badge ${index + 1} at ${topPercent}%, ${leftPercent}%`);
         });
+        
+        console.log('✅ Total badges created:', issues.length);
+        console.log('Badges container children:', badgesContainer.children.length);
     }
 </script>
