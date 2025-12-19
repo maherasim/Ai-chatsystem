@@ -521,14 +521,14 @@
         font-weight: 800;
         font-size: 16px;
         cursor: pointer;
-        z-index: 10;
+        z-index: 1000 !important;
         border: 3px solid white;
         box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
         transition: transform 0.2s, box-shadow 0.2s;
     }
     
     .issue-badge:hover {
-        transform: scale(1.1);
+        transform: translate(-50%, -50%) scale(1.1) !important;
         box-shadow: 0 4px 12px rgba(34, 197, 94, 0.6);
     }
     
@@ -546,12 +546,18 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 8;
+        z-index: 100;
         pointer-events: none;
+        overflow: visible;
     }
     
     #issueBadgesContainer .issue-badge-wrapper {
         pointer-events: all;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
     
     /* Notes List */
@@ -2622,17 +2628,36 @@
         issues.forEach((issue, index) => {
             const badgeWrapper = document.createElement('div');
             badgeWrapper.className = 'issue-badge-wrapper';
+            badgeWrapper.style.position = 'absolute';
+            badgeWrapper.style.top = '0';
+            badgeWrapper.style.left = '0';
+            badgeWrapper.style.width = '100%';
+            badgeWrapper.style.height = '100%';
             
             // Check if issue has position data
             let topPercent = 20;
             let leftPercent = 20;
             
-            if (issue.position) {
-                // Use position from issue if available
-                topPercent = issue.position.top || topPercent;
-                leftPercent = issue.position.left || leftPercent;
+            if (issue.position && issue.layer) {
+                // Convert pixel positions to percentages based on layer dimensions
+                const layerWidth = issue.layer.width || containerWidth;
+                const layerHeight = issue.layer.height || containerHeight;
+                const leftPx = issue.position.left || 0;
+                const topPx = issue.position.top || 0;
+                
+                // Convert to percentage
+                leftPercent = (leftPx / layerWidth) * 100;
+                topPercent = (topPx / layerHeight) * 100;
+                
+                console.log(`Issue ${index + 1} - Layer: ${layerWidth}x${layerHeight}, Position: ${leftPx},${topPx} => ${leftPercent.toFixed(2)}%, ${topPercent.toFixed(2)}%`);
+            } else if (issue.position) {
+                // If position exists but no layer, assume pixels relative to container
+                const leftPx = issue.position.left || 0;
+                const topPx = issue.position.top || 0;
+                leftPercent = (leftPx / containerWidth) * 100;
+                topPercent = (topPx / containerHeight) * 100;
             } else if (issue.x !== undefined && issue.y !== undefined) {
-                // Use x, y coordinates if available
+                // Use x, y coordinates if available (assuming percentages)
                 leftPercent = issue.x;
                 topPercent = issue.y;
             } else {
@@ -2651,23 +2676,34 @@
             // Create badge
             const badge = document.createElement('div');
             badge.className = 'issue-badge';
-            badge.textContent = index + 1;
+            badge.textContent = issue.number || (index + 1);
             badge.style.top = topPercent + '%';
             badge.style.left = leftPercent + '%';
             badge.style.transform = 'translate(-50%, -50%)'; // Center the badge
             badge.style.position = 'absolute';
+            badge.style.zIndex = '100';
             badge.onclick = function(e) {
                 e.stopPropagation();
+                e.preventDefault();
                 openIssueDetail(index);
             };
             
             badgeWrapper.appendChild(badge);
             badgesContainer.appendChild(badgeWrapper);
             
-            console.log(`Created badge ${index + 1} at ${topPercent}%, ${leftPercent}%`);
+            console.log(`✅ Created badge ${badge.textContent} at ${topPercent.toFixed(2)}%, ${leftPercent.toFixed(2)}%`);
+            console.log(`Badge element:`, badge);
+            console.log(`Badge computed style:`, window.getComputedStyle(badge));
         });
         
         console.log('✅ Total badges created:', issues.length);
         console.log('Badges container children:', badgesContainer.children.length);
+        console.log('Container dimensions:', badgesContainer.offsetWidth, 'x', badgesContainer.offsetHeight);
+        console.log('Image area dimensions:', imageArea.offsetWidth, 'x', imageArea.offsetHeight);
+        
+        // Force visibility
+        badgesContainer.style.display = 'block';
+        badgesContainer.style.visibility = 'visible';
+        badgesContainer.style.opacity = '1';
     }
 </script>
