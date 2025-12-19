@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $baseUrl = config('app.url');
+    $baseUrl = config('http://127.0.0.1:8002/');
 @endphp
 
 <style>
@@ -1246,6 +1246,17 @@
                     <div id="rejectionReasonText">The Rejection Reason will be here</div>
                 </div>
 
+                <!-- Start Task Button (Rejected State) -->
+                <div class="start-btn-container" id="rejectedStartBtnContainer" style="display: none;">
+                    <div class="timeline-line"></div>
+                    <button class="start-task-btn" onclick="openStartConfirmationModal()">
+                        <div class="start-btn-icon">
+                            <i class="ti ti-rocket"></i>
+                        </div>
+                        Start the Task
+                    </button>
+                </div>
+
                 <!-- Go To Task Button (On Hold State) -->
                 <div class="start-btn-container" id="goToTaskBtnContainer" style="display: none;">
                     <div class="timeline-line"></div>
@@ -1678,6 +1689,7 @@
         const holdReason = document.getElementById('holdReasonContainer');
         const goToTaskBtn = document.getElementById('goToTaskBtnContainer');
         const continueTaskBtn = document.getElementById('continueTaskBtnContainer');
+        const rejectedStartBtn = document.getElementById('rejectedStartBtnContainer');
 
         // Section visibility controls for "in checking" status
         const defaultNotesSection = document.getElementById('defaultNotesSection');
@@ -1696,6 +1708,7 @@
         holdReason.style.display = 'none';
         goToTaskBtn.style.display = 'none';
         continueTaskBtn.style.display = 'none';
+        if (rejectedStartBtn) rejectedStartBtn.style.display = 'none';
 
         // Reset all section visibility
         if (defaultNotesSection) defaultNotesSection.style.display = 'block';
@@ -1832,6 +1845,17 @@
             if (badgeStatus) {
                 badgeStatus.className = 'badge-custom badge-rejected';
                 badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Rejected';
+            }
+
+            // Hide rejection reason box (user doesn't need it)
+            const rejectionReasonContainer = document.getElementById('rejectionReasonContainer');
+            if (rejectionReasonContainer) {
+                rejectionReasonContainer.style.display = 'none';
+            }
+            
+            // Show start task button for rejected status
+            if (rejectedStartBtn) {
+                rejectedStartBtn.style.display = 'block';
             }
         }
         else if (isDone) {
