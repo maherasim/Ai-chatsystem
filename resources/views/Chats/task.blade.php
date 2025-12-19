@@ -1014,7 +1014,8 @@
                                         @if(!empty($task->mark_image_path))
                                             <img src="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}"
                                                  alt="Task"
-                                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px;">
+                                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
+                                                 onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');">
                                         @else
                                             <!-- Transparent/Placeholder controlled by CSS pattern -->
                                         @endif
@@ -1133,7 +1134,7 @@
 
                 <!-- Image Area -->
                 <div class="image-preview-area" id="modalImageArea">
-                    <img id="modalTaskImageFull" src="" style="display:none;" alt="Proof">
+                    <img id="modalTaskImageFull" src="" style="display:none; cursor: pointer;" alt="Proof" onclick="openModalIssuesPopup()">
                     <div id="modalImagePlaceholder" style="text-align:center;">
                         <i class="ti ti-photo-off fs-1"></i>
                         <br>No Image
@@ -1541,6 +1542,53 @@
     </div>
 </div>
 
+<!-- Issues Selection Popup -->
+<div class="modal fade" id="issuesSelectionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content task-modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Select Issue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-2" style="font-family: 'Outfit', sans-serif;">
+                <div id="issuesListContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Issue numbers will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Issue Detail Popup -->
+<div class="modal fade" id="issueDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content task-modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" style="font-family: 'Outfit', sans-serif;">Issue Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-2" style="font-family: 'Outfit', sans-serif;">
+                <div class="desc-box mb-3">
+                    <span class="desc-label">Issue Title</span>
+                    <p id="issueDetailTitle" style="margin:0; line-height:1.4; font-weight: 600; color: #1e293b;"></p>
+                </div>
+                <div class="desc-box mb-3">
+                    <span class="desc-label">Issue Description</span>
+                    <p id="issueDetailDescription" style="margin:0; line-height:1.4;"></p>
+                </div>
+                <div class="meta-row mb-3">
+                    <div class="meta-item">Start Date <span id="issueDetailStartDate">-</span></div>
+                    <div class="meta-item">|</div>
+                    <div class="meta-item">End Date <span id="issueDetailEndDate">-</span></div>
+                </div>
+                <div class="desc-box">
+                    <span class="desc-label">Task ID</span>
+                    <p id="issueDetailTaskId" style="margin:0; line-height:1.4; font-weight: 600; color: #1e293b;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->
 @include('Chats.partials.modals') 
@@ -1690,6 +1738,10 @@
 
         // Store full task ID globally
         window.currentTaskIdForStart = fullTaskId;
+        
+        // Store issues and task ID for issue popup
+        window.currentTaskIssues = issuesJson ? JSON.parse(issuesJson) : [];
+        window.currentFullTaskId = fullTaskId;
 
         // --- Toggle UI State ---
         const header = document.querySelector('.task-modal-header');
@@ -1959,6 +2011,17 @@
         // Image - Use the image path that PHP already prepared (from issue or task)
         const imgEl = document.getElementById('modalTaskImageFull');
         const placeholderEl = document.getElementById('modalImagePlaceholder');
+        
+        // Store issues for modal image click
+        if (issuesJson) {
+            try {
+                window.currentTaskIssues = JSON.parse(issuesJson);
+                window.currentFullTaskId = fullTaskId;
+            } catch (e) {
+                console.error('Error parsing issues:', e);
+                window.currentTaskIssues = [];
+            }
+        }
         
         if (imageSrc && imageSrc.trim() !== '') {
             imgEl.src = imageSrc;
@@ -2273,5 +2336,130 @@
             // No files, use regular JSON request
             executeStatusUpdate(newStatus, extraData);
         }
+    }
+    
+    // Issue Popup Functions
+    function openIssuesPopup(imgElement, issuesJson, taskId) {
+        let issues = [];
+        try {
+            issues = issuesJson ? JSON.parse(issuesJson) : [];
+        } catch (e) {
+            console.error('Error parsing issues:', e);
+            issues = [];
+        }
+        
+        if (!issues || issues.length === 0) {
+            alert('No issues available for this task.');
+            return;
+        }
+        
+        // Store current task ID
+        window.currentFullTaskId = taskId;
+        window.currentTaskIssues = issues;
+        
+        // Populate issues list
+        const issuesContainer = document.getElementById('issuesListContainer');
+        issuesContainer.innerHTML = '';
+        
+        issues.forEach((issue, index) => {
+            const issueItem = document.createElement('div');
+            issueItem.className = 'note-item';
+            issueItem.style.cursor = 'pointer';
+            issueItem.onclick = function() {
+                openIssueDetail(index);
+            };
+            issueItem.innerHTML = `
+                <div class="note-content">
+                    <i class="ti ti-bolt note-icon"></i> Issue ${index + 1}
+                </div>
+                <i class="ti ti-chevron-right" style="color: #94a3b8;"></i>
+            `;
+            issuesContainer.appendChild(issueItem);
+        });
+        
+        // Show modal
+        const issuesModal = new bootstrap.Modal(document.getElementById('issuesSelectionModal'));
+        issuesModal.show();
+    }
+    
+    function openModalIssuesPopup() {
+        // Use stored issues and task ID from task modal
+        if (!window.currentTaskIssues || window.currentTaskIssues.length === 0) {
+            alert('No issues available for this task.');
+            return;
+        }
+        
+        // Populate issues list
+        const issuesContainer = document.getElementById('issuesListContainer');
+        issuesContainer.innerHTML = '';
+        
+        window.currentTaskIssues.forEach((issue, index) => {
+            const issueItem = document.createElement('div');
+            issueItem.className = 'note-item';
+            issueItem.style.cursor = 'pointer';
+            issueItem.onclick = function() {
+                openIssueDetail(index);
+            };
+            issueItem.innerHTML = `
+                <div class="note-content">
+                    <i class="ti ti-bolt note-icon"></i> Issue ${index + 1}
+                </div>
+                <i class="ti ti-chevron-right" style="color: #94a3b8;"></i>
+            `;
+            issuesContainer.appendChild(issueItem);
+        });
+        
+        // Show modal
+        const issuesModalEl = document.getElementById('issuesSelectionModal');
+        const issuesModal = new bootstrap.Modal(issuesModalEl);
+        issuesModal.show();
+    }
+    
+    function openIssueDetail(issueIndex) {
+        if (!window.currentTaskIssues || !window.currentTaskIssues[issueIndex]) {
+            alert('Issue not found.');
+            return;
+        }
+        
+        const issue = window.currentTaskIssues[issueIndex];
+        
+        // Close issues selection modal
+        const issuesModalEl = document.getElementById('issuesSelectionModal');
+        const issuesModal = bootstrap.Modal.getInstance(issuesModalEl);
+        if (issuesModal) {
+            issuesModal.hide();
+        }
+        
+        // Populate issue details
+        document.getElementById('issueDetailTitle').textContent = issue.title || 'No Title';
+        document.getElementById('issueDetailDescription').textContent = issue.description || 'No description available.';
+        
+        // Format dates
+        let startDate = '-';
+        let endDate = '-';
+        if (issue.start_date) {
+            try {
+                const start = new Date(issue.start_date);
+                startDate = start.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            } catch (e) {
+                startDate = issue.start_date;
+            }
+        }
+        if (issue.end_date) {
+            try {
+                const end = new Date(issue.end_date);
+                endDate = end.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            } catch (e) {
+                endDate = issue.end_date;
+            }
+        }
+        
+        document.getElementById('issueDetailStartDate').textContent = startDate;
+        document.getElementById('issueDetailEndDate').textContent = endDate;
+        document.getElementById('issueDetailTaskId').textContent = window.currentFullTaskId || '-';
+        
+        // Show issue detail modal
+        const detailModal = new bootstrap.Modal(document.getElementById('issueDetailModal'));
+        detailModal.show();
     }
 </script>
