@@ -492,10 +492,19 @@
         margin-bottom: 20px;
         overflow: hidden;
         position: relative;
+        color: #94a3b8;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #94a3b8;
+    }
+    
+    #modalTaskImageFull {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     /* Notes List */
@@ -1124,7 +1133,7 @@
 
                 <!-- Image Area -->
                 <div class="image-preview-area" id="modalImageArea">
-                    <img id="modalTaskImageFull" src="" style="width:100%; height:100%; object-fit:contain; display:none;" alt="Proof">
+                    <img id="modalTaskImageFull" src="" style="display:none;" alt="Proof">
                     <div id="modalImagePlaceholder" style="text-align:center;">
                         <i class="ti ti-photo-off fs-1"></i>
                         <br>No Image
