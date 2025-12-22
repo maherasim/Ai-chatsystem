@@ -1131,6 +1131,47 @@
                                                 $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
                                                 $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
                                                 $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                                
+                                                // Decode issues for issue description
+                                                $issueDescription = 'No description available.';
+                                                
+                                                try {
+                                                    $issuesRaw = $task->issues ?? null;
+                                                    
+                                                    if ($issuesRaw !== null) {
+                                                        // Convert to array if it's a JSON string
+                                                        if (is_string($issuesRaw)) {
+                                                            $issuesArray = json_decode($issuesRaw, true);
+                                                            if (json_last_error() === JSON_ERROR_NONE && is_array($issuesArray)) {
+                                                                $issues = $issuesArray;
+                                                            } else {
+                                                                $issues = [];
+                                                            }
+                                                        } elseif (is_array($issuesRaw)) {
+                                                            $issues = $issuesRaw;
+                                                        } else {
+                                                            $issues = [];
+                                                        }
+                                                        
+                                                        // Extract description from first issue
+                                                        if (!empty($issues) && isset($issues[0]) && is_array($issues[0])) {
+                                                            $firstIssue = $issues[0];
+                                                            if (isset($firstIssue['description']) && !empty($firstIssue['description'])) {
+                                                                $issueDescription = (string)$firstIssue['description'];
+                                                            }
+                                                        }
+                                                    }
+                                                } catch (\Exception $e) {
+                                                    // If anything fails, fall through to default
+                                                }
+                                                
+                                                // Fallback to task description
+                                                if ($issueDescription === 'No description available.' && !empty($task->description)) {
+                                                    $issueDescription = (string)$task->description;
+                                                }
+                                                
+                                                // Escape for HTML attribute
+                                                $issueDescriptionEscaped = e($issueDescription);
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-rejected-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inreject"
                                                 data-task-id="{{ $taskId }}"
@@ -1143,6 +1184,7 @@
                                                 data-start-date="{{ $startDate }}"
                                                 data-end-date="{{ $endDate }}"
                                                 data-rejection-reason="{{ $rejectionReason }}"
+                                                data-issue-description="{{ $issueDescriptionEscaped }}"
                                                 data-mark-image-path="{{ $task->mark_image_path ?? '' }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
@@ -7662,6 +7704,15 @@
                     document.getElementById('tpvSection').textContent = card.getAttribute('data-section') || 'Section';
                     document.getElementById('tpvStart').textContent = card.getAttribute('data-start') || '-';
                     document.getElementById('tpvDeliver').textContent = card.getAttribute('data-deliver') || '-';
+                    
+                    // Set issue description from first issue
+                    var issueDescEl = document.getElementById('tpvIssueDesc');
+                    if (issueDescEl && issues && issues.length > 0 && issues[0] && issues[0].description) {
+                        issueDescEl.textContent = issues[0].description;
+                    } else if (issueDescEl) {
+                        issueDescEl.textContent = '-';
+                    }
+                    
                     var logoEl = document.getElementById('tpvLogo');
                     var logoAttr = card.getAttribute('data-project-logo');
                     if (logoEl && logoAttr) {
@@ -7909,8 +7960,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Sign-in Box -->
@@ -8081,8 +8132,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Sign-in Box -->
@@ -8273,8 +8324,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Sign-in Box -->
@@ -8463,8 +8514,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Sign-in Box -->
@@ -8647,8 +8698,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- card -->
@@ -8898,8 +8949,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Task Status Image -->
@@ -9498,6 +9549,10 @@
                     const startDate = this.getAttribute('data-start-date') || '--';
                     const endDate = this.getAttribute('data-end-date') || '--';
                     const rejectionReason = this.getAttribute('data-rejection-reason') || 'No rejection reason provided';
+                    const issueDescription = this.getAttribute('data-issue-description') || 'No description available.';
+                    
+                    console.log('Issue description from data attribute:', issueDescription);
+                    console.log('Raw data-issue-description value:', this.getAttribute('data-issue-description'));
                     
                     // Update modal header
                     document.getElementById('inreject-project-name').textContent = projectName;
@@ -9513,6 +9568,26 @@
                     
                     // Update rejection reason
                     document.getElementById('inreject-rejection-reason').textContent = rejectionReason;
+                    
+                    // Update issue description
+                    const issueDescEl = document.getElementById('inreject-issue-description');
+                    console.log('=== Issue Description Debug ===');
+                    console.log('Raw attribute value:', this.getAttribute('data-issue-description'));
+                    console.log('Parsed value:', issueDescription);
+                    console.log('Element found:', issueDescEl);
+                    
+                    if (issueDescEl) {
+                        issueDescEl.textContent = issueDescription || 'No description available.';
+                        console.log('Issue description updated to:', issueDescEl.textContent);
+                    } else {
+                        console.warn('Issue description element not found');
+                    }
+                    
+                    // Also update all issue description elements (for multiple modals with same ID)
+                    document.querySelectorAll('#inreject-issue-description').forEach(function(el) {
+                        el.textContent = issueDescription || 'No description available.';
+                        console.log('Updated element:', el.textContent);
+                    });
                 });
             });
         });
@@ -9694,8 +9769,8 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="inreject-issue-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available.
                             </p>
                         </div>
                         <!-- Sign-in Box -->
