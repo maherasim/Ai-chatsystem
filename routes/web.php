@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
     // Tasks APIs
     Route::get('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
+    Route::get('/tasks/developers', [TaskController::class, 'developers'])->name('tasks.developers');
     Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');
     Route::post('/tasks/store', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
@@ -102,6 +103,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/board', [TaskController::class, 'uploadBoard'])->name('tasks.board.upload');
     Route::get('/tasks/by-ticket', [TaskController::class, 'byTicket'])->name('tasks.by_ticket');
     Route::post('/tasks/reject', [TaskController::class, 'reject'])->name('tasks.reject');
+    Route::get('/tasks/my-tasks', [TaskController::class, 'myTasks'])->name('tasks.my_tasks');
+    
+    // Notification APIs
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::put('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark_read');
+    Route::put('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark_all_read');
+    Route::delete('/notifications/{id}', [\App\Http\Controllers\NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::delete('/notifications', [\App\Http\Controllers\NotificationController::class, 'destroyAll'])->name('notifications.destroy_all');
+    
     // WebTasks APIs (separate collection)
     
     Route::get('/webtasks/tickets', [WebTaskController::class, 'tickets'])->name('webtasks.tickets');
