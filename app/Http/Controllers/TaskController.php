@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\WebTask;
 use App\Models\EmployeeTask;
 use App\Models\Teams;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -91,20 +92,49 @@ class TaskController extends Controller
         
         // DEBUG: Log final task IDs
         Log::info('=== FINAL RESULTS ===');
-        Log::info('Total Task IDs Found: ' . count($userTaskIds));
-        Log::info('Task IDs: ' . json_encode($userTaskIds));
+        Log::info('Total Task IDs Found from Teams: ' . count($userTaskIds));
+        Log::info('Task IDs from Teams: ' . json_encode($userTaskIds));
 
-        // Fetch only tasks assigned to authenticated user
-        $tasks = !empty($userTaskIds) 
-            ? Task::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+        // Also fetch tasks directly assigned to the user via assigned_to field
+        $directlyAssignedTasks = Task::where('assigned_to', $authIdString)
+            ->orderByDesc('created_at')
+            ->limit(200)
+            ->get();
+            
+        $directlyAssignedWebTasks = WebTask::where('assigned_to', $authIdString)
+            ->orderByDesc('created_at')
+            ->limit(200)
+            ->get();
+            
+        $directlyAssignedEmployeeTasks = EmployeeTask::where('assigned_to', $authIdString)
+            ->orderByDesc('created_at')
+            ->limit(200)
+            ->get();
+        
+        // Get IDs from directly assigned tasks
+        $directTaskIds = $directlyAssignedTasks->pluck('_id')->map(fn($id) => (string)$id)->toArray();
+        $directWebTaskIds = $directlyAssignedWebTasks->pluck('_id')->map(fn($id) => (string)$id)->toArray();
+        $directEmployeeTaskIds = $directlyAssignedEmployeeTasks->pluck('_id')->map(fn($id) => (string)$id)->toArray();
+        
+        // Merge all task IDs (from teams and direct assignments)
+        $allTaskIds = array_unique(array_merge($userTaskIds, $directTaskIds));
+        $allWebTaskIds = array_unique(array_merge($userTaskIds, $directWebTaskIds));
+        $allEmployeeTaskIds = array_unique(array_merge($userTaskIds, $directEmployeeTaskIds));
+        
+        Log::info('Directly assigned Task IDs: ' . count($directTaskIds));
+        Log::info('Total combined Task IDs: ' . count($allTaskIds));
+
+        // Fetch tasks assigned to authenticated user (from teams OR direct assignment)
+        $tasks = !empty($allTaskIds) 
+            ? Task::whereIn('_id', $allTaskIds)->orderByDesc('created_at')->limit(200)->get()
             : collect();
             
-        $webtasks = !empty($userTaskIds)
-            ? WebTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+        $webtasks = !empty($allWebTaskIds)
+            ? WebTask::whereIn('_id', $allWebTaskIds)->orderByDesc('created_at')->limit(200)->get()
             : collect();
             
-        $employeeTasks = !empty($userTaskIds)
-            ? EmployeeTask::whereIn('_id', $userTaskIds)->orderByDesc('created_at')->limit(200)->get()
+        $employeeTasks = !empty($allEmployeeTaskIds)
+            ? EmployeeTask::whereIn('_id', $allEmployeeTaskIds)->orderByDesc('created_at')->limit(200)->get()
             : collect();
             
         $emptasks = $employeeTasks;
@@ -180,6 +210,31 @@ class TaskController extends Controller
             'done'        => $allTasks->filter(fn($t) => in_array($norm($t->status), ['done', 'completed', 'in_done']))->count(),
         ];
 
+        // Fetch notifications for the current user related to tasks
+        $userId = (string) $authId;
+        
+        // Debug: Log user ID being searched
+        Log::info('=== NOTIFICATION FETCH DEBUG ===');
+        Log::info('Searching for notifications with user_id: ' . $userId);
+        Log::info('User ID type: ' . gettype($userId));
+        
+        // Try multiple query formats to handle different user_id storage formats
+        $notifications = Notification::where(function($query) use ($userId, $authId) {
+                $query->where('user_id', $userId)
+                      ->orWhere('user_id', (string)$authId);
+            })
+            ->where('type', 'ticket_assigned')
+            ->orderByDesc('created_at')
+            ->limit(20)
+            ->get();
+        
+        // Debug: Log notification results
+        Log::info('Total notifications found: ' . $notifications->count());
+        foreach ($notifications as $index => $notif) {
+            Log::info("Notification #{$index}: ID={$notif->_id}, user_id={$notif->user_id}, type={$notif->type}, title={$notif->title}");
+        }
+        Log::info('=== NOTIFICATION FETCH DEBUG END ===');
+
         return view('Chats.task', [
             'headers'       => $headers,
             'projects'      => $projects,
@@ -191,6 +246,7 @@ class TaskController extends Controller
             'employeetasks' => $employeeTasks,
             'projectsdone'  => $projectsdone,
             'stats'         => $stats,
+            'notifications' => $notifications,
         ]);
     }
 

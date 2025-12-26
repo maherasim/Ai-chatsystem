@@ -977,12 +977,12 @@
                     </div>
                     
 
-                    <!-- Central Content: Ticket In Progress -->
+                    <!-- Central Content: Assigned Tasks -->
                     <div class="section-container">
                         <div class="section-header">
                             <div>
-                                <h2 class="section-title">Ticket in Progress</h2>
-                                <span class="section-subtitle">Total Tickets: {{ $stats['in_progress'] + $stats['new'] }}</span>
+                                <h2 class="section-title">My Assigned Tasks</h2>
+                                <span class="section-subtitle">Total Tasks: {{ $stats['total'] ?? 0 }}</span>
                             </div>
                             
                             <div class="dropdown">
@@ -1001,7 +1001,7 @@
                         <!-- Task List -->
                         <div class="tasks-wrapper" id="tasksListContainer">
                             @php
-                                // Combine and sort tasks to show relevant ones first
+                                // Combine and sort all tasks assigned to the user
                                 $mergedTasks = collect($tasks)->merge($webtasks)->merge($employeeTasks)->sortByDesc('created_at');
                                 
                                 $normView = fn($s) => strtolower(str_replace([' ', '-'], '_', $s ?? ''));

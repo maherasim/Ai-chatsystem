@@ -25,6 +25,7 @@ class WebTask extends Model
         'mark_image_path',
         'issues',
         'created_by',
+        'assigned_to', // user ID the task is assigned to
         'hold_reason', // reason for putting task on hold
         'video_link', // video link for checked tasks
         'attachments', // array of file paths for checked tasks
