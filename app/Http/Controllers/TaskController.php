@@ -544,6 +544,102 @@ class TaskController extends Controller
         // Save the task
         $task->save();
 
+        // If task status was changed to 'in_progress', notify the admin who assigned it
+        if (!empty($validated['status']) && in_array(strtolower($validated['status']), ['in_progress', 'progress'])) {
+            try {
+                $currentUserId = (string) Auth::id();
+                $taskId = (string) ($task->_id ?? $task->id);
+                $taskTicketId = $task->ticket_id ?? null;
+                
+                // Find the notification that assigned this task to the current user
+                // Match by user_id (current user), type (ticket_assigned), and ticket_id in data
+                $assignmentNotification = Notification::where('user_id', $currentUserId)
+                    ->where('type', 'ticket_assigned')
+                    ->orderByDesc('created_at')
+                    ->get()
+                    ->first(function($notif) use ($taskId, $taskTicketId) {
+                        // Parse data field
+                        $data = [];
+                        if (is_string($notif->data)) {
+                            $decoded = json_decode($notif->data, true);
+                            $data = is_array($decoded) ? $decoded : [];
+                        } elseif (is_array($notif->data)) {
+                            $data = $notif->data;
+                        }
+                        
+                        // Check if ticket_id in notification data matches task
+                        $notifTicketId = $data['ticket_id'] ?? null;
+                        if ($notifTicketId && ($notifTicketId === $taskId || $notifTicketId === $taskTicketId)) {
+                            return true;
+                        }
+                        
+                        // Also check if ticket_id matches task's ticket_id
+                        if ($taskTicketId && $notifTicketId === $taskTicketId) {
+                            return true;
+                        }
+                        
+                        return false;
+                    });
+                
+                if ($assignmentNotification && $assignmentNotification->created_by) {
+                    // Get admin ID who assigned the task
+                    $adminId = (string) $assignmentNotification->created_by;
+                    
+                    // Get current user info
+                    $currentUser = Auth::user();
+                    $userName = $currentUser->name ?? 'User';
+                    
+                    // Get project info if available
+                    $projectName = 'Unknown Project';
+                    $projectId = null;
+                    if ($task->project_id) {
+                        $project = Project::find($task->project_id);
+                        if ($project) {
+                            $projectName = $project->title ?? 'Unknown Project';
+                            $projectId = (string) ($project->_id ?? $project->id);
+                        }
+                    }
+                    
+                    // Parse original notification data to reuse structure
+                    $originalData = [];
+                    if (is_string($assignmentNotification->data)) {
+                        $decoded = json_decode($assignmentNotification->data, true);
+                        $originalData = is_array($decoded) ? $decoded : [];
+                    } elseif (is_array($assignmentNotification->data)) {
+                        $originalData = $assignmentNotification->data;
+                    }
+                    
+                    // Create notification data
+                    $notificationData = [
+                        'ticket_id' => $taskId,
+                        'ticket_code' => $originalData['ticket_code'] ?? '',
+                        'project' => $projectName,
+                        'project_id' => $projectId,
+                        'task_title' => $task->title ?? 'Task',
+                        'status' => 'in_progress',
+                    ];
+                    
+                    // Create notification for admin
+                    Notification::create([
+                        'user_id' => $adminId,
+                        'type' => 'task_started',
+                        'title' => 'Task Started',
+                        'message' => "{$userName} started the task \"{$task->title}\" in project {$projectName}",
+                        'data' => $notificationData,
+                        'read' => false,
+                        'created_by' => $currentUserId,
+                    ]);
+                    
+                    Log::info("Notification created for admin {$adminId} - Task {$taskId} started by user {$currentUserId}");
+                } else {
+                    Log::info("No assignment notification found for task {$taskId} assigned to user {$currentUserId}");
+                }
+            } catch (\Throwable $e) {
+                Log::error("Failed to create notification for task start: " . $e->getMessage());
+                // Don't fail the request if notification creation fails
+            }
+        }
+
         // Optional new image
         if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {
             try {
