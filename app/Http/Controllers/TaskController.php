@@ -544,30 +544,55 @@ class TaskController extends Controller
     private function notifyAdminTaskStarted(Task $task)
     {
         try {
-            // Find admin user (assuming admin@gmail.com is the admin)
-            $admin = User::where('email', 'admin@gmail.com')->first();
-            if (!$admin) {
-                // Fallback: find user who created the task
-                $admin = $task->creator;
+            $currentUserId = (string) Auth::id();
+            $taskId = (string) ($task->_id ?? $task->id);
+            
+            // Find the notification that assigned this task to the current user
+            // The admin ID is in the notification's created_by field
+            $assignmentNotification = Notification::where('user_id', $currentUserId)
+                ->where('type', 'task_assigned')
+                ->where('task_id', $taskId)
+                ->orderByDesc('created_at')
+                ->first();
+            
+            $adminId = null;
+            
+            if ($assignmentNotification && $assignmentNotification->created_by) {
+                // Get admin ID from the notification that assigned the task
+                $adminId = (string) $assignmentNotification->created_by;
+            } else {
+                // Fallback: find admin user by email
+                $admin = User::where('email', 'admin@gmail.com')->first();
+                if ($admin) {
+                    $adminId = (string) ($admin->_id ?? $admin->id);
+                } else {
+                    // Final fallback: use task creator
+                    if ($task->created_by) {
+                        $adminId = (string) $task->created_by;
+                    }
+                }
             }
-
-            if (!$admin) {
+            
+            if (!$adminId) {
+                \Log::warning("Could not find admin to notify for task {$taskId}");
                 return;
             }
 
-            $developer = $task->assignedDeveloper;
-            $developerName = $developer ? $developer->name : 'Unknown';
+            $developer = Auth::user();
+            $developerName = $developer ? ($developer->name ?? 'Unknown') : 'Unknown';
 
-            // Create in-app notification
+            // Create in-app notification for admin
             Notification::create([
-                'user_id' => (string)($admin->_id ?? $admin->id),
+                'user_id' => $adminId,
                 'type' => 'task_started',
                 'title' => 'Task Started',
                 'message' => "{$developerName} has started working on task: {$task->title}",
-                'task_id' => (string)($task->_id ?? $task->id),
+                'task_id' => $taskId,
                 'read' => false,
-                'created_by' => $task->assigned_to,
+                'created_by' => $currentUserId,
             ]);
+            
+            \Log::info("Notification created for admin {$adminId} - Task {$taskId} started by user {$currentUserId}");
         } catch (\Throwable $e) {
             \Log::error('Failed to notify admin: ' . $e->getMessage());
         }
