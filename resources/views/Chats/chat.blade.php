@@ -20,7 +20,6 @@
 
     /* Prevent parent containers from overflowing */
     .main_content,
-    .chat-body,
     .sidebar-group {
         overflow: visible !important;
     }
@@ -107,6 +106,50 @@
         border: none !important;
         padding: 0 !important;
     }
+
+    .chat-body {
+        height: calc(100vh - 200px); /* Adjust based on header and footer height */
+        overflow-y: auto !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .messages {
+        flex: 1;
+    }
+
+    /* Message Bubble Size Reduction */
+    .chats .chat-content .message-content,
+    .chats-right .chat-content .message-content,
+    .chats-right .chat-info .message-content {
+        padding: 8px 12px !important;
+        min-height: unset !important;
+        margin-bottom: 4px !important;
+    }
+
+    .chats .chat-content .message-content {
+        border-radius: 12px 12px 12px 0 !important;
+    }
+
+    .chats-right .chat-content .message-content,
+    .chats-right .chat-info .message-content {
+        border-radius: 12px 12px 0 12px !important;
+    }
+
+    /* Message Alignment Fix */
+    .chats.chats-right {
+        justify-content: flex-end !important;
+    }
+
+    .chats.chats-right .chat-content {
+        order: 0 !important;
+    }
+
+    .chats.chats-right .chat-avatar {
+        order: 1 !important;
+        padding-right: 0 !important;
+        padding-left: 8px !important;
+    }
 </style>
 
 
@@ -139,13 +182,13 @@
 @endphp
 
 @if($header)
-    <img src="{{ !empty($header->image) ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
+    <img id="chatHeaderAvatar" src="{{ !empty($header->image) ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
          class="rounded-circle"
          alt="image">
 @endif
                     </div>
                     <div class="ms-2 overflow-hidden">
-                        <h6>{{$header->first_name}}</h6>
+                        <h6 id="chatHeaderName">{{$header->first_name ?? 'Chat'}}</h6>
                         <span class="last-seen">Online</span>
                     </div>
                 </div>
@@ -1022,7 +1065,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         // Initialize Agora Chat
         if (window.groupChatManager) {
-            window.groupChatManager.initAgora();
+            window.groupChatManager.initAgora().then(() => {
+                @if(isset($groups) && count($groups) > 0)
+                    @php $firstGroup = $groups[0]; @endphp
+                    window.groupChatManager.openGroupChat('{{ $firstGroup['id'] }}', '{{ addslashes($firstGroup['name']) }}', '{{ $firstGroup['team_photo'] }}');
+                @endif
+            });
         }
     });
 </script>

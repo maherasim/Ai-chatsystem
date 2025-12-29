@@ -83,7 +83,7 @@
 
                             @forelse($groups as $group)
                                 <!-- Dynamic Group Card -->
-                                <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}')" 
+                                <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}', '{{ $group['team_photo'] }}')" 
                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
                                     onmouseover="this.style.transform='scale(1.05)'" 
                                     onmouseout="this.style.transform='scale(1)'">

@@ -7,6 +7,7 @@ class GroupChatManager {
     constructor() {
         this.currentGroupId = null;
         this.currentGroupName = null;
+        this.currentGroupPhoto = null;
         this.currentUserId = null;
         this.agoraClient = null;
         this.isConnected = false;
@@ -27,7 +28,7 @@ class GroupChatManager {
             });
 
             const data = await response.json();
-            
+
             if (!data.success) {
                 throw new Error(data.message || 'Failed to get Agora token');
             }
@@ -50,7 +51,7 @@ class GroupChatManager {
 
                 this.isConnected = true;
                 this.setupEventListeners();
-                
+
                 console.log('Agora Chat initialized successfully');
                 return true;
             } else {
@@ -86,9 +87,10 @@ class GroupChatManager {
     /**
      * Open group chat
      */
-    async openGroupChat(groupId, groupName) {
+    async openGroupChat(groupId, groupName, photoUrl) {
         this.currentGroupId = groupId;
         this.currentGroupName = groupName;
+        this.currentGroupPhoto = photoUrl;
 
         // Hide empty state
         const emptyState = document.getElementById('emptyChatState');
@@ -97,7 +99,7 @@ class GroupChatManager {
         }
 
         // Update chat header
-        this.updateChatHeader(groupName);
+        this.updateChatHeader(groupName, photoUrl);
 
         // Initialize Agora if not already done
         if (!this.isConnected) {
@@ -116,12 +118,18 @@ class GroupChatManager {
     }
 
     /**
-     * Update chat header
+     * Update chat header with group name and photo
      */
-    updateChatHeader(groupName) {
-        const headerName = document.querySelector('.user-details h6');
+    updateChatHeader(groupName, photoUrl) {
+        const headerName = document.getElementById('chatHeaderName') || document.querySelector('.user-details h6');
         if (headerName) {
             headerName.textContent = groupName;
+        }
+
+        const headerAvatar = document.getElementById('chatHeaderAvatar') || document.querySelector('.user-details .avatar img');
+        if (headerAvatar && photoUrl) {
+            headerAvatar.src = photoUrl;
+            headerAvatar.alt = groupName || 'Group';
         }
     }
 
@@ -137,7 +145,7 @@ class GroupChatManager {
             });
 
             const data = await response.json();
-            
+
             if (data.success && data.messages) {
                 console.log('Loaded messages:', data.messages.length, 'Current user ID:', this.currentUserId);
                 this.renderMessages(data.messages);
@@ -199,11 +207,11 @@ class GroupChatManager {
      */
     groupMessagesByDate(messages) {
         const grouped = {};
-        
+
         messages.forEach(message => {
             const date = new Date(message.created_at);
             const dateStr = this.formatDate(date);
-            
+
             if (!grouped[dateStr]) {
                 grouped[dateStr] = [];
             }
@@ -235,10 +243,10 @@ class GroupChatManager {
      */
     createMessageElement(message) {
         // Compare sender_id with currentUserId (handle both string and object ID)
-        const senderId = String(message.sender_id || message.from_user_id || '');
+        const senderId = String(message.sender_id || message.from_user_id || message.from || '');
         const currentUserIdStr = String(this.currentUserId || '');
-        const isOwnMessage = senderId === currentUserIdStr;
-        
+        const isOwnMessage = senderId === currentUserIdStr && senderId !== '';
+
         // Debug logging
         if (window.location.search.includes('debug')) {
             console.log('Message comparison:', {
@@ -248,19 +256,19 @@ class GroupChatManager {
                 message: message
             });
         }
-        
+
         const messageDiv = document.createElement('div');
         messageDiv.className = `chats ${isOwnMessage ? 'chats-right' : ''}`;
         messageDiv.setAttribute('data-message-id', message._id || message.id);
 
-        const time = new Date(message.created_at).toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        const time = new Date(message.created_at).toLocaleTimeString('en-US', {
+            hour: '2-digit',
             minute: '2-digit',
-            hour12: true 
+            hour12: true
         });
 
         let messageContent = '';
-        
+
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {
             messageContent = `
@@ -506,7 +514,7 @@ class GroupChatManager {
             if (emptyState) {
                 emptyState.style.display = 'none';
             }
-            
+
             container.appendChild(messageElement);
             this.scrollToBottom();
         }
@@ -575,7 +583,7 @@ class GroupChatManager {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Clear input
                 const input = document.querySelector('.chat-footer-wrap .form-control');
@@ -624,7 +632,7 @@ class GroupChatManager {
      */
     setReplyMessage(messageId, content) {
         this.replyingToMessage = { id: messageId, content: content };
-        
+
         // Show reply UI
         const replyDiv = document.getElementById('reply-div');
         if (replyDiv) {
@@ -737,48 +745,47 @@ class GroupChatManager {
 // Global instance
 window.groupChatManager = new GroupChatManager();
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        // Setup message input handler
-        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
-        const sendButton = document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');
-        
-        if (messageInput) {
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    const content = messageInput.value.trim();
-                    if (content) {
-                        window.groupChatManager.sendMessage(content);
-                    }
-                }
-            });
-        }
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup message input handler
+    const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+    const sendButton = document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');
 
-        if (sendButton) {
-            sendButton.addEventListener('click', (e) => {
+    if (messageInput) {
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                const content = messageInput ? messageInput.value.trim() : '';
+                const content = messageInput.value.trim();
                 if (content) {
                     window.groupChatManager.sendMessage(content);
                 }
-            });
-        }
+            }
+        });
+    }
 
-        // Close reply handler
-        const closeReply = document.querySelector('.close-replay');
-        if (closeReply) {
-            closeReply.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.groupChatManager.clearReply();
-            });
-        }
-    });
+    if (sendButton) {
+        sendButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const content = messageInput ? messageInput.value.trim() : '';
+            if (content) {
+                window.groupChatManager.sendMessage(content);
+            }
+        });
+    }
+
+    // Close reply handler
+    const closeReply = document.querySelector('.close-replay');
+    if (closeReply) {
+        closeReply.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.groupChatManager.clearReply();
+        });
+    }
+});
 
 // Update openGroupChat function in notification.blade.php
-window.openGroupChat = function(groupId, groupName) {
+window.openGroupChat = function (groupId, groupName, photoUrl) {
     if (window.groupChatManager) {
-        window.groupChatManager.openGroupChat(groupId, groupName);
+        window.groupChatManager.openGroupChat(groupId, groupName, photoUrl);
     }
 };
-
