@@ -14,6 +14,7 @@ use App\Models\WebTask;
 use App\Models\EmployeeTask;
 use MongoDB\BSON\ObjectId;
 use App\Models\User;
+use App\Models\Group;
 use App\Mail\TaskAssignmentMail;
 
 class TeamController extends Controller
@@ -355,9 +356,12 @@ class TeamController extends Controller
         $developers = User::query()
             ->where('type', 'developer')
             ->orderBy('name')
-            ->get(['id','name'])
+            ->get()
             ->map(function ($u) {
-                return ['id' => (string) ($u->_id ?? $u->id), 'name' => $u->name ?? 'Developer'];
+                return [
+                    'id' => (string) ($u->_id ?? $u->id), 
+                    'name' => $u->name ?? $u->email ?? 'Developer'
+                ];
             })
             ->values();
         return response()->json($developers);
@@ -535,6 +539,31 @@ class TeamController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
+            // Create group from developers assigned to tasks
+            // Extract unique developer IDs from task_developers map
+            $groupDeveloperIds = [];
+            if (!empty($devMap) && is_array($devMap)) {
+                // devMap structure: [userId => [developerName]]
+                $groupDeveloperIds = array_keys($devMap);
+            }
+            
+            \Log::info('Team created - Extracting developers for group:', [
+                'devMap' => $devMap,
+                'groupDeveloperIds' => $groupDeveloperIds,
+                'count' => count($groupDeveloperIds)
+            ]);
+            
+            if (!empty($groupDeveloperIds) && is_array($groupDeveloperIds)) {
+                $group = $this->createGroupForTeam($team, $groupDeveloperIds);
+                if ($group) {
+                    \Log::info('Group created successfully', ['group_id' => (string)$group->_id, 'team_id' => (string)$team->_id]);
+                } else {
+                    \Log::warning('Group creation returned null', ['team_id' => (string)$team->_id]);
+                }
+            } else {
+                \Log::info('No developers assigned to tasks, skipping group creation', ['team_id' => (string)$team->_id]);
+            }
+
             // Send email notifications to assigned developers
             $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '');
 
@@ -543,6 +572,151 @@ class TeamController extends Controller
         }
 
         return redirect()->route('chat-team')->with('success', 'Team created successfully.');
+    }
+
+    /**
+     * Update group for a team with selected developers
+     */
+    private function updateGroupForTeam($group, $developerIds, $team)
+    {
+        try {
+            // Filter and validate developer IDs
+            $validDeveloperIds = collect($developerIds)
+                ->filter()
+                ->map(function ($devId) {
+                    return (string) trim($devId);
+                })
+                ->filter(function ($devId) {
+                    return !empty($devId) && preg_match('/^[a-f0-9]{24}$/i', $devId);
+                })
+                ->unique()
+                ->values()
+                ->all();
+
+            // Verify all developers exist
+            $developers = User::whereIn('_id', $validDeveloperIds)
+                ->where('type', 'developer')
+                ->get();
+
+            if ($developers->isEmpty() && empty($validDeveloperIds)) {
+                // No developers, but that's okay - just update name
+                $group->name = $team->title ?? $group->name;
+                $group->member_ids = [];
+                $group->save();
+                return $group;
+            }
+
+            $actualDeveloperIds = $developers->pluck('_id')->map(function ($id) {
+                return (string) $id;
+            })->all();
+
+            // Update group
+            $group->name = $team->title ?? $group->name;
+            $group->member_ids = $actualDeveloperIds;
+            $group->save();
+
+            return $group;
+        } catch (\Throwable $e) {
+            \Log::error('Failed to update group for team: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Create a group for a team with selected developers
+     */
+    private function createGroupForTeam($team, $developerIds)
+    {
+        try {
+            \Log::info('createGroupForTeam called', [
+                'team_id' => (string)$team->_id,
+                'team_title' => $team->title,
+                'developer_ids' => $developerIds,
+                'developer_count' => count($developerIds)
+            ]);
+
+            // Filter and validate developer IDs
+            $validDeveloperIds = collect($developerIds)
+                ->filter()
+                ->map(function ($devId) {
+                    return (string) trim($devId);
+                })
+                ->filter(function ($devId) {
+                    // Validate it's a valid user ID format
+                    return !empty($devId) && preg_match('/^[a-f0-9]{24}$/i', $devId);
+                })
+                ->unique()
+                ->values()
+                ->all();
+
+            \Log::info('Validated developer IDs', ['valid_ids' => $validDeveloperIds, 'count' => count($validDeveloperIds)]);
+
+            if (empty($validDeveloperIds)) {
+                \Log::warning('No valid developer IDs found after validation');
+                return null;
+            }
+
+            // Verify all developers exist
+            $developers = User::whereIn('_id', $validDeveloperIds)
+                ->where('type', 'developer')
+                ->get();
+
+            \Log::info('Developers found', ['count' => $developers->count(), 'developers' => $developers->pluck('name')->all()]);
+
+            if ($developers->isEmpty()) {
+                \Log::warning('No developers found with type=developer', ['searched_ids' => $validDeveloperIds]);
+                return null;
+            }
+
+            $actualDeveloperIds = $developers->pluck('_id')->map(function ($id) {
+                return (string) $id;
+            })->all();
+
+            // Create group
+            $groupData = [
+                'name' => $team->title ?? 'Untitled Group',
+                'team_id' => (string) $team->_id,
+                'admin_id' => (string) Auth::id(), // Team creator is admin
+                'member_ids' => $actualDeveloperIds,
+                'created_by' => (string) Auth::id(),
+            ];
+
+            \Log::info('Creating group with data', $groupData);
+
+            try {
+                $group = new Group();
+                $group->name = $groupData['name'];
+                $group->team_id = $groupData['team_id'];
+                $group->admin_id = $groupData['admin_id'];
+                $group->member_ids = $groupData['member_ids'];
+                $group->created_by = $groupData['created_by'];
+                $group->save();
+                
+                \Log::info('Group saved successfully', ['group_id' => (string)$group->_id]);
+            } catch (\Exception $e) {
+                \Log::error('Group::create failed, trying manual save', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                throw $e;
+            }
+
+            \Log::info('Group created successfully', [
+                'group_id' => (string)$group->_id,
+                'group_name' => $group->name,
+                'member_count' => count($actualDeveloperIds)
+            ]);
+
+            return $group;
+        } catch (\Throwable $e) {
+            // Log error but don't fail team creation
+            \Log::error('Failed to create group for team', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'team_id' => (string)$team->_id ?? 'unknown'
+            ]);
+            return null;
+        }
     }
 
     public function destroy($id)
@@ -688,6 +862,27 @@ class TeamController extends Controller
             $team->task_developers = $devMap;
 
             $team->save();
+
+            // Update or create group from developers assigned to tasks
+            // Extract unique developer IDs from task_developers map
+            $groupDeveloperIds = [];
+            if (!empty($devMap) && is_array($devMap)) {
+                // devMap structure: [userId => [developerName]]
+                $groupDeveloperIds = array_keys($devMap);
+            }
+            
+            if (!empty($groupDeveloperIds) && is_array($groupDeveloperIds)) {
+                // Check if group exists for this team
+                $existingGroup = Group::where('team_id', (string) $team->_id)->first();
+                
+                if ($existingGroup) {
+                    // Update existing group
+                    $this->updateGroupForTeam($existingGroup, $groupDeveloperIds, $team);
+                } else {
+                    // Create new group
+                    $this->createGroupForTeam($team, $groupDeveloperIds);
+                }
+            }
 
             // Send email notifications to newly assigned developers
             $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '', $oldDevMap);

@@ -18,6 +18,7 @@ use App\Models\Project;
 
 
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ChatController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
@@ -62,11 +63,7 @@ Route::get('/login', function () {
 
 
 
-Route::get('/chat', function () {
-    $headers = Setting::all();
-    $setting = Setting::first();
-    return view('Chats.chat', compact('headers','setting'));
-})->middleware('auth')->name('chat.index');
+Route::get('/chat', [ChatController::class, 'index'])->middleware('auth')->name('chat.index');
 
 // Route::get('/chat', function () {
 //     return view('index');
@@ -192,6 +189,23 @@ Route::post('/settings/login-background/select', [App\Http\Controllers\SettingCo
 Route::post('/settings/chat-background', [App\Http\Controllers\SettingController::class, 'uploadchatBackground'])->name('upload.chat.backgrounds');
 Route::post('/upload-chat-sounds', [App\Http\Controllers\SettingController::class, 'uploadChatSounds'])->name('upload.chat.sounds');
 Route::post('/upload-notification-sounds', [App\Http\Controllers\SettingController::class, 'uploadNotificationSounds'])->name('upload.notification.sounds');
+
+// Chat API Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/api/chat/token', [ChatController::class, 'getToken'])->name('chat.token');
+    Route::get('/api/chat/conversations', [ChatController::class, 'getConversationsApi'])->name('chat.conversations');
+    Route::get('/api/chat/conversation/{conversationId}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::get('/api/chat/conversation/user/{otherUserId}', [ChatController::class, 'getConversation'])->name('chat.conversation.user');
+    Route::post('/api/chat/message', [ChatController::class, 'saveMessage'])->name('chat.message.save');
+    Route::post('/api/chat/upload-file', [ChatController::class, 'uploadFile'])->name('chat.upload.file');
+    Route::post('/api/chat/conversation/{conversationId}/read', [ChatController::class, 'markAsRead'])->name('chat.mark.read');
+    Route::delete('/api/chat/message/{messageId}', [ChatController::class, 'deleteMessage'])->name('chat.message.delete');
+    Route::post('/api/chat/message/{messageId}/reaction', [ChatController::class, 'addReaction'])->name('chat.message.reaction');
+    
+    // Group chat routes
+    Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
+    Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+});
 // new editor save endpoints
 Route::post('/settings/policy/save', [App\Http\Controllers\SettingController::class, 'savePolicy'])->name('settings.policy.save');
 Route::post('/settings/agreement/save', [App\Http\Controllers\SettingController::class, 'saveAgreement'])->name('settings.agreement.save');
@@ -202,6 +216,7 @@ Route::get('/all-calls', function () {
 })->name('all-calls');
 
 Route::get('/group-chat', function () {
+    
     return view('group-chat');
 })->name('group-chat');
 
