@@ -409,56 +409,9 @@
 
                     <!-- Notification Cards Wrapper -->
                     <div id="notificationWrapper">
-                        <!-- Notification Card 1 -->
-                        <div class="notificationCard"
-                            style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
-
-                            <!-- Profile Image -->
-                            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-
-                            <!-- Text Content -->
-                            <div style="flex-grow: 1;">
-                                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Developer name</div>
-                                <div style="font-size: 12px; color: #7f8ea3;">Developer is now Online</div>
-                            </div>
-
-                            <!-- Top Right Time -->
-                            <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                                1h
-                            </div>
-
-                            <!-- Bottom Right Red Dot -->
-                            <div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                        </div>
-
-                        <!-- Notification Card 2 -->
-                        <div class="notificationCard"
-                            style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
-
-                            <!-- Profile Image -->
-                            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-
-                            <!-- Text Content -->
-                            <div style="flex-grow: 1;">
-                                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Developer name</div>
-                                <div style="font-size: 12px; color: #7f8ea3;">Developer is now Online</div>
-                            </div>
-
-                            <!-- Top Right Time -->
-                            <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                                1h
-                            </div>
-
-                            <!-- Bottom Right Red Dot -->
-                            <div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                        </div>
+                        <!-- Notifications will be loaded dynamically via JavaScript -->
+                        <div style="text-align: center; padding: 40px; color: #7f8ea3; font-size: 14px;">Loading notifications...</div>
                     </div>
-                    <!-- Inline JS (no <script>) -->
-                    <img onerror="  function deleteNotificationCards() { var cards = document.querySelectorAll('.notificationCard'); cards.forEach(function(card) { card.remove(); });} " style="display: none;">
                 </div>
                 <!-- tasks -->
                 <!-- Delete All Button -->
@@ -3034,7 +2987,223 @@
                 icon.classList.toggle('selected', name === tabName);
             }
         });
+
+        // Load notifications when bell tab is opened
+        if (tabName === 'bell') {
+            loadNotifications();
+        }
     }
+
+    // Load notifications from API
+    function loadNotifications() {
+        fetch('{{ route("notifications.index") }}', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderNotifications(data.notifications);
+                updateNotificationBadge(data.unread_count);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading notifications:', error);
+        });
+    }
+
+    // Render notifications in the UI
+    function renderNotifications(notifications) {
+        const wrapper = document.getElementById('notificationWrapper');
+        if (!wrapper) return;
+
+        // Clear existing notifications
+        wrapper.innerHTML = '';
+
+        if (!notifications || notifications.length === 0) {
+            wrapper.innerHTML = '<div style="text-align: center; padding: 40px; color: #7f8ea3; font-size: 14px;">No notifications yet</div>';
+            return;
+        }
+
+        notifications.forEach(notification => {
+            const card = createNotificationCard(notification);
+            wrapper.appendChild(card);
+        });
+    }
+
+    // Create notification card HTML
+    function createNotificationCard(notification) {
+        const card = document.createElement('div');
+        card.className = 'notificationCard';
+        card.style.cssText = 'position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; cursor: pointer;';
+        
+        // Add click handler to mark as read
+        if (!notification.read) {
+            card.style.borderLeft = '3px solid #00c469';
+            card.onclick = () => markAsRead(notification._id || notification.id);
+        }
+
+        const timeAgo = getTimeAgo(notification.created_at);
+        const iconSrc = notification.type === 'task_assigned' 
+            ? '{{ asset("build/img/inhold.svg") }}' 
+            : '{{ asset("build/img/avatar.svg") }}';
+        
+        card.innerHTML = `
+            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid ${notification.read ? '#ddd' : 'limegreen'}; overflow: hidden; margin-right: 10px; flex-shrink: 0;">
+                <img src="${iconSrc}" alt="Icon" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex-grow: 1;">
+                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">${escapeHtml(notification.title || 'Notification')}</div>
+                <div style="font-size: 12px; color: #7f8ea3; margin-top: 2px;">${escapeHtml(notification.message || '')}</div>
+            </div>
+            <div style="position: absolute; top: 10px; right: 14px; font-size: 11px; color: #9ba3ae;">
+                ${timeAgo}
+            </div>
+            ${!notification.read ? '<div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>' : ''}
+            <button onclick="event.stopPropagation(); deleteNotification('${notification._id || notification.id}')" 
+                style="position: absolute; top: 8px; right: 30px; background: transparent; border: none; color: #9ba3ae; cursor: pointer; font-size: 16px; padding: 0; width: 20px; height: 20px;">×</button>
+        `;
+
+        return card;
+    }
+
+    // Mark notification as read
+    function markAsRead(notificationId) {
+        fetch(`{{ url('/notifications') }}/${notificationId}/read`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications(); // Reload to update UI
+            }
+        })
+        .catch(error => {
+            console.error('Error marking notification as read:', error);
+        });
+    }
+
+    // Delete notification
+    function deleteNotification(notificationId) {
+        if (!confirm('Are you sure you want to delete this notification?')) {
+            return;
+        }
+
+        fetch(`{{ url('/notifications') }}/${notificationId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications(); // Reload to update UI
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting notification:', error);
+        });
+    }
+
+    // Delete all notifications
+    function deleteNotificationCards() {
+        if (!confirm('Are you sure you want to delete all notifications?')) {
+            return;
+        }
+
+        fetch('{{ route("notifications.destroy_all") }}', {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications(); // Reload to update UI
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting all notifications:', error);
+        });
+    }
+
+    // Update notification badge count
+    function updateNotificationBadge(count) {
+        // Update bell icon badge if exists
+        const bellIcon = document.getElementById('icon-bell');
+        if (bellIcon) {
+            // Remove existing badge
+            const existingBadge = bellIcon.querySelector('.notification-badge');
+            if (existingBadge) {
+                existingBadge.remove();
+            }
+
+            // Add badge if there are unread notifications
+            if (count > 0) {
+                const badge = document.createElement('span');
+                badge.className = 'notification-badge';
+                badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;';
+                badge.textContent = count > 9 ? '9+' : count;
+                bellIcon.style.position = 'relative';
+                bellIcon.appendChild(badge);
+            }
+        }
+    }
+
+    // Helper function to get time ago
+    function getTimeAgo(dateString) {
+        if (!dateString) return 'Just now';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return diffMins + 'm ago';
+        if (diffHours < 24) return diffHours + 'h ago';
+        if (diffDays < 7) return diffDays + 'd ago';
+        
+        return date.toLocaleDateString();
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Load notifications on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load notifications initially
+        loadNotifications();
+        
+        // Refresh notifications every 30 seconds
+        setInterval(loadNotifications, 30000);
+    });
 
     function openGroupChat(groupId, groupName) {
         // Open group chat - you can customize this based on your chat implementation

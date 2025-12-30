@@ -2097,6 +2097,20 @@
                                     });
                                 }
                             } catch (_) {}
+                            
+                            // Prefill developer assignment
+                            try {
+                                var devSelect = document.getElementById('select-developer');
+                                if (devSelect && t.assigned_to) {
+                                    // Load developers first, then set value
+                                    loadDevelopers();
+                                    setTimeout(function() {
+                                        if (devSelect) {
+                                            devSelect.value = String(t.assigned_to);
+                                        }
+                                    }, 500);
+                                }
+                            } catch (_) {}
 
                             // Prefill preview image (board preferred, else mark) and render existing issues
                             try {
@@ -3291,10 +3305,44 @@
 
             // Projects are rendered server-side; no client-side fetching needed
 
+            // Load developers list
+            function loadDevelopers() {
+                var developerSelect = document.getElementById('select-developer');
+                if (!developerSelect) return;
+                
+                setSelectLoading(developerSelect, true);
+                fetch('{{ route("tasks.developers") }}', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function(r) {
+                    return r.json();
+                })
+                .then(function(developers) {
+                    developerSelect.innerHTML = '<option value="">Assign to Developer (Optional)</option>';
+                    if (Array.isArray(developers) && developers.length > 0) {
+                        developers.forEach(function(dev) {
+                            var opt = document.createElement('option');
+                            opt.value = dev.id;
+                            opt.textContent = dev.name || dev.email || 'Developer';
+                            developerSelect.appendChild(opt);
+                        });
+                    }
+                    setSelectLoading(developerSelect, false);
+                })
+                .catch(function(error) {
+                    console.error('Failed to load developers:', error);
+                    developerSelect.innerHTML = '<option value="">Failed to load developers</option>';
+                    setSelectLoading(developerSelect, false);
+                });
+            }
+
             function loadTickets(projectId) {
                 if (!ticketSelect) return Promise.resolve();
                 if (!projectId) {
                     ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                    ticketSelect.disabled = true;
                     return Promise.resolve();
                 }
                 setSelectLoading(ticketSelect, true);
@@ -3302,10 +3350,14 @@
                 url.searchParams.set('project_id', projectId);
                 return fetch(url.toString(), {
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
                         }
                     })
                     .then(function(res) {
+                        if (!res.ok) {
+                            throw new Error('Failed to load tickets: ' + res.status);
+                        }
                         return res.json();
                     })
                     .then(function(resp) {
@@ -3316,28 +3368,119 @@
                         items.forEach(function(t) {
                             var opt = document.createElement('option');
                             opt.value = t.id;
-                            opt.textContent = (t.title || 'Untitled');
+                            // Display code and title, or fallback to code or title or 'Untitled'
+                            // Filter out email-like strings from title
+                            var ticketTitle = t.title || '';
+                            var ticketCode = t.code || '';
+                            
+                            // If title looks like an email, use code instead or section_name
+                            if (ticketTitle && ticketTitle.includes('@') && ticketTitle.includes('.')) {
+                                ticketTitle = t.section_name || ticketCode || '';
+                            }
+                            
+                            var displayText = '';
+                            if (ticketCode && ticketTitle) {
+                                displayText = ticketCode + ' - ' + ticketTitle;
+                            } else if (ticketCode) {
+                                displayText = ticketCode;
+                            } else if (ticketTitle) {
+                                displayText = ticketTitle;
+                            } else {
+                                displayText = 'Untitled Ticket';
+                            }
+                            opt.textContent = displayText;
                             ticketSelect.appendChild(opt);
                             ticketCache[t.id] = t;
                         });
                         ticketSelect.disabled = false;
+                        setSelectLoading(ticketSelect, false);
                         // reset displayed dates when list refreshes
                         renderTicketDates(null);
                         return items;
                     })
-                    .catch(function() {
+                    .catch(function(error) {
+                        console.error('Error loading tickets:', error);
                         ticketSelect.innerHTML = '<option value="">Failed to load tickets</option>';
                         ticketSelect.disabled = false;
+                        setSelectLoading(ticketSelect, false);
                         return [];
                     });
             }
 
             createTaskModalEl.addEventListener('shown.bs.modal', function() {
+                // Load developers when modal opens
+                loadDevelopers();
+                
                 if (window.__editingTaskMode) return; // don't reset when editing
+                
+                // Reset form fields
+                if (projectSelect) {
+                    projectSelect.value = '';
+                }
                 if (ticketSelect) {
                     ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
                     ticketSelect.disabled = true;
                 }
+                var developerSelect = document.getElementById('select-developer');
+                if (developerSelect) {
+                    developerSelect.value = '';
+                }
+                if (startDateSpan) startDateSpan.textContent = '--';
+                if (endDateSpan) endDateSpan.textContent = '--';
+            });
+            
+            // Reset modal when closed
+            createTaskModalEl.addEventListener('hidden.bs.modal', function() {
+                // Clear editing mode
+                window.__editingTaskMode = false;
+                try {
+                    delete (document.getElementById('create-task-save') || {}).dataset.editingId;
+                } catch (_) {}
+                
+                // Reset modal title
+                try {
+                    var titleEl = document.querySelector('#createTaskModal .modal-title');
+                    if (titleEl) titleEl.textContent = 'Create new Task';
+                } catch (_) {}
+                
+                // Reset form
+                if (projectSelect) projectSelect.value = '';
+                if (ticketSelect) {
+                    ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                    ticketSelect.disabled = true;
+                }
+                var developerSelect = document.getElementById('select-developer');
+                if (developerSelect) developerSelect.value = '';
+                
+                // Reset image and markers
+                if (previewImg) {
+                    previewImg.src = '';
+                    previewImg.style.display = 'none';
+                    previewImg.style.filter = '';
+                }
+                var uploadText = document.getElementById('uploadText');
+                if (uploadText) {
+                    uploadText.style.display = 'block';
+                    uploadText.innerHTML = 'Upload Or Drag <br><small>PDF, JPG, PNG</small>';
+                }
+                if (markerLayer) {
+                    markerLayer.style.display = 'none';
+                    markerLayer.innerHTML = '';
+                }
+                var markerToolbar = document.getElementById('markerToolbar');
+                if (markerToolbar) markerToolbar.style.display = 'none';
+                var markerActions = document.getElementById('markerActions');
+                if (markerActions) markerActions.style.display = 'none';
+                
+                // Reset created tasks
+                createdTasks = [];
+                badgeCounter = 0;
+                currentMarker = null;
+                placingActive = false;
+                
+                // Reset dates
+                if (startDateSpan) startDateSpan.textContent = '--';
+                if (endDateSpan) endDateSpan.textContent = '--';
             });
 
             if (projectSelect) {
@@ -3611,6 +3754,7 @@
                             var editingId = (document.getElementById('create-task-save') || {}).dataset
                                 ?.editingId;
                             if (editingId) {
+                                var developerSelect = document.getElementById('select-developer');
                                 var updatePayload = {
                                     // Use selected ticket title as task title (same as create flow)
                                     title: (function() {
@@ -3623,6 +3767,7 @@
                                         }
                                     })(),
                                     description: '',
+                                    assigned_to: (developerSelect || {}).value || null,
                                     start_date: (function() {
                                         try {
                                             var t = ticketCache[(ticketSelect || {}).value];
@@ -3698,10 +3843,11 @@
                                 });
                                 return;
                             }
-                            if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
-                                alert('Please add at least one issue on the image before saving the task.');
-                                return;
-                            }
+                            // Issues are optional - allow saving task without issues
+                            // if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
+                            //     alert('Please add at least one issue on the image before saving the task.');
+                            //     return;
+                            // }
                             var ticketText = (function() {
                                 try {
                                     var opt = ticketSelect?.selectedOptions?.[0];
@@ -3711,11 +3857,13 @@
                                 }
                             })();
                             var taskTitle = ticketText ? ticketText : 'Task';
+                            var developerSelect = document.getElementById('select-developer');
                             var payload = {
                                 project_id: (projectSelect || {}).value || null,
                                 ticket_id: (ticketSelect || {}).value || null,
                                 title: taskTitle,
                                 description: '',
+                                assigned_to: (developerSelect || {}).value || null,
                                 // Persist task-level dates from the selected ticket
                                 start_date: (function() {
                                     try {
@@ -3762,7 +3910,7 @@
                                         note.className = 'position-fixed top-0 end-0 p-3';
                                         note.style.zIndex = '1060';
                                         note.innerHTML =
-                                            '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task created with issues</div>';
+                                            '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task created successfully</div>';
                                         document.body.appendChild(note);
                                         setTimeout(function() {
                                             try {
@@ -3770,59 +3918,32 @@
                                             } catch (_) {}
                                         }, 1500);
                                     } catch (_) {}
-                                    // Optionally reset accumulator
+                                    
+                                    // Close modal and reload page to show new task
                                     try {
-                                        createdTasks = [];
-                                        badgeCounter = 0;
-                                        // remove badges from layer
-                                        var existing = markerLayer?.querySelectorAll(
-                                            '.marker-badge') || [];
-                                        existing.forEach?.(function(n) {
-                                            try {
-                                                n.remove();
-                                            } catch (_) {}
-                                        });
-                                    } catch (_) {}
-                                    // Keep main modal open; just append card without reloading
-                                    try {
-                                        var list = document.getElementById('taskList');
-                                        if (list) {
-                                            var card = document.createElement('div');
-                                            card.className = 'd-flex p-2 rounded mt-2 task-card';
-                                            card.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
-                                            var imgSrc = (previewImg && previewImg.src) ? previewImg.src : '';
-                                            var urgent = String((createdTasks || []).length || 1).padStart(2,'0');
-                                            var startStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
-                                            var endStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
-                                            card.setAttribute('data-board', imgSrc);
-                                            try { card.setAttribute('data-issues', JSON.stringify(createdTasks||[])); } catch (_) {}
-                                            card.setAttribute('data-title', taskTitle || 'Task');
-                                            card.onclick = function(){ try{ openTaskViewer(card); }catch(_){ } };
-                                            card.innerHTML =
-                                                '<div class=\"me-2\">'
-                                                +   '<img src=\"'+ imgSrc +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
-                                                + '</div>'
-                                                + '<div class=\"flex-grow-1\">'
-                                                +   '<div class=\"d-flex justify-content-between align-items-center\">'
-                                                +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'
-                                                +       (taskTitle || 'Task')
-                                                +     '</div>'
-                                                +   '</div>'
-                                                +   '<div style=\"font-size:12px;color:#6c757d;\">'+ (ticketSelect?.selectedOptions?.[0]?.text || '') +'</div>'
-                                                +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
-                                                +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ startStr +'</small></div>'
-                                                +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ endStr +'</small></div>'
-                                                +     '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+ urgent +'</div>'
-                                                +   '</div>'
-                                                + '</div>';
-                                            list.prepend(card);
+                                        var modal = bootstrap.Modal.getInstance(document.getElementById('createTaskModal'));
+                                        if (modal) {
+                                            modal.hide();
                                         }
-                                    } catch (_) {}
+                                    } catch (e) {
+                                        try {
+                                            document.getElementById('createTaskModal').classList.remove('show');
+                                            document.body.classList.remove('modal-open');
+                                            var backdrop = document.querySelector('.modal-backdrop');
+                                            if (backdrop) backdrop.remove();
+                                        } catch (_) {}
+                                    }
+                                    
+                                    // Reload page after a short delay to show the new task
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 500);
                                 } else {
-                                    alert('Failed to create task');
+                                    alert('Failed to create task: ' + (resp.message || 'Unknown error'));
                                 }
-                            }).catch(function() {
-                                alert('Failed to create task');
+                            }).catch(function(error) {
+                                console.error('Error creating task:', error);
+                                alert('Failed to create task. Please try again.');
                             });
                         } catch (_) {}
                     });
@@ -3842,9 +3963,11 @@
                         })();
                         var taskTitle = ticketText ? ticketText : 'Task';
                         if (editingId) {
+                            var developerSelect = document.getElementById('select-developer');
                             var updatePayload = {
                                 title: taskTitle,
                                 description: '',
+                                assigned_to: (developerSelect || {}).value || null,
                                 start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
                                 end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
                                 checkpoints: [],
@@ -3872,11 +3995,13 @@
                             return;
                         }
                         if (!Array.isArray(createdTasks) || createdTasks.length === 0) return;
+                        var developerSelect = document.getElementById('select-developer');
                         var payload = {
                             project_id: (projectSelect || {}).value || null,
                             ticket_id: (ticketSelect || {}).value || null,
                             title: taskTitle,
                             description: '',
+                            assigned_to: (developerSelect || {}).value || null,
                             start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
                             end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
                             issues: createdTasks,
@@ -3937,6 +4062,7 @@
                             var editingId = (document.getElementById('create-task-save') || {}).dataset
                                 ?.editingId;
                             if (editingId) {
+                                var developerSelect = document.getElementById('select-developer');
                                 var updatePayload = {
                                     title: (function() {
                                         try {
@@ -3948,6 +4074,7 @@
                                         }
                                     })(),
                                     description: '',
+                                    assigned_to: (developerSelect || {}).value || null,
                                     start_date: (function() {
                                         try {
                                             var t = ticketCache[(ticketSelect || {}).value];
@@ -4021,10 +4148,11 @@
                                 });
                                 return;
                             }
-                            if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
-                                alert('Please add at least one issue on the image before saving the task.');
-                                return;
-                            }
+                            // Issues are optional - allow saving task without issues
+                            // if (!Array.isArray(createdTasks) || createdTasks.length === 0) {
+                            //     alert('Please add at least one issue on the image before saving the task.');
+                            //     return;
+                            // }
                             var ticketText = (function() {
                                 try {
                                     var opt = ticketSelect?.selectedOptions?.[0];
@@ -4034,11 +4162,13 @@
                                 }
                             })();
                             var taskTitle = ticketText ? ticketText : 'Task';
+                            var developerSelect = document.getElementById('select-developer');
                             var payload = {
                                 project_id: (projectSelect || {}).value || null,
                                 ticket_id: (ticketSelect || {}).value || null,
                                 title: taskTitle,
                                 description: '',
+                                assigned_to: (developerSelect || {}).value || null,
                                 start_date: (function() {
                                     try {
                                         var t = ticketCache[(ticketSelect || {}).value];
@@ -4108,6 +4238,13 @@
                                         if (ticketSelect) {
                                             try {
                                                 ticketSelect.value = '';
+                                            } catch (_) {}
+                                        }
+                                        // reset developer select
+                                        var devSelect = document.getElementById('select-developer');
+                                        if (devSelect) {
+                                            try {
+                                                devSelect.value = '';
                                             } catch (_) {}
                                         }
                                         // reset dates
@@ -4668,9 +4805,9 @@
                             <div class="mt-1 mb-2" style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
                             <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                             <small class="text-muted">Ticket Details</small>
-                            <div class="d-flex gap-2 mt-2">
+                            <div class="d-flex gap-2 mt-2 flex-wrap">
                                 <select id="select-project" name="project_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
+                                    style="background: #fff; border-radius: 8px; flex: 1; min-width: 150px;">
                                     <option value="">Select the Project</option>
                                     @if (isset($projects) && count($projects))
                                         @foreach ($projects as $project)
@@ -4680,8 +4817,12 @@
                                     @endif
                                 </select>
                                 <select id="select-ticket" name="ticket_id" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px;">
+                                    style="background: #fff; border-radius: 8px; flex: 1; min-width: 150px;" disabled>
                                     <option value="">Select the Ticket</option>
+                                </select>
+                                <select id="select-developer" name="assigned_to" class="form-select form-select-sm"
+                                    style="background: #fff; border-radius: 8px; flex: 1; min-width: 150px;">
+                                    <option value="">Assign to Developer (Optional)</option>
                                 </select>
                             </div>
                         </div>
@@ -4822,7 +4963,7 @@
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
                     <!-- Save and Close (Green) -->
                     <button id="create-task-save" type="button" class="btn text-white"
-                        style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal">
+                        style="background-color: #28c76f; border-radius: 6px;">
                         Save and Close
                     </button>
 
@@ -6486,10 +6627,11 @@
                     });
                     return;
                 }
-                if (!Array.isArray(wtIssues) || wtIssues.length === 0) {
-                    alert('Please add at least one issue on the image before saving the task.');
-                    return;
-                }
+                // Issues are optional - allow saving task without issues
+                // if (!Array.isArray(wtIssues) || wtIssues.length === 0) {
+                //     alert('Please add at least one issue on the image before saving the task.');
+                //     return;
+                // }
                 var payload = {
                     project_id: (wtProjectSelect || {}).value || null,
                     ticket_id: (wtTicketSelect || {}).value || null,
@@ -6686,10 +6828,11 @@
                             });
                             return;
                         }
-                        if (!Array.isArray(wtIssues) || wtIssues.length === 0) {
-                            alert('Please add at least one issue on the image before saving the task.');
-                            return;
-                        }
+                        // Issues are optional - allow saving task without issues
+                        // if (!Array.isArray(wtIssues) || wtIssues.length === 0) {
+                        //     alert('Please add at least one issue on the image before saving the task.');
+                        //     return;
+                        // }
                         var payload = {
                             project_id: (wtProjectSelect || {}).value || null,
                             ticket_id: (wtTicketSelect || {}).value || null,

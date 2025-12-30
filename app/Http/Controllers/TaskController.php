@@ -8,8 +8,12 @@ use App\Models\Ticket;
 use App\Models\Task;
 use App\Models\WebTask;
 use App\Models\EmployeeTask;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TaskAssignmentMail;
 
 class TaskController extends Controller
 {
@@ -83,6 +87,26 @@ class TaskController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * Get list of developers for task assignment
+     */
+    public function developers()
+    {
+        $developers = User::where('type', 'developer')
+            ->where('active', true)
+            ->orderBy('name')
+            ->get()
+            ->map(function ($u) {
+                return [
+                    'id' => (string) ($u->_id ?? $u->id),
+                    'name' => $u->name ?? 'Developer',
+                    'email' => $u->email ?? '',
+                ];
+            })
+            ->values();
+        return response()->json($developers);
+    }
+
     public function tickets(Request $request)
 {
     $projectId = $request->input('project_id'); // ✅ plain string
@@ -99,14 +123,13 @@ class TaskController extends Controller
     $data = $tickets->map(function ($t) {
         return [
             'id' => (string) ($t->_id ?? $t->id),
-            'code' => $t->code,
+            'code' => $t->code ?? null,
             'project_id' => $t->project_id,
-            'title' => $t->title,
-            'section_name' => $t->section_name,
-            'title' => $t->title,
-            'description' => $t->description,
-            'status' => $t->status,
-            'priority' => $t->priority,
+            'title' => $t->title ?? null,
+            'section_name' => $t->section_name ?? null,
+            'description' => $t->description ?? null,
+            'status' => $t->status ?? null,
+            'priority' => $t->priority ?? null,
             'start_date' => optional($t->start_date)->toDateString(),
             'end_date' => optional($t->end_date)->toDateString(),
         ];
@@ -139,6 +162,7 @@ class TaskController extends Controller
             'mark_image'   => 'nullable|string', // base64 data URL
             'issues'       => 'nullable|array',
             'board_image'  => 'nullable|string', // optional base64 board
+            'assigned_to'  => 'nullable|string', // Developer user ID
         ]);
 
         $path = null;
@@ -211,7 +235,13 @@ class TaskController extends Controller
             'mark_image_path'=> $firstIssueImagePath ?: $path,
             'issues'         => $issues,
             'created_by'     => Auth::id(),
+            'assigned_to'    => $validated['assigned_to'] ?? null,
         ]);
+
+        // Send notification to developer if task is assigned
+        if (!empty($validated['assigned_to'])) {
+            $this->notifyDeveloperTaskAssigned($task, $validated['assigned_to']);
+        }
 
         return response()->json([
             'success' => true,
@@ -241,9 +271,13 @@ class TaskController extends Controller
             'mark_image'   => 'nullable|string',
             'issues'       => 'nullable|array',
             'ratings'      => 'nullable|array',
+            'assigned_to'  => 'nullable|string',
         ]);
 
         $task = Task::findOrFail($id);
+        
+        // Track old status to detect changes
+        $oldStatus = $task->status;
 
         // Optional new image
         if (!empty($validated['mark_image']) && str_starts_with($validated['mark_image'], 'data:image')) {
@@ -261,8 +295,26 @@ class TaskController extends Controller
         $incomingIssues = $validated['issues'] ?? null;
         unset($validated['mark_image'], $validated['issues']);
 
+        // Track old assigned_to to detect changes
+        $oldAssignedTo = $task->assigned_to;
+        
         // Update scalar fields first
         $task->update($validated);
+        
+        // Reload task to get updated values
+        $task = Task::find($id);
+        
+        // Check if status changed to in_progress and notify admin
+        $newStatus = $validated['status'] ?? $task->status;
+        if ($oldStatus !== $newStatus && in_array($newStatus, ['in_progress', 'progress', 'inprogress', 'started'])) {
+            $this->notifyAdminTaskStarted($task);
+        }
+        
+        // If task is being assigned to a developer (new assignment or changed assignment), send notification
+        $newAssignedTo = $validated['assigned_to'] ?? null;
+        if (!empty($newAssignedTo) && $newAssignedTo !== $oldAssignedTo) {
+            $this->notifyDeveloperTaskAssigned($task, $newAssignedTo);
+        }
 
         if (is_array($incomingIssues) && count($incomingIssues)) {
             $processed = [];
@@ -420,6 +472,130 @@ class TaskController extends Controller
             'success' => true,
             'message' => 'Task rejected successfully',
         ]);
+    }
+
+    /**
+     * Get tasks assigned to the current developer
+     */
+    public function myTasks(Request $request)
+    {
+        $user = Auth::user();
+        
+        // Only developers can access this
+        if ($user->type !== 'developer') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Only developers can access assigned tasks.',
+            ], 403);
+        }
+
+        $tasks = Task::where('assigned_to', (string)($user->_id ?? $user->id))
+            ->with(['project', 'ticket', 'creator'])
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'tasks' => $tasks,
+            'count' => $tasks->count(),
+        ]);
+    }
+
+    /**
+     * Send notification to developer when task is assigned
+     */
+    private function notifyDeveloperTaskAssigned(Task $task, $developerId)
+    {
+        try {
+            $developer = User::find($developerId);
+            if (!$developer || $developer->type !== 'developer') {
+                return;
+            }
+
+            // Create in-app notification
+            Notification::create([
+                'user_id' => $developerId,
+                'type' => 'task_assigned',
+                'title' => 'New Task Assigned',
+                'message' => "You have been assigned a new task: {$task->title}",
+                'task_id' => (string)($task->_id ?? $task->id),
+                'read' => false,
+                'created_by' => Auth::id(),
+            ]);
+
+            // Send email notification
+            if (!empty($developer->email)) {
+                try {
+                    Mail::to($developer->email)->send(
+                        new TaskAssignmentMail($developer, $task, '', '')
+                    );
+                } catch (\Throwable $e) {
+                    \Log::error('Failed to send task assignment email: ' . $e->getMessage());
+                }
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Failed to notify developer: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send notification to admin when developer starts task
+     */
+    private function notifyAdminTaskStarted(Task $task)
+    {
+        try {
+            $currentUserId = (string) Auth::id();
+            $taskId = (string) ($task->_id ?? $task->id);
+            
+            // Find the notification that assigned this task to the current user
+            // The admin ID is in the notification's created_by field
+            $assignmentNotification = Notification::where('user_id', $currentUserId)
+                ->where('type', 'task_assigned')
+                ->where('task_id', $taskId)
+                ->orderByDesc('created_at')
+                ->first();
+            
+            $adminId = null;
+            
+            if ($assignmentNotification && $assignmentNotification->created_by) {
+                // Get admin ID from the notification that assigned the task
+                $adminId = (string) $assignmentNotification->created_by;
+            } else {
+                // Fallback: find admin user by email
+                $admin = User::where('email', 'admin@gmail.com')->first();
+                if ($admin) {
+                    $adminId = (string) ($admin->_id ?? $admin->id);
+                } else {
+                    // Final fallback: use task creator
+                    if ($task->created_by) {
+                        $adminId = (string) $task->created_by;
+                    }
+                }
+            }
+            
+            if (!$adminId) {
+                \Log::warning("Could not find admin to notify for task {$taskId}");
+                return;
+            }
+
+            $developer = Auth::user();
+            $developerName = $developer ? ($developer->name ?? 'Unknown') : 'Unknown';
+
+            // Create in-app notification for admin
+            Notification::create([
+                'user_id' => $adminId,
+                'type' => 'task_started',
+                'title' => 'Task Started',
+                'message' => "{$developerName} has started working on task: {$task->title}",
+                'task_id' => $taskId,
+                'read' => false,
+                'created_by' => $currentUserId,
+            ]);
+            
+            \Log::info("Notification created for admin {$adminId} - Task {$taskId} started by user {$currentUserId}");
+        } catch (\Throwable $e) {
+            \Log::error('Failed to notify admin: ' . $e->getMessage());
+        }
     }
 
 }

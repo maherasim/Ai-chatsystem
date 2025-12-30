@@ -29,6 +29,7 @@ class Task extends Model
         'rejections', // array of rejection history
         'ratings', // array of ratings (reliability, punctuality, accuracy, quality, workIndependently)
         'created_by',
+        'assigned_to', // Developer user ID assigned to this task
     ];
 
     protected $casts = [
@@ -50,6 +51,16 @@ class Task extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class, 'ticket_id');
+    }
+
+    public function assignedDeveloper()
+    {
+        return $this->belongsTo(User::class, 'assigned_to', '_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', '_id');
     }
 }
 
