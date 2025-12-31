@@ -14,6 +14,25 @@
         /* Green border */
 
     }
+    
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ef4444;
+        color: white;
+        border-radius: 10px;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 0 6px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
 
@@ -39,6 +58,12 @@
                     <!-- Icon 3 -->
                     <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
                         <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $notificationCount = isset($notifications) ? $notifications->count() : 0;
+                        @endphp
+                        @if($notificationCount > 0)
+                            <span class="notification-badge">{{ $notificationCount }}</span>
+                        @endif
                     </div>
 
                     <!-- Icon 4 -->
@@ -289,8 +314,10 @@
                                     $timeAgo = '1h';
                                     if ($notification->created_at) {
                                         $diff = $notification->created_at->diffInMinutes(now());
-                                        if ($diff < 60) {
-                                            $timeAgo = $diff . 'm';
+                                        if ($diff < 1) {
+                                            $timeAgo = 'Just now';
+                                        } elseif ($diff < 60) {
+                                            $timeAgo = round($diff) . 'm';
                                         } elseif ($diff < 1440) {
                                             $timeAgo = round($diff / 60) . 'h';
                                         } else {
@@ -743,8 +770,10 @@
                                 $timeAgo = '1h';
                                 if ($notification->created_at) {
                                     $diff = $notification->created_at->diffInMinutes(now());
-                                    if ($diff < 60) {
-                                        $timeAgo = $diff . 'm';
+                                    if ($diff < 1) {
+                                        $timeAgo = 'Just now';
+                                    } elseif ($diff < 60) {
+                                        $timeAgo = round($diff) . 'm';
                                     } elseif ($diff < 1440) {
                                         $timeAgo = round($diff / 60) . 'h';
                                     } else {

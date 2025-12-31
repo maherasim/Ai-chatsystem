@@ -489,10 +489,17 @@ class TaskController extends Controller
             return response()->json(['success' => false, 'message' => 'Task not found in any collection.'], 404);
         }
 
+        $oldStatus = $task->status ?? null;
+        $statusChanged = false;
+
         // Force Status Update
         if (!empty($validated['status'])) {
-            $task->status = $validated['status'];
-            \Illuminate\Support\Facades\Log::info("Task status updated to: " . $validated['status']);
+            $newStatus = $validated['status'];
+            if ($oldStatus !== $newStatus) {
+                $task->status = $newStatus;
+                $statusChanged = true;
+                \Illuminate\Support\Facades\Log::info("Task status updated from: {$oldStatus} to: {$newStatus}");
+            }
         }
         
         // Update hold reason if provided
@@ -547,11 +554,12 @@ class TaskController extends Controller
         // Save the task
         $task->save();
 
-        if (!empty($validated['status']) && in_array(strtolower($validated['status']), ['in_progress', 'progress'])) {
+        if ($statusChanged && !empty($validated['status'])) {
             try {
                 $currentUserId = (string) Auth::id();
                 $taskId = (string) ($task->_id ?? $task->id);
                 $taskTicketId = $task->ticket_id ?? null;
+                $newStatus = strtolower($validated['status']);
                 
                 // Find the notification that assigned this task to the current user
                 $assignmentNotification = Notification::where('user_id', $currentUserId)
@@ -627,6 +635,41 @@ class TaskController extends Controller
                         }
                     }
                     
+                    $notificationType = 'task_status_updated';
+                    $notificationTitle = 'Task Status Updated';
+                    $statusMessage = '';
+                    
+                    if (in_array($newStatus, ['in_progress', 'progress'])) {
+                        $notificationType = 'task_started';
+                        $notificationTitle = 'Task Started';
+                        $statusMessage = "started";
+                    } elseif (in_array($newStatus, ['on_hold', 'hold', 'in_hold'])) {
+                        $notificationType = 'task_on_hold';
+                        $notificationTitle = 'Task On Hold';
+                        $statusMessage = "moved to on hold";
+                        if ($task->hold_reason) {
+                            $statusMessage .= " - " . $task->hold_reason;
+                        }
+                    } elseif (in_array($newStatus, ['checked', 'in_checked'])) {
+                        $notificationType = 'task_checked';
+                        $notificationTitle = 'Task Checked';
+                        $statusMessage = "moved to checked";
+                    } elseif (in_array($newStatus, ['delayed', 'in_delayed'])) {
+                        $notificationType = 'task_delayed';
+                        $notificationTitle = 'Task Delayed';
+                        $statusMessage = "moved to delayed";
+                    } elseif (in_array($newStatus, ['rejected', 'in_rejected'])) {
+                        $notificationType = 'task_rejected';
+                        $notificationTitle = 'Task Rejected';
+                        $statusMessage = "rejected";
+                    } elseif (in_array($newStatus, ['done', 'completed', 'in_done'])) {
+                        $notificationType = 'task_completed';
+                        $notificationTitle = 'Task Completed';
+                        $statusMessage = "completed";
+                    } else {
+                        $statusMessage = "updated status to " . $validated['status'];
+                    }
+                    
                     // Create notification data
                     $notificationData = [
                         'task_id' => $taskId,
@@ -635,15 +678,16 @@ class TaskController extends Controller
                         'project' => $projectName,
                         'project_id' => $projectId,
                         'task_title' => $task->title ?? 'Task',
-                        'status' => 'in_progress',
+                        'status' => $validated['status'],
+                        'old_status' => $oldStatus,
                     ];
                     
                     // Create notification for admin
                     Notification::create([
                         'user_id' => $adminId,
-                        'type' => 'task_started',
-                        'title' => 'Task Started',
-                        'message' => "{$userName} started the task \"{$task->title}\" in project {$projectName}",
+                        'type' => $notificationType,
+                        'title' => $notificationTitle,
+                        'message' => "{$userName} {$statusMessage} the task \"{$task->title}\" in project {$projectName}",
                         'data' => $notificationData,
                         'read' => false,
                         'created_by' => $currentUserId,
