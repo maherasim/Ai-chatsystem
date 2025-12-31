@@ -216,9 +216,21 @@ class TaskController extends Controller
             ->limit(1000)
             ->get();
         
-        $allNotifications = $allNotifications->filter(function($notif) {
+        // Filter for all task-related notification types
+        $taskNotificationTypes = [
+            'task_assigned',
+            'task_started',
+            'task_on_hold',
+            'task_checked',
+            'task_delayed',
+            'task_rejected',
+            'task_completed',
+            'task_status_updated',
+        ];
+        
+        $allNotifications = $allNotifications->filter(function($notif) use ($taskNotificationTypes) {
             $type = is_string($notif->type) ? trim(rtrim($notif->type, ', ')) : (string)$notif->type;
-            return $type === 'task_assigned';
+            return in_array($type, $taskNotificationTypes);
         });
         
         $notifications = $allNotifications->filter(function($notif) use ($userId, $authId) {
