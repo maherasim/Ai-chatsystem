@@ -15,39 +15,129 @@
        
 
     }
+
+    /* Ensure consistent sidebar width on notification page */
+    /* Prevent width changes when switching tabs */
+    .sidebar-group {
+        width: 400px !important;
+        min-width: 400px !important;
+        max-width: 400px !important;
+        margin-left: 72px !important;
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    /* Ensure inner content doesn't affect sidebar width */
+    .sidebar-group > .tab-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: calc(100vh - 0px) !important;
+    }
+
+    .sidebar-group .tab-pane {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+
+    /* Fixed tabs bar at top */
+    #iconBar {
+        flex-shrink: 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        background-color: #fff !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Scrollable content area */
+    .sidebar-group .slimscroll {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        padding-bottom: 20px !important;
+    }
+
+    .sidebar-group .tab-content[id^="tab-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    @media (max-width: 1400px) {
+        .sidebar-group {
+            width: 330px !important;
+            min-width: 330px !important;
+            max-width: 330px !important;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .sidebar-group {
+            width: calc(100% - 72px) !important;
+            min-width: calc(100% - 72px) !important;
+            max-width: calc(100% - 72px) !important;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .sidebar-group {
+            width: calc(100% - 57px) !important;
+            min-width: calc(100% - 57px) !important;
+            max-width: calc(100% - 57px) !important;
+            margin-left: 57px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar-group {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+        }
+    }
 </style>
 
 
 <div class="sidebar-group">
     <div class="tab-content" style=" box-sizing: border-box;">
         <div class="tab-pane fade active show " id="chat-menu">
-            <!-- Chats sidebar -->
-            <div class="slimscroll">
-
-                <!-- Parent Container -->
-                <!-- Icons Row -->
-                <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
-                    <!-- Icon 1 -->
-                    <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
-                        <img src="{{ asset('/build/img/layers.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                    </div>
-
-                    <!-- Icon 2 -->
-                    <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
-                        <img src="{{ asset('/build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                    </div>
-
-                    <!-- Icon 3 -->
-                    <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
-                        <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                    </div>
-
-                    <!-- Icon 4 -->
-                    <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
-                        <img src="{{ asset('/build/img/mesgnoti.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                    </div>
+            <!-- Fixed Icons Row at Top -->
+            <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
+                <!-- Icon 1 -->
+                <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
+                    <img src="{{ asset('/build/img/layers.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
                 </div>
 
+                <!-- Icon 2 -->
+                <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
+                    <img src="{{ asset('/build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                </div>
+
+                <!-- Icon 3 -->
+                <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
+                    <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                </div>
+
+                <!-- Icon 4 -->
+                <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
+                    <img src="{{ asset('/build/img/mesgnoti.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                </div>
+            </div>
+
+            <!-- Scrollable Content Section -->
+            <div class="slimscroll">
                 <!-- Content Section -->
                 <!-- team -->
                 <div id="tab-layers" class="tab-content" style="display: block;">
@@ -2988,6 +3078,21 @@
             }
         });
 
+        // Ensure sidebar-group maintains its width after tab switch
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (sidebarGroup) {
+            // Force maintain width
+            if (window.innerWidth > 1400) {
+                sidebarGroup.style.width = '400px';
+                sidebarGroup.style.minWidth = '400px';
+                sidebarGroup.style.maxWidth = '400px';
+            } else if (window.innerWidth > 1200) {
+                sidebarGroup.style.width = '330px';
+                sidebarGroup.style.minWidth = '330px';
+                sidebarGroup.style.maxWidth = '330px';
+            }
+        }
+
         // Load notifications when bell tab is opened
         if (tabName === 'bell') {
             loadNotifications();
@@ -3197,7 +3302,58 @@
     }
 
     // Load notifications on page load
+    // Function to maintain sidebar width
+    function maintainSidebarWidth() {
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (!sidebarGroup) return;
+
+        const width = window.innerWidth;
+        if (width > 1400) {
+            sidebarGroup.style.width = '400px';
+            sidebarGroup.style.minWidth = '400px';
+            sidebarGroup.style.maxWidth = '400px';
+        } else if (width > 1200) {
+            sidebarGroup.style.width = '330px';
+            sidebarGroup.style.minWidth = '330px';
+            sidebarGroup.style.maxWidth = '330px';
+        } else if (width > 992) {
+            sidebarGroup.style.width = 'calc(100% - 72px)';
+            sidebarGroup.style.minWidth = 'calc(100% - 72px)';
+            sidebarGroup.style.maxWidth = 'calc(100% - 72px)';
+        } else if (width > 768) {
+            sidebarGroup.style.width = 'calc(100% - 57px)';
+            sidebarGroup.style.minWidth = 'calc(100% - 57px)';
+            sidebarGroup.style.maxWidth = 'calc(100% - 57px)';
+        } else {
+            sidebarGroup.style.width = '100%';
+            sidebarGroup.style.minWidth = '100%';
+            sidebarGroup.style.maxWidth = '100%';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Maintain sidebar width on load
+        maintainSidebarWidth();
+
+        // Maintain sidebar width on window resize
+        window.addEventListener('resize', maintainSidebarWidth);
+
+        // Use MutationObserver to watch for any width changes
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (sidebarGroup) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        // If width is changed, restore it
+                        setTimeout(maintainSidebarWidth, 0);
+                    }
+                });
+            });
+            observer.observe(sidebarGroup, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
         // Load notifications initially
         loadNotifications();
         
