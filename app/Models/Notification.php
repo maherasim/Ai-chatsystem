@@ -17,6 +17,7 @@ class Notification extends Model
         'data',
         'read',
         'created_by',
+        'task_id',
     ];
 
     protected $casts = [

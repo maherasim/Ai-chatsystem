@@ -547,7 +547,6 @@ class TaskController extends Controller
         // Save the task
         $task->save();
 
-        // If task status was changed to 'in_progress', notify the admin who assigned it
         if (!empty($validated['status']) && in_array(strtolower($validated['status']), ['in_progress', 'progress'])) {
             try {
                 $currentUserId = (string) Auth::id();
@@ -555,9 +554,8 @@ class TaskController extends Controller
                 $taskTicketId = $task->ticket_id ?? null;
                 
                 // Find the notification that assigned this task to the current user
-                // Match by user_id (current user), type (ticket_assigned), and ticket_id in data
                 $assignmentNotification = Notification::where('user_id', $currentUserId)
-                    ->where('type', 'ticket_assigned')
+                    ->where('type', 'task_assigned')
                     ->orderByDesc('created_at')
                     ->get()
                     ->first(function($notif) use ($taskId, $taskTicketId) {
@@ -570,24 +568,26 @@ class TaskController extends Controller
                             $data = $notif->data;
                         }
                         
-                        // Check if ticket_id in notification data matches task
-                        $notifTicketId = $data['ticket_id'] ?? null;
-                        if ($notifTicketId && ($notifTicketId === $taskId || $notifTicketId === $taskTicketId)) {
+                        $notifTaskId = $data['task_id'] ?? null;
+                        if ($notifTaskId && $notifTaskId === $taskId) {
                             return true;
                         }
                         
-                        // Also check if ticket_id matches task's ticket_id
-                        if ($taskTicketId && $notifTicketId === $taskTicketId) {
+                        if (isset($notif->task_id) && (string)$notif->task_id === $taskId) {
                             return true;
                         }
                         
                         return false;
                     });
                 
+                $adminId = null;
                 if ($assignmentNotification && $assignmentNotification->created_by) {
-                    // Get admin ID who assigned the task
                     $adminId = (string) $assignmentNotification->created_by;
-                    
+                } elseif ($task->created_by) {
+                    $adminId = (string) $task->created_by;
+                }
+                
+                if ($adminId) {
                     // Get current user info
                     $currentUser = Auth::user();
                     $userName = $currentUser->name ?? 'User';
@@ -603,19 +603,35 @@ class TaskController extends Controller
                         }
                     }
                     
-                    // Parse original notification data to reuse structure
+                    // Get ticket info if available
+                    $ticketCode = '';
+                    if ($taskTicketId) {
+                        $ticket = Ticket::find($taskTicketId);
+                        if ($ticket) {
+                            $ticketCode = $ticket->code ?? '';
+                        }
+                    }
+                    
+                    // Parse original notification data if available
                     $originalData = [];
-                    if (is_string($assignmentNotification->data)) {
-                        $decoded = json_decode($assignmentNotification->data, true);
-                        $originalData = is_array($decoded) ? $decoded : [];
-                    } elseif (is_array($assignmentNotification->data)) {
-                        $originalData = $assignmentNotification->data;
+                    if ($assignmentNotification) {
+                        if (is_string($assignmentNotification->data)) {
+                            $decoded = json_decode($assignmentNotification->data, true);
+                            $originalData = is_array($decoded) ? $decoded : [];
+                        } elseif (is_array($assignmentNotification->data)) {
+                            $originalData = $assignmentNotification->data;
+                        }
+                        // Use ticket_code from original notification if available
+                        if (isset($originalData['ticket_code']) && !empty($originalData['ticket_code'])) {
+                            $ticketCode = $originalData['ticket_code'];
+                        }
                     }
                     
                     // Create notification data
                     $notificationData = [
-                        'ticket_id' => $taskId,
-                        'ticket_code' => $originalData['ticket_code'] ?? '',
+                        'task_id' => $taskId,
+                        'ticket_id' => $taskTicketId,
+                        'ticket_code' => $ticketCode,
                         'project' => $projectName,
                         'project_id' => $projectId,
                         'task_title' => $task->title ?? 'Task',
@@ -631,6 +647,7 @@ class TaskController extends Controller
                         'data' => $notificationData,
                         'read' => false,
                         'created_by' => $currentUserId,
+                        'task_id' => $taskId,
                     ]);
                 }
             } catch (\Throwable $e) {
