@@ -15,6 +15,7 @@ use App\Models\EmployeeTask;
 use MongoDB\BSON\ObjectId;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\Notification;
 use App\Mail\TaskAssignmentMail;
 
 class TeamController extends Controller
@@ -423,8 +424,6 @@ class TeamController extends Controller
 
     public function store(Request $request)
     {
-        
-        
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'project_id' => 'nullable|string|max:255',
@@ -485,7 +484,7 @@ class TeamController extends Controller
                 ->filter()
                 ->all();
 
-            // Restructure task_developers: from [taskId => [developerName, ...]] to [userId => [developerName]]
+            // Keep original task_developers structure: [taskId => [developerName, ...]]
             $devInput = (array) $request->input('task_developers', []);
             $devMap = [];
             
@@ -566,6 +565,9 @@ class TeamController extends Controller
 
             // Send email notifications to assigned developers
             $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '');
+            
+            // Create in-app notifications for assigned tasks
+            $this->createTaskAssignmentNotifications($devInput, $taskIds->values()->all(), $team->project_id ?? null);
 
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to create team: ' . $e->getMessage())->withInput();
@@ -886,6 +888,9 @@ class TeamController extends Controller
 
             // Send email notifications to newly assigned developers
             $this->sendTaskAssignmentEmails($devMap, $priorityValues, $taskIds->values()->all(), $team->title ?? '', $oldDevMap);
+            
+            // Create in-app notifications for assigned tasks
+            $this->createTaskAssignmentNotifications($devInput, $taskIds->values()->all(), $team->project_id ?? null);
 
             return redirect()->route('chat-team')->with('success', 'Team updated successfully.');
         } catch (\Throwable $e) {
@@ -999,6 +1004,149 @@ class TeamController extends Controller
         } catch (\Throwable $e) {
             // Log error but don't fail the entire operation
             \Log::error('Failed to send task assignment emails: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create in-app notifications for tasks assigned to developers
+     * 
+     * @param array $devInput Original structure: [taskId => [developerName, ...]]
+     * @param array $taskIds Array of task IDs
+     * @param string|null $projectId Project ID
+     */
+    private function createTaskAssignmentNotifications($devInput, $taskIds, $projectId = null)
+    {
+        try {
+            if (empty($devInput) || !is_array($devInput)) {
+                return;
+            }
+
+            // Get project info if available
+            $project = null;
+            $projectName = 'Unknown Project';
+            if ($projectId) {
+                try {
+                    $project = Project::find($projectId);
+                    if ($project) {
+                        $projectName = $project->title ?? 'Unknown Project';
+                    }
+                } catch (\Throwable $e) {}
+            }
+
+            // Get admin/creator info
+            $admin = Auth::user();
+            $adminName = $admin->name ?? 'Admin';
+            $adminId = (string) Auth::id();
+
+            // Process each task assignment
+            foreach ($devInput as $taskId => $developers) {
+                if (empty($taskId) || empty($developers)) {
+                    continue;
+                }
+                
+                // Handle both string (single developer) and array (multiple developers) formats
+                if (is_string($developers)) {
+                    $developers = [$developers]; // Convert to array for consistent processing
+                }
+                
+                if (!is_array($developers)) {
+                    continue;
+                }
+
+                // Find the task
+                $task = null;
+                try {
+                    $task = Task::find($taskId);
+                    if (!$task) {
+                        $task = WebTask::find($taskId);
+                    }
+                    if (!$task) {
+                        $task = EmployeeTask::find($taskId);
+                    }
+                } catch (\Throwable $e) {
+                    continue;
+                }
+
+                if (!$task) {
+                    continue;
+                }
+
+                $taskTitle = $task->title ?? 'Task';
+                $taskIdString = (string) ($task->_id ?? $task->id);
+                
+                // Get ticket info if available
+                $ticket = null;
+                $ticketCode = '';
+                if ($task->ticket_id) {
+                    try {
+                        $ticket = Ticket::find($task->ticket_id);
+                        if ($ticket) {
+                            $ticketCode = $ticket->code ?? '';
+                        }
+                    } catch (\Throwable $e) {}
+                }
+
+                // For each developer assigned to this task
+                foreach ($developers as $developerName) {
+                    if (empty($developerName)) {
+                        continue;
+                    }
+
+                    $developerStr = trim((string) $developerName);
+                    $user = null;
+
+                    // Check if it's an ObjectId (user ID)
+                    if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
+                        try {
+                            $user = User::find($developerStr);
+                        } catch (\Throwable $e) {}
+                        
+                        if (!$user) {
+                            try {
+                                $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first();
+                            } catch (\Throwable $e) {}
+                        }
+                    } else {
+                        // It's a name, look up by name
+                        try {
+                            $user = User::where('name', $developerStr)->first();
+                        } catch (\Throwable $e) {}
+                    }
+
+                    if (!$user || $user->type !== 'developer') {
+                        continue;
+                    }
+
+                    $userId = (string) ($user->_id ?? $user->id);
+
+                    // Create notification data
+                    $notificationData = [
+                        'ticket_id' => $taskIdString,
+                        'ticket_code' => $ticketCode,
+                        'project' => $projectName,
+                        'project_id' => $projectId ? (string) $projectId : null,
+                        'task_title' => $taskTitle,
+                        'status' => 'assigned',
+                    ];
+
+                    // Create notification
+                    try {
+                        Notification::create([
+                            'user_id' => $userId,
+                            'type' => 'task_assigned',
+                            'title' => 'New Task Assigned',
+                            'message' => "You have been assigned a new task: {$taskTitle}",
+                            'data' => $notificationData,
+                            'read' => false,
+                            'created_by' => $adminId,
+                        ]);
+                    } catch (\Throwable $e) {
+                        // Continue with other notifications if one fails
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Don't fail the entire operation if notification creation fails
         }
     }
 }

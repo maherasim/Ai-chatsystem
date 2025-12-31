@@ -2097,20 +2097,6 @@
                                     });
                                 }
                             } catch (_) {}
-                            
-                            // Prefill developer assignment
-                            try {
-                                var devSelect = document.getElementById('select-developer');
-                                if (devSelect && t.assigned_to) {
-                                    // Load developers first, then set value
-                                    loadDevelopers();
-                                    setTimeout(function() {
-                                        if (devSelect) {
-                                            devSelect.value = String(t.assigned_to);
-                                        }
-                                    }, 500);
-                                }
-                            } catch (_) {}
 
                             // Prefill preview image (board preferred, else mark) and render existing issues
                             try {
@@ -3305,39 +3291,6 @@
 
             // Projects are rendered server-side; no client-side fetching needed
 
-            // Load developers list
-            function loadDevelopers() {
-                var developerSelect = document.getElementById('select-developer');
-                if (!developerSelect) return;
-                
-                setSelectLoading(developerSelect, true);
-                fetch('{{ route("tasks.developers") }}', {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(function(r) {
-                    return r.json();
-                })
-                .then(function(developers) {
-                    developerSelect.innerHTML = '<option value="">Assign to Developer (Optional)</option>';
-                    if (Array.isArray(developers) && developers.length > 0) {
-                        developers.forEach(function(dev) {
-                            var opt = document.createElement('option');
-                            opt.value = dev.id;
-                            opt.textContent = dev.name || dev.email || 'Developer';
-                            developerSelect.appendChild(opt);
-                        });
-                    }
-                    setSelectLoading(developerSelect, false);
-                })
-                .catch(function(error) {
-                    console.error('Failed to load developers:', error);
-                    developerSelect.innerHTML = '<option value="">Failed to load developers</option>';
-                    setSelectLoading(developerSelect, false);
-                });
-            }
-
             function loadTickets(projectId) {
                 if (!ticketSelect) return Promise.resolve();
                 if (!projectId) {
@@ -3421,10 +3374,6 @@
                     ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
                     ticketSelect.disabled = true;
                 }
-                var developerSelect = document.getElementById('select-developer');
-                if (developerSelect) {
-                    developerSelect.value = '';
-                }
                 if (startDateSpan) startDateSpan.textContent = '--';
                 if (endDateSpan) endDateSpan.textContent = '--';
             });
@@ -3449,9 +3398,6 @@
                     ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
                     ticketSelect.disabled = true;
                 }
-                var developerSelect = document.getElementById('select-developer');
-                if (developerSelect) developerSelect.value = '';
-                
                 // Reset image and markers
                 if (previewImg) {
                     previewImg.src = '';
@@ -3754,7 +3700,6 @@
                             var editingId = (document.getElementById('create-task-save') || {}).dataset
                                 ?.editingId;
                             if (editingId) {
-                                var developerSelect = document.getElementById('select-developer');
                                 var updatePayload = {
                                     // Use selected ticket title as task title (same as create flow)
                                     title: (function() {
@@ -3767,7 +3712,6 @@
                                         }
                                     })(),
                                     description: '',
-                                    assigned_to: (developerSelect || {}).value || null,
                                     start_date: (function() {
                                         try {
                                             var t = ticketCache[(ticketSelect || {}).value];
@@ -3857,13 +3801,11 @@
                                 }
                             })();
                             var taskTitle = ticketText ? ticketText : 'Task';
-                            var developerSelect = document.getElementById('select-developer');
                             var payload = {
                                 project_id: (projectSelect || {}).value || null,
                                 ticket_id: (ticketSelect || {}).value || null,
                                 title: taskTitle,
                                 description: '',
-                                assigned_to: (developerSelect || {}).value || null,
                                 // Persist task-level dates from the selected ticket
                                 start_date: (function() {
                                     try {
@@ -3963,11 +3905,9 @@
                         })();
                         var taskTitle = ticketText ? ticketText : 'Task';
                         if (editingId) {
-                            var developerSelect = document.getElementById('select-developer');
                             var updatePayload = {
                                 title: taskTitle,
                                 description: '',
-                                assigned_to: (developerSelect || {}).value || null,
                                 start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
                                 end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
                                 checkpoints: [],
@@ -3995,13 +3935,11 @@
                             return;
                         }
                         if (!Array.isArray(createdTasks) || createdTasks.length === 0) return;
-                        var developerSelect = document.getElementById('select-developer');
                         var payload = {
                             project_id: (projectSelect || {}).value || null,
                             ticket_id: (ticketSelect || {}).value || null,
                             title: taskTitle,
                             description: '',
-                            assigned_to: (developerSelect || {}).value || null,
                             start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
                             end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
                             issues: createdTasks,
@@ -4062,7 +4000,6 @@
                             var editingId = (document.getElementById('create-task-save') || {}).dataset
                                 ?.editingId;
                             if (editingId) {
-                                var developerSelect = document.getElementById('select-developer');
                                 var updatePayload = {
                                     title: (function() {
                                         try {
@@ -4074,7 +4011,6 @@
                                         }
                                     })(),
                                     description: '',
-                                    assigned_to: (developerSelect || {}).value || null,
                                     start_date: (function() {
                                         try {
                                             var t = ticketCache[(ticketSelect || {}).value];
@@ -4162,13 +4098,11 @@
                                 }
                             })();
                             var taskTitle = ticketText ? ticketText : 'Task';
-                            var developerSelect = document.getElementById('select-developer');
                             var payload = {
                                 project_id: (projectSelect || {}).value || null,
                                 ticket_id: (ticketSelect || {}).value || null,
                                 title: taskTitle,
                                 description: '',
-                                assigned_to: (developerSelect || {}).value || null,
                                 start_date: (function() {
                                     try {
                                         var t = ticketCache[(ticketSelect || {}).value];
@@ -4241,12 +4175,6 @@
                                             } catch (_) {}
                                         }
                                         // reset developer select
-                                        var devSelect = document.getElementById('select-developer');
-                                        if (devSelect) {
-                                            try {
-                                                devSelect.value = '';
-                                            } catch (_) {}
-                                        }
                                         // reset dates
                                         try {
                                             (startDateSpan || {}).textContent = '--';
@@ -4819,10 +4747,6 @@
                                 <select id="select-ticket" name="ticket_id" class="form-select form-select-sm"
                                     style="background: #fff; border-radius: 8px; flex: 1; min-width: 150px;" disabled>
                                     <option value="">Select the Ticket</option>
-                                </select>
-                                <select id="select-developer" name="assigned_to" class="form-select form-select-sm"
-                                    style="background: #fff; border-radius: 8px; flex: 1; min-width: 150px;">
-                                    <option value="">Assign to Developer (Optional)</option>
                                 </select>
                             </div>
                         </div>

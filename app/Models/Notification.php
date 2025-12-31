@@ -14,6 +14,7 @@ class Notification extends Model
         'type',             // 'task_assigned', 'task_started', etc.
         'title',            // Notification title
         'message',          // Notification message
+        'data',             // Additional data (JSON)
         'task_id',          // Related task ID (if applicable)
         'read',             // Boolean: whether notification is read
         'created_by',       // User who triggered the notification
@@ -21,6 +22,7 @@ class Notification extends Model
 
     protected $casts = [
         'read' => 'boolean',
+        'data' => 'array',
     ];
 
     public function user()
