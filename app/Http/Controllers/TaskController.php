@@ -210,30 +210,33 @@ class TaskController extends Controller
             'done'        => $allTasks->filter(fn($t) => in_array($norm($t->status), ['done', 'completed', 'in_done']))->count(),
         ];
 
-        // Fetch notifications for the current user related to tasks
         $userId = (string) $authId;
         
-        // Debug: Log user ID being searched
-        Log::info('=== NOTIFICATION FETCH DEBUG ===');
-        Log::info('Searching for notifications with user_id: ' . $userId);
-        Log::info('User ID type: ' . gettype($userId));
-        
-        // Try multiple query formats to handle different user_id storage formats
-        $notifications = Notification::where(function($query) use ($userId, $authId) {
-                $query->where('user_id', $userId)
-                      ->orWhere('user_id', (string)$authId);
-            })
-            ->where('type', 'ticket_assigned')
-            ->orderByDesc('created_at')
-            ->limit(20)
+        $allNotifications = Notification::orderByDesc('created_at')
+            ->limit(1000)
             ->get();
         
-        // Debug: Log notification results
-        Log::info('Total notifications found: ' . $notifications->count());
-        foreach ($notifications as $index => $notif) {
-            Log::info("Notification #{$index}: ID={$notif->_id}, user_id={$notif->user_id}, type={$notif->type}, title={$notif->title}");
-        }
-        Log::info('=== NOTIFICATION FETCH DEBUG END ===');
+        $allNotifications = $allNotifications->filter(function($notif) {
+            $type = is_string($notif->type) ? trim(rtrim($notif->type, ', ')) : (string)$notif->type;
+            return $type === 'task_assigned';
+        });
+        
+        $notifications = $allNotifications->filter(function($notif) use ($userId, $authId) {
+            $notifUserId = $notif->user_id;
+            
+            if (is_object($notifUserId)) {
+                $notifUserIdStr = (string)$notifUserId;
+            } else {
+                $notifUserIdStr = (string)$notifUserId;
+            }
+            
+            $notifUserIdStr = rtrim($notifUserIdStr, '/ ');
+            
+            $authIdStr = (string)$authId;
+            $userIdStr = (string)$userId;
+            
+            return ($notifUserIdStr === $userIdStr || $notifUserIdStr === $authIdStr);
+        })->sortByDesc('created_at')->values();
 
         return view('Chats.task', [
             'headers'       => $headers,
@@ -629,13 +632,8 @@ class TaskController extends Controller
                         'read' => false,
                         'created_by' => $currentUserId,
                     ]);
-                    
-                    Log::info("Notification created for admin {$adminId} - Task {$taskId} started by user {$currentUserId}");
-                } else {
-                    Log::info("No assignment notification found for task {$taskId} assigned to user {$currentUserId}");
                 }
             } catch (\Throwable $e) {
-                Log::error("Failed to create notification for task start: " . $e->getMessage());
                 // Don't fail the request if notification creation fails
             }
         }

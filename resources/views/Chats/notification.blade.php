@@ -202,29 +202,8 @@
                     </div>
                     <!-- Task Notifications -->
                     @php
-                        // Debug: Check notifications availability
                         $hasNotifications = isset($notifications) && $notifications->count() > 0;
-                        $notificationsCount = isset($notifications) ? $notifications->count() : 0;
                     @endphp
-                    <!-- Debug Info (remove after testing) -->
-                    <script>
-                        console.log('=== NOTIFICATION DEBUG ===');
-                        console.log('Notifications variable exists:', {{ isset($notifications) ? 'true' : 'false' }});
-                        console.log('Notifications count:', {{ $notificationsCount }});
-                        @if(isset($notifications) && $notifications->count() > 0)
-                            @foreach($notifications as $idx => $notif)
-                                console.log('Notification {{ $idx }}:', {
-                                    id: '{{ $notif->_id ?? "N/A" }}',
-                                    user_id: '{{ $notif->user_id ?? "N/A" }}',
-                                    type: '{{ $notif->type ?? "N/A" }}',
-                                    title: '{{ addslashes($notif->title ?? "N/A") }}',
-                                    message: '{{ addslashes(Str::limit($notif->message ?? "N/A", 50)) }}'
-                                });
-                            @endforeach
-                        @endif
-                        console.log('Will display notifications:', {{ $hasNotifications ? 'true' : 'false' }});
-                        console.log('=== NOTIFICATION DEBUG END ===');
-                    </script>
                     @if($hasNotifications)
                     <div style="background:#fff; border-radius: 10px; padding: 10px; margin: 20px; font-family: sans-serif;">
                         <!-- Header Row -->
