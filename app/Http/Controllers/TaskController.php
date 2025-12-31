@@ -10,6 +10,7 @@ use App\Models\WebTask;
 use App\Models\EmployeeTask;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -304,10 +305,12 @@ class TaskController extends Controller
         // Reload task to get updated values
         $task = Task::find($id);
         
-        // Check if status changed to in_progress and notify admin
+        // Check if status changed and notify developer
         $newStatus = $validated['status'] ?? $task->status;
-        if ($oldStatus !== $newStatus && in_array($newStatus, ['in_progress', 'progress', 'inprogress', 'started'])) {
-            $this->notifyAdminTaskStarted($task);
+        $statusChanged = ($oldStatus !== $newStatus && !empty($validated['status']));
+        
+        if ($statusChanged) {
+            $this->notifyDeveloperStatusChanged($task, $oldStatus, $newStatus);
         }
         
         // If task is being assigned to a developer (new assignment or changed assignment), send notification
@@ -450,6 +453,9 @@ class TaskController extends Controller
             $rejectionReason = $validated['other_reason'];
         }
 
+        // Store old status before updating
+        $oldStatus = $task->status;
+        
         // Update task status to rejected
         $task->status = 'rejected';
         
@@ -467,6 +473,15 @@ class TaskController extends Controller
         $task->rejections = $rejections;
         
         $task->save();
+        
+        // Reload task to ensure we have the latest data
+        $task = Task::find($validated['task_id']);
+        
+        // Notify developer about status change
+        if ($oldStatus !== 'rejected' && $task) {
+            \Log::info("Rejecting task {$validated['task_id']}, old status: {$oldStatus}, assigned_to: " . ($task->assigned_to ?? 'null'));
+            $this->notifyDeveloperStatusChanged($task, $oldStatus, 'rejected');
+        }
 
         return response()->json([
             'success' => true,
@@ -595,6 +610,179 @@ class TaskController extends Controller
             \Log::info("Notification created for admin {$adminId} - Task {$taskId} started by user {$currentUserId}");
         } catch (\Throwable $e) {
             \Log::error('Failed to notify admin: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send notification to developer when admin changes task status
+     */
+    private function notifyDeveloperStatusChanged(Task $task, $oldStatus, $newStatus)
+    {
+        try {
+            $taskId = (string) ($task->_id ?? $task->id);
+            $developerIds = [];
+            
+            // First, check if task has direct assigned_to
+            if (!empty($task->assigned_to)) {
+                $developerIds[] = (string) $task->assigned_to;
+            }
+            
+            // Also check team assignments
+            $teams = Team::all();
+            foreach ($teams as $team) {
+                $teamTasks = is_string($team->tasks) 
+                    ? json_decode($team->tasks, true) 
+                    : $team->tasks;
+                
+                if (!is_array($teamTasks)) {
+                    continue;
+                }
+                
+                // Check if this task is in the team's tasks
+                if (in_array($taskId, $teamTasks)) {
+                    $taskDevelopers = is_string($team->task_developers) 
+                        ? json_decode($team->task_developers, true) 
+                        : $team->task_developers;
+                    
+                    if (is_array($taskDevelopers)) {
+                        // task_developers structure: {userId: [developerName, ...]}
+                        foreach ($taskDevelopers as $userId => $developers) {
+                            if (!empty($userId)) {
+                                $developerIds[] = (string) $userId;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Remove duplicates
+            $developerIds = array_unique($developerIds);
+            
+            if (empty($developerIds)) {
+                \Log::warning("Task {$taskId} has no assigned developers (neither assigned_to nor team assignment), skipping notification for status change from {$oldStatus} to {$newStatus}");
+                return;
+            }
+            
+            \Log::info("Found " . count($developerIds) . " developer(s) for task {$taskId}: " . json_encode($developerIds));
+            
+            // Send notification to all assigned developers
+            foreach ($developerIds as $developerId) {
+                // Try to find developer with different ID formats
+                $developer = User::find($developerId);
+                if (!$developer) {
+                    $developer = User::where('_id', $developerId)->first();
+                }
+                if (!$developer) {
+                    // Try as ObjectId if it's a valid MongoDB ObjectId string
+                    try {
+                        $developer = User::where('_id', new \MongoDB\BSON\ObjectId($developerId))->first();
+                    } catch (\Exception $e) {
+                        // Not a valid ObjectId, continue
+                    }
+                }
+                
+                if (!$developer) {
+                    \Log::warning("Developer with ID {$developerId} not found for task {$taskId}, skipping notification");
+                    continue;
+                }
+                
+                \Log::info("Sending status change notification to developer {$developer->name} (ID: {$developerId}) for task {$taskId}: {$oldStatus} -> {$newStatus}");
+
+                $taskTicketId = $task->ticket_id ?? null;
+                $adminId = (string) Auth::id();
+                $admin = Auth::user();
+                $adminName = $admin ? ($admin->name ?? 'Admin') : 'Admin';
+                
+                // Get project info if available
+                $projectName = 'Unknown Project';
+                $projectId = null;
+                if ($task->project_id) {
+                    $project = Project::find($task->project_id);
+                    if ($project) {
+                        $projectName = $project->title ?? 'Unknown Project';
+                        $projectId = (string) ($project->_id ?? $project->id);
+                    }
+                }
+                
+                // Get ticket info if available
+                $ticketCode = '';
+                if ($taskTicketId) {
+                    $ticket = Ticket::find($taskTicketId);
+                    if ($ticket) {
+                        $ticketCode = $ticket->code ?? '';
+                    }
+                }
+                
+                // Determine notification type, title, and message based on status
+                $notificationType = 'task_status_updated';
+                $notificationTitle = 'Task Status Updated';
+                $statusMessage = '';
+                $newStatusLower = strtolower($newStatus ?? '');
+                
+                if (in_array($newStatusLower, ['in_progress', 'progress', 'inprogress', 'started'])) {
+                    $notificationType = 'task_started';
+                    $notificationTitle = 'Task Started';
+                    $statusMessage = "started";
+                } elseif (in_array($newStatusLower, ['on_hold', 'hold', 'in_hold'])) {
+                    $notificationType = 'task_on_hold';
+                    $notificationTitle = 'Task On Hold';
+                    $statusMessage = "moved to on hold";
+                    if ($task->hold_reason) {
+                        $statusMessage .= " - " . $task->hold_reason;
+                    }
+                } elseif (in_array($newStatusLower, ['checked', 'in_checked'])) {
+                    $notificationType = 'task_checked';
+                    $notificationTitle = 'Task Checked';
+                    $statusMessage = "moved to checked";
+                } elseif (in_array($newStatusLower, ['delayed', 'in_delayed'])) {
+                    $notificationType = 'task_delayed';
+                    $notificationTitle = 'Task Delayed';
+                    $statusMessage = "moved to delayed";
+                } elseif (in_array($newStatusLower, ['rejected', 'in_rejected'])) {
+                    $notificationType = 'task_rejected';
+                    $notificationTitle = 'Task Rejected';
+                    $statusMessage = "rejected";
+                } elseif (in_array($newStatusLower, ['done', 'completed', 'in_done'])) {
+                    $notificationType = 'task_completed';
+                    $notificationTitle = 'Task Completed';
+                    $statusMessage = "completed";
+                } else {
+                    $statusMessage = "updated status to " . $newStatus;
+                }
+                
+                // Create notification data
+                $notificationData = [
+                    'task_id' => $taskId,
+                    'ticket_id' => $taskTicketId,
+                    'ticket_code' => $ticketCode,
+                    'project' => $projectName,
+                    'project_id' => $projectId,
+                    'task_title' => $task->title ?? 'Task',
+                    'status' => $newStatus,
+                    'old_status' => $oldStatus,
+                ];
+                
+                // Create notification for developer
+                $notification = Notification::create([
+                    'user_id' => $developerId,
+                    'type' => $notificationType,
+                    'title' => $notificationTitle,
+                    'message' => "{$adminName} {$statusMessage} the task \"{$task->title}\" in project {$projectName}",
+                    'data' => $notificationData,
+                    'read' => false,
+                    'created_by' => $adminId,
+                    'task_id' => $taskId,
+                ]);
+                
+                if ($notification) {
+                    \Log::info("Notification created successfully for developer {$developerId} - Task {$taskId} status changed from {$oldStatus} to {$newStatus} by admin {$adminId}. Notification ID: " . ($notification->_id ?? $notification->id));
+                } else {
+                    \Log::error("Failed to create notification - Notification::create() returned null for developer {$developerId}, task {$taskId}");
+                }
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Failed to notify developer about status change: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
         }
     }
 
