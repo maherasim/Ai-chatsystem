@@ -135,10 +135,10 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
+                        <img id="chatHeaderAvatar" src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                     </div>
                     <div class="ms-2 overflow-hidden">
-                        <h6>Edward Lietz</h6>
+                        <h6 id="chatHeaderName">Edward Lietz</h6>
                         <span class="last-seen">Online</span>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
 
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
                 <div class="right-icons d-flex align-items-center gap-4">
-                    <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
+                    <a href="" class="{{ request()->is('settings') ? 'active' : '' }}">
                         <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
                     </a>
 
@@ -208,7 +208,14 @@
             </div>
 
             <div class="chat-body chat-page-group slimscroll">
-                <div class="messages">
+                <div id="emptyChatState" class="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4" style="display: none !important;">
+                    <div class="welcome-chat-icon mb-3">
+                        <img src="{{URL::asset('/build/img/icons/chat-welcome.svg')}}" alt="Welcome" width="120" onerror="this.src='/build/img/icons/emonji-02.svg'">
+                    </div>
+                    <h4>Welcome to Group Chat</h4>
+                    <p class="text-muted">Select a group from the sidebar to start messaging.</p>
+                </div>
+                <div class="messages" id="chatMessagesContainer">
                     <div class="chats">
                         <div class="chat-avatar">
                             <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
@@ -1891,4 +1898,6 @@
 
 @component('components.model-popup')
 @endcomponent
+
+<script src="{{ URL::asset('/js/group-chat.js') }}"></script>
 @endsection

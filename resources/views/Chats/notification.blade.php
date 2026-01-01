@@ -92,82 +92,36 @@
                                 }
                             </style>
 
-                            <!-- CARD 1 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team A</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">5 Users</p>
-                                </div>
-                            </div>
+                            @php
+                                $authId = (string)Auth::id();
+                                $displayGroups = isset($groups) ? $groups : \App\Models\Group::all()->filter(function($group) use ($authId) {
+                                    return $group->isMember($authId);
+                                });
+                            @endphp
 
-                            <!-- CARD 2 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
+                            @forelse($displayGroups as $group)
+                                <!-- Dynamic Group CARD -->
+                                <div onclick="if(typeof openGroupChat === 'function') { openGroupChat('{{ $group->id }}', '{{ $group->name }}', '{{ $group->avatar ? asset('storage/' . $group->avatar) : URL::asset('/build/img/profile.svg') }}'); } else { window.location.href='{{ url('/chat') }}?group_id={{ $group->id }}'; }" 
+                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer;">
+                                    <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                                        <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
+                                            style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div style="position: relative; margin-top: -20px;">
+                                        <img src="{{ $group->avatar ? asset('storage/' . $group->avatar) : URL::asset('/build/img/profile.svg') }}" alt="Profile"
+                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #00c469; background: white;"
+                                            onerror="this.src='{{ URL::asset('/build/img/profile.svg') }}'">
+                                    </div>
+                                    <div style="padding: 8px;">
+                                        <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $group->name }}</h6>
+                                        <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ is_array($group->member_ids) ? count($group->member_ids) : (json_decode($group->member_ids, true) ? count(json_decode($group->member_ids, true)) : 0) }} Users</p>
+                                    </div>
                                 </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
+                            @empty
+                                <div style="flex: 0 0 auto; width: 100%; padding: 20px; text-align: center; color: #7f8ea3;">
+                                    <p style="font-size: 12px;">No groups joined yet.</p>
                                 </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team B</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">7 Users</p>
-                                </div>
-                            </div>
-
-                            <!-- CARD 3 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid gold; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team C</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">9 Users</p>
-                                </div>
-                            </div>
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid gold; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team C</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">9 Users</p>
-                                </div>
-                            </div>
-                            <!-- team -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid gold; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team C</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">9 Users</p>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
 
                         <!-- Dot Indicator -->

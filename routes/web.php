@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::get('/meetings', [MeetingsController::class, 'index'])->name('chat-meetings');
+    
+    // Chat Routes
+    Route::get('/chat', [\App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
     Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
     Route::post('/meetings/{id}/accept', [MeetingsController::class, 'acceptMeeting'])->name('meetings.accept');
     Route::post('/meetings/{id}/reject', [MeetingsController::class, 'rejectMeeting'])->name('meetings.reject');
@@ -59,6 +62,13 @@ Route::get('/ticket', [TicketController::class, 'index'])->name('chat-ticket');
 Route::get('/tickets/stats', [TicketController::class, 'getDashboardStats'])->name('tickets.stats');
 Route::get('/tickets/by-status', [TicketController::class, 'getTicketsByStatus'])->name('tickets.filter');
 Route::get('/tickets/projects', [TicketController::class, 'projects'])->name('tickets.projects');
+
+// Chat API Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/api/chat/token', [\App\Http\Controllers\ChatController::class, 'getToken'])->name('chat.token');
+    Route::get('/api/chat/group/{groupId}/messages', [\App\Http\Controllers\ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
+    Route::post('/api/chat/group/message', [\App\Http\Controllers\ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+});
 
 
 
