@@ -104,6 +104,12 @@
                        </a>
                    </li>
 
+                     <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Chats" data-bs-custom-class="tooltip-primary">
+                       <a href="{{ route('chat.index') }}" class="nav-link task-icon-link {{ request()->is('chat') ? 'active' : '' }}">
+                           <img src="{{ asset('/build/img/Chat-White.svg') }}" alt="White Icon" class="icon-white">
+                           <img src="{{ asset('/build/img/Chat-Black.svg') }}" alt="Black Icon" class="icon-black">
+                       </a>
+                   </li>
                          <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Ticket" data-bs-custom-class="tooltip-primary">
                        <a href="{{ route('chat-ticket') }}" class="nav-link task-icon-link {{ request()->is('ticket') ? 'active' : '' }}">
                            <img src="{{ asset('/build/img/ticket_icon_white.svg') }}" alt="Task White" class="icon-white" style="width: 30px !important; height: 30px !important;">
