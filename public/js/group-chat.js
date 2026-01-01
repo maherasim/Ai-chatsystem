@@ -38,16 +38,29 @@ class GroupChatManager {
             console.log('Current user ID set:', this.currentUserId);
 
             // Initialize Agora Chat SDK if available
-            if (typeof AgoraChat !== 'undefined') {
-                this.agoraClient = AgoraChat.createInstance({
+            const sdk = window.AgoraChat || window.WebIM;
+            if (sdk) {
+                console.log('Agora/WebIM SDK found, creating instance...');
+                this.agoraClient = sdk.createInstance ? sdk.createInstance({
+                    appKey: data.app_id,
+                }) : new sdk.connection({
                     appKey: data.app_id,
                 });
 
                 // Login to Agora
-                await this.agoraClient.open({
-                    user: this.currentUserId,
-                    agoraToken: data.token,
-                });
+                if (this.agoraClient.open) {
+                    await this.agoraClient.open({
+                        user: this.currentUserId,
+                        agoraToken: data.token,
+                    });
+                } else {
+                    await this.agoraClient.open({
+                        apiUrl: 'https://a1.chat.agora.io',
+                        user: this.currentUserId,
+                        accessToken: data.token,
+                        appKey: data.app_id
+                    });
+                }
 
                 this.isConnected = true;
                 this.setupEventListeners();
@@ -55,8 +68,7 @@ class GroupChatManager {
                 console.log('Agora Chat initialized successfully');
                 return true;
             } else {
-                console.warn('Agora Chat SDK not loaded. Using fallback mode.');
-                // Still return true because we got the user ID
+                console.warn('Agora Chat SDK not loaded (checked AgoraChat and WebIM). Using fallback mode.');
                 return true;
             }
         } catch (error) {
@@ -132,6 +144,7 @@ class GroupChatManager {
         // Hide empty state
         const emptyState = document.getElementById('emptyChatState');
         if (emptyState) {
+            emptyState.classList.remove('d-flex');
             emptyState.style.display = 'none';
         }
 
@@ -275,11 +288,13 @@ class GroupChatManager {
         const emptyState = document.getElementById('emptyChatState');
         if (messages.length > 0) {
             if (emptyState) {
+                emptyState.classList.remove('d-flex');
                 emptyState.style.display = 'none';
             }
         } else {
             // Show empty state if no messages
             if (emptyState) {
+                emptyState.classList.add('d-flex');
                 emptyState.style.display = 'flex';
             }
             return;
@@ -792,6 +807,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.history.replaceState({}, document.title, newUrl);
             }
         }, 500); // Small delay to ensure everything is ready
+    } else {
+        // Auto-select first group if no group_id in URL
+        setTimeout(() => {
+            // Find first group card with openGroupChat in onclick
+            const firstGroupCard = document.querySelector('#cardScroller div[onclick*="openGroupChat"]');
+            if (firstGroupCard) {
+                console.log('Auto-selecting first group chat');
+                firstGroupCard.click();
+            }
+        }, 1000); // Wait bit longer for sidebar to render
     }
 });
 

@@ -101,20 +101,20 @@
 
                             @forelse($displayGroups as $group)
                                 <!-- Dynamic Group CARD -->
-                                <div onclick="if(typeof openGroupChat === 'function') { openGroupChat('{{ $group->id }}', '{{ $group->name }}', '{{ $group->avatar ? asset('storage/' . $group->avatar) : URL::asset('/build/img/profile.svg') }}'); } else { window.location.href='{{ url('/chat') }}?group_id={{ $group->id }}'; }" 
+                                <div onclick="if(typeof openGroupChat === 'function') { openGroupChat('{{ data_get($group, 'id') }}', '{{ data_get($group, 'name') }}', '{{ data_get($group, 'avatar') ? asset('storage/' . data_get($group, 'avatar')) : URL::asset('/build/img/profile.svg') }}'); } else { window.location.href='{{ url('/chat') }}?group_id={{ data_get($group, 'id') }}'; }" 
                                      style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer;">
                                     <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
                                         <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
                                             style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <div style="position: relative; margin-top: -20px;">
-                                        <img src="{{ $group->avatar ? asset('storage/' . $group->avatar) : URL::asset('/build/img/profile.svg') }}" alt="Profile"
+                                        <img src="{{ data_get($group, 'avatar') ? asset('storage/' . data_get($group, 'avatar')) : URL::asset('/build/img/profile.svg') }}" alt="Profile"
                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #00c469; background: white;"
                                             onerror="this.src='{{ URL::asset('/build/img/profile.svg') }}'">
                                     </div>
                                     <div style="padding: 8px;">
-                                        <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $group->name }}</h6>
-                                        <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ is_array($group->member_ids) ? count($group->member_ids) : (json_decode($group->member_ids, true) ? count(json_decode($group->member_ids, true)) : 0) }} Users</p>
+                                        <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ data_get($group, 'name') }}</h6>
+                                        <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ is_array(data_get($group, 'member_ids')) ? count(data_get($group, 'member_ids')) : (json_decode(data_get($group, 'member_ids'), true) ? count(json_decode(data_get($group, 'member_ids'), true)) : 0) }} Users</p>
                                     </div>
                                 </div>
                             @empty
@@ -436,7 +436,7 @@
                             <!-- Header -->
                             <div class="d-flex justify-content-between align-items-start p-2 pt-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                    <img src="{{URL::asset('/build/img/profile.svg')}}" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
                                         <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
                                         <small style="color: #6b7280; font-size: 11px;">Project Title</small>
@@ -534,9 +534,9 @@
                                 <!-- Avatars -->
                                 <div class="d-flex" style="margin-left: auto;">
                                     <div style="position: relative; width: 60px; height: 30px;">
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
+                                        <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white; width: 30px; height: 30px;" />
+                                        <img src="{{URL::asset('/build/img/profiles/avatar-02.jpg')}}" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white; width: 30px; height: 30px;" />
+                                        <img src="{{URL::asset('/build/img/profiles/avatar-03.jpg')}}" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white; width: 30px; height: 30px;" />
                                     </div>
                                 </div>
                             </div>

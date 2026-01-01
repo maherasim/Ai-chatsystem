@@ -20,9 +20,14 @@
 
     /* Prevent parent containers from overflowing */
     .main_content,
-    .chat-body,
     .sidebar-group {
         overflow: visible !important;
+    }
+
+    .chat-body.chat-page-group {
+        height: calc(100vh - 200px) !important; /* Adjust based on header/footer */
+        overflow-y: auto !important;
+        display: block !important;
     }
 
     /* Ensure base styles don't interfere */
@@ -208,7 +213,7 @@
             </div>
 
             <div class="chat-body chat-page-group slimscroll">
-                <div id="emptyChatState" class="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4" style="display: none !important;">
+                <div id="emptyChatState" class="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4">
                     <div class="welcome-chat-icon mb-3">
                         <img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Welcome" width="120">
                     </div>
@@ -216,25 +221,8 @@
                     <p class="text-muted">Select a group from the sidebar to start messaging.</p>
                 </div>
                 <div class="messages" id="chatMessagesContainer">
-                    <div class="chats">
-                        <div class="chat-avatar">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
-                        </div>
-                        <div class="chat-content">
-                            <div class="chat-profile-name">
-                                <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                            </div>
-                            <div class="chat-info">
-                                <div class="message-content">
-                                    Hi there! I'm interested in your services.
-                                    <div class="emoj-group">
-                                        <ul>
-                                            <li class="emoj-action"><a href="javascript:void(0);"><i class="ti ti-mood-smile"></i></a>
-                                                <div class="emoj-group-list">
-                                                    <ul>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon"></a></li>
-                                                        <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon"></a></li>
+
+
                                                         <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon"></a></li>
                                                         <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon"></a></li>
                                                         <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-03.svg')}}" alt="Icon"></a></li>

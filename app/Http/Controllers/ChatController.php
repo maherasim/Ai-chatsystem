@@ -132,6 +132,8 @@ class ChatController extends Controller
                     ? asset('storage/' . ltrim($team->banner_path, '/'))
                     : asset('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
+                'avatar' => $group->avatar,
+                'member_ids' => $memberIds,
             ];
         })
         ->values();
