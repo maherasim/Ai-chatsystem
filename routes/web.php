@@ -67,6 +67,7 @@ Route::get('/tickets/projects', [TicketController::class, 'projects'])->name('ti
 Route::middleware('auth')->group(function () {
     Route::get('/api/chat/token', [\App\Http\Controllers\ChatController::class, 'getToken'])->name('chat.token');
     Route::get('/api/chat/group/{groupId}/messages', [\App\Http\Controllers\ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
+    Route::get('/api/chat/group/{groupId}/members', [\App\Http\Controllers\ChatController::class, 'getGroupMembers'])->name('chat.group.members');
     Route::post('/api/chat/group/message', [\App\Http\Controllers\ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
 });
 
@@ -149,9 +150,7 @@ Route::get('/test-db-data', function () {
 
 
 
-Route::get('/chat', function () {
-    return view('Chats.chat');
-})->middleware('auth')->name('chat.index');
+// Route for chat handled above at line 48
 
 // Route::get('/chat', function () {
 //     return view('index');

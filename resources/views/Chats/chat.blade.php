@@ -210,7 +210,7 @@
             <div class="chat-body chat-page-group slimscroll">
                 <div id="emptyChatState" class="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4" style="display: none !important;">
                     <div class="welcome-chat-icon mb-3">
-                        <img src="{{URL::asset('/build/img/icons/chat-welcome.svg')}}" alt="Welcome" width="120" onerror="this.src='/build/img/icons/emonji-02.svg'">
+                        <img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Welcome" width="120">
                     </div>
                     <h4>Welcome to Group Chat</h4>
                     <p class="text-muted">Select a group from the sidebar to start messaging.</p>
@@ -1114,7 +1114,7 @@
         </div>
         <div class="chat-footer">
             <form class="footer-form">
-                <div class="chats reply-chat reply-div" id="reply-div">
+                <div class="chats reply-chat reply-div" id="reply-div" style="display: none;">
                     <div class="chat-avatar">
                         <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                     </div>
@@ -1280,6 +1280,16 @@
                                     <a href="javascript:void(0);"><i class="ti ti-brand-instagram"></i></a>
                                     <a href="javascript:void(0);"><i class="ti ti-brand-linkedin"></i></a>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-wrapper" id="group-members-wrapper" style="display: none;">
+                        <h5 class="sub-title">Group Members (<span id="group-member-count">0</span>)</h5>
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush" id="group-members-list">
+                                    <!-- Members will be loaded here -->
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -1861,12 +1871,14 @@
     const toggleIcon = document.getElementById("toggleIcon");
     const chevron = document.getElementById("chevronIcon");
 
-    toggleIcon.addEventListener("click", () => {
-        setTimeout(() => {
-            chevron.classList.toggle("ti-chevron-down");
-            chevron.classList.toggle("ti-chevron-up");
-        }, 150);
-    });
+    if (toggleIcon && chevron) {
+        toggleIcon.addEventListener("click", () => {
+            setTimeout(() => {
+                chevron.classList.toggle("ti-chevron-down");
+                chevron.classList.toggle("ti-chevron-up");
+            }, 150);
+        });
+    }
 </script>
 
 
@@ -1877,19 +1889,23 @@
         const darkBtn = document.getElementById('dark-mode-toggle');
         const lightBtn = document.getElementById('light-mode-toggle');
 
-        darkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.add('dark-mode');
-            darkBtn.style.display = 'none';
-            lightBtn.style.display = 'inline';
-        });
+        if (darkBtn) {
+            darkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.add('dark-mode');
+                darkBtn.style.display = 'none';
+                if (lightBtn) lightBtn.style.display = 'inline';
+            });
+        }
 
-        lightBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.remove('dark-mode');
-            lightBtn.style.display = 'none';
-            darkBtn.style.display = 'inline';
-        });
+        if (lightBtn) {
+            lightBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.remove('dark-mode');
+                lightBtn.style.display = 'none';
+                if (darkBtn) darkBtn.style.display = 'inline';
+            });
+        }
     });
 </script>
 
@@ -1899,5 +1915,11 @@
 @component('components.model-popup')
 @endcomponent
 
+<script>
+    window.currentUserId = "{{ (string)Auth::id() }}";
+    window.currentUserName = "{{ Auth::user()->name ?? Auth::user()->email }}";
+    window.currentUserAvatar = "{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : URL::asset('/build/img/profiles/avatar-17.jpg') }}";
+</script>
+<script src="https://download.agora.io/sdk/release/AgoraChat-web-4.1.0.js"></script>
 <script src="{{ URL::asset('/js/group-chat.js') }}"></script>
 @endsection
