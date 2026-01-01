@@ -1587,102 +1587,297 @@
 <!-- add team -->
 
 <div class="modal fade" id="add_team" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 630px; width: 98%;">
-        <div class="modal-content" style="border-radius: 10px;">
-            <!-- Modal Header -->
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 800px; width: 98%;">
+        <div class="modal-content" style="border-radius: 24px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1); background-color: #fff;">
+            
             <style>
-                @media (max-width: 576px) {
-                    .modal-header {
-                        flex-wrap: wrap !important;
-                        padding-right: 15px !important;
-                    }
+                .modal-content { font-family: 'Inter', sans-serif; color: #1e293b; }
+                
+                /* Custom Form Controls */
+                .custom-input {
+                    background-color: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 12px;
+                    padding: 12px 16px;
+                    font-size: 14px;
+                    color: #1e293b;
+                    width: 100%;
+                    outline: none;
+                }
+                .custom-input:focus { border-color: #22c55e; }
+                
+                /* Custom Select Arrow */
+                .custom-select-wrap { position: relative; }
+                .custom-select-wrap::after {
+                    content: '';
+                    position: absolute;
+                    right: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 10px; 
+                    height: 6px;
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    pointer-events: none;
+                }
+                .custom-input-select { appearance: none; cursor: pointer; }
 
-                    .modal-header>div.title-subtitle {
-                        flex: 1 1 100% !important;
-                        margin-bottom: 8px;
-                    }
+                /* Upload Box */
+                .upload-box {
+                    background: #f8fafc;
+                    border: 2px dashed #cbd5e1;
+                    border-radius: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .upload-box-banner {
+                    background: rgba(236, 236, 236, 0.5);
+                    border: none;
+                    border-radius: 10px 10px 0 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .upload-box-thumb {
+                    background: rgba(236, 236, 236, 0.5);
+                    border: 2px dashed #cbd5e1;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .upload-box:hover, .upload-box-banner:hover, .upload-box-thumb:hover { 
+                    background: rgba(236, 236, 236, 0.7); 
+                    border-color: #94a3b8; 
+                }
 
-                    .modal-header>div.warning-box {
-                        max-width: 100% !important;
-                    }
+                /* Ticket Tabs */
+                .ticket-tabs-scroll {
+                    overflow-x: auto;
+                    white-space: nowrap;
+                    padding-bottom: 5px;
+                    scrollbar-width: none;
+                }
+                .ticket-tabs-scroll::-webkit-scrollbar { display: none; }
+                
+                .ticket-btn {
+                    background: transparent;
+                    border: none;
+                    color: #94a3b8;
+                    font-weight: 600;
+                    padding: 8px 16px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    transition: all 0.2s;
+                }
+                .ticket-btn.active {
+                    background-color: #22c55e;
+                    color: #fff;
+                    box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2);
+                }
+
+                /* Task Card Styles (Figma Match) */
+                .task-wrapper {
+                    background: #F2F2F2;
+                    border-radius: 16px;
+                    padding: 16px;
+                    margin-bottom: 16px;
+                }
+                .task-row {
+                    display: flex;
+                    align-items: stretch;
+                    gap: 16px;
+                    position: relative;
+                }
+                
+                /* 1. Left Image Section */
+                .task-image-box {
+                    width: 100px;
+                    flex-shrink: 0;
+                    position: relative;
+                }
+                .task-badge {
+                    position: absolute;
+                    top: -6px;
+                    left: -6px;
+                    background-color: #ff0000; /* Red */
+                    color: white;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%; /* Perfect circle */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    font-size: 14px;
+                    z-index: 10;
+                    box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+                }
+                .task-img-placeholder {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 12px;
+                    background-color: #e2e8f0;
+                    /* Checkerboard Pattern */
+                    background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%, transparent 75%, #cbd5e1 75%, #cbd5e1),
+                    linear-gradient(45deg, #cbd5e1 25%, transparent 25%, transparent 75%, #cbd5e1 75%, #cbd5e1);
+                    background-size: 12px 12px;
+                    background-position: 0 0, 6px 6px;
+                    overflow: hidden;
+                }
+
+                /* 2. Middle Card Section */
+                .task-content-card {
+                    flex-grow: 1;
+                    background: #fff;
+                    border-radius: 16px;
+                    padding: 16px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+                    border: 1px solid #f1f5f9;
+                    position: relative;
+                    min-height: 100px;
+                }
+                .status-indicator-outer {
+                    position: absolute;
+                    top: 16px;
+                    right: 16px;
+                    width: 24px;
+                    height: 24px;
+                    background: #ecfccb; /* Light lime */
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .status-indicator-inner {
+                    width: 12px;
+                    height: 12px;
+                    background: #84cc16; /* Lime Green */
+                    border-radius: 50%;
+                }
+                .tag-badge {
+                    background: #e0f2fe;
+                    color: #0ea5e9;
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding: 4px 10px;
+                    border-radius: 20px;
+                    display: inline-block;
+                }
+                .date-footer {
+                    background: #ecfdf5;
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                    color: #10b981;
+                    font-weight: 600;
+                    font-size: 12px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-top: 8px;
+                    width: 100%;
+                }
+
+                /* 3. Right Controls Section */
+                .task-controls {
+                    width: 140px;
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    padding-top: 35px; /* Push down to align with content */
+                }
+                .control-dropdown {
+                    background: #fff;
+                    border: 1px solid #f1f5f9;
+                    border-radius: 10px;
+                    padding: 6px 10px;
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                    height: 40px;
+                }
+                .control-select-overlay {
+                    position: absolute;
+                    top: 0; left: 0; width: 100%; height: 100%;
+                    opacity: 0;
+                    cursor: pointer;
                 }
             </style>
 
-            <div class="modal-header d-flex"
-                style="border-bottom: none; position: relative; padding-right: 40px; flex-wrap: nowrap; align-items: flex-start;">
-
-                <!-- Title and subtitle -->
-                <div class="title-subtitle" style="flex: 1;">
-                    <h5 id="teamModalTitle" class="modal-title" style="font-weight: 700; font-size: 18px; color: #1b1b3a; margin: 0;">
-                        Edit the Team
-                    </h5>
-                    <p style="margin: 0; font-size: 13px; color: #64748b;">Manage your Projects</p>
+            <div class="modal-header border-0 pb-0 pt-4 px-4 align-items-start position-relative">
+                <div class="flex-grow-1">
+                    <h5 class="modal-title fw-bold text-dark mb-1" style="font-size: 20px;">Edit the Team</h5>
+                    <p class="text-muted m-0 small">Manage your Projects</p>
                 </div>
 
-                <!-- Warning box -->
-                <div class="warning-box" style="background-color: #ffe4e6; color: #be123c; font-size: 11px; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; max-width: 320px; line-height: 1.3;">
-                    <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 18px; height: 18px; margin-right: 8px;">
-                    <span>PLease Note ! Projects, Ticket and Task must be created before add a Team</span>
+                <div class="d-none d-sm-flex align-items-center bg-danger bg-opacity-10 rounded-3 px-3 py-2 me-5" style="max-width: 320px;">
+                    <img src="{{ URL::asset('/build/img/tera.svg') }}" style="width: 18px; filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%); margin-right: 10px; flex-shrink: 0;">
+                    <span style="font-size: 11px; color: rgba(28, 39, 76, 0.7); line-height: 1.3;">Please Note! Projects, Ticket and Task must be created before add a Team</span>
                 </div>
 
-                <!-- Close button -->
-                <button type="button" data-bs-dismiss="modal" aria-label="Close"
-                    style="position: absolute; top: 10px; right: 10px; font-size: 24px; background: none; border: none; line-height: 1;">
-                    &times;
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: #64748b; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                    <i class="ti ti-x" style="font-size: 24px;"></i>
                 </button>
             </div>
 
-
-
-            <!-- Modal Body -->
             <form id="teamForm" action="{{ route('teams.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="_method" id="teamFormMethod" value="">
-            <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="padding: 20px 40px; background: #fff;">
                 
-                <!-- Upload Banner -->
-                <div onclick="document.getElementById('bannerInput').click();" style="width: 100%; height: 160px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; cursor: pointer; position: relative; overflow: hidden; flex-direction: column;">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute; object-fit: cover; width:100%; height:100%;" />
-                    <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 40px; color: #94a3b8; font-weight: 300; line-height: 1;">+</div>
-                        <div style="font-size: 18px; color: #64748b; font-weight: 600; margin-top: 10px;">Upload banner</div>
-                        <div style="font-size: 14px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
+                <div class="modal-body px-4 pb-4 pt-2">
+                    
+                    <div class="d-flex flex-column gap-3 mb-4 mt-2">
+                        <!-- Banner Upload -->
+                        <div class="upload-box-banner" style="width: 100%; height: 160px;" onclick="document.getElementById('bannerInput').click();">
+                            <img id="bannerPreview" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; border-radius: 10px 10px 0 0;" />
+                            <div class="text-center text-box">
+                                <div style="font-size: 48px; font-weight: 300; color: #94a3b8; line-height: 1;">+</div>
+                                <div style="font-size: 16px; font-weight: 600; color: #475569; margin-top: 8px;">Upload banner</div>
+                                <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
                     </div>
                 </div>
-                <input type="file" accept="image/*" id="bannerInput" name="banner" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
+                        <input type="file" id="bannerInput" name="banner" class="d-none" onchange="previewImage(this, 'bannerPreview')">
                 
                 <!-- Thumbnail Upload -->
-                <div onclick="document.getElementById('thumbInput').click();"
-                    style="width: 120px; height: 120px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; overflow: hidden; flex-direction: column; margin-bottom: 30px;">
-                    <img style="max-height: 100%; max-width: 100%; display: none; position: absolute; object-fit: cover; width:100%; height:100%;" />
-                    <div class="text-box" style="text-align: center;">
-                        <div style="font-size: 32px; color: #94a3b8; font-weight: 300; line-height: 1;">+</div>
-                        <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
+                        <div class="upload-box-thumb" style="width: 120px; height: 120px; margin: 0 auto;" onclick="document.getElementById('thumbInput').click();">
+                            <img id="thumbPreview" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; border-radius: 10px;" />
+                            <div class="text-center text-box">
+                                <div style="font-size: 32px; font-weight: 300; color: #94a3b8; line-height: 1;">+</div>
+                                <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">JPG or PNG</div>
                     </div>
                 </div>
-                <input type="file" accept="image/*" id="thumbInput" name="thumb" style="display: none;" onchange="this.previousElementSibling.querySelector('img').src = window.URL.createObjectURL(this.files[0]); this.previousElementSibling.querySelector('img').style.display='block'; this.previousElementSibling.querySelector('.text-box').style.display='none';">
-
-                <!-- removed extra hidden file input -->
-
-                <!-- Team Details Section -->
-                <div class="container-fluid mt-2" style="background-color: #fcfcfc; border-radius: 20px; padding: 25px; margin-bottom: 20px;">
-
-                    <!-- Title & Subtitle -->
-                    <div class="mb-4">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 16px; color: #1e293b;">Team Details</h6>
-                        <p style="margin: 0; font-size: 13px; color: #64748b;">Manage your time</p>
+                        <input type="file" id="thumbInput" name="thumb" class="d-none" onchange="previewImage(this, 'thumbPreview')">
                     </div>
 
-                    <!-- Inputs Row (2 fields per row) -->
-                    <div class="row g-3">
-                        <!-- Row 1 -->
-                        <div class="col-12 col-md-6">
-                            <input type="text" class="form-control" name="title" placeholder="Team Title"
-                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #1e293b; box-shadow: none;">
+                    <div class="p-4 mb-4" style="background: rgba(242, 242, 242, 0.5); border: none; border-radius: 10px;">
+                        <div class="mb-3">
+                            <h6 class="fw-bold m-0" style="color: #1e293b; font-size: 16px;">Team Details</h6>
+                            <small style="color: #64748b; font-size: 13px;">Manage your time</small>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <select class="form-select" id="addProjectSelect" name="project_id"
-                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
+                    <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="custom-input" name="title" placeholder="Team Title">
+                        </div>
+                            <div class="col-md-6 custom-select-wrap">
+                                <select class="custom-input custom-input-select" id="addProjectSelect" name="project_id" style="color:#64748b;">
                                 <option value="" selected>Select Project</option>
                                 @isset($projects)
                                     @foreach($projects as $project)
@@ -1691,392 +1886,270 @@
                                 @endisset
                             </select>
                         </div>
-                        <!-- Row 2 -->
-                        <div class="col-12 col-md-6">
-                            <select class="form-select" name="pm_id"
-                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
+                            <div class="col-md-6 custom-select-wrap">
+                                <select class="custom-input custom-input-select" name="pm_id" style="color:#64748b;">
                                 <option selected>Select PM</option>
                                 <option>PM A</option>
                                 <option>PM B</option>
                             </select>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <select class="form-select" name="timeline_color"
-                                style="background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer; background-position: right 16px center;">
+                            <div class="col-md-6 custom-select-wrap">
+                                <select class="custom-input custom-input-select" name="timeline_color" style="color:#64748b;">
                                 <option selected>Timeline Color</option>
                                 <option>Red</option>
                                 <option>Blue</option>
                             </select>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="p-4" style="background: rgba(242, 242, 242, 0.5); border: none; border-radius: 10px; min-height: 250px;">
+                        
+                        <h6 class="fw-bold text-dark mb-3">Select Ticket & Task</h6>
+
+                        <div class="ticket-tabs-scroll d-flex gap-2 mb-4" id="addTicketContainer" style="background: white; padding: 12px; border-radius: 8px;">
+                            <div class="text-muted small p-1">Please select a project above first...</div>
                 </div>
 
-                <!-- tasks -->
-                <div class="container-fluid mt-2" style="background-color: #fcfcfc; border-radius: 20px; padding: 25px; min-height: 200px;">
-
-                    <!-- Title -->
-                    <div class="mb-3">
-                        <h6 style="margin: 0; font-weight: 700; font-size: 16px; color: #1e293b;">
-                            Select Ticket & Task   
-                        </h6>
+                        <div id="taskListContainer" class="w-100">
+                            </div>
                     </div>
 
-                    <!-- Ticket Buttons Row -->
-                    <div class="d-flex align-items-center gap-3 mb-4" style="overflow-x: auto; padding-bottom: 5px;" id="addTicketContainer"></div>
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
+                        <div class="d-flex align-items-center bg-danger bg-opacity-10 rounded-3 px-3 py-2 mt-3 me-3" style="width: auto;">
+                            <img src="{{ URL::asset('/build/img/tera.svg') }}" style="width: 16px; filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%); margin-right: 8px; flex-shrink: 0;">
+                            <span style="font-size: 11px; color: rgba(28, 39, 76, 0.7); white-space: nowrap;">There some section not asigend yet</span>
+                        </div>
+                        <button type="submit" class="btn btn-success text-white fw-bold px-4 py-3 rounded-3 mt-3" style="background-color: #22c55e; border:none; font-size: 13px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);">
+                            + Save and create work flow
+                        </button>
+                    </div>
 
+                    <input type="hidden" name="tickets[]" id="selectedTicketId" value="">
+                    <div id="tasksHiddenContainer"></div>
+
+                </div>
+            </form>
+        </div>
                 </div>
 
                 <script>
+        // Image Preview Helper
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const textBox = input.previousElementSibling.querySelector('.text-box');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    if(textBox) textBox.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Main Logic
                     document.addEventListener('DOMContentLoaded', function () {
                         const projectSelect = document.getElementById('addProjectSelect');
-                        const container = document.getElementById('addTicketContainer');
+            const ticketContainer = document.getElementById('addTicketContainer');
                         const tasksContainer = document.getElementById('taskListContainer');
                         const selectedTicketInput = document.getElementById('selectedTicketId');
                         const tasksHiddenContainer = document.getElementById('tasksHiddenContainer');
-                        let developersList = [];
 
-                        // preload developers for multi-select
+            // Dummy Data for immediate visual verification if fetch fails
+            let developersList = []; // Will fetch real ones
+            
+            // Fetch Developers on load
                         fetch('{{ url('/team/developers') }}', { credentials: 'same-origin' })
                             .then(r => r.ok ? r.json() : [])
                             .then(json => { developersList = Array.isArray(json) ? json : []; })
-                            .catch(() => { developersList = []; });
+                .catch(e => console.log('Dev fetch error', e));
 
-                        function showMessage(msg) {
-                            container.innerHTML = '';
-                            const div = document.createElement('div');
-                            div.style.color = '#7a7a9d';
-                            div.style.fontSize = '12px';
-                            div.textContent = msg;
-                            container.appendChild(div);
-                        }
-
-                        function showTasksMessage(msg) {
-                            if (!tasksContainer) return;
+            // 1. Fetch Tickets
+            window.fetchTickets = async function(projectId) {
+                if(!projectId) return;
+                
+                // Show loading state
+                ticketContainer.innerHTML = '<div class="spinner-border spinner-border-sm text-success" role="status"></div>';
                             tasksContainer.innerHTML = '';
-                            const div = document.createElement('div');
-                            div.style.color = '#7a7a9d';
-                            div.style.fontSize = '12px';
-                            div.textContent = msg;
-                            tasksContainer.appendChild(div);
-                        }
 
-                        function renderTickets(tickets) {
-                            container.innerHTML = '';
-                            if (!tickets || tickets.length === 0) {
-                                showMessage('No tickets for this project');
-                                return;
-                            }
-                            tickets.forEach(function (t, idx) {
-                                const btn = document.createElement('button');
-                                btn.type = 'button'; 
-                                btn.className = 'btn ticket-tab-btn';
-                                btn.textContent = (t.title || '').trim() || ('Ticket #' + (idx + 1));
-                                btn.style.borderRadius = '8px';
-                                btn.style.padding = '8px 16px';
-                                btn.style.fontWeight = '600';
-                                btn.style.fontSize = '14px';
-                                btn.style.whiteSpace = 'nowrap';
-                                btn.style.border = 'none';
-                                btn.dataset.ticketId = t.id || t._id || '';
-                                
-                                // Default inactive style
-                                btn.style.backgroundColor = 'transparent';
-                                btn.style.color = '#94a3b8';
+                try {
+                    const res = await fetch('{{ url('/team/tickets') }}?project_id=' + projectId);
+                    if(!res.ok) throw new Error('Failed');
+                    const data = await res.json();
+                    const tickets = data.tickets || data || [];
+                    renderTickets(tickets);
+                } catch (e) {
+                    console.error(e);
+                    ticketContainer.innerHTML = '<div class="text-danger small">Error loading tickets</div>';
+                }
+            };
 
-                                btn.addEventListener('click', function (e) {
-                                    e.preventDefault();
-                                    Array.from(container.children).forEach(function (child) {
-                                        if (child.classList.contains('ticket-tab-btn')) {
-                                            child.style.backgroundColor = 'transparent';
-                                            child.style.color = '#94a3b8';
-                                            child.style.boxShadow = 'none';
-                                        }
-                                    });
-                                    // Active styling
-                                    btn.style.backgroundColor = '#22c55e'; // Green
-                                    btn.style.color = '#ffffff';
-                                    btn.style.boxShadow = '0 4px 12px rgba(34, 197, 94, 0.2)';
+            // 2. Fetch Tasks
+            window.fetchTasks = async function(ticketId) {
+                tasksContainer.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-success" role="status"></div></div>';
+                
+                try {
+                    const res = await fetch('{{ url('/team/tasks') }}?ticket_id=' + ticketId);
+                    if(!res.ok) throw new Error('Failed');
+                    const data = await res.json();
+                    const tasks = data.tasks || data || [];
+                    renderTasks(tasks);
+                } catch (e) {
+                    console.error(e);
+                    tasksContainer.innerHTML = '<div class="text-center text-muted small py-4">No tasks found</div>';
+                }
+            };
 
-                                    if (btn.dataset.ticketId) {
-                                        if (selectedTicketInput) selectedTicketInput.value = btn.dataset.ticketId;
-                                        fetchTasks(btn.dataset.ticketId);
-                                    } else {
-                                        showTasksMessage('No ticket id found for this item');
-                                    }
-                                });
-                                container.appendChild(btn);
-                                
-                                // Auto-select first ticket
-                                if (idx === 0) {
-                                    btn.click();
-                                }
-                            });
-                            // Prefer a preselected ticket id (edit mode), else default to first
-                            const preselectedId = selectedTicketInput && selectedTicketInput.value ? selectedTicketInput.value : '';
-                            let targetBtn = preselectedId ? container.querySelector('button[data-ticket-id="' + preselectedId + '"]') : null;
-                            if (!targetBtn) {
-                                targetBtn = container.querySelector('button[data-ticket-id]');
-                            }
-                            if (targetBtn && targetBtn.dataset.ticketId) {
-                                // set active styles
-                                targetBtn.style.backgroundColor = '#47ca7a';
-                                targetBtn.style.color = 'white';
-                                if (selectedTicketInput) selectedTicketInput.value = targetBtn.dataset.ticketId;
-                                fetchTasks(targetBtn.dataset.ticketId);
-                            } else {
-                                showTasksMessage('Select a ticket to view tasks');
-                            }
-                        }
+            // 3. Render Tickets (Tabs)
+            function renderTickets(tickets) {
+                ticketContainer.innerHTML = '';
+                if(tickets.length === 0) {
+                    ticketContainer.innerHTML = '<div class="text-muted small">No tickets found for this project</div>';
+                    return;
+                }
 
-                        function setHiddenTaskIds(tasks) {
-                            if (!tasksHiddenContainer) return;
-                            tasksHiddenContainer.innerHTML = '';
-                            (tasks || []).forEach(function (t) {
-                                const taskId = (t && (t.id || t._id)) ? (t.id || t._id) : null;
-                                if (!taskId) return;
-                                const input = document.createElement('input');
-                                input.type = 'hidden';
-                                input.name = 'tasks[]';
-                                input.value = String(taskId);
-                                tasksHiddenContainer.appendChild(input);
-                            });
-                        }
+                tickets.forEach((t, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'ticket-btn';
+                    btn.textContent = `#${idx+1} ${t.title || 'Ticket'}`;
+                    btn.onclick = () => {
+                        // Toggle Active Class
+                        document.querySelectorAll('.ticket-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        // Set ID and Fetch Tasks
+                        selectedTicketInput.value = t.id || t._id;
+                        fetchTasks(t.id || t._id);
+                    };
+                    ticketContainer.appendChild(btn);
 
+                    // Auto select first
+                    if(idx === 0) btn.click();
+                });
+            }
+
+            // 4. Render Tasks (Cards) - PIXEL PERFECT FIGMA MATCH
                         function renderTasks(tasks) {
-                            if (!tasksContainer) return;
                             tasksContainer.innerHTML = '';
-                            if (!tasks || tasks.length === 0) {
-                                showTasksMessage('No tasks for this ticket');
-                                setHiddenTaskIds([]);
+                tasksHiddenContainer.innerHTML = '';
+                
+                if(tasks.length === 0) {
+                    tasksContainer.innerHTML = '<div class="text-center text-muted small py-4">No tasks found</div>';
                                 return;
                             }
-                            // store hidden ids for submit
-                            setHiddenTaskIds(tasks);
-                            tasks.forEach(function (task, idx) {
-                                const title = (task.title || 'Task Title');
-                                const description = (task.description || 'Task description will be here');
-                                const start = (task.start_date || '').toString().slice(0, 10);
-                                const end = (task.end_date || '').toString().slice(0, 10);
-                                const ticketTitle = (task.ticket && task.ticket.title) ? task.ticket.title : (task.ticket_title || 'Ticket Title');
-                                const ticketCode = (task.ticket && task.ticket.code) ? task.ticket.code : (task.ticket_code || '#1');
-                                const status = (task.status || '').toLowerCase();
-                                const statusBg = status === 'in_delayed' || status === 'delayed' ? 'red'
-                                                  : status === 'in_hold' || status === 'hold' ? '#F5A623'
-                                                  : status === 'in_done' || status === 'done' ? '#00C853'
-                                                  : status === 'in_progress' || status === 'progress' ? '#10B981'
-                                                  : 'red';
-                                const badgeText = (task.status || '01');
 
-                                const card = `
-                <!-- Task Card (New Design) -->
-                <div class="d-flex align-items-start position-relative mb-4" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                tasks.forEach((task, idx) => {
+                    // Hidden input for form submission
+                    const hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'tasks[]';
+                    hidden.value = task.id || task._id;
+                    tasksHiddenContainer.appendChild(hidden);
+
+                    // Data Prep
+                    const title = task.title || 'Task Title';
+                    const desc = task.description || 'Task description will be here';
+                    const startDate = task.start_date ? new Date(task.start_date).toLocaleDateString('de-DE') : '12.10.2025';
+                    const endDate = task.end_date ? new Date(task.end_date).toLocaleDateString('de-DE') : '15.10.2025';
                     
-                    <!-- Red Badge -->
-                    <div style="position: absolute; top: 15px; left: -10px; background: #ff0000; color: white; width: 40px; height: 40px; border-bottom-right-radius: 12px; border-top-left-radius: 12px; border-top-right-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
-                        ${String(idx + 1).padStart(2, '0')}
-                    </div>
+                    // Developer Options
+                    const devOptions = developersList.map(d => 
+                        `<option value="${d.id}" data-img="${d.image || '{{ URL::asset("/build/img/profile.svg") }}'}">${d.name}</option>`
+                    ).join('');
 
-                    <!-- Image (Left) -->
-                    <div style="width: 130px; height: 130px; background: #e0e0e0; border-radius: 15px; flex-shrink: 0; overflow: hidden; margin-right: 25px; margin-left: 10px;">
-                        ${task.mark_image_path 
-                            ? `<img src="${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
-                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
-                        }
-                    </div>
-
-                    <!-- Center Content -->
-                    <div style="flex: 1; min-width: 0;">
-                        
-                        <!-- Header Row -->
-                        <div class="d-flex align-items-center mb-3">
-                             <!-- Logo -->
-                           ${task.project_logo_path 
-                               ? `<img src="${task.project_logo_path}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
-                               : `<img src="{{ URL::asset('/build/img/yekbon.svg') }}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; border: 2px solid #f1f5f9;">`
-                           }
-                           <div>
-                               <div style="font-weight: 700; font-size: 18px; color: #1b1b3a;">${title}</div>
-                               <div class="d-flex gap-2 mt-1">
-                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Task ID</span>
-                                    <span style="background: #e0f2fe; color: #0ea5e9; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">${ticketCode}</span>
+                    // --- HTML TEMPLATE ---
+                    const cardHtml = `
+                    <div class="task-wrapper">
+                    <div class="task-row">
+                        <div class="task-image-box">
+                            <div class="task-badge">${String(idx + 1).padStart(2, '0')}</div>
+                            <div class="task-img-placeholder">
+                                ${task.mark_image_path ? `<img src="${task.mark_image_path}" style="width:100%; height:100%; object-fit:cover;">` : ''}
                                </div>
                            </div>
                            
-                           <!-- Status Dot -->
-                           <div style="margin-left: auto; width: 18px; height: 18px; background: #a3e635; border-radius: 50%; border: 4px solid #f0fdf4;"></div>
+                        <div class="task-content-card">
+                            <div class="status-indicator-outer">
+                                <div class="status-indicator-inner"></div>
                         </div>
 
-                        <!-- Description -->
-                        <div style="font-size: 13px; color: #64748b; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
-                            ${description}
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="${task.project_logo_path || '{{ URL::asset("/build/img/yekbon.svg") }}'}" style="width: 24px; height: 24px; border-radius: 50%; border:1px solid #eee; margin-right: 8px;">
+                                <h6 class="mb-0 fw-bold" style="font-size: 15px; color:#1e293b;">${title}</h6>
                         </div>
 
-                        <!-- Bottom Date Banner -->
-                        <div style="background: #ecfdf5; border-radius: 10px; padding: 10px 15px; display: inline-flex; align-items: center; gap: 15px; color: #10b981; font-weight: 600; font-size: 13px;">
-                             <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width: 18px; height: 18px;">
-                             <span>${start}</span>
-                             <span>&rarr;</span>
-                             <span>${end}</span>
-                             <span>&rarr;</span>
-                             <span>15:30</span>
+                            <div class="d-flex gap-2 mb-2 pb-2" style="border-bottom: 1px solid #e2e8f0;">
+                                <span class="tag-badge">Task ID</span>
+                                <span class="tag-badge">${task.ticket?.code || 'Ticket ID'}</span>
                         </div>
 
+                            <p class="text-muted mb-2 mt-2" style="font-size: 13px; line-height: 1.4;">${desc}</p>
+
+                            <div class="date-footer">
+                                <img src="{{ URL::asset('/build/img/calender1.svg') }}" style="width: 14px;">
+                                <span>${startDate}</span>
+                                <span>↔</span>
+                                <span>${endDate}</span>
+                                <span>↔</span>
+                                <span>15:30</span>
+                            </div>
                     </div>
 
-                    <!-- Right Side Dropdowns -->
-                    <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 15px; width: 160px; padding-top: 60px;">
-                        
-                        <!-- Priority -->
-                        <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
-                             <select class="priority-select" name="task_priorities[${task.id || task._id}]">
-                                    <option value="" ${!task.priority ? 'selected' : ''}>Priority</option>
-                                    <option value="low" ${(task.priority==='low') ? 'selected' : ''}>Low</option>
-                                    <option value="medium" ${(task.priority==='medium') ? 'selected' : ''}>Medium</option>
-                                    <option value="high" ${(task.priority==='high') ? 'selected' : ''}>High</option>
+                        <div class="task-controls">
+                            <div class="control-dropdown">
+                                <span class="dot" style="width:8px; height:8px; border-radius:50%; background:#22c55e; margin-right:8px;"></span>
+                                <span class="text flex-grow-1" style="font-size:12px; color:#475569;">Low</span>
+                                <i class="ti ti-chevron-down" style="font-size:10px; color:#94a3b8;"></i>
+                                <select class="control-select-overlay" name="task_priorities[${task.id || task._id}]" onchange="updateUI(this, 'priority')">
+                                    <option value="low" data-color="#22c55e">Low</option>
+                                    <option value="medium" data-color="#f59e0b">Medium</option>
+                                    <option value="high" data-color="#ef4444">High</option>
                              </select>
                         </div>
                         
-                        <!-- Developer -->
-                         <div style="background: #f8fafc; border-radius: 10px; padding: 4px; border: 1px solid #f1f5f9;">
-                             <select class="developer-select" name="task_developers[${task.id || task._id}]">
-                                    <option value="">Developer</option>
-                                    ${developersList.map(d => `<option value="${d.name}">${d.name}</option>`).join('')}
+                            <div class="control-dropdown">
+                                <img class="avatar" src="{{ URL::asset('/build/img/profile.svg') }}" style="width:20px; height:20px; border-radius:50%; margin-right:8px;">
+                                <span class="text flex-grow-1" style="font-size:12px; color:#475569;">Name</span>
+                                <i class="ti ti-chevron-down" style="font-size:10px; color:#94a3b8;"></i>
+                                <select class="control-select-overlay" name="task_developers[${task.id || task._id}]" onchange="updateUI(this, 'dev')">
+                                    <option value="">Select User</option>
+                                    ${devOptions}
                              </select>
                         </div>
-
                     </div>
                 </div>
-                                `;
-                                // append card
-                                const wrapper = document.createElement('div');
-                                wrapper.innerHTML = card;
-                                const node = wrapper.firstElementChild;
-                                tasksContainer.appendChild(node);
+                    </div>`;
+                    
+                    const div = document.createElement('div');
+                    div.innerHTML = cardHtml;
+                    tasksContainer.appendChild(div);
+                });
+            }
 
-                                // Preselect values if editing
-                                var currentTeamId = window.currentEditingTeamId || null;
-                                var teamData = currentTeamId && window.teamsData ? window.teamsData[currentTeamId] : null;
-                                var taskId = (task.id || task._id) || null;
-                                var prePriority = teamData && teamData.task_priorities && taskId ? teamData.task_priorities[taskId] : null;
-                                var preDevelopers = teamData && teamData.task_developers && taskId ? (teamData.task_developers[taskId] || []) : [];
+            // Listen for Project Change
+            projectSelect.addEventListener('change', function() {
+                fetchTickets(this.value);
+            });
+        });
 
-                                if (prePriority) {
-                                    const pSel = node.querySelector('select.priority-select');
-                                    if (pSel) pSel.value = prePriority;
-                                }
-                                if (preDevelopers && preDevelopers.length) {
-                                    const dSel = node.querySelector('select.developer-select');
-                                    if (dSel) {
-                                        Array.from(dSel.options).forEach(function(opt) {
-                                            if (preDevelopers.includes(opt.value)) {
-                                                opt.selected = true;
-                                            }
-                                        });
-                                    }
-                                }
-
-                                // Enhance selects with Choices.js
-                                try {
-                                    const priorityEl = node.querySelector('select.priority-select');
-                                    if (priorityEl && !priorityEl.dataset.enhanced) {
-                                        new Choices(priorityEl, {
-                                            removeItemButton: false,
-                                            searchEnabled: false,
-                                            placeholder: true,
-                                            shouldSort: false,
-                                            classNames: { containerOuter: 'choices choices--priority' }
-                                        });
-                                        priorityEl.dataset.enhanced = '1';
-                                    }
-                                    const devEl = node.querySelector('select.developer-select');
-                                    if (devEl && !devEl.dataset.enhanced) {
-                                        new Choices(devEl, {
-                                            removeItemButton: false,
-                                            placeholder: true,
-                                            placeholderValue: 'Developer',
-                                            searchPlaceholderValue: 'Search developer',
-                                            shouldSort: false,
-                                            classNames: { containerOuter: 'choices choices--developers' }
-                                        });
-                                        devEl.dataset.enhanced = '1';
-                                    }
-                                } catch (e) {}
-                            });
-                        }
-
-                        async function fetchTickets(projectId) {
-                            try {
-                                const res = await fetch('{{ url('/team/tickets') }}?project_id=' + encodeURIComponent(projectId), { credentials: 'same-origin' });
-                                if (!res.ok) { renderTickets([]); return; }
-                                const data = await res.json();
-                                const tickets = Array.isArray(data) ? data : (data.tickets || []);
-                                renderTickets(tickets);
-                            } catch (e) {
-                                renderTickets([]);
-                            }
-                        }
-
-                        async function fetchTasks(ticketId) {
-                            try {
-                                if (!ticketId) { showTasksMessage('Select a ticket to view tasks'); return; }
-                                const res = await fetch('{{ url('/team/tasks') }}?ticket_id=' + encodeURIComponent(ticketId), { credentials: 'same-origin' });
-                                if (!res.ok) { renderTasks([]); return; }
-                                const data = await res.json();
-                                const tasks = Array.isArray(data) ? data : (data.tasks || []);
-                                renderTasks(tasks);
-                            } catch (e) {
-                                renderTasks([]);
-                            }
-                        }
-
-                        if (projectSelect) {
-                            projectSelect.addEventListener('change', function () {
-                                const pid = projectSelect.value;
-                                if (pid) {
-                                    fetchTickets(pid);
-                                    showTasksMessage('Select a ticket to view tasks');
+        // UI Update Helpers
+        function updateUI(select, type) {
+            const container = select.parentElement;
+            const option = select.options[select.selectedIndex];
+            
+            if(type === 'priority') {
+                const color = option.getAttribute('data-color');
+                container.querySelector('.dot').style.backgroundColor = color;
+                container.querySelector('.text').textContent = option.text;
                                 } else {
-                                    showMessage('Select a project to view tickets');
-                                    showTasksMessage('Select a project to view tasks');
+                const img = option.getAttribute('data-img');
+                if(img) container.querySelector('.avatar').src = img;
+                container.querySelector('.text').textContent = option.text;
                                 }
-                            });
                         }
-                    });
                 </script>
-
-                <!-- Dynamic tasks will render here -->
-                <div id="taskListContainer" class="w-100" style="min-height: 40px;"></div>
-                <!-- Selected ticket hidden field for submit -->
-                <input type="hidden" name="tickets[]" id="selectedTicketId" value="">
-                <!-- Selected tasks (all listed for chosen ticket) -->
-                <div id="tasksHiddenContainer"></div>
-                
-
-                <div style="display: flex;  justify-content: space-between; align-items: center; gap: 7px; margin-top: 16px;">
-
-                    <!-- Left Warning Box -->
-                    <div style="background-color: #feefef; color: #7a7a9d; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; font-size: 12px;">
-                        <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px; margin-right: 8px;">
-                        There some section not asigned yet
-                    </div>
-
-                    <!-- Right Save Button -->
-                    <button type="submit"
-                        style="background-color: #26c26c; color: white; font-weight: 600; font-size: 13px; padding: 10px 16px; border: none; border-radius: 8px; white-space: nowrap;">
-                        + Save and create work flow
-                    </button>
-
-                </div>
-                <!-- Modal Body -->
-
-
-
-            </div>
-            </form>
-
-        </div>
-    </div>
 </div>
 
 <!-- edit team -->
