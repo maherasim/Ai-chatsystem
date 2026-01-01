@@ -122,13 +122,32 @@
     .chats .chat-content .message-content,
     .chats-right .chat-content .message-content,
     .chats-right .chat-info .message-content {
-        padding: 8px 12px !important;
+        padding: 4px 16px !important; /* Reduced vertical padding (height), increased horizontal padding */
         min-height: unset !important;
         margin-bottom: 4px !important;
+        line-height: 1.4 !important; /* Tighter line height to reduce height */
     }
 
     .chats .chat-content .message-content {
         border-radius: 12px 12px 12px 0 !important;
+        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
+        width: auto !important; /* Allow natural width based on content */
+        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
+        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
+        white-space: normal !important; /* Allow normal text flow */
+        word-break: normal !important; /* Don't break words */
+    }
+    
+    /* Left-side (received) message content styling */
+    .chats:not(.chats-right) .chat-info > .message-content {
+        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
+        width: auto !important; /* Allow natural width based on content */
+        min-width: fit-content !important; /* Ensure minimum width fits content */
+        line-height: 1.4 !important; /* Tighter line height to reduce height */
+        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
+        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
+        white-space: normal !important; /* Allow normal text flow */
+        word-break: normal !important; /* Don't break words */
     }
 
     .chats-right .chat-content .message-content,
@@ -183,17 +202,21 @@
         background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
         color: #ffffff !important;
         border-radius: 16px 16px 2px 16px !important;
-        padding: 6px 14px !important;
+        padding: 4px 16px !important; /* Reduced vertical padding (height), increased horizontal padding */
         display: inline-block !important;
-        width: fit-content !important;
+        width: auto !important; /* Changed from fit-content to auto for better text flow */
+        min-width: fit-content !important; /* Ensure minimum width fits content */
+        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
         flex: 0 1 auto !important;
         margin-left: auto !important;
         text-align: left !important;
-        max-width: 85% !important;
         box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2) !important;
-        word-wrap: break-word !important;
-        white-space: pre-wrap !important;
+        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
+        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
+        white-space: normal !important; /* Allow normal text flow */
+        word-break: normal !important; /* Don't break words */
         min-height: unset !important;
+        line-height: 1.4 !important; /* Tighter line height to reduce height */
     }
     
     .chats.chats-right .chat-info > .message-content * {
