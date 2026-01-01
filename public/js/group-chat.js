@@ -19,7 +19,7 @@ class GroupChatManager {
      */
     async initAgora() {
         try {
-            // Get token from backend
+            // Get token from backend to get user ID
             const response = await fetch('/api/chat/token', {
                 method: 'GET',
                 headers: {
@@ -33,8 +33,8 @@ class GroupChatManager {
                 throw new Error(data.message || 'Failed to get Agora token');
             }
 
-            // Store user ID as string for consistent comparison
-            this.currentUserId = String(data.user_id || data.userId || '');
+            // Store user ID as string for consistent comparison (ALWAYS set this, even if Agora fails)
+            this.currentUserId = String(data.user_id || data.userId || '').trim();
             console.log('Current user ID set:', this.currentUserId);
 
             // Initialize Agora Chat SDK if available
@@ -56,11 +56,40 @@ class GroupChatManager {
                 return true;
             } else {
                 console.warn('Agora Chat SDK not loaded. Using fallback mode.');
-                return false;
+                // Still return true because we got the user ID
+                return true;
             }
         } catch (error) {
             console.error('Failed to initialize Agora Chat:', error);
+            // Try to get user ID from a fallback endpoint or current user data
+            await this.initializeUserIdFallback();
             return false;
+        }
+    }
+
+    /**
+     * Fallback method to get user ID if token endpoint fails
+     */
+    async initializeUserIdFallback() {
+        try {
+            // Try to get user ID from a meta tag or global variable
+            const userIdMeta = document.querySelector('meta[name="user-id"]');
+            if (userIdMeta) {
+                this.currentUserId = String(userIdMeta.content).trim();
+                console.log('User ID set from meta tag:', this.currentUserId);
+                return;
+            }
+
+            // Try to get from window object if available
+            if (window.currentUserId) {
+                this.currentUserId = String(window.currentUserId).trim();
+                console.log('User ID set from window:', this.currentUserId);
+                return;
+            }
+
+            console.warn('Could not determine current user ID');
+        } catch (error) {
+            console.error('Failed to initialize user ID fallback:', error);
         }
     }
 
@@ -101,9 +130,18 @@ class GroupChatManager {
         // Update chat header
         this.updateChatHeader(groupName, photoUrl);
 
-        // Initialize Agora if not already done
-        if (!this.isConnected) {
+        // Initialize user ID and Agora if not already done
+        if (!this.currentUserId) {
             await this.initAgora();
+        } else if (!this.isConnected) {
+            // User ID is set but Agora not connected, try to connect
+            await this.initAgora();
+        }
+
+        // Ensure we have user ID before loading messages
+        if (!this.currentUserId) {
+            console.error('Cannot load messages: User ID not set');
+            await this.initializeUserIdFallback();
         }
 
         // Load existing messages
@@ -243,19 +281,23 @@ class GroupChatManager {
      */
     createMessageElement(message) {
         // Compare sender_id with currentUserId (handle both string and object ID)
-        const senderId = String(message.sender_id || message.from_user_id || message.from || '');
-        const currentUserIdStr = String(this.currentUserId || '');
-        const isOwnMessage = senderId === currentUserIdStr && senderId !== '';
+        // Normalize both IDs by trimming and converting to string
+        const senderId = String(message.sender_id || message.from_user_id || message.from || '').trim();
+        const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
 
-        // Debug logging
-        if (window.location.search.includes('debug')) {
-            console.log('Message comparison:', {
-                senderId,
-                currentUserIdStr,
-                isOwnMessage,
-                message: message
-            });
-        }
+        // Compare IDs (handle MongoDB ObjectId format)
+        const isOwnMessage = senderId !== '' && currentUserIdStr !== '' &&
+            (senderId === currentUserIdStr ||
+                senderId.toLowerCase() === currentUserIdStr.toLowerCase());
+
+        // Debug logging (always log to help debug)
+        console.log('Message comparison:', {
+            senderId: senderId,
+            currentUserIdStr: currentUserIdStr,
+            isOwnMessage: isOwnMessage,
+            messageId: message._id || message.id,
+            messageContent: message.content?.substring(0, 30) || ''
+        });
 
         const messageDiv = document.createElement('div');
         messageDiv.className = `chats ${isOwnMessage ? 'chats-right' : ''}`;
@@ -377,9 +419,8 @@ class GroupChatManager {
                                 </a></li>
                             </ul>
                         </div>
-                        <div class="message-content">
-                            ${messageContent}
-                            <div class="emoj-group">
+                        ${messageContent}
+                        <div class="emoj-group">
                                 <ul>
                                     <li class="emoj-action">
                                         <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
@@ -415,14 +456,14 @@ class GroupChatManager {
                     ${reactionsHtml}
                 </div>
                 <div class="chat-avatar">
-                    <img src="{{URL::asset('/build/img/profiles/avatar-17.jpg')}}" class="rounded-circle dreams_chat" alt="image">
+                    <img src="${window.currentUserAvatar || '/build/img/profiles/avatar-02.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.src='/build/img/profiles/avatar-02.jpg'">
                 </div>
             `;
         } else {
             // LEFT SIDE: Received messages (avatar first, content second)
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    <img src="${message.sender_avatar || '{{URL::asset(\'/build/img/profiles/avatar-06.jpg\')}}'}" class="rounded-circle" alt="image">
+                    <img src="${message.sender_avatar || '/build/img/profiles/avatar-06.jpg'}" class="rounded-circle" alt="image">
                 </div>
                 <div class="chat-content">
                     <div class="chat-profile-name">
@@ -584,7 +625,7 @@ class GroupChatManager {
 
             const data = await response.json();
 
-            if (data.success) {
+            if (data.success && data.message) {
                 // Clear input
                 const input = document.querySelector('.chat-footer-wrap .form-control');
                 if (input) {
@@ -594,7 +635,101 @@ class GroupChatManager {
                 // Clear reply
                 this.clearReply();
 
-                // Reload messages to show the new one
+                // Immediately add the sent message to UI (on right side)
+                const sentMessageData = {
+                    ...data.message,
+                    sender_id: String(this.currentUserId || ''),
+                    from_user_id: String(this.currentUserId || ''),
+                };
+
+                // Add message to UI immediately
+                const container = document.getElementById('chatMessagesContainer');
+                if (container) {
+                    // Hide empty state
+                    const emptyState = document.getElementById('emptyChatState');
+                    if (emptyState) {
+                        emptyState.style.display = 'none';
+                    }
+
+                    // Check if we need to add a date separator
+                    const lastMessage = container.lastElementChild;
+                    const messageDate = new Date(sentMessageData.created_at);
+                    let needsDateSeparator = true;
+
+                    if (lastMessage && lastMessage.classList.contains('chats')) {
+                        const lastMessageDate = lastMessage.getAttribute('data-date');
+                        const today = new Date();
+                        const yesterday = new Date(today);
+                        yesterday.setDate(yesterday.getDate() - 1);
+
+                        let dateStr = '';
+                        if (messageDate.toDateString() === today.toDateString()) {
+                            dateStr = 'Today';
+                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
+                            dateStr = 'Yesterday';
+                        } else {
+                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        }
+
+                        if (lastMessageDate === dateStr) {
+                            needsDateSeparator = false;
+                        } else {
+                            // Add date separator
+                            const dateSeparator = document.createElement('div');
+                            dateSeparator.className = 'chat-line';
+                            dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                            container.appendChild(dateSeparator);
+                        }
+                    } else if (lastMessage && lastMessage.classList.contains('chat-line')) {
+                        // Last element is a date separator, check if same date
+                        const lastDateText = lastMessage.querySelector('.chat-date')?.textContent;
+                        const today = new Date();
+                        const yesterday = new Date(today);
+                        yesterday.setDate(yesterday.getDate() - 1);
+
+                        let dateStr = '';
+                        if (messageDate.toDateString() === today.toDateString()) {
+                            dateStr = 'Today';
+                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
+                            dateStr = 'Yesterday';
+                        } else {
+                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        }
+
+                        if (lastDateText === dateStr) {
+                            needsDateSeparator = false;
+                        }
+                    } else {
+                        // No messages yet, add date separator
+                        const today = new Date();
+                        const yesterday = new Date(today);
+                        yesterday.setDate(yesterday.getDate() - 1);
+
+                        let dateStr = '';
+                        if (messageDate.toDateString() === today.toDateString()) {
+                            dateStr = 'Today';
+                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
+                            dateStr = 'Yesterday';
+                        } else {
+                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        }
+
+                        const dateSeparator = document.createElement('div');
+                        dateSeparator.className = 'chat-line';
+                        dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                        container.appendChild(dateSeparator);
+                    }
+
+                    const messageElement = this.createMessageElement(sentMessageData);
+                    messageElement.setAttribute('data-date', this.formatDate(messageDate));
+                    container.appendChild(messageElement);
+                    this.scrollToBottom();
+                }
+
+                // Also reload messages to ensure consistency (but UI already updated)
+                // await this.loadGroupMessages(this.currentGroupId);
+            } else if (data.success) {
+                // Fallback: reload all messages if message data not returned
                 await this.loadGroupMessages(this.currentGroupId);
             }
         } catch (error) {
@@ -746,7 +881,12 @@ class GroupChatManager {
 window.groupChatManager = new GroupChatManager();
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize user ID immediately on page load
+    if (window.groupChatManager && !window.groupChatManager.currentUserId) {
+        await window.groupChatManager.initAgora();
+    }
+
     // Setup message input handler
     const messageInput = document.querySelector('.chat-footer-wrap .form-control');
     const sendButton = document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');

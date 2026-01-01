@@ -133,22 +133,81 @@
 
     .chats-right .chat-content .message-content,
     .chats-right .chat-info .message-content {
-        border-radius: 12px 12px 0 12px !important;
+        border-radius: 16px 16px 2px 16px !important;
     }
 
     /* Message Alignment Fix */
     .chats.chats-right {
         justify-content: flex-end !important;
+        margin-left: auto !important;
+        text-align: right !important;
+        flex-direction: row !important;
+        margin-bottom: 15px !important;
     }
 
     .chats.chats-right .chat-content {
-        order: 0 !important;
+        order: 1 !important;
+        text-align: right !important;
+        align-items: flex-end !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .chats.chats-right .chat-avatar {
-        order: 1 !important;
+        order: 2 !important;
         padding-right: 0 !important;
         padding-left: 8px !important;
+    }
+
+    .chats.chats-right .chat-profile-name {
+        text-align: right !important;
+        width: 100% !important;
+        margin-bottom: 5px !important;
+    }
+
+    .chats.chats-right .chat-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        gap: 0 !important;
+    }
+
+    /* Target ONLY the inner message content to avoid double bubbles */
+    .chats.chats-right .message-content .message-content {
+        background: none !important;
+        padding: 0 !important;
+        color: inherit !important;
+    }
+
+    .chats.chats-right .chat-info > .message-content {
+        background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
+        color: #ffffff !important;
+        border-radius: 16px 16px 2px 16px !important;
+        padding: 6px 14px !important;
+        display: inline-block !important;
+        width: fit-content !important;
+        flex: 0 1 auto !important;
+        margin-left: auto !important;
+        text-align: left !important;
+        max-width: 85% !important;
+        box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2) !important;
+        word-wrap: break-word !important;
+        white-space: pre-wrap !important;
+        min-height: unset !important;
+    }
+    
+    .chats.chats-right .chat-info > .message-content * {
+        color: #ffffff !important;
+    }
+
+    .chats.chats-right .chat-time {
+        color: #adb5bd !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .chats.chats-right .chat-profile-name h6 {
+        font-weight: 600 !important;
+        color: #495057 !important;
     }
 </style>
 
@@ -1056,6 +1115,12 @@
 
 <!-- Agora Chat SDK -->
 <script src="https://download.agora.io/sdk/release/AgoraChat-sdk-Web.js"></script>
+
+<!-- Pass current user ID to JS -->
+<script>
+    window.currentUserId = "{{ (string)Auth::id() }}";
+    window.currentUserAvatar = "{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('build/img/profiles/avatar-17.jpg') }}";
+</script>
 
 <!-- Group Chat Manager -->
 <script src="{{ asset('js/group-chat.js') }}"></script>
