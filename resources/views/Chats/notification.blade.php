@@ -137,14 +137,10 @@
                                      onmouseover="this.style.transform='scale(1.05)'"
                                      onmouseout="this.style.transform='scale(1)'">
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                 @php
-                                     // Resolution Logic moved up
-                                 @endphp
-                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                         <img src="{{ $bannerUrl }}" alt="Background"
-                                         style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
-                                 </div>
-                                 <div style="position: relative; margin-top: -20px;">
+                                        <img src="{{ $bannerUrl }}" alt="Background"
+                                        style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
+                                </div>
+                                <div style="position: relative; margin-top: -20px;">
                                          <img src="{{ $photoUrl }}" alt="Profile"
                                              style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;" title="{{ $photoUrl }}">
                                  </div>
