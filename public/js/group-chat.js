@@ -403,14 +403,22 @@ class GroupChatManager {
                     </div>
                 </div>
                 <div class="chat-avatar">
-                    <img src="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" class="rounded-circle dreams_chat" alt="image" title="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}">
+                    <img src="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" 
+                        class="rounded-circle dreams_chat" 
+                        alt="image" 
+                        title="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}"
+                        onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); this.src = this.src.replace(window.location.origin, 'https://logiadmin.it-supportline.de'); } else { this.src = '/build/img/profiles/avatar-02.jpg'; }">
                 </div>
             `;
         } else {
             // LEFT SIDE: Received messages (avatar first, content second)
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    <img src="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" class="rounded-circle" alt="image" title="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}">
+                    <img src="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" 
+                        class="rounded-circle" 
+                        alt="image" 
+                        title="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}"
+                        onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); this.src = this.src.replace(window.location.origin, 'https://logiadmin.it-supportline.de'); } else { this.src = '/build/img/profiles/avatar-02.jpg'; }">
                 </div>
                 <div class="chat-content">
                     <div class="chat-profile-name">
