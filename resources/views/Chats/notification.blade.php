@@ -79,7 +79,7 @@
                         <!-- Header -->
                         <div style="margin-bottom: 20px;">
                             <h6 style="font-weight: 600; color: #2e3a59; font-size: 16px; margin-bottom: 4px;">Team Chat</h6>
-                            <small style="color: #7f8ea3;">Public Groups</small>
+                            <small style="color: #7f8ea3;">Public Groups  </small>
                         </div>
                         <!-- Scrollable Card Container -->
                         <div id="cardScroller"
@@ -104,21 +104,48 @@
                                 @php
                                     $groupId = is_array($group) ? ($group['id'] ?? '') : (isset($group->id) ? $group->id : (string)($group->_id ?? ''));
                                     $groupName = is_array($group) ? ($group['name'] ?? 'Group') : ($group->name ?? 'Group');
-                                    $groupPhoto = is_array($group) ? ($group['team_photo'] ?? '') : ($group->team_photo ?? ($group->avatar ?? ''));
                                     $memberCount = is_array($group) ? ($group['member_count'] ?? 0) : (is_array($group->member_ids ?? []) ? count($group->member_ids) : (json_decode($group->member_ids ?? '[]', true) ? count(json_decode($group->member_ids, true)) : 0));
+                                    
+                                    // Fetch images from Team model if available
+                                    $groupPhoto = '';
+                                    $groupBanner = '';
+                                    
+                                    if (is_array($group)) {
+                                        $groupPhoto = $group['team_photo'] ?? '';
+                                        $groupBanner = $group['team_banner'] ?? '';
+                                    } else {
+                                        // It is a Group Model
+                                        $teamId = $group->team_id ?? null;
+                                        if ($teamId) {
+                                            $team = \App\Models\Teams::find($teamId);
+                                            if ($team) {
+                                                $groupPhoto = $team->thumb_path ?? '';
+                                                $groupBanner = $team->banner_path ?? '';
+                                            }
+                                        }
+                                        // Fallback if no team or no image in team
+                                        if (empty($groupPhoto)) $groupPhoto = $group->avatar ?? '';
+                                        // Banner fallback not defined in Group model typically
+                                    }
                                 @endphp
                                 <div onclick="openGroupChat('{{ $groupId }}', '{{ addslashes($groupName) }}', '{{ $groupPhoto }}')" 
                                      style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
                                      onmouseover="this.style.transform='scale(1.05)'"
                                      onmouseout="this.style.transform='scale(1)'">
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                        <img src="{{ is_array($group) ? ($group['team_banner'] ?? 'https://logiadmin.it-supportline.de/build/img/bgractangle.svg') : 'https://logiadmin.it-supportline.de/build/img/bgractangle.svg' }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
+                                        @php 
+                                            $baseStorage = 'https://logiadmin.it-supportline.de/storage/';
+                                            $bannerUrl = $groupBanner ? (str_starts_with($groupBanner, 'http') ? $groupBanner : $baseStorage . ltrim($groupBanner, '/')) : $baseStorage;
+                                        @endphp
+                                        <img src="{{ $bannerUrl }}" alt="Background"
+                                        style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
                                 </div>
                                 <div style="position: relative; margin-top: -20px;">
-                                        <img src="{{ $groupPhoto ?: 'https://logiadmin.it-supportline.de/build/img/profile.svg' }}" alt="Profile"
-                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;"
-                                            onerror="this.src='https://logiadmin.it-supportline.de/build/img/profile.svg'">
+                                        @php 
+                                            $photoUrl = $groupPhoto ? (str_starts_with($groupPhoto, 'http') ? $groupPhoto : $baseStorage . ltrim($groupPhoto, '/')) : $baseStorage;
+                                        @endphp
+                                        <img src="{{ $photoUrl }}" alt="Profile"
+                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;" title="{{ $photoUrl }}">
                                 </div>
                                 <div style="padding: 8px;">
                                         <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $groupName }}</h6>
@@ -360,7 +387,7 @@
 
                             <!-- Avatar 1 -->
                             <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
+                                <img src="" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
 
                             </div>
 
@@ -406,7 +433,7 @@
 
                             <!-- Avatar 1 -->
                             <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
+                                <img src="" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
 
                             </div>
 
@@ -599,7 +626,7 @@
 
                             <!-- Profile Image -->
                             <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
 
                             <!-- Text Content -->
@@ -623,7 +650,7 @@
 
                             <!-- Profile Image -->
                             <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
 
                             <!-- Text Content -->
@@ -811,7 +838,7 @@
                         <!-- Header -->
                         <div style="margin-bottom: 20px;">
                             <h6 style="font-weight: 600; color: #2e3a59; font-size: 16px; margin-bottom: 4px;">Team Chat</h6>
-                            <small style="color: #7f8ea3;">Public Groups</small>
+                            <small style="color: #7f8ea3;">Public Groups asim</small>
                         </div>
                         <!-- Scrollable Card Container -->
                         <div id="teamChat-cardScroller"

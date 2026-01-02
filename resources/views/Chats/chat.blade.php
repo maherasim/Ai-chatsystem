@@ -145,7 +145,8 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        <img id="chatHeaderAvatar" src="{{ isset($currentUser->image) && $currentUser->image ? 'https://logiadmin.it-supportline.de/storage/' . ltrim($currentUser->image, '/') : 'https://logiadmin.it-supportline.de/build/img/profiles/avatar-06.jpg' }}" class="rounded-circle" alt="image">
+                        @php $headerAvatar = isset($currentUser->image) && $currentUser->image ? 'https://logiadmin.it-supportline.de/storage/' . ltrim($currentUser->image, '/') : 'https://logiadmin.it-supportline.de/storage/'; @endphp
+                        <img id="chatHeaderAvatar" src="{{ $headerAvatar }}" class="rounded-circle" alt="image" title="{{ $headerAvatar }}">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6 id="chatHeaderName">Select a group to start chatting</h6>
@@ -232,7 +233,8 @@
             <form class="footer-form">
                 <div class="chats reply-chat reply-div" id="reply-div" style="display: none;">
                     <div class="chat-avatar">
-                        <img id="reply-avatar" src="{{ isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="image">
+                        @php $replyAvatar = isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : asset('storage/'); @endphp
+                        <img id="reply-avatar" src="{{ $replyAvatar }}" class="rounded-circle" alt="image" title="{{ $replyAvatar }}">
                     </div>
                     <div class="chat-content">
                         <div class="chat-profile-name">
@@ -291,7 +293,8 @@
             <form class="footer-form">
                 <div class="chats reply-chat reply-div" id="reply-div" style="display: none;">
                     <div class="chat-avatar">
-                        <img id="reply-avatar" src="{{ isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="image">
+                        @php $replyAvatar = isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : asset('storage/'); @endphp
+                        <img id="reply-avatar" src="{{ $replyAvatar }}" class="rounded-circle" alt="image" title="{{ $replyAvatar }}">
                     </div>
                     <div class="chat-content">
                         <div class="chat-profile-name">
@@ -326,7 +329,8 @@
                 <div class="profile-content">
                     <div class="contact-profile-info">
                         <div class="avatar avatar-xxl online mb-2">
-                            <img src="{{ isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="img">
+                            @php $contactAvatar = isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : asset('storage/'); @endphp
+                            <img src="{{ $contactAvatar }}" class="rounded-circle" alt="img" title="{{ $contactAvatar }}">
                         </div>
                         <h6>{{ $currentUser->name ?? 'User' }}</h6>
                         <p>Last seen at 07:15 PM</p>

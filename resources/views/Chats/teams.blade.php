@@ -113,7 +113,7 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="image">
+                        <img src="https://logiadmin.it-supportline.de/storage/" class="rounded-circle" alt="image" title="https://logiadmin.it-supportline.de/storage/">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6>Username</h6>
@@ -222,7 +222,7 @@
 
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                            <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                            <img src="https://logiadmin.it-supportline.de/storage/" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile" title="https://logiadmin.it-supportline.de/storage/">
                                         </div>
                                 </div>
 
@@ -264,7 +264,7 @@
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <img src="https://logiadmin.it-supportline.de/storage/" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" title="https://logiadmin.it-supportline.de/storage/" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                                         </div>
 
@@ -417,7 +417,7 @@
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <img src="https://logiadmin.it-supportline.de/storage/" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" title="https://logiadmin.it-supportline.de/storage/" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                         </div>
 
@@ -570,7 +570,7 @@
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <img src="https://logiadmin.it-supportline.de/storage/" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" title="https://logiadmin.it-supportline.de/storage/" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
                         </div>
 

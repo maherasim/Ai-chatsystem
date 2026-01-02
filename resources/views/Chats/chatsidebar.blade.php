@@ -49,7 +49,7 @@
 <div class="sidebar-menu">
        <div class="logo">
            <a href="{{ url('/home') }}" class="logo-normal">
-               <img src="https://admin.onlinesystems.info/storage/uploads/settings/app_logo_1758731350.png" alt="Logo" width="50" height="auto" style="object-fit: contain; width: 50px; height: auto;">
+               <img src="https://admin.onlinesystems.info/storage/uploads/settings/app_logo_1758731350.png" alt="Logo" width="50" height="auto" style="object-fit: contain; width: 50px; height: auto;" title="https://admin.onlinesystems.info/storage/uploads/settings/app_logo_1758731350.png">
            </a>
        </div>
        <div class="menu-wrap">

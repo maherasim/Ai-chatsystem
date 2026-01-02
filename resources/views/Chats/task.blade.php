@@ -1035,7 +1035,7 @@
                                     $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
                                     $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
                                     $staticImageUrl = 'https://logiadmin.it-supportline.de';
-                                    $markImagePath = !empty($issueImagePath) ? $staticImageUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticImageUrl . '/storage/' . $task->mark_image_path : '');
+                                    $markImagePath = !empty($issueImagePath) ? $staticImageUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticImageUrl . '/storage/' . $task->mark_image_path : $staticImageUrl . '/storage/');
                                     
                                     // Extract rejection reason from rejections array
                                     $rejectionReason = '';
@@ -1081,7 +1081,8 @@
                                             <img src="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}"
                                                  alt="Task"
                                                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
-                                                 onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');">
+                                                 onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
+                                                 title="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}">
                                         @else
                                             <!-- Transparent/Placeholder controlled by CSS pattern -->
                                         @endif
@@ -1157,7 +1158,7 @@
                 <!-- Logo Circle -->
                 <div class="logo-circle">
                     <!-- Standard Logo or B icon -->
-                    <img src="{{ $baseUrl }}/build/img/AI-Logo.svg" onerror="this.src='https://via.placeholder.com/30'" alt="Logo" style="width: 32px;">
+                    <img src="{{ $baseUrl }}/build/img/AI-Logo.svg" alt="Logo" style="width: 32px;">
                 </div>
             </div>
 
@@ -1200,7 +1201,7 @@
 
                 <!-- Image Area -->
                 <div class="image-preview-area" id="modalImageArea">
-                    <img id="modalTaskImageFull" src="" style="display:none;" alt="Proof">
+                    <img id="modalTaskImageFull" src="" style="display:none;" alt="Proof" title="">
                     <div id="issueBadgesContainer"></div>
                     <div id="modalImagePlaceholder" style="text-align:center;">
                         <i class="ti ti-photo-off fs-1"></i>
@@ -2129,6 +2130,7 @@
         
         if (imageSrc && imageSrc.trim() !== '') {
             imgEl.src = imageSrc;
+            imgEl.title = imageSrc;
             imgEl.style.display = 'block';
             imgEl.onerror = function() {
                 // If image fails to load, show placeholder

@@ -192,7 +192,7 @@ class GroupChatManager {
 
             if (data.success && data.messages) {
                 console.log('Loaded messages:', data.messages.length, 'Current user ID:', this.currentUserId);
-                
+
                 // Enrich messages with sender avatars if missing
                 const enrichedMessages = await Promise.all(data.messages.map(async (message) => {
                     // If sender_avatar is missing but we have sender_id, try to fetch it
@@ -204,7 +204,7 @@ class GroupChatManager {
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                                 },
                             });
-                            
+
                             if (userResponse.ok) {
                                 const userData = await userResponse.json();
                                 if (userData.success && userData.user && userData.user.avatar) {
@@ -218,7 +218,7 @@ class GroupChatManager {
                     }
                     return message;
                 }));
-                
+
                 this.renderMessages(enrichedMessages);
             } else {
                 console.warn('No messages or failed to load:', data);
@@ -349,7 +349,7 @@ class GroupChatManager {
             messageContent = `
                 <div class="chat-img">
                     <div class="img-wrap">
-                        <img src="${message.file_url}" alt="Image">
+                        <img src="${message.file_url}" alt="Image" title="${message.file_url}">
                         <div class="img-overlay">
                             <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
                                 <i class="ti ti-eye"></i>
@@ -403,14 +403,14 @@ class GroupChatManager {
                     </div>
                 </div>
                 <div class="chat-avatar">
-                    <img src="${window.currentUserAvatar || (window.baseUrl || '') + '/build/img/profiles/avatar-17.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.style.display='none'">
+                    <img src="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" class="rounded-circle dreams_chat" alt="image" title="${window.currentUserAvatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}">
                 </div>
             `;
         } else {
             // LEFT SIDE: Received messages (avatar first, content second)
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    ${message.sender_avatar ? `<img src="${message.sender_avatar}" class="rounded-circle" alt="image" onerror="this.style.display='none'">` : ''}
+                    <img src="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}" class="rounded-circle" alt="image" title="${message.sender_avatar || (window.baseUrl || 'https://logiadmin.it-supportline.de') + '/storage/'}">
                 </div>
                 <div class="chat-content">
                     <div class="chat-profile-name">
@@ -449,7 +449,7 @@ class GroupChatManager {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                 },
             });
-            
+
             if (userResponse.ok) {
                 const userData = await userResponse.json();
                 if (userData.success && userData.user) {
@@ -603,7 +603,7 @@ class GroupChatManager {
 
         const replyDiv = document.getElementById('reply-div');
         const replyContent = document.getElementById('reply-content');
-        
+
         if (replyDiv && replyContent) {
             replyContent.textContent = messageContent;
             replyDiv.style.display = 'block';
