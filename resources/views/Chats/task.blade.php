@@ -1651,11 +1651,11 @@
                 </div>
                 <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
                 <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
-                    <p style="color: black;">{{ $project->start_date->format('d.m.Y') }}</p>
+                    <p style="color: black;">{{ optional($project->start_date)->format('d.m.Y') ?? '--' }}</p>
                 </div>
                 <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
                 <div style="color: #10b981;text-align:center"><strong>End:</strong>
-                    <p style="color: black;">{{ $project->end_date->format('d.m.Y') }}</p>
+                    <p style="color: black;">{{ optional($project->end_date)->format('d.m.Y') ?? '--' }}</p>
                 </div>
             </div>
 
