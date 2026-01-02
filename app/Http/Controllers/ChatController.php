@@ -113,7 +113,7 @@ class ChatController extends Controller
 
         try {
             // Create or get Agora user
-            $avatarUrl = $user->image ? asset(ltrim($user->image, '/')) : null;
+            $avatarUrl = $this->getAvatarUrl($user);
             $this->agoraService->createUser($userId, $user->name ?? $user->email, $avatarUrl);
 
             // Generate chat token
@@ -173,7 +173,7 @@ class ChatController extends Controller
                 'other_user' => $otherUser ? [
                     'id' => (string)$otherUser->_id,
                     'name' => $otherUser->name ?? $otherUser->email,
-                    'avatar' => $otherUser->image ? asset(ltrim($otherUser->image, '/')) : null,
+                    'avatar' => $this->getAvatarUrl($otherUser),
                 ] : null,
                 'last_message' => [
                     'content' => $lastMessage->content,
@@ -405,7 +405,7 @@ class ChatController extends Controller
             'sender' => $message->sender ? [
                 'id' => (string)$message->sender->_id,
                 'name' => $message->sender->name ?? $message->sender->email,
-                'avatar' => $message->sender->image ? asset(ltrim($message->sender->image, '/')) : null,
+                'avatar' => $this->getAvatarUrl($message->sender),
             ] : null,
         ];
     }
@@ -462,7 +462,7 @@ class ChatController extends Controller
                     'sender_id' => (string)($senderId ?? ''),
                     'from_user_id' => (string)($senderId ?? ''), // Also include for compatibility
                     'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
-                    'sender_avatar' => $sender && $sender->image ? asset(ltrim($sender->image, '/')) : null,
+                    'sender_avatar' => $this->getAvatarUrl($sender),
                     'content' => $message->content,
                     'message_type' => $message->message_type ?? 'txt',
                     'file_url' => $message->file_url,
@@ -578,7 +578,7 @@ class ChatController extends Controller
             'id' => (string)$message->_id,
             'sender_id' => (string)($senderId ?? ''),
             'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
-            'sender_avatar' => $sender && $sender->image ? asset(ltrim($sender->image, '/')) : null,
+            'sender_avatar' => $this->getAvatarUrl($sender),
             'content' => $message->content,
             'message_type' => $message->message_type ?? 'txt',
             'file_url' => $message->file_url,
@@ -586,8 +586,32 @@ class ChatController extends Controller
             'file_size' => $message->file_size,
             'reactions' => $message->reactions ?? [],
             'replied_to_message' => $repliedTo,
-            'created_at' => $message->created_at->toIso8601String(),
         ];
+    }
+
+    /**
+     * Get avatar URL checking both public and storage paths
+     */
+    private function getAvatarUrl($user)
+    {
+        if (!$user || !$user->image) {
+            return null;
+        }
+        
+        $image = ltrim($user->image, '/');
+        
+        // Check public/upload/...
+        if (file_exists(public_path($image))) {
+            return asset($image);
+        }
+        
+        // Check storage/app/public/upload/...
+        if (file_exists(storage_path('app/public/' . $image))) {
+            return asset('storage/' . $image);
+        }
+        
+        // Default to public path if file not found (legacy behavior)
+        return asset($image);
     }
 }
 

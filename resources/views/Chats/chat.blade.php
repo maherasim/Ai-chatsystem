@@ -1140,9 +1140,24 @@
 <script src="https://download.agora.io/sdk/release/AgoraChat-sdk-Web.js"></script>
 
 <!-- Pass current user ID to JS -->
+@php
+    $currentUser = Auth::user();
+    $avatarUrl = asset('build/img/profiles/avatar-17.jpg');
+    
+    if ($currentUser && $currentUser->image) {
+        $imagePath = ltrim($currentUser->image, '/');
+        if (file_exists(public_path($imagePath))) {
+            $avatarUrl = asset($imagePath);
+        } elseif (file_exists(storage_path('app/public/' . $imagePath))) {
+            $avatarUrl = asset('storage/' . $imagePath);
+        } else {
+            $avatarUrl = asset($imagePath);
+        }
+    }
+@endphp
 <script>
     window.currentUserId = "{{ (string)Auth::id() }}";
-    window.currentUserAvatar = "{{ Auth::user()->image ? asset(ltrim(Auth::user()->image, '/')) : asset('build/img/profiles/avatar-17.jpg') }}";
+    window.currentUserAvatar = "{{ $avatarUrl }}";
 </script>
 
 <!-- Group Chat Manager -->
