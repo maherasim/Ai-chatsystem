@@ -272,7 +272,28 @@ class ChatController extends Controller
             // Format messages
             $formattedMessages = $messages->map(function($message) use ($user) {
                 $senderId = $message->sender_id ?? $message->from_user_id;
-                $sender = $senderId ? User::find($senderId) : null;
+                $sender = null;
+                $senderAvatar = null;
+                
+                // Fetch sender with proper error handling
+                if ($senderId) {
+                    try {
+                        $sender = User::find($senderId);
+                        if ($sender && isset($sender->image)) {
+                            $imagePath = trim($sender->image);
+                            if (!empty($imagePath)) {
+                                $senderAvatar = asset('storage/' . ltrim($imagePath, '/'));
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        \Log::warning('Failed to fetch sender for message', [
+                            'sender_id' => $senderId,
+                            'message_id' => (string)$message->_id,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
+                
                 $repliedTo = null;
                 
                 $repliedToId = $message->replied_to_message_id ?? $message->reply_to_message_id;
@@ -295,7 +316,7 @@ class ChatController extends Controller
                     'sender_id' => (string)($senderId ?? ''),
                     'from_user_id' => (string)($senderId ?? ''),
                     'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
-                    'sender_avatar' => $sender && isset($sender->image) && $sender->image ? asset('storage/' . $sender->image) : null,
+                    'sender_avatar' => $senderAvatar,
                     'content' => $message->content,
                     'message_type' => $message->message_type ?? 'txt',
                     'file_url' => $message->file_url,
@@ -399,6 +420,43 @@ class ChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send message',
+            ], 500);
+        }
+    }
+
+    /**
+     * Get user profile by ID
+     */
+    public function getUserProfile($userId)
+    {
+        try {
+            $user = User::find($userId);
+            
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'user' => [
+                    'id' => (string)$user->_id,
+                    'name' => $user->name ?? $user->email ?? 'Unknown',
+                    'email' => $user->email ?? '',
+                    'avatar' => isset($user->image) && !empty(trim($user->image)) ? asset('storage/' . ltrim($user->image, '/')) : null,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get user profile', [
+                'error' => $e->getMessage(),
+                'user_id' => $userId,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load user profile',
             ], 500);
         }
     }

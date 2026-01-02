@@ -192,7 +192,34 @@ class GroupChatManager {
 
             if (data.success && data.messages) {
                 console.log('Loaded messages:', data.messages.length, 'Current user ID:', this.currentUserId);
-                this.renderMessages(data.messages);
+                
+                // Enrich messages with sender avatars if missing
+                const enrichedMessages = await Promise.all(data.messages.map(async (message) => {
+                    // If sender_avatar is missing but we have sender_id, try to fetch it
+                    if (!message.sender_avatar && message.sender_id) {
+                        try {
+                            const userResponse = await fetch(`/api/user/${message.sender_id}/profile`, {
+                                method: 'GET',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                                },
+                            });
+                            
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                if (userData.success && userData.user && userData.user.avatar) {
+                                    message.sender_avatar = userData.user.avatar;
+                                    message.sender_name = userData.user.name || message.sender_name;
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Failed to fetch sender profile for message:', error);
+                        }
+                    }
+                    return message;
+                }));
+                
+                this.renderMessages(enrichedMessages);
             } else {
                 console.warn('No messages or failed to load:', data);
             }
@@ -383,7 +410,7 @@ class GroupChatManager {
             // LEFT SIDE: Received messages (avatar first, content second)
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    <img src="${message.sender_avatar || '/build/img/profiles/avatar-06.jpg'}" class="rounded-circle" alt="image" onerror="this.src='/build/img/profiles/avatar-06.jpg'">
+                    ${message.sender_avatar ? `<img src="${message.sender_avatar}" class="rounded-circle" alt="image" onerror="this.style.display='none'">` : ''}
                 </div>
                 <div class="chat-content">
                     <div class="chat-profile-name">
@@ -408,15 +435,41 @@ class GroupChatManager {
     /**
      * Handle received message
      */
-    handleMessageReceived(message) {
+    async handleMessageReceived(message) {
+        // Fetch sender's profile information
+        const senderId = String(message.from || '');
+        let senderAvatar = null;
+        let senderName = message.from || 'User';
+
+        // Try to fetch sender info from backend
+        try {
+            const userResponse = await fetch(`/api/user/${senderId}/profile`, {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+            
+            if (userResponse.ok) {
+                const userData = await userResponse.json();
+                if (userData.success && userData.user) {
+                    senderName = userData.user.name || userData.user.email || senderName;
+                    senderAvatar = userData.user.avatar || null;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch sender profile:', error);
+        }
+
         // Add message to UI
         const messageData = {
             _id: message.id || message.serverMsgId,
-            sender_id: String(message.from || ''),
+            sender_id: senderId,
             content: message.msg || message.content,
             message_type: message.type || 'txt',
             created_at: new Date().toISOString(),
-            sender_name: message.from,
+            sender_name: senderName,
+            sender_avatar: senderAvatar,
         };
 
         const messageElement = this.createMessageElement(messageData);
