@@ -120,7 +120,7 @@
                                                                     <span
                                                                         class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
                                                                         <img id="preview-image"
-                                                                            src="{{ $setting && $setting->image ? asset('storage/' . $setting->image) : URL::asset('/build/img/profiles/avatar-16.jpg') }}"
+                                                                            src="{{ $setting && $setting->image ? (str_starts_with($setting->image, 'upload/') || str_starts_with($setting->image, 'http') ? asset($setting->image) : asset('storage/' . $setting->image)) : URL::asset('/build/img/profiles/avatar-16.jpg') }}"
                                                                             class="rounded-circle" alt="user">
                                                                         <span
                                                                             class="add avatar avatar-sm d-flex justify-content-center align-items-center">

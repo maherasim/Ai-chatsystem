@@ -119,7 +119,11 @@ public function store(Request $request)
     $user = User::where('id', auth()->id())->first();
     // Upload image if provided
     if ($request->hasFile('image')) {
-        $setting->image = $request->file('image')->store('upload/users', 'public');
+        $file = $request->file('image');
+        $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '', $file->getClientOriginalName());
+        $file->move(public_path('upload/users'), $filename);
+        
+        $setting->image = 'upload/users/' . $filename;
         $user->image = $setting->image;
         $user->profile_image = $setting->image;
     }
