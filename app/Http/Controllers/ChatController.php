@@ -132,8 +132,6 @@ class ChatController extends Controller
                     ? asset('storage/' . ltrim($team->banner_path, '/'))
                     : asset('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
-                'avatar' => $group->avatar,
-                'member_ids' => $memberIds,
             ];
         })
         ->values();
@@ -401,56 +399,6 @@ class ChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send message',
-            ], 500);
-        }
-    }
-
-    /**
-     * Get group members
-     */
-    public function getGroupMembers($groupId)
-    {
-        try {
-            $group = Group::find($groupId);
-            if (!$group) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Group not found',
-                ], 404);
-            }
-
-            $userIds = $group->member_ids ?? [];
-            if (is_string($userIds)) {
-                $decoded = json_decode($userIds, true);
-                $userIds = is_array($decoded) ? $decoded : [];
-            }
-            
-            // Add admin to member list
-            $userIds[] = (string)$group->admin_id;
-            $userIds = array_unique(array_map('strval', $userIds));
-
-            $members = User::whereIn('_id', $userIds)->get()->map(function($user) use ($group) {
-                return [
-                    'id' => (string)$user->_id,
-                    'name' => $user->name ?? $user->email,
-                    'avatar' => isset($user->image) && $user->image ? asset('storage/' . $user->image) : null,
-                    'is_admin' => (string)$user->_id === (string)$group->admin_id,
-                ];
-            });
-
-            return response()->json([
-                'success' => true,
-                'members' => $members,
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Failed to get group members', [
-                'error' => $e->getMessage(),
-                'group_id' => $groupId,
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to load members',
             ], 500);
         }
     }

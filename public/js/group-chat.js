@@ -38,29 +38,16 @@ class GroupChatManager {
             console.log('Current user ID set:', this.currentUserId);
 
             // Initialize Agora Chat SDK if available
-            const sdk = window.AgoraChat || window.WebIM;
-            if (sdk) {
-                console.log('Agora/WebIM SDK found, creating instance...');
-                this.agoraClient = sdk.createInstance ? sdk.createInstance({
-                    appKey: data.app_id,
-                }) : new sdk.connection({
+            if (typeof AgoraChat !== 'undefined') {
+                this.agoraClient = AgoraChat.createInstance({
                     appKey: data.app_id,
                 });
 
                 // Login to Agora
-                if (this.agoraClient.open) {
-                    await this.agoraClient.open({
-                        user: this.currentUserId,
-                        agoraToken: data.token,
-                    });
-                } else {
-                    await this.agoraClient.open({
-                        apiUrl: 'https://a1.chat.agora.io',
-                        user: this.currentUserId,
-                        accessToken: data.token,
-                        appKey: data.app_id
-                    });
-                }
+                await this.agoraClient.open({
+                    user: this.currentUserId,
+                    agoraToken: data.token,
+                });
 
                 this.isConnected = true;
                 this.setupEventListeners();
@@ -68,7 +55,8 @@ class GroupChatManager {
                 console.log('Agora Chat initialized successfully');
                 return true;
             } else {
-                console.warn('Agora Chat SDK not loaded (checked AgoraChat and WebIM). Using fallback mode.');
+                console.warn('Agora Chat SDK not loaded. Using fallback mode.');
+                // Still return true because we got the user ID
                 return true;
             }
         } catch (error) {
@@ -144,7 +132,6 @@ class GroupChatManager {
         // Hide empty state
         const emptyState = document.getElementById('emptyChatState');
         if (emptyState) {
-            emptyState.classList.remove('d-flex');
             emptyState.style.display = 'none';
         }
 
@@ -167,9 +154,6 @@ class GroupChatManager {
 
         // Load existing messages
         await this.loadGroupMessages(groupId);
-
-        // Load group members
-        await this.loadGroupMembers(groupId);
 
         // Join group chat room
         if (this.agoraClient && this.currentGroupId) {
@@ -218,63 +202,6 @@ class GroupChatManager {
     }
 
     /**
-     * Load group members
-     */
-    async loadGroupMembers(groupId) {
-        try {
-            const response = await fetch(`/api/chat/group/${groupId}/members`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-                },
-            });
-
-            const data = await response.json();
-
-            if (data.success && data.members) {
-                this.renderMembers(data.members);
-            }
-        } catch (error) {
-            console.error('Failed to load group members:', error);
-        }
-    }
-
-    /**
-     * Render group members in offcanvas
-     */
-    renderMembers(members) {
-        const wrapper = document.getElementById('group-members-wrapper');
-        const list = document.getElementById('group-members-list');
-        const countSpan = document.getElementById('group-member-count');
-        const headerStatus = document.querySelector('.last-seen');
-
-        if (countSpan) countSpan.textContent = members.length;
-        if (headerStatus) headerStatus.textContent = `${members.length} Members`;
-
-        if (!list || !wrapper) return;
-
-        wrapper.style.display = 'block';
-        list.innerHTML = '';
-
-        members.forEach(member => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item d-flex align-items-center justify-content-between p-3';
-            li.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <div class="avatar avatar-md online">
-                        <img src="${member.avatar || '/build/img/profiles/avatar-06.jpg'}" class="rounded-circle" alt="img" onerror="this.src='/build/img/profiles/avatar-06.jpg'">
-                    </div>
-                    <div class="ms-2">
-                        <h6 class="mb-0">${member.id === this.currentUserId ? 'You' : member.name}</h6>
-                        <small class="text-muted">${member.is_admin ? 'Admin' : 'Member'}</small>
-                    </div>
-                </div>
-                ${member.is_admin ? '<i class="ti ti-crown text-warning"></i>' : ''}
-            `;
-            list.appendChild(li);
-        });
-    }
-
-    /**
      * Render messages dynamically
      */
     renderMessages(messages) {
@@ -288,13 +215,11 @@ class GroupChatManager {
         const emptyState = document.getElementById('emptyChatState');
         if (messages.length > 0) {
             if (emptyState) {
-                emptyState.classList.remove('d-flex');
                 emptyState.style.display = 'none';
             }
         } else {
             // Show empty state if no messages
             if (emptyState) {
-                emptyState.classList.add('d-flex');
                 emptyState.style.display = 'flex';
             }
             return;
@@ -444,33 +369,11 @@ class GroupChatManager {
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>
                         </h6>
                     </div>
-                    ${message.replied_to_message ? `
-                        <div class="message-reply-wrap mb-2">
-                             <div class="reply-content">
-                                 <strong>${message.replied_to_message.sender_name}</strong>
-                                 <p>${message.replied_to_message.content}</p>
-                             </div>
-                        </div>
-                    ` : ''}
                     <div class="chat-info">
                         <div class="message-content">
                             ${messageContent}
                         </div>
-                        <div class="chat-actions">
-                            <a class="#" href="#" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end p-3">
-                                <li><a class="dropdown-item reply-btn" href="#" onclick="window.groupChatManager.setReply('${message._id || message.id}', '${this.escapeHtml(message.content || '')}', 'You', '${window.currentUserAvatar || ''}')"><i class="ti ti-corner-up-left me-2"></i>Reply</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                            </ul>
-                        </div>
                     </div>
-                    ${message.reactions && message.reactions.length > 0 ? `
-                        <div class="emonji-wrap text-end mt-1">
-                            ${message.reactions.map(r => `<span>${r.emoji} ${r.count || 1}</span>`).join('')}
-                        </div>
-                    ` : ''}
                 </div>
                 <div class="chat-avatar">
                     <img src="${window.currentUserAvatar || '/build/img/profiles/avatar-17.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.src='/build/img/profiles/avatar-17.jpg'">
@@ -490,33 +393,11 @@ class GroupChatManager {
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>
                         </h6>
                     </div>
-                    ${message.replied_to_message ? `
-                        <div class="message-reply-wrap mb-2">
-                             <div class="reply-content">
-                                 <strong>${message.replied_to_message.sender_name}</strong>
-                                 <p>${message.replied_to_message.content}</p>
-                             </div>
-                        </div>
-                    ` : ''}
                     <div class="chat-info">
                         <div class="message-content">
                             ${messageContent}
                         </div>
-                        <div class="chat-actions">
-                            <a class="#" href="#" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end p-3">
-                                <li><a class="dropdown-item reply-btn" href="#" onclick="window.groupChatManager.setReply('${message._id || message.id}', '${this.escapeHtml(message.content || '')}', '${this.escapeHtml(message.sender_name || 'User')}', '${message.sender_avatar || ''}')"><i class="ti ti-corner-up-left me-2"></i>Reply</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="ti ti-flag me-2"></i>Report</a></li>
-                            </ul>
-                        </div>
                     </div>
-                    ${message.reactions && message.reactions.length > 0 ? `
-                        <div class="emonji-wrap mt-1">
-                            ${message.reactions.map(r => `<span>${r.emoji} ${r.count || 1}</span>`).join('')}
-                        </div>
-                    ` : ''}
                 </div>
             `;
         }
@@ -529,16 +410,13 @@ class GroupChatManager {
      */
     handleMessageReceived(message) {
         // Add message to UI
-        const attrs = message.ext;
         const messageData = {
             _id: message.id || message.serverMsgId,
             sender_id: String(message.from || ''),
             content: message.msg || message.content,
             message_type: message.type || 'txt',
             created_at: new Date().toISOString(),
-            sender_name: attrs?.sender_name || message.from,
-            sender_avatar: attrs?.sender_avatar || null,
-            replied_to_message: attrs?.replied_to_message ? JSON.parse(attrs.replied_to_message) : null,
+            sender_name: message.from,
         };
 
         const messageElement = this.createMessageElement(messageData);
@@ -597,25 +475,11 @@ class GroupChatManager {
 
             // Send via Agora if connected
             if (this.agoraClient && this.isConnected) {
-                const ext = {
-                    sender_name: window.currentUserName || 'User',
-                    sender_avatar: window.currentUserAvatar || '',
-                };
-
-                if (this.replyingToMessage) {
-                    ext.replied_to_message = JSON.stringify({
-                        id: this.replyingToMessage.id,
-                        content: this.replyingToMessage.content,
-                        sender_name: this.replyingToMessage.sender_name
-                    });
-                }
-
                 const msg = AgoraChat.message.create({
                     type: messageType,
                     to: this.currentGroupId,
                     msg: content,
                     chatType: 'groupChat',
-                    ext: ext
                 });
 
                 await this.agoraClient.send(msg);
@@ -676,6 +540,24 @@ class GroupChatManager {
     }
 
     /**
+     * Set reply message
+     */
+    setReplyMessage(messageId, messageContent) {
+        this.replyingToMessage = {
+            id: messageId,
+            content: messageContent
+        };
+
+        const replyDiv = document.getElementById('reply-div');
+        const replyContent = document.getElementById('reply-content');
+        
+        if (replyDiv && replyContent) {
+            replyContent.textContent = messageContent;
+            replyDiv.style.display = 'block';
+        }
+    }
+
+    /**
      * Clear reply
      */
     clearReply() {
@@ -684,34 +566,6 @@ class GroupChatManager {
         if (replyDiv) {
             replyDiv.style.display = 'none';
         }
-    }
-
-    /**
-     * Set reply
-     */
-    setReply(messageId, content, senderName, avatar) {
-        this.replyingToMessage = {
-            id: messageId,
-            content: content,
-            sender_name: senderName
-        };
-
-        const replyDiv = document.getElementById('reply-div');
-        if (replyDiv) {
-            replyDiv.style.display = 'flex';
-            const nameEl = replyDiv.querySelector('h6');
-            if (nameEl) nameEl.firstChild.textContent = senderName;
-
-            const contentEl = replyDiv.querySelector('.reply-content');
-            if (contentEl) contentEl.textContent = content;
-
-            const avatarEl = replyDiv.querySelector('.chat-avatar img');
-            if (avatarEl && avatar) avatarEl.src = avatar;
-        }
-
-        // Focus input
-        const input = document.querySelector('.chat-footer-wrap .form-control');
-        if (input) input.focus();
     }
 
     /**
@@ -807,16 +661,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.history.replaceState({}, document.title, newUrl);
             }
         }, 500); // Small delay to ensure everything is ready
-    } else {
-        // Auto-select first group if no group_id in URL
-        setTimeout(() => {
-            // Find first group card with openGroupChat in onclick
-            const firstGroupCard = document.querySelector('#cardScroller div[onclick*="openGroupChat"]');
-            if (firstGroupCard) {
-                console.log('Auto-selecting first group chat');
-                firstGroupCard.click();
-            }
-        }, 1000); // Wait bit longer for sidebar to render
     }
 });
 
