@@ -171,26 +171,9 @@ class GroupChatManager {
         }
 
         const headerAvatar = document.getElementById('chatHeaderAvatar') || document.querySelector('.user-details .avatar img');
-
-        // Base URL fallback logic
-        const baseUrl = window.baseUrl || 'https://logiadmin.it-supportline.de';
-        const storageBaseUrl = `${baseUrl}/storage/`;
-
-        let finalPhotoUrl = storageBaseUrl;
-
-        if (photoUrl && photoUrl.trim() !== '') {
-            if (photoUrl.startsWith('http')) {
-                finalPhotoUrl = photoUrl;
-            } else {
-                // Remove leading slash if present to avoid double slashes
-                finalPhotoUrl = storageBaseUrl + photoUrl.replace(/^\//, '');
-            }
-        }
-
-        if (headerAvatar) {
-            headerAvatar.src = finalPhotoUrl;
+        if (headerAvatar && photoUrl) {
+            headerAvatar.src = photoUrl;
             headerAvatar.alt = groupName || 'Group';
-            headerAvatar.title = finalPhotoUrl; // For inspection
         }
     }
 
