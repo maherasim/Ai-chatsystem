@@ -15,6 +15,7 @@ use App\Models\EmployeeTask;
 use MongoDB\BSON\ObjectId;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\ChatMessage;
 use App\Models\Notification;
 use App\Mail\TaskAssignmentMail;
 
@@ -733,11 +734,28 @@ class TeamController extends Controller
                 }
             }
             if ($team) {
+                $teamId = (string)$team->_id;
+
+                // Find and delete associated groups
+                $groups = Group::where('team_id', $teamId)->get();
+                foreach ($groups as $group) {
+                    $groupId = (string)$group->_id;
+                    
+                    // Delete all messages in the group
+                    ChatMessage::where('group_id', $groupId)
+                        ->orWhere('conversation_id', 'group_' . $groupId)
+                        ->delete();
+                    
+                    $group->delete();
+                    \Log::info('Associated group and messages deleted for team', ['team_id' => $teamId, 'group_id' => $groupId]);
+                }
+
                 $team->delete();
                 return back()->with('success', 'Team deleted successfully.');
             }
             return back()->with('error', 'Team not found.');
         } catch (\Throwable $e) {
+            \Log::error('Failed to delete team', ['error' => $e->getMessage(), 'team_id' => $id]);
             return back()->with('error', 'Failed to delete team: ' . $e->getMessage());
         }
     }
