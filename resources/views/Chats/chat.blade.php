@@ -1040,6 +1040,11 @@
 @component('components.model-popup')
 @endcomponent
 
+<script>
+    window.currentUserId = "{{ Auth::id() }}";
+    window.currentUserAvatar = "{{ Auth::user()->image ? (str_starts_with(Auth::user()->image, 'upload/') || str_starts_with(Auth::user()->image, 'http') ? asset(Auth::user()->image) : asset('storage/' . Auth::user()->image)) : asset('build/img/profiles/avatar-02.jpg') }}";
+</script>
+
 <!-- Agora Chat SDK -->
 <script src="https://download.agora.io/sdk/release/AgoraChat-4.1.1.js"></script>
 <!-- Group Chat JavaScript -->
