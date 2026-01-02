@@ -120,7 +120,7 @@
 
     /* Reduce message bubble height */
     .chat .chat-body .messages .chats .chat-content .message-content {
-        padding: 8px 14px !important;
+        padding: 5px 12px !important;
         min-height: 0 !important; /* Ensure no min-height constraints */
     }
 </style>
