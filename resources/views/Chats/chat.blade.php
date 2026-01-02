@@ -30,7 +30,6 @@
 
     /* Prevent parent containers from overflowing */
     .main_content,
-    .chat-body,
     .sidebar-group {
         overflow: visible !important;
     }
@@ -117,6 +116,12 @@
         background: transparent !important;
         border: none !important;
         padding: 0 !important;
+    }
+
+    /* Reduce message bubble height */
+    .chat .chat-body .messages .chats .chat-content .message-content {
+        padding: 8px 14px !important;
+        min-height: 0 !important; /* Ensure no min-height constraints */
     }
 </style>
 
@@ -218,7 +223,7 @@
 
             </div>
 
-            <div class="chat-body chat-page-group slimscroll">
+            <div class="chat-body chat-page-group slimscroll" style="height: calc(100vh - 180px); overflow-y: auto; scrollbar-width: thin;">
                 <div class="messages" id="chatMessagesContainer">
                     <!-- Empty state when no group is selected -->
                     <div id="emptyChatState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 400px; color: #7f8ea3;">
