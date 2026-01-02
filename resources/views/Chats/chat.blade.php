@@ -1140,6 +1140,7 @@
 <script src="https://download.agora.io/sdk/release/AgoraChat-sdk-Web.js"></script>
 
 <!-- Pass current user ID to JS -->
+<script>
     window.currentUserId = "{{ (string)Auth::id() }}";
     window.currentUserAvatar = "{{ Auth::user()->image ? asset(ltrim(Auth::user()->image, '/')) : asset('build/img/profiles/avatar-17.jpg') }}";
 </script>
