@@ -47,6 +47,11 @@ class ChatController extends Controller
         if (strpos($path, 'build/') === 0) {
             return $this->baseUrl . '/' . $path;
         }
+
+        // If it's an upload path (users/...), UNLESS it's specifically in storage
+        if (strpos($path, 'upload/') === 0 || strpos($path, 'users/') === 0) {
+             return $this->baseUrl . '/' . $path;
+        }
         
         // Default: assume it's a storage path
         return $this->baseUrl . '/storage/' . $path;
@@ -157,10 +162,10 @@ class ChatController extends Controller
                 'name' => $group->name ?? 'Untitled Group',
                 'team_id' => $group->team_id,
                 'team_photo' => $team && isset($team->thumb_path) && $team->thumb_path
-                    ? $this->getImageUrl('storage/' . ltrim($team->thumb_path, '/'))
+                    ? $this->getImageUrl(ltrim($team->thumb_path, '/'))
                     : $this->getImageUrl('build/img/profile.svg'),
                 'team_banner' => $team && isset($team->banner_path) && $team->banner_path
-                    ? $this->getImageUrl('storage/' . ltrim($team->banner_path, '/'))
+                    ? $this->getImageUrl(ltrim($team->banner_path, '/'))
                     : $this->getImageUrl('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
             ];
@@ -185,7 +190,7 @@ class ChatController extends Controller
 
         try {
             // Create or get Agora user
-            $avatarUrl = isset($user->image) && $user->image ? $this->getImageUrl('storage/' . $user->image) : null;
+            $avatarUrl = isset($user->image) && $user->image ? $this->getImageUrl($user->image) : null;
             $this->agoraService->createUser($userId, $user->name ?? $user->email, $avatarUrl);
 
             // Generate chat token
@@ -237,7 +242,7 @@ class ChatController extends Controller
                     'id' => (string)$otherUser->_id,
                     'name' => $otherUser->name ?? $otherUser->email,
                     'avatar' => isset($otherUser->image) && $otherUser->image 
-                        ? $this->getImageUrl('storage/' . $otherUser->image) 
+                        ? $this->getImageUrl($otherUser->image) 
                         : null,
                 ] : null,
                 'last_message' => [
@@ -313,7 +318,7 @@ class ChatController extends Controller
                         if ($sender && isset($sender->image)) {
                             $imagePath = trim($sender->image);
                             if (!empty($imagePath)) {
-                                $senderAvatar = $this->getImageUrl('storage/' . ltrim($imagePath, '/'));
+                                $senderAvatar = $this->getImageUrl(ltrim($imagePath, '/'));
                             }
                         }
                     } catch (\Exception $e) {
@@ -476,7 +481,7 @@ class ChatController extends Controller
                     'id' => (string)$user->_id,
                     'name' => $user->name ?? $user->email ?? 'Unknown',
                     'email' => $user->email ?? '',
-                    'avatar' => isset($user->image) && !empty(trim($user->image)) ? $this->getImageUrl('storage/' . ltrim($user->image, '/')) : null,
+                    'avatar' => isset($user->image) && !empty(trim($user->image)) ? $this->getImageUrl(ltrim($user->image, '/')) : null,
                 ],
             ]);
         } catch (\Exception $e) {
@@ -520,7 +525,7 @@ class ChatController extends Controller
             'id' => (string)$message->_id,
             'sender_id' => (string)($senderId ?? ''),
             'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
-            'sender_avatar' => $sender && isset($sender->image) && $sender->image ? $this->getImageUrl('storage/' . $sender->image) : null,
+            'sender_avatar' => $sender && isset($sender->image) && $sender->image ? $this->getImageUrl($sender->image) : null,
             'content' => $message->content,
             'message_type' => $message->message_type ?? 'txt',
             'file_url' => $message->file_url,
