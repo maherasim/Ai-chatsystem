@@ -456,14 +456,22 @@ class GroupChatManager {
                     ${reactionsHtml}
                 </div>
                 <div class="chat-avatar">
-                    <img src="${window.currentUserAvatar || '/build/img/profiles/avatar-02.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.src='/build/img/profiles/avatar-02.jpg'">
+                    <img src="${window.currentUserAvatar || (window.baseUrl || 'https://logiteam.it-supportline.de') + '/storage/'}" 
+                        class="rounded-circle dreams_chat" 
+                        alt="image" 
+                        title="${window.currentUserAvatar || (window.baseUrl || 'https://logiteam.it-supportline.de') + '/storage/'}"
+                        onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); try { const u = new URL(this.src); this.src = 'https://logiteam.it-supportline.de' + u.pathname; } catch(e) { this.src = '/build/img/profiles/avatar-02.jpg'; } } else { this.src = '/build/img/profiles/avatar-02.jpg'; }">
                 </div>
             `;
         } else {
             // LEFT SIDE: Received messages (avatar first, content second)
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    <img src="${message.sender_avatar || '/build/img/profiles/avatar-06.jpg'}" class="rounded-circle" alt="image">
+                    <img src="${message.sender_avatar || (window.baseUrl || 'https://logiteam.it-supportline.de') + '/storage/'}" 
+                        class="rounded-circle" 
+                        alt="image" 
+                        title="${message.sender_avatar || (window.baseUrl || 'https://logiteam.it-supportline.de') + '/storage/'}"
+                        onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); try { const u = new URL(this.src); this.src = 'https://logiteam.it-supportline.de' + u.pathname; } catch(e) { this.src = '/build/img/profiles/avatar-06.jpg'; } } else { this.src = '/build/img/profiles/avatar-06.jpg'; }">
                 </div>
                 <div class="chat-content">
                     <div class="chat-profile-name">

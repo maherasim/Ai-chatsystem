@@ -1,6 +1,16 @@
 ﻿<?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
+@php
+    $currentUser = Auth::user();
+    $currentUserId = (string)($currentUser->_id ?? '');
+@endphp
+<meta name="user-id" content="{{ $currentUserId }}">
+<script>
+    window.currentUserId = '{{ $currentUserId }}';
+    window.currentUserAvatar = '{{ isset($currentUser->image) && $currentUser->image ? "https://logiteam.it-supportline.de/storage/" . ltrim($currentUser->image, "/") : "" }}';
+    window.baseUrl = 'https://logiteam.it-supportline.de';
+</script>
 <style>
     body {
         overflow-x: hidden;
