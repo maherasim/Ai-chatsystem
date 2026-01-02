@@ -2390,10 +2390,12 @@
                 <!-- task1 -->
                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
-                    <!-- Image / Icon -->
+                    <!-- Image -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                        ${task.mark_image_path 
+                            ? `<img src="${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
+                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
+                        }
                     </div>
 
                     <!-- Content Area -->
