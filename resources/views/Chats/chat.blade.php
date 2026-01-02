@@ -8,7 +8,8 @@
 <meta name="user-id" content="{{ $currentUserId }}">
 <script>
     window.currentUserId = '{{ $currentUserId }}';
-    window.currentUserAvatar = '{{ isset($currentUser->image) && $currentUser->image ? asset("storage/" . $currentUser->image) : "" }}';
+    window.currentUserAvatar = '{{ isset($currentUser->image) && $currentUser->image ? "https://logiadmin.it-supportline.de/storage/" . ltrim($currentUser->image, "/") : "" }}';
+    window.baseUrl = 'https://logiadmin.it-supportline.de';
 </script>
 <style>
     body {
@@ -144,7 +145,7 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        <img id="chatHeaderAvatar" src="{{ isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : URL::asset('/build/img/profiles/avatar-06.jpg') }}" class="rounded-circle" alt="image">
+                        <img id="chatHeaderAvatar" src="{{ isset($currentUser->image) && $currentUser->image ? 'https://logiadmin.it-supportline.de/storage/' . ltrim($currentUser->image, '/') : 'https://logiadmin.it-supportline.de/build/img/profiles/avatar-06.jpg' }}" class="rounded-circle" alt="image">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6 id="chatHeaderName">Select a group to start chatting</h6>

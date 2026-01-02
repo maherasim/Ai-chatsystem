@@ -403,7 +403,7 @@ class GroupChatManager {
                     </div>
                 </div>
                 <div class="chat-avatar">
-                    <img src="${window.currentUserAvatar || '/build/img/profiles/avatar-17.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.src='/build/img/profiles/avatar-17.jpg'">
+                    <img src="${window.currentUserAvatar || (window.baseUrl || '') + '/build/img/profiles/avatar-17.jpg'}" class="rounded-circle dreams_chat" alt="image" onerror="this.style.display='none'">
                 </div>
             `;
         } else {

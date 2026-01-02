@@ -15,10 +15,41 @@ use Illuminate\Support\Str;
 class ChatController extends Controller
 {
     protected $agoraService;
+    protected $baseUrl = 'https://logiadmin.it-supportline.de';
 
     public function __construct(AgoraService $agoraService)
     {
         $this->agoraService = $agoraService;
+    }
+    
+    /**
+     * Get full image URL with base URL
+     */
+    private function getImageUrl($path)
+    {
+        if (empty($path)) {
+            return null;
+        }
+        
+        $path = ltrim($path, '/');
+        
+        // If path already starts with http, return as is
+        if (strpos($path, 'http') === 0) {
+            return $path;
+        }
+        
+        // If it's a storage path, use storage URL
+        if (strpos($path, 'storage/') === 0) {
+            return $this->baseUrl . '/' . $path;
+        }
+        
+        // If it's a build path, use build URL
+        if (strpos($path, 'build/') === 0) {
+            return $this->baseUrl . '/' . $path;
+        }
+        
+        // Default: assume it's a storage path
+        return $this->baseUrl . '/storage/' . $path;
     }
 
     /**
@@ -126,11 +157,11 @@ class ChatController extends Controller
                 'name' => $group->name ?? 'Untitled Group',
                 'team_id' => $group->team_id,
                 'team_photo' => $team && isset($team->thumb_path) && $team->thumb_path
-                    ? asset('storage/' . ltrim($team->thumb_path, '/'))
-                    : asset('build/img/profile.svg'),
+                    ? $this->getImageUrl('storage/' . ltrim($team->thumb_path, '/'))
+                    : $this->getImageUrl('build/img/profile.svg'),
                 'team_banner' => $team && isset($team->banner_path) && $team->banner_path
-                    ? asset('storage/' . ltrim($team->banner_path, '/'))
-                    : asset('build/img/bgractangle.svg'),
+                    ? $this->getImageUrl('storage/' . ltrim($team->banner_path, '/'))
+                    : $this->getImageUrl('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
             ];
         })
@@ -154,7 +185,7 @@ class ChatController extends Controller
 
         try {
             // Create or get Agora user
-            $avatarUrl = isset($user->image) && $user->image ? asset('storage/' . $user->image) : null;
+            $avatarUrl = isset($user->image) && $user->image ? $this->getImageUrl('storage/' . $user->image) : null;
             $this->agoraService->createUser($userId, $user->name ?? $user->email, $avatarUrl);
 
             // Generate chat token
@@ -206,7 +237,7 @@ class ChatController extends Controller
                     'id' => (string)$otherUser->_id,
                     'name' => $otherUser->name ?? $otherUser->email,
                     'avatar' => isset($otherUser->image) && $otherUser->image 
-                        ? asset('storage/' . $otherUser->image) 
+                        ? $this->getImageUrl('storage/' . $otherUser->image) 
                         : null,
                 ] : null,
                 'last_message' => [
@@ -282,7 +313,7 @@ class ChatController extends Controller
                         if ($sender && isset($sender->image)) {
                             $imagePath = trim($sender->image);
                             if (!empty($imagePath)) {
-                                $senderAvatar = asset('storage/' . ltrim($imagePath, '/'));
+                                $senderAvatar = $this->getImageUrl('storage/' . ltrim($imagePath, '/'));
                             }
                         }
                     } catch (\Exception $e) {
@@ -445,7 +476,7 @@ class ChatController extends Controller
                     'id' => (string)$user->_id,
                     'name' => $user->name ?? $user->email ?? 'Unknown',
                     'email' => $user->email ?? '',
-                    'avatar' => isset($user->image) && !empty(trim($user->image)) ? asset('storage/' . ltrim($user->image, '/')) : null,
+                    'avatar' => isset($user->image) && !empty(trim($user->image)) ? $this->getImageUrl('storage/' . ltrim($user->image, '/')) : null,
                 ],
             ]);
         } catch (\Exception $e) {
@@ -489,7 +520,7 @@ class ChatController extends Controller
             'id' => (string)$message->_id,
             'sender_id' => (string)($senderId ?? ''),
             'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
-            'sender_avatar' => $sender && isset($sender->image) && $sender->image ? asset('storage/' . $sender->image) : null,
+            'sender_avatar' => $sender && isset($sender->image) && $sender->image ? $this->getImageUrl('storage/' . $sender->image) : null,
             'content' => $message->content,
             'message_type' => $message->message_type ?? 'txt',
             'file_url' => $message->file_url,

@@ -12,7 +12,7 @@
         /* Light green highlight */
         box-shadow: 0 0 0 2px #00c469;
         /* Green border */
-
+       
     }
     
     .notification-badge {
@@ -111,20 +111,20 @@
                                      style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
                                      onmouseover="this.style.transform='scale(1.05)'"
                                      onmouseout="this.style.transform='scale(1)'">
-                                    <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                        <img src="{{ is_array($group) ? ($group['team_banner'] ?? URL::asset('/build/img/bgractangle.svg')) : URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                            style="width: 100%; height: 100%; object-fit: cover;">
-                                    </div>
-                                    <div style="position: relative; margin-top: -20px;">
-                                        <img src="{{ $groupPhoto ?: URL::asset('/build/img/profile.svg') }}" alt="Profile"
+                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                                        <img src="{{ is_array($group) ? ($group['team_banner'] ?? 'https://logiadmin.it-supportline.de/build/img/bgractangle.svg') : 'https://logiadmin.it-supportline.de/build/img/bgractangle.svg' }}" alt="Background"
+                                        style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div style="position: relative; margin-top: -20px;">
+                                        <img src="{{ $groupPhoto ?: 'https://logiadmin.it-supportline.de/build/img/profile.svg' }}" alt="Profile"
                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;"
-                                            onerror="this.src='{{ URL::asset('/build/img/profile.svg') }}'">
-                                    </div>
-                                    <div style="padding: 8px;">
+                                            onerror="this.src='https://logiadmin.it-supportline.de/build/img/profile.svg'">
+                                </div>
+                                <div style="padding: 8px;">
                                         <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $groupName }}</h6>
                                         <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ $memberCount }} {{ $memberCount == 1 ? 'User' : 'Users' }}</p>
-                                    </div>
                                 </div>
+                            </div>
                             @empty
                                 <div style="flex: 0 0 auto; width: 100%; padding: 20px; text-align: center; color: #7f8ea3;">
                                     <p style="font-size: 12px;">No groups joined yet.</p>
@@ -753,16 +753,16 @@
                             @endphp
                             
                             <div class="notificationCard" style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; border-left: 3px solid {{ $statusColor }};">
-                                <!-- Top Row: Icon + Title -->
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <!-- Task Icon -->
+                        <!-- Top Row: Icon + Title -->
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <!-- Task Icon -->
                                     <img src="{{ $statusIcon }}" alt="Task Icon" style="width: 28px; height: 28px;">
 
-                                    <!-- Title and Time -->
-                                    <div style="flex-grow: 1;">
+                            <!-- Title and Time -->
+                            <div style="flex-grow: 1;">
                                         <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">
                                             {{ $taskTitle }} - {{ $projectName }}
-                                        </div>
+                            </div>
                                         <div style="font-size: 12px; color: #7f8ea3;">
                                             @if($taskIdDisplay)
                                                 Set the Task ID #{{ $taskIdDisplay }} - to 
@@ -770,34 +770,34 @@
                                                 {{ $notification->message ?? 'Task assigned' }}
                                             @endif
                                             <span style="color: {{ $statusColor }}; font-weight: 600;">{{ $statusText }}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                            </div>
+                        </div>
 
-                                <!-- User and Reason -->
+                        <!-- User and Reason -->
                                 <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px; width: fit-content;">
-                                    <!-- Avatar -->
-                                    <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
+                            <!-- Avatar -->
+                            <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
                                         <img src="{{ $creatorAvatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                                    </div>
+                            </div>
 
-                                    <!-- Username and Reason -->
-                                    <div>
+                            <!-- Username and Reason -->
+                            <div>
                                         <span style="color: #2e3a59; font-weight: 600;">{{ $creatorName }}</span>
                                         <span style="color: red; font-weight: 500;"> &nbsp; ! {{ $notification->message ?? 'Task assigned' }}</span>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
 
-                                <!-- Time Top Right -->
-                                <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
+                        <!-- Time Top Right -->
+                        <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
                                     {{ $timeAgo }}
-                                </div>
+                        </div>
 
                                 <!-- Red Dot Bottom Right (if unread) -->
                                 @if(!$notification->read)
-                                <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
                                 @endif
-                            </div>
+                    </div>
                         @endforeach
                     @else
                         <div style="text-align: center; padding: 40px 20px; color: #7f8ea3;">

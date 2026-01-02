@@ -196,7 +196,7 @@
                                         <div
                                             style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
-                                            <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
+                                                <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
                                         </div>
 
                                         <!-- Popup Menu -->
@@ -364,9 +364,9 @@
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
                                                     data-bs-target="#edit_team">
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
                                     <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
 
@@ -376,8 +376,8 @@
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
                                             <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
+                    </div>
+                    </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
@@ -387,11 +387,11 @@
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             yekbon project
-                                        </span>
-                                    </div>
+                </span>
+        </div>
 
 
-                                </div>
+    </div>
 
                                 <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
@@ -401,8 +401,8 @@
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
                                             <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
-                                        </div>
-                                    </div>
+                </div>
+                        </div>
 
                                     <!-- Bottom Row: Logo + PM + Team -->
                                     <div class="d-flex justify-content-between align-items-center text-center">
@@ -412,46 +412,46 @@
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
                                             <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
+                        </div>
+                        </div>
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
-                                        </div>
+                        </div>
 
                                         <!-- Right: Overlapping team members -->
                                         <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
+                        </div>
 
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
                                         <div>1</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
                                         <div>10</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
                                         <div>10</div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="d-flex justify-content-between px-1"
                                         style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
-                                    </div>
+                        </div>
 
                                     <!-- Progress Bars -->
                                     <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
@@ -460,38 +460,38 @@
                                             style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Yellow Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Red Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
+                        </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
 
-                            </div>
+                        </div>
                         </div>
                         <!-- card 3 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
+                        <div style="position: relative;">
                                     <!-- Background Image -->
                                     <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
@@ -504,7 +504,7 @@
                                             style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
-                                        </div>
+                        </div>
 
                                         <!-- Popup Menu -->
                                         <div
@@ -517,9 +517,9 @@
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
                                                     data-bs-target="#edit_team">
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
-                                            </div>
-                                        </div>
-                                    </div>
+                        </div>
+                        </div>
+                        </div>
 
                                     <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
 
@@ -529,8 +529,8 @@
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
                                             <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
+                        </div>
+                    </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
@@ -541,10 +541,10 @@
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             yekbon project
                                         </span>
-                                    </div>
+                    </div>
 
 
-                                </div>
+        </div>
 
                                 <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
@@ -554,8 +554,8 @@
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
                                             <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
-                                        </div>
-                                    </div>
+                </div>
+                        </div>
 
                                     <!-- Bottom Row: Logo + PM + Team -->
                                     <div class="d-flex justify-content-between align-items-center text-center">
@@ -565,46 +565,46 @@
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
                                             <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
+                        </div>
+                        </div>
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
-                                        </div>
+                        </div>
 
                                         <!-- Right: Overlapping team members -->
                                         <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
+                        </div>
 
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
                                         <div>1</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
                                         <div>10</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
                                         <div>10</div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="d-flex justify-content-between px-1"
                                         style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
-                                    </div>
+                        </div>
 
                                     <!-- Progress Bars -->
                                     <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
@@ -613,38 +613,38 @@
                                             style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Yellow Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Red Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
+                        </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
 
-                            </div>
+                        </div>
                         </div>
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card" style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
                                 <!-- Top Background with Overlay Elements -->
-                                <div style="position: relative;">
+                        <div style="position: relative;">
                                     <!-- Background Image -->
                                     <img src="{{ URL::asset('/build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: auto;" alt="BG Image">
 
@@ -657,7 +657,7 @@
                                             style="width: 32px; height: 32px; border: 2px solid #c2c7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: white; cursor: pointer;"
                                             onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'; event.stopPropagation();">
                                             <span style="color: #2e3a59; font-size: 18px; font-weight: bold; margin-bottom: 8px;">...</span>
-                                        </div>
+                        </div>
 
                                         <!-- Popup Menu -->
                                         <div
@@ -670,9 +670,9 @@
                                                 <img src="{{URL::asset('/build/img/Edit1.svg')}}" alt="Edit" style="width: 22px; cursor: pointer;" data-bs-toggle="modal"
                                                     data-bs-target="#edit_team">
                                                 <img src="{{URL::asset('/build/img/flow.svg')}}" alt="Flow" style="width: 22px; cursor: pointer;">
-                                            </div>
-                                        </div>
-                                    </div>
+                        </div>
+                        </div>
+                        </div>
 
                                     <!-- Hide all popups on outside click (Inline JS inside body tag only) -->
 
@@ -682,8 +682,8 @@
                                         <!-- Profile Image (overlapping bottom center) -->
                                         <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
                                             <img src="{{ URL::asset('/build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
-                                        </div>
-                                </div>
+                        </div>
+                    </div>
 
                                 <!-- Content Below Image -->
                                 <div style="padding-top: 40px;" class="text-center">
@@ -694,10 +694,10 @@
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
                                             yekbon project
                                         </span>
-                                    </div>
+                    </div>
 
 
-                                </div>
+                </div>
 
                                 <div class="p-3 mb-2" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px;">
 
@@ -707,8 +707,8 @@
                                         <div class="d-flex align-items-center gap-1" style="font-size: 13px; color: #2e3a59;">
                                             <img src="{{ asset('build/img/member.svg') }}" alt="Green Flag" width="14" height="14">
                                             <span>10.09.2025</span>
-                                        </div>
-                                    </div>
+                        </div>
+                        </div>
 
                                     <!-- Bottom Row: Logo + PM + Team -->
                                     <div class="d-flex justify-content-between align-items-center text-center">
@@ -718,46 +718,46 @@
                                             <img src="{{URL::asset('/build/img/yekbon.svg')}}" alt="Logo" style="height: 32px; width: 32px;" />
                                             <div style="background: #c8ede0; padding: 4px 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('build/img/greenflag.svg') }}" alt="Green Flag" width="14" height="14">
-                                            </div>
-                                        </div>
+                        </div>
+                        </div>
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: #4b5c74;">PM</div>
-                                        </div>
+                        </div>
 
                                         <!-- Right: Overlapping team members -->
                                         <div class="d-flex align-items-center justify-content-center" style="margin-left: 6px;margin-bottom: 18px;">
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; z-index: 2;" />
                                             <img src="{{URL::asset('/build/img/profileuser.svg')}}" class="rounded-circle" style="height: 28px; width: 28px; object-fit: cover; border: 2px solid #fff; margin-left: -10px; z-index: 1;" />
-                                        </div>
+                        </div>
 
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
 
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Tickets</div>
                                         <div>1</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
                                         <div>10</div>
-                                    </div>
+                        </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
                                         <div>10</div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="d-flex justify-content-between px-1"
                                         style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
                                         <span>Section #175%</span>
-                                    </div>
+                        </div>
 
                                     <!-- Progress Bars -->
                                     <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
@@ -766,44 +766,44 @@
                                             style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Yellow Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
+                        </div>
 
                                         <!-- Red Progress -->
                                         <div class="progress"
                                             style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
                                             <div class="progress-bar"
                                                 style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        </div>
+                        </div>
                                 <!-- Productivity -->
                                 <div class="text-center mt-1 mb-1" style="background-color: #f8f9fb; border-radius: 10px; padding: 10px; margin: 6px; font-size: 14px; font-family: sans-serif;">
                                     <div style="font-weight: 600; color: #4a90e2;">Productivity 75%</div>
                                     <div style="height: 8px; width: 90%; margin: 6px auto; background-color: #e6e6e6; border-radius: 5px;">
                                         <div style="width: 75%; height: 100%; background-color: #4acbff; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-
-                            </div>
+                        </div>
                         </div>
 
-                    </div>
+                        </div>
+                        </div>
 
-                </div>
-            </div>
+                        </div>
 
-        </div>
+                        </div>
+                        </div>
 
-    </div>
+                        </div>
 
-</div>
+                        </div>
+
+                        </div>
 
 <!-- user pop-up -->
 
@@ -950,7 +950,7 @@
                     <!-- Title -->
                     <div class="mb-3">
                         <h6 style="margin: 0; font-weight: 700; font-size: 14px; color: #1b1b3a;">
-                            Select Ticket & Task
+                            Select Ticket & Task   
                         </h6>
                     </div>
 
@@ -1009,7 +1009,7 @@
                             #4 Ticket Title
                         </button>
 
-                    </div>
+                </div>
 
                 </div>
 
@@ -1059,7 +1059,7 @@
                         <!-- Description -->
                         <div style="font-size: 12px; color: #7a7a9d;">
                             Task description will be here
-                        </div>
+                    </div>
 
                         <!-- Dates & Status Row -->
                         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border-radius: 10px; padding: 10px;">
@@ -1072,7 +1072,7 @@
                                     <strong>Start:</strong>
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
+                    </div>
 
                                 <!-- Deliver Date -->
                                 <div style="font-size: 13px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
@@ -1088,13 +1088,13 @@
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="⚡" style="width: 16px; height: 16px;">
                                 <div style="background-color: red; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px;">
                                     01
-                                </div>
-                            </div>
-
+                               </div>
+                           </div>
+                           
                         </div>
 
 
-                    </div>
+                        </div>
                 </div>
                 <!-- task2 -->
                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
@@ -1103,7 +1103,7 @@
                     <div style="width: 60px; height: 123px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
                         <!-- Replace with actual image tag -->
                         <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
+                        </div>
 
                     <!-- Content Area -->
                     <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
@@ -1122,7 +1122,7 @@
                                 <div>
                                     <div style="font-weight: 700; font-size: 14px; color: #1b1b3a;">Task Title</div>
                                     <div style="font-size: 12px; color: #999;">Ticket #1 - Ticket Title</div>
-                                </div>
+                    </div>
 
                             </div>
 
@@ -1134,10 +1134,10 @@
                                 </select>
                                 <select style="background-color: #fff; border: none; border-radius: 8px; padding: 4px 8px; font-size: 12px; color: #555;">
                                     <option>Developer</option>
-                                </select>
+                             </select>
                             </div>
                         </div>
-
+                        
                         <!-- Description -->
                         <div style="font-size: 12px; color: #7a7a9d;">
                             Task description will be here
@@ -1154,13 +1154,13 @@
                                     <strong>Start:</strong>
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
+                    </div>
                                 <!-- Deliver Date -->
                                 <div style="font-size: 12px; color: #00cc88; display: flex; align-items: center; gap: 5px;">
                                     <strong>Deliver:</strong>
                                     <span style="color: #1b1b3a;">22.10.2024</span>
                                     <img src="{{ URL::asset('/build/img/timeicon.svg') }}" style="width: 16px; height: 16px;" />
-                                </div>
+                </div>
                             </div>
 
                             <!-- Status Badge -->
@@ -1285,7 +1285,7 @@
                         </li>
 
                     </ul>
-                </div>
+            </div>
 
 
             </div>
@@ -1395,11 +1395,11 @@
                         <!-- Select Project -->
                         <div class="col-12 col-md-6 col-lg-3">
                             <select class="form-select"
-                                style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
+                                    style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option selected>Select Project</option>
                                 <option>Project A</option>
                                 <option>Project B</option>
-                            </select>
+                                </select>
                         </div>
 
                         <!-- Select PM -->
@@ -1769,7 +1769,7 @@
                         </li>
 
                     </ul>
-                </div>
+            </div>
 
 
             </div>
@@ -1779,7 +1779,7 @@
 </div>
 
 <!-- timelines -->
- <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="scheduleModal" tabindex="-1">
   <div class="modal-dialog modal-xl">
     <div class="modal-content" style="border-radius:10px; background:#f6f6f8;">
