@@ -127,26 +127,27 @@
                                         if (empty($groupPhoto)) $groupPhoto = $group->avatar ?? '';
                                         // Banner fallback not defined in Group model typically
                                     }
+                                    // Calculate resolved URLs
+                                    $baseStorage = 'https://logiadmin.it-supportline.de/storage/';
+                                    $bannerUrl = $groupBanner ? (str_starts_with($groupBanner, 'http') ? $groupBanner : $baseStorage . ltrim($groupBanner, '/')) : $baseStorage;
+                                    $photoUrl = $groupPhoto ? (str_starts_with($groupPhoto, 'http') ? $groupPhoto : $baseStorage . ltrim($groupPhoto, '/')) : $baseStorage;
                                 @endphp
-                                <div onclick="openGroupChat('{{ $groupId }}', '{{ addslashes($groupName) }}', '{{ $groupPhoto }}')" 
+                                <div onclick="openGroupChat('{{ $groupId }}', '{{ addslashes($groupName) }}', '{{ $photoUrl }}')" 
                                      style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
                                      onmouseover="this.style.transform='scale(1.05)'"
                                      onmouseout="this.style.transform='scale(1)'">
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                        @php 
-                                            $baseStorage = 'https://logiadmin.it-supportline.de/storage/';
-                                            $bannerUrl = $groupBanner ? (str_starts_with($groupBanner, 'http') ? $groupBanner : $baseStorage . ltrim($groupBanner, '/')) : $baseStorage;
-                                        @endphp
-                                        <img src="{{ $bannerUrl }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                        @php 
-                                            $photoUrl = $groupPhoto ? (str_starts_with($groupPhoto, 'http') ? $groupPhoto : $baseStorage . ltrim($groupPhoto, '/')) : $baseStorage;
-                                        @endphp
-                                        <img src="{{ $photoUrl }}" alt="Profile"
-                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;" title="{{ $photoUrl }}">
-                                </div>
+                                 @php
+                                     // Resolution Logic moved up
+                                 @endphp
+                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                                         <img src="{{ $bannerUrl }}" alt="Background"
+                                         style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
+                                 </div>
+                                 <div style="position: relative; margin-top: -20px;">
+                                         <img src="{{ $photoUrl }}" alt="Profile"
+                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;" title="{{ $photoUrl }}">
+                                 </div>
                                 <div style="padding: 8px;">
                                         <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $groupName }}</h6>
                                         <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ $memberCount }} {{ $memberCount == 1 ? 'User' : 'Users' }}</p>
