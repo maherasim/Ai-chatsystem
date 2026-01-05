@@ -1302,7 +1302,7 @@
                                 <i class="ti ti-bolt note-icon"></i> Take Backup before start Development
                             </div>
                             <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" checked>
+                                <input class="form-check-input required-checkbox" type="checkbox" checked>
                             </div>
                         </div>
                          <div class="note-item">
@@ -1310,7 +1310,7 @@
                                 <i class="ti ti-bolt note-icon"></i> Work on your Local Server
                             </div>
                             <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input required-checkbox" type="checkbox">
                             </div>
                         </div>
                         <div class="note-item">
@@ -1318,7 +1318,7 @@
                                 <i class="ti ti-bolt note-icon"></i> Check your work before u deliver the work
                             </div>
                             <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input required-checkbox" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -1952,7 +1952,17 @@
         if (isOnHold) {
             header.classList.add('on-hold');
             holdReason.style.display = 'block';
-            goToTaskBtn.style.display = 'block';
+            // Don't show button yet - wait for all checkboxes to be checked
+            goToTaskBtn.style.display = 'none';
+            
+            // Track which button should be shown
+            window.buttonsToShow = {
+                actionButtons: false,
+                startBtn: false,
+                rejectedStartBtn: false,
+                goToTaskBtn: true,
+                continueTaskBtn: false
+            };
             
             // Display hold reason if available
             const holdReasonText = element.getAttribute('data-hold-reason') || '';
@@ -1960,10 +1970,23 @@
             if (holdReasonTextEl) {
                 holdReasonTextEl.textContent = holdReasonText || 'No reason provided';
             }
+            
+            // Set up checkbox validation for buttons
+            setupCheckboxValidation();
         } 
         else if (isInProgress) {
             header.classList.add('in-progress');
-            actionBtns.style.display = 'flex';
+            // Don't show action buttons yet - wait for all checkboxes to be checked
+            actionBtns.style.display = 'none';
+            
+            // Track which buttons should be shown
+            window.buttonsToShow = {
+                actionButtons: true,
+                startBtn: false,
+                rejectedStartBtn: false,
+                goToTaskBtn: false,
+                continueTaskBtn: false
+            };
             
             // Update badge to show "In Progress"
             const badgeStatus = document.getElementById('badgeStatus');
@@ -1971,11 +1994,23 @@
                 badgeStatus.className = 'badge-custom badge-progress';
                 badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Progress';
             }
+            
+            // Set up checkbox validation for action buttons
+            setupCheckboxValidation();
         } 
         else if (isChecked) {
             header.classList.add('check-header');
             // Don't show continue button for checking status - will show sign-in popup instead
             // continueTaskBtn.style.display = 'block';
+            
+            // Track which button should be shown (if any)
+            window.buttonsToShow = {
+                actionButtons: false,
+                startBtn: false,
+                rejectedStartBtn: false,
+                goToTaskBtn: false,
+                continueTaskBtn: false
+            };
             
             // Update badge to show "In Checking"
             const badgeStatus = document.getElementById('badgeStatus');
@@ -1983,6 +2018,8 @@
                 badgeStatus.className = 'badge-custom badge-checked';
                 badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Project is in Checking';
             }
+            
+            // No checkboxes in this status, so no validation needed
 
             // Show "in checking" specific sections
             if (defaultNotesSection) defaultNotesSection.style.display = 'none';
@@ -2084,10 +2121,22 @@
                 rejectionReasonContainer.style.display = 'none';
             }
             
-            // Show start task button for rejected status
+            // Don't show start task button yet - wait for all checkboxes to be checked
             if (rejectedStartBtn) {
-                rejectedStartBtn.style.display = 'block';
+                rejectedStartBtn.style.display = 'none';
             }
+            
+            // Track which button should be shown
+            window.buttonsToShow = {
+                actionButtons: false,
+                startBtn: false,
+                rejectedStartBtn: true,
+                goToTaskBtn: false,
+                continueTaskBtn: false
+            };
+            
+            // Set up checkbox validation for buttons
+            setupCheckboxValidation();
         }
         else if (isDone) {
             header.classList.add('done');
@@ -2167,7 +2216,17 @@
         }
         else {
             // Default / New
-            startBtn.style.display = 'block';
+            // Don't show start button yet - wait for all checkboxes to be checked
+            startBtn.style.display = 'none';
+            
+            // Track which button should be shown
+            window.buttonsToShow = {
+                actionButtons: false,
+                startBtn: true,
+                rejectedStartBtn: false,
+                goToTaskBtn: false,
+                continueTaskBtn: false
+            };
             
             // Reset badge to default
             const badgeStatus = document.getElementById('badgeStatus');
@@ -2175,6 +2234,9 @@
                 badgeStatus.className = 'badge-custom badge-new';
                 badgeStatus.innerHTML = '<i class="ti ti-flag"></i> New Task';
             }
+            
+            // Set up checkbox validation for buttons
+            setupCheckboxValidation();
         }
 
         // Image - Use the image path that PHP already prepared (from issue or task)
@@ -2830,5 +2892,153 @@
         badgesContainer.style.display = 'block';
         badgesContainer.style.visibility = 'visible';
         badgesContainer.style.opacity = '1';
+    }
+    
+    // Function to check if all required checkboxes are checked
+    function checkAllCheckboxesChecked() {
+        const requiredCheckboxes = document.querySelectorAll('#defaultNotesSection .required-checkbox');
+        
+        if (requiredCheckboxes.length === 0) {
+            return false;
+        }
+        
+        // Check if all checkboxes are checked
+        let allChecked = true;
+        requiredCheckboxes.forEach(checkbox => {
+            if (!checkbox.checked) {
+                allChecked = false;
+            }
+        });
+        
+        // Get all button containers
+        const actionButtonsContainer = document.getElementById('actionButtonsContainer');
+        const startBtnContainer = document.getElementById('startBtnContainer');
+        const rejectedStartBtnContainer = document.getElementById('rejectedStartBtnContainer');
+        const goToTaskBtnContainer = document.getElementById('goToTaskBtnContainer');
+        const continueTaskBtnContainer = document.getElementById('continueTaskBtnContainer');
+        
+        // Store which buttons should be shown (based on data attributes or container visibility intent)
+        // We'll use a global variable to track which buttons should be shown for current status
+        if (!window.buttonsToShow) {
+            window.buttonsToShow = {
+                actionButtons: false,
+                startBtn: false,
+                rejectedStartBtn: false,
+                goToTaskBtn: false,
+                continueTaskBtn: false
+            };
+        }
+        
+        if (allChecked) {
+            // Show buttons that should be visible for current status
+            if (window.buttonsToShow.actionButtons && actionButtonsContainer) {
+                actionButtonsContainer.style.display = 'flex';
+            }
+            if (window.buttonsToShow.startBtn && startBtnContainer) {
+                startBtnContainer.style.display = 'block';
+            }
+            if (window.buttonsToShow.rejectedStartBtn && rejectedStartBtnContainer) {
+                rejectedStartBtnContainer.style.display = 'block';
+            }
+            if (window.buttonsToShow.goToTaskBtn && goToTaskBtnContainer) {
+                goToTaskBtnContainer.style.display = 'block';
+            }
+            if (window.buttonsToShow.continueTaskBtn && continueTaskBtnContainer) {
+                continueTaskBtnContainer.style.display = 'block';
+            }
+        } else {
+            // Hide all buttons
+            if (actionButtonsContainer) actionButtonsContainer.style.display = 'none';
+            if (startBtnContainer) startBtnContainer.style.display = 'none';
+            if (rejectedStartBtnContainer) rejectedStartBtnContainer.style.display = 'none';
+            if (goToTaskBtnContainer) goToTaskBtnContainer.style.display = 'none';
+            if (continueTaskBtnContainer) continueTaskBtnContainer.style.display = 'none';
+        }
+        
+        return allChecked;
+    }
+    
+    // Function to set up checkbox validation
+    function setupCheckboxValidation() {
+        const defaultNotesSection = document.getElementById('defaultNotesSection');
+        
+        // Only proceed if notes section is visible
+        if (!defaultNotesSection || defaultNotesSection.style.display === 'none') {
+            // No checkboxes section, show buttons immediately
+            showButtonsForCurrentStatus();
+            return;
+        }
+        
+        const requiredCheckboxes = document.querySelectorAll('#defaultNotesSection .required-checkbox');
+        
+        // If no checkboxes found, show buttons immediately
+        if (requiredCheckboxes.length === 0) {
+            showButtonsForCurrentStatus();
+            return;
+        }
+        
+        // Initially hide all buttons (they'll show when all checkboxes are checked)
+        const actionButtonsContainer = document.getElementById('actionButtonsContainer');
+        const startBtnContainer = document.getElementById('startBtnContainer');
+        const rejectedStartBtnContainer = document.getElementById('rejectedStartBtnContainer');
+        const goToTaskBtnContainer = document.getElementById('goToTaskBtnContainer');
+        const continueTaskBtnContainer = document.getElementById('continueTaskBtnContainer');
+        
+        if (actionButtonsContainer) actionButtonsContainer.style.display = 'none';
+        if (startBtnContainer) startBtnContainer.style.display = 'none';
+        if (rejectedStartBtnContainer) rejectedStartBtnContainer.style.display = 'none';
+        if (goToTaskBtnContainer) goToTaskBtnContainer.style.display = 'none';
+        if (continueTaskBtnContainer) continueTaskBtnContainer.style.display = 'none';
+        
+        // Add event listeners to all required checkboxes
+        // Using a named function to allow removal if needed
+        requiredCheckboxes.forEach(checkbox => {
+            // Remove existing listener if any (using data attribute to track)
+            if (checkbox.dataset.listenerAttached === 'true') {
+                return; // Already has listener
+            }
+            
+            checkbox.addEventListener('change', function() {
+                checkAllCheckboxesChecked();
+            });
+            
+            // Mark as having listener attached
+            checkbox.dataset.listenerAttached = 'true';
+        });
+        
+        // Check initial state (in case some are pre-checked)
+        // Use a small delay to ensure DOM is ready
+        setTimeout(function() {
+            checkAllCheckboxesChecked();
+        }, 100);
+    }
+    
+    // Helper function to show buttons for current status (when no checkboxes exist)
+    function showButtonsForCurrentStatus() {
+        if (!window.buttonsToShow) {
+            return;
+        }
+        
+        const actionButtonsContainer = document.getElementById('actionButtonsContainer');
+        const startBtnContainer = document.getElementById('startBtnContainer');
+        const rejectedStartBtnContainer = document.getElementById('rejectedStartBtnContainer');
+        const goToTaskBtnContainer = document.getElementById('goToTaskBtnContainer');
+        const continueTaskBtnContainer = document.getElementById('continueTaskBtnContainer');
+        
+        if (window.buttonsToShow.actionButtons && actionButtonsContainer) {
+            actionButtonsContainer.style.display = 'flex';
+        }
+        if (window.buttonsToShow.startBtn && startBtnContainer) {
+            startBtnContainer.style.display = 'block';
+        }
+        if (window.buttonsToShow.rejectedStartBtn && rejectedStartBtnContainer) {
+            rejectedStartBtnContainer.style.display = 'block';
+        }
+        if (window.buttonsToShow.goToTaskBtn && goToTaskBtnContainer) {
+            goToTaskBtnContainer.style.display = 'block';
+        }
+        if (window.buttonsToShow.continueTaskBtn && continueTaskBtnContainer) {
+            continueTaskBtnContainer.style.display = 'block';
+        }
     }
 </script>
