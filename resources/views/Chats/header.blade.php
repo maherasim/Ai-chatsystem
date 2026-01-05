@@ -41,32 +41,25 @@
      </div>
      
 
-     <!-- Right Side Icons -->
-     <div class="left-icons d-flex align-items-center gap-5">
+    <!-- Right Side Icons -->
+    <div class="left-icons d-flex align-items-center gap-5" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+        <li style="list-style: none; display: list-item !important; visibility: visible !important; opacity: 1 !important;">
+            <!-- Moon Icon -->
+            <a href="#" id="dark-mode-toggle" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
+                <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
+            </a>
 
-         {{-- <li data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-primary" style="list-style: none;">
-             <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                 <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-             </a>
-         </li>
+            <!-- Sun Icon -->
+            <a href="#" id="light-mode-toggle" style="display: none; visibility: visible !important; opacity: 1 !important;">
+                <i class="ti ti-sun" style="font-size: 22px; cursor: pointer; visibility: visible !important; opacity: 1 !important;"></i>
+            </a>
+        </li>
 
-         <li style="list-style: none;">
-             <!-- Moon Icon -->
-             <a href="#" id="dark-mode-toggle" style="display: inline;">
-                 <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-             </a>
-
-             <!-- Sun Icon -->
-             <a href="#" id="light-mode-toggle" style="display: none;">
-                 <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-             </a>
-         </li>
-
-         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-             @csrf
-             <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                 <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-             </button>
-         </form> --}}
-     </div>
- </div>-
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
+            @csrf
+            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
+                <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
+            </button>
+        </form>
+    </div>
+ </div>

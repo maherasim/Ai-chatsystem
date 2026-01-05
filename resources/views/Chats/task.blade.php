@@ -68,6 +68,50 @@
         border-radius: 3px;
     }
 
+    /* Chat Header - Reduce Height */
+    .chat.chat-messages .chat-header {
+        padding: 6px 16px !important;
+        min-height: auto !important;
+        height: auto !important;
+        max-height: 60px !important;
+    }
+    
+    .chat.chat-messages .chat-header .user-details {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .chat.chat-messages .chat-header .avatar.avatar-lg {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .chat.chat-messages .chat-header .user-details .ms-2 {
+        margin-left: 8px !important;
+    }
+    
+    .chat.chat-messages .chat-header .user-details h6 {
+        font-size: 14px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .chat.chat-messages .chat-header .user-details p {
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .chat.chat-messages .chat-header .left-icons {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     /* Header Section */
     .page-header-custom {
         display: flex;
@@ -248,7 +292,7 @@
         width: 100% !important;
         box-sizing: border-box !important;
     }
-    
+
     /* Ticket In Progress Section */
     .section-container {
         max-width: 550px;
@@ -961,6 +1005,7 @@
     
     <div class="chat chat-messages show" id="middle">
         <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden; flex: 1; min-height: 0;">
+            @include('Chats.header')
             <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background-color: #f4f6f8; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; min-height: 0;">
                 <div class="chat-body chat-page-group p-4" style="max-width: 1400px; margin: 0 auto; width: 100%;">
                     <div class="page-header-custom">

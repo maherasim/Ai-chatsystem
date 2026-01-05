@@ -196,6 +196,35 @@
         scrollbar-width: thin;
         scrollbar-color: #ccc transparent;
     }
+
+    /* Ensure header buttons are visible */
+    .chat-header {
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    .chat-header .left-icons {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 20 !important;
+    }
+
+    .chat-header .left-icons li {
+        display: list-item !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .chat-header .left-icons a,
+    .chat-header .left-icons form,
+    .chat-header .left-icons button,
+    .chat-header .left-icons img {
+        display: inline !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 </style>
 
 
@@ -2843,19 +2872,21 @@
         const darkBtn = document.getElementById('dark-mode-toggle');
         const lightBtn = document.getElementById('light-mode-toggle');
 
-        darkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.add('dark-mode');
-            darkBtn.style.display = 'none';
-            lightBtn.style.display = 'inline';
-        });
+        if (darkBtn && lightBtn) {
+            darkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.add('dark-mode');
+                darkBtn.style.display = 'none';
+                lightBtn.style.display = 'inline';
+            });
 
-        lightBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.remove('dark-mode');
-            lightBtn.style.display = 'none';
-            darkBtn.style.display = 'inline';
-        });
+            lightBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.remove('dark-mode');
+                lightBtn.style.display = 'none';
+                darkBtn.style.display = 'inline';
+            });
+        }
     });
 </script>
 
