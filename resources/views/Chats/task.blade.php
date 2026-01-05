@@ -1386,7 +1386,7 @@
                     </button>
                     <button class="action-btn" onclick="openCheckModal()">
                         <div class="action-icon icon-check">
-                            <i class="ti ti-folder-clock"></i>
+                            <i class="ti ti-folder-check"></i>
                         </div>
                         <span>Move to in Check</span>
                     </button>
