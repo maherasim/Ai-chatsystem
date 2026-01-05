@@ -8,13 +8,51 @@
 
 <style>
     /* Global Overrides */
-    body {
+    html, body {
         background-color: #f4f6f8;
         font-family: 'Outfit', sans-serif; /* Assuming a modern font or user default */
+        overflow: hidden !important; /* Prevent body scrolling */
+        height: 100% !important; /* Constrain body height */
+        margin: 0;
+        padding: 0;
     }
     
-    .main_content {
-        padding-bottom: 0px;
+    /* Main wrapper must be the top-level scroll container */
+    .main-wrapper {
+        height: 100vh !important;
+        max-height: 100vh !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        position: relative !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        visibility: visible !important; /* Override global hidden */
+    }
+    
+    /* Main content container - target both classes */
+    .content.main_content {
+        padding-bottom: 0px !important;
+        height: 100% !important; /* Use 100% of parent (main-wrapper) */
+        max-height: 100% !important; /* Prevent overflow */
+        overflow: hidden !important; /* Prevent main content container from scrolling */
+        display: flex !important; /* Ensure flex layout */
+        flex: 1 !important;
+        min-height: 0 !important; /* Important for flex children */
+        position: relative !important;
+        box-sizing: border-box !important;
+        padding: 0 !important; /* Remove padding that causes overflow */
+        margin: 0 !important;
+    }
+    
+    /* Left Sidebar Navigation - Keep it constrained */
+    .content.main_content .sidebar-menu {
+        height: 100% !important;
+        max-height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex-shrink: 0 !important;
     }
 
     /* Scrollbar */
@@ -166,6 +204,51 @@
 
 
 
+    /* Main Content Area - Independent Scroll */
+    .content.main_content .chat.chat-messages {
+        height: 100% !important; /* Use 100% of parent (main_content) */
+        max-height: 100% !important; /* Prevent overflow */
+        overflow: hidden !important; /* Prevent chat container from scrolling */
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        min-height: 0 !important; /* Important for flex children to allow shrinking */
+        position: relative !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Inner chat containers */
+    .content.main_content .chat.chat-messages > div {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        box-sizing: border-box !important;
+    }
+    
+    .content.main_content .chat.chat-messages > div > div {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        min-height: 0 !important;
+        -webkit-overflow-scrolling: touch !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Chat body container */
+    .content.main_content .chat-body.chat-page-group {
+        padding: 16px !important; /* Reduce padding from 1.5rem */
+        margin: 0 auto !important;
+        max-width: 1400px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
     /* Ticket In Progress Section */
     .section-container {
         max-width: 550px;
@@ -877,8 +960,8 @@
     @include('Chats.notification')
     
     <div class="chat chat-messages show" id="middle">
-        <div style="display: flex; flex-direction: column; height: calc(100vh - 80px); overflow: hidden;">
-            <div style="flex: 1; overflow-y: auto; background-color: #f4f6f8; display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden; flex: 1; min-height: 0;">
+            <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background-color: #f4f6f8; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; min-height: 0;">
                 <div class="chat-body chat-page-group p-4" style="max-width: 1400px; margin: 0 auto; width: 100%;">
                     <div class="page-header-custom">
                         <div class="header-title-group">
