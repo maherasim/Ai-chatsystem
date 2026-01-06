@@ -296,12 +296,25 @@ class ChatController extends Controller
                 ], 403);
             }
 
-            // Get messages for this group
-            $messages = ChatMessage::where(function($query) use ($groupId) {
+            // Get last_id from request for polling
+            $lastId = request()->query('last_id');
+            
+            // Build query for messages
+            $query = ChatMessage::where(function($query) use ($groupId) {
                     $query->where('group_id', $groupId)
                           ->orWhere('conversation_id', 'group_' . $groupId);
-                })
-                ->orderBy('created_at', 'asc')
+                });
+            
+            // If last_id is provided, only get messages after that ID
+            if ($lastId) {
+                $lastMessage = ChatMessage::find($lastId);
+                if ($lastMessage) {
+                    $query->where('created_at', '>', $lastMessage->created_at);
+                }
+            }
+            
+            // Get messages
+            $messages = $query->orderBy('created_at', 'asc')
                 ->limit(100)
                 ->get();
 

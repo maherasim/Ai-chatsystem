@@ -12,6 +12,10 @@ class GroupChatManager {
         this.agoraClient = null;
         this.isConnected = false;
         this.replyingToMessage = null;
+        this.notificationSound = null;
+        this.lastMessageId = null;
+        this.pollingInterval = null;
+        this.initNotificationSound();
     }
 
     /**
@@ -94,23 +98,105 @@ class GroupChatManager {
     }
 
     /**
+     * Initialize notification sound
+     */
+    initNotificationSound() {
+        try {
+            // Try multiple paths to find the sound file
+            const soundPaths = [
+                '/assets/message_tone.wav',
+                'assets/message_tone.wav',
+                window.baseUrl ? `${window.baseUrl}/assets/message_tone.wav` : null,
+            ].filter(Boolean);
+            
+            this.notificationSound = new Audio(soundPaths[0]);
+            this.notificationSound.volume = 0.7; // Set volume to 70%
+            this.notificationSound.preload = 'auto';
+            
+            // Test if audio can be loaded
+            this.notificationSound.addEventListener('error', () => {
+                console.warn('Failed to load notification sound from:', soundPaths[0]);
+                // Try fallback path
+                if (soundPaths[1]) {
+                    this.notificationSound = new Audio(soundPaths[1]);
+                    this.notificationSound.volume = 0.7;
+                }
+            });
+            
+            console.log('Notification sound initialized:', soundPaths[0]);
+        } catch (error) {
+            console.warn('Failed to initialize notification sound:', error);
+        }
+    }
+
+    /**
+     * Play notification sound
+     */
+    playNotificationSound() {
+        try {
+            if (this.notificationSound) {
+                // Reset audio to start from beginning
+                this.notificationSound.currentTime = 0;
+                // Play the sound
+                const playPromise = this.notificationSound.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.warn('Failed to play notification sound:', error);
+                        // Some browsers require user interaction before playing audio
+                        // This is expected behavior for autoplay policies
+                    });
+                }
+                console.log('Playing notification sound');
+            } else {
+                console.warn('Notification sound not initialized');
+            }
+        } catch (error) {
+            console.warn('Error playing notification sound:', error);
+        }
+    }
+
+    /**
      * Setup Agora event listeners
      */
     setupEventListeners() {
-        if (!this.agoraClient) return;
+        if (!this.agoraClient) {
+            console.warn('Agora client not available, cannot setup event listeners');
+            return;
+        }
 
-        // Message received
-        this.agoraClient.addEventHandler('messageHandler', {
-            onTextMessage: (message) => {
-                this.handleMessageReceived(message);
-            },
-            onPictureMessage: (message) => {
-                this.handleMessageReceived(message);
-            },
-            onFileMessage: (message) => {
-                this.handleMessageReceived(message);
-            },
-        });
+        try {
+            // Message received - try multiple event handler patterns
+            this.agoraClient.addEventHandler('messageHandler', {
+                onTextMessage: (message) => {
+                    console.log('Agora text message received:', message);
+                    // Check if message is for current group
+                    if (message.to === this.currentGroupId || message.chatType === 'groupChat') {
+                        this.handleMessageReceived(message);
+                    }
+                },
+                onPictureMessage: (message) => {
+                    console.log('Agora picture message received:', message);
+                    if (message.to === this.currentGroupId || message.chatType === 'groupChat') {
+                        this.handleMessageReceived(message);
+                    }
+                },
+                onFileMessage: (message) => {
+                    console.log('Agora file message received:', message);
+                    if (message.to === this.currentGroupId || message.chatType === 'groupChat') {
+                        this.handleMessageReceived(message);
+                    }
+                },
+                onMessage: (message) => {
+                    console.log('Agora message received (generic):', message);
+                    if (message.to === this.currentGroupId || message.chatType === 'groupChat') {
+                        this.handleMessageReceived(message);
+                    }
+                },
+            });
+            console.log('Agora event listeners set up successfully');
+        } catch (error) {
+            console.error('Failed to setup Agora event listeners:', error);
+        }
     }
 
     /**
@@ -155,9 +241,112 @@ class GroupChatManager {
         // Load existing messages
         await this.loadGroupMessages(groupId);
 
+        // Setup event listeners again when opening a group (in case they weren't set up)
+        if (this.agoraClient && this.isConnected) {
+            this.setupEventListeners();
+            console.log('Event listeners refreshed for group:', groupId);
+        }
+
+        // Start polling for new messages as a fallback
+        this.startPolling();
+
         // Join group chat room
         if (this.agoraClient && this.currentGroupId) {
             console.log('Joining group chat room:', groupId);
+        }
+    }
+
+    /**
+     * Start polling for new messages (fallback if Agora doesn't work)
+     */
+    startPolling() {
+        // Stop any existing polling
+        this.stopPolling();
+
+        if (!this.currentGroupId) return;
+
+        // Poll every 3 seconds for new messages
+        this.pollingInterval = setInterval(async () => {
+            if (this.currentGroupId) {
+                await this.checkForNewMessages();
+            }
+        }, 3000);
+
+        console.log('Started polling for new messages');
+    }
+
+    /**
+     * Stop polling for new messages
+     */
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+            console.log('Stopped polling for new messages');
+        }
+    }
+
+    /**
+     * Check for new messages by polling the backend
+     */
+    async checkForNewMessages() {
+        if (!this.currentGroupId) return;
+
+        try {
+            const response = await fetch(`/api/chat/group/${this.currentGroupId}/messages?last_id=${this.lastMessageId || ''}`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.messages && data.messages.length > 0) {
+                // Filter out messages we already have
+                const newMessages = data.messages.filter(msg => {
+                    const msgId = msg._id || msg.id;
+                    return msgId !== this.lastMessageId;
+                });
+
+                if (newMessages.length > 0) {
+                    console.log('Found new messages via polling:', newMessages.length);
+                    
+                    // Update last message ID
+                    const latestMessage = newMessages[newMessages.length - 1];
+                    this.lastMessageId = latestMessage._id || latestMessage.id;
+
+                    // Add new messages to UI
+                    for (const message of newMessages) {
+                        // Check if message is from another user
+                        const senderId = String(message.sender_id || message.from_user_id || '').trim();
+                        const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
+                        const isFromOtherUser = senderId !== '' && currentUserIdStr !== '' && 
+                            senderId !== currentUserIdStr && 
+                            senderId.toLowerCase() !== currentUserIdStr.toLowerCase();
+
+                        // Play notification sound if from another user
+                        if (isFromOtherUser) {
+                            this.playNotificationSound();
+                        }
+
+                        // Add message to UI
+                        const messageElement = this.createMessageElement(message);
+                        const container = document.getElementById('chatMessagesContainer');
+                        if (container) {
+                            // Hide empty state
+                            const emptyState = document.getElementById('emptyChatState');
+                            if (emptyState) {
+                                emptyState.style.display = 'none';
+                            }
+
+                            container.appendChild(messageElement);
+                            this.scrollToBottom();
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Failed to check for new messages:', error);
         }
     }
 
@@ -192,6 +381,12 @@ class GroupChatManager {
 
             if (data.success && data.messages) {
                 console.log('Loaded messages:', data.messages.length, 'Current user ID:', this.currentUserId);
+
+                // Update last message ID
+                if (data.messages.length > 0) {
+                    const lastMessage = data.messages[data.messages.length - 1];
+                    this.lastMessageId = lastMessage._id || lastMessage.id;
+                }
 
                 // Enrich messages with sender avatars if missing
                 const enrichedMessages = await Promise.all(data.messages.map(async (message) => {
@@ -446,6 +641,13 @@ class GroupChatManager {
     async handleMessageReceived(message) {
         // Fetch sender's profile information
         const senderId = String(message.from || '');
+        const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
+        
+        // Check if message is from another user (not the current user)
+        const isFromOtherUser = senderId !== '' && currentUserIdStr !== '' && 
+            senderId !== currentUserIdStr && 
+            senderId.toLowerCase() !== currentUserIdStr.toLowerCase();
+
         let senderAvatar = null;
         let senderName = message.from || 'User';
 
@@ -467,6 +669,14 @@ class GroupChatManager {
             }
         } catch (error) {
             console.error('Failed to fetch sender profile:', error);
+        }
+
+        // Play notification sound if message is from another user
+        if (isFromOtherUser) {
+            console.log('Message from another user, playing notification sound');
+            this.playNotificationSound();
+        } else {
+            console.log('Message from current user, skipping notification sound');
         }
 
         // Add message to UI
@@ -574,6 +784,11 @@ class GroupChatManager {
                     sender_id: String(this.currentUserId || ''),
                     from_user_id: String(this.currentUserId || ''),
                 };
+
+                // Update last message ID
+                if (sentMessageData._id || sentMessageData.id) {
+                    this.lastMessageId = sentMessageData._id || sentMessageData.id;
+                }
 
                 // Add message to UI immediately
                 const container = document.getElementById('chatMessagesContainer');
@@ -731,4 +946,25 @@ window.openGroupChat = function (groupId, groupName, photoUrl) {
         window.groupChatManager.openGroupChat(groupId, groupName, photoUrl);
     }
 };
+
+// Cleanup when page is unloaded
+window.addEventListener('beforeunload', () => {
+    if (window.groupChatManager) {
+        window.groupChatManager.stopPolling();
+    }
+});
+
+// Stop polling when page becomes hidden
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if (window.groupChatManager) {
+            window.groupChatManager.stopPolling();
+        }
+    } else {
+        // Resume polling when page becomes visible again
+        if (window.groupChatManager && window.groupChatManager.currentGroupId) {
+            window.groupChatManager.startPolling();
+        }
+    }
+});
 
