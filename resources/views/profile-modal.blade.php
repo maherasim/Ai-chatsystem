@@ -70,7 +70,7 @@
                             <!-- Profile Image (Overlapping) -->
                             <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
-                                <h5 class="mt-2 mb-1">{{$user->name}}</h5>
+                                <h5 class="mt-2 mb-1">{{$user->title}}</h5>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">{{$user->type }}</span>
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">{{$user->description}}</span>
                             </div>
@@ -79,6 +79,13 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">{{$user->gender}}</div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> Name</div>
+                                    <div class="fw-bold">{{$user->name}}</div>
                                 </div>
                             </div>
 
@@ -116,6 +123,30 @@
                                     <div class="fw-bold">{{$user->phone}}</div>
                                 </div>
                             </div>
+
+                            @if($user->card_image && !empty($user->card_image))
+                            <div class="card mb-2 p-3">
+                                <div class="mb-2">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
+                                        <div class="fw-bold" style="font-size: 14px;">ID Card</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; background-color: #f9f9f9; padding: 15px; border-radius: 8px; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="{{ asset('storage/' . $user->card_image) }}" alt="ID Card" 
+                                         style="max-width: 100%; max-height: 250px; width: auto; height: auto; min-width: 200px; border-radius: 8px; border: 1px solid #e0e0e0; cursor: pointer; display: block; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: contain; background-color: white;"
+                                         onerror="console.error('Failed to load ID card image');"
+                                         onclick="openImageModal('{{ asset('storage/' . $user->card_image) }}')">
+                                </div>
+                            </div>
+                            @else
+                            <div class="card mb-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> ID Card</div>
+                                    <div class="fw-bold text-muted" style="font-size: 12px;">Not uploaded</div>
+                                </div>
+                            </div>
+                            @endif
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -1939,14 +1970,24 @@
                             <div style="position: relative; margin-top: -60px; text-align: center;" class="mb-3">
                                 <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; object-fit: cover; box-shadow: 0 0 8px rgba(0,0,0,0.2);">
                                 <h5 class="mt-2 mb-1">{{$user->name}}</h5>
+                                @if(isset($user->title) && !empty($user->title))
+                                <div class="mb-1" style="font-size: 14px; color: #666;">{{$user->title}}</div>
+                                @endif
                                 <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">{{$user->type }}</span>
-                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">{{$user->description}}</span>
+                                <span class="badge  text-danger" style="font-size: 12px;background:white;border-radius:10px;">{{$user->description ?? $user->user_description ?? ''}}</span>
                             </div>
                             <!-- Info Rows -->
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div> <img src="{{URL::asset('/build/img/User11.svg')}}" alt="user" style="width: 20px;"> Gender</div>
                                     <div class="fw-bold">{{$user->gender}}</div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> Name</div>
+                                    <div class="fw-bold">{{$user->name}}</div>
                                 </div>
                             </div>
 
@@ -1984,6 +2025,30 @@
                                     <div class="fw-bold">{{$user->phone}}</div>
                                 </div>
                             </div>
+
+                            @if($user->card_image && !empty($user->card_image))
+                            <div class="card mb-2 p-3">
+                                <div class="mb-2">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px; margin-right: 8px;">
+                                        <div class="fw-bold" style="font-size: 14px;">ID Card</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; background-color: #f9f9f9; padding: 15px; border-radius: 8px; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="{{ asset('storage/' . $user->card_image) }}" alt="ID Card" 
+                                         style="max-width: 100%; max-height: 250px; width: auto; height: auto; min-width: 200px; border-radius: 8px; border: 1px solid #e0e0e0; cursor: pointer; display: block; margin: 0 auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: contain; background-color: white;"
+                                         onerror="console.error('Failed to load ID card image');"
+                                         onclick="openImageModal('{{ asset('storage/' . $user->card_image) }}')">
+                                </div>
+                            </div>
+                            @else
+                            <div class="card mb-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div><img src="{{URL::asset('/build/img/user_od.svg')}}" alt="" style="width: 20px;"> ID Card</div>
+                                    <div class="fw-bold text-muted" style="font-size: 12px;">Not uploaded</div>
+                                </div>
+                            </div>
+                            @endif
 
                             <div class="card mb-2 p-2">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -2190,3 +2255,26 @@
 
 </div>
 </div>
+
+<!-- Image Modal for ID Card -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">ID Card</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="ID Card" style="max-width: 100%; height: auto; border-radius: 8px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openImageModal(imageSrc) {
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    document.getElementById('modalImage').src = imageSrc;
+    modal.show();
+}
+</script>

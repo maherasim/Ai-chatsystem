@@ -41,25 +41,25 @@
      </div>
      
 
-    <!-- Right Side Icons -->
+     <!-- Right Side Icons -->
     <div class="left-icons d-flex align-items-center gap-5" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
         <li style="list-style: none; display: list-item !important; visibility: visible !important; opacity: 1 !important;">
-            <!-- Moon Icon -->
+             <!-- Moon Icon -->
             <a href="#" id="dark-mode-toggle" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
                 <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
-            </a>
+             </a>
 
-            <!-- Sun Icon -->
+             <!-- Sun Icon -->
             <a href="#" id="light-mode-toggle" style="display: none; visibility: visible !important; opacity: 1 !important;">
                 <i class="ti ti-sun" style="font-size: 22px; cursor: pointer; visibility: visible !important; opacity: 1 !important;"></i>
-            </a>
-        </li>
+             </a>
+         </li>
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
-            @csrf
+             @csrf
             <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
                 <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
-            </button>
+             </button>
         </form>
     </div>
- </div>
+     </div>
