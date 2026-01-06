@@ -12,6 +12,85 @@ class GroupChatManager {
         this.agoraClient = null;
         this.isConnected = false;
         this.replyingToMessage = null;
+        this.notificationAudio = null;
+        this.pollingInterval = null;
+        this.lastMessageId = null;
+        this.initNotificationSound();
+    }
+
+    /**
+     * Initialize notification sound
+     */
+    initNotificationSound() {
+        try {
+            // Try multiple paths
+            const audioPaths = [
+                '/assets/message_tone.wav',
+                'assets/message_tone.wav',
+                (window.baseUrl || 'https://logiteam.it-supportline.de') + '/assets/message_tone.wav',
+            ];
+
+            for (const audioPath of audioPaths) {
+                try {
+                    this.notificationAudio = new Audio(audioPath);
+                    this.notificationAudio.volume = 0.7; // Set volume to 70%
+                    this.notificationAudio.preload = 'auto';
+                    
+                    // Test if audio can be loaded
+                    this.notificationAudio.addEventListener('canplaythrough', () => {
+                        console.log('✅ Notification sound loaded successfully:', audioPath);
+                    });
+                    
+                    this.notificationAudio.addEventListener('error', (e) => {
+                        console.warn('Audio path failed:', audioPath, e);
+                        // Try next path
+                        if (audioPaths.indexOf(audioPath) < audioPaths.length - 1) {
+                            return; // Will try next path
+                        }
+                    });
+                    
+                    // If we got here without error, this path works
+                    break;
+                } catch (err) {
+                    console.warn('Failed to create audio with path:', audioPath, err);
+                    continue;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to initialize notification sound:', error);
+        }
+    }
+
+    /**
+     * Play notification sound
+     */
+    playNotificationSound() {
+        try {
+            if (this.notificationAudio) {
+                // Reset audio to beginning and play
+                this.notificationAudio.currentTime = 0;
+                const playPromise = this.notificationAudio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('🔔 Notification sound played');
+                        })
+                        .catch(error => {
+                            console.error('Failed to play notification sound:', error);
+                            // Try to reload and play
+                            this.notificationAudio.load();
+                            this.notificationAudio.play().catch(e => {
+                                console.error('Retry also failed:', e);
+                            });
+                        });
+                }
+            } else {
+                console.warn('Notification audio not initialized');
+            }
+        } catch (error) {
+            console.error('Error playing notification sound:', error);
+        }
     }
 
     /**
@@ -97,20 +176,63 @@ class GroupChatManager {
      * Setup Agora event listeners
      */
     setupEventListeners() {
-        if (!this.agoraClient) return;
+        if (!this.agoraClient) {
+            console.warn('Agora client not available, cannot setup event listeners');
+            return;
+        }
 
-        // Message received
+        console.log('Setting up Agora event listeners...');
+
+        // Message received handlers - for group chat
+        // Accept all messages and filter in handleMessageReceived if needed
         this.agoraClient.addEventHandler('messageHandler', {
             onTextMessage: (message) => {
+                console.log('📩 Text message received from Agora:', message);
+                // For group chat, accept all messages - filtering will happen in handleMessageReceived
                 this.handleMessageReceived(message);
             },
             onPictureMessage: (message) => {
+                console.log('📩 Picture message received from Agora:', message);
                 this.handleMessageReceived(message);
             },
             onFileMessage: (message) => {
+                console.log('📩 File message received from Agora:', message);
+                this.handleMessageReceived(message);
+            },
+            onAudioMessage: (message) => {
+                console.log('📩 Audio message received from Agora:', message);
+                this.handleMessageReceived(message);
+            },
+            onVideoMessage: (message) => {
+                console.log('📩 Video message received from Agora:', message);
+                this.handleMessageReceived(message);
+            },
+            onCustomMessage: (message) => {
+                console.log('📩 Custom message received from Agora:', message);
                 this.handleMessageReceived(message);
             },
         });
+
+        // Connection status handlers
+        this.agoraClient.addEventHandler('connectionHandler', {
+            onConnected: () => {
+                console.log('✅ Connected to Agora Chat');
+                this.isConnected = true;
+            },
+            onDisconnected: () => {
+                console.log('❌ Disconnected from Agora Chat');
+                this.isConnected = false;
+            },
+            onTokenWillExpire: () => {
+                console.warn('⚠️ Token will expire soon');
+            },
+            onTokenDidExpire: () => {
+                console.error('❌ Token expired');
+                this.isConnected = false;
+            },
+        });
+
+        console.log('✅ Agora event listeners set up successfully');
     }
 
     /**
@@ -147,11 +269,118 @@ class GroupChatManager {
         // Load existing messages
         await this.loadGroupMessages(groupId);
 
-        // Join group chat room
-        if (this.agoraClient && this.currentGroupId) {
-            // For group chat, we use the group ID as the conversation ID
-            // You may need to adjust this based on your Agora setup
-            console.log('Joining group chat:', groupId);
+        // Join group chat room (if needed)
+        if (this.agoraClient && this.isConnected && this.currentGroupId) {
+            console.log('✅ Ready to receive messages for group:', groupId);
+            console.log('Agora connection status:', {
+                isConnected: this.isConnected,
+                currentUserId: this.currentUserId,
+                currentGroupId: this.currentGroupId
+            });
+        } else {
+            console.warn('⚠️ Agora not ready:', {
+                hasClient: !!this.agoraClient,
+                isConnected: this.isConnected,
+                currentGroupId: this.currentGroupId
+            });
+        }
+
+        // Start polling as fallback if Agora is not working
+        this.startMessagePolling();
+        
+        // Set last message ID from loaded messages
+        const container = document.getElementById('chatMessagesContainer');
+        if (container) {
+            const lastMessage = container.querySelector('.chats:last-child');
+            if (lastMessage) {
+                this.lastMessageId = lastMessage.getAttribute('data-message-id');
+            }
+        }
+    }
+
+    /**
+     * Start polling for new messages (fallback if Agora fails)
+     */
+    startMessagePolling() {
+        // Stop any existing polling
+        this.stopMessagePolling();
+
+        if (!this.currentGroupId) return;
+
+        console.log('🔄 Starting message polling for group:', this.currentGroupId);
+        
+        // Poll every 3 seconds for new messages
+        this.pollingInterval = setInterval(async () => {
+            if (!this.currentGroupId) {
+                this.stopMessagePolling();
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/chat/group/${this.currentGroupId}/messages?last_id=${this.lastMessageId || ''}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.messages && data.messages.length > 0) {
+                    // Filter out messages we already have
+                    const newMessages = data.messages.filter(msg => {
+                        const msgId = String(msg._id || msg.id);
+                        const existing = document.querySelector(`[data-message-id="${msgId}"]`);
+                        return !existing;
+                    });
+
+                    if (newMessages.length > 0) {
+                        console.log(`📥 Polling found ${newMessages.length} new messages`);
+                        
+                        // Enrich with sender info
+                        const enrichedMessages = await this.enrichMessagesWithSenderInfo(newMessages);
+                        
+                        // Add new messages to UI
+                        enrichedMessages.forEach(message => {
+                            const senderId = String(message.sender_id || message.from_user_id || '');
+                            const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
+                            const isOwnMessage = senderId !== '' && currentUserIdStr !== '' &&
+                                (senderId === currentUserIdStr || senderId.toLowerCase() === currentUserIdStr.toLowerCase());
+
+                            // Play sound for received messages
+                            if (!isOwnMessage) {
+                                this.playNotificationSound();
+                            }
+
+                            const messageElement = this.createMessageElement(message);
+                            const container = document.getElementById('chatMessagesContainer');
+                            if (container) {
+                                const emptyState = document.getElementById('emptyChatState');
+                                if (emptyState) {
+                                    emptyState.style.display = 'none';
+                                }
+                                container.appendChild(messageElement);
+                                this.scrollToBottom();
+                            }
+
+                            // Update last message ID
+                            this.lastMessageId = String(message._id || message.id);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error polling for messages:', error);
+            }
+        }, 3000); // Poll every 3 seconds
+    }
+
+    /**
+     * Stop message polling
+     */
+    stopMessagePolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+            console.log('🛑 Stopped message polling');
         }
     }
 
@@ -186,13 +415,54 @@ class GroupChatManager {
 
             if (data.success && data.messages) {
                 console.log('Loaded messages:', data.messages.length, 'Current user ID:', this.currentUserId);
-                this.renderMessages(data.messages);
+                // Enrich messages with sender info if needed
+                const enrichedMessages = await this.enrichMessagesWithSenderInfo(data.messages);
+                this.renderMessages(enrichedMessages);
             } else {
                 console.warn('No messages or failed to load:', data);
             }
         } catch (error) {
             console.error('Failed to load group messages:', error);
         }
+    }
+
+    /**
+     * Enrich messages with sender information (avatar, name) if missing
+     */
+    async enrichMessagesWithSenderInfo(messages) {
+        const enrichedMessages = await Promise.all(messages.map(async (message) => {
+            // If sender_avatar is already present, skip
+            if (message.sender_avatar) {
+                return message;
+            }
+
+            const senderId = String(message.sender_id || message.from_user_id || message.from || '').trim();
+            if (!senderId) {
+                return message;
+            }
+
+            try {
+                const userResponse = await fetch(`/api/user/${senderId}/profile`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    if (userData.success && userData.user) {
+                        message.sender_name = userData.user.name || userData.user.email || message.sender_name;
+                        message.sender_avatar = userData.user.avatar || null;
+                    }
+                }
+            } catch (error) {
+                console.error(`Failed to fetch sender profile for message ${message._id}:`, error);
+            }
+
+            return message;
+        }));
+
+        return enrichedMessages;
     }
 
     /**
@@ -204,6 +474,9 @@ class GroupChatManager {
 
         // Clear existing messages
         container.innerHTML = '';
+        
+        // Reset last message ID
+        this.lastMessageId = null;
 
         // Hide empty state if we have messages
         const emptyState = document.getElementById('emptyChatState');
@@ -236,6 +509,12 @@ class GroupChatManager {
             });
         });
 
+        // Set last message ID for polling
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            this.lastMessageId = String(lastMessage._id || lastMessage.id);
+        }
+
         // Scroll to bottom after rendering
         this.scrollToBottom();
     }
@@ -263,16 +542,35 @@ class GroupChatManager {
      * Format date for display
      */
     formatDate(date) {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
+        try {
+            // Handle both Date objects and date strings
+            const dateObj = date instanceof Date ? date : new Date(date);
+            
+            // Check if date is valid
+            if (isNaN(dateObj.getTime())) {
+                console.warn('Invalid date provided to formatDate:', date);
+                return 'Today'; // Fallback to Today for invalid dates
+            }
 
-        if (date.toDateString() === today.toDateString()) {
-            return 'Today';
-        } else if (date.toDateString() === yesterday.toDateString()) {
-            return 'Yesterday';
-        } else {
-            return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            // Reset time to compare dates only
+            const dateOnly = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+            const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const yesterdayOnly = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+
+            if (dateOnly.getTime() === todayOnly.getTime()) {
+                return 'Today';
+            } else if (dateOnly.getTime() === yesterdayOnly.getTime()) {
+                return 'Yesterday';
+            } else {
+                return dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+        } catch (error) {
+            console.error('Error formatting date:', error, date);
+            return 'Today'; // Fallback to Today on error
         }
     }
 
@@ -303,11 +601,33 @@ class GroupChatManager {
         messageDiv.className = `chats ${isOwnMessage ? 'chats-right' : ''}`;
         messageDiv.setAttribute('data-message-id', message._id || message.id);
 
-        const time = new Date(message.created_at).toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        });
+        // Safely parse the date for time display
+        let messageTime;
+        try {
+            const dateObj = message.created_at ? new Date(message.created_at) : new Date();
+            if (isNaN(dateObj.getTime())) {
+                messageTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            } else {
+                messageTime = dateObj.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+        } catch (error) {
+            console.warn('Error parsing message time:', error);
+            messageTime = new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+        
+        const time = messageTime;
 
         let messageContent = '';
 
@@ -544,16 +864,91 @@ class GroupChatManager {
     /**
      * Handle received message
      */
-    handleMessageReceived(message) {
+    async handleMessageReceived(message) {
+        console.log('📨 Handling received message:', message);
+        
+        // Check if this is a group chat message and if it's for the current group
+        const messageGroupId = message.to || message.targetId || '';
+        const isGroupChat = message.chatType === 'groupChat' || message.type === 'groupChat';
+        
+        // If we have a current group and this is a group message, check if it's for our group
+        if (this.currentGroupId && isGroupChat) {
+            // Check various possible group ID formats
+            const groupIdMatches = 
+                messageGroupId === this.currentGroupId ||
+                messageGroupId === `group_${this.currentGroupId}` ||
+                messageGroupId === `group_${this.currentGroupId}` ||
+                message.to === this.currentGroupId;
+            
+            if (!groupIdMatches) {
+                console.log('⚠️ Message is for a different group, ignoring:', {
+                    messageGroupId,
+                    currentGroupId: this.currentGroupId
+                });
+                return; // Ignore messages not for current group
+            }
+        }
+        
+        // Check if message is from current user (don't play sound for own messages)
+        const senderId = String(message.from || message.from_user_id || '');
+        const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
+        const isOwnMessage = senderId !== '' && currentUserIdStr !== '' &&
+            (senderId === currentUserIdStr || senderId.toLowerCase() === currentUserIdStr.toLowerCase());
+
+        console.log('Message details:', {
+            senderId,
+            currentUserId: currentUserIdStr,
+            isOwnMessage,
+            messageType: message.type || message.message_type,
+            chatType: message.chatType,
+            to: message.to,
+            messageGroupId,
+            currentGroupId: this.currentGroupId
+        });
+
+        // Fetch sender's profile information for avatar
+        let senderAvatar = null;
+        let senderName = message.from || 'User';
+
+        if (!isOwnMessage && senderId) {
+            try {
+                const userResponse = await fetch(`/api/user/${senderId}/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+                
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    if (userData.success && userData.user) {
+                        senderName = userData.user.name || userData.user.email || senderName;
+                        senderAvatar = userData.user.avatar || null;
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch sender profile:', error);
+            }
+        }
+
+        // Play notification sound only for received messages (not own messages)
+        if (!isOwnMessage) {
+            console.log('🔔 Playing notification sound for received message');
+            this.playNotificationSound();
+        }
+
         // Add message to UI
         const messageData = {
-            _id: message.id || message.serverMsgId,
-            sender_id: String(message.from || ''),
-            content: message.msg || message.content,
-            message_type: message.type || 'txt',
-            created_at: new Date().toISOString(),
-            sender_name: message.from,
+            _id: message.id || message.serverMsgId || message._id,
+            sender_id: senderId,
+            content: message.msg || message.content || message.body?.content || '',
+            message_type: message.type || message.message_type || 'txt',
+            created_at: message.time || message.timestamp || new Date().toISOString(),
+            sender_name: senderName,
+            sender_avatar: senderAvatar,
         };
+
+        console.log('📝 Adding message to UI:', messageData);
 
         const messageElement = this.createMessageElement(messageData);
         const container = document.getElementById('chatMessagesContainer');
@@ -564,8 +959,61 @@ class GroupChatManager {
                 emptyState.style.display = 'none';
             }
 
+            // Check if we need to add a date separator
+            const lastMessage = container.lastElementChild;
+            
+            // Safely parse the date
+            let messageDate;
+            try {
+                messageDate = messageData.created_at ? new Date(messageData.created_at) : new Date();
+                if (isNaN(messageDate.getTime())) {
+                    console.warn('Invalid date in messageData.created_at:', messageData.created_at);
+                    messageDate = new Date(); // Fallback to current date
+                    messageData.created_at = messageDate.toISOString(); // Update with valid date
+                }
+            } catch (error) {
+                console.warn('Error parsing message date:', error);
+                messageDate = new Date(); // Fallback to current date
+                messageData.created_at = messageDate.toISOString(); // Update with valid date
+            }
+            
+            // Use formatDate method for consistent date formatting
+            const dateStr = this.formatDate(messageDate);
+
+            if (lastMessage && lastMessage.classList.contains('chats')) {
+                const lastMessageDate = lastMessage.getAttribute('data-date');
+                if (lastMessageDate === dateStr) {
+                    // Same date, no separator needed
+                } else {
+                    const dateSeparator = document.createElement('div');
+                    dateSeparator.className = 'chat-line';
+                    dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                    container.appendChild(dateSeparator);
+                }
+            } else if (lastMessage && lastMessage.classList.contains('chat-line')) {
+                // Last element is a date separator, check if same date
+                const lastDateText = lastMessage.querySelector('.chat-date')?.textContent;
+                if (lastDateText !== dateStr) {
+                    const dateSeparator = document.createElement('div');
+                    dateSeparator.className = 'chat-line';
+                    dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                    container.appendChild(dateSeparator);
+                }
+            } else {
+                // No messages yet or no date separator, add date separator
+                const dateSeparator = document.createElement('div');
+                dateSeparator.className = 'chat-line';
+                dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                container.appendChild(dateSeparator);
+            }
+
+            messageElement.setAttribute('data-date', dateStr);
             container.appendChild(messageElement);
             this.scrollToBottom();
+            
+            console.log('✅ Message added to UI successfully');
+        } else {
+            console.error('❌ Chat messages container not found');
         }
     }
 
@@ -611,14 +1059,27 @@ class GroupChatManager {
 
             // Send via Agora if connected
             if (this.agoraClient && this.isConnected) {
-                const msg = AgoraChat.message.create({
-                    type: messageType,
-                    to: this.currentGroupId,
-                    msg: content,
-                    chatType: 'groupChat',
-                });
+                try {
+                    const msg = AgoraChat.message.create({
+                        type: messageType,
+                        to: this.currentGroupId,
+                        msg: content,
+                        chatType: 'groupChat',
+                    });
 
-                await this.agoraClient.send(msg);
+                    console.log('📤 Sending message via Agora:', {
+                        to: this.currentGroupId,
+                        type: messageType,
+                        content: content.substring(0, 50) + '...'
+                    });
+
+                    await this.agoraClient.send(msg);
+                    console.log('✅ Message sent via Agora successfully');
+                } catch (error) {
+                    console.error('❌ Failed to send message via Agora:', error);
+                }
+            } else {
+                console.warn('⚠️ Agora not connected, message will only be saved to backend');
             }
 
             // Save to backend
@@ -650,6 +1111,11 @@ class GroupChatManager {
                     from_user_id: String(this.currentUserId || ''),
                 };
 
+                // Ensure created_at is set and valid
+                if (!sentMessageData.created_at) {
+                    sentMessageData.created_at = new Date().toISOString();
+                }
+
                 // Add message to UI immediately
                 const container = document.getElementById('chatMessagesContainer');
                 if (container) {
@@ -661,26 +1127,29 @@ class GroupChatManager {
 
                     // Check if we need to add a date separator
                     const lastMessage = container.lastElementChild;
-                    const messageDate = new Date(sentMessageData.created_at);
-                    let needsDateSeparator = true;
+                    
+                    // Safely parse the date
+                    let messageDate;
+                    try {
+                        messageDate = sentMessageData.created_at ? new Date(sentMessageData.created_at) : new Date();
+                        if (isNaN(messageDate.getTime())) {
+                            console.warn('Invalid date in sentMessageData.created_at:', sentMessageData.created_at);
+                            messageDate = new Date(); // Fallback to current date
+                            sentMessageData.created_at = messageDate.toISOString(); // Update with valid date
+                        }
+                    } catch (error) {
+                        console.warn('Error parsing sent message date:', error);
+                        messageDate = new Date(); // Fallback to current date
+                        sentMessageData.created_at = messageDate.toISOString(); // Update with valid date
+                    }
+                    
+                    // Use formatDate method for consistent date formatting
+                    const dateStr = this.formatDate(messageDate);
 
                     if (lastMessage && lastMessage.classList.contains('chats')) {
                         const lastMessageDate = lastMessage.getAttribute('data-date');
-                        const today = new Date();
-                        const yesterday = new Date(today);
-                        yesterday.setDate(yesterday.getDate() - 1);
-
-                        let dateStr = '';
-                        if (messageDate.toDateString() === today.toDateString()) {
-                            dateStr = 'Today';
-                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
-                            dateStr = 'Yesterday';
-                        } else {
-                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                        }
-
                         if (lastMessageDate === dateStr) {
-                            needsDateSeparator = false;
+                            // Same date, no separator needed
                         } else {
                             // Add date separator
                             const dateSeparator = document.createElement('div');
@@ -691,37 +1160,14 @@ class GroupChatManager {
                     } else if (lastMessage && lastMessage.classList.contains('chat-line')) {
                         // Last element is a date separator, check if same date
                         const lastDateText = lastMessage.querySelector('.chat-date')?.textContent;
-                        const today = new Date();
-                        const yesterday = new Date(today);
-                        yesterday.setDate(yesterday.getDate() - 1);
-
-                        let dateStr = '';
-                        if (messageDate.toDateString() === today.toDateString()) {
-                            dateStr = 'Today';
-                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
-                            dateStr = 'Yesterday';
-                        } else {
-                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                        }
-
-                        if (lastDateText === dateStr) {
-                            needsDateSeparator = false;
+                        if (lastDateText !== dateStr) {
+                            const dateSeparator = document.createElement('div');
+                            dateSeparator.className = 'chat-line';
+                            dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                            container.appendChild(dateSeparator);
                         }
                     } else {
-                        // No messages yet, add date separator
-                        const today = new Date();
-                        const yesterday = new Date(today);
-                        yesterday.setDate(yesterday.getDate() - 1);
-
-                        let dateStr = '';
-                        if (messageDate.toDateString() === today.toDateString()) {
-                            dateStr = 'Today';
-                        } else if (messageDate.toDateString() === yesterday.toDateString()) {
-                            dateStr = 'Yesterday';
-                        } else {
-                            dateStr = messageDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                        }
-
+                        // No messages yet or no date separator, add date separator
                         const dateSeparator = document.createElement('div');
                         dateSeparator.className = 'chat-line';
                         dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
@@ -729,7 +1175,7 @@ class GroupChatManager {
                     }
 
                     const messageElement = this.createMessageElement(sentMessageData);
-                    messageElement.setAttribute('data-date', this.formatDate(messageDate));
+                    messageElement.setAttribute('data-date', dateStr);
                     container.appendChild(messageElement);
                     this.scrollToBottom();
                 }

@@ -140,24 +140,29 @@
 
     .chats .chat-content .message-content {
         border-radius: 12px 12px 12px 0 !important;
-        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
+        max-width: 75% !important; /* Optimal max-width for message bubbles */
         width: auto !important; /* Allow natural width based on content */
-        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
-        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
-        white-space: normal !important; /* Allow normal text flow */
-        word-break: normal !important; /* Don't break words */
+        min-width: fit-content !important; /* Ensure minimum width fits content */
+        display: inline-block !important; /* Make it inline-block for proper sizing */
+        word-wrap: break-word !important; /* Break long words if they exceed container */
+        overflow-wrap: break-word !important; /* Break words if they're too long */
+        white-space: normal !important; /* Normal text flow - wrap when needed */
+        word-break: break-word !important; /* Break long words if necessary */
+        hyphens: none !important; /* Don't add hyphens */
     }
     
     /* Left-side (received) message content styling */
     .chats:not(.chats-right) .chat-info > .message-content {
-        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
+        max-width: 75% !important; /* Optimal max-width for message bubbles */
         width: auto !important; /* Allow natural width based on content */
         min-width: fit-content !important; /* Ensure minimum width fits content */
+        display: inline-block !important; /* Make it inline-block for proper sizing */
         line-height: 1.4 !important; /* Tighter line height to reduce height */
-        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
-        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
-        white-space: normal !important; /* Allow normal text flow */
-        word-break: normal !important; /* Don't break words */
+        word-wrap: break-word !important; /* Break long words if they exceed container */
+        overflow-wrap: break-word !important; /* Break words if they're too long */
+        white-space: normal !important; /* Normal text flow - wrap when needed */
+        word-break: break-word !important; /* Break long words if necessary */
+        hyphens: none !important; /* Don't add hyphens */
     }
 
     .chats-right .chat-content .message-content,
@@ -208,23 +213,24 @@
         color: inherit !important;
     }
 
-    .chats.chats-right .chat-info > .message-content {
+    .chats    .chats-right .chat-info > .message-content {
         background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
         color: #ffffff !important;
         border-radius: 16px 16px 2px 16px !important;
         padding: 4px 16px !important; /* Reduced vertical padding (height), increased horizontal padding */
         display: inline-block !important;
-        width: auto !important; /* Changed from fit-content to auto for better text flow */
+        width: auto !important; /* Allow natural width based on content */
         min-width: fit-content !important; /* Ensure minimum width fits content */
-        max-width: 70% !important; /* Set a reasonable max-width, but allow natural expansion */
+        max-width: 75% !important; /* Optimal max-width for message bubbles */
         flex: 0 1 auto !important;
         margin-left: auto !important;
         text-align: left !important;
         box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2) !important;
-        word-wrap: normal !important; /* Only break on spaces, not in middle of words */
-        overflow-wrap: normal !important; /* Prevent breaking words unnecessarily */
-        white-space: normal !important; /* Allow normal text flow */
-        word-break: normal !important; /* Don't break words */
+        word-wrap: break-word !important; /* Break long words if they exceed container */
+        overflow-wrap: break-word !important; /* Break words if they're too long */
+        white-space: normal !important; /* Normal text flow - wrap when needed */
+        word-break: break-word !important; /* Break long words if necessary */
+        hyphens: none !important; /* Don't add hyphens */
         min-height: unset !important;
         line-height: 1.4 !important; /* Tighter line height to reduce height */
     }

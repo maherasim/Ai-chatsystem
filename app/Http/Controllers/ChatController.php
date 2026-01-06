@@ -413,7 +413,7 @@ class ChatController extends Controller
     /**
      * Get group messages
      */
-    public function getGroupMessages($groupId)
+    public function getGroupMessages($groupId, Request $request)
     {
         try {
             $user = Auth::user();
@@ -427,12 +427,26 @@ class ChatController extends Controller
                 ], 404);
             }
 
+            // Get last_id from request for polling
+            $lastId = $request->input('last_id');
+            
+            // Build query
+            $query = ChatMessage::where(function($q) use ($groupId) {
+                    $q->where('group_id', $groupId)
+                      ->orWhere('conversation_id', 'group_' . $groupId);
+                });
+
+            // If last_id is provided, only get messages after that ID
+            if ($lastId && strlen($lastId) === 24 && ctype_xdigit($lastId)) {
+                try {
+                    $query->where('_id', '>', new \MongoDB\BSON\ObjectId($lastId));
+                } catch (\Exception $e) {
+                    \Log::warning('Invalid last_id format for polling', ['last_id' => $lastId]);
+                }
+            }
+
             // Get messages for this group
-            $messages = ChatMessage::where(function($query) use ($groupId) {
-                    $query->where('group_id', $groupId)
-                          ->orWhere('conversation_id', 'group_' . $groupId);
-                })
-                ->orderBy('created_at', 'asc')
+            $messages = $query->orderBy('created_at', 'asc')
                 ->limit(100)
                 ->get();
 
