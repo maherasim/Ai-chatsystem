@@ -21,4 +21,9 @@
 <script src="{{ URL::asset('/build/js/bootstrap-datetimepicker.min.js')}}"></script>
 
 <!-- Custom JS -->
-<script src="{{ URL::asset('/build/js/script.js')}}"></script> 
+<script src="{{ URL::asset('/build/js/script.js')}}"></script>
+
+<!-- Global Chat Notifications (works on all pages) -->
+@if(Auth::check())
+<script src="{{ asset('js/global-chat-notifications.js') }}"></script>
+@endif 

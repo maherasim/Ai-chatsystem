@@ -241,6 +241,11 @@ class GroupChatManager {
         // Load existing messages
         await this.loadGroupMessages(groupId);
 
+        // Mark group as read in global notifications
+        if (window.globalChatNotifications) {
+            window.globalChatNotifications.markGroupAsRead(groupId);
+        }
+
         // Setup event listeners again when opening a group (in case they weren't set up)
         if (this.agoraClient && this.isConnected) {
             this.setupEventListeners();

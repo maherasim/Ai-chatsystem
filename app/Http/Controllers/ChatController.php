@@ -260,6 +260,58 @@ class ChatController extends Controller
     }
 
     /**
+     * Get all groups for the current user (API endpoint)
+     */
+    public function getGroups()
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+            
+            // Get all groups
+            $allGroups = Group::all();
+            
+            // Filter groups where user is admin or member
+            $filteredGroups = $allGroups->filter(function($group) use ($userId) {
+                $isAdmin = (string)$group->admin_id === $userId;
+                
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberIds = array_map('strval', $memberIds);
+                $isMember = in_array($userId, $memberIds);
+                
+                return $isAdmin || $isMember;
+            });
+            
+            $groups = $filteredGroups->map(function($group) {
+                return [
+                    '_id' => (string)$group->_id,
+                    'id' => (string)$group->_id,
+                    'name' => $group->name ?? 'Group',
+                    'photo' => $group->photo ?? null,
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'groups' => $groups->values(),
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get groups', [
+                'error' => $e->getMessage(),
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load groups',
+            ], 500);
+        }
+    }
+
+    /**
      * Get group messages
      */
     public function getGroupMessages($groupId)
