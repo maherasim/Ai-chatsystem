@@ -1,11 +1,12 @@
- <div class="chat-header">
-     <div class="user-details">
-         <div class="d-xl-none">
-             <a class="text-muted chat-close me-2" href="#">
-                 <i class="fas fa-arrow-left"></i>
-             </a>
-         </div>
-         <div class="avatar avatar-lg online flex-shrink-0">
+<div class="chat-header d-flex justify-content-between align-items-center flex-wrap" style="gap: 10px;">
+    <!-- LEFT: User Info -->
+    <div class="user-details d-flex align-items-center" style="flex: 1 1 auto; min-width: 0;">
+        <div class="d-xl-none">
+            <a class="text-muted chat-close me-2" href="#">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        <div class="avatar avatar-lg online flex-shrink-0">
             @php
                 $imageUrl = asset('build/img/profiles/avatar-16.jpg');
 
@@ -27,39 +28,31 @@
                     }
                 }
             @endphp
+            <img src="{{ $imageUrl }}" class="rounded-circle" alt="image">
+        </div>
+        <div class="ms-2 overflow-hidden" style="min-width: 0;">
+            <h6 class="mb-0 text-truncate" style="max-width: 200px;">{{ auth()->user()->name }}</h6>
+            <p class="last-seen text-truncate mb-0" style="max-width: 200px;">{{ auth()->user()->type ?? 'Admin' }}</p>
+        </div>
+    </div>
 
-            <img src="{{ $imageUrl }}"
-                 class="rounded-circle"
-                 alt="image">
+    <!-- RIGHT: Theme Toggle + Logout -->
+    <div class="left-icons d-flex align-items-center" style="flex-shrink: 0; gap: 0.75rem;">
+        <!-- Dark Mode Toggle -->
+        <a href="#" id="dark-mode-toggle" style="display: inline-block; flex-shrink: 0;">
+            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer; max-width: 25px;">
+        </a>
+        <!-- Light Mode Toggle -->
+        <a href="#" id="light-mode-toggle" style="display: none; flex-shrink: 0;">
+            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
+        </a>
 
-
-         </div>
-         <div class="ms-2 overflow-hidden">
-             <h6>{{ auth()->user()->name }}</h6>
-             <p class="last-seen text-truncate"> {{ auth()->user()->type ?? 'Admin' }}</p>
-         </div>
-     </div>
-     
-
-     <!-- Right Side Icons -->
-    <div class="left-icons d-flex align-items-center gap-5" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
-        <li style="list-style: none; display: list-item !important; visibility: visible !important; opacity: 1 !important;">
-             <!-- Moon Icon -->
-            <a href="#" id="dark-mode-toggle" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
-                <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
-             </a>
-
-             <!-- Sun Icon -->
-            <a href="#" id="light-mode-toggle" style="display: none; visibility: visible !important; opacity: 1 !important;">
-                <i class="ti ti-sun" style="font-size: 22px; cursor: pointer; visibility: visible !important; opacity: 1 !important;"></i>
-             </a>
-         </li>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline !important; visibility: visible !important; opacity: 1 !important;">
-             @csrf
-            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
-                <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer; visibility: visible !important; opacity: 1 !important;">
-             </button>
+        <!-- Logout -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline-block; margin: 0; flex-shrink: 0;">
+            @csrf
+            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer; max-width: 25px;">
+            </button>
         </form>
     </div>
-     </div>
+</div>

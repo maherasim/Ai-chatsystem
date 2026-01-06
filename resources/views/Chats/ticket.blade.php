@@ -12,9 +12,16 @@
         transition: max-height 0.7s ease, opacity 0.6s ease;
     }
     .px-4 {
-    padding-right: 1.5rem !important;
-    padding-left: 3.5rem !important;
-}
+        padding-right: 1rem !important;
+        padding-left: 1rem !important;
+    }
+
+    @media (max-width: 768px) {
+        .px-4 {
+            padding-right: 0.75rem !important;
+            padding-left: 0.75rem !important;
+        }
+    }
     .project-details.show {
         opacity: 1;
     }
@@ -165,8 +172,14 @@
         background-color: #eee;
     }
     .gap-3 {
-    gap: 5rem !important;
-}
+        gap: 1rem !important;
+    }
+
+    @media (min-width: 992px) {
+        .gap-3 {
+            gap: 2rem !important;
+        }
+    }
 
     .progress-bar {
         border-radius: 3px;
@@ -197,33 +210,150 @@
         scrollbar-color: #ccc transparent;
     }
 
-    /* Ensure header buttons are visible */
+    /* Responsive fixes - prevent overflow */
+    body, html {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+
+    .content.main_content {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
+
+    .chat.chat-messages {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
+
+    /* Ensure header buttons are visible and responsive */
     .chat-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
         position: relative !important;
         z-index: 10 !important;
+        overflow: visible !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        padding: 8px 16px !important;
+        min-height: 60px !important;
+    }
+
+    .chat-header .user-details {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .chat-header .user-details h6,
+    .chat-header .user-details p {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 200px !important;
     }
     
     .chat-header .left-icons {
         display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        flex-shrink: 0 !important;
         visibility: visible !important;
         opacity: 1 !important;
         position: relative !important;
         z-index: 20 !important;
+        margin-left: auto !important;
     }
 
-    .chat-header .left-icons li {
-        display: list-item !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+    @media (max-width: 768px) {
+        .chat-header {
+            padding: 8px 12px !important;
+        }
+        
+        .chat-header .left-icons {
+            gap: 0.5rem !important;
+        }
+
+        .chat-header .left-icons img {
+            height: 20px !important;
+        }
+
+        .chat-header .user-details h6,
+        .chat-header .user-details p {
+            max-width: 150px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .chat-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+
+        .chat-header .left-icons {
+            width: 100% !important;
+            justify-content: flex-end !important;
+            margin-left: 0 !important;
+            margin-top: 8px !important;
+        }
     }
     
     .chat-header .left-icons a,
     .chat-header .left-icons form,
     .chat-header .left-icons button,
     .chat-header .left-icons img {
-        display: inline !important;
+        display: inline-block !important;
         visibility: visible !important;
         opacity: 1 !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Fix main content area overflow */
+    .chat-body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
+
+    .container-fluid {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Fix card containers */
+    .px-4 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Fix flex containers that overflow */
+    [style*="display: flex"] {
+        max-width: 100% !important;
+    }
+
+    [style*="gap: 80px"] {
+        gap: 1rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    [style*="gap: 5rem"] {
+        gap: 1rem !important;
+    }
+
+    /* Responsive card grid */
+    @media (max-width: 1200px) {
+        [style*="max-width: 250px"] {
+            max-width: 100% !important;
+            flex: 1 1 calc(50% - 10px) !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        [style*="max-width: 250px"] {
+            flex: 1 1 100% !important;
+        }
     }
 </style>
 
@@ -292,7 +422,7 @@
                     </div>
                     <!-- Container for the full width -->
                     <div class="container-fluid px-4">
-                        <div class="py-1" style="display: flex; gap: 80px; padding-left: 20px;">
+                        <div class="py-1" style="display: flex; gap: 1rem; padding-left: 0; flex-wrap: wrap;">
                             <!-- Card 1: Total Projects -->
                             <div style="flex: 1; max-width: 250px;">
                                 <div class="px-3 py-2" style="border-radius: 10px; height: 100px; background: #fff; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);">
