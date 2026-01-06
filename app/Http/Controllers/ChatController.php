@@ -627,5 +627,108 @@ class ChatController extends Controller
         // Default to public path if file not found (legacy behavior)
         return asset($image);
     }
+
+    /**
+     * Get user's groups for notifications
+     */
+    public function getUserGroups()
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+
+            // Get all groups
+            $allGroups = Group::all();
+
+            // Filter groups where user is admin or member
+            $userGroups = $allGroups->filter(function($group) use ($userId) {
+                // Check if user is admin
+                if ((string)$group->admin_id === $userId) {
+                    return true;
+                }
+
+                // Check if user is in member_ids
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+
+                if (is_array($memberIds)) {
+                    foreach ($memberIds as $memberId) {
+                        if ((string)$memberId === $userId) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            });
+
+            $formattedGroups = $userGroups->map(function($group) {
+                return [
+                    '_id' => (string)$group->_id,
+                    'id' => (string)$group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                ];
+            })->values();
+
+            return response()->json([
+                'success' => true,
+                'groups' => $formattedGroups,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get user groups', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve groups',
+                'groups' => [],
+            ], 500);
+        }
+    }
+
+    /**
+     * Get user profile
+     */
+    public function getUserProfile(string $userId)
+    {
+        try {
+            $user = User::find($userId);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ], 404);
+            }
+
+            $avatarUrl = null;
+            if (isset($user->image) && !empty(trim($user->image))) {
+                $avatarUrl = $this->getImageUrl('storage/' . ltrim($user->image, '/'));
+            }
+
+            return response()->json([
+                'success' => true,
+                'user' => [
+                    'id' => (string)$user->_id,
+                    'name' => $user->name ?? $user->email ?? 'Unknown',
+                    'email' => $user->email ?? '',
+                    'avatar' => $avatarUrl,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get user profile', [
+                'error' => $e->getMessage(),
+                'user_id' => $userId,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve user profile',
+            ], 500);
+        }
+    }
 }
 

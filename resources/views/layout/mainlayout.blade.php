@@ -51,6 +51,16 @@
     </div>
     <!-- /Main Wrapper -->
     @include('layout.partials.footer-scripts')
+    
+    @auth
+    <!-- Global Chat Notifications -->
+    <meta name="user-id" content="{{ Auth::id() }}">
+    <script>
+        window.currentUserId = "{{ Auth::id() }}";
+        window.baseUrl = "https://logiteam.it-supportline.de";
+    </script>
+    <script src="{{ asset('js/global-notifications.js') }}"></script>
+    @endauth
 </body>
 @auth
 <script>

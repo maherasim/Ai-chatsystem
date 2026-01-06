@@ -215,6 +215,10 @@ Route::middleware('auth')->group(function () {
     // Group chat routes
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+    // Groups API for notifications
+    Route::get('/api/chat/groups', [ChatController::class, 'getUserGroups'])->name('chat.groups');
+    // User profile API
+    Route::get('/api/user/{userId}/profile', [ChatController::class, 'getUserProfile'])->name('api.user.profile');
 });
 // new editor save endpoints
 Route::post('/settings/policy/save', [App\Http\Controllers\SettingController::class, 'savePolicy'])->name('settings.policy.save');
