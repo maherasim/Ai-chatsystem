@@ -589,7 +589,7 @@ function confirmDelete(deleteUrl, userName) {
 
             // Display card_image if available
             if (user.card_image && user.card_image.trim() !== '') {
-                const staticBaseUrl = 'https://logiteam.it-supportline.de/';
+                const staticBaseUrl = 'https://logiteam.it-supportline.de/storage/';
                 const cardImageUrl = staticBaseUrl + user.card_image;
                 const fileName = user.card_image.split('/').pop() || user.card_image;
                 const ext = fileName.split('.').pop().toLowerCase();
