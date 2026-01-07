@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\UserAttachment;
 use App\Mail\UserWelcomeMail;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use MongoDB\BSON\ObjectId;
 
 class UsersController extends Controller
@@ -26,14 +27,30 @@ class UsersController extends Controller
         //all users other than superadmin
      $users = User::where('email', '!=', 'admin@gmail.com')->get();
 
+        // Get all teams and groups once (optimization)
+        try {
+            $allTeams = Team::all();
+        } catch (\Exception $e) {
+            \Log::error('Error fetching teams: ' . $e->getMessage());
+            $allTeams = collect([]);
+        }
+        
+        try {
+            $allGroups = Group::all();
+        } catch (\Exception $e) {
+            \Log::error('Error fetching groups: ' . $e->getMessage());
+            $allGroups = collect([]);
+        }
+        
         // Fetch team names for each user
-        $users = $users->map(function ($user) {
+        $users = $users->map(function ($user) use ($allTeams, $allGroups) {
+            try {
             $teamNames = [];
             $userId = (string) ($user->_id ?? $user->id);
             $userUserId = $user->user_id ?? null;
             
-            // Get all teams
-            $teams = Team::all();
+            // Use pre-fetched teams
+            $teams = $allTeams;
             
             foreach ($teams as $team) {
                 $taskDevelopers = $team->task_developers ?? [];
@@ -89,7 +106,8 @@ class UsersController extends Controller
             
             // Fetch group names for each user (check if user ID is in group's member_ids)
             $groupNames = [];
-            $groups = Group::all();
+            // Use pre-fetched groups
+            $groups = $allGroups;
             
             foreach ($groups as $group) {
                 $memberIds = array_map('strval', $group->member_ids ?? []);
@@ -106,6 +124,15 @@ class UsersController extends Controller
             $user->group = !empty($groupNames) ? implode(', ', array_unique($groupNames)) : '';
             
             return $user;
+            } catch (\Exception $e) {
+                \Log::error('Error processing user ' . ($user->_id ?? $user->id) . ': ' . $e->getMessage());
+                // Set defaults if error occurs
+                $user->team_names = [];
+                $user->team = '';
+                $user->group_names = [];
+                $user->group = '';
+                return $user;
+            }
         });
 
     $headers = Setting::all();

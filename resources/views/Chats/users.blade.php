@@ -414,15 +414,15 @@ function confirmDelete(deleteUrl, userName) {
                                                         "group" => $user->group ?? "",
                                                         "phone" => $user->phone ?? "",
                                                         "card_image" => $user->card_image ?? "",
-                                                        "attachments" => $user->attachments->map(function ($attachment) {
+                                                        "attachments" => ($user->attachments ?? collect())->map(function ($attachment) {
                                                                 return [
-                                                                    "file_name" => $attachment->file_name,
-                                                                    "id" => $attachment->_id,
-                                                                    "file_path" => asset('storage/' . $attachment->file_path),
-                                                                    "file_type" => $attachment->file_type,
-                                                                    "size"      => $attachment->size,
+                                                                    "file_name" => $attachment->file_name ?? "",
+                                                                    "id" => $attachment->_id ?? "",
+                                                                    "file_path" => asset('storage/' . ($attachment->file_path ?? "")),
+                                                                    "file_type" => $attachment->file_type ?? "",
+                                                                    "size"      => $attachment->size ?? "",
                                                                 ];
-                                                            }),
+                                                            })->toArray(),
                                                         "image_url" => $user->image ? asset($user->image) : "",
                                                         "join_date" => optional($user->created_at)->format('d.m.Y')
                                                     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openUserOffcanvas(JSON.parse(this.getAttribute('data-user')))"> {{$user->name}}</div>
@@ -533,15 +533,22 @@ function confirmDelete(deleteUrl, userName) {
             setText('offcanvasUserId', user.id);
             setText('offcanvasCountry', user.country);
             setText('offcanvasTeam', user.team);
-            setText('offcanvasGroup', user.group ? '@' + user.group : '-');
             setText('offcanvasJoinDate', user.join_date);
             setText('offcanvasPhone', user.phone);
             setText('offcanvasEmail', user.email);
+            
+            // Set group name with @ prefix
+            const groupEl = document.getElementById('offcanvasGroup');
+            if (groupEl) {
+                groupEl.textContent = user.group ? '@' + user.group : '-';
+            }
 
             document.getElementById('userid').value = user.id;
 
             // Load user projects
-            loadUserProjects(user.id);
+            if (user.id) {
+                loadUserProjects(user.id);
+            }
 
            // const baseUrl = "{{ asset('storage') }}/"; // Laravel storage base URL
            // const fileUrl = baseUrl + user.card_image;
@@ -584,80 +591,31 @@ function confirmDelete(deleteUrl, userName) {
             if (user.card_image && user.card_image.trim() !== '') {
                 const staticBaseUrl = 'https://logiteam.it-supportline.de/';
                 const cardImageUrl = staticBaseUrl + user.card_image;
-                const fileName = user.card_image.split('/').pop();
+                const fileName = user.card_image.split('/').pop() || user.card_image;
                 const ext = fileName.split('.').pop().toLowerCase();
-                
-                // Determine icon/display
+
+                // Determine icon/thumbnail
                 let icon = cardImageUrl;
-                let displayType = 'image';
-                
-                if (['pdf'].includes(ext)) {
-                    icon = '{{URL::asset("/build/img/pdf-icon.svg")}}';
-                    displayType = 'pdf';
-                } else if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
-                    icon = cardImageUrl;
-                    displayType = 'image';
-                } else if (['mp4','mov','avi','mkv'].includes(ext)) {
-                    icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
-                    displayType = 'video';
-                } else {
+                let isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
+                if (!isImage) {
                     icon = '{{URL::asset("/build/img/file-icon.svg")}}';
-                    displayType = 'file';
+                    if (['pdf'].includes(ext)) icon = '{{URL::asset("/build/img/pdf-icon.svg")}}';
+                    if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
                 }
-                
-                let displayName = fileName.replace(/^cards\//, '');
-                if (displayName.length > 25) {
-                    displayName = displayName.substring(0, 25) + '...';
-                }
-                
-                const cardImageDiv = document.createElement('div');
-                cardImageDiv.className = 'd-flex align-items-center gap-2 mb-2';
-                cardImageDiv.style.cssText = 'padding: 8px; background: #f8f9fa; border-radius: 8px; cursor: pointer;';
-                cardImageDiv.onclick = () => {
-                    window.open(cardImageUrl, '_blank');
-                };
-                
-                cardImageDiv.innerHTML = `
-                    <img src="${icon}" alt="${displayName}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" 
-                         onerror="this.src='{{URL::asset("/build/img/file-icon.svg")}}'">
-                    <div class="flex-grow-1">
-                        <div style="font-size: 13px; font-weight: 500; color: #2e3a59;">${displayName}</div>
-                        <div style="font-size: 11px; color: #6c757d;">ID Card</div>
-                    </div>
-                    <a href="${cardImageUrl}" target="_blank" style="color: #0d6efd; text-decoration: none;">
-                        <i class="ti ti-external-link" style="font-size: 18px;"></i>
-                    </a>
-                `;
-                
-                container.appendChild(cardImageDiv);
-            }
-
-            // Display other attachments
-            if (user.attachments && user.attachments.length > 0) {
-                user.attachments.forEach((file, index) => {
-                const fileUrl = file.file_path;
-                const fileName = file.file_name;
-                const ext = fileName.split('.').pop().toLowerCase();
-
-                // Determine icon
-                let icon = '{{URL::asset("/build/img/file-icon.svg")}}';
-                if (['pdf'].includes(ext)) icon = '{{URL::asset("/build/img/pdf-icon.svg")}}';
-                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) icon = fileUrl;
-                if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
 
                 // Truncate name
                 let dispname = fileName.length > 25 ? fileName.substring(0, 25) + '...' : fileName;
 
-                // Build HTML block
-                const block = document.createElement('div');
-                block.className = "d-flex justify-content-between align-items-center p-2 mb-2 rounded";
-                block.style.backgroundColor = "white";
-                block.style.boxShadow = "0 0 6px rgba(0,0,0,0.05)";
+                // Build HTML block for card_image
+                const cardImageBlock = document.createElement('div');
+                cardImageBlock.className = "d-flex justify-content-between align-items-center p-2 mb-2 rounded";
+                cardImageBlock.style.backgroundColor = "white";
+                cardImageBlock.style.boxShadow = "0 0 6px rgba(0,0,0,0.05)";
 
-                block.innerHTML = `
+                cardImageBlock.innerHTML = `
                     <div class="d-flex align-items-center">
                         <img src="${icon}" style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px; cursor: pointer;"
-                            onclick="window.open('${fileUrl}', '_blank')" />
+                            onclick="window.open('${cardImageUrl}', '_blank')" />
                         <div>
                             <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">${dispname}</div>
                         </div>
@@ -675,19 +633,77 @@ function confirmDelete(deleteUrl, userName) {
                             onclick="event.stopPropagation();">
                             <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
                             <div style="display:flex; justify-content: space-between; align-items:center;">
-                                <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
-                                    style="width: 22px; cursor: pointer;"
-                                    onclick="deleteAttachment('${file.id}', this)">
-                                <a href="${fileUrl}" download>
+                                <a href="${cardImageUrl}" download>
                                     <img src="{{URL::asset('/build/img/download.svg')}}" alt="Download" style="width: 22px; cursor: pointer;">
+                                </a>
+                                <a href="${cardImageUrl}" target="_blank">
+                                    <img src="{{URL::asset('/build/img/flow.svg')}}" alt="View" style="width: 22px; cursor: pointer;">
                                 </a>
                             </div>
                         </div>
                     </div>
                 `;
 
-                container.appendChild(block);
-            });
+                container.appendChild(cardImageBlock);
+            }
+
+            // Display other attachments
+            if (user.attachments && Array.isArray(user.attachments) && user.attachments.length > 0) {
+                user.attachments.forEach((file, index) => {
+                    const fileUrl = file.file_path;
+                    const fileName = file.file_name;
+                    const ext = fileName.split('.').pop().toLowerCase();
+
+                    // Determine icon
+                    let icon = '{{URL::asset("/build/img/file-icon.svg")}}';
+                    if (['pdf'].includes(ext)) icon = '{{URL::asset("/build/img/pdf-icon.svg")}}';
+                    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) icon = fileUrl;
+                    if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) icon = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+
+                    // Truncate name
+                    let dispname = fileName.length > 25 ? fileName.substring(0, 25) + '...' : fileName;
+
+                    // Build HTML block
+                    const block = document.createElement('div');
+                    block.className = "d-flex justify-content-between align-items-center p-2 mb-2 rounded";
+                    block.style.backgroundColor = "white";
+                    block.style.boxShadow = "0 0 6px rgba(0,0,0,0.05)";
+
+                    block.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <img src="${icon}" style="width: 35px; height: 40px; object-fit: contain; margin-right: 10px; cursor: pointer;"
+                                onclick="window.open('${fileUrl}', '_blank')" />
+                            <div>
+                                <div style="font-weight: 500; font-size: 14px; color: #2e3a59;">${dispname}</div>
+                            </div>
+                        </div>
+
+                        <div style="position: relative; display: inline-block;">
+                            <div
+                                style="width: 28px; height: 28px; border: 1px solid #a6aec1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background:#fff;"
+                                onclick="let menu=this.nextElementSibling; menu.style.display = (menu.style.display==='block')?'none':'block'; event.stopPropagation();">
+                                <i class="bi bi-three-dots" style="font-size: 16px; color: #2e3a59;"></i>
+                            </div>
+
+                            <div class="menu-box"
+                                style="display: none; position: absolute; top: 35px; right: 0; background: #fff; width:100px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 10px; text-align: center; z-index:1000;"
+                                onclick="event.stopPropagation();">
+                                <div style="font-size: 13px; color: #7a7a9d; font-weight: 600; margin-bottom: 8px;">Options</div>
+                                <div style="display:flex; justify-content: space-between; align-items:center;">
+                                    <img src="{{URL::asset('/build/img/delete1.svg')}}" alt="Delete"
+                                        style="width: 22px; cursor: pointer;"
+                                        onclick="deleteAttachment('${file.id}', this)">
+                                    <a href="${fileUrl}" download>
+                                        <img src="{{URL::asset('/build/img/download.svg')}}" alt="Download" style="width: 22px; cursor: pointer;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(block);
+                });
+            }
 
             
             
@@ -696,6 +712,210 @@ function confirmDelete(deleteUrl, userName) {
 
         } catch (e) {
             console.error('Failed to populate user offcanvas', e);
+        }
+    }
+
+    function loadUserProjects(userId) {
+        const container = document.getElementById('userProjectsContainer');
+        if (!container) return;
+        
+        container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;"><img src="{{ asset("assets/spin-loader.gif") }}" alt="Loading" style="width: 20px; height: 20px;" /> Loading projects...</div></div>';
+        
+        fetch(`/users/${userId}/projects`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    renderProjects(data.projects || []);
+                    if (data.summary) {
+                        renderProjectSummary(data.summary);
+                    }
+                } else {
+                    container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found.</div></div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading projects:', error);
+                container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #e74a3b;">Error loading projects. Check console for details.</div></div>';
+            });
+    }
+
+    function renderProjects(projects) {
+        try {
+            const container = document.getElementById('userProjectsContainer');
+            const template = document.getElementById('projectCardTemplate');
+            if (!container) {
+                console.error('Container userProjectsContainer not found');
+                return;
+            }
+            if (!template) {
+                console.error('Template projectCardTemplate not found');
+                return;
+            }
+            
+            console.log('Rendering projects:', projects);
+            container.innerHTML = '';
+            if (!projects || projects.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found.</div></div>';
+                return;
+            }
+            
+            projects.forEach(project => {
+                try {
+                    const clone = document.importNode(template.content, true);
+                    const progressPercent = project.progress_percent || 0;
+                    
+                    // Update progress circle
+                    const progressText = clone.querySelector('div[style*="position: absolute"]');
+                    if (progressText) progressText.textContent = progressPercent + '%';
+                    const progressPath = clone.querySelector('svg path:last-child');
+                    if (progressPath) progressPath.setAttribute('stroke-dasharray', `${progressPercent}, 100`);
+                    
+                    // Update logo
+                    const logoImg = clone.querySelector('.mx-auto img');
+                    if (logoImg && project.logo_url) logoImg.src = project.logo_url;
+                    
+                    // Update title
+                    const titleEl = clone.querySelector('h6');
+                    if (titleEl) titleEl.textContent = project.title || 'Project';
+                    
+                    // Update priority
+                    const prioritySpan = clone.querySelector('span[style*="color: #4b5c74"]');
+                    if (prioritySpan) prioritySpan.textContent = (project.priority || 'low').toUpperCase();
+                    
+                    // Update dates - find the specific date div (the one with "Ticket ID" text)
+                    const allDateDivs = clone.querySelectorAll('div[style*="font-size: 12px"]');
+                    const dateDiv = Array.from(allDateDivs).find(div => div.textContent && div.textContent.includes('Ticket ID'));
+                    if (dateDiv && project.start_date && project.end_date) {
+                        dateDiv.innerHTML = `<div><strong>${project.code || 'N/A'}</strong> | <strong>Section</strong></div><div><span style="color: #28c76f;">Start:</span> ${project.start_date}</div><div><span style="color: #28c76f;">Deliver:</span> ${project.end_date}</div>`;
+                    }
+                    
+                    // Update stats
+                    const statsDivs = clone.querySelectorAll('div[style*="flex: 1"]');
+                    if (statsDivs.length >= 4) {
+                        const lastChild0 = statsDivs[0].querySelector('div:last-child');
+                        if (lastChild0) lastChild0.textContent = `#${project.in_progress_tickets || 0} of #${project.total_tickets || 0}`;
+                        const lastChild1 = statsDivs[1].querySelector('div:last-child');
+                        if (lastChild1) lastChild1.textContent = `#${project.total_tasks || 0}`;
+                        const lastChild2 = statsDivs[2].querySelector('div:last-child');
+                        if (lastChild2) lastChild2.textContent = `#${project.days_left || 0}`;
+                        const lastChild3 = statsDivs[3].querySelector('div:last-child');
+                        if (lastChild3) lastChild3.textContent = `${progressPercent}%`;
+                    }
+                    
+                    // Update progress bar
+                    const progressBar = clone.querySelector('.progress-bar');
+                    if (progressBar) progressBar.style.width = progressPercent + '%';
+                    
+                    // Update PM
+                    const pmImg = clone.querySelector('div[style*="Project Manager"] + img');
+                    if (pmImg && project.project_manager && project.project_manager.avatar) {
+                        pmImg.src = project.project_manager.avatar;
+                    }
+                    
+                    // Update developers
+                    const devContainer = clone.querySelector('div[style*="Developers"] + div');
+                    if (devContainer && project.developers && project.developers.length > 0) {
+                        devContainer.innerHTML = '';
+                        project.developers.slice(0, 3).forEach((dev, index) => {
+                            const img = document.createElement('img');
+                            img.src = dev.avatar || '{{ asset("build/img/profileuser.svg") }}';
+                            img.className = 'rounded-circle border border-white shadow-sm';
+                            img.style.cssText = `width: 32px; height: 32px; position: absolute; left: ${index * 18}px; z-index: ${3 - index};`;
+                            devContainer.appendChild(img);
+                        });
+                    }
+                    
+                    // Update tickets & tasks
+                    const ticketsTasksDiv = clone.querySelector('div[style*="Ticket & Tasks"] + div');
+                    if (ticketsTasksDiv) {
+                        ticketsTasksDiv.textContent = `${project.total_tickets || 0} Tickets - ${project.total_tasks || 0} Tasks`;
+                    }
+                    
+                    // Update sections - find by structure
+                    const sectionsContainer = clone.querySelector('div.flex-grow-1.mt-1');
+                    if (sectionsContainer && project.sections && project.sections.length > 0) {
+                        // Find labels div (contains spans with Section#1)
+                        const labelsDiv = Array.from(sectionsContainer.querySelectorAll('div')).find(div => 
+                            div.textContent && div.textContent.includes('Section#1')
+                        );
+                        // Find bars div (contains progress bars)
+                        const barsDiv = Array.from(sectionsContainer.querySelectorAll('div')).find(div => 
+                            div.querySelectorAll('.progress').length > 0
+                        );
+                        
+                        if (labelsDiv && barsDiv) {
+                            labelsDiv.innerHTML = '';
+                            barsDiv.innerHTML = '';
+                            project.sections.slice(0, 4).forEach((section, index) => {
+                                const span = document.createElement('span');
+                                span.style.cssText = 'margin-left:10px;margin-right:10px;';
+                                span.textContent = `${section.name || 'Section'} ${section.progress || 0}%`;
+                                labelsDiv.appendChild(span);
+                                const progressDiv = document.createElement('div');
+                                progressDiv.className = 'progress';
+                                progressDiv.style.cssText = `width: 24%; height: 10px; background-color: ${index % 3 === 0 ? '#d3f4dc' : index % 3 === 1 ? '#fef3d3' : '#fdd7d7'}; border-radius: 10px;`;
+                                const bar = document.createElement('div');
+                                bar.className = 'progress-bar';
+                                bar.style.cssText = `width: ${section.progress || 0}%; background-color: ${index % 3 === 0 ? '#28c76f' : index % 3 === 1 ? '#ffc107' : '#ea5455'}; border-radius: 10px;`;
+                                progressDiv.appendChild(bar);
+                                barsDiv.appendChild(progressDiv);
+                            });
+                        }
+                    }
+                    
+                    container.appendChild(clone);
+                } catch (e) {
+                    console.error('Error rendering project:', project, e);
+                }
+            });
+        } catch (e) {
+            console.error('Error in renderProjects:', e);
+            const container = document.getElementById('userProjectsContainer');
+            if (container) {
+                container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #e74a3b;">Error rendering projects. Check console for details.</div></div>';
+            }
+        }
+    }
+
+    function renderProjectSummary(summary) {
+        if (!summary) return;
+        const titleEl = document.getElementById('totalProjectsTitle');
+        if (titleEl && summary.total_projects !== undefined) {
+            titleEl.textContent = `Total Projects (${summary.total_projects})`;
+        }
+        const tagsContainer = document.getElementById('projectTagsContainer');
+        if (tagsContainer && summary.project_summary) {
+            tagsContainer.innerHTML = '';
+            if (summary.project_summary.length === 0) {
+                tagsContainer.innerHTML = '<div class="col-12 text-center p-2"><div style="color: #6c757d; font-size: 12px;">No projects</div></div>';
+            } else {
+                summary.project_summary.forEach(project => {
+                    const tagDiv = document.createElement('div');
+                    tagDiv.className = 'd-flex flex-wrap align-items-center gap-2';
+                    tagDiv.style.cssText = 'background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;';
+                    tagDiv.innerHTML = `<img src="${project.logo_url || '{{ URL::asset("/build/img/yekbon.svg") }}'}" alt="Logo" style="width: 24px; height: 24px;"><div class="d-flex flex-wrap flex-column" style="line-height: 1.2;"><strong style="color: #1a2343; font-size: 13px;">${project.title || 'Project'}</strong><div class="d-flex flex-wrap gap-2 mt-1"><span style="color: #1a2343;">Tickets<span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">${project.tickets_count || 0}</span></span><span style="color: #1a2343;">Tasks<span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">${project.tasks_count || 0}</span></span></div></div>`;
+                    tagsContainer.appendChild(tagDiv);
+                });
+            }
+        }
+        if (summary.task_stats) {
+            const stats = summary.task_stats;
+            const updateCount = (id, count) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = count || 0;
+            };
+            updateCount('newTaskCount', stats.new_tasks);
+            updateCount('totalTaskCount', stats.total_tasks);
+            updateCount('progressTaskCount', stats.progress_tasks);
+            updateCount('inHoldTaskCount', stats.in_hold_tasks);
+            updateCount('inCheckTaskCount', stats.in_check_tasks);
+            updateCount('delayedTaskCount', stats.delayed_tasks);
+            updateCount('rejectedTaskCount', stats.rejected_tasks);
         }
     }
 
@@ -757,202 +977,6 @@ function confirmDelete(deleteUrl, userName) {
         });
     }
 
-    function loadUserProjects(userId) {
-        const container = document.getElementById('userProjectsContainer');
-        if (!container) return;
-        
-        container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">Loading projects...</div></div>';
-        
-        fetch(`/users/${encodeURIComponent(userId)}/projects`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (data.projects && data.projects.length > 0) {
-                        renderProjects(data.projects);
-                    } else {
-                        container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found for this user.</div></div>';
-                    }
-                    
-                    // Render summary data
-                    if (data.summary) {
-                        renderProjectSummary(data.summary);
-                    }
-                } else {
-                    container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found for this user.</div></div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading projects:', error);
-                container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #ef4444;">Failed to load projects.</div></div>';
-            });
-    }
-
-    function renderProjects(projects) {
-        const container = document.getElementById('userProjectsContainer');
-        const template = document.getElementById('projectCardTemplate');
-        
-        if (!container || !template) return;
-        
-        container.innerHTML = '';
-        
-        projects.forEach(project => {
-            const card = template.cloneNode(true);
-            card.style.display = 'block';
-            card.id = ''; // Remove template ID
-            
-            // Update progress circle
-            const progress = project.progress_percent || 0;
-            const progressBar = card.querySelector('.progress-bar');
-            const progressText = card.querySelector('.progress-text');
-            if (progressBar) {
-                const circumference = 2 * Math.PI * 15.9155;
-                const offset = circumference - (progress / 100) * circumference;
-                progressBar.setAttribute('stroke-dasharray', `${(progress / 100) * circumference}, ${circumference}`);
-            }
-            if (progressText) progressText.textContent = progress + '%';
-            
-            // Update project logo
-            const logo = card.querySelector('.project-logo');
-            if (logo) logo.src = project.logo_url || '{{URL::asset("/build/img/yekbon.svg")}}';
-            
-            // Update project title
-            const title = card.querySelector('.project-title');
-            if (title) title.textContent = project.title || 'Project';
-            
-            // Update priority
-            const priorityDot = card.querySelector('.priority-dot');
-            const priorityText = card.querySelector('.priority-text');
-            if (priorityDot && priorityText) {
-                const priority = (project.priority || 'low').toLowerCase();
-                const colors = { low: '#28c76f', medium: '#ffc107', high: '#ea5455' };
-                priorityDot.style.background = colors[priority] || colors.low;
-                priorityText.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
-            }
-            
-            // Update dates
-            const startDate = card.querySelector('.start-date');
-            const endDate = card.querySelector('.end-date');
-            if (startDate) startDate.textContent = project.start_date || '-';
-            if (endDate) endDate.textContent = project.end_date || '-';
-            
-            // Update ticket section
-            const ticketSection = card.querySelector('.ticket-section');
-            if (ticketSection && project.code) {
-                ticketSection.textContent = project.code;
-            }
-            
-            // Update stats
-            const ticketsCount = card.querySelector('.tickets-count');
-            const tasksCount = card.querySelector('.tasks-count');
-            const daysLeft = card.querySelector('.days-left');
-            const statusPercent = card.querySelector('.status-percent');
-            const progressBarMain = card.querySelector('.progress-bar-main');
-            const ticketsTasksCount = card.querySelector('.tickets-tasks-count');
-            
-            if (ticketsCount) ticketsCount.textContent = `#${project.in_progress_tickets || 0} of #${project.total_tickets || 0}`;
-            if (tasksCount) tasksCount.textContent = `#${project.total_tasks || 0}`;
-            if (daysLeft) daysLeft.textContent = `#${project.days_left || 0}`;
-            if (statusPercent) statusPercent.textContent = `${progress}%`;
-            if (progressBarMain) progressBarMain.style.width = `${progress}%`;
-            if (ticketsTasksCount) ticketsTasksCount.textContent = `${project.total_tickets || 0} Tickets - ${project.total_tasks || 0} Tasks`;
-            
-            // Update PM avatar
-            const pmAvatar = card.querySelector('.pm-avatar');
-            if (pmAvatar) {
-                pmAvatar.src = project.project_manager?.avatar || '{{asset("build/img/profileuser.svg")}}';
-                pmAvatar.alt = project.project_manager?.name || 'PM';
-            }
-            
-            // Update developers
-            const devContainer = card.querySelector('.developers-container');
-            if (devContainer && project.developers && project.developers.length > 0) {
-                devContainer.innerHTML = '';
-                project.developers.slice(0, 3).forEach((dev, index) => {
-                    const img = document.createElement('img');
-                    img.src = dev.avatar || '{{asset("build/img/profileuser.svg")}}';
-                    img.className = 'rounded-circle border border-white shadow-sm';
-                    img.style.cssText = `width: 32px; height: 32px; position: absolute; left: ${index * 18}px; z-index: ${3 - index};`;
-                    img.alt = dev.name;
-                    devContainer.appendChild(img);
-                });
-            }
-            
-            // Update sections
-            const sectionsContainer = card.querySelector('.sections-container');
-            if (sectionsContainer && project.sections && project.sections.length > 0) {
-                let sectionsHtml = '<div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59; margin-left:10px;margin-right:10px;">';
-                project.sections.forEach(section => {
-                    sectionsHtml += `<span style="margin-left:10px;margin-right:10px;">${section.name} ${section.progress}%</span>`;
-                });
-                sectionsHtml += '</div><div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">';
-                
-                project.sections.forEach(section => {
-                    const color = section.progress >= 75 ? '#28c76f' : section.progress >= 50 ? '#ffc107' : '#ea5455';
-                    const bgColor = section.progress >= 75 ? '#d3f4dc' : section.progress >= 50 ? '#fef3d3' : '#fdd7d7';
-                    sectionsHtml += `<div class="progress" style="width: ${100 / project.sections.length}%; height: 10px; background-color: ${bgColor}; border-radius: 10px;"><div class="progress-bar" style="width: ${section.progress}%; background-color: ${color}; border-radius: 10px;"></div></div>`;
-                });
-                sectionsHtml += '</div>';
-                sectionsContainer.innerHTML = sectionsHtml;
-            }
-            
-            container.appendChild(card);
-        });
-    }
-
-    function renderProjectSummary(summary) {
-        // Update total projects title
-        const titleEl = document.getElementById('totalProjectsTitle');
-        if (titleEl && summary.total_projects !== undefined) {
-            titleEl.textContent = `Total Projects (${summary.total_projects})`;
-        }
-        
-        // Render project tags
-        const tagsContainer = document.getElementById('projectTagsContainer');
-        if (tagsContainer && summary.project_summary) {
-            if (summary.project_summary.length === 0) {
-                tagsContainer.innerHTML = '<div class="col-12 text-center p-2"><div style="color: #6c757d; font-size: 12px;">No projects</div></div>';
-            } else {
-                tagsContainer.innerHTML = '';
-                summary.project_summary.forEach(project => {
-                    const tag = document.createElement('div');
-                    tag.className = 'd-flex flex-wrap align-items-center gap-2';
-                    tag.style.cssText = 'background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;';
-                    tag.innerHTML = `
-                        <img src="${project.logo_url || '{{URL::asset("/build/img/yekbon.svg")}}'}" alt="Logo" style="width: 24px; height: 24px;">
-                        <div class="d-flex flex-wrap flex-column" style="line-height: 1.2;">
-                            <strong style="color: #1a2343; font-size: 13px;">${project.title || 'Project'}</strong>
-                            <div class="d-flex flex-wrap gap-2 mt-1">
-                                <span style="color: #1a2343;">Tickets
-                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">${project.tickets_count || 0}</span>
-                                </span>
-                                <span style="color: #1a2343;">Tasks
-                                    <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">${project.tasks_count || 0}</span>
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                    tagsContainer.appendChild(tag);
-                });
-            }
-        }
-        
-        // Update task status counts
-        if (summary.task_stats) {
-            const stats = summary.task_stats;
-            const setCount = (id, value) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = value || 0;
-            };
-            
-            setCount('newTasksCount', stats.new_tasks);
-            setCount('totalTasksCount', stats.total_tasks);
-            setCount('progressTasksCount', stats.progress_tasks);
-            setCount('inHoldTasksCount', stats.in_hold_tasks);
-            setCount('inCheckTasksCount', stats.in_check_tasks);
-            setCount('delayedTasksCount', stats.delayed_tasks);
-            setCount('rejectedTasksCount', stats.rejected_tasks);
-        }
-    }
 
 </script>
 
@@ -1468,447 +1492,232 @@ function confirmDelete(deleteUrl, userName) {
             <!-- Right Panel: col-9 -->
             <div id="overviewContent" class="toggle-content col-md-8 col-sm-12" style="display:block;">
 
+                <!-- Project Card Template (Hidden) -->
+                <template id="projectCardTemplate" style="display: none;">
+                    <div class="col-12 col-md-6">
+                            <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
+
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <!-- Left: Circular Progress -->
+                                    <div style="position: relative; width: 45px; height: 45px;">
+                                        <svg viewBox="0 0 36 36" width="45" height="45">
+                                            <path
+                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path
+                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
+                                                stroke-dasharray="70, 100"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
+                                            70%
+                                        </div>
+                                    </div>
+
+                                    <!-- Center: Yekbon Logo -->
+                                    <div class="mx-auto">
+                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                    </div>
+
+                                    <!-- Right: Empty space for balance (optional) -->
+                                    <div style="width: 45px;"></div>
+                                </div>
+
+
+
+                                <div class="text-center" style="cursor: pointer;">
+                                    <h6 style="cursor: pointer;"
+                                        data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight"
+                                        aria-controls="offcanvasRight">
+                                        Project Title
+                                    </h6>
+                                    <!-- Project ID styled exactly like screenshot -->
+                                </div>
+
+
+                                <!-- Progress Status -->
+                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
+                                    <!-- Status with green dot and soft gray/green background -->
+                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
+                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
+                                    </div>
+                                    <!-- Red Flag with soft red background -->
+                                    <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
+                                        <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
+                                    </div>
+                                </div>
+
+                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
+                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
+                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
+                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                                </div>
+
+                                <!-- Section Progress Block -->
+                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
+                                    <!-- Stats -->
+                                    <div class="d-flex justify-content-between text-center mb-2">
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
+                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
+                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
+                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
+                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Blue Progress Bar -->
+                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
+                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Team & Tickets Info -->
+                                <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                    <!-- Project Manager -->
+                                    <div class="text-center" style="flex: 1; min-width: 100px;">
+                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
+                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm"
+                                            style="width: 32px; height: 32px; margin-top: 4px;">
+                                    </div>
+
+                                    <!-- Developers -->
+                                    <div class="text-center" style="flex: 1; min-width: 100px;">
+                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
+                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
+                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
+                                                style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
+                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
+                                                style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
+                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
+                                                style="width: 32px; height: 32px; position: absolute; left: 36px; z-index: 1;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Tickets & Tasks -->
+                                    <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
+                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
+                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">5 Tickets - 10 Tasks</div>
+                                    </div>
+                                </div>
+
+                                <!-- sections -->
+                                <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
+                                    <!-- Section Labels -->
+                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
+                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                                    </div>
+
+                                    <!-- Section Progress Bars -->
+                                    <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
+                                        <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
+                                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                        </div>
+                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
+                                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
+                                        </div>
+                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
+                                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
                 <!-- Our projects -->
-                <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 0px;" class="mb-2">
+                <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 10px;" class="mb-2">
                     <div>
                         <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
                     </div>
                     <div id="userProjectsContainer" class="row g-1">
                         <div class="col-12 text-center p-4">
-                            <div style="color: #6c757d;">Loading projects...</div>
+                            <div style="color: #6c757d;">Select a user to view their projects</div>
                         </div>
                     </div>
-                    <!-- Template for project card (hidden) -->
-                    <div id="projectCardTemplate" style="display: none;" class="col-12 col-md-6">
-                        <div class="card shadow-sm p-2" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <!-- Left: Circular Progress -->
-                                <div style="position: relative; width: 45px; height: 45px;">
-                                    <svg viewBox="0 0 36 36" width="45" height="45" class="progress-circle">
-                                        <path class="progress-bg" style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path class="progress-bar" style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div class="progress-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">0%</div>
-                                </div>
-                                <!-- Center: Project Logo -->
-                                <div class="mx-auto">
-                                    <img class="project-logo rounded-circle" style="height: 55px;" alt="Project Logo">
-                                </div>
-                                <!-- Right: Empty space -->
-                                <div style="width: 45px;"></div>
-                            </div>
-                            <div class="text-center" style="cursor: pointer;">
-                                <h6 class="project-title" style="cursor: pointer;">Project Title</h6>
-                            </div>
-                            <!-- Progress Status -->
-                            <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                <div class="priority-badge" style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                    <span class="priority-dot" style="width: 10px; height: 10px; border-radius: 50%; display: inline-block;"></span>
-                                    <span class="priority-text" style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                </div>
-                                <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                    <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
-                                </div>
-                            </div>
-                            <div class="project-dates" style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                <div><strong class="ticket-section">Ticket ID</strong> | <strong>Section</strong></div>
-                                <div><span style="color: #28c76f;">Start:</span> <span class="start-date">-</span></div>
-                                <div><span style="color: #28c76f;">Deliver:</span> <span class="end-date">-</span></div>
-                            </div>
-                            <!-- Section Progress Block -->
-                            <div class="flex-grow-1 mt-1" style="flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
-                                <div class="d-flex justify-content-between text-center mb-2">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                        <div class="tickets-count" style="font-size: 12px; color: #649bc3;">#0 of #0</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                        <div class="tasks-count" style="font-size: 13px; color: #649bc3;">#0</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                        <div class="days-left" style="font-size: 13px; color: #649bc3;">#0</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                        <div class="status-percent" style="font-size: 13px; color: #649bc3;">0%</div>
-                                    </div>
-                                </div>
-                                <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                    <div class="progress-bar-main" style="width: 0%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                </div>
-                            </div>
-                            <!-- Team & Tickets Info -->
-                            <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                <div class="text-center" style="flex: 1; min-width: 100px;">
-                                    <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
-                                    <img class="pm-avatar rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; margin-top: 4px;" alt="PM">
-                                </div>
-                                <div class="text-center" style="flex: 1; min-width: 100px;">
-                                    <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                    <div class="developers-container position-relative d-inline-block mt-1" style="height: 32px; width: 80px;"></div>
-                                </div>
-                                <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
-                                    <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
-                                    <div class="tickets-tasks-count" style="font-size: 11px; color: #6c757d; margin-top: 10px;">0 Tickets - 0 Tasks</div>
-                                </div>
-                            </div>
-                            <!-- Sections -->
-                            <div class="flex-grow-1 mt-1 sections-container" style="background:#f8f9fa;border-radius:10px;"></div>
-                        </div>
-                    </div>
-                    <!-- Original hardcoded cards (will be replaced) -->
-                    <div class="row g-1" style="display: none;">
-
-                        <div class=" col-12 col-md-6">
-                            <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <!-- Left: Circular Progress -->
-                                    <div style="position: relative; width: 45px; height: 45px;">
-                                        <svg viewBox="0 0 36 36" width="45" height="45">
-                                            <path
-                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path
-                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                stroke-dasharray="70, 100"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        </svg>
-                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                            70%
-                                        </div>
-                                    </div>
-
-                                    <!-- Center: Yekbon Logo -->
-                                    <div class="mx-auto">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                    </div>
-
-                                    <!-- Right: Empty space for balance (optional) -->
-                                    <div style="width: 45px;"></div>
-                                </div>
-
-
-
-                                <div class="text-center" style="cursor: pointer;">
-                                    <h6 style="cursor: pointer;"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight"
-                                        aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-                                    <!-- Project ID styled exactly like screenshot -->
-                                </div>
-
-
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                    <!-- Status with green dot and soft gray/green background -->
-                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                    </div>
-                                    <!-- Red Flag with soft red background -->
-                                    <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                        <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
-                                    </div>
-                                </div>
-
-                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                                </div>
-
-                                <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
-                                    <!-- Stats -->
-                                    <div class="d-flex justify-content-between text-center mb-2">
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar -->
-                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Team & Tickets Info -->
-                                <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                    <!-- Project Manager -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; margin-top: 4px;">
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 36px; z-index: 1;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Tickets & Tasks -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
-                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">5 Tickets - 10 Tasks</div>
-                                    </div>
-                                </div>
-
-                                <!-- sections -->
-                                <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
-                                    <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                    </div>
-
-                                    <!-- Section Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- card 2 -->
-                        <div class=" col-12 col-md-6">
-                            <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <!-- Left: Circular Progress -->
-                                    <div style="position: relative; width: 45px; height: 45px;">
-                                        <svg viewBox="0 0 36 36" width="45" height="45">
-                                            <path
-                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path
-                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                stroke-dasharray="70, 100"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        </svg>
-                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                            70%
-                                        </div>
-                                    </div>
-
-                                    <!-- Center: Yekbon Logo -->
-                                    <div class="mx-auto">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                    </div>
-
-                                    <!-- Right: Empty space for balance (optional) -->
-                                    <div style="width: 45px;"></div>
-                                </div>
-
-
-
-                                <div class="text-center" style="cursor: pointer;">
-                                    <h6 style="cursor: pointer;"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight"
-                                        aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-                                    <!-- Project ID styled exactly like screenshot -->
-                                </div>
-
-
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                    <!-- Status with green dot and soft gray/green background -->
-                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                    </div>
-                                    <!-- Red Flag with soft red background -->
-                                    <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                        <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
-                                    </div>
-                                </div>
-
-                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                                </div>
-
-                                <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
-                                    <!-- Stats -->
-                                    <div class="d-flex justify-content-between text-center mb-2">
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar -->
-                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Team & Tickets Info -->
-                                <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                    <!-- Project Manager -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; margin-top: 4px;">
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 36px; z-index: 1;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Tickets & Tasks -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
-                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">5 Tickets - 10 Tasks</div>
-                                    </div>
-                                </div>
-
-                                <!-- sections -->
-                                <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
-                                    <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                    </div>
-
-                                    <!-- Section Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
+
                 <!-- Total projects -->
-                <div id="totalProjectsContainer" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
+                <div style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                     <div class="d-flex flex-wrap justify-content-between align-items-start mb-3">
+
                         <!-- Left Icon -->
                         <img src="{{ asset('build/img/lato.svg') }}" alt="Icon" style="width: 50px; height: auto; margin-bottom:3px;">
+
                         <!-- Project Summary -->
                         <div id="projectSummaryContainer" style="background-color: white;border-radius:6px;padding:5px;">
                             <div id="totalProjectsTitle" style="font-size: 15px; font-weight: 600; color: #2e3a59;">Total Projects</div>
                             <div id="projectTagsContainer" class="d-flex gap-1 mt-1 flex-nowrap">
                                 <div class="col-12 text-center p-2">
-                                    <div style="color: #6c757d; font-size: 12px;">Loading...</div>
+                                    <div style="color: #6c757d; font-size: 12px;">Select a user to view projects</div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <!-- Task Status Cards -->
-                    <div id="taskStatusCardsContainer" class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius: 10px; padding: 5px; padding-left: 1px;">
+                    <div class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius: 10px; padding: 5px; padding-left: 1px;">
+                        <!-- Card Template -->
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/newtask.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">New Task</div>
-                            <div id="newTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="newTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
                         <div style="flex: 1; min-width: 80px;  border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/totaltask.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Total Tasks</div>
-                            <div id="totalTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="totalTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/progress.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Progress</div>
-                            <div id="progressTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="progressTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/inhold.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Hold</div>
-                            <div id="inHoldTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="inHoldTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/incheck.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Check</div>
-                            <div id="inCheckTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="inCheckTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/delayed.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Delayed</div>
-                            <div id="delayedTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="delayedTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
+
+                        <!-- Last item: No border-right -->
                         <div style="flex: 1; min-width: 80px; padding: 0 8px;">
                             <img src="{{ asset('build/img/rejected.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Rejected</div>
-                            <div id="rejectedTasksCount" style="font-weight: 600; font-size: 13px;">0</div>
+                            <div id="rejectedTaskCount" style="font-weight: 600; font-size: 13px;">0</div>
                         </div>
                     </div>
+
                 </div>
                 <!-- reminder -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; padding-bottom: 1px;">
