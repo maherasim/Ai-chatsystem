@@ -99,6 +99,11 @@
         }
     }
 
+    /* Hide hardcoded chat items in all-chats tab (using dynamic conversations) */
+    #all-chats .chat-list:not(#conversationsList) {
+        display: none !important;
+    }
+
     @media (max-width: 768px) {
         .sidebar-group {
             width: 100% !important;
@@ -791,11 +796,61 @@
                         <div class="tab-content" id="innerTabContent">
                             <div class="tab-pane fade show active" id="all-chats" role="tabpanel" aria-labelledby="all-chats-tab">
                                 <div class="chat-users-wrap">
-                                    <div class="chat-list">
-                                        <a href="{{url('chat')}}" class="chat-user-list">
-                                            <div class="avatar avatar-lg online me-2">
-                                                <img src="{{URL::asset('/build/img/profiles/avatar-01.jpg')}}" class="rounded-circle border border-warning border-2" alt="image">
+                                    <div class="chat-list" id="conversationsList">
+                                        @if(isset($conversations) && $conversations->count() > 0)
+                                            @foreach($conversations as $conversation)
+                                                @if($conversation['other_user'])
+                                                    <div class="position-relative" data-conversation-id="{{ $conversation['conversation_id'] }}">
+                                                        <a href="javascript:void(0)" class="chat-user-list" onclick="openConversation('{{ $conversation['conversation_id'] }}', '{{ $conversation['other_user']['id'] }}')">
+                                                            <div class="avatar avatar-lg online me-2">
+                                                                <img src="{{ $conversation['other_user']['avatar'] ?? URL::asset('/build/img/profiles/avatar-01.jpg') }}" class="rounded-circle border border-warning border-2" alt="image">
+                                                            </div>
+                                                            <div class="chat-user-info">
+                                                                <div class="chat-user-msg">
+                                                                    <h6>{{ $conversation['other_user']['name'] }}</h6>
+                                                                    <p>
+                                                                        @if($conversation['last_message']['type'] === 'img')
+                                                                            <i class="ti ti-photo"></i> Image
+                                                                        @elseif($conversation['last_message']['type'] === 'file')
+                                                                            <i class="ti ti-file"></i> File
+                                                                        @else
+                                                                            {{ Str::limit($conversation['last_message']['content'] ?? 'No messages', 30) }}
+                                                                        @endif
+                                                                    </p>
+                                                                </div>
+                                                                <div class="chat-user-time">
+                                                                    <span class="time">{{ \Carbon\Carbon::parse($conversation['last_message']['created_at'])->format('h:i A') }}</span>
+                                                                    @if($conversation['unread_count'] > 0)
+                                                                        <div class="chat-pin">
+                                                                            <span class="count-message fs-12 fw-semibold" style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; min-width: 20px; text-align: center; display: inline-block;">{{ $conversation['unread_count'] }}</span>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <div class="chat-dropdown">
+                                                            <a class="#" href="#" data-bs-toggle="dropdown">
+                                                                <i class="ti ti-dots-vertical"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu dropdown-menu-end p-3">
+                                                                <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archive Chat</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
+                                                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat"><i class="ti ti-trash me-2"></i>Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <div class="text-center p-4" style="color: #6c757d;">
+                                                <p>No conversations yet</p>
                                             </div>
+                                        @endif
+                                        <!-- Original hardcoded items (hidden - using dynamic conversations above) -->
+                                        <div style="display: none !important;">
+                                            <!-- All hardcoded chat items are hidden -->
                                             <div class="chat-user-info">
                                                 <div class="chat-user-msg">
                                                     <h6>Mark Villiams</h6>
@@ -3375,5 +3430,75 @@
             // Fallback: show alert or redirect
             alert('Opening chat for: ' + groupName);
         }
+    }
+
+    // Open conversation with a user
+    function openConversation(conversationId, otherUserId) {
+        // Trigger chat system to open this conversation
+        if (typeof window.agoraChat !== 'undefined' && window.agoraChat.openConversation) {
+            window.agoraChat.openConversation(conversationId, otherUserId);
+        } else if (typeof window.groupChatManager !== 'undefined') {
+            // Fallback: try to use group chat manager
+            console.log('Opening conversation:', conversationId, otherUserId);
+        }
+        
+        // Mark messages as read when opening conversation
+        fetch(`/api/chat/conversations/${conversationId}/read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+        }).catch(err => console.error('Error marking as read:', err));
+        
+        // Refresh unread counts after a short delay
+        setTimeout(refreshUnreadCounts, 500);
+    }
+
+    // Refresh unread message counts for all conversations
+    function refreshUnreadCounts() {
+        const currentUserId = window.currentUserId || document.querySelector('meta[name="user-id"]')?.getAttribute('content');
+        if (!currentUserId) return;
+        
+        fetch('/api/chat/conversations')
+            .then(response => response.json())
+            .then(data => {
+                if (data && Array.isArray(data)) {
+                    // Update unread counts in the sidebar
+                    data.forEach(conversation => {
+                        const conversationElement = document.querySelector(`[data-conversation-id="${conversation.conversation_id}"]`);
+                        if (conversationElement) {
+                            const timeElement = conversationElement.querySelector('.chat-user-time');
+                            if (timeElement) {
+                                let badgeElement = timeElement.querySelector('.count-message');
+                                
+                                if (conversation.unread_count > 0) {
+                                    if (!badgeElement) {
+                                        // Create badge if it doesn't exist
+                                        badgeElement = document.createElement('span');
+                                        badgeElement.className = 'count-message fs-12 fw-semibold';
+                                        badgeElement.style.cssText = 'background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; min-width: 20px; text-align: center; display: inline-block; margin-left: 8px;';
+                                        timeElement.appendChild(badgeElement);
+                                    }
+                                    badgeElement.textContent = conversation.unread_count > 99 ? '99+' : conversation.unread_count;
+                                    badgeElement.style.display = 'inline-block';
+                                } else {
+                                    if (badgeElement) {
+                                        badgeElement.style.display = 'none';
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error refreshing unread counts:', error);
+            });
+    }
+
+    // Refresh unread counts periodically
+    if (typeof setInterval !== 'undefined') {
+        setInterval(refreshUnreadCounts, 30000); // Refresh every 30 seconds
     }
 </script>
