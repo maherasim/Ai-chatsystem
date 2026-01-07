@@ -714,6 +714,7 @@ class GroupChatManager {
                 <div class="chat-content">
                     <div class="chat-profile-name text-end">
                         <h6>You
+                            ${message.group_name ? `<span style="color: #6c757d; font-size: 0.85em; font-weight: normal; margin-left: 8px;">(${this.escapeHtml(message.group_name)})</span>` : ''}
                             <i class="ti ti-circle-filled fs-7 mx-2"></i>
                             <span class="chat-time">${time}</span>
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>
@@ -796,6 +797,7 @@ class GroupChatManager {
                 <div class="chat-content">
                     <div class="chat-profile-name">
                         <h6>${message.sender_name || 'User'}
+                            ${message.group_name ? `<span style="color: #6c757d; font-size: 0.85em; font-weight: normal; margin-left: 8px;">(${this.escapeHtml(message.group_name)})</span>` : ''}
                             <i class="ti ti-circle-filled fs-7 mx-2"></i>
                             <span class="chat-time">${time}</span>
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>

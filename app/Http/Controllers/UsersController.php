@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Team;
+use App\Models\Group;
+use App\Models\Project;
+use App\Models\Ticket;
+use App\Models\Task;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
@@ -20,6 +25,88 @@ class UsersController extends Controller
 
         //all users other than superadmin
      $users = User::where('email', '!=', 'admin@gmail.com')->get();
+
+        // Fetch team names for each user
+        $users = $users->map(function ($user) {
+            $teamNames = [];
+            $userId = (string) ($user->_id ?? $user->id);
+            $userUserId = $user->user_id ?? null;
+            
+            // Get all teams
+            $teams = Team::all();
+            
+            foreach ($teams as $team) {
+                $taskDevelopers = $team->task_developers ?? [];
+                
+                // Handle different formats of task_developers
+                if (is_string($taskDevelopers)) {
+                    $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                }
+                
+                if (!is_array($taskDevelopers)) {
+                    continue;
+                }
+                
+                // Check if user ID is in task_developers
+                // task_developers can be: [userId => [names...]] or flat array of IDs/names
+                $found = false;
+                
+                foreach ($taskDevelopers as $key => $value) {
+                    // Check if key matches user ID (for format: {userId: [names...]})
+                    $keyStr = (string) $key;
+                    if ($keyStr === $userId || $keyStr === $userUserId) {
+                        $found = true;
+                        break;
+                    }
+                    
+                    if (is_array($value)) {
+                        // Format: {userId: [names...]} - check values in the array
+                        foreach ($value as $val) {
+                            $valStr = (string) $val;
+                            if ($valStr === $userId || $valStr === $userUserId || $valStr === $user->name) {
+                                $found = true;
+                                break 2;
+                            }
+                        }
+                    } else {
+                        // Flat array format - check the value directly
+                        $valStr = (string) $value;
+                        if ($valStr === $userId || $valStr === $userUserId || $valStr === $user->name) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if ($found && !empty($team->title)) {
+                    $teamNames[] = $team->title;
+                }
+            }
+            
+            // Attach team names to user object
+            $user->team_names = array_unique($teamNames);
+            $user->team = !empty($teamNames) ? implode(', ', array_unique($teamNames)) : '';
+            
+            // Fetch group names for each user (check if user ID is in group's member_ids)
+            $groupNames = [];
+            $groups = Group::all();
+            
+            foreach ($groups as $group) {
+                $memberIds = array_map('strval', $group->member_ids ?? []);
+                // Check if user ID is in member_ids or is admin
+                if (in_array($userId, $memberIds) || (string)$group->admin_id === $userId) {
+                    if (!empty($group->name)) {
+                        $groupNames[] = $group->name;
+                    }
+                }
+            }
+            
+            // Attach group names to user object
+            $user->group_names = array_unique($groupNames);
+            $user->group = !empty($groupNames) ? implode(', ', array_unique($groupNames)) : '';
+            
+            return $user;
+        });
 
     $headers = Setting::all();
     $setting = Setting::first();
@@ -399,4 +486,228 @@ public function destroy($id){
      }
 }
 
+    /**
+     * Get projects for a user based on teams where user is in task_developers
+     */
+    public function getUserProjects($userId)
+    {
+        try {
+            $user = User::where('user_id', $userId)->orWhere('_id', $userId)->first();
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'User not found'], 404);
+            }
+
+            $userIdStr = (string) ($user->_id ?? $user->id);
+            $userUserId = $user->user_id ?? null;
+            
+            // Find teams where user is in task_developers
+            $teams = Team::all();
+            $projectIds = [];
+            
+            foreach ($teams as $team) {
+                $taskDevelopers = $team->task_developers ?? [];
+                
+                // Handle different formats of task_developers
+                if (is_string($taskDevelopers)) {
+                    $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                }
+                
+                if (!is_array($taskDevelopers)) {
+                    continue;
+                }
+                
+                // Check if user ID is in task_developers (format: {"userId": ["name"]})
+                $found = false;
+                foreach ($taskDevelopers as $key => $value) {
+                    $keyStr = (string) $key;
+                    if ($keyStr === $userIdStr || $keyStr === $userUserId) {
+                        $found = true;
+                        break;
+                    }
+                    
+                    if (is_array($value)) {
+                        foreach ($value as $val) {
+                            $valStr = (string) $val;
+                            if ($valStr === $userIdStr || $valStr === $userUserId || $valStr === $user->name) {
+                                $found = true;
+                                break 2;
+                            }
+                        }
+                    } else {
+                        $valStr = (string) $value;
+                        if ($valStr === $userIdStr || $valStr === $userUserId || $valStr === $user->name) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // If user found in team, get project_id
+                if ($found && !empty($team->project_id)) {
+                    $projectIds[] = (string) $team->project_id;
+                }
+            }
+            
+            $projectIds = array_unique($projectIds);
+            
+            if (empty($projectIds)) {
+                return response()->json(['success' => true, 'projects' => []]);
+            }
+            
+            // Fetch projects
+            $projects = Project::whereIn('_id', $projectIds)->get();
+            
+            // Format projects with tickets and tasks
+            $formattedProjects = $projects->map(function ($project) {
+                // Get tickets for this project
+                $tickets = Ticket::where('project_id', (string)($project->_id ?? $project->id))->get();
+                
+                // Get tasks for this project
+                $tasks = Task::where('project_id', (string)($project->_id ?? $project->id))->get();
+                
+                // Calculate stats
+                $totalTickets = $tickets->count();
+                $totalTasks = $tasks->count();
+                $completedTasks = $tasks->where('status', 'completed')->count();
+                $inProgressTickets = $tickets->where('status', 'in_progress')->count();
+                
+                // Get sections
+                $sections = $project->sections ?? [];
+                $sectionStats = [];
+                foreach ($sections as $section) {
+                    $sectionName = $section['name'] ?? 'Unknown';
+                    $sectionTasks = $tasks->filter(function ($task) use ($sectionName) {
+                        return ($task->section_name ?? '') === $sectionName;
+                    });
+                    $sectionCompleted = $sectionTasks->where('status', 'completed')->count();
+                    $sectionTotal = $sectionTasks->count();
+                    $sectionProgress = $sectionTotal > 0 ? round(($sectionCompleted / $sectionTotal) * 100) : 0;
+                    
+                    $sectionStats[] = [
+                        'name' => $sectionName,
+                        'progress' => $sectionProgress,
+                        'total' => $sectionTotal,
+                        'completed' => $sectionCompleted,
+                    ];
+                }
+                
+                // Get project manager
+                $pm = null;
+                if (!empty($project->user_id)) {
+                    $pm = User::find($project->user_id);
+                }
+                
+                // Get developers from teams
+                $developers = [];
+                $teamsForProject = Team::where('project_id', (string)($project->_id ?? $project->id))->get();
+                foreach ($teamsForProject as $team) {
+                    $taskDevelopers = $team->task_developers ?? [];
+                    if (is_string($taskDevelopers)) {
+                        $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                    }
+                    
+                    foreach ($taskDevelopers as $devId => $devNames) {
+                        if (is_array($devNames)) {
+                            foreach ($devNames as $devName) {
+                                $dev = User::where('name', $devName)->orWhere('_id', $devId)->first();
+                                if ($dev && !in_array($dev->_id, array_column($developers, 'id'))) {
+                                    $developers[] = [
+                                        'id' => (string)($dev->_id ?? $dev->id),
+                                        'name' => $dev->name,
+                                        'avatar' => $dev->image ? asset($dev->image) : asset('build/img/profileuser.svg'),
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Calculate days left
+                $daysLeft = 0;
+                if ($project->end_date) {
+                    $endDate = Carbon::parse($project->end_date);
+                    $today = Carbon::today();
+                    $daysLeft = max(0, $today->diffInDays($endDate, false));
+                }
+                
+                return [
+                    'id' => (string)($project->_id ?? $project->id),
+                    'title' => $project->title ?? 'Project',
+                    'code' => $project->code ?? '',
+                    'progress_percent' => $project->progress_percent ?? 0,
+                    'status' => $project->status ?? 'new',
+                    'priority' => $project->priority ?? 'low',
+                    'start_date' => $project->start_date ? $project->start_date->format('d.m.Y') : null,
+                    'end_date' => $project->end_date ? $project->end_date->format('d.m.Y') : null,
+                    'logo_url' => $project->logo_path ? asset('storage/' . $project->logo_path) : asset('build/img/yekbon.svg'),
+                    'total_tickets' => $totalTickets,
+                    'in_progress_tickets' => $inProgressTickets,
+                    'total_tasks' => $totalTasks,
+                    'completed_tasks' => $completedTasks,
+                    'days_left' => $daysLeft,
+                    'sections' => $sectionStats,
+                    'project_manager' => $pm ? [
+                        'id' => (string)($pm->_id ?? $pm->id),
+                        'name' => $pm->name,
+                        'avatar' => $pm->image ? asset($pm->image) : asset('build/img/profileuser.svg'),
+                    ] : null,
+                    'developers' => array_slice($developers, 0, 3), // Limit to 3 for display
+                    'tickets_count' => $totalTickets,
+                    'tasks_count' => $totalTasks,
+                ];
+            });
+            
+            // Calculate aggregated stats across all projects
+            $allTickets = Ticket::whereIn('project_id', $projectIds)->get();
+            $allTasks = Task::whereIn('project_id', $projectIds)->get();
+            
+            // Task status counts
+            $newTasksCount = $allTasks->whereIn('status', ['new', 'new_task', 'newtask'])->count();
+            $totalTasksCount = $allTasks->count();
+            $progressTasksCount = $allTasks->whereIn('status', ['in_progress', 'progress', 'inprogress'])->count();
+            $inHoldTasksCount = $allTasks->whereIn('status', ['in_hold', 'hold', 'inhold', 'on_hold'])->count();
+            $inCheckTasksCount = $allTasks->whereIn('status', ['in_checked', 'checked', 'inchecked'])->count();
+            $delayedTasksCount = $allTasks->whereIn('status', ['delayed', 'in_delayed'])->count();
+            $rejectedTasksCount = $allTasks->whereIn('status', ['rejected', 'in_rejected'])->count();
+            
+            // Project summary (first 2 projects for display)
+            $projectSummary = $formattedProjects->take(2)->map(function ($project) {
+                return [
+                    'id' => $project['id'],
+                    'title' => $project['title'],
+                    'logo_url' => $project['logo_url'],
+                    'tickets_count' => $project['total_tickets'],
+                    'tasks_count' => $project['total_tasks'],
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'projects' => $formattedProjects,
+                'summary' => [
+                    'total_projects' => $formattedProjects->count(),
+                    'project_summary' => $projectSummary,
+                    'task_stats' => [
+                        'new_tasks' => $newTasksCount,
+                        'total_tasks' => $totalTasksCount,
+                        'progress_tasks' => $progressTasksCount,
+                        'in_hold_tasks' => $inHoldTasksCount,
+                        'in_check_tasks' => $inCheckTasksCount,
+                        'delayed_tasks' => $delayedTasksCount,
+                        'rejected_tasks' => $rejectedTasksCount,
+                    ],
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get user projects', [
+                'error' => $e->getMessage(),
+                'user_id' => $userId,
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load projects',
+            ], 500);
+        }
+    }
 }

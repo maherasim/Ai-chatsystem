@@ -36,6 +36,7 @@ Route::put('/user/{id}', [UsersController::class, 'update'])->name('user.update'
 Route::get('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth')->name('chat-users');
 Route::get('/users/check-email', [UsersController::class, 'checkEmail'])->name('users.checkEmail');
+Route::get('/users/{userId}/projects', [UsersController::class, 'getUserProjects'])->name('users.projects');
 Route::delete('/attachments/{id}', [UsersController::class, 'destroyattachement'])->name('attachments.destroy');
 
 
