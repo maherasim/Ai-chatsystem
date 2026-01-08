@@ -9,6 +9,7 @@
         <div class="avatar avatar-lg online flex-shrink-0">
             @php
                 $imageUrl = asset('build/img/profiles/avatar-16.jpg');
+                $defaultImage = asset('build/img/profiles/avatar-16.jpg');
 
                 $firstHeader = null;
                 if (isset($headers)) {
@@ -18,17 +19,67 @@
                 }
 
                 if ($firstHeader && !empty($firstHeader->image)) {
-                    $imageUrl = asset('storage/' . $firstHeader->image);
+                    // Handle header image
+                    $imgPath = $firstHeader->image;
+                    if (strpos($imgPath, 'storage/') === 0) {
+                        $imgPath = substr($imgPath, 8);
+                    }
+                    $imagePath = 'storage/' . $imgPath;
+                    if (file_exists(public_path($imagePath))) {
+                        $imageUrl = asset($imagePath);
+                    }
                 } elseif (auth()->check()) {
                     $userObj = auth()->user();
-                    if (!empty($userObj->image)) {
-                        $imageUrl = asset('storage/' . $userObj->image);
-                    } elseif (!empty($userObj->profile_image)) {
-                        $imageUrl = asset('storage/' . $userObj->profile_image);
+                    
+                    // Check profile_image first (stored as 'profiles/filename.jpg' in storage)
+                    if (!empty($userObj->profile_image)) {
+                        $imgPath = $userObj->profile_image;
+                        // If it already starts with storage/, use it as is
+                        if (strpos($imgPath, 'storage/') === 0) {
+                            $imagePath = $imgPath;
+                        } else {
+                            // Otherwise, prepend storage/
+                            $imagePath = 'storage/' . $imgPath;
+                        }
+                        
+                        if (file_exists(public_path($imagePath))) {
+                            $imageUrl = asset($imagePath);
+                        } else {
+                            // Try without storage/ prefix (in case it's already a full path)
+                            $altPath = str_replace('storage/', '', $imagePath);
+                            if (file_exists(public_path('storage/' . $altPath))) {
+                                $imageUrl = asset('storage/' . $altPath);
+                            }
+                        }
+                    }
+                    
+                    // Fallback to image field (stored as 'upload/users/filename.jpg')
+                    if ($imageUrl === $defaultImage && !empty($userObj->image)) {
+                        $imgPath = $userObj->image;
+                        // If it's already a public path (upload/users/...)
+                        if (strpos($imgPath, 'upload/') === 0) {
+                            if (file_exists(public_path($imgPath))) {
+                                $imageUrl = asset($imgPath);
+                            }
+                        } elseif (strpos($imgPath, 'storage/') === 0) {
+                            if (file_exists(public_path($imgPath))) {
+                                $imageUrl = asset($imgPath);
+                            }
+                        } else {
+                            // Try with storage/ prefix
+                            $imagePath = 'storage/' . $imgPath;
+                            if (file_exists(public_path($imagePath))) {
+                                $imageUrl = asset($imagePath);
+                            }
+                        }
                     }
                 }
             @endphp
-            <img src="{{ $imageUrl }}" class="rounded-circle" alt="image">
+            <img src="{{ $imageUrl }}" 
+                 class="rounded-circle" 
+                 alt="Developer Image"
+                 onerror="this.onerror=null; this.src='{{ $defaultImage }}';"
+                 style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e2e8f0;">
         </div>
         <div class="ms-2 overflow-hidden" style="min-width: 0;">
             <h6 class="mb-0 text-truncate" style="max-width: 200px;">{{ auth()->user()->name }}</h6>
