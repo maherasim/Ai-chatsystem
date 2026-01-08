@@ -50,13 +50,10 @@
 
     <!-- RIGHT: Theme Toggle + Logout -->
     <div class="left-icons d-flex align-items-center" style="flex-shrink: 0; gap: 0.75rem;">
-        <!-- Dark Mode Toggle -->
-        <a href="#" id="dark-mode-toggle" style="display: inline-block; flex-shrink: 0;">
-            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer; max-width: 25px;">
-        </a>
-        <!-- Light Mode Toggle -->
-        <a href="#" id="light-mode-toggle" style="display: none; flex-shrink: 0;">
-            <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
+        <!-- Dark/Light Mode Toggle (Single Button) -->
+        <a href="#" id="dark-mode-toggle" style="display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 25px; height: 25px;">
+            <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" id="theme-icon-img" style="height: 25px; cursor: pointer; max-width: 25px; display: inline-block;">
+            <i class="ti ti-sun" id="theme-icon-sun" style="font-size: 22px; cursor: pointer; display: none;"></i>
         </a>
 
         <!-- Logout -->
