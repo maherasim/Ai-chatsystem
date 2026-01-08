@@ -8,8 +8,22 @@
 <meta name="user-id" content="{{ $currentUserId }}">
 <script>
     window.currentUserId = '{{ $currentUserId }}';
-    window.currentUserAvatar = '{{ isset($currentUser->image) && $currentUser->image ? "https://logiteam.it-supportline.de/storage/" . ltrim($currentUser->image, "/") : "" }}';
-    window.baseUrl = 'https://logiteam.it-supportline.de';
+    @php
+        $currentUserAvatar = '';
+        if (isset($currentUser)) {
+            if (!empty($currentUser->profile_image)) {
+                $currentUserAvatar = asset('storage/' . $currentUser->profile_image);
+            } elseif (!empty($currentUser->image)) {
+                if (strpos($currentUser->image, 'upload/') === 0) {
+                    $currentUserAvatar = asset($currentUser->image);
+                } else {
+                    $currentUserAvatar = asset('storage/' . $currentUser->image);
+                }
+            }
+        }
+    @endphp
+    window.currentUserAvatar = '{{ $currentUserAvatar }}';
+    window.baseUrl = '{{ url("/") }}';
 </script>
 <style>
     body {
@@ -279,11 +293,31 @@
     $header = $headers[0] ?? null;
 @endphp
 
-@if($header)
-    <img id="chatHeaderAvatar" src="{{ !empty($header->image) ? asset('storage/' . $header->image) : asset('build/img/profiles/avatar-16.jpg') }}"
-         class="rounded-circle"
-         alt="image">
-@endif
+@php
+    $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
+    if ($header && !empty($header->image)) {
+        if (strpos($header->image, 'upload/') === 0) {
+            $headerAvatar = asset($header->image);
+        } else {
+            $headerAvatar = asset('storage/' . $header->image);
+        }
+    } elseif (auth()->check()) {
+        $userObj = auth()->user();
+        if (!empty($userObj->profile_image)) {
+            $headerAvatar = asset('storage/' . $userObj->profile_image);
+        } elseif (!empty($userObj->image)) {
+            if (strpos($userObj->image, 'upload/') === 0) {
+                $headerAvatar = asset($userObj->image);
+            } else {
+                $headerAvatar = asset('storage/' . $userObj->image);
+            }
+        }
+    }
+@endphp
+<img id="chatHeaderAvatar" src="{{ $headerAvatar }}"
+     class="rounded-circle"
+     alt="image"
+     onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-16.jpg') }}';">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6 id="chatHeaderName">{{$header->first_name ?? 'Chat'}}</h6>
@@ -1160,14 +1194,18 @@
     $currentUser = Auth::user();
     $avatarUrl = asset('build/img/profiles/avatar-17.jpg');
     
-    if ($currentUser && $currentUser->image) {
-        $imagePath = ltrim($currentUser->image, '/');
-        if (file_exists(public_path($imagePath))) {
-            $avatarUrl = asset($imagePath);
-        } elseif (file_exists(storage_path('app/public/' . $imagePath))) {
-            $avatarUrl = asset('storage/' . $imagePath);
-        } else {
-            $avatarUrl = asset($imagePath);
+    if ($currentUser) {
+        // Check profile_image first (stored in storage/app/public/profiles/)
+        if (!empty($currentUser->profile_image)) {
+            $avatarUrl = asset('storage/' . $currentUser->profile_image);
+        }
+        // Fallback to image field (stored in public/upload/users/)
+        elseif (!empty($currentUser->image)) {
+            if (strpos($currentUser->image, 'upload/') === 0) {
+                $avatarUrl = asset($currentUser->image);
+            } else {
+                $avatarUrl = asset('storage/' . $currentUser->image);
+            }
         }
     }
 @endphp

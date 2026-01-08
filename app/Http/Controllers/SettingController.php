@@ -120,12 +120,27 @@ public function store(Request $request)
     // Upload image if provided
     if ($request->hasFile('image')) {
         $file = $request->file('image');
-        $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '', $file->getClientOriginalName());
-        $file->move(public_path('upload/users'), $filename);
         
-        $setting->image = 'upload/users/' . $filename;
-        $user->image = $setting->image;
-        $user->profile_image = $setting->image;
+        // Store profile_image in storage/app/public/profiles/ (same as registration)
+        // This returns path like 'profiles/filename.jpg'
+        $profilePath = $file->store('profiles', 'public');
+        
+        // Copy from storage to public/upload/users/ for backward compatibility with 'image' field
+        $storedFile = storage_path('app/public/' . $profilePath);
+        $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9_.]/', '', $file->getClientOriginalName());
+        $publicPath = 'upload/users/' . $filename;
+        
+        // Ensure directory exists
+        if (!file_exists(public_path('upload/users'))) {
+            mkdir(public_path('upload/users'), 0755, true);
+        }
+        
+        // Copy the stored file to public directory
+        copy($storedFile, public_path($publicPath));
+        
+        $setting->image = $publicPath;
+        $user->image = $publicPath;
+        $user->profile_image = $profilePath; // This will be 'profiles/filename.jpg' (stored in storage)
     }
 
     $setting->first_name = $request->first_name;
