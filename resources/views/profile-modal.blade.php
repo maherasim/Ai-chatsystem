@@ -654,11 +654,29 @@
 
                 <!-- Our projects -->
                 <div style="background-color: #f4f6f8;  border-radius: 12px;padding-left:3px;padding-right:3px;padding-bottom: 0px;" class="mb-2">
-                    <div>
-                        <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
+                    <div class="d-flex justify-content-between align-items-center pb-1 ps-2 pe-2">
+                        <h3 class="mb-0" style="font-weight: 600;">Our Projects</h3>
+                        @if(($projects ?? collect())->count() > 2)
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-target="#projectsCarousel" data-bs-slide="prev" style="border-radius: 50%; width: 32px; height: 32px; padding: 0;">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-target="#projectsCarousel" data-bs-slide="next" style="border-radius: 50%; width: 32px; height: 32px; padding: 0;">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                        @endif
                     </div>
-                    <div class="row g-1">
-                        @forelse($projects->take(2) as $project)
+                    @php
+                        $projectsList = $projects ?? collect();
+                        $projectChunks = $projectsList->chunk(2);
+                    @endphp
+                    <div id="projectsCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false" style="position: relative; padding: 0 10px;">
+                        <div class="carousel-inner" style="transition: transform 0.6s ease-in-out;">
+                            @forelse($projectChunks as $chunkIndex => $chunk)
+                            <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
+                                <div class="row g-1">
+                                    @foreach($chunk as $project)
                         <div class="col-12 col-md-6">
                             <div class="card shadow-sm p-2" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -768,11 +786,19 @@
                                 @endif
                             </div>
                         </div>
-                        @empty
-                        <div class="col-12">
-                            <p class="text-center text-muted">No projects found</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @empty
+                            <div class="carousel-item active">
+                                <div class="row g-1">
+                                    <div class="col-12">
+                                        <p class="text-center text-muted py-4">No projects found</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforelse
                         </div>
-                        @endforelse
                     </div>
 
 
@@ -784,9 +810,9 @@
                         <img src="{{ asset('build/img/lato.svg') }}" alt="Icon" style="width: 50px; height: auto; margin-bottom:3px;">
                         <!-- Project Summary -->
                         <div style="background-color: white;border-radius:6px;padding:5px;">
-                            <div style="font-size: 15px; font-weight: 600; color: #2e3a59;">Total Projects: {{ $projects->count() }}</div>
-                            <div class="d-flex gap-1 mt-1 flex-nowrap">
-                                @foreach($projects->take(2) as $project)
+                            <div style="font-size: 15px; font-weight: 600; color: #2e3a59;">Total Projects: {{ ($projects ?? collect())->count() }}</div>
+                            <div class="d-flex gap-1 mt-1 project-summary-scroll" style="overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+                                @foreach(($projects ?? collect())->take(5) as $project)
                                 <div class="d-flex flex-wrap align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
                                     <img src="{{ $project['logo'] }}" alt="Logo" style="width: 24px; height: 24px;">
                                     <div class="d-flex flex-wrap flex-column" style="line-height: 1.2;">
@@ -1693,6 +1719,63 @@ function openImageModal(imageSrc) {
     document.getElementById('modalImage').src = imageSrc;
     modal.show();
 }
+
+// Initialize projects carousel without auto-play
+document.addEventListener('DOMContentLoaded', function() {
+    const projectsCarousel = document.getElementById('projectsCarousel');
+    if (projectsCarousel) {
+        // Initialize carousel with no auto-play
+        const carousel = new bootstrap.Carousel(projectsCarousel, {
+            interval: false,
+            ride: false,
+            wrap: true
+        });
+    }
+});
 </script>
-</script>
-</script>
+
+<style>
+/* Projects Carousel Styling */
+#projectsCarousel .carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+
+#projectsCarousel .carousel-item.active {
+    display: block;
+}
+
+#projectsCarousel .btn-outline-secondary {
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+#projectsCarousel .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+/* Smooth scrolling for project summary */
+.project-summary-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7f7f7;
+}
+
+.project-summary-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.project-summary-scroll::-webkit-scrollbar-track {
+    background: #f7f7f7;
+    border-radius: 3px;
+}
+
+.project-summary-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.project-summary-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+</style>
