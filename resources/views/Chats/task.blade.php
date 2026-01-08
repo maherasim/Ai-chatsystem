@@ -423,14 +423,70 @@
     .status-dot-large {
         width: 20px;
         height: 20px;
-        background-color: #bef264; /* Lime base */
-        border: 4px solid #ecfccb; /* Lighter ring */
         border-radius: 50%;
         position: absolute;
         right: 0;
         top: 50%;
         transform: translateY(-50%);
+        border: 4px solid;
+    }
+    
+    /* Status-specific dot colors matching card status colors */
+    .status-dot-large.status-new,
+    .status-dot-large[data-status*="new"] {
+        background-color: #3b82f6; /* Blue */
+        border-color: #dbeafe; /* Light Blue ring */
+        box-shadow: 0 0 0 1px #bfdbfe;
+    }
+    
+    .status-dot-large.status-in_progress,
+    .status-dot-large[data-status*="progress"] {
+        background-color: #22c55e; /* Green */
+        border-color: #dcfce7; /* Light Green ring */
+        box-shadow: 0 0 0 1px #bbf7d0;
+    }
+    
+    .status-dot-large.status-on_hold,
+    .status-dot-large[data-status*="hold"] {
+        background-color: #f97316; /* Orange */
+        border-color: #ffedd5; /* Light Orange ring */
+        box-shadow: 0 0 0 1px #fed7aa;
+    }
+    
+    .status-dot-large.status-checked,
+    .status-dot-large[data-status*="checked"] {
+        background-color: #a855f7; /* Purple */
+        border-color: #f3e8ff; /* Light Purple ring */
+        box-shadow: 0 0 0 1px #e9d5ff;
+    }
+    
+    .status-dot-large.status-delayed,
+    .status-dot-large[data-status*="delayed"] {
+        background-color: #ef4444; /* Red */
+        border-color: #fee2e2; /* Light Red ring */
+        box-shadow: 0 0 0 1px #fecaca;
+    }
+    
+    .status-dot-large.status-rejected,
+    .status-dot-large[data-status*="rejected"] {
+        background-color: #ec4899; /* Pink/Magenta */
+        border-color: #fce7f3; /* Light Pink ring */
+        box-shadow: 0 0 0 1px #fbcfe8;
+    }
+    
+    .status-dot-large.status-done,
+    .status-dot-large[data-status*="done"],
+    .status-dot-large[data-status*="completed"] {
+        background-color: #84cc16; /* Lime */
+        border-color: #ecfccb; /* Light Lime ring */
         box-shadow: 0 0 0 1px #d9f99d;
+    }
+    
+    /* Default fallback for unknown statuses */
+    .status-dot-large:not([data-status]):not(.status-new):not(.status-in_progress):not(.status-on_hold):not(.status-checked):not(.status-delayed):not(.status-rejected):not(.status-done) {
+        background-color: #f43f5e; /* Pinkish for total/unknown */
+        border-color: #ffe4e6; /* Light Pink ring */
+        box-shadow: 0 0 0 1px #fecdd3;
     }
 
     .task-ids-row {
@@ -1221,7 +1277,7 @@
                                         <!-- Header: Title + Dot -->
                                         <div class="task-header-new">
                                              <div class="task-title-new">{{ $task->title ?? 'Untitled Task' }}</div>
-                                             <div class="status-dot-large" title="{{ $taskStatus }}"></div>
+                                             <div class="status-dot-large {{ $filterClass }}" data-status="{{ $taskStatus }}" title="{{ $taskStatus }}"></div>
                                         </div>
 
                                         <!-- IDs Row -->
