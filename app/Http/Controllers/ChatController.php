@@ -260,6 +260,58 @@ class ChatController extends Controller
     }
 
     /**
+     * Get all groups for the current user (API endpoint)
+     */
+    public function getGroups()
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+            
+            // Get all groups
+            $allGroups = Group::all();
+            
+            // Filter groups where user is admin or member
+            $filteredGroups = $allGroups->filter(function($group) use ($userId) {
+                $isAdmin = (string)$group->admin_id === $userId;
+                
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberIds = array_map('strval', $memberIds);
+                $isMember = in_array($userId, $memberIds);
+                
+                return $isAdmin || $isMember;
+            });
+            
+            $groups = $filteredGroups->map(function($group) {
+                return [
+                    '_id' => (string)$group->_id,
+                    'id' => (string)$group->_id,
+                    'name' => $group->name ?? 'Group',
+                    'photo' => $group->photo ?? null,
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'groups' => $groups->values(),
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get groups', [
+                'error' => $e->getMessage(),
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load groups',
+            ], 500);
+        }
+    }
+
+    /**
      * Get group messages
      */
     public function getGroupMessages($groupId)
@@ -296,12 +348,25 @@ class ChatController extends Controller
                 ], 403);
             }
 
-            // Get messages for this group
-            $messages = ChatMessage::where(function($query) use ($groupId) {
+            // Get last_id from request for polling
+            $lastId = request()->query('last_id');
+            
+            // Build query for messages
+            $query = ChatMessage::where(function($query) use ($groupId) {
                     $query->where('group_id', $groupId)
                           ->orWhere('conversation_id', 'group_' . $groupId);
-                })
-                ->orderBy('created_at', 'asc')
+                });
+            
+            // If last_id is provided, only get messages after that ID
+            if ($lastId) {
+                $lastMessage = ChatMessage::find($lastId);
+                if ($lastMessage) {
+                    $query->where('created_at', '>', $lastMessage->created_at);
+                }
+            }
+            
+            // Get messages
+            $messages = $query->orderBy('created_at', 'asc')
                 ->limit(100)
                 ->get();
 
