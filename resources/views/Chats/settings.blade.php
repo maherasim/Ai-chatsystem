@@ -119,9 +119,29 @@
                                                                     class="d-flex justify-content-center align-items-center">
                                                                     <span
                                                                         class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
+                                                                        @php
+                                                                            $profileImg = URL::asset('/build/img/profiles/avatar-16.jpg');
+                                                                            $user = auth()->user();
+                                                                            if ($user && !empty($user->profile_image)) {
+                                                                                $profileImg = asset('storage/' . $user->profile_image);
+                                                                            } elseif ($user && !empty($user->image)) {
+                                                                                if (strpos($user->image, 'upload/') === 0) {
+                                                                                    $profileImg = asset($user->image);
+                                                                                } else {
+                                                                                    $profileImg = asset('storage/' . $user->image);
+                                                                                }
+                                                                            } elseif ($setting && $setting->image) {
+                                                                                if (str_starts_with($setting->image, 'upload/') || str_starts_with($setting->image, 'http')) {
+                                                                                    $profileImg = asset($setting->image);
+                                                                                } else {
+                                                                                    $profileImg = asset('storage/' . $setting->image);
+                                                                                }
+                                                                            }
+                                                                        @endphp
                                                                         <img id="preview-image"
-                                                                            src="{{ $setting && $setting->image ? (str_starts_with($setting->image, 'upload/') || str_starts_with($setting->image, 'http') ? asset($setting->image) : asset('storage/' . $setting->image)) : URL::asset('/build/img/profiles/avatar-16.jpg') }}"
-                                                                            class="rounded-circle" alt="user">
+                                                                            src="{{ $profileImg }}"
+                                                                            class="rounded-circle" alt="user"
+                                                                            onerror="this.onerror=null; this.src='{{ URL::asset('/build/img/profiles/avatar-16.jpg') }}';">
                                                                         <span
                                                                             class="add avatar avatar-sm d-flex justify-content-center align-items-center">
                                                                             <label for="profile_img" class="m-0"

@@ -147,7 +147,19 @@
                                     <div class="row align-items-center">
                                         <!-- Welcome Section -->
                                         <div class="col-12 col-md-8 d-flex align-items-start mb-3 mb-md-0">
-                                            <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('build/img/groups/group-01.jpg') }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
+                                            @php
+                                                $userImg = asset('build/img/groups/group-01.jpg');
+                                                if (!empty($user->profile_image)) {
+                                                    $userImg = asset('storage/' . $user->profile_image);
+                                                } elseif (!empty($user->image)) {
+                                                    if (strpos($user->image, 'upload/') === 0) {
+                                                        $userImg = asset($user->image);
+                                                    } else {
+                                                        $userImg = asset('storage/' . $user->image);
+                                                    }
+                                                }
+                                            @endphp
+                                            <img src="{{ $userImg }}" style="width: 50px; height: 50px;" class="rounded-circle me-3" alt="User Image">
                                             <div>
                                                 <h6 class="mb-1">Welcome Back, <b>{{$user->name}}</b></h6>
                                                 <small>

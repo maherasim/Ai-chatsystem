@@ -1002,6 +1002,19 @@
                                                 $accuracy = $task->accuracy ?? 0;
                                                 $quality = $task->quality ?? 0;
                                                 $workIndependently = $task->work_Independently ?? $task->work_independently ?? 0;
+                                                
+                                                // Get additional task data
+                                                $taskDescription = $task->description ?? '';
+                                                // Admin notes might be in issues array or separate field
+                                                $adminNotes = '';
+                                                if (!empty($task->issues) && is_array($task->issues)) {
+                                                    // Try to get notes from issues array
+                                                    $adminNotes = collect($task->issues)->pluck('notes')->filter()->first() ?? '';
+                                                }
+                                                $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                                $priority = $task->priority ?? 'low';
+                                                $status = $task->status ?? 'checked';
+                                                $markImagePath = $task->mark_image_path ?? '';
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-checked-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
@@ -1017,6 +1030,12 @@
                                                 data-end-date="{{ $endDate }}"
                                                 data-video-link="{{ $videoLink }}"
                                                 data-attachments="{{ json_encode($attachments) }}"
+                                                data-description="{{ $taskDescription }}"
+                                                data-admin-notes="{{ $adminNotes }}"
+                                                data-section="{{ $sectionName }}"
+                                                data-priority="{{ $priority }}"
+                                                data-status="{{ $status }}"
+                                                data-mark-image-path="{{ $markImagePath }}"
                                                 data-reliability="{{ $reliability }}"
                                                 data-punctuality="{{ $punctuality }}"
                                                 data-accuracy="{{ $accuracy }}"
@@ -1498,26 +1517,96 @@
                                         </div>
 
                                 @forelse ($newTasks as $task)
-                                    <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#totaltask">
+                                    @php
+                                        // Prepare task data for modal
+                                        $taskId = (string)($task->_id ?? $task->id ?? '');
+                                        $taskType = 'task';
+                                        if ($task instanceof \App\Models\WebTask) {
+                                            $taskType = 'webtask';
+                                        } elseif ($task instanceof \App\Models\EmployeeTask) {
+                                            $taskType = 'employeetask';
+                                        }
+                                        
+                                        $projectName = optional($task->project)->name ?? 'Project Name';
+                                        $ticketCode = optional($task->ticket)->code ?? '—';
+                                        $ticketTitle = $task->ticket_title ?? ($task->title ?? 'Ticket Title');
+                                        $taskTitle = $task->title ?? 'Task Title';
+                                        $projectLogo = optional($task->project)->logo_path;
+                                        $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
+                                        $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
+                                        $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                        $videoLink = $task->video_link ?? null;
+                                        
+                                        $attachments = $task->attachments ?? [];
+                                        if (is_string($attachments)) {
+                                            $attachments = json_decode($attachments, true) ?? [];
+                                        }
+                                        if (!is_array($attachments)) {
+                                            $attachments = [];
+                                        }
+                                        
+                                        // Parse issues - handle both JSON string and array
+                                        $issues = $task->issues ?? [];
+                                        if (is_string($issues)) {
+                                            $issues = json_decode($issues, true) ?? [];
+                                        }
+                                        if (!is_array($issues)) {
+                                            $issues = [];
+                                        }
+                                        
+                                        // Get task description - use first issue description if task description is empty
+                                        $taskDescription = $task->description ?? '';
+                                        if (empty($taskDescription) && !empty($issues) && is_array($issues)) {
+                                            $firstIssue = collect($issues)->first();
+                                            if ($firstIssue && isset($firstIssue['description'])) {
+                                                $taskDescription = $firstIssue['description'];
+                                            }
+                                        }
+                                        
+                                        $adminNotes = '';
+                                        if (!empty($issues) && is_array($issues)) {
+                                            $adminNotes = collect($issues)->pluck('notes')->filter()->first() ?? '';
+                                        }
+                                        $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                        $priority = $task->priority ?? 'low';
+                                        $status = $task->status ?? 'new';
+                                        $markImagePath = $task->mark_image_path ?? '';
+                                        
+                                        $markImage = !empty($task->mark_image_path)
+                                            ? asset('storage/' . ltrim($task->mark_image_path, '/'))
+                                            : asset('build/img/dooted img.svg');
+                                    @endphp
+                                    <div class="d-flex p-2 rounded mt-2 totaltask-item" style="background-color: #ebebeb;cursor:pointer" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#totaltask"
+                                        data-task-id="{{ $taskId }}"
+                                        data-task-type="{{ $taskType }}"
+                                        data-task-title="{{ $taskTitle }}"
+                                        data-project-name="{{ $projectName }}"
+                                        data-ticket-code="{{ $ticketCode }}"
+                                        data-ticket-title="{{ $ticketTitle }}"
+                                        data-project-logo="{{ $projectLogoUrl }}"
+                                        data-start-date="{{ $startDate }}"
+                                        data-end-date="{{ $endDate }}"
+                                        data-video-link="{{ $videoLink }}"
+                                        data-attachments="{{ json_encode($attachments) }}"
+                                        data-description="{{ $taskDescription }}"
+                                        data-admin-notes="{{ $adminNotes }}"
+                                        data-section="{{ $sectionName }}"
+                                        data-priority="{{ $priority }}"
+                                        data-status="{{ $status }}"
+                                        data-mark-image-path="{{ $markImagePath }}"
+                                        data-issues="{{ json_encode($issues) }}">
                                         <!-- Task Image -->
                                         <div class="me-2">
-                                            @php
-                                                $markImage = !empty($task->mark_image_path)
-                                                    ? asset('storage/' . ltrim($task->mark_image_path, '/'))
-                                                    : asset('build/img/dooted img.svg');
-                                            @endphp
                                             <img src="{{ $markImage }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
                                         </div>
                                         <!-- Task Content -->
                                         <div class="flex-grow-1">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">
-                                                    @php
-                                                        $projectLogo = optional($task->project)->logo_path;
-                                                        $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
-                                                    @endphp
                                                     <img src="{{ $projectLogoUrl }}" alt="Project Logo" style="width: 30px; height: 30px; margin-right: 6px; object-fit: cover; border-radius: 4px;">
-                                                    {{ $task->title ?? 'Task Title' }}
+                                                    {{ $taskTitle }}
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <span style="width: 12px; height: 12px; background-color: #7ED957; border-radius: 50%; display: inline-block;"></span>
@@ -1525,17 +1614,17 @@
                                                 </div>
                                             </div>
                                             <div style="font-size: 12px; color: #6c757d;">
-                                                 {{ optional($task->ticket)->code ?? '—' }} - {{ $task->ticket_title ?? ($task->title ?? 'Ticket Title') }}
+                                                 {{ $ticketCode }} - {{ $ticketTitle }}
                                             </div>
                                             <div style="font-size: 13px; margin-top: 2px;">
-                                                {{ $task->description ?? 'Task description will be here' }}
+                                                {{ $taskDescription ?: 'Task description will be here' }}
                                             </div>
                                             <div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color: #fff; border-radius: 10px; padding: 4px;gap:3px;">
                                                 <div style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                    <small>Start: {{ optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--') }}</small>
+                                                    <small>Start: {{ $startDate }}</small>
                                                 </div>
                                                 <div style="font-size: 10px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                    <small>Deliver: {{ optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--') }}</small>
+                                                    <small>Deliver: {{ $endDate }}</small>
                                                 </div>
                                                 <div class="d-flex align-items-center" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
                                                     <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" alt="Urgent" style="margin-right: 4px;">
@@ -3352,7 +3441,6 @@
                         return items;
                     })
                     .catch(function(error) {
-                        console.error('Error loading tickets:', error);
                         ticketSelect.innerHTML = '<option value="">Failed to load tickets</option>';
                         ticketSelect.disabled = false;
                         setSelectLoading(ticketSelect, false);
@@ -3824,6 +3912,15 @@
                                     }
                                 })(),
                                 issues: createdTasks,
+                                // Include mark_image (main uploaded image) if present and still a dataURL
+                                mark_image: (function() {
+                                    try {
+                                        var src = (previewImg || {}).src || '';
+                                        return (src && src.indexOf('data:image') === 0) ? src : null;
+                                    } catch (_) {
+                                        return null;
+                                    }
+                                })(),
                                 // Include board image if present and still a dataURL (not yet persisted)
                                 board_image: (function() {
                                     try {
@@ -3884,7 +3981,6 @@
                                     alert('Failed to create task: ' + (resp.message || 'Unknown error'));
                                 }
                             }).catch(function(error) {
-                                console.error('Error creating task:', error);
                                 alert('Failed to create task. Please try again.');
                             });
                         } catch (_) {}
@@ -3943,6 +4039,8 @@
                             start_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.start_date || null) : null; }catch(_){ return null; }})(),
                             end_date: (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t ? (t.end_date || null) : null; }catch(_){ return null; }})(),
                             issues: createdTasks,
+                            // Include mark_image (main uploaded image) if present and still a dataURL
+                            mark_image: (function(){ try{ var src=(previewImg||{}).src||''; return (src && src.indexOf('data:image')===0)?src:null; }catch(_){ return null; }})(),
                             board_image: (function(){ try{ var src=(previewImg||{}).src||''; return (src && src.indexOf('data:image')===0)?src:null; }catch(_){ return null; }})()
                         };
                         fetch("{{ route('tasks.store') }}", {
@@ -4120,6 +4218,15 @@
                                     }
                                 })(),
                                 issues: createdTasks,
+                                // Include mark_image (main uploaded image) if present and still a dataURL
+                                mark_image: (function() {
+                                    try {
+                                        var src = (previewImg || {}).src || '';
+                                        return (src && src.indexOf('data:image') === 0) ? src : null;
+                                    } catch (_) {
+                                        return null;
+                                    }
+                                })(),
                                 board_image: (function() {
                                     try {
                                         var src = (previewImg || {}).src || '';
@@ -8969,9 +9076,11 @@
                             <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 14px;">
                                 <div>
                                     <div class="text-muted">Task ID</div>
+                                    <div id="incheck-task-id" style="font-weight: 500; color: #1c2233;">{{ $taskId ?? 'N/A' }}</div>
                                 </div>
                                 <div>
                                     <div class="text-muted">Section</div>
+                                    <div id="incheck-section" style="font-weight: 500; color: #1c2233;">Section</div>
                                 </div>
                                 <div>
                                     <div><span class="text-success">Start:</span> <span id="incheck-start-date">22.10.2024</span></div>
@@ -8985,16 +9094,23 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="incheck-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available
                             </p>
                         </div>
-                        <!-- Task Status Image -->
+                        <!-- Task Image Display (replaces Sign-in Box) -->
                         <div class="mx-auto my-4"
-                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center; overflow: hidden;">
-                            <img id="incheck-mark-image" src="{{ asset('build/img/dooted img.svg') }}"
-                                style="width: 100%; max-width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 8px; display: block; margin: 0 auto;"
-                                alt="Task Status Image">
+                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
+                            <img id="incheck-mark-image" 
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
+                            
+                            <!-- Close Button (positioned lower) -->
+                            <div style="margin-top: 25px;">
+                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
+                            </div>
+
                         </div>
                         <!-- Notes -->
                         <!-- Notes Section-->
@@ -9008,8 +9124,7 @@
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="icon"
                                     style="width: 18px; height: 18px; margin-right: 10px;">
 
-                                <span style="color: #667085; font-size: 13.5px;">Please check the task atachement before
-                                    take action</span>
+                                <span id="incheck-admin-notes" style="color: #667085; font-size: 13.5px;">No admin notes available</span>
                             </div>
                         </div>
                         <!-- Video Attachments Section -->
@@ -9118,6 +9233,10 @@
                     const videoLink = this.getAttribute('data-video-link') || '';
                     const attachmentsJson = this.getAttribute('data-attachments') || '[]';
                     const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    const description = this.getAttribute('data-description') || 'No description available';
+                    const adminNotes = this.getAttribute('data-admin-notes') || 'No admin notes available';
+                    const section = this.getAttribute('data-section') || 'Section';
+                    const taskId = this.getAttribute('data-task-id') || 'N/A';
                     
                     // Get rating data
                     const reliability = parseInt(this.getAttribute('data-reliability')) || 0;
@@ -9138,13 +9257,26 @@
                     // Update mark image
                     const markImageElement = document.getElementById('incheck-mark-image');
                     if (markImageElement) {
-                        if (markImagePath && markImagePath.trim() !== '') {
-                            const imageUrl = markImagePath.startsWith('http') 
-                                ? markImagePath 
-                                : '/storage/' + markImagePath.replace(/^\/+/, '');
+                        const trimmedPath = (markImagePath || '').trim();
+                        if (trimmedPath !== '') {
+                            let imageUrl;
+                            if (trimmedPath.startsWith('http://') || trimmedPath.startsWith('https://')) {
+                                imageUrl = trimmedPath;
+                            } else if (trimmedPath.startsWith('storage/')) {
+                                imageUrl = '{{ asset("") }}' + trimmedPath;
+                            } else {
+                                // Path like "tasks/marks/mark_xxx.jpg" - prepend storage/
+                                const cleanPath = trimmedPath.replace(/^\/+/, '');
+                                imageUrl = '{{ asset("storage") }}/' + cleanPath;
+                            }
                             markImageElement.src = imageUrl;
+                            markImageElement.style.display = 'block';
+                            markImageElement.onerror = function() {
+                                this.src = '{{ asset('build/img/dooted img.svg') }}';
+                            };
                         } else {
                             markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                            markImageElement.style.display = 'block';
                         }
                     }
                     
@@ -9158,6 +9290,20 @@
                         
                         // Update task title
                         document.getElementById('incheck-task-title').textContent = taskTitle;
+                        
+                        // Update task ID and section
+                        const taskIdEl = document.getElementById('incheck-task-id');
+                        if (taskIdEl) taskIdEl.textContent = taskId;
+                        const sectionEl = document.getElementById('incheck-section');
+                        if (sectionEl) sectionEl.textContent = section;
+                        
+                        // Update description
+                        const descEl = document.getElementById('incheck-description');
+                        if (descEl) descEl.textContent = description;
+                        
+                        // Update admin notes
+                        const notesEl = document.getElementById('incheck-admin-notes');
+                        if (notesEl) notesEl.textContent = adminNotes;
                         
                         // Update dates
                         document.getElementById('incheck-start-date').textContent = startDate;
@@ -9245,7 +9391,7 @@
                             attachmentsContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No file attachments available</div>';
                         }
                     } catch (e) {
-                        console.error('Error parsing task data:', e);
+                        // Silently handle parsing errors
                     }
                     
                     // Store task ID and type for reject functionality
@@ -9514,7 +9660,6 @@
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('An error occurred. Please try again.');
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Save & Close';
@@ -9698,7 +9843,6 @@
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('An error occurred. Please try again.');
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Save & Close';
@@ -9719,14 +9863,14 @@
 
                         <!-- Text Left-Aligned -->
                         <div style="text-align: left;">
-                            <h5 style="margin: 0;">Project Name</h5>
-                            <small>Ticket #1 - Ticket Title</small>
+                            <h5 style="margin: 0;" id="totaltask-project-name">Project Name</h5>
+                            <small id="totaltask-ticket-info">Ticket #1 - Ticket Title</small>
                         </div>
 
                         <!-- Logo Centered, Half Outside -->
                         <div
                             style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
-                            <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
+                            <img id="totaltask-project-logo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
                                 style="width: 60px; height: 60px; border-radius: 50%;">
                         </div>
 
@@ -9737,7 +9881,7 @@
                             style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0px 0px 5px rgba(0,0,0,0.05);margin-top:25px;">
 
                             <!-- Title -->
-                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;">Task Title</h5>
+                            <h5 class="text-center fw-bold mb-3" style="color: #1c2233;" id="totaltask-task-title">Task Title</h5>
 
                             <!-- Badges Row -->
                             <div class="text-center mb-3">
@@ -9765,15 +9909,17 @@
                             <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 14px;">
                                 <div>
                                     <div class="text-muted">Task ID</div>
+                                    <div id="totaltask-task-id" style="font-weight: 500; color: #1c2233;">N/A</div>
                                 </div>
                                 <div>
                                     <div class="text-muted">Section</div>
+                                    <div id="totaltask-section" style="font-weight: 500; color: #1c2233;">Section</div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Start:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Start:</span> <span id="totaltask-start-date">--</span></div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Deliver:</span> 22.10.2024</div>
+                                    <div><span class="text-success">Deliver:</span> <span id="totaltask-end-date">--</span></div>
                                 </div>
                             </div>
 
@@ -9781,23 +9927,23 @@
                         <!-- Issue Description -->
                         <div class="mt-2 mb-3" style="background-color: #f8f9fa;padding:10px;border-radius:10px;">
                             <strong>Issue Description :</strong>
-                            <p style="font-size: 14px; margin-top: 5px;">
-                                move the close button more down due to its near on the popup
+                            <p id="totaltask-description" style="font-size: 14px; margin-top: 5px;">
+                                No description available
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
-                        <div class="mx-auto my-4"
-                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
-
-                            <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
-
+                        <!-- Image Canvas (replaces Sign-in Box) -->
+                        <div id="totaltask-canvas" class="mx-auto my-4" style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; text-align: center; overflow:hidden;">
+                            <img id="totaltask-mark-image" 
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Board"
+                                style="width:100%; height:auto; max-height:400px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; filter:brightness(0.8);">
+                            <div id="totaltask-layer" style="position:absolute; inset:0; pointer-events:auto;"></div>
+                            <div id="totaltask-focus" style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;"></div>
+                        </div>
+                        
+                        <!-- Close Button (positioned lower) -->
+                        <div class="text-center" style="margin-top: 20px;">
+                            <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
                         </div>
                         <!-- Notes -->
                         <!-- Notes Section-->
@@ -9811,8 +9957,7 @@
                                 <img src="{{ URL::asset('/build/img/tera.svg') }}" alt="icon"
                                     style="width: 18px; height: 18px; margin-right: 10px;">
 
-                                <span style="color: #667085; font-size: 13.5px;">Please check the task atachement before
-                                    take action</span>
+                                <span id="totaltask-admin-notes" style="color: #667085; font-size: 13.5px;">No admin notes available</span>
                             </div>
                         </div>
                         <!-- Video Attachments Section -->
@@ -9824,56 +9969,27 @@
                                 • Video Attachments •
                             </div>
 
-                            <!-- Attachment Input Box -->
-                            <div
-                                style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
-
-                                <!-- Icon -->
-                                <div
-                                    style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                    <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon"
-                                        style="width: 16px; height: 16px;">
-                                </div>
-
-                                <!-- Input -->
-                                <input type="text" placeholder="Video Link will be here to check the work"
-                                    style="border: none; outline: none; width: 100%; font-size: 14px; color: #1c2b48; background-color: transparent;" />
+                            <!-- Video Link Display -->
+                            <div id="totaltask-video-container">
+                                <!-- Video link will be populated here -->
                             </div>
 
+                        </div>
+                        <!-- Issues Section -->
+                        <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px; margin-top:5px;">
+                            <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 15px;">• Issues •</div>
+
+                            <div id="totaltask-issues-container">
+                                <!-- Issues will be populated here -->
+                            </div>
                         </div>
                         <!-- File Attachments Section -->
                         <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px; margin-top:5px;">
                             <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 15px;">• File
                                 Attachments •</div>
 
-                            <div class="d-flex flex-wrap gap-3">
-
-                                <!-- File Box -->
-                                <div
-                                    style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                    <img src="pdf-icon.svg" alt="PDF" style="width: 32px; height: 32px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf
-                                        </div>
-                                        <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
-                                    </div>
-                                    <img src="download-icon.svg" alt="Download" style="width: 16px; height: 16px;">
-                                </div>
-
-                                <!-- File Box Copy 2 -->
-                                <div
-                                    style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px;">
-                                    <img src="pdf-icon.svg" alt="PDF" style="width: 32px; height: 32px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 500; color: #374151;">File Title.pdf
-                                        </div>
-                                        <div style="font-size: 11px; color: #9ca3af;">94 KB of 94 KB</div>
-                                    </div>
-                                    <img src="download-icon.svg" alt="Download" style="width: 16px; height: 16px;">
-                                </div>
-
-
-
+                            <div class="d-flex flex-wrap gap-3" id="totaltask-attachments-container">
+                                <!-- File attachments will be populated here -->
                             </div>
                         </div>
 
@@ -9917,6 +10033,490 @@
 
         </div>
     </div>
+
+    <script>
+        // Handle totaltask modal population when task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('totaltask');
+            const taskItems = document.querySelectorAll('.totaltask-item');
+            
+            // Also listen for modal show event to re-render badges if needed
+            if (modal) {
+                modal.addEventListener('shown.bs.modal', function() {
+                    // Re-render badges when modal is shown (in case image loaded before modal opened)
+                    const maskLayer = document.getElementById('totaltask-layer');
+                    const canvasElement = document.getElementById('totaltask-canvas');
+                    const markImageElement = document.getElementById('totaltask-mark-image');
+                    if (maskLayer && canvasElement && markImageElement && markImageElement.complete) {
+                        // Get issues from the clicked task item
+                        const clickedItem = document.querySelector('.totaltask-item.active');
+                        if (clickedItem) {
+                            const issuesJson = clickedItem.getAttribute('data-issues') || '[]';
+                            let issues = [];
+                            try {
+                                const parsed = JSON.parse(issuesJson);
+                                if (Array.isArray(parsed)) {
+                                    issues = parsed;
+                                }
+                            } catch (e) {
+                                issues = [];
+                            }
+                            
+                            if (issues.length > 0) {
+                                // Get saved dimensions
+                                let savedW = (issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                                let savedH = (issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                                
+                                if (!savedW || savedW === 0) {
+                                    savedW = markImageElement.naturalWidth;
+                                }
+                                if (!savedH || savedH === 0) {
+                                    savedH = markImageElement.naturalHeight;
+                                }
+                                
+                                const rect = canvasElement.getBoundingClientRect();
+                                const sx = savedW > 0 ? (rect.width) / savedW : 1;
+                                const sy = savedH > 0 ? (rect.height) / savedH : 1;
+                                const used = {};
+                                
+                                maskLayer.innerHTML = '';
+                                issues.forEach(function(it, idx) {
+                                    if (!it || !it.position || typeof it.position.left !== 'number' || typeof it.position.top !== 'number') {
+                                        return;
+                                    }
+                                    
+                                    const n = (it && it.number) ? it.number : (idx + 1);
+                                    const badge = document.createElement('div');
+                                    badge.textContent = String(n);
+                                    badge.className = 'viewer-badge';
+                                    
+                                    const baseLeft = it.position.left;
+                                    const baseTop = it.position.top;
+                                    const lx = baseLeft * sx;
+                                    const ly = baseTop * sy;
+                                    const key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                                    
+                                    if (used[key] === undefined) {
+                                        used[key] = 0;
+                                    } else {
+                                        used[key]++;
+                                    }
+                                    const k = used[key];
+                                    const dx = (k % 3 - 1) * 14;
+                                    const dy = Math.floor(k / 3) * 14;
+                                    
+                                    badge.style.left = (lx + dx) + 'px';
+                                    badge.style.top = (ly + dy) + 'px';
+                                    badge.style.zIndex = 10 + idx;
+                                    badge.style.pointerEvents = 'auto';
+                                    
+                                    const badgeColor = it.color || '#28c76f';
+                                    badge.style.borderColor = badgeColor;
+                                    badge.style.color = badgeColor;
+                                    
+                                    badge.addEventListener('click', function(ev) {
+                                        ev.stopPropagation();
+                                        if (window.Swal && typeof Swal.fire === 'function') {
+                                            const titleText = (it && it.title) ? it.title : 'Issue';
+                                            const desc = (it && it.description) ? it.description : '-';
+                                            const start = (it && it.start_date) ? it.start_date : '-';
+                                            const end = (it && it.end_date) ? it.end_date : '-';
+                                            const accent = (it && it.color) ? it.color : '#28c76f';
+                                            Swal.fire({
+                                                title: '',
+                                                html: (
+                                                    '<div style="text-align:left;">' +
+                                                        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                                            '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                                            '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
+                                                        '</div>' +
+                                                        '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
+                                                            (String(desc||'').trim() || '-') +
+                                                        '</div>' +
+                                                        '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span>' +
+                                                        '</div>' +
+                                                    '</div>'
+                                                ),
+                                                width: 420,
+                                                showCloseButton: true,
+                                                focusConfirm: false,
+                                                confirmButtonText: 'Close',
+                                                confirmButtonColor: '#28c76f',
+                                                customClass: {
+                                                    popup: 'swal-compact'
+                                                }
+                                            });
+                                        }
+                                    });
+                                    
+                                    maskLayer.appendChild(badge);
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+            
+            taskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    // Mark as active for modal show event
+                    taskItems.forEach(function(item) {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    // Get task data from data attributes
+                    const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
+                    const projectName = this.getAttribute('data-project-name') || 'Project Name';
+                    const ticketCode = this.getAttribute('data-ticket-code') || '—';
+                    const ticketTitle = this.getAttribute('data-ticket-title') || 'Ticket Title';
+                    const projectLogo = this.getAttribute('data-project-logo') || '{{ URL::asset('/build/img/yekbon.svg') }}';
+                    const startDate = this.getAttribute('data-start-date') || '--';
+                    const endDate = this.getAttribute('data-end-date') || '--';
+                    const videoLink = this.getAttribute('data-video-link') || '';
+                    const attachmentsJson = this.getAttribute('data-attachments') || '[]';
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    const description = this.getAttribute('data-description') || 'No description available';
+                    const adminNotes = this.getAttribute('data-admin-notes') || 'No admin notes available';
+                    const section = this.getAttribute('data-section') || 'Section';
+                    const taskId = this.getAttribute('data-task-id') || 'N/A';
+                    const issuesJson = this.getAttribute('data-issues') || '[]';
+                    
+                    // Parse issues first (outside try block so it's accessible)
+                    let issues = [];
+                    try {
+                        issues = JSON.parse(issuesJson);
+                        if (!Array.isArray(issues)) {
+                            issues = [];
+                        }
+                    } catch (e) {
+                        issues = [];
+                    }
+                    
+                    try {
+                        const attachments = JSON.parse(attachmentsJson);
+                        
+                        // Update modal header
+                        document.getElementById('totaltask-project-name').textContent = projectName;
+                        document.getElementById('totaltask-ticket-info').textContent = 'Ticket ' + ticketCode + ' - ' + ticketTitle;
+                        document.getElementById('totaltask-project-logo').src = projectLogo;
+                        
+                        // Update task title
+                        document.getElementById('totaltask-task-title').textContent = taskTitle;
+                        
+                        // Update task ID and section
+                        const taskIdEl = document.getElementById('totaltask-task-id');
+                        if (taskIdEl) taskIdEl.textContent = taskId;
+                        const sectionEl = document.getElementById('totaltask-section');
+                        if (sectionEl) sectionEl.textContent = section;
+                        
+                        // Update description
+                        const descEl = document.getElementById('totaltask-description');
+                        if (descEl) descEl.textContent = description;
+                        
+                        // Update admin notes
+                        const notesEl = document.getElementById('totaltask-admin-notes');
+                        if (notesEl) notesEl.textContent = adminNotes;
+                        
+                        // Update dates
+                        document.getElementById('totaltask-start-date').textContent = startDate;
+                        document.getElementById('totaltask-end-date').textContent = endDate;
+                        
+                        // Update mark image in sign-in section (matching taskProgressViewerModal style)
+                        const markImageElement = document.getElementById('totaltask-mark-image');
+                        const maskLayer = document.getElementById('totaltask-layer');
+                        const canvasElement = document.getElementById('totaltask-canvas');
+                        
+                        // Get saved dimensions from first issue's layer property (like taskProgressViewerModal)
+                        let savedW = (issues && issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                        let savedH = (issues && issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                        
+                        if (markImageElement && maskLayer) {
+                            const trimmedPath = (markImagePath || '').trim();
+                            if (trimmedPath !== '') {
+                                let imageUrl;
+                                if (trimmedPath.startsWith('http://') || trimmedPath.startsWith('https://')) {
+                                    imageUrl = trimmedPath;
+                                } else if (trimmedPath.startsWith('storage/')) {
+                                    imageUrl = '{{ asset("") }}' + trimmedPath;
+                                } else {
+                                    // Path like "tasks/marks/mark_xxx.jpg" - prepend storage/
+                                    const cleanPath = trimmedPath.replace(/^\/+/, '');
+                                    imageUrl = '{{ asset("storage") }}/' + cleanPath;
+                                }
+                                
+                                // Function to render badges (matching taskProgressViewerModal)
+                                const renderBadges = function() {
+                                    if (!maskLayer || !canvasElement) {
+                                        return;
+                                    }
+                                    
+                                    // Clear existing badges
+                                    maskLayer.innerHTML = '';
+                                    
+                                    // Check if we have issues
+                                    if (!issues || !Array.isArray(issues) || issues.length === 0) {
+                                        return;
+                                    }
+                                    
+                                    const rect = canvasElement.getBoundingClientRect();
+                                    if (rect.width === 0 || rect.height === 0) {
+                                        return; // Canvas not ready
+                                    }
+                                    
+                                    // Use saved dimensions from issue layer, or fallback to image dimensions
+                                    let scaleW = savedW;
+                                    let scaleH = savedH;
+                                    
+                                    // If no saved dimensions from layer, use image natural dimensions
+                                    if (!scaleW || scaleW === 0) {
+                                        scaleW = markImageElement.naturalWidth || rect.width;
+                                    }
+                                    if (!scaleH || scaleH === 0) {
+                                        scaleH = markImageElement.naturalHeight || rect.height;
+                                    }
+                                    
+                                    const sx = scaleW > 0 ? (rect.width) / scaleW : 1;
+                                    const sy = scaleH > 0 ? (rect.height) / scaleH : 1;
+                                    const used = {};
+                                    
+                                    issues.forEach(function(it, idx) {
+                                        if (!it) return;
+                                        
+                                        // Check if position exists and is valid
+                                        if (!it.position || typeof it.position !== 'object' || 
+                                            typeof it.position.left !== 'number' || typeof it.position.top !== 'number') {
+                                            return;
+                                        }
+                                        
+                                        const n = (it && it.number) ? it.number : (idx + 1);
+                                        const badge = document.createElement('div');
+                                        badge.textContent = String(n);
+                                        badge.className = 'viewer-badge';
+                                        
+                                        // Get position from issue - use the actual position values
+                                        const baseLeft = it.position.left;
+                                        const baseTop = it.position.top;
+                                        const lx = baseLeft * sx;
+                                        const ly = baseTop * sy;
+                                        const key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                                        
+                                        // Handle overlapping badges
+                                        if (used[key] === undefined) {
+                                            used[key] = 0;
+                                        } else {
+                                            used[key]++;
+                                        }
+                                        const k = used[key];
+                                        const dx = (k % 3 - 1) * 14; // -14, 0, +14
+                                        const dy = Math.floor(k / 3) * 14; // stack every 3
+                                        
+                                        badge.style.left = (lx + dx) + 'px';
+                                        badge.style.top = (ly + dy) + 'px';
+                                        badge.style.zIndex = 10 + idx;
+                                        badge.style.pointerEvents = 'auto';
+                                        
+                                        // Apply color if available
+                                        if (it.color) {
+                                            badge.style.borderColor = it.color;
+                                            badge.style.color = it.color;
+                                        }
+                                        
+                                        // Add click handler to show issue details
+                                        badge.addEventListener('click', function(ev) {
+                                            ev.stopPropagation();
+                                            if (window.Swal && typeof Swal.fire === 'function') {
+                                                const titleText = (it && it.title) ? it.title : 'Issue';
+                                                const desc = (it && it.description) ? it.description : '-';
+                                                const start = (it && it.start_date) ? it.start_date : '-';
+                                                const end = (it && it.end_date) ? it.end_date : '-';
+                                                const accent = (it && it.color) ? it.color : '#28c76f';
+                                                Swal.fire({
+                                                    title: '',
+                                                    html: (
+                                                        '<div style="text-align:left;">' +
+                                                            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                                                '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                                                '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
+                                                            '</div>' +
+                                                            '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
+                                                                (String(desc||'').trim() || '-') +
+                                                            '</div>' +
+                                                            '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                                                '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                                                '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span>' +
+                                                            '</div>' +
+                                                        '</div>'
+                                                    ),
+                                                    width: 420,
+                                                    showCloseButton: true,
+                                                    focusConfirm: false,
+                                                    confirmButtonText: 'Close',
+                                                    confirmButtonColor: '#28c76f',
+                                                    customClass: {
+                                                        popup: 'swal-compact'
+                                                    }
+                                                });
+                                            } else {
+                                                const msg = (it && it.title ? (it.title + '\n') : '') +
+                                                    'Description: ' + ((it && it.description) ? it.description : '-') +
+                                                    '\n' +
+                                                    'Start: ' + ((it && it.start_date) ? it.start_date : '-') + '  End: ' +
+                                                    ((it && it.end_date) ? it.end_date : '-');
+                                                alert(msg);
+                                            }
+                                        });
+                                        
+                                        maskLayer.appendChild(badge);
+                                    });
+                                };
+                                
+                                // Set image source and handle loading
+                                markImageElement.src = imageUrl;
+                                markImageElement.style.display = 'block';
+                                
+                                // Render badges when image is ready
+                                const ensureRender = function() {
+                                    if (markImageElement.complete && markImageElement.naturalWidth > 0 && markImageElement.naturalHeight > 0) {
+                                        // If we don't have saved dimensions from issues, use image dimensions
+                                        if (!savedW || savedW === 0) {
+                                            savedW = markImageElement.naturalWidth;
+                                        }
+                                        if (!savedH || savedH === 0) {
+                                            savedH = markImageElement.naturalHeight;
+                                        }
+                                        // Small delay to ensure DOM is ready and image is fully rendered
+                                        setTimeout(function() {
+                                            renderBadges();
+                                        }, 150);
+                                    }
+                                };
+                                
+                                if (markImageElement.complete && markImageElement.naturalWidth > 0) {
+                                    ensureRender();
+                                } else {
+                                    markImageElement.onload = function() {
+                                        ensureRender();
+                                    };
+                                }
+                                
+                                markImageElement.onerror = function() {
+                                    this.src = '{{ asset('build/img/dooted img.svg') }}';
+                                    this.style.display = 'block';
+                                    if (maskLayer) maskLayer.innerHTML = '';
+                                };
+                            } else {
+                                markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                                markImageElement.style.display = 'block';
+                                if (maskLayer) maskLayer.innerHTML = '';
+                            }
+                        }
+                        
+                        // Update video container
+                        const videoContainer = document.getElementById('totaltask-video-container');
+                        if (videoLink && videoLink.trim() !== '') {
+                            if (videoLink.includes('meet.google.com') || videoLink.includes('google.com/meet')) {
+                                videoContainer.innerHTML = `
+                                    <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                        <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                            <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                        </div>
+                                        <a href="${videoLink}" target="_blank" style="flex: 1; color: #1c2b48; text-decoration: none; font-size: 14px;">
+                                            ${videoLink}
+                                        </a>
+                                    </div>
+                                `;
+                            } else {
+                                videoContainer.innerHTML = `
+                                    <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                        <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                            <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                        </div>
+                                        <a href="${videoLink}" target="_blank" style="flex: 1; color: #1c2b48; text-decoration: none; font-size: 14px;">
+                                            ${videoLink}
+                                        </a>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            videoContainer.innerHTML = `
+                                <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 15px; display: flex; align-items: center;">
+                                    <div style="background-color: #cfd3dc; border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                        <img src="{{ URL::asset('/build/img/Videocamera.svg') }}" alt="Video Icon" style="width: 16px; height: 16px;">
+                                    </div>
+                                    <span style="flex: 1; color: #9ca3af; font-size: 14px;">No video link available</span>
+                                </div>
+                            `;
+                        }
+                        
+                        // Update file attachments
+                        const attachmentsContainer = document.getElementById('totaltask-attachments-container');
+                        if (attachments && Array.isArray(attachments) && attachments.length > 0) {
+                            let attachmentsHtml = '';
+                            attachments.forEach(function(attachment) {
+                                if (attachment) {
+                                    const fileName = attachment.split('/').pop() || 'File';
+                                    const fileExtension = fileName.split('.').pop().toLowerCase() || 'file';
+                                    const downloadUrl = attachment.startsWith('http') ? attachment : '{{ asset("storage") }}/' + attachment.replace(/^\/+/, '');
+                                    
+                                    let iconSrc = '{{ URL::asset("/build/img/file-icon.svg") }}';
+                                    if (fileExtension === 'pdf') {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/pdf.png';
+                                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/image.png';
+                                    } else if (['doc', 'docx'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/ms-word.png';
+                                    } else if (['xls', 'xlsx'].includes(fileExtension)) {
+                                        iconSrc = 'https://img.icons8.com/color/48/000000/ms-excel.png';
+                                    }
+                                    
+                                    attachmentsHtml += `
+                                        <div style="background-color: #ffffff; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; min-width: 200px; cursor: pointer;" onclick="window.open('${downloadUrl}', '_blank')">
+                                            <img src="${iconSrc}" alt="${fileExtension.toUpperCase()}" style="width: 32px; height: 32px; object-fit: contain;">
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 13px; font-weight: 500; color: #374151;">${fileName}</div>
+                                            </div>
+                                            <a href="${downloadUrl}" download="${fileName}" onclick="event.stopPropagation();" style="text-decoration: none;">
+                                                <img src="https://img.icons8.com/ios-filled/16/000000/download.png" alt="Download" style="width: 16px; height: 16px;">
+                                            </a>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            attachmentsContainer.innerHTML = attachmentsHtml;
+                        } else {
+                            attachmentsContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No file attachments available</div>';
+                        }
+                        
+                        // Update issues display
+                        const issuesContainer = document.getElementById('totaltask-issues-container');
+                        if (issuesContainer) {
+                            if (issues && Array.isArray(issues) && issues.length > 0) {
+                                let issuesHtml = '';
+                                issues.forEach(function(issue, index) {
+                                    const issueTitle = issue.title || 'Issue ' + (index + 1);
+                                    const issueDescription = issue.description || 'No description';
+                                    const issueColor = issue.color || '#28c76f';
+                                    issuesHtml += `
+                                        <div style="background-color: #fff; border-radius: 6px; padding: 12px; margin-bottom: 10px; border-left: 4px solid ${issueColor};">
+                                            <div style="font-weight: 600; color: #1c2b48; font-size: 14px; margin-bottom: 5px;">${issueTitle}</div>
+                                            <div style="color: #667085; font-size: 13px;">${issueDescription}</div>
+                                        </div>
+                                    `;
+                                });
+                                issuesContainer.innerHTML = issuesHtml;
+                            } else {
+                                issuesContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No issues available</div>';
+                            }
+                        }
+                    } catch (e) {
+                        // Silently handle parsing errors
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- moveToDoneModal Modal -->
     <div class="modal fade" id="moveToDoneModal" tabindex="-1" aria-labelledby="moveToDoneLabel"
