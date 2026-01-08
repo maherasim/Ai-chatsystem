@@ -1545,10 +1545,27 @@
                                             $attachments = [];
                                         }
                                         
+                                        // Parse issues - handle both JSON string and array
+                                        $issues = $task->issues ?? [];
+                                        if (is_string($issues)) {
+                                            $issues = json_decode($issues, true) ?? [];
+                                        }
+                                        if (!is_array($issues)) {
+                                            $issues = [];
+                                        }
+                                        
+                                        // Get task description - use first issue description if task description is empty
                                         $taskDescription = $task->description ?? '';
+                                        if (empty($taskDescription) && !empty($issues) && is_array($issues)) {
+                                            $firstIssue = collect($issues)->first();
+                                            if ($firstIssue && isset($firstIssue['description'])) {
+                                                $taskDescription = $firstIssue['description'];
+                                            }
+                                        }
+                                        
                                         $adminNotes = '';
-                                        if (!empty($task->issues) && is_array($task->issues)) {
-                                            $adminNotes = collect($task->issues)->pluck('notes')->filter()->first() ?? '';
+                                        if (!empty($issues) && is_array($issues)) {
+                                            $adminNotes = collect($issues)->pluck('notes')->filter()->first() ?? '';
                                         }
                                         $sectionName = optional($task->ticket)->section_name ?? 'Section';
                                         $priority = $task->priority ?? 'low';
@@ -1578,7 +1595,8 @@
                                         data-section="{{ $sectionName }}"
                                         data-priority="{{ $priority }}"
                                         data-status="{{ $status }}"
-                                        data-mark-image-path="{{ $markImagePath }}">
+                                        data-mark-image-path="{{ $markImagePath }}"
+                                        data-issues="{{ json_encode($issues) }}">
                                         <!-- Task Image -->
                                         <div class="me-2">
                                             <img src="{{ $markImage }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;">
@@ -9893,19 +9911,19 @@
                                 No description available
                             </p>
                         </div>
-                        <!-- Task Image Display (replaces Sign-in Box) -->
-                        <div class="mx-auto my-4"
-                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
+                        <!-- Image Canvas (replaces Sign-in Box) -->
+                        <div id="totaltask-canvas" class="mx-auto my-4" style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; text-align: center; overflow:hidden;">
                             <img id="totaltask-mark-image" 
                                 src="{{ asset('build/img/dooted img.svg') }}"
-                                alt="Task Image"
-                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
-                            
-                            <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
-
+                                alt="Task Board"
+                                style="width:100%; height:auto; max-height:400px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; filter:brightness(0.8);">
+                            <div id="totaltask-layer" style="position:absolute; inset:0; pointer-events:auto;"></div>
+                            <div id="totaltask-focus" style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;"></div>
+                        </div>
+                        
+                        <!-- Close Button (positioned lower) -->
+                        <div class="text-center" style="margin-top: 20px;">
+                            <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
                         </div>
                         <!-- Notes -->
                         <!-- Notes Section-->
@@ -9936,6 +9954,14 @@
                                 <!-- Video link will be populated here -->
                             </div>
 
+                        </div>
+                        <!-- Issues Section -->
+                        <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px; margin-top:5px;">
+                            <div style="font-weight: 600; color: #333; font-size: 14px; margin-bottom: 15px;">• Issues •</div>
+
+                            <div id="totaltask-issues-container">
+                                <!-- Issues will be populated here -->
+                            </div>
                         </div>
                         <!-- File Attachments Section -->
                         <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px; margin-top:5px;">
@@ -9994,8 +10020,132 @@
             const modal = document.getElementById('totaltask');
             const taskItems = document.querySelectorAll('.totaltask-item');
             
+            // Also listen for modal show event to re-render badges if needed
+            if (modal) {
+                modal.addEventListener('shown.bs.modal', function() {
+                    // Re-render badges when modal is shown (in case image loaded before modal opened)
+                    const maskLayer = document.getElementById('totaltask-layer');
+                    const canvasElement = document.getElementById('totaltask-canvas');
+                    const markImageElement = document.getElementById('totaltask-mark-image');
+                    if (maskLayer && canvasElement && markImageElement && markImageElement.complete) {
+                        // Get issues from the clicked task item
+                        const clickedItem = document.querySelector('.totaltask-item.active');
+                        if (clickedItem) {
+                            const issuesJson = clickedItem.getAttribute('data-issues') || '[]';
+                            let issues = [];
+                            try {
+                                const parsed = JSON.parse(issuesJson);
+                                if (Array.isArray(parsed)) {
+                                    issues = parsed;
+                                }
+                            } catch (e) {
+                                issues = [];
+                            }
+                            
+                            if (issues.length > 0) {
+                                // Get saved dimensions
+                                let savedW = (issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                                let savedH = (issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                                
+                                if (!savedW || savedW === 0) {
+                                    savedW = markImageElement.naturalWidth;
+                                }
+                                if (!savedH || savedH === 0) {
+                                    savedH = markImageElement.naturalHeight;
+                                }
+                                
+                                const rect = canvasElement.getBoundingClientRect();
+                                const sx = savedW > 0 ? (rect.width) / savedW : 1;
+                                const sy = savedH > 0 ? (rect.height) / savedH : 1;
+                                const used = {};
+                                
+                                maskLayer.innerHTML = '';
+                                issues.forEach(function(it, idx) {
+                                    if (!it || !it.position || typeof it.position.left !== 'number' || typeof it.position.top !== 'number') {
+                                        return;
+                                    }
+                                    
+                                    const n = (it && it.number) ? it.number : (idx + 1);
+                                    const badge = document.createElement('div');
+                                    badge.textContent = String(n);
+                                    badge.className = 'viewer-badge';
+                                    
+                                    const baseLeft = it.position.left;
+                                    const baseTop = it.position.top;
+                                    const lx = baseLeft * sx;
+                                    const ly = baseTop * sy;
+                                    const key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                                    
+                                    if (used[key] === undefined) {
+                                        used[key] = 0;
+                                    } else {
+                                        used[key]++;
+                                    }
+                                    const k = used[key];
+                                    const dx = (k % 3 - 1) * 14;
+                                    const dy = Math.floor(k / 3) * 14;
+                                    
+                                    badge.style.left = (lx + dx) + 'px';
+                                    badge.style.top = (ly + dy) + 'px';
+                                    badge.style.zIndex = 10 + idx;
+                                    badge.style.pointerEvents = 'auto';
+                                    
+                                    const badgeColor = it.color || '#28c76f';
+                                    badge.style.borderColor = badgeColor;
+                                    badge.style.color = badgeColor;
+                                    
+                                    badge.addEventListener('click', function(ev) {
+                                        ev.stopPropagation();
+                                        if (window.Swal && typeof Swal.fire === 'function') {
+                                            const titleText = (it && it.title) ? it.title : 'Issue';
+                                            const desc = (it && it.description) ? it.description : '-';
+                                            const start = (it && it.start_date) ? it.start_date : '-';
+                                            const end = (it && it.end_date) ? it.end_date : '-';
+                                            const accent = (it && it.color) ? it.color : '#28c76f';
+                                            Swal.fire({
+                                                title: '',
+                                                html: (
+                                                    '<div style="text-align:left;">' +
+                                                        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                                            '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                                            '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
+                                                        '</div>' +
+                                                        '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
+                                                            (String(desc||'').trim() || '-') +
+                                                        '</div>' +
+                                                        '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                                            '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span>' +
+                                                        '</div>' +
+                                                    '</div>'
+                                                ),
+                                                width: 420,
+                                                showCloseButton: true,
+                                                focusConfirm: false,
+                                                confirmButtonText: 'Close',
+                                                confirmButtonColor: '#28c76f',
+                                                customClass: {
+                                                    popup: 'swal-compact'
+                                                }
+                                            });
+                                        }
+                                    });
+                                    
+                                    maskLayer.appendChild(badge);
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+            
             taskItems.forEach(function(taskItem) {
                 taskItem.addEventListener('click', function() {
+                    // Mark as active for modal show event
+                    taskItems.forEach(function(item) {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
                     // Get task data from data attributes
                     const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
                     const projectName = this.getAttribute('data-project-name') || 'Project Name';
@@ -10011,6 +10161,18 @@
                     const adminNotes = this.getAttribute('data-admin-notes') || 'No admin notes available';
                     const section = this.getAttribute('data-section') || 'Section';
                     const taskId = this.getAttribute('data-task-id') || 'N/A';
+                    const issuesJson = this.getAttribute('data-issues') || '[]';
+                    
+                    // Parse issues first (outside try block so it's accessible)
+                    let issues = [];
+                    try {
+                        issues = JSON.parse(issuesJson);
+                        if (!Array.isArray(issues)) {
+                            issues = [];
+                        }
+                    } catch (e) {
+                        issues = [];
+                    }
                     
                     try {
                         const attachments = JSON.parse(attachmentsJson);
@@ -10041,9 +10203,16 @@
                         document.getElementById('totaltask-start-date').textContent = startDate;
                         document.getElementById('totaltask-end-date').textContent = endDate;
                         
-                        // Update mark image in sign-in section
+                        // Update mark image in sign-in section (matching taskProgressViewerModal style)
                         const markImageElement = document.getElementById('totaltask-mark-image');
-                        if (markImageElement) {
+                        const maskLayer = document.getElementById('totaltask-layer');
+                        const canvasElement = document.getElementById('totaltask-canvas');
+                        
+                        // Get saved dimensions from first issue's layer property (like taskProgressViewerModal)
+                        let savedW = (issues && issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                        let savedH = (issues && issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                        
+                        if (markImageElement && maskLayer) {
                             const trimmedPath = (markImagePath || '').trim();
                             if (trimmedPath !== '') {
                                 let imageUrl;
@@ -10056,15 +10225,171 @@
                                     const cleanPath = trimmedPath.replace(/^\/+/, '');
                                     imageUrl = '{{ asset("storage") }}/' + cleanPath;
                                 }
+                                
+                                // Function to render badges (matching taskProgressViewerModal)
+                                const renderBadges = function() {
+                                    if (!maskLayer || !canvasElement) {
+                                        return;
+                                    }
+                                    
+                                    // Clear existing badges
+                                    maskLayer.innerHTML = '';
+                                    
+                                    // Check if we have issues
+                                    if (!issues || !Array.isArray(issues) || issues.length === 0) {
+                                        return;
+                                    }
+                                    
+                                    const rect = canvasElement.getBoundingClientRect();
+                                    if (rect.width === 0 || rect.height === 0) {
+                                        return; // Canvas not ready
+                                    }
+                                    
+                                    // Use saved dimensions from issue layer, or fallback to image dimensions
+                                    let scaleW = savedW;
+                                    let scaleH = savedH;
+                                    
+                                    // If no saved dimensions from layer, use image natural dimensions
+                                    if (!scaleW || scaleW === 0) {
+                                        scaleW = markImageElement.naturalWidth || rect.width;
+                                    }
+                                    if (!scaleH || scaleH === 0) {
+                                        scaleH = markImageElement.naturalHeight || rect.height;
+                                    }
+                                    
+                                    const sx = scaleW > 0 ? (rect.width) / scaleW : 1;
+                                    const sy = scaleH > 0 ? (rect.height) / scaleH : 1;
+                                    const used = {};
+                                    
+                                    issues.forEach(function(it, idx) {
+                                        if (!it) return;
+                                        
+                                        // Check if position exists and is valid
+                                        if (!it.position || typeof it.position !== 'object' || 
+                                            typeof it.position.left !== 'number' || typeof it.position.top !== 'number') {
+                                            return;
+                                        }
+                                        
+                                        const n = (it && it.number) ? it.number : (idx + 1);
+                                        const badge = document.createElement('div');
+                                        badge.textContent = String(n);
+                                        badge.className = 'viewer-badge';
+                                        
+                                        // Get position from issue - use the actual position values
+                                        const baseLeft = it.position.left;
+                                        const baseTop = it.position.top;
+                                        const lx = baseLeft * sx;
+                                        const ly = baseTop * sy;
+                                        const key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                                        
+                                        // Handle overlapping badges
+                                        if (used[key] === undefined) {
+                                            used[key] = 0;
+                                        } else {
+                                            used[key]++;
+                                        }
+                                        const k = used[key];
+                                        const dx = (k % 3 - 1) * 14; // -14, 0, +14
+                                        const dy = Math.floor(k / 3) * 14; // stack every 3
+                                        
+                                        badge.style.left = (lx + dx) + 'px';
+                                        badge.style.top = (ly + dy) + 'px';
+                                        badge.style.zIndex = 10 + idx;
+                                        badge.style.pointerEvents = 'auto';
+                                        
+                                        // Apply color if available
+                                        if (it.color) {
+                                            badge.style.borderColor = it.color;
+                                            badge.style.color = it.color;
+                                        }
+                                        
+                                        // Add click handler to show issue details
+                                        badge.addEventListener('click', function(ev) {
+                                            ev.stopPropagation();
+                                            if (window.Swal && typeof Swal.fire === 'function') {
+                                                const titleText = (it && it.title) ? it.title : 'Issue';
+                                                const desc = (it && it.description) ? it.description : '-';
+                                                const start = (it && it.start_date) ? it.start_date : '-';
+                                                const end = (it && it.end_date) ? it.end_date : '-';
+                                                const accent = (it && it.color) ? it.color : '#28c76f';
+                                                Swal.fire({
+                                                    title: '',
+                                                    html: (
+                                                        '<div style="text-align:left;">' +
+                                                            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                                                '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                                                '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
+                                                            '</div>' +
+                                                            '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
+                                                                (String(desc||'').trim() || '-') +
+                                                            '</div>' +
+                                                            '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                                                '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                                                '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span>' +
+                                                            '</div>' +
+                                                        '</div>'
+                                                    ),
+                                                    width: 420,
+                                                    showCloseButton: true,
+                                                    focusConfirm: false,
+                                                    confirmButtonText: 'Close',
+                                                    confirmButtonColor: '#28c76f',
+                                                    customClass: {
+                                                        popup: 'swal-compact'
+                                                    }
+                                                });
+                                            } else {
+                                                const msg = (it && it.title ? (it.title + '\n') : '') +
+                                                    'Description: ' + ((it && it.description) ? it.description : '-') +
+                                                    '\n' +
+                                                    'Start: ' + ((it && it.start_date) ? it.start_date : '-') + '  End: ' +
+                                                    ((it && it.end_date) ? it.end_date : '-');
+                                                alert(msg);
+                                            }
+                                        });
+                                        
+                                        maskLayer.appendChild(badge);
+                                    });
+                                };
+                                
+                                // Set image source and handle loading
                                 markImageElement.src = imageUrl;
                                 markImageElement.style.display = 'block';
+                                
+                                // Render badges when image is ready
+                                const ensureRender = function() {
+                                    if (markImageElement.complete && markImageElement.naturalWidth > 0 && markImageElement.naturalHeight > 0) {
+                                        // If we don't have saved dimensions from issues, use image dimensions
+                                        if (!savedW || savedW === 0) {
+                                            savedW = markImageElement.naturalWidth;
+                                        }
+                                        if (!savedH || savedH === 0) {
+                                            savedH = markImageElement.naturalHeight;
+                                        }
+                                        // Small delay to ensure DOM is ready and image is fully rendered
+                                        setTimeout(function() {
+                                            renderBadges();
+                                        }, 150);
+                                    }
+                                };
+                                
+                                if (markImageElement.complete && markImageElement.naturalWidth > 0) {
+                                    ensureRender();
+                                } else {
+                                    markImageElement.onload = function() {
+                                        ensureRender();
+                                    };
+                                }
+                                
                                 markImageElement.onerror = function() {
                                     this.src = '{{ asset('build/img/dooted img.svg') }}';
                                     this.style.display = 'block';
+                                    if (maskLayer) maskLayer.innerHTML = '';
                                 };
                             } else {
                                 markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
                                 markImageElement.style.display = 'block';
+                                if (maskLayer) maskLayer.innerHTML = '';
                             }
                         }
                         
@@ -10142,6 +10467,28 @@
                             attachmentsContainer.innerHTML = attachmentsHtml;
                         } else {
                             attachmentsContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No file attachments available</div>';
+                        }
+                        
+                        // Update issues display
+                        const issuesContainer = document.getElementById('totaltask-issues-container');
+                        if (issuesContainer) {
+                            if (issues && Array.isArray(issues) && issues.length > 0) {
+                                let issuesHtml = '';
+                                issues.forEach(function(issue, index) {
+                                    const issueTitle = issue.title || 'Issue ' + (index + 1);
+                                    const issueDescription = issue.description || 'No description';
+                                    const issueColor = issue.color || '#28c76f';
+                                    issuesHtml += `
+                                        <div style="background-color: #fff; border-radius: 6px; padding: 12px; margin-bottom: 10px; border-left: 4px solid ${issueColor};">
+                                            <div style="font-weight: 600; color: #1c2b48; font-size: 14px; margin-bottom: 5px;">${issueTitle}</div>
+                                            <div style="color: #667085; font-size: 13px;">${issueDescription}</div>
+                                        </div>
+                                    `;
+                                });
+                                issuesContainer.innerHTML = issuesHtml;
+                            } else {
+                                issuesContainer.innerHTML = '<div style="color: #9ca3af; font-size: 14px; padding: 10px;">No issues available</div>';
+                            }
                         }
                     } catch (e) {
                         // Silently handle parsing errors
