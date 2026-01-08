@@ -995,7 +995,12 @@
                     </div>
                     @forelse($newTasks as $task)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <div style="background:#fff">
+                        @if($task['mark_image_url'])
+                        <div class="me-2">
+                            <img src="{{ $task['mark_image_url'] }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;" onerror="this.src='{{ asset('build/img/dooted img.svg') }}';">
+                        </div>
+                        @endif
+                        <div style="background:#fff; flex: 1;">
                             <div class="d-flex justify-content-between mb-3">
                                 <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
@@ -1062,7 +1067,12 @@
                     </div>
                     @forelse($inProgressTasks as $task)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <div style="background:#fff">
+                        @if($task['mark_image_url'])
+                        <div class="me-2">
+                            <img src="{{ $task['mark_image_url'] }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;" onerror="this.src='{{ asset('build/img/dooted img.svg') }}';">
+                        </div>
+                        @endif
+                        <div style="background:#fff; flex: 1;">
                             <div class="d-flex justify-content-between mb-3">
                                 <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
@@ -1129,7 +1139,12 @@
                     </div>
                     @forelse($inHoldTasks as $task)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <div style="background:#fff">
+                        @if($task['mark_image_url'])
+                        <div class="me-2">
+                            <img src="{{ $task['mark_image_url'] }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;" onerror="this.src='{{ asset('build/img/dooted img.svg') }}';">
+                        </div>
+                        @endif
+                        <div style="background:#fff; flex: 1;">
                             <div class="d-flex justify-content-between mb-3">
                                 <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
@@ -1205,7 +1220,12 @@
                     </div>
                     @forelse($inCheckTasks as $task)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <div style="background:#fff">
+                        @if($task['mark_image_url'])
+                        <div class="me-2">
+                            <img src="{{ $task['mark_image_url'] }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;" onerror="this.src='{{ asset('build/img/dooted img.svg') }}';">
+                        </div>
+                        @endif
+                        <div style="background:#fff; flex: 1;">
                             <div class="d-flex justify-content-between mb-3">
                                 <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
@@ -1272,7 +1292,12 @@
                     </div>
                     @forelse($rejectedTasks as $task)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <div style="background:#fff">
+                        @if($task['mark_image_url'])
+                        <div class="me-2">
+                            <img src="{{ $task['mark_image_url'] }}" alt="Task Image" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; background: transparent; border: none; padding: 0; display:block;" onerror="this.src='{{ asset('build/img/dooted img.svg') }}';">
+                        </div>
+                        @endif
+                        <div style="background:#fff; flex: 1;">
                             <div class="d-flex justify-content-between mb-3">
                                 <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">

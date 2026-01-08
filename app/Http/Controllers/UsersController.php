@@ -137,6 +137,20 @@ class UsersController extends Controller
             $project = $task->project;
             $ticket = $task->ticket;
             
+            // Get task image URL
+            $markImageUrl = null;
+            if ($task->mark_image_path) {
+                $markImagePath = $task->mark_image_path;
+                // Ensure proper path handling
+                if (strpos($markImagePath, 'storage/') === 0) {
+                    $markImageUrl = asset($markImagePath);
+                } elseif (strpos($markImagePath, 'tasks/') === 0) {
+                    $markImageUrl = asset('storage/' . $markImagePath);
+                } else {
+                    $markImageUrl = asset('storage/' . $markImagePath);
+                }
+            }
+            
             return [
                 'id' => $task->_id,
                 'title' => $task->title,
@@ -150,6 +164,7 @@ class UsersController extends Controller
                 'ticket_code' => $ticket ? $ticket->code : 'N/A',
                 'project_logo' => $project && $project->logo_path ? asset('storage/' . $project->logo_path) : asset('build/img/yekbon.svg'),
                 'hold_reason' => $task->hold_reason ?? null,
+                'mark_image_url' => $markImageUrl,
             ];
         };
         

@@ -687,7 +687,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        z-index: 1;
     }
     
     /* Issue Badge Styles */
@@ -1218,8 +1219,14 @@
                                     $issueStartDate = isset($firstIssue['start_date']) ? \Carbon\Carbon::parse($firstIssue['start_date'])->format('d.m.Y') : (isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '12.10.2025');
                                     $issueEndDate = isset($firstIssue['end_date']) ? \Carbon\Carbon::parse($firstIssue['end_date'])->format('d.m.Y') : (isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '15.10.2025');
                                     $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
-                                    $staticImageUrl = 'https://logiadmin.it-supportline.de';
-                                    $markImagePath = !empty($issueImagePath) ? $staticImageUrl . '/storage/' . $issueImagePath : (!empty($task->mark_image_path) ? $staticImageUrl . '/storage/' . $task->mark_image_path : $staticImageUrl . '/storage/');
+                                    // Use asset() helper for proper URL generation
+                                    if (!empty($issueImagePath)) {
+                                        $markImagePath = asset('storage/' . $issueImagePath);
+                                    } elseif (!empty($task->mark_image_path)) {
+                                        $markImagePath = asset('storage/' . $task->mark_image_path);
+                                    } else {
+                                        $markImagePath = '';
+                                    }
                                     
                                     // Extract rejection reason from rejections array
                                     $rejectionReason = '';
@@ -1262,11 +1269,12 @@
                                     <div class="task-image-col">
                                         <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                         @if(!empty($task->mark_image_path))
-                                            <img src="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}"
+                                            <img src="{{ asset('storage/' . $task->mark_image_path) }}"
                                                  alt="Task"
                                                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
                                                  onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
-                                                 title="https://logiadmin.it-supportline.de/storage/{{ $task->mark_image_path }}">
+                                                 title="{{ asset('storage/' . $task->mark_image_path) }}"
+                                                 onerror="this.style.display='none';">
                                         @else
                                             <!-- Transparent/Placeholder controlled by CSS pattern -->
                                         @endif
@@ -2374,25 +2382,39 @@
             window.currentTaskIssues = [];
         }
         
-        if (imageSrc && imageSrc.trim() !== '') {
+        // Check if imageSrc is valid (not empty and not just the storage path)
+        const baseUrl = '{{ config("app.url") }}';
+        const isValidImageSrc = imageSrc && imageSrc.trim() !== '' && 
+                                 imageSrc !== baseUrl + '/storage/' && 
+                                 imageSrc !== '/storage/' &&
+                                 !imageSrc.endsWith('/storage/');
+        
+        if (isValidImageSrc) {
             imgEl.src = imageSrc;
             imgEl.title = imageSrc;
             imgEl.style.display = 'block';
+            placeholderEl.style.display = 'none';
+            
             imgEl.onerror = function() {
                 // If image fails to load, show placeholder
                 this.style.display = 'none';
                 placeholderEl.style.display = 'block';
             };
+            
             imgEl.onload = function() {
+                // Ensure image is visible
+                this.style.display = 'block';
+                placeholderEl.style.display = 'none';
                 // Create issue badges on image load
                 setTimeout(function() {
                     createIssueBadges();
                 }, 300);
             };
-            placeholderEl.style.display = 'none';
             
             // Also create badges if image is already loaded
             if (imgEl.complete && imgEl.naturalHeight !== 0) {
+                imgEl.style.display = 'block';
+                placeholderEl.style.display = 'none';
                 setTimeout(function() {
                     createIssueBadges();
                 }, 300);
