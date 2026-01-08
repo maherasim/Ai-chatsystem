@@ -783,15 +783,78 @@ function confirmDelete(deleteUrl, userName) {
                     const titleEl = clone.querySelector('h6');
                     if (titleEl) titleEl.textContent = project.title || 'Project';
                     
-                    // Update priority
+                    // Update priority dynamically with color
                     const prioritySpan = clone.querySelector('span[style*="color: #4b5c74"]');
-                    if (prioritySpan) prioritySpan.textContent = (project.priority || 'low').toUpperCase();
+                    if (prioritySpan) {
+                        const priority = (project.priority || 'low').toLowerCase();
+                        prioritySpan.textContent = priority.toUpperCase();
+                        
+                        // Set priority color dynamically
+                        const priorityColors = {
+                            'high': '#ea5455',
+                            'medium': '#ffc107',
+                            'low': '#28c76f'
+                        };
+                        const priorityBgColors = {
+                            'high': '#fdd7d7',
+                            'medium': '#fef3d3',
+                            'low': '#f1f3f4'
+                        };
+                        const color = priorityColors[priority] || priorityColors['low'];
+                        const bgColor = priorityBgColors[priority] || priorityBgColors['low'];
+                        
+                        // Update the priority container background
+                        const priorityContainer = prioritySpan.closest('div[style*="background"]');
+                        if (priorityContainer) {
+                            priorityContainer.style.background = bgColor;
+                        }
+                        
+                        // Update the dot color
+                        const dot = priorityContainer ? priorityContainer.querySelector('span[style*="border-radius: 50%"]') : null;
+                        if (dot) {
+                            dot.style.background = color;
+                        }
+                    }
+                    
+                    // Update flag icon dynamically based on priority
+                    const flagContainer = clone.querySelector('div[style*="background: #fff3cd"]');
+                    if (flagContainer) {
+                        const priority = (project.priority || 'low').toLowerCase();
+                        const flagColors = {
+                            'high': '#fdd7d7',
+                            'medium': '#fef3d3',
+                            'low': '#fff3cd'
+                        };
+                        flagContainer.style.background = flagColors[priority] || flagColors['low'];
+                        
+                        // Update flag icon based on priority
+                        const flagImg = flagContainer.querySelector('img');
+                        if (flagImg) {
+                            const flagIcons = {
+                                'high': '{{ asset("build/img/redflag.svg") }}',
+                                'medium': '{{ asset("build/img/yelowflag.svg") }}',
+                                'low': '{{ asset("build/img/yelowflag.svg") }}'
+                            };
+                            flagImg.src = flagIcons[priority] || flagIcons['low'];
+                        }
+                    }
                     
                     // Update dates - find the specific date div (the one with "Ticket ID" text)
                     const allDateDivs = clone.querySelectorAll('div[style*="font-size: 12px"]');
                     const dateDiv = Array.from(allDateDivs).find(div => div.textContent && div.textContent.includes('Ticket ID'));
-                    if (dateDiv && project.start_date && project.end_date) {
-                        dateDiv.innerHTML = `<div><strong>${project.code || 'N/A'}</strong> | <strong>Section</strong></div><div><span style="color: #28c76f;">Start:</span> ${project.start_date}</div><div><span style="color: #28c76f;">Deliver:</span> ${project.end_date}</div>`;
+                    if (dateDiv) {
+                        // Get section names dynamically
+                        const sectionNames = project.sections && project.sections.length > 0 
+                            ? project.sections.map(s => s.name || 'Section').join(', ') 
+                            : 'Section';
+                        const sectionText = project.sections && project.sections.length > 0 
+                            ? `<strong>${sectionNames}</strong>` 
+                            : '<strong>Section</strong>';
+                        
+                        const dateContent = project.start_date && project.end_date
+                            ? `<div><strong>${project.code || 'N/A'}</strong> | ${sectionText}</div><div><span style="color: #28c76f;">Start:</span> ${project.start_date}</div><div><span style="color: #28c76f;">Deliver:</span> ${project.end_date}</div>`
+                            : `<div><strong>${project.code || 'N/A'}</strong> | ${sectionText}</div>${project.start_date ? `<div><span style="color: #28c76f;">Start:</span> ${project.start_date}</div>` : ''}${project.end_date ? `<div><span style="color: #28c76f;">Deliver:</span> ${project.end_date}</div>` : ''}`;
+                        dateDiv.innerHTML = dateContent;
                     }
                     
                     // Update stats
@@ -817,23 +880,52 @@ function confirmDelete(deleteUrl, userName) {
                         pmImg.src = project.project_manager.avatar;
                     }
                     
-                    // Update developers
+                    // Update developers - display ALL developers dynamically
                     const devContainer = clone.querySelector('div[style*="Developers"] + div');
                     if (devContainer && project.developers && project.developers.length > 0) {
                         devContainer.innerHTML = '';
-                        project.developers.slice(0, 3).forEach((dev, index) => {
+                        // Adjust container width based on number of developers
+                        const maxVisible = 5; // Show up to 5 avatars
+                        const visibleDevs = project.developers.slice(0, maxVisible);
+                        const containerWidth = Math.min(visibleDevs.length * 18 + 32, 120);
+                        devContainer.style.width = containerWidth + 'px';
+                        
+                        visibleDevs.forEach((dev, index) => {
                             const img = document.createElement('img');
                             img.src = dev.avatar || '{{ asset("build/img/profileuser.svg") }}';
                             img.className = 'rounded-circle border border-white shadow-sm';
-                            img.style.cssText = `width: 32px; height: 32px; position: absolute; left: ${index * 18}px; z-index: ${3 - index};`;
+                            img.style.cssText = `width: 32px; height: 32px; position: absolute; left: ${index * 18}px; z-index: ${maxVisible - index};`;
+                            img.title = dev.name || 'Developer';
                             devContainer.appendChild(img);
                         });
+                        
+                        // If there are more developers, show a count badge
+                        if (project.developers.length > maxVisible) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge bg-primary';
+                            badge.style.cssText = `position: absolute; left: ${maxVisible * 18}px; z-index: 0; font-size: 10px; padding: 2px 6px;`;
+                            badge.textContent = `+${project.developers.length - maxVisible}`;
+                            badge.title = `Total: ${project.developers.length} developers`;
+                            devContainer.appendChild(badge);
+                        }
                     }
                     
-                    // Update tickets & tasks
+                    // Update tickets & tasks with dynamic task status breakdown
                     const ticketsTasksDiv = clone.querySelector('div[style*="Ticket & Tasks"] + div');
                     if (ticketsTasksDiv) {
-                        ticketsTasksDiv.textContent = `${project.total_tickets || 0} Tickets - ${project.total_tasks || 0} Tasks`;
+                        const taskStatus = project.task_status_breakdown || {};
+                        const statusText = [
+                            taskStatus.new ? `${taskStatus.new} New` : '',
+                            taskStatus.in_progress ? `${taskStatus.in_progress} Progress` : '',
+                            taskStatus.completed ? `${taskStatus.completed} Done` : ''
+                        ].filter(Boolean).join(', ');
+                        
+                        ticketsTasksDiv.innerHTML = `
+                            <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">
+                                <div><strong>${project.total_tickets || 0}</strong> Tickets - <strong>${project.total_tasks || 0}</strong> Tasks</div>
+                                ${statusText ? `<div style="font-size: 10px; color: #28c76f; margin-top: 4px;">${statusText}</div>` : ''}
+                            </div>
+                        `;
                     }
                     
                     // Update sections - find by structure
@@ -866,6 +958,91 @@ function confirmDelete(deleteUrl, userName) {
                                 barsDiv.appendChild(progressDiv);
                             });
                         }
+                    }
+                    
+                    // Update teams section dynamically
+                    const teamsContainer = clone.querySelector('#teamsContainer');
+                    if (teamsContainer && project.teams && project.teams.length > 0) {
+                        teamsContainer.innerHTML = '';
+                        project.teams.forEach((team, teamIndex) => {
+                            const teamDiv = document.createElement('div');
+                            teamDiv.style.cssText = 'background: white; border-radius: 8px; padding: 10px; border-left: 3px solid ' + (team.timeline_color || '#4dc3ff') + ';';
+                            
+                            // Team title
+                            const teamTitle = document.createElement('div');
+                            teamTitle.style.cssText = 'font-weight: 600; font-size: 13px; color: #2b3e5f; margin-bottom: 8px;';
+                            teamTitle.textContent = team.title || 'Team';
+                            teamDiv.appendChild(teamTitle);
+                            
+                            // Team PM if available
+                            if (team.pm) {
+                                const pmDiv = document.createElement('div');
+                                pmDiv.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; color: #6c757d;';
+                                const pmImg = document.createElement('img');
+                                pmImg.src = team.pm.avatar || '{{ asset("build/img/profileuser.svg") }}';
+                                pmImg.style.cssText = 'width: 20px; height: 20px; border-radius: 50%;';
+                                pmImg.alt = 'PM';
+                                pmDiv.appendChild(pmImg);
+                                const pmText = document.createElement('span');
+                                pmText.textContent = 'PM: ' + (team.pm.name || 'N/A');
+                                pmDiv.appendChild(pmText);
+                                teamDiv.appendChild(pmDiv);
+                            }
+                            
+                            // Team developers
+                            if (team.developers && team.developers.length > 0) {
+                                const devsDiv = document.createElement('div');
+                                devsDiv.style.cssText = 'display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;';
+                                const devsLabel = document.createElement('span');
+                                devsLabel.style.cssText = 'font-size: 11px; color: #6c757d; font-weight: 600;';
+                                devsLabel.textContent = 'Developers:';
+                                devsDiv.appendChild(devsLabel);
+                                
+                                const devsContainer = document.createElement('div');
+                                devsContainer.style.cssText = 'display: flex; gap: 4px;';
+                                team.developers.slice(0, 5).forEach(dev => {
+                                    const devImg = document.createElement('img');
+                                    devImg.src = dev.avatar || '{{ asset("build/img/profileuser.svg") }}';
+                                    devImg.style.cssText = 'width: 24px; height: 24px; border-radius: 50%; border: 1px solid #e0e0e0;';
+                                    devImg.title = dev.name || 'Developer';
+                                    devsContainer.appendChild(devImg);
+                                });
+                                if (team.developers.length > 5) {
+                                    const moreBadge = document.createElement('span');
+                                    moreBadge.style.cssText = 'font-size: 10px; color: #6c757d; padding: 2px 6px; background: #f0f0f0; border-radius: 10px;';
+                                    moreBadge.textContent = '+' + (team.developers.length - 5);
+                                    devsContainer.appendChild(moreBadge);
+                                }
+                                devsDiv.appendChild(devsContainer);
+                                teamDiv.appendChild(devsDiv);
+                            }
+                            
+                            // Team tasks
+                            if (team.tasks && team.tasks.length > 0) {
+                                const tasksDiv = document.createElement('div');
+                                tasksDiv.style.cssText = 'font-size: 11px; color: #6c757d; margin-top: 6px;';
+                                const taskCounts = {};
+                                team.tasks.forEach(task => {
+                                    const status = task.status || 'new';
+                                    taskCounts[status] = (taskCounts[status] || 0) + 1;
+                                });
+                                
+                                const taskText = Object.entries(taskCounts)
+                                    .map(([status, count]) => `${count} ${status}`)
+                                    .join(', ');
+                                tasksDiv.innerHTML = `<strong>Tasks:</strong> ${team.total_tasks || 0} total (${taskText})`;
+                                teamDiv.appendChild(tasksDiv);
+                            } else {
+                                const noTasksDiv = document.createElement('div');
+                                noTasksDiv.style.cssText = 'font-size: 11px; color: #6c757d; margin-top: 6px;';
+                                noTasksDiv.textContent = 'No tasks assigned';
+                                teamDiv.appendChild(noTasksDiv);
+                            }
+                            
+                            teamsContainer.appendChild(teamDiv);
+                        });
+                    } else if (teamsContainer) {
+                        teamsContainer.innerHTML = '<div class="text-center p-2" style="color: #6c757d; font-size: 12px;">No teams available</div>';
                     }
                     
                     container.appendChild(clone);
@@ -1635,6 +1812,15 @@ function confirmDelete(deleteUrl, userName) {
                                             <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
                                         </div>
 
+                                    </div>
+                                </div>
+
+                                <!-- Teams Section -->
+                                <div class="mt-1 py-2" style="background: #f8f9fa; border-radius: 10px; padding: 8px;">
+                                    <div style="color: #2b3e5f; font-weight: 600; font-size: 13px; margin-bottom: 8px; padding-left: 8px;">Teams</div>
+                                    <div id="teamsContainer" class="d-flex flex-column gap-2" style="padding: 0 8px;">
+                                        <!-- Teams will be dynamically inserted here -->
+                                        <div class="text-center p-2" style="color: #6c757d; font-size: 12px;">No teams available</div>
                                     </div>
                                 </div>
                             </div>

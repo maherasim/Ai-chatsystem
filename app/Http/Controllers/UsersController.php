@@ -585,7 +585,7 @@ public function destroy($id){
             $projects = Project::whereIn('_id', $projectIds)->get();
             
             // Format projects with tickets and tasks
-            $formattedProjects = $projects->map(function ($project) {
+            $formattedProjects = $projects->map(function ($project) use ($userIdStr, $userUserId, $user) {
                 // Get tickets for this project
                 $tickets = Ticket::where('project_id', (string)($project->_id ?? $project->id))->get();
                 
@@ -597,6 +597,17 @@ public function destroy($id){
                 $totalTasks = $tasks->count();
                 $completedTasks = $tasks->where('status', 'completed')->count();
                 $inProgressTickets = $tickets->where('status', 'in_progress')->count();
+                
+                // Task status breakdown
+                $taskStatusBreakdown = [
+                    'new' => $tasks->whereIn('status', ['new', 'new_task', 'newtask'])->count(),
+                    'in_progress' => $tasks->whereIn('status', ['in_progress', 'progress', 'inprogress'])->count(),
+                    'in_hold' => $tasks->whereIn('status', ['in_hold', 'hold', 'inhold', 'on_hold'])->count(),
+                    'in_check' => $tasks->whereIn('status', ['in_checked', 'checked', 'inchecked'])->count(),
+                    'delayed' => $tasks->whereIn('status', ['delayed', 'in_delayed'])->count(),
+                    'rejected' => $tasks->whereIn('status', ['rejected', 'in_rejected'])->count(),
+                    'completed' => $tasks->where('status', 'completed')->count(),
+                ];
                 
                 // Get sections
                 $sections = $project->sections ?? [];
@@ -624,30 +635,109 @@ public function destroy($id){
                     $pm = User::find($project->user_id);
                 }
                 
-                // Get developers from teams
-                $developers = [];
+                // Get teams for this project with full details
                 $teamsForProject = Team::where('project_id', (string)($project->_id ?? $project->id))->get();
+                $teamsData = [];
+                $allDevelopersMap = []; // Use map to avoid duplicates
+                
                 foreach ($teamsForProject as $team) {
-                    $taskDevelopers = $team->task_developers ?? [];
-                    if (is_string($taskDevelopers)) {
-                        $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                    $teamTaskDevelopers = $team->task_developers ?? [];
+                    if (is_string($teamTaskDevelopers)) {
+                        $teamTaskDevelopers = json_decode($teamTaskDevelopers, true) ?? [];
                     }
                     
-                    foreach ($taskDevelopers as $devId => $devNames) {
+                    // Get team developers
+                    $teamDevelopers = [];
+                    foreach ($teamTaskDevelopers as $devId => $devNames) {
+                        $devIdStr = (string) $devId;
                         if (is_array($devNames)) {
                             foreach ($devNames as $devName) {
-                                $dev = User::where('name', $devName)->orWhere('_id', $devId)->first();
-                                if ($dev && !in_array($dev->_id, array_column($developers, 'id'))) {
-                                    $developers[] = [
+                                $dev = User::where('name', $devName)->orWhere('_id', $devIdStr)->first();
+                                if ($dev) {
+                                    $devKey = (string)($dev->_id ?? $dev->id);
+                                    if (!isset($allDevelopersMap[$devKey])) {
+                                        $allDevelopersMap[$devKey] = [
+                                            'id' => $devKey,
+                                            'name' => $dev->name,
+                                            'avatar' => $dev->image ? asset($dev->image) : asset('build/img/profileuser.svg'),
+                                        ];
+                                    }
+                                    if (!in_array($devKey, array_column($teamDevelopers, 'id'))) {
+                                        $teamDevelopers[] = $allDevelopersMap[$devKey];
+                                    }
+                                }
+                            }
+                        } else {
+                            $dev = User::where('name', $devNames)->orWhere('_id', $devIdStr)->first();
+                            if ($dev) {
+                                $devKey = (string)($dev->_id ?? $dev->id);
+                                if (!isset($allDevelopersMap[$devKey])) {
+                                    $allDevelopersMap[$devKey] = [
+                                        'id' => $devKey,
+                                        'name' => $dev->name,
+                                        'avatar' => $dev->image ? asset($dev->image) : asset('build/img/profileuser.svg'),
+                                    ];
+                                }
+                                if (!in_array($devKey, array_column($teamDevelopers, 'id'))) {
+                                    $teamDevelopers[] = $allDevelopersMap[$devKey];
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Get team PM
+                    $teamPm = null;
+                    if (!empty($team->pm_id)) {
+                        $teamPm = User::find($team->pm_id);
+                    }
+                    
+                    // Get tasks for this team
+                    $teamTaskIds = $team->tasks ?? [];
+                    $teamTasks = [];
+                    if (is_array($teamTaskIds) && !empty($teamTaskIds)) {
+                        $teamTasks = Task::whereIn('_id', $teamTaskIds)->get()->map(function ($task) {
+                            $assignedDev = null;
+                            if ($task->assigned_to) {
+                                $dev = User::find($task->assigned_to);
+                                if ($dev) {
+                                    $assignedDev = [
                                         'id' => (string)($dev->_id ?? $dev->id),
                                         'name' => $dev->name,
                                         'avatar' => $dev->image ? asset($dev->image) : asset('build/img/profileuser.svg'),
                                     ];
                                 }
                             }
-                        }
+                            
+                            return [
+                                'id' => (string)($task->_id ?? $task->id),
+                                'title' => $task->title ?? 'Task',
+                                'status' => $task->status ?? 'new',
+                                'assigned_developer' => $assignedDev,
+                                'start_date' => $task->start_date ? $task->start_date->format('d.m.Y') : null,
+                                'end_date' => $task->end_date ? $task->end_date->format('d.m.Y') : null,
+                            ];
+                        })->toArray();
                     }
+                    
+                    $teamsData[] = [
+                        'id' => (string)($team->_id ?? $team->id),
+                        'title' => $team->title ?? 'Team',
+                        'banner_url' => $team->banner_path ? asset('storage/' . $team->banner_path) : null,
+                        'thumb_url' => $team->thumb_path ? asset('storage/' . $team->thumb_path) : null,
+                        'timeline_color' => $team->timeline_color ?? null,
+                        'pm' => $teamPm ? [
+                            'id' => (string)($teamPm->_id ?? $teamPm->id),
+                            'name' => $teamPm->name,
+                            'avatar' => $teamPm->image ? asset($teamPm->image) : asset('build/img/profileuser.svg'),
+                        ] : null,
+                        'developers' => $teamDevelopers,
+                        'tasks' => $teamTasks,
+                        'total_tasks' => count($teamTasks),
+                    ];
                 }
+                
+                // Convert developers map to array (all unique developers)
+                $allDevelopers = array_values($allDevelopersMap);
                 
                 // Calculate days left
                 $daysLeft = 0;
@@ -678,7 +768,9 @@ public function destroy($id){
                         'name' => $pm->name,
                         'avatar' => $pm->image ? asset($pm->image) : asset('build/img/profileuser.svg'),
                     ] : null,
-                    'developers' => array_slice($developers, 0, 3), // Limit to 3 for display
+                    'developers' => $allDevelopers, // All developers, not limited
+                    'teams' => $teamsData, // All teams with full details
+                    'task_status_breakdown' => $taskStatusBreakdown,
                     'tickets_count' => $totalTickets,
                     'tasks_count' => $totalTasks,
                 ];
