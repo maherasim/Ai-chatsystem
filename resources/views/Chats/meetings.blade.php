@@ -465,17 +465,7 @@ use Carbon\Carbon;
                                     $owner = 1;
                                 }
 
-                                $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
-
-                                if ($isLocal) {
-                                    $imageUrl = asset('storage/' . $meeting->user->profile_image);
-                                } else {
-                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
-                                        ? 'https://admin.onlinesystems.info'
-                                        : 'https://team.onlinesystems.info';
-
-                                    $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
-                                }
+                                $imageUrl = asset('storage/' . $meeting->user->profile_image);
 
                                 $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->start_time, 'Europe/Berlin');
 //$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
@@ -749,15 +739,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                 $isLocal = request()->getHost() === '127.0.0.1' || request()->getHost() === 'localhost';
 
-                                if ($isLocal) {
-                                    $imageUrl = asset('storage/' . $meeting->user->profile_image);
-                                } else {
-                                    $domain = ($meeting->user->is_admin == 1 || in_array($meeting->user->type, ['admin', 'subadmin']))
-                                        ? 'https://admin.onlinesystems.info'
-                                        : 'https://team.onlinesystems.info';
-
-                                    $imageUrl = $domain . '/storage/' . $meeting->user->profile_image;
-                                }
+                                $imageUrl = asset('storage/' . $meeting->user->profile_image);
 
                                 $endDateTime = \Carbon\Carbon::parse($meeting->end_date . ' ' . $meeting->end_time, 'Europe/Berlin');
 //$remaining = $endDateTime->diffInSeconds(\Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin'), false);
@@ -827,15 +809,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                     
                                                 @php
                                                     
-                                                    if ($isLocal) {
-                                                        $memberimg = asset('storage/' . $member->user->profile_image);
-                                                    } else {
-                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
-                                                            ? 'https://admin.onlinesystems.info'
-                                                            : 'https://team.onlinesystems.info';
-
-                                                        $memberimg = $domain . '/storage/' . $member->user->profile_image;
-                                                    }
+                                                    $memberimg = asset('storage/' . $member->user->profile_image);
                                                 @endphp
 
                                                     <img src="{{ $memberimg }}"
@@ -861,15 +835,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                                     
                                                 @php
                                                     
-                                                    if ($isLocal) {
-                                                        $memberimg = asset('storage/' . $member->user->profile_image);
-                                                    } else {
-                                                        $domain = ($member->user->is_admin == 1 || in_array($member->user->type, ['admin', 'subadmin']))
-                                                            ? 'https://admin.onlinesystems.info'
-                                                            : 'https://team.onlinesystems.info';
-
-                                                        $memberimg = $domain . '/storage/' . $member->user->profile_image;
-                                                    }
+                                                    $memberimg = asset('storage/' . $member->user->profile_image);
                                                 @endphp
 
                                                     <img src="{{ $memberimg }}"
@@ -1390,7 +1356,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             
                             <div class="col-md-3 invit-box">
                                 <div class="invit-img">
-                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
+                                    <img src="{{ asset('build/img/profiles/avatar-16.jpg') }}" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
                                 </div>
                                 <div class="invit-txt">User name</div>
                             </div>

@@ -8,8 +8,24 @@
 <meta name="user-id" content="{{ $currentUserId }}">
 <script>
     window.currentUserId = '{{ $currentUserId }}';
-    window.currentUserAvatar = '{{ isset($currentUser->image) && $currentUser->image ? "https://logiadmin.it-supportline.de/storage/" . ltrim($currentUser->image, "/") : "" }}';
-    window.baseUrl = 'https://logiadmin.it-supportline.de';
+    @php
+        $currentUserAvatar = asset('build/img/profiles/avatar-16.jpg');
+        if (isset($currentUser)) {
+            if (!empty($currentUser->profile_image)) {
+                $imgPath = str_replace('storage/', '', $currentUser->profile_image);
+                $currentUserAvatar = asset('storage/' . $imgPath);
+            } elseif (!empty($currentUser->image)) {
+                if (strpos($currentUser->image, 'upload/') === 0) {
+                    $currentUserAvatar = asset($currentUser->image);
+                } else {
+                    $imgPath = str_replace('storage/', '', $currentUser->image);
+                    $currentUserAvatar = asset('storage/' . $imgPath);
+                }
+            }
+        }
+    @endphp
+    window.currentUserAvatar = '{{ $currentUserAvatar }}';
+    window.baseUrl = '{{ url("/") }}';
 </script>
 <style>
     body {
@@ -150,8 +166,23 @@
                         </a>
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
-                        @php $headerAvatar = isset($currentUser->image) && $currentUser->image ? 'https://logiadmin.it-supportline.de/storage/' . ltrim($currentUser->image, '/') : 'https://logiadmin.it-supportline.de/storage/'; @endphp
-                        <img id="chatHeaderAvatar" src="{{ $headerAvatar }}" class="rounded-circle" alt="image" title="{{ $headerAvatar }}">
+                        @php 
+                            $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
+                            if (isset($currentUser)) {
+                                if (!empty($currentUser->profile_image)) {
+                                    $imgPath = str_replace('storage/', '', $currentUser->profile_image);
+                                    $headerAvatar = asset('storage/' . $imgPath);
+                                } elseif (!empty($currentUser->image)) {
+                                    if (strpos($currentUser->image, 'upload/') === 0) {
+                                        $headerAvatar = asset($currentUser->image);
+                                    } else {
+                                        $imgPath = str_replace('storage/', '', $currentUser->image);
+                                        $headerAvatar = asset('storage/' . $imgPath);
+                                    }
+                                }
+                            }
+                        @endphp
+                        <img id="chatHeaderAvatar" src="{{ $headerAvatar }}" class="rounded-circle" alt="image" title="{{ $headerAvatar }}" onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-16.jpg') }}';">
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6 id="chatHeaderName">Select a group to start chatting</h6>
@@ -238,7 +269,22 @@
             <form class="footer-form">
                 <div class="chats reply-chat reply-div" id="reply-div" style="display: none;">
                     <div class="chat-avatar">
-                        @php $replyAvatar = isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : asset('storage/'); @endphp
+                        @php 
+                            $replyAvatar = asset('build/img/profiles/avatar-16.jpg');
+                            if (isset($currentUser)) {
+                                if (!empty($currentUser->profile_image)) {
+                                    $imgPath = str_replace('storage/', '', $currentUser->profile_image);
+                                    $replyAvatar = asset('storage/' . $imgPath);
+                                } elseif (!empty($currentUser->image)) {
+                                    if (strpos($currentUser->image, 'upload/') === 0) {
+                                        $replyAvatar = asset($currentUser->image);
+                                    } else {
+                                        $imgPath = str_replace('storage/', '', $currentUser->image);
+                                        $replyAvatar = asset('storage/' . $imgPath);
+                                    }
+                                }
+                            }
+                        @endphp
                         <img id="reply-avatar" src="{{ $replyAvatar }}" class="rounded-circle" alt="image" title="{{ $replyAvatar }}">
                     </div>
                     <div class="chat-content">
@@ -298,7 +344,22 @@
             <form class="footer-form">
                 <div class="chats reply-chat reply-div" id="reply-div" style="display: none;">
                     <div class="chat-avatar">
-                        @php $replyAvatar = isset($currentUser->image) && $currentUser->image ? asset('storage/' . $currentUser->image) : asset('storage/'); @endphp
+                        @php 
+                            $replyAvatar = asset('build/img/profiles/avatar-16.jpg');
+                            if (isset($currentUser)) {
+                                if (!empty($currentUser->profile_image)) {
+                                    $imgPath = str_replace('storage/', '', $currentUser->profile_image);
+                                    $replyAvatar = asset('storage/' . $imgPath);
+                                } elseif (!empty($currentUser->image)) {
+                                    if (strpos($currentUser->image, 'upload/') === 0) {
+                                        $replyAvatar = asset($currentUser->image);
+                                    } else {
+                                        $imgPath = str_replace('storage/', '', $currentUser->image);
+                                        $replyAvatar = asset('storage/' . $imgPath);
+                                    }
+                                }
+                            }
+                        @endphp
                         <img id="reply-avatar" src="{{ $replyAvatar }}" class="rounded-circle" alt="image" title="{{ $replyAvatar }}">
                     </div>
                     <div class="chat-content">
