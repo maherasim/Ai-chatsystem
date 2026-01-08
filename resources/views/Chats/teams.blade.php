@@ -2048,6 +2048,24 @@
                     hidden.value = task.id || task._id;
                     tasksHiddenContainer.appendChild(hidden);
 
+                    const fallbackMarkImg = '{{ URL::asset('/build/img/dooted img.svg') }}';
+                    const markImgSrc = (function () {
+                        const raw = (task && task.mark_image_path) ? String(task.mark_image_path) : '';
+                        if (!raw) return fallbackMarkImg;
+                        // If the backend returned an absolute URL, keep it (but fix double storage).
+                        if (raw.startsWith('http://') || raw.startsWith('https://')) {
+                            return raw.replace('/storage/storage/', '/storage/');
+                        }
+                        // If it's already a root-relative path
+                        if (raw.startsWith('/storage/')) return raw.replace('/storage/storage/', '/storage/');
+                        if (raw.startsWith('/build/')) return raw;
+                        // If DB stored "storage/.." or "build/.."
+                        if (raw.startsWith('storage/')) return ('/' + raw).replace('/storage/storage/', '/storage/');
+                        if (raw.startsWith('build/')) return ('/' + raw);
+                        // Otherwise assume it's a storage-relative path like "tasks/xyz.png"
+                        return ('{{ asset('storage') }}/' + raw.replace(/^\/+/, '')).replace('/storage/storage/', '/storage/');
+                    })();
+
                     // Data Prep
                     const title = task.title || 'Task Title';
                     const desc = task.description || 'Task description will be here';
@@ -2066,7 +2084,7 @@
                         <div class="task-image-box">
                             <div class="task-badge">${String(idx + 1).padStart(2, '0')}</div>
                             <div class="task-img-placeholder">
-                                ${task.mark_image_path ? `<img src="${task.mark_image_path}" style="width:100%; height:100%; object-fit:cover;">` : ''}
+                                <img src="${markImgSrc}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='{{ URL::asset('/build/img/dooted img.svg') }}';">
                                </div>
                            </div>
                            
@@ -2390,10 +2408,12 @@
                 <!-- task1 -->
                 <div class="container-fluid mt-2" style="background-color: #f4f4f4; border-radius: 10px; padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start;">
 
-                    <!-- Image / Icon -->
+                    <!-- Image -->
                     <div style="width: 70px; height: 100px; border-radius: 8px; overflow: hidden; background-color: #ccc; flex-shrink: 0;">
-                        <!-- Replace with actual image tag -->
-                        <img src="{{URL::asset('/build/img/dooted img.svg')}}" alt="icon" style="width: 100%; height: 100%; object-fit: cover;">
+                        ${task.mark_image_path 
+                            ? `<img src="${task.mark_image_path}" style="width: 100%; height: 100%; object-fit: cover;">` 
+                            : `<img src="{{URL::asset('/build/img/dooted img.svg')}}" style="width: 100%; height: 100%; object-fit: cover;">`
+                        }
                     </div>
 
                     <!-- Content Area -->

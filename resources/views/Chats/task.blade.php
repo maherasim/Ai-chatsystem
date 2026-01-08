@@ -1651,11 +1651,11 @@
                 </div>
                 <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
                 <div style="color: #10b981;text-align:center"><strong>Begining:</strong>
-                    <p style="color: black;">{{ $project->start_date->format('d.m.Y') }}</p>
+                    <p style="color: black;">{{ optional($project->start_date)->format('d.m.Y') ?? '--' }}</p>
                 </div>
                 <div style="height: 16px; width: 1px; background-color: #cbd5e1;"></div>
                 <div style="color: #10b981;text-align:center"><strong>End:</strong>
-                    <p style="color: black;">{{ $project->end_date->format('d.m.Y') }}</p>
+                    <p style="color: black;">{{ optional($project->end_date)->format('d.m.Y') ?? '--' }}</p>
                 </div>
             </div>
 
@@ -4386,7 +4386,7 @@
 
     <!-- createTaskModal Modal -->
     <div class="modal fade" id="createTaskModal" tabindex="-1" aria-hidden="true" data-bs-focus="false">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 1040px;">
             <div class="modal-content" style="border-radius: 12px;">
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between flex-wrap align-items-start"
@@ -4396,27 +4396,6 @@
                         <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
                         <small class="text-muted">Create Task</small>
                     </div>
-                    
-                    <!--  -->
-                     <div>
-                       <!-- <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Start & Deliver
-                                Date</label><br>
-                            <small class="text-muted">Tasks must be done in this duration</small> -->
-                            <div class="d-flex gap-2 mt-0">
-                                <div class="text-center p-2 text-white"
-                                    style="background: #28c76f; border-radius: 8px;">
-                                    <small>Start Date :</small>
-                                    <span id="ticket-start-date" class="fw-bold">--</span>
-                                </div>
-                                <div class="text-center p-2 text-white"
-                                    style="background: #ea5455; border-radius: 8px;">
-                                    <small>Deliver Date :</small>
-                                    <span id="ticket-end-date" class="fw-bold">--</span>
-                                </div>
-                            </div>
-                             </div>
-
-
 
                 </div>
 
@@ -4612,28 +4591,32 @@
                             });
                         </script>
                         <!-- Left Upload Area -->
-                        <div class="col-md-7">
+                        <div class="col-md-5" style="max-width: 450px;">
 
                             <div id="uploadBox" onclick="var p=document.getElementById('select-project'); var t=document.getElementById('select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('fileInput').click();"
-                                ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
-                                ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
+                                ondragover="event.preventDefault(); this.style.border='3px dashed #28c76f';"
+                                ondragleave="this.style.border='3px dashed #ccc';"
+                                ondrop="event.preventDefault(); this.style.border='3px dashed #ccc'; var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
                                 style="background-color: #f7f7f7;
       height: 640px;
       min-height: 640px;
       cursor: pointer;
-      border: 2px dashed #ccc;
+      border: 3px dashed #ccc;
       border-radius: 10px;
       display: flex;
-      width:440px;
       justify-content: center;
       align-items: center;
       text-align: center;
       flex-direction: column;
       position: relative;
     ">
-                                <p id="uploadText" class="text-muted m-0"> 
-                                    Upload Or Drag <br><small>PDF, JPG, PNG</small>
+                                <p id="uploadText" class="text-muted m-0" style="display: flex; flex-direction: column; align-items: center; gap: 8px;"> 
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <span style="font-size: 14px; color: #6c757d; font-weight: 500;">Upload Or Drag</span>
+                                    <small style="font-size: 12px; color: #9ca3af;">PDF, JPG, PNG</small>
                                 </p>
                                 <img id="previewImage" src=""
                                     style="display:none; position:absolute; top:56px; right:0; bottom:0; left:0; width:100%; height:calc(100% - 56px); object-fit: contain;" />
@@ -4729,8 +4712,8 @@
 
 
                         <!-- Right Task List -->
-                        <div class="col-md-5" >
-                            <div class="mt-1 mb-2" style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
+                        <div class="col-md-7" >
+                            <div class="mt-1 mb-2" style="background-color:#F2F2F280;border-radius:10px;padding:6px;">
                             <label class="form-label fw-bold mb-0" style="color: #2b2d42;">Ticket Details</label><br>
                             <small class="text-muted">Ticket Details</small>
                             <div class="d-flex gap-2 mt-2 flex-wrap">
@@ -4784,7 +4767,7 @@
                                                 : asset('build/img/dooted img.svg'));
                                     @endphp
                                     <div class="d-flex p-2 rounded mt-2 task-card"
-                                        style="background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;"
+                                        style="background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px; border-radius: 10px;"
                                         data-board="{{ $viewerImg }}" data-issues='@json($task->issues ?? [])'
                                         data-title="{{ e($task->title) }}"
                                         data-project-id="{{ (string) ($task->project_id ?? (optional($task->project)->_id ?? optional($task->project)->id)) }}"
@@ -4798,9 +4781,9 @@
                                         data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
                                         data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
                                         onclick="openTaskViewer(this)">
-                                        <div class="me-2">
+                                        <div style="padding: 3.95px 0 3.95px 4.05px; flex-shrink: 0;">
                                             <img src="{{ $thumb }}" alt="Task Image"
-                                                style="width: 100px; height: 100px; border-radius: 8px;   background: transparent; border: none; padding: 0; display:block;">
+                                                style="width: 110px; height: 140px; border-radius: 8px; background: transparent; border: none; padding: 0; display:block; object-fit: cover;">
                                         </div>
                                         <div class="flex-grow-1">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -4843,23 +4826,41 @@
                                             </div>
                                             <div style="font-size: 13px; margin-top: 2px;">
                                                 {{ optional($task->ticket)->description ?? '-' }}</div>
-                                            <div class="d-flex justify-content-between mt-2 flex-nowrap"
+                                            <div class="d-flex align-items-center justify-content-between mt-2 flex-nowrap gap-2"
                                                 style="background-color: #fff; border-radius: 10px; padding: 4px;">
-                                                <div
-                                                    style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                    <small>Start:
-                                                        {{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '--') }}</small>
+                                                <div class="d-flex align-items-center gap-1" style="font-size: 14px;">
+                                                    <span style="color: #1BC469; font-weight: 500;">Start:</span>
+                                                    <span style="color: #1C274C;">{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->format('d.m.Y') : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') : '--') }}</span>
+                                                    <span style="color: #1C274C; margin: 0 4px;">|</span>
+                                                    <span style="color: #1BC469; font-weight: 500;">Deliver:</span>
+                                                    <span style="color: #1C274C;">{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '--') }}</span>
                                                 </div>
-                                                <div
-                                                    style="font-size: 14px; background-color: #e6fff2;  border-radius: 6px; color: #00aa55;">
-                                                    <small>Deliver:
-                                                        {{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->format('d.m.Y') : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d.m.Y') : '--') }}</small>
-                                                </div>
-                                                <div class="d-flex align-items-center"
-                                                    style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                    {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                        alt="Urgent" style="margin-right: 4px;"> --}}
-                                                    {{ str_pad((string) ($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
+                                                <div class="d-flex align-items-center gap-2">
+                                                    @php
+                                                        $priority = strtolower($task->priority ?? 'low');
+                                                        $priorityColors = [
+                                                            'low' => '#1BC469',
+                                                            'medium' => '#f59e0b',
+                                                            'high' => '#ef4444'
+                                                        ];
+                                                        $priorityColor = $priorityColors[$priority] ?? $priorityColors['low'];
+                                                    @endphp
+                                                    <!-- Priority Badge -->
+                                                    <div class="d-flex align-items-center gap-1" style="background-color: #f3f4f6; border-radius: 6px; padding: 4px 8px;">
+                                                        <div style="width: 8px; height: 8px; background-color: {{ $priorityColor }}; border-radius: 50%;"></div>
+                                                        <span style="font-size: 12px; color: #374151; font-weight: 500; text-transform: capitalize;">{{ $priority }}</span>
+                                                    </div>
+                                                    <!-- Lightning Bolt Icon -->
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                                    </svg>
+                                                    <!-- Number Badge -->
+                                                    <div class="d-flex align-items-center gap-1"
+                                                        style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 600;">
+                                                        <span style="font-size: 8px;">•</span>
+                                                        {{ str_pad((string) ($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
+                                                        <span style="font-size: 8px;">•</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -4867,11 +4868,30 @@
                                 @endforeach
                                 </div>
 
+                                <!-- Add New Task Button -->
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button type="button" 
+                                        style="background-color: #f3f4f6; 
+                                               border: 2px dashed #d1d5db; 
+                                               border-radius: 8px; 
+                                               padding: 16px 24px; 
+                                               cursor: pointer;
+                                               width: 100%;
+                                               display: flex;
+                                               flex-direction: column;
+                                               align-items: center;
+                                               gap: 4px;
+                                               transition: all 0.2s;">
+                                        <span style="color: #1e293b; font-size: 14px; font-weight: 500;">+ Add new Task</span>
+                                        <span style="color: #9ca3af; font-size: 12px;">Ticket ID</span>
+                                    </button>
+                                </div>
+
                                 <!-- 2 -->
 
 
-                              
 
+                              
                             </div>
                               <!-- Add Task -->
                                 <!-- Hidden File Input -->
