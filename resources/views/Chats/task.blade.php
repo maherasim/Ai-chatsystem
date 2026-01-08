@@ -9395,13 +9395,13 @@
                     }
                     
                     // Store task ID and type for reject functionality
-                    const taskId = this.getAttribute('data-task-id') || '';
+                    const taskId2 = this.getAttribute('data-task-id') || '';
                     const taskType = this.getAttribute('data-task-type') || 'task';
-                    document.getElementById('rejectTaskId').value = taskId;
+                    document.getElementById('rejectTaskId').value = taskId2;
                     document.getElementById('rejectTaskType').value = taskType;
                     
                     // Also store task ID and type for move to done functionality
-                    document.getElementById('doneTaskId').value = taskId;
+                    document.getElementById('doneTaskId').value = taskId2;
                     document.getElementById('doneTaskType').value = taskType;
                 });
             });
