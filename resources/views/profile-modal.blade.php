@@ -658,298 +658,121 @@
                         <h3 class="pb-1 ps-2" style="font-weight: 600;">Our Projects</h3>
                     </div>
                     <div class="row g-1">
-
-                        <div class=" col-12 col-md-6">
-                            <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-
+                        @forelse($projects->take(2) as $project)
+                        <div class="col-12 col-md-6">
+                            <div class="card shadow-sm p-2" style="border-radius: 20px; font-family: 'Segoe UI', sans-serif;">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <!-- Left: Circular Progress -->
                                     <div style="position: relative; width: 45px; height: 45px;">
                                         <svg viewBox="0 0 36 36" width="45" height="45">
-                                            <path
-                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path
-                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                stroke-dasharray="70, 100"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;" stroke-dasharray="{{ $project['progress'] }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                                         </svg>
                                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                            70%
+                                            {{ $project['progress'] }}%
                                         </div>
                                     </div>
-
-                                    <!-- Center: Yekbon Logo -->
+                                    <!-- Center: Project Logo -->
                                     <div class="mx-auto">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
+                                        <img src="{{ $project['logo'] }}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
                                     </div>
-
-                                    <!-- Right: Empty space for balance (optional) -->
                                     <div style="width: 45px;"></div>
                                 </div>
-
-
-
                                 <div class="text-center" style="cursor: pointer;">
-                                    <h6 style="cursor: pointer;"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight"
-                                        aria-controls="offcanvasRight">
-                                        Project Title
+                                    <h6 style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                        {{ $project['title'] }}
                                     </h6>
-                                    <!-- Project ID styled exactly like screenshot -->
                                 </div>
-
-
                                 <!-- Progress Status -->
                                 <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                    <!-- Status with green dot and soft gray/green background -->
                                     <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $project['priority'] == 'high' ? '#ea5455' : ($project['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">{{ ucfirst($project['priority']) }}</span>
                                     </div>
-                                    <!-- Red Flag with soft red background -->
                                     <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
                                         <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
                                     </div>
                                 </div>
-
                                 <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
                                     <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                                    @if($project['start_date'])
+                                    <div><span style="color: #28c76f;">Start:</span> {{ $project['start_date'] }}</div>
+                                    @endif
+                                    @if($project['end_date'])
+                                    <div><span style="color: #28c76f;">Deliver:</span> {{ $project['end_date'] }}</div>
+                                    @endif
                                 </div>
-
                                 <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
-                                    <!-- Stats -->
+                                <div class="flex-grow-1 mt-1" style="flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
                                     <div class="d-flex justify-content-between text-center mb-2">
                                         <div style="flex: 1;">
                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
+                                            <div style="font-size: 12px; color: #649bc3;">#{{ $project['tickets_count'] }}</div>
                                         </div>
                                         <div style="flex: 1;">
                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
+                                            <div style="font-size: 13px; color: #649bc3;">#{{ $project['tasks_count'] }}</div>
                                         </div>
                                         <div style="flex: 1;">
                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
+                                            <div style="font-size: 13px; color: #649bc3;">{{ $project['days_left'] !== null ? ($project['days_left'] > 0 ? '#' . $project['days_left'] : 'Overdue') : 'N/A' }}</div>
                                         </div>
                                         <div style="flex: 1;">
                                             <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
+                                            <div style="font-size: 13px; color: #649bc3;">{{ $project['progress'] }}%</div>
                                         </div>
                                     </div>
-
-                                    <!-- Blue Progress Bar -->
                                     <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
+                                        <div class="progress-bar" style="width: {{ $project['progress'] }}%; background-color: #4dc3ff; border-radius: 10px;"></div>
                                     </div>
                                 </div>
-
-
                                 <!-- Team & Tickets Info -->
                                 <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                    <!-- Project Manager -->
                                     <div class="text-center" style="flex: 1; min-width: 100px;">
                                         <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; margin-top: 4px;">
+                                        @if($project['project_manager'])
+                                        <img src="{{ asset('storage/' . $project['project_manager']->profile_image) }}" alt="PM" class="rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; margin-top: 4px;">
+                                        @else
+                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; margin-top: 4px;">
+                                        @endif
                                     </div>
-
-                                    <!-- Developers -->
                                     <div class="text-center" style="flex: 1; min-width: 100px;">
                                         <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 36px; z-index: 1;">
+                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: {{ min($project['team_members']->count(), 3) * 50 }}px;">
+                                            @foreach($project['team_members']->take(3) as $index => $member)
+                                            <img src="{{ $member->profile_image ? asset('storage/' . $member->profile_image) : asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; position: absolute; left: {{ $index * 18 }}px; z-index: {{ 3 - $index }};">
+                                            @endforeach
                                         </div>
                                     </div>
-
-                                    <!-- Tickets & Tasks -->
                                     <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
                                         <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
-                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">5 Tickets - 10 Tasks</div>
+                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">{{ $project['tickets_count'] }} Tickets - {{ $project['tasks_count'] }} Tasks</div>
                                     </div>
                                 </div>
-
                                 <!-- sections -->
-                                <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
-                                    <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
+                                @if($project['sections']->count() > 0)
+                                <div class="flex-grow-1 mt-1" style="background:#f8f9fa;border-radius:10px;">
+                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59; margin-left:10px;margin-right:10px;">
+                                        @foreach($project['sections']->take(4) as $section)
+                                        <span style="margin-left:10px;margin-right:10px;">{{ $section['name'] }} {{ $section['progress'] }}%</span>
+                                        @endforeach
                                     </div>
-
-                                    <!-- Section Progress Bars -->
                                     <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
+                                        @foreach($project['sections']->take(3) as $section)
                                         <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            <div class="progress-bar" style="width: {{ $section['progress'] }}%; background-color: {{ $section['progress'] >= 75 ? '#28c76f' : ($section['progress'] >= 50 ? '#ffc107' : '#ea5455') }}; border-radius: 10px;"></div>
                                         </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-
+                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
-                                        </div>
-                        <!-- card 2 -->
-                        <div class=" col-12 col-md-6">
-                            <div class="card shadow-sm  p-2" style="border-radius: 20px; font-family:    'Segoe UI', sans-serif;">
-
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <!-- Left: Circular Progress -->
-                                    <div style="position: relative; width: 45px; height: 45px;">
-                                        <svg viewBox="0 0 36 36" width="45" height="45">
-                                            <path
-                                                style="fill: none; stroke:#b7b7b7; stroke-width: 3.8;"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path
-                                                style="fill: none; stroke: #f9a825; stroke-width: 3.8; stroke-linecap: round;"
-                                                stroke-dasharray="70, 100"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        </svg>
-                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; font-weight: bold; color: #f9a825;">
-                                            70%
-                                        </div>
-                                    </div>
-
-                                    <!-- Center: Yekbon Logo -->
-                                    <div class="mx-auto">
-                                        <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="rounded-circle" style="height: 55px;" alt="Project Logo">
-                                    </div>
-
-                                    <!-- Right: Empty space for balance (optional) -->
-                                    <div style="width: 45px;"></div>
-                                </div>
-
-
-
-                                <div class="text-center" style="cursor: pointer;">
-                                    <h6 style="cursor: pointer;"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight"
-                                        aria-controls="offcanvasRight">
-                                        Project Title
-                                    </h6>
-                                    <!-- Project ID styled exactly like screenshot -->
-                                </div>
-
-
-                                <!-- Progress Status -->
-                                <div class="text-center mb-2 d-flex justify-content-center gap-2">
-                                    <!-- Status with green dot and soft gray/green background -->
-                                    <div style="background: #f1f3f4; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        <span style="color: #4b5c74; font-weight: 500; font-size: 13px;">Low</span>
-                                    </div>
-                                    <!-- Red Flag with soft red background -->
-                                    <div style="background: #fff3cd; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                        <img src="{{ asset('build/img/yelowflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
-                                    </div>
-                                </div>
-
-                                <div style="font-size: 12px;color: #6c757d;display: flex;justify-content: center;align-items: center;gap: 4px;flex-wrap: wrap;background: #f8f9fa;width: 100%;border-radius: 7px;padding: 6px 12px;text-align: center;">
-                                    <div><strong>Ticket ID</strong> | <strong>Section</strong></div>
-                                    <div><span style="color: #28c76f;">Start:</span> 22.10.2024</div>
-                                    <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-                                </div>
-
-                                <!-- Section Progress Block -->
-                                <div class="flex-grow-1  mt-1" style=" flex-wrap: wrap; background:#f8f9fa;border-radius:10px;">
-                                    <!-- Stats -->
-                                    <div class="d-flex justify-content-between text-center mb-2">
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Tickets</div>
-                                            <div style="font-size: 12px; color: #649bc3;">#1 of #05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Total Tasks</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Days Left</div>
-                                            <div style="font-size: 13px; color: #649bc3;">#05</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 15px; color: #1d6fa5;">Status</div>
-                                            <div style="font-size: 13px; color: #649bc3;">75%</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar -->
-                                    <div class="progress w-100" style="height: 8px; background-color: #e9ecef; border-radius: 10px;">
-                                        <div class="progress-bar" style="width: 75%; background-color: #4dc3ff; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Team & Tickets Info -->
-                                <div class="mt-1 py-1" style="background: #f8f9fa; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                                    <!-- Project Manager -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Project Manager</div>
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" alt="PM" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; margin-top: 4px;">
-                                    </div>
-
-                                    <!-- Developers -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-                                            <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                                style="width: 32px; height: 32px; position: absolute; left: 36px; z-index: 1;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Tickets & Tasks -->
-                                    <div class="text-center" style="flex: 1; min-width: 100px;margin-top: -10px;">
-                                        <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Ticket & Tasks</div>
-                                        <div style="font-size: 11px; color: #6c757d; margin-top: 10px;">5 Tickets - 10 Tasks</div>
-                                    </div>
-                                </div>
-
-                                <!-- sections -->
-                                <div class="flex-grow-1 mt-1 " style="background:#f8f9fa;border-radius:10px;">
-                                    <!-- Section Labels -->
-                                    <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59;" style="margin-left:10px;margin-right:10px;">
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                        <span style="margin-left:10px;margin-right:10px;">Section#1 75%</span>
-                                    </div>
-
-                                    <!-- Section Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-                                        <div class="progress" style="width: 24%; height: 10px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar" style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
+                        @empty
+                        <div class="col-12">
+                            <p class="text-center text-muted">No projects found</p>
+                        </div>
+                        @endforelse
                     </div>
 
 
@@ -957,129 +780,85 @@
                 <!-- Total projects -->
                 <div style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;">
                     <div class="d-flex flex-wrap justify-content-between align-items-start mb-3">
-
                         <!-- Left Icon -->
                         <img src="{{ asset('build/img/lato.svg') }}" alt="Icon" style="width: 50px; height: auto; margin-bottom:3px;">
-
                         <!-- Project Summary -->
                         <div style="background-color: white;border-radius:6px;padding:5px;">
-                            <div style="font-size: 15px; font-weight: 600; color: #2e3a59;">Project Title</div>
+                            <div style="font-size: 15px; font-weight: 600; color: #2e3a59;">Total Projects: {{ $projects->count() }}</div>
                             <div class="d-flex gap-1 mt-1 flex-nowrap">
-                                <!-- Project Tag 1 -->
+                                @foreach($projects->take(2) as $project)
                                 <div class="d-flex flex-wrap align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
-                                    <!-- Logo -->
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 24px; height: 24px;">
-
-                                    <!-- Project Title and Badges -->
-                                    <div class="d-flex  flex-wrap flex-column" style="line-height: 1.2;">
-                                        <strong style="color: #1a2343; font-size: 13px;">Project Title</strong>
+                                    <img src="{{ $project['logo'] }}" alt="Logo" style="width: 24px; height: 24px;">
+                                    <div class="d-flex flex-wrap flex-column" style="line-height: 1.2;">
+                                        <strong style="color: #1a2343; font-size: 13px;">{{ $project['title'] }}</strong>
                                         <div class="d-flex flex-wrap gap-2 mt-1">
                                             <span style="color: #1a2343;">Tickets
-                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">{{ $project['tickets_count'] }}</span>
                                             </span>
                                             <span style="color: #1a2343;">Tasks
-                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
+                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">{{ $project['tasks_count'] }}</span>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Project Tag 2 -->
-                                <div class="d-flex  flex-wrap align-items-center gap-2" style="background: #f7f7f7; padding: 6px 10px; border-radius: 8px; font-size: 13px;">
-                                    <!-- Logo -->
-                                    <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo" style="width: 24px; height: 24px;">
-
-                                    <!-- Project Title and Badges -->
-                                    <div class="d-flex flex-wrap flex-column" style="line-height: 1.2;">
-                                        <strong style="color: #1a2343; font-size: 13px;">Project Title</strong>
-                                        <div class="d-flex flex-wrap  gap-2 mt-1">
-                                            <span style="color: #1a2343;">Tickets
-                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
-                                            </span>
-                                            <span style="color: #1a2343;">Tasks
-                                                <span style="background: #ff4d4f; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px;">4</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-
                     <!-- Task Status Cards -->
                     <div class="d-flex flex-wrap justify-content-start" style="background:#fff; border-radius: 10px; padding: 5px; padding-left: 1px;">
-                        <!-- Card Template -->
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/newtask.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">New Task</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['new'] ?? 0 }}</div>
                         </div>
-
-                        <div style="flex: 1; min-width: 80px;  border-right: 3px solid #e2e8f0; padding: 0 8px;">
+                        <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/totaltask.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Total Tasks</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['total'] ?? 0 }}</div>
                         </div>
-
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/progress.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Progress</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['progress'] ?? 0 }}</div>
                         </div>
-
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/inhold.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Hold</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['in_hold'] ?? 0 }}</div>
                         </div>
-
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/incheck.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">In Check</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['in_check'] ?? 0 }}</div>
                         </div>
-
                         <div style="flex: 1; min-width: 80px; border-right: 3px solid #e2e8f0; padding: 0 8px;">
                             <img src="{{ asset('build/img/delayed.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Delayed</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['delayed'] ?? 0 }}</div>
                         </div>
-
-                        <!-- Last item: No border-right -->
                         <div style="flex: 1; min-width: 80px; padding: 0 8px;">
                             <img src="{{ asset('build/img/rejected.svg') }}" style="width: 26px;" alt="">
                             <div style="font-size: 12px; color: #4b5c74; margin-top: 4px;">Rejected</div>
-                            <div style="font-weight: 600; font-size: 13px;">2</div>
+                            <div style="font-weight: 600; font-size: 13px;">{{ $taskStats['rejected'] ?? 0 }}</div>
                         </div>
                     </div>
-
                 </div>
                 <!-- reminder -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; padding-bottom: 1px;">
-                    <!-- Header: Reminder & Member Count -->
                     <div class="d-flex align-items-center" style="gap: 8px;">
                         <img src="{{ asset('build/img/bell.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Reminder</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $reminders->count() }} Reminders</div>
                         </div>
                     </div>
-
-                    <!-- Task Card -->
+                    @forelse($reminders->take(1) as $reminder)
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px; background: #fff; padding: 10px; border-radius: 10px;">
-
-                        <!-- Left: Task Title + Badges + Meta Info -->
                         <div style="background: #fff;">
-                            <!-- Task Title & Badges -->
                             <div class="d-flex flex-wrap justify-content-between mb-1">
-                                <!-- Task Title -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Badges -->
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $reminder['title'] }}</div>
                                 <div class="d-flex flex-wrap align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; font-weight: 600; font-size: 12px;">
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
@@ -1088,56 +867,28 @@
                                             <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
                                     </span>
-
-                                    <!-- LOW Badge -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $reminder['priority'] == 'high' ? '#ea5455' : ($reminder['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($reminder['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #fff3cd; padding: 4px 8px; border-radius: 10px;">
                                         <img src="{{ asset('build/img/yelowflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
                             </div>
-
-                            <!-- Meta Info: Ticket ID, Start, Deliver -->
                             <div class="mt-1" style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap; background:#f8f9fa; border-radius:7px; padding: 3px 6px; width: fit-content;">
-                                <div><strong>Ticket ID</strong> | <strong>Section</strong> |</div>
-                                <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                                <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                                @if($reminder['start_date'])
+                                <div><span style="color: #28c76f;">Start:</span> {{ $reminder['start_date'] }} |</div>
+                                @endif
+                                @if($reminder['end_date'])
+                                <div><span style="color: #28c76f;">Deliver:</span> {{ $reminder['end_date'] }}</div>
+                                @endif
                             </div>
                         </div>
-
-                        <!-- Right: Metrics -->
-                        <div>
-                            <div class="d-flex flex-wrap align-items-center gap-3 mt-md-0">
-                                <div style="background: #f8f9fa; border-radius: 10px; padding: 8px 1px; flex-grow: 1; max-width: 100%;">
-                                    <div style="display: flex; gap: 25px; align-items: center;">
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Bar -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+                    @empty
+                    <div class="text-center text-muted p-3">No reminders found</div>
+                    @endforelse
                 </div>
 
 
@@ -1147,246 +898,91 @@
                         <img src="{{ asset('build/img/inhold.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Assigned Tickets</div>
-                            <div style="font-size: 13px; color: #4b5563;">3 Tickets</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $assignedTickets->count() }} Tickets</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($assignedTickets as $ticket)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;border-radius: 10px; padding: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Ticket Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $ticket['title'] }}</div>
                                 <div class="d-flex align-items-center">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
-                                        <span style=" padding: 6px 8px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="Icon" width="20" height="20" />
+                                        <span style="padding: 6px 8px; display: flex; align-items: center;">
+                                            <img src="{{ $ticket['project'] && $ticket['project']->logo_path ? asset('storage/' . $ticket['project']->logo_path) : asset('build/img/yekbon.svg') }}" alt="Icon" width="20" height="20" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <div style="background: #fddede; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                            <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px;" alt="flag" />
+                                            <img src="{{ asset('build/img/redflag.svg') }}" style="height: 16px; width: 16px;" alt="flag" />
                                         </div>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $ticket['priority'] == 'high' ? '#ea5455' : ($ticket['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($ticket['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
-
-
-                                    <!--  -->
-                                    <span class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-
+                                    @if($ticket['assignees']->count() > 0)
+                                    <span class="position-relative d-inline-block mt-1" style="height: 32px; width: {{ min($ticket['assignees']->count(), 2) * 50 }}px;">
+                                        @foreach($ticket['assignees']->take(2) as $index => $assignee)
+                                        <img src="{{ $assignee && $assignee->profile_image ? asset('storage/' . $assignee->profile_image) : asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; position: absolute; left: {{ $index * 18 }}px; z-index: {{ 2 - $index }};">
+                                        @endforeach
                                     </span>
+                                    @endif
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 3px; flex-grow: 1; max-width: 100%;margin-bottom: 9px; margin-top: 4px; margin-right: 4px;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
                                             <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $ticket['code'] }}</div>
                                         </div>
                                         <div class="text-center">
                                             <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $ticket['tasks_count'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Progress</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $ticket['progress'] }}%</div>
                                         </div>
                                     </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
                                     <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
+                                        <div style="width: {{ $ticket['progress'] }}%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                     </div>
-
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $ticket['code'] }}</strong> | <strong>{{ $ticket['section'] }} |</strong></div>
+                        @if($ticket['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $ticket['start_date'] }} |</div>
+                        @endif
+                        @if($ticket['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $ticket['end_date'] }}</div>
+                        @endif
                     </div>
+                    @if($ticket['assignees']->count() > 0)
                     <div class="d-flex justify-content-center mt-3 mb-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                         <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background-color: #fdf6ec; font-size: 12px; border-radius: 10px;margin-bottom:6px;">
-
-                            <!-- Avatar and Username -->
+                            @foreach($ticket['assignees']->take(1) as $assignee)
                             <div class="d-flex align-items-center gap-2">
-                                <img src="https://i.pravatar.cc/28" class="rounded-circle" width="28" height="28" alt="Avatar">
-                                <span style="color: #000; font-weight: 500;">Username</span>
+                                <img src="{{ $assignee && $assignee->profile_image ? asset('storage/' . $assignee->profile_image) : 'https://i.pravatar.cc/28' }}" class="rounded-circle" width="28" height="28" alt="Avatar">
+                                <span style="color: #000; font-weight: 500;">{{ $assignee ? $assignee->name : 'N/A' }}</span>
                             </div>
-
-                            <!-- Start Date -->
-                            <div style="color: #22c55e;">
-                                <strong>Start:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Deliver Date -->
-                            <div style="color: #ef4444;">
-                                <strong>Deliver:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Reason -->
-                            <div style="color: #ef4444;">
-                                <strong>! We will get the reason here</strong>
-                            </div>
-
+                            @endforeach
+                            @if($ticket['start_date'])
+                            <div style="color: #22c55e;"><strong>Start:</strong> {{ $ticket['start_date'] }}</div>
+                            @endif
+                            @if($ticket['end_date'])
+                            <div style="color: #ef4444;"><strong>Deliver:</strong> {{ $ticket['end_date'] }}</div>
+                            @endif
                         </div>
                     </div>
-                    <!-- 2 -->
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
-                        <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Ticket Title
-                                </div>
-
-                                <!-- Status badges on the right -->
-                                <div class="d-flex align-items-center">
-                                    <!-- Red Badge with Lightning Icon -->
-                                    <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
-                                        <span style=" padding: 6px 8px; display: flex; align-items: center;">
-                                            <img src="{{ asset('build/img/yekbon.svg') }}" alt="Icon" width="20" height="20" />
-                                        </span>
-
-                                        <!-- Red badge area -->
-                                        <div style="background: #fddede; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px;">
-                                            <img src="{{URL::asset('/build/img/redflag.svg')}}" style="height: 16px; width: 16px;" alt="flag" />
-                                        </div>
-
-                                    </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
-                                    <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
-                                    </span>
-
-                                    <!-- Yellow Badge with Flag -->
-
-
-                                    <!--  -->
-                                    <span class="position-relative d-inline-block mt-1" style="height: 32px; width: 80px;">
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; position: absolute; left: 0; z-index: 3;">
-                                        <img src="{{ asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm"
-                                            style="width: 32px; height: 32px; position: absolute; left: 18px; z-index: 2;">
-
-                                    </span>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Ticket Metrics Box -->
-                        <div style="max-width: 450px;">
-                            <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
-                                <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 3px; flex-grow: 1; max-width: 100%;margin-bottom: 9px; margin-top: 4px; margin-right: 4px;">
-                                    <div style="display: flex; gap: 25px; align-items: center;">
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                    </div>
-
-                                </div>
-
-
-                                <!-- Circular Progress -->
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-
-                    </div>
-                    <div class="d-flex justify-content-center mt-3 mb-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                        <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background-color: #fdf6ec; font-size: 12px; border-radius: 10px;margin-bottom:6px;">
-
-                            <!-- Avatar and Username -->
-                            <div class="d-flex align-items-center gap-2">
-                                <img src="https://i.pravatar.cc/28" class="rounded-circle" width="28" height="28" alt="Avatar">
-                                <span style="color: #000; font-weight: 500;">Username</span>
-                            </div>
-
-                            <!-- Start Date -->
-                            <div style="color: #22c55e;">
-                                <strong>Start:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Deliver Date -->
-                            <div style="color: #ef4444;">
-                                <strong>Deliver:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Reason -->
-                            <div style="color: #ef4444;">
-                                <strong>! We will get the reason here</strong>
-                            </div>
-
-                        </div>
-                    </div>
+                    @endif
+                    @empty
+                    <div class="text-center text-muted p-3">No assigned tickets found</div>
+                    @endforelse
                 </div>
                 <!--new tasks -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
@@ -1394,99 +990,66 @@
                         <img src="{{ asset('build/img/newtask.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">New Tasks</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $newTasks->count() }} Tasks</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($newTasks as $task)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: bold;">·</span>
-                                            01
-                                            <span style="font-weight: bold;">·</span>
+                                            <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $task['priority'] == 'high' ? '#ea5455' : ($task['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($task['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #e1effe; padding: 4px 8px; border-radius: 10px;">
-
-                                        <span>
-                                            <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
-                                        </span>
+                                        <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
-
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 7px; flex-grow: 1; max-width: 100%;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Ticket</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $task['ticket_code'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Section</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $task['section'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Priority</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ strtoupper($task['priority']) }}</div>
                                         </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                     </div>
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $task['ticket_code'] }}</strong> | <strong>{{ $task['section'] }} |</strong></div>
+                        @if($task['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $task['start_date'] }} |</div>
+                        @endif
+                        @if($task['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $task['end_date'] }}</div>
+                        @endif
                     </div>
-
+                    @empty
+                    <div class="text-center text-muted p-3">No new tasks found</div>
+                    @endforelse
                 </div>
                 <!-- task in progress -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
@@ -1494,99 +1057,66 @@
                         <img src="{{ asset('build/img/progress.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Tasks in Progress</div>
-                            <div style="font-size: 13px; color: #4b5563;">3 Tasks</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $inProgressTasks->count() }} Tasks</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($inProgressTasks as $task)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: bold;">·</span>
-                                            01
-                                            <span style="font-weight: bold;">·</span>
+                                            <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $task['priority'] == 'high' ? '#ea5455' : ($task['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($task['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #ecfbdc; padding: 4px 8px; border-radius: 10px;">
-
-                                        <span>
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
-                                        </span>
+                                        <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
-
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 7px; flex-grow: 1; max-width: 100%;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Ticket</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $task['ticket_code'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Section</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $task['section'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Priority</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ strtoupper($task['priority']) }}</div>
                                         </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                     </div>
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $task['ticket_code'] }}</strong> | <strong>{{ $task['section'] }} |</strong></div>
+                        @if($task['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $task['start_date'] }} |</div>
+                        @endif
+                        @if($task['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $task['end_date'] }}</div>
+                        @endif
                     </div>
-
+                    @empty
+                    <div class="text-center text-muted p-3">No tasks in progress found</div>
+                    @endforelse
                 </div>
                 <!-- task in hold -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
@@ -1594,128 +1124,75 @@
                         <img src="{{ asset('build/img/inhold.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Task in Hold</div>
-                            <div style="font-size: 13px; color: #4b5563;">15 Member</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $inHoldTasks->count() }} Tasks</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($inHoldTasks as $task)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: bold;">·</span>
-                                            01
-                                            <span style="font-weight: bold;">·</span>
+                                            <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $task['priority'] == 'high' ? '#ea5455' : ($task['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($task['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #e1effe; padding: 4px 8px; border-radius: 10px;">
-
-                                        <span>
-                                            <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
-                                        </span>
+                                        <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 7px; flex-grow: 1; max-width: 100%;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Ticket</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $task['ticket_code'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Section</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $task['section'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Priority</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ strtoupper($task['priority']) }}</div>
                                         </div>
                                     </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                    </div>
-
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $task['ticket_code'] }}</strong> | <strong>{{ $task['section'] }} |</strong></div>
+                        @if($task['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $task['start_date'] }} |</div>
+                        @endif
+                        @if($task['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $task['end_date'] }}</div>
+                        @endif
                     </div>
-
-
+                    @if(isset($task['hold_reason']) && $task['hold_reason'])
                     <div class="d-flex justify-content-center mt-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                         <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background-color: #fdf6ec; font-size: 12px; border-radius: 10px;margin-bottom:6px;">
-
-                            <!-- Avatar and Username -->
-                            <div class="d-flex align-items-center gap-2">
-                                <img src="https://i.pravatar.cc/28" class="rounded-circle" width="28" height="28" alt="Avatar">
-                                <span style="color: #000; font-weight: 500;">Username</span>
-                            </div>
-
-                            <!-- Start Date -->
-                            <div style="color: #22c55e;">
-                                <strong>Start:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Deliver Date -->
                             <div style="color: #ef4444;">
-                                <strong>Deliver:</strong> 22.10.2024
+                                <strong>! {{ $task['hold_reason'] }}</strong>
                             </div>
-
-                            <!-- Reason -->
-                            <div style="color: #ef4444;">
-                                <strong>! We will get the reason here</strong>
-                            </div>
-
                         </div>
                     </div>
-
+                    @endif
+                    @empty
+                    <div class="text-center text-muted p-3">No tasks in hold found</div>
+                    @endforelse
                 </div>
                 <!-- task in check -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
@@ -1723,228 +1200,142 @@
                         <img src="{{ asset('build/img/incheck.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Tasks in Check</div>
-                            <div style="font-size: 13px; color: #4b5563;">3 Tasks</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $inCheckTasks->count() }} Tasks</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($inCheckTasks as $task)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: bold;">·</span>
-                                            01
-                                            <span style="font-weight: bold;">·</span>
+                                            <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $task['priority'] == 'high' ? '#ea5455' : ($task['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($task['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #ecfbdc; padding: 4px 8px; border-radius: 10px;">
-
-                                        <span>
-                                            <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
-                                        </span>
+                                        <img src="{{ asset('build/img/greenflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
-
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 7px; flex-grow: 1; max-width: 100%;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Ticket</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $task['ticket_code'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Section</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $task['section'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Priority</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ strtoupper($task['priority']) }}</div>
                                         </div>
-                                    </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
                                     </div>
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $task['ticket_code'] }}</strong> | <strong>{{ $task['section'] }} |</strong></div>
+                        @if($task['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $task['start_date'] }} |</div>
+                        @endif
+                        @if($task['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $task['end_date'] }}</div>
+                        @endif
                     </div>
-
+                    @empty
+                    <div class="text-center text-muted p-3">No tasks in check found</div>
+                    @endforelse
                 </div>
                 <!-- Rejected -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
                     <div class="d-flex align-items-center" style="gap: 8px; font-family: 'Segoe UI', sans-serif;">
-                        <img src="{{ asset('build/img/inhold.svg') }}" style="width: 30px;" alt="Reminder Icon">
+                        <img src="{{ asset('build/img/rejected.svg') }}" style="width: 30px;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Rejected Task</div>
-                            <div style="font-size: 13px; color: #4b5563;">3 Task</div>
+                            <div style="font-size: 13px; color: #4b5563;">{{ $rejectedTasks->count() }} Tasks</div>
                         </div>
                     </div>
-                    <!-- Ticket Title + Status and Metrics -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap " style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
-                        <!-- Ticket Title & Status -->
+                    @forelse($rejectedTasks as $task)
+                    <div class="d-flex justify-content-between align-items-start flex-wrap" style="margin-bottom: 16px;background:#fff;padding: 10px;border-radius: 10px;">
                         <div style="background:#fff">
-                            <!-- Ticket Title -->
-                            <div class="d-flex justify-content-between  mb-3">
-                                <!-- Ticket Title on the left -->
-                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">
-                                    Task Title
-                                </div>
-
-                                <!-- Status badges on the right -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div style="font-weight: 600; font-size: 16px; color: #2e3a59;">{{ $task['title'] }}</div>
                                 <div class="d-flex align-items-center gap-2" style="margin-left: 14px;">
-                                    <!-- Red Badge with Lightning Icon -->
                                     <span style="display: inline-flex; align-items: center; border-radius: 8px; overflow: hidden; font-weight: 600; font-size: 12px;">
-
-                                        <!-- Left icon area -->
                                         <span style="background: #f4f4f4; padding: 6px 8px; display: flex; align-items: center;">
                                             <img src="{{ asset('build/img/tera.svg') }}" alt="Icon" width="14" height="14" />
                                         </span>
-
-                                        <!-- Red badge area -->
                                         <span style="background: #f44336; color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 4px;">
-                                            <span style="font-weight: bold;">·</span>
-                                            01
-                                            <span style="font-weight: bold;">·</span>
+                                            <span style="font-weight: bold;">·</span> 01 <span style="font-weight: bold;">·</span>
                                         </span>
-
                                     </span>
-
-
-                                    <!-- Low Badge with Green Dot -->
                                     <span style="display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #8F98A0; font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 20px;">
-                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c76f; display: inline-block;"></span>
-                                        LOW
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $task['priority'] == 'high' ? '#ea5455' : ($task['priority'] == 'medium' ? '#ffc107' : '#28c76f') }}; display: inline-block;"></span>
+                                        {{ strtoupper($task['priority']) }}
                                     </span>
-
-                                    <!-- Yellow Badge with Flag -->
                                     <span style="display: inline-flex; align-items: center; background: #e1effe; padding: 4px 8px; border-radius: 10px;">
-
-                                        <span>
-                                            <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
-                                        </span>
+                                        <img src="{{ asset('build/img/blueflag.svg') }}" alt="Icon" width="14" height="14" />
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Ticket Metrics Box -->
                         <div style="max-width: 450px;">
                             <div class="d-flex align-items-center gap-3 mt-md-0 flex-wrap">
-                                <!-- Metrics Box -->
                                 <div style="background: #f8f9fa; border-radius: 10px; padding: 10px 7px; flex-grow: 1; max-width: 100%;">
                                     <div style="display: flex; gap: 25px; align-items: center;">
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Tickets</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#1 of #05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Ticket</div>
+                                            <div style="color: #649bc3; font-size: 12px;">#{{ $task['ticket_code'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Total Tasks</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Section</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ $task['section'] }}</div>
                                         </div>
                                         <div class="text-center">
-                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Days Left</div>
-                                            <div style="color: #649bc3; font-size: 12px;">#05</div>
+                                            <div style="color: #1d6fa5; font-weight: 600; font-size: 14px;">Priority</div>
+                                            <div style="color: #649bc3; font-size: 12px;">{{ strtoupper($task['priority']) }}</div>
                                         </div>
                                     </div>
-
-                                    <!-- Blue Progress Bar Underneath OUTSIDE the flex row -->
-                                    <div style="height: 8px; background: #e0e0e0; border-radius: 5px; margin-top: 10px;">
-                                        <div style="width: 70%; height: 100%; background: #34c6f3; border-radius: 5px;"></div>
-                                    </div>
-
                                 </div>
-
-
-                                <!-- Circular Progress -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- Ticket meta info -->
-                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:323px;border-radius:7px;width:fit-content;padding-bottom:3px;padding-left:3px;padding-right:3px;padding-top:2px;">
-                        <div><strong>Ticket ID</strong> | <strong>Section |</strong></div>
-                        <div><span style="color: #28c76f;">Start:</span> 22.10.2024 |</div>
-                        <div><span style="color: #28c76f;">Deliver:</span> 22.10.2024</div>
-
+                    <div style="font-size: 10px; color: #6c757d; display: flex; gap: 8px; flex-wrap: wrap;margin-top:-58px;margin-left:5px;background:#f8f9fa;width:fit-content;border-radius:7px;padding:3px;">
+                        <div><strong>{{ $task['ticket_code'] }}</strong> | <strong>{{ $task['section'] }} |</strong></div>
+                        @if($task['start_date'])
+                        <div><span style="color: #28c76f;">Start:</span> {{ $task['start_date'] }} |</div>
+                        @endif
+                        @if($task['end_date'])
+                        <div><span style="color: #28c76f;">Deliver:</span> {{ $task['end_date'] }}</div>
+                        @endif
                     </div>
-
-
+                    @if(isset($task['hold_reason']) && $task['hold_reason'])
                     <div class="d-flex justify-content-center mt-3" style="background-color: #fff;padding:3px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                         <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background-color: #fdf6ec; font-size: 12px; border-radius: 10px;margin-bottom:6px;">
-
-                            <!-- Avatar and Username -->
-                            <div class="d-flex align-items-center gap-2">
-                                <img src="https://i.pravatar.cc/28" class="rounded-circle" width="28" height="28" alt="Avatar">
-                                <span style="color: #000; font-weight: 500;">Username</span>
-                            </div>
-
-                            <!-- Start Date -->
-                            <div style="color: #22c55e;">
-                                <strong>Start:</strong> 22.10.2024
-                            </div>
-
-                            <!-- Deliver Date -->
                             <div style="color: #ef4444;">
-                                <strong>Deliver:</strong> 22.10.2024
+                                <strong>! {{ $task['hold_reason'] }}</strong>
                             </div>
-
-                            <!-- Reason -->
-                            <div style="color: #ef4444;">
-                                <strong>! We will get the reason here</strong>
-                            </div>
-
                         </div>
                     </div>
-
+                    @endif
+                    @empty
+                    <div class="text-center text-muted p-3">No rejected tasks found</div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -2277,4 +1668,6 @@ function openImageModal(imageSrc) {
     document.getElementById('modalImage').src = imageSrc;
     modal.show();
 }
+</script>
+</script>
 </script>
