@@ -33,6 +33,17 @@
         border: 2px solid white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
+
+    .notification-dot {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid rgb(255, 255, 255);
+        z-index: 2;
+    }
 </style>
 
 
@@ -53,6 +64,10 @@
                     <!-- Icon 2 -->
                     <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
                         <img src="{{ asset('/build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
+                        @endphp
+                        <span class="notification-dot" style="background: {{ $unreadCount > 0 ? 'rgb(241,65,68)' : 'rgb(0,196,105)' }};"></span>
                     </div>
 
                     <!-- Icon 3 -->
