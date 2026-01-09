@@ -15,6 +15,7 @@ class GroupChatManager {
         this.notificationAudio = null;
         this.pollingInterval = null;
         this.lastMessageId = null;
+        this.notifiedMessageIds = new Set(); // Track which messages have already triggered notifications
         this.initNotificationSound();
     }
 
@@ -239,6 +240,11 @@ class GroupChatManager {
      * Open group chat
      */
     async openGroupChat(groupId, groupName, photoUrl) {
+        // Clear notified messages when switching groups to allow notifications for new group
+        if (this.currentGroupId !== groupId) {
+            this.notifiedMessageIds.clear();
+        }
+        
         this.currentGroupId = groupId;
         this.currentGroupName = groupName;
         this.currentGroupPhoto = photoUrl;
@@ -341,14 +347,16 @@ class GroupChatManager {
                         
                         // Add new messages to UI
                         enrichedMessages.forEach(message => {
+                            const messageId = String(message._id || message.id);
                             const senderId = String(message.sender_id || message.from_user_id || '');
                             const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
                             const isOwnMessage = senderId !== '' && currentUserIdStr !== '' &&
                                 (senderId === currentUserIdStr || senderId.toLowerCase() === currentUserIdStr.toLowerCase());
 
-                            // Play sound for received messages
-                            if (!isOwnMessage) {
+                            // Play sound for received messages only once per message
+                            if (!isOwnMessage && !this.notifiedMessageIds.has(messageId)) {
                                 this.playNotificationSound();
+                                this.notifiedMessageIds.add(messageId);
                             }
 
                             const messageElement = this.createMessageElement(message);
@@ -363,7 +371,7 @@ class GroupChatManager {
                             }
 
                             // Update last message ID
-                            this.lastMessageId = String(message._id || message.id);
+                            this.lastMessageId = messageId;
                         });
                     }
                 }
@@ -509,10 +517,18 @@ class GroupChatManager {
             });
         });
 
-        // Set last message ID for polling
+        // Set last message ID for polling and mark all loaded messages as notified
         if (messages.length > 0) {
             const lastMessage = messages[messages.length - 1];
             this.lastMessageId = String(lastMessage._id || lastMessage.id);
+            
+            // Mark all loaded messages as already notified (they're old messages)
+            messages.forEach(message => {
+                const messageId = String(message._id || message.id);
+                if (messageId) {
+                    this.notifiedMessageIds.add(messageId);
+                }
+            });
         }
 
         // Scroll to bottom after rendering
@@ -933,10 +949,12 @@ class GroupChatManager {
             }
         }
 
-        // Play notification sound only for received messages (not own messages)
-        if (!isOwnMessage) {
+        // Play notification sound only for received messages (not own messages) and only once per message
+        const messageId = String(message.id || message.serverMsgId || message._id || '');
+        if (!isOwnMessage && messageId && !this.notifiedMessageIds.has(messageId)) {
             console.log('🔔 Playing notification sound for received message');
             this.playNotificationSound();
+            this.notifiedMessageIds.add(messageId);
         }
 
         // Add message to UI

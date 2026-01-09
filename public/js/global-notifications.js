@@ -10,6 +10,7 @@ class GlobalNotificationManager {
         this.pollingInterval = null;
         this.lastCheckedMessages = {}; // Store last message ID per group
         this.unreadCounts = {}; // Store unread message counts per group
+        this.notifiedMessageIds = new Set(); // Track which messages have already triggered notifications
         this.isPageVisible = true;
         this.init();
     }
@@ -264,25 +265,41 @@ class GlobalNotificationManager {
                     window.groupChatManager.currentGroupId === groupId;
 
                 if (!isViewingThisGroup) {
-                    // We're not viewing this group, show notifications
-                    const latestMessage = newMessages[newMessages.length - 1];
-                    const messageContent = latestMessage.content || 'New message';
-                    const senderName = latestMessage.sender_name || 'Someone';
+                    // Filter out messages we've already notified about
+                    const messagesToNotify = newMessages.filter(msg => {
+                        const messageId = String(msg._id || msg.id);
+                        const notificationKey = `${groupId}-${messageId}`;
+                        return !this.notifiedMessageIds.has(notificationKey);
+                    });
 
-                    // Play sound
-                    this.playNotificationSound();
+                    if (messagesToNotify.length > 0) {
+                        // We're not viewing this group, show notifications
+                        const latestMessage = messagesToNotify[messagesToNotify.length - 1];
+                        const messageContent = latestMessage.content || 'New message';
+                        const senderName = latestMessage.sender_name || 'Someone';
 
-                    // Show browser notification
-                    this.showBrowserNotification(
-                        `${groupName}`,
-                        `${senderName}: ${messageContent.substring(0, 50)}${messageContent.length > 50 ? '...' : ''}`,
-                        groupId,
-                        groupName
-                    );
+                        // Mark messages as notified
+                        messagesToNotify.forEach(msg => {
+                            const messageId = String(msg._id || msg.id);
+                            const notificationKey = `${groupId}-${messageId}`;
+                            this.notifiedMessageIds.add(notificationKey);
+                        });
 
-                    // Update unread count
-                    this.unreadCounts[groupId] = (this.unreadCounts[groupId] || 0) + newMessages.length;
-                    this.updateUnreadBadge();
+                        // Play sound only once for the latest message
+                        this.playNotificationSound();
+
+                        // Show browser notification
+                        this.showBrowserNotification(
+                            `${groupName}`,
+                            `${senderName}: ${messageContent.substring(0, 50)}${messageContent.length > 50 ? '...' : ''}`,
+                            groupId,
+                            groupName
+                        );
+
+                        // Update unread count
+                        this.unreadCounts[groupId] = (this.unreadCounts[groupId] || 0) + messagesToNotify.length;
+                        this.updateUnreadBadge();
+                    }
                 }
 
                 // Update last checked message ID
