@@ -383,6 +383,15 @@ class GroupChatManager {
                             // Update last message ID
                             this.lastMessageId = messageId;
                         });
+
+                        // Update global notification manager's last checked message for this group
+                        if (this.currentGroupId && enrichedMessages.length > 0) {
+                            const latestMessageId = String(enrichedMessages[enrichedMessages.length - 1]._id || enrichedMessages[enrichedMessages.length - 1].id);
+                            if (window.globalNotificationManager) {
+                                window.globalNotificationManager.lastCheckedMessages[this.currentGroupId] = latestMessageId;
+                                window.globalNotificationManager.saveLastCheckedMessages();
+                            }
+                        }
                     }
                 }
             } catch (error) {
@@ -531,7 +540,7 @@ class GroupChatManager {
         if (messages.length > 0) {
             const lastMessage = messages[messages.length - 1];
             this.lastMessageId = String(lastMessage._id || lastMessage.id);
-
+            
             // Mark all loaded messages as already notified (they're old messages)
             messages.forEach(message => {
                 const messageId = String(message._id || message.id);
@@ -539,6 +548,13 @@ class GroupChatManager {
                     this.notifiedMessageIds.add(messageId);
                 }
             });
+
+            // Update global notification manager's last checked message
+            // This prevents notifications when navigating away and back
+            if (this.currentGroupId && window.globalNotificationManager) {
+                window.globalNotificationManager.lastCheckedMessages[this.currentGroupId] = this.lastMessageId;
+                window.globalNotificationManager.saveLastCheckedMessages();
+            }
         }
 
         // Scroll to bottom after rendering
