@@ -2999,22 +2999,33 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const body = document.body;
-        const darkBtn = document.getElementById('dark-mode-toggle');
-        const lightBtn = document.getElementById('light-mode-toggle');
+        const themeBtn = document.getElementById('dark-mode-toggle');
+        const themeIconImg = document.getElementById('theme-icon-img');
+        const themeIconSun = document.getElementById('theme-icon-sun');
 
-        if (darkBtn && lightBtn) {
-            darkBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                body.classList.add('dark-mode');
-                darkBtn.style.display = 'none';
-                lightBtn.style.display = 'inline';
-            });
+        // Check initial theme state
+        if (localStorage.getItem('theme') === 'dark' || body.classList.contains('dark-mode')) {
+            body.classList.add('dark-mode');
+            if (themeIconImg) themeIconImg.style.display = 'none';
+            if (themeIconSun) themeIconSun.style.display = 'inline-block';
+        }
 
-            lightBtn.addEventListener('click', function(e) {
+        if (themeBtn) {
+            themeBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                body.classList.remove('dark-mode');
-                lightBtn.style.display = 'none';
-                darkBtn.style.display = 'inline';
+                if (body.classList.contains('dark-mode')) {
+                    // Switch to light mode
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                    if (themeIconImg) themeIconImg.style.display = 'inline-block';
+                    if (themeIconSun) themeIconSun.style.display = 'none';
+                } else {
+                    // Switch to dark mode
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                    if (themeIconImg) themeIconImg.style.display = 'none';
+                    if (themeIconSun) themeIconSun.style.display = 'inline-block';
+                }
             });
         }
     });
