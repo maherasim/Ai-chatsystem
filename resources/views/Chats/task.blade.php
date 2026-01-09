@@ -1437,7 +1437,13 @@
                                         </div>
 
                                         @forelse ($doneTasks as $task)
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#indone">
+                                            @php
+                                                $doneMarkImagePath = $task->mark_image_path ?? '';
+                                            @endphp
+                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#indone"
+                                                data-mark-image-path="{{ $doneMarkImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -2090,6 +2096,27 @@
         </div>
     </div>
     <script>
+        // Handle progress modal image from task card
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressItems = document.querySelectorAll('.task-progress-item');
+            const markImageElement = document.getElementById('progress-mark-image');
+            
+            progressItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    if (!markImageElement) return;
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    const trimmedPath = (markImagePath || '').trim();
+                    if (trimmedPath !== '') {
+                        const imageUrl = trimmedPath.startsWith('http')
+                            ? trimmedPath
+                            : '/storage/' + trimmedPath.replace(/^\/+/, '');
+                        markImageElement.src = imageUrl;
+                    } else {
+                        markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                    }
+                });
+            });
+        });
         (function () {
             if (window.__taskDetailsToggleBound) return;
             window.__taskDetailsToggleBound = true;
@@ -8107,13 +8134,13 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
+                        <!-- Task Image Display (Progress - replaces Sign-in Box) -->
                         <div class="mx-auto my-4"
                             style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
+                            <img id="progress-mark-image"
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
                             <div style="margin-top: 25px;">
@@ -8279,13 +8306,13 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
+                        <!-- Task Image Display (Reject - replaces Sign-in Box) -->
                         <div class="mx-auto my-4"
                             style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
+                            <img id="inreject-mark-image"
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
                             <div style="margin-top: 25px;">
@@ -8471,13 +8498,13 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
+                        <!-- Task Image Display (Hold - replaces Sign-in Box) -->
                         <div class="mx-auto my-4"
                             style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
+                            <img id="inhold-mark-image"
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
                             <div style="margin-top: 25px;">
@@ -8661,13 +8688,13 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- Sign-in Box -->
+                        <!-- Task Image Display (Delayed - replaces Sign-in Box) -->
                         <div class="mx-auto my-4"
                             style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
+                            <img id="indelayed-mark-image"
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
                             <div style="margin-top: 25px;">
@@ -8845,91 +8872,13 @@
                                 move the close button more down due to its near on the popup
                             </p>
                         </div>
-                        <!-- card -->
-                        <div class="card text-center p-3"
-                            style="border-radius: 16px; border: none; background: #f9f9f9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);  margin: auto;">
-
-                            <!-- TOP SECTION (Background + Profile + Name + Role) -->
-                            <div
-                                style="width: 160px; margin: auto; background: #fdfdfd; border-radius: 20px; padding-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-
-                                <!-- Background Image -->
-                                <div
-                                    style="position: relative; height: 60px; overflow: hidden; border-radius: 20px 20px 0 0;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-
-                                <!-- Profile Image -->
-                                <div style="position: relative; margin-top: -25px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        class="rounded-circle"
-                                        style="width: 50px; height: 50px; object-fit: cover; border: 3px solid white;">
-                                </div>
-
-                                <!-- Name & Role -->
-                                <div class="mt-1">
-                                    <h6 style="margin: 0; font-weight: 600; font-size: 13px;">Name Lastname</h6>
-                                    <div style="font-size: 11px; color: #e74c3c; font-weight: 500;">Developer</div>
-                                </div>
-                            </div>
-
-                            <!-- Status Tag -->
-                            <div class="my-2">
-                                <span
-                                    style="background-color: #d4f4e1; color: #27ae60; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600;">On
-                                    Time</span>
-                            </div>
-
-                            <!-- Start / Deliver / Duration -->
-                            <div class="d-flex justify-content-between text-center mb-3 px-2"
-                                style="font-size: 12px; font-weight: 500;">
-                                <div>
-                                    <div style="color: #7f8ea3;">Start:</div>
-                                    <div style="color: #27ae60;">22.10.2025 - 12:30</div>
-                                </div>
-                                <div>
-                                    <div style="color: #7f8ea3;">Deliver:</div>
-                                    <div style="color: #27ae60;">22.10.2025 - 19:30</div>
-                                </div>
-                                <div>
-                                    <div style="color: #7f8ea3;">Time Left:</div>
-                                    <div style="color: #2ecc71;">0 day 7 Hr - 30 min</div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Info: Meetings, Trys, In Hold, In Delayed -->
-                            <div class="d-flex justify-content-around text-center pt-2 border-top"
-                                style="font-size: 12px;">
-                                <div>
-                                    <div style="color: #2c3e50;">Meetings:</div>
-                                    <div><span style="color: #2c3e50;">3</span> / <span style="color: red;">2 - 1</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div style="color: #2c3e50;">Trys:</div>
-                                    <div style="color: #2c3e50;">3</div>
-                                </div>
-                                <div>
-                                    <div style="color: #2c3e50;">In Hold:</div>
-                                    <div style="color: orange;">1</div>
-                                </div>
-                                <div>
-                                    <div style="color: #2c3e50;">In delayed:</div>
-                                    <div style="color: red;">0</div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <!-- Sign-in Box -->
+                        <!-- Task Image Display (Done) -->
                         <div class="mx-auto my-4"
                             style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
-                            <img src="https://img.icons8.com/ios-filled/100/40C057/right--v1.png"
-                                style="width: 40px; margin-bottom: 10px;" alt="Sign In">
-                            <h6 style="font-weight: bold;">Sign in</h6>
-                            <p style="font-size: 14px; color: #555;">Please use your Login Details for Access</p>
+                            <img id="indone-mark-image"
+                                src="{{ asset('build/img/dooted img.svg') }}"
+                                alt="Task Image"
+                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
                             <div style="margin-top: 25px;">
@@ -9715,6 +9664,29 @@
             });
         });
         
+        // Handle delayed modal population when delayed task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const delayedTaskItems = document.querySelectorAll('.task-delayed-item');
+            
+            delayedTaskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    const markImageElement = document.getElementById('indelayed-mark-image');
+                    if (markImageElement) {
+                        const trimmedPath = (markImagePath || '').trim();
+                        if (trimmedPath !== '') {
+                            const imageUrl = trimmedPath.startsWith('http')
+                                ? trimmedPath
+                                : '/storage/' + trimmedPath.replace(/^\/+/, '');
+                            markImageElement.src = imageUrl;
+                        } else {
+                            markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                        }
+                    }
+                });
+            });
+        });
+        
         // Handle inreject modal population when rejected task is clicked
         document.addEventListener('DOMContentLoaded', function() {
             const rejectedTaskItems = document.querySelectorAll('.task-rejected-item');
@@ -9730,6 +9702,7 @@
                     const startDate = this.getAttribute('data-start-date') || '--';
                     const endDate = this.getAttribute('data-end-date') || '--';
                     const rejectionReason = this.getAttribute('data-rejection-reason') || 'No rejection reason provided';
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
                     
                     // Update modal header
                     document.getElementById('inreject-project-name').textContent = projectName;
@@ -9745,6 +9718,20 @@
                     
                     // Update rejection reason
                     document.getElementById('inreject-rejection-reason').textContent = rejectionReason;
+
+                    // Update mark image
+                    const markImageElement = document.getElementById('inreject-mark-image');
+                    if (markImageElement) {
+                        const trimmedPath = (markImagePath || '').trim();
+                        if (trimmedPath !== '') {
+                            const imageUrl = trimmedPath.startsWith('http')
+                                ? trimmedPath
+                                : '/storage/' + trimmedPath.replace(/^\/+/, '');
+                            markImageElement.src = imageUrl;
+                        } else {
+                            markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                        }
+                    }
                 });
             });
         });
@@ -9766,6 +9753,29 @@
                 }
             }
         }
+
+        // Handle done (indone) modal population when done task is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const doneTaskItems = document.querySelectorAll('[data-bs-target="#indone"][data-mark-image-path]');
+            
+            doneTaskItems.forEach(function(taskItem) {
+                taskItem.addEventListener('click', function() {
+                    const markImagePath = this.getAttribute('data-mark-image-path') || '';
+                    const markImageElement = document.getElementById('indone-mark-image');
+                    if (markImageElement) {
+                        const trimmedPath = (markImagePath || '').trim();
+                        if (trimmedPath !== '') {
+                            const imageUrl = trimmedPath.startsWith('http')
+                                ? trimmedPath
+                                : '/storage/' + trimmedPath.replace(/^\/+/, '');
+                            markImageElement.src = imageUrl;
+                        } else {
+                            markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
+                        }
+                    }
+                });
+            });
+        });
         
         // Reset reject form
         function resetRejectForm() {
