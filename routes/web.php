@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/chat/groups', [\App\Http\Controllers\ChatController::class, 'getGroups'])->name('chat.groups');
     Route::get('/api/chat/group/{groupId}/messages', [\App\Http\Controllers\ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [\App\Http\Controllers\ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+    Route::get('/api/chat/group/{groupId}/members', [\App\Http\Controllers\ChatController::class, 'getGroupMembers'])->name('chat.group.members');
     Route::get('/api/user/{userId}/profile', [\App\Http\Controllers\ChatController::class, 'getUserProfile'])->name('user.profile');
 });
 

@@ -526,6 +526,83 @@ class ChatController extends Controller
     }
 
     /**
+     * Get group members for mentions
+     */
+    public function getGroupMembers($groupId)
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+
+            // Find the group
+            $group = Group::find($groupId);
+            if (!$group) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Group not found',
+                ], 404);
+            }
+
+            // Verify user is member of group
+            $memberIds = $group->member_ids ?? [];
+            if (is_string($memberIds)) {
+                $decoded = json_decode($memberIds, true);
+                $memberIds = is_array($decoded) ? $decoded : [];
+            }
+            $memberIds = array_map('strval', $memberIds);
+            $isAdmin = (string)$group->admin_id === $userId;
+            $isMember = in_array($userId, $memberIds);
+            
+            if (!$isAdmin && !$isMember) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You are not a member of this group',
+                ], 403);
+            }
+
+            // Get all member IDs (including admin)
+            $allMemberIds = array_map('strval', $memberIds);
+            if ($group->admin_id && !in_array((string)$group->admin_id, $allMemberIds)) {
+                $allMemberIds[] = (string)$group->admin_id;
+            }
+
+            // Fetch all members
+            $members = User::whereIn('_id', $allMemberIds)->get();
+
+            // Format members
+            $formattedMembers = $members->map(function($member) {
+                $avatarUrl = null;
+                if (isset($member->image) && !empty(trim($member->image))) {
+                    $avatarUrl = $this->getImageUrl(ltrim($member->image, '/'));
+                } elseif (isset($member->profile_image) && !empty(trim($member->profile_image))) {
+                    $avatarUrl = $this->getImageUrl('storage/' . ltrim($member->profile_image, '/'));
+                }
+
+                return [
+                    'id' => (string)$member->_id,
+                    'name' => $member->name ?? $member->email ?? 'Unknown',
+                    'email' => $member->email ?? '',
+                    'avatar' => $avatarUrl,
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'members' => $formattedMembers,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get group members', [
+                'error' => $e->getMessage(),
+                'group_id' => $groupId,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve group members',
+            ], 500);
+        }
+    }
+
+    /**
      * Get user profile by ID
      */
     public function getUserProfile($userId)

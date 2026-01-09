@@ -15,6 +15,10 @@ class GroupChatManager {
         this.notificationSound = null;
         this.lastMessageId = null;
         this.pollingInterval = null;
+        this.groupMembers = []; // Store group members for mentions
+        this.mentionStartPos = null; // Track @ mention start position
+        this.mentionDropdown = null; // Mention dropdown element
+        this.selectedMentionIndex = -1; // Selected mention index
         this.initNotificationSound();
     }
 
@@ -578,7 +582,7 @@ class GroupChatManager {
             // Text message
             messageContent = `
                 <div class="message-content">
-                    ${this.escapeHtml(message.content || '')}
+                    ${this.formatMessageWithMentions(message.content || '')}
                 </div>
             `;
         }
@@ -878,6 +882,328 @@ class GroupChatManager {
         div.textContent = text;
         return div.innerHTML;
     }
+
+    /**
+     * Format message content with highlighted mentions
+     */
+    formatMessageWithMentions(content) {
+        if (!content) return '';
+
+        // Escape HTML first
+        const escaped = this.escapeHtml(content);
+
+        // Replace @mentions with highlighted spans
+        // Pattern: @ followed by name (letters, numbers, spaces, hyphens, underscores, dots)
+        // Stop at space, newline, punctuation (except @), or end of string
+        const mentionRegex = /@([\w\s\-\.]+?)(?=\s|$|@|[^\w\s\-\.]|[\n\r])/g;
+        
+        return escaped.replace(mentionRegex, (match, name) => {
+            // Trim the name and create highlighted mention
+            const trimmedName = name.trim();
+            if (trimmedName && trimmedName.length > 0) {
+                return `<span class="mention-highlight" style="color: #1a73e8; font-weight: 600; background-color: rgba(26, 115, 232, 0.1); padding: 2px 6px; border-radius: 4px; display: inline-block;">@${this.escapeHtml(trimmedName)}</span>`;
+            }
+            return match;
+        });
+    }
+
+    /**
+     * Load group members for mentions
+     */
+    async loadGroupMembers() {
+        if (!this.currentGroupId) return;
+
+        try {
+            const response = await fetch(`/api/chat/group/${this.currentGroupId}/members`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            const data = await response.json();
+            if (data.success && data.members) {
+                this.groupMembers = data.members;
+                console.log('✅ Loaded group members for mentions:', this.groupMembers.length);
+            }
+        } catch (error) {
+            console.error('Failed to load group members:', error);
+        }
+    }
+
+    /**
+     * Setup mention functionality
+     */
+    setupMentionHandler() {
+        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+        if (!messageInput) {
+            console.warn('Mention handler: Message input not found');
+            return;
+        }
+
+        console.log('Setting up mention handler');
+
+        // Remove existing handlers
+        if (this.handleMentionInput) {
+            messageInput.removeEventListener('input', this.handleMentionInput);
+        }
+        if (this.handleMentionKeydown) {
+            messageInput.removeEventListener('keydown', this.handleMentionKeydown);
+        }
+
+        // Bind handlers
+        this.handleMentionInput = this.handleMentionInput.bind(this);
+        this.handleMentionKeydown = this.handleMentionKeydown.bind(this);
+
+        messageInput.addEventListener('input', this.handleMentionInput);
+        messageInput.addEventListener('keydown', this.handleMentionKeydown);
+
+        // Also listen for keypress to catch @ immediately
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === '@' || e.keyCode === 64) {
+                // Small delay to let the @ character be added to input
+                setTimeout(() => {
+                    this.handleMentionInput({ target: messageInput });
+                }, 10);
+            }
+        });
+
+        // Close dropdown when clicking outside
+        if (!this.clickOutsideHandler) {
+            this.clickOutsideHandler = (e) => {
+                if (this.mentionDropdown && !this.mentionDropdown.contains(e.target) && e.target !== messageInput) {
+                    this.hideMentionDropdown();
+                }
+            };
+            document.addEventListener('click', this.clickOutsideHandler);
+        }
+    }
+
+    /**
+     * Handle input for mentions
+     */
+    handleMentionInput(e) {
+        const input = e.target;
+        const value = input.value;
+        const cursorPos = input.selectionStart || value.length;
+
+        // Check if @ was typed
+        const textBeforeCursor = value.substring(0, cursorPos);
+        const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+
+        if (lastAtIndex !== -1) {
+            // Check if there's a space after @ (meaning mention is complete)
+            const textAfterAt = textBeforeCursor.substring(lastAtIndex + 1);
+            if (textAfterAt.includes(' ') || textAfterAt.includes('\n')) {
+                this.hideMentionDropdown();
+                return;
+            }
+
+            // Check if we have group members loaded
+            if (!this.groupMembers || this.groupMembers.length === 0) {
+                console.warn('No group members loaded yet');
+                // Try to load members if not loaded
+                if (this.currentGroupId) {
+                    this.loadGroupMembers().then(() => {
+                        // Retry showing dropdown after loading
+                        if (this.groupMembers && this.groupMembers.length > 0) {
+                            this.mentionStartPos = lastAtIndex;
+                            const searchQuery = textAfterAt.toLowerCase();
+                            this.showMentionDropdown(searchQuery, input);
+                        }
+                    });
+                }
+                return;
+            }
+
+            // Show mention dropdown
+            this.mentionStartPos = lastAtIndex;
+            const searchQuery = textAfterAt.toLowerCase();
+            this.showMentionDropdown(searchQuery, input);
+        } else {
+            this.hideMentionDropdown();
+        }
+    }
+
+    /**
+     * Handle keydown for mentions
+     */
+    handleMentionKeydown(e) {
+        if (!this.mentionDropdown || !this.mentionDropdown.parentElement) {
+            return;
+        }
+
+        const items = this.mentionDropdown.querySelectorAll('.mention-item');
+        if (items.length === 0) return;
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                this.selectedMentionIndex = Math.min(this.selectedMentionIndex + 1, items.length - 1);
+                this.updateMentionSelection(items);
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                this.selectedMentionIndex = Math.max(this.selectedMentionIndex - 1, -1);
+                this.updateMentionSelection(items);
+                break;
+            case 'Enter':
+            case 'Tab':
+                e.preventDefault();
+                if (this.selectedMentionIndex >= 0 && items[this.selectedMentionIndex]) {
+                    items[this.selectedMentionIndex].click();
+                }
+                break;
+            case 'Escape':
+                e.preventDefault();
+                this.hideMentionDropdown();
+                break;
+        }
+    }
+
+    /**
+     * Show mention dropdown
+     */
+    showMentionDropdown(searchQuery, input) {
+        console.log('Showing mention dropdown, query:', searchQuery, 'members:', this.groupMembers.length);
+        
+        // Filter members based on search query
+        const filteredMembers = this.groupMembers.filter(member => {
+            const name = (member.name || '').toLowerCase();
+            const email = (member.email || '').toLowerCase();
+            return name.includes(searchQuery) || email.includes(searchQuery);
+        });
+
+        console.log('Filtered members:', filteredMembers.length);
+
+        if (filteredMembers.length === 0) {
+            this.hideMentionDropdown();
+            return;
+        }
+
+        // Create or update dropdown
+        if (!this.mentionDropdown) {
+            this.mentionDropdown = document.createElement('div');
+            this.mentionDropdown.className = 'mention-dropdown';
+            this.mentionDropdown.style.cssText = `
+                position: absolute;
+                bottom: 100%;
+                left: 0;
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1000;
+                min-width: 250px;
+                margin-bottom: 5px;
+            `;
+        }
+
+        // Clear and populate dropdown
+        this.mentionDropdown.innerHTML = '';
+        this.selectedMentionIndex = -1;
+
+        filteredMembers.forEach((member, index) => {
+            const item = document.createElement('div');
+            item.className = 'mention-item';
+            item.style.cssText = `
+                padding: 10px 15px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-bottom: 1px solid #f0f0f0;
+            `;
+            item.innerHTML = `
+                <img src="${member.avatar || '/build/img/profiles/avatar-06.jpg'}" 
+                     style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" 
+                     onerror="this.src='/build/img/profiles/avatar-06.jpg'">
+                <div style="flex: 1;">
+                    <div style="font-weight: 500; font-size: 14px; color: #333;">${this.escapeHtml(member.name)}</div>
+                </div>
+            `;
+
+            item.addEventListener('click', () => {
+                this.insertMention(member, input);
+            });
+
+            item.addEventListener('mouseenter', () => {
+                this.selectedMentionIndex = index;
+                this.updateMentionSelection(this.mentionDropdown.querySelectorAll('.mention-item'));
+            });
+
+            this.mentionDropdown.appendChild(item);
+        });
+
+        // Append to input wrapper
+        const inputWrapper = input.closest('.form-wrap');
+        if (inputWrapper) {
+            if (!inputWrapper.contains(this.mentionDropdown)) {
+                inputWrapper.style.position = 'relative';
+                inputWrapper.appendChild(this.mentionDropdown);
+                console.log('Mention dropdown appended to DOM');
+            }
+        } else {
+            // Fallback: append to chat footer
+            const chatFooter = input.closest('.chat-footer');
+            if (chatFooter) {
+                chatFooter.style.position = 'relative';
+                if (!chatFooter.contains(this.mentionDropdown)) {
+                    chatFooter.appendChild(this.mentionDropdown);
+                    console.log('Mention dropdown appended to chat footer');
+                }
+            }
+        }
+    }
+
+    /**
+     * Update mention selection highlight
+     */
+    updateMentionSelection(items) {
+        items.forEach((item, index) => {
+            if (index === this.selectedMentionIndex) {
+                item.style.backgroundColor = '#f0f0f0';
+            } else {
+                item.style.backgroundColor = 'transparent';
+            }
+        });
+    }
+
+    /**
+     * Insert mention into input
+     */
+    insertMention(member, input) {
+        const value = input.value;
+        const cursorPos = input.selectionStart;
+        const textBeforeCursor = value.substring(0, this.mentionStartPos);
+        const textAfterCursor = value.substring(cursorPos);
+
+        // Insert mention
+        const mentionText = `@${member.name} `;
+        const newValue = textBeforeCursor + mentionText + textAfterCursor;
+
+        input.value = newValue;
+        input.focus();
+
+        // Set cursor position after mention
+        const newCursorPos = this.mentionStartPos + mentionText.length;
+        input.setSelectionRange(newCursorPos, newCursorPos);
+
+        // Hide dropdown
+        this.hideMentionDropdown();
+    }
+
+    /**
+     * Hide mention dropdown
+     */
+    hideMentionDropdown() {
+        if (this.mentionDropdown && this.mentionDropdown.parentElement) {
+            this.mentionDropdown.remove();
+        }
+        this.mentionStartPos = null;
+        this.selectedMentionIndex = -1;
+    }
 }
 
 // Global instance
@@ -896,7 +1222,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (messageInput) {
         messageInput.addEventListener('keypress', (e) => {
+            // Don't send if mention dropdown is open and user presses Enter
             if (e.key === 'Enter' && !e.shiftKey) {
+                const mentionDropdown = document.querySelector('.mention-dropdown');
+                if (mentionDropdown && mentionDropdown.parentElement) {
+                    // Let mention handler deal with it
+                    return;
+                }
+                
                 e.preventDefault();
                 const content = messageInput.value.trim();
                 if (content) {
@@ -904,6 +1237,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         });
+
+        // Setup mention handler after input is found
+        if (window.groupChatManager && messageInput) {
+            // Wait a bit for group to potentially be opened
+            setTimeout(() => {
+                window.groupChatManager.setupMentionHandler();
+            }, 500);
+        }
     }
 
     if (sendButton) {
