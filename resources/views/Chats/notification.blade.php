@@ -9,11 +9,11 @@
 
     .icon-wrapper.selected {
         background-color: #e0f7e9;
-        /* Light green highlight */
         box-shadow: 0 0 0 2px #00c469;
-        /* Green border */
-       
+    }
 
+    #icon-bell svg circle[fill="#F14144"] {
+        opacity: 0;
     }
 
     /* Ensure consistent sidebar width on notification page */
@@ -3113,12 +3113,13 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                updateNotificationBadge(data.unread_count || 0);
                 renderNotifications(data.notifications);
-                updateNotificationBadge(data.unread_count);
             }
         })
         .catch(error => {
             console.error('Error loading notifications:', error);
+            updateNotificationBadge(0);
         });
     }
 
@@ -3252,27 +3253,26 @@
         });
     }
 
-    // Update notification badge count
-    function updateNotificationBadge(count) {
-        // Update bell icon badge if exists
+    // Update notification dot on bell icon:
+    // - red when there are unread notifications
+    // - green when there are none
+    function updateNotificationBadge(unreadCount) {
         const bellIcon = document.getElementById('icon-bell');
-        if (bellIcon) {
-            // Remove existing badge
-            const existingBadge = bellIcon.querySelector('.notification-badge');
-            if (existingBadge) {
-                existingBadge.remove();
-            }
+        if (!bellIcon) return;
 
-            // Add badge if there are unread notifications
-            if (count > 0) {
-                const badge = document.createElement('span');
-                badge.className = 'notification-badge';
-                badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;';
-                badge.textContent = count > 9 ? '9+' : count;
-                bellIcon.style.position = 'relative';
-                bellIcon.appendChild(badge);
-            }
+        const count = Number(unreadCount) || 0;
+        bellIcon.style.position = 'relative';
+
+        let dot = bellIcon.querySelector('.notification-dot');
+        if (!dot) {
+            dot = document.createElement('span');
+            dot.className = 'notification-dot';
+            bellIcon.appendChild(dot);
         }
+
+        dot.style.cssText =
+            'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
+            `background:${count > 0 ? 'rgb(241,65,68)' : 'rgb(0,196,105)'};z-index:2;`;
     }
 
     // Helper function to get time ago
@@ -3354,7 +3354,7 @@
                 attributeFilter: ['style', 'class']
             });
         }
-        // Load notifications initially
+        
         loadNotifications();
         
         // Refresh notifications every 30 seconds
