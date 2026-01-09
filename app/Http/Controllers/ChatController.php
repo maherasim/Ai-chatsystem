@@ -505,6 +505,7 @@ class ChatController extends Controller
                 return [
                     '_id' => (string)$message->_id,
                     'id' => (string)$message->_id,
+                    'message_id' => $message->message_id, // Return Agora message ID
                     'sender_id' => (string)($senderId ?? ''),
                     'from_user_id' => (string)($senderId ?? ''), // Also include for compatibility
                     'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
@@ -554,6 +555,7 @@ class ChatController extends Controller
                 'file_name' => 'nullable|string',
                 'file_size' => 'nullable|integer',
                 'replied_to_message_id' => 'nullable|string',
+                'message_id' => 'nullable|string',
             ]);
 
             // Verify user is member of group
@@ -578,6 +580,7 @@ class ChatController extends Controller
             $message->file_size = $request->file_size;
             $message->replied_to_message_id = $request->replied_to_message_id;
             $message->reply_to_message_id = $request->replied_to_message_id; // Also set for compatibility
+            $message->message_id = $request->message_id; // Save Agora message ID
             $message->reactions = [];
             $message->save();
 
@@ -623,6 +626,7 @@ class ChatController extends Controller
         return [
             '_id' => (string)$message->_id,
             'id' => (string)$message->_id,
+            'message_id' => $message->message_id, // Return Agora message ID
             'sender_id' => (string)($senderId ?? ''),
             'sender_name' => $sender ? ($sender->name ?? $sender->email) : 'Unknown',
             'sender_avatar' => $this->getAvatarUrl($sender),

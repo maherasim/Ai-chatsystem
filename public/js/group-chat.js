@@ -36,12 +36,12 @@ class GroupChatManager {
                     this.notificationAudio = new Audio(audioPath);
                     this.notificationAudio.volume = 0.7; // Set volume to 70%
                     this.notificationAudio.preload = 'auto';
-                    
+
                     // Test if audio can be loaded
                     this.notificationAudio.addEventListener('canplaythrough', () => {
                         console.log('✅ Notification sound loaded successfully:', audioPath);
                     });
-                    
+
                     this.notificationAudio.addEventListener('error', (e) => {
                         console.warn('Audio path failed:', audioPath, e);
                         // Try next path
@@ -49,7 +49,7 @@ class GroupChatManager {
                             return; // Will try next path
                         }
                     });
-                    
+
                     // If we got here without error, this path works
                     break;
                 } catch (err) {
@@ -71,7 +71,7 @@ class GroupChatManager {
                 // Reset audio to beginning and play
                 this.notificationAudio.currentTime = 0;
                 const playPromise = this.notificationAudio.play();
-                
+
                 if (playPromise !== undefined) {
                     playPromise
                         .then(() => {
@@ -244,7 +244,7 @@ class GroupChatManager {
         if (this.currentGroupId !== groupId) {
             this.notifiedMessageIds.clear();
         }
-        
+
         this.currentGroupId = groupId;
         this.currentGroupName = groupName;
         this.currentGroupPhoto = photoUrl;
@@ -293,7 +293,7 @@ class GroupChatManager {
 
         // Start polling as fallback if Agora is not working
         this.startMessagePolling();
-        
+
         // Set last message ID from loaded messages
         const container = document.getElementById('chatMessagesContainer');
         if (container) {
@@ -314,7 +314,7 @@ class GroupChatManager {
         if (!this.currentGroupId) return;
 
         console.log('🔄 Starting message polling for group:', this.currentGroupId);
-        
+
         // Poll every 3 seconds for new messages
         this.pollingInterval = setInterval(async () => {
             if (!this.currentGroupId) {
@@ -335,16 +335,26 @@ class GroupChatManager {
                     // Filter out messages we already have
                     const newMessages = data.messages.filter(msg => {
                         const msgId = String(msg._id || msg.id);
-                        const existing = document.querySelector(`[data-message-id="${msgId}"]`);
-                        return !existing;
+                        const agoraMsgId = msg.message_id; // Check for Agora ID
+
+                        // Check if message exists by Backend ID
+                        const existingById = document.querySelector(`[data-message-id="${msgId}"]`);
+
+                        // Check if message exists by Agora ID (if available)
+                        const existingByAgoraId = agoraMsgId ? document.querySelector(`[data-message-id="${agoraMsgId}"]`) : null;
+
+                        // Also check if we already have this Agora ID in our notified set
+                        const alreadyNotified = agoraMsgId ? this.notifiedMessageIds.has(agoraMsgId) : false;
+
+                        return !existingById && !existingByAgoraId && !alreadyNotified;
                     });
 
                     if (newMessages.length > 0) {
                         console.log(`📥 Polling found ${newMessages.length} new messages`);
-                        
+
                         // Enrich with sender info
                         const enrichedMessages = await this.enrichMessagesWithSenderInfo(newMessages);
-                        
+
                         // Add new messages to UI
                         enrichedMessages.forEach(message => {
                             const messageId = String(message._id || message.id);
@@ -482,7 +492,7 @@ class GroupChatManager {
 
         // Clear existing messages
         container.innerHTML = '';
-        
+
         // Reset last message ID
         this.lastMessageId = null;
 
@@ -521,7 +531,7 @@ class GroupChatManager {
         if (messages.length > 0) {
             const lastMessage = messages[messages.length - 1];
             this.lastMessageId = String(lastMessage._id || lastMessage.id);
-            
+
             // Mark all loaded messages as already notified (they're old messages)
             messages.forEach(message => {
                 const messageId = String(message._id || message.id);
@@ -561,7 +571,7 @@ class GroupChatManager {
         try {
             // Handle both Date objects and date strings
             const dateObj = date instanceof Date ? date : new Date(date);
-            
+
             // Check if date is valid
             if (isNaN(dateObj.getTime())) {
                 console.warn('Invalid date provided to formatDate:', date);
@@ -642,7 +652,7 @@ class GroupChatManager {
                 hour12: true
             });
         }
-        
+
         const time = messageTime;
 
         let messageContent = '';
@@ -884,20 +894,20 @@ class GroupChatManager {
      */
     async handleMessageReceived(message) {
         console.log('📨 Handling received message:', message);
-        
+
         // Check if this is a group chat message and if it's for the current group
         const messageGroupId = message.to || message.targetId || '';
         const isGroupChat = message.chatType === 'groupChat' || message.type === 'groupChat';
-        
+
         // If we have a current group and this is a group message, check if it's for our group
         if (this.currentGroupId && isGroupChat) {
             // Check various possible group ID formats
-            const groupIdMatches = 
+            const groupIdMatches =
                 messageGroupId === this.currentGroupId ||
                 messageGroupId === `group_${this.currentGroupId}` ||
                 messageGroupId === `group_${this.currentGroupId}` ||
                 message.to === this.currentGroupId;
-            
+
             if (!groupIdMatches) {
                 console.log('⚠️ Message is for a different group, ignoring:', {
                     messageGroupId,
@@ -906,7 +916,7 @@ class GroupChatManager {
                 return; // Ignore messages not for current group
             }
         }
-        
+
         // Check if message is from current user (don't play sound for own messages)
         const senderId = String(message.from || message.from_user_id || '');
         const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
@@ -936,7 +946,7 @@ class GroupChatManager {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                     },
                 });
-                
+
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
                     if (userData.success && userData.user) {
@@ -981,7 +991,7 @@ class GroupChatManager {
 
             // Check if we need to add a date separator
             const lastMessage = container.lastElementChild;
-            
+
             // Safely parse the date
             let messageDate;
             try {
@@ -996,7 +1006,7 @@ class GroupChatManager {
                 messageDate = new Date(); // Fallback to current date
                 messageData.created_at = messageDate.toISOString(); // Update with valid date
             }
-            
+
             // Use formatDate method for consistent date formatting
             const dateStr = this.formatDate(messageDate);
 
@@ -1030,7 +1040,7 @@ class GroupChatManager {
             messageElement.setAttribute('data-date', dateStr);
             container.appendChild(messageElement);
             this.scrollToBottom();
-            
+
             console.log('✅ Message added to UI successfully');
         } else {
             console.error('❌ Chat messages container not found');
@@ -1077,6 +1087,8 @@ class GroupChatManager {
                 }
             }
 
+            let agoraMessageId = null;
+
             // Send via Agora if connected
             if (this.agoraClient && this.isConnected) {
                 try {
@@ -1087,10 +1099,13 @@ class GroupChatManager {
                         chatType: 'groupChat',
                     });
 
+                    agoraMessageId = msg.id; // Capture Agora Message ID
+
                     console.log('📤 Sending message via Agora:', {
                         to: this.currentGroupId,
                         type: messageType,
-                        content: content.substring(0, 50) + '...'
+                        content: content.substring(0, 50) + '...',
+                        id: agoraMessageId
                     });
 
                     await this.agoraClient.send(msg);
@@ -1103,6 +1118,7 @@ class GroupChatManager {
             }
 
             // Save to backend
+            messageData.message_id = agoraMessageId; // Add message_id to backend payload
             const response = await fetch('/api/chat/group/message', {
                 method: 'POST',
                 headers: {
@@ -1147,7 +1163,7 @@ class GroupChatManager {
 
                     // Check if we need to add a date separator
                     const lastMessage = container.lastElementChild;
-                    
+
                     // Safely parse the date
                     let messageDate;
                     try {
@@ -1162,7 +1178,7 @@ class GroupChatManager {
                         messageDate = new Date(); // Fallback to current date
                         sentMessageData.created_at = messageDate.toISOString(); // Update with valid date
                     }
-                    
+
                     // Use formatDate method for consistent date formatting
                     const dateStr = this.formatDate(messageDate);
 
