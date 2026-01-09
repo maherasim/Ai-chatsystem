@@ -25,9 +25,8 @@
 					if (!empty($userObj->profile_image)) {
 						$imageUrl = asset('storage/' . $userObj->profile_image);
 					}
-					// Fallback to image field (stored in storage/upload/users/)
+					// Fallback to image field (stored in public/upload/users/)
 					elseif (!empty($userObj->image)) {
-						// Always use storage/ prefix for image paths
 						$imageUrl = asset('storage/' . $userObj->image);
 					}
 				}

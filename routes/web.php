@@ -216,6 +216,7 @@ Route::middleware('auth')->group(function () {
     // Group chat routes
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+    Route::get('/api/chat/group/{groupId}/members', [ChatController::class, 'getGroupMembers'])->name('chat.group.members');
     // Groups API for notifications
     Route::get('/api/chat/groups', [ChatController::class, 'getUserGroups'])->name('chat.groups');
     // User profile API

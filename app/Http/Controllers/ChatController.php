@@ -645,24 +645,49 @@ class ChatController extends Controller
      */
     private function getAvatarUrl($user)
     {
-        if (!$user || !$user->image) {
+        if (!$user) {
             return null;
         }
         
-        $image = ltrim($user->image, '/');
-        
-        // Check public/upload/...
-        if (file_exists(public_path($image))) {
-            return asset($image);
-        }
-        
-        // Check storage/app/public/upload/...
-        if (file_exists(storage_path('app/public/' . $image))) {
+        // Check profile_image first (stored in storage/app/public/profiles/)
+        if (isset($user->profile_image) && !empty(trim($user->profile_image))) {
+            $image = ltrim($user->profile_image, '/');
+            // Check storage/app/public/...
+            if (file_exists(storage_path('app/public/' . $image))) {
+                return asset('storage/' . $image);
+            }
+            // Default to storage path
             return asset('storage/' . $image);
         }
         
-        // Default to public path if file not found (legacy behavior)
-        return asset($image);
+        // Fallback to image field (stored in public/upload/users/ or storage/upload/users/)
+        if (isset($user->image) && !empty(trim($user->image))) {
+            $image = ltrim($user->image, '/');
+            
+            // Check if it starts with upload/ (public folder)
+            if (strpos($image, 'upload/') === 0) {
+                // Check public/upload/...
+                if (file_exists(public_path($image))) {
+                    return asset($image);
+                }
+                // If not in public, try storage
+                if (file_exists(storage_path('app/public/' . $image))) {
+                    return asset('storage/' . $image);
+                }
+                // Default to storage path
+                return asset('storage/' . $image);
+            } else {
+                // Already has storage path or other format
+                // Check storage/app/public/...
+                if (file_exists(storage_path('app/public/' . $image))) {
+                    return asset('storage/' . $image);
+                }
+                // Default to storage path
+                return asset('storage/' . $image);
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -728,6 +753,72 @@ class ChatController extends Controller
     }
 
     /**
+     * Get group members for mentions
+     */
+    public function getGroupMembers($groupId)
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+
+            // Find the group
+            $group = Group::find($groupId);
+            if (!$group) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Group not found',
+                ], 404);
+            }
+
+            // Verify user is member of group
+            $memberIds = array_map('strval', $group->member_ids ?? []);
+            $isMember = in_array($userId, $memberIds) || (string)$group->admin_id === $userId;
+            
+            if (!$isMember) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You are not a member of this group',
+                ], 403);
+            }
+
+            // Get all member IDs (including admin)
+            $allMemberIds = array_map('strval', $memberIds);
+            if ($group->admin_id && !in_array((string)$group->admin_id, $allMemberIds)) {
+                $allMemberIds[] = (string)$group->admin_id;
+            }
+
+            // Fetch all members
+            $members = User::whereIn('_id', $allMemberIds)->get();
+
+            // Format members
+            $formattedMembers = $members->map(function($member) {
+                $avatarUrl = $this->getAvatarUrl($member);
+
+                return [
+                    'id' => (string)$member->_id,
+                    'name' => $member->name ?? $member->email ?? 'Unknown',
+                    'email' => $member->email ?? '',
+                    'avatar' => $avatarUrl,
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'members' => $formattedMembers,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get group members', [
+                'error' => $e->getMessage(),
+                'group_id' => $groupId,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve group members',
+            ], 500);
+        }
+    }
+
+    /**
      * Get user profile
      */
     public function getUserProfile(string $userId)
@@ -742,10 +833,7 @@ class ChatController extends Controller
                 ], 404);
             }
 
-            $avatarUrl = null;
-            if (isset($user->image) && !empty(trim($user->image))) {
-                $avatarUrl = $this->getImageUrl('storage/' . ltrim($user->image, '/'));
-            }
+            $avatarUrl = $this->getAvatarUrl($user);
 
             return response()->json([
                 'success' => true,
