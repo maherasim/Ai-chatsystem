@@ -67,18 +67,14 @@
                         @php
                             $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
                         @endphp
-                        <span class="notification-dot" style="background: {{ $unreadCount > 0 ? 'rgb(241,65,68)' : 'rgb(0,196,105)' }};"></span>
+                        @if($unreadCount > 0)
+                            <span class="notification-dot" style="background: rgb(241,65,68);"></span>
+                        @endif
                     </div>
 
                     <!-- Icon 3 -->
                     <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
                         <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                        @php
-                            $notificationCount = isset($notifications) ? $notifications->count() : 0;
-                        @endphp
-                        @if($notificationCount > 0)
-                            <span class="notification-badge">{{ $notificationCount }}</span>
-                        @endif
                     </div>
 
                     <!-- Icon 4 -->
