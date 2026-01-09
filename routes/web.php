@@ -221,6 +221,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/chat/groups', [ChatController::class, 'getUserGroups'])->name('chat.groups');
     // User profile API
     Route::get('/api/user/{userId}/profile', [ChatController::class, 'getUserProfile'])->name('api.user.profile');
+    // Group profile API
+    Route::get('/api/chat/group/{groupId}/profile', [ChatController::class, 'getGroupProfile'])->name('api.group.profile');
 });
 // new editor save endpoints
 Route::post('/settings/policy/save', [App\Http\Controllers\SettingController::class, 'savePolicy'])->name('settings.policy.save');

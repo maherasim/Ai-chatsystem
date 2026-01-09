@@ -270,6 +270,9 @@ class GroupChatManager {
         // Update chat header
         this.updateChatHeader(groupName, photoUrl);
 
+        // Update contact info panel
+        await this.updateContactInfo(groupId);
+
         // Initialize user ID and Agora if not already done
         if (!this.currentUserId) {
             await this.initAgora();
@@ -436,6 +439,108 @@ class GroupChatManager {
         if (headerAvatar && photoUrl) {
             headerAvatar.src = photoUrl;
             headerAvatar.alt = groupName || 'Group';
+        }
+    }
+
+    /**
+     * Update contact info panel with group details
+     */
+    async updateContactInfo(groupId) {
+        try {
+            const response = await fetch(`/api/chat/group/${groupId}/profile`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.group) {
+                const group = data.group;
+                
+                // Update profile avatar
+                const profileAvatar = document.getElementById('contactProfileAvatar');
+                if (profileAvatar) {
+                    profileAvatar.src = group.photo || window.baseUrl + '/build/img/profiles/avatar-06.jpg';
+                    profileAvatar.alt = group.name || 'Group';
+                }
+
+                // Update profile name
+                const profileName = document.getElementById('contactProfileName');
+                if (profileName) {
+                    profileName.textContent = group.name || 'Untitled Group';
+                }
+
+                // Update status (can show member count or last seen)
+                const profileStatus = document.getElementById('contactProfileStatus');
+                if (profileStatus) {
+                    profileStatus.textContent = `${group.member_count || 0} members`;
+                }
+
+                // Update contact info details
+                const contactInfoName = document.getElementById('contactInfoName');
+                if (contactInfoName) {
+                    contactInfoName.textContent = group.name || 'Untitled Group';
+                }
+
+                const contactInfoEmail = document.getElementById('contactInfoEmail');
+                if (contactInfoEmail) {
+                    contactInfoEmail.textContent = group.email || '-';
+                }
+
+                const contactInfoPhone = document.getElementById('contactInfoPhone');
+                if (contactInfoPhone) {
+                    contactInfoPhone.textContent = '-'; // Groups don't have phone numbers
+                }
+
+                const contactInfoBio = document.getElementById('contactInfoBio');
+                if (contactInfoBio) {
+                    contactInfoBio.textContent = group.description || group.name || '-';
+                }
+            } else {
+                console.warn('Failed to load group profile:', data);
+                // Set default values
+                this.resetContactInfo();
+            }
+        } catch (error) {
+            console.error('Failed to update contact info:', error);
+            // Set default values on error
+            this.resetContactInfo();
+        }
+    }
+
+    /**
+     * Reset contact info to default values
+     */
+    resetContactInfo() {
+        const profileName = document.getElementById('contactProfileName');
+        if (profileName) {
+            profileName.textContent = 'Select a group';
+        }
+
+        const profileStatus = document.getElementById('contactProfileStatus');
+        if (profileStatus) {
+            profileStatus.textContent = 'Last seen at 07:15 PM';
+        }
+
+        const contactInfoName = document.getElementById('contactInfoName');
+        if (contactInfoName) {
+            contactInfoName.textContent = 'Select a group';
+        }
+
+        const contactInfoEmail = document.getElementById('contactInfoEmail');
+        if (contactInfoEmail) {
+            contactInfoEmail.textContent = '-';
+        }
+
+        const contactInfoPhone = document.getElementById('contactInfoPhone');
+        if (contactInfoPhone) {
+            contactInfoPhone.textContent = '-';
+        }
+
+        const contactInfoBio = document.getElementById('contactInfoBio');
+        if (contactInfoBio) {
+            contactInfoBio.textContent = '-';
         }
     }
 

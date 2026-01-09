@@ -855,5 +855,81 @@ class ChatController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get group profile/details
+     */
+    public function getGroupProfile(string $groupId)
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+
+            // Find the group
+            $group = Group::find($groupId);
+            if (!$group) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Group not found',
+                ], 404);
+            }
+
+            // Verify user is member of group
+            $memberIds = array_map('strval', $group->member_ids ?? []);
+            $isMember = in_array($userId, $memberIds) || (string)$group->admin_id === $userId;
+            
+            if (!$isMember) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You are not a member of this group',
+                ], 403);
+            }
+
+            // Get admin user
+            $admin = null;
+            $adminEmail = '';
+            if ($group->admin_id) {
+                $admin = User::find($group->admin_id);
+                if ($admin) {
+                    $adminEmail = $admin->email ?? '';
+                }
+            }
+
+            // Get team if exists
+            $team = null;
+            $teamPhoto = asset('build/img/profiles/avatar-06.jpg');
+            if ($group->team_id) {
+                $team = Team::find($group->team_id);
+                if ($team && $team->thumb_path) {
+                    $teamPhoto = asset('storage/' . ltrim($team->thumb_path, '/'));
+                }
+            }
+
+            // Get member count
+            $memberCount = count($memberIds) + 1; // +1 for admin
+
+            return response()->json([
+                'success' => true,
+                'group' => [
+                    'id' => (string)$group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                    'description' => $group->description ?? '',
+                    'email' => $adminEmail,
+                    'photo' => $teamPhoto,
+                    'member_count' => $memberCount,
+                    'admin_name' => $admin ? ($admin->name ?? $admin->email ?? 'Unknown') : 'Unknown',
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get group profile', [
+                'error' => $e->getMessage(),
+                'group_id' => $groupId,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve group profile',
+            ], 500);
+        }
+    }
 }
 

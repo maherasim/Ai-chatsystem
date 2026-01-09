@@ -1,4 +1,4 @@
-﻿<?php $page = 'index'; ?>
+<?php $page = 'index'; ?>
 @extends('layout.mainlayout')
 @section('content')
 @php
@@ -296,21 +296,13 @@
 @php
     $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
     if ($header && !empty($header->image)) {
-        if (strpos($header->image, 'upload/') === 0) {
-            $headerAvatar = asset($header->image);
-        } else {
-            $headerAvatar = asset('storage/' . $header->image);
-        }
+        $headerAvatar = asset('storage/' . $header->image);
     } elseif (auth()->check()) {
         $userObj = auth()->user();
         if (!empty($userObj->profile_image)) {
             $headerAvatar = asset('storage/' . $userObj->profile_image);
         } elseif (!empty($userObj->image)) {
-            if (strpos($userObj->image, 'upload/') === 0) {
-                $headerAvatar = asset($userObj->image);
-            } else {
-                $headerAvatar = asset('storage/' . $userObj->image);
-            }
+             $headerAvatar = asset('storage/' . $userObj->image);
         }
     }
 @endphp
@@ -327,56 +319,28 @@
 
                 <!-- CENTER: Chat Options -->
                 <div class="chat-options">
-                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">
-                        <li>
-                            <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
-                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
-                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
-                            </a>
-                        </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
-                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
-                            </a>
-                        </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
-                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
-                            </a>
-                        </li>
-                        <li title="Contact Info" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
-                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
-                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
-                            </a>
-                        </li>
-
-                    </ul>
+                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">      </ul>
                 </div>
 
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
                 <div class="right-icons d-flex align-items-center gap-4">
-                    <a href="{{ route('settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">
-                        <img src="{{URL::asset('/build/img/setting.svg')}}" alt="setting" style="height: 25px; cursor: pointer;">
-                    </a>
+                      <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
+                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
+                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
+                            </a>
+                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
+                            </a>
+                              <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
+                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
+                            </a>
 
-                    <!-- Dark Mode Toggle -->
-                    <a href="#" id="dark-mode-toggle">
-                        <img src="{{ URL::asset('/build/img/Moon.svg') }}" alt="moon" style="height: 25px; cursor: pointer;">
-                    </a>
-                    <a href="#" id="light-mode-toggle" style="display: none;">
-                        <i class="ti ti-sun" style="font-size: 22px; cursor: pointer;"></i>
-                    </a>
-
-                    <!-- Logout -->
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" style="background: none; border: none; padding: 0; margin: 0;">
-                            <img src="{{ URL::asset('/build/img/exit.svg') }}" alt="Logout" style="height: 25px; cursor: pointer;">
-                        </button>
-                    </form>
+                               <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
+                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
+                            </a>
                 </div>
                 <div class="chat-search search-wrap contact-search">
                     <form>
@@ -481,10 +445,10 @@
                 <div class="profile-content">
                     <div class="contact-profile-info">
                         <div class="avatar avatar-xxl online mb-2">
-                            <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="img">
+                            <img id="contactProfileAvatar" src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="img" onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-06.jpg') }}';">
                         </div>
-                        <h6>Edward Lietz</h6>
-                        <p>Last seen at 07:15 PM</p>
+                        <h6 id="contactProfileName">Select a group</h6>
+                        <p id="contactProfileStatus">Last seen at 07:15 PM</p>
                     </div>
                     <div class="row gx-3">
                         <div class="col">
@@ -520,7 +484,7 @@
                                     <li class="list-group-item">
                                         <div class="profile-info">
                                             <h6>Name</h6>
-                                            <p>Edward Lietz</p>
+                                            <p id="contactInfoName">Select a group</p>
                                         </div>
                                         <div class="profile-icon">
                                             <i class="ti ti-user-circle"></i>
@@ -529,7 +493,7 @@
                                     <li class="list-group-item">
                                         <div class="info">
                                             <h6>Email Address</h6>
-                                            <p>info@example.com</p>
+                                            <p id="contactInfoEmail">-</p>
                                         </div>
                                         <div class="icon">
                                             <i class="ti ti-mail-heart"></i>
@@ -538,7 +502,7 @@
                                     <li class="list-group-item">
                                         <div class="info">
                                             <h6>Phone</h6>
-                                            <p>555-555-21541</p>
+                                            <p id="contactInfoPhone">-</p>
                                         </div>
                                         <div class="icon">
                                             <i class="ti ti-phone-check"></i>
@@ -547,7 +511,7 @@
                                     <li class="list-group-item">
                                         <div class="info">
                                             <h6>Bio</h6>
-                                            <p>Hello, I am using DreamsChat</p>
+                                            <p id="contactInfoBio">-</p>
                                         </div>
                                         <div class="icon">
                                             <i class="ti ti-user-check"></i>
@@ -1201,11 +1165,7 @@
         }
         // Fallback to image field (stored in public/upload/users/)
         elseif (!empty($currentUser->image)) {
-            if (strpos($currentUser->image, 'upload/') === 0) {
-                $avatarUrl = asset($currentUser->image);
-            } else {
-                $avatarUrl = asset('storage/' . $currentUser->image);
-            }
+            $avatarUrl = asset('storage/' . $currentUser->image);
         }
     }
 @endphp
