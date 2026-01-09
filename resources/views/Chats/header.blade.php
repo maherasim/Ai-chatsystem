@@ -17,27 +17,18 @@
 				}
 
 				if ($firstHeader && !empty($firstHeader->image)) {
-					// Check if it's already a full URL or starts with upload/
-					if (strpos($firstHeader->image, 'upload/') === 0) {
-						$imageUrl = asset($firstHeader->image);
-					} else {
-						$imageUrl = asset('storage/' . $firstHeader->image);
-					}
+					// Always use storage/ prefix for image paths
+					$imageUrl = asset('storage/' . $firstHeader->image);
 				} elseif (auth()->check()) {
 					$userObj = auth()->user();
 					// Check profile_image first (stored in storage/app/public/profiles/)
 					if (!empty($userObj->profile_image)) {
 						$imageUrl = asset('storage/' . $userObj->profile_image);
 					}
-					// Fallback to image field (stored in public/upload/users/)
+					// Fallback to image field (stored in storage/upload/users/)
 					elseif (!empty($userObj->image)) {
-						// If it starts with upload/, it's in public folder (no storage prefix)
-						if (strpos($userObj->image, 'upload/') === 0) {
-							$imageUrl = asset($userObj->image);
-						} else {
-							// Otherwise assume it's in storage
-							$imageUrl = asset('storage/' . $userObj->image);
-						}
+						// Always use storage/ prefix for image paths
+						$imageUrl = asset('storage/' . $userObj->image);
 					}
 				}
 			@endphp
