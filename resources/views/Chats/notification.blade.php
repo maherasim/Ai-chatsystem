@@ -12,10 +12,6 @@
         box-shadow: 0 0 0 2px #00c469;
     }
 
-    #icon-bell svg circle[fill="#F14144"] {
-        opacity: 0;
-    }
-
     /* Ensure consistent sidebar width on notification page */
     /* Prevent width changes when switching tabs */
     .sidebar-group {
@@ -3253,9 +3249,6 @@
         });
     }
 
-    // Update notification dot on bell icon:
-    // - red when there are unread notifications
-    // - green when there are none
     function updateNotificationBadge(unreadCount) {
         const bellIcon = document.getElementById('icon-bell');
         if (!bellIcon) return;
@@ -3264,6 +3257,11 @@
         bellIcon.style.position = 'relative';
 
         let dot = bellIcon.querySelector('.notification-dot');
+        if (count <= 0) {
+            if (dot) dot.remove();
+            return;
+        }
+
         if (!dot) {
             dot = document.createElement('span');
             dot.className = 'notification-dot';
@@ -3272,7 +3270,7 @@
 
         dot.style.cssText =
             'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
-            `background:${count > 0 ? 'rgb(241,65,68)' : 'rgb(0,196,105)'};z-index:2;`;
+            'background:rgb(241,65,68);z-index:2;';
     }
 
     // Helper function to get time ago
