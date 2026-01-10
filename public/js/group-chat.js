@@ -1539,7 +1539,15 @@ class GroupChatManager {
 
             const data = await response.json();
             if (data.success && data.members) {
-                this.groupMembers = data.members;
+                // Filter out current user from mentions list
+                const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
+                
+                this.groupMembers = data.members.filter(member => {
+                    const memberId = String(member.id || member._id || '').trim();
+                    // Keep if member ID is not empty and not equal to current user ID
+                    return memberId !== '' && memberId !== currentUserIdStr;
+                });
+                
                 console.log('✅ Loaded group members for mentions:', this.groupMembers.length);
             }
         } catch (error) {
