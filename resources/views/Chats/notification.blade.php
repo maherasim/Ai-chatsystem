@@ -164,10 +164,15 @@
                         <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
                         <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                         @php
-                            $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
                         @endphp
                         @if($unreadCount > 0)
-                            <span class="notification-dot" style="background: rgb(241,65,68);"></span>
+                            <span class="notification-dot"></span>
                         @endif
                     </div>
 
@@ -175,6 +180,17 @@
                     <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
                         <img src="{{ asset('assets/img/icons/taskIconInactive.svg') }}" class="task-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/taskIconActive.svg') }}" class="task-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-dot"></span>
+                        @endif
                     </div>
 
                     <!-- Icon 4 -->
@@ -323,165 +339,6 @@
 
                         </div>
                     </div>
-                    <!-- Task Notifications -->
-                    @php
-                        $hasNotifications = isset($notifications) && $notifications->count() > 0;
-                    @endphp
-                    @if($hasNotifications)
-                    <div style="background:#fff; border-radius: 10px; padding: 10px; margin: 20px; font-family: sans-serif;">
-                        <!-- Header Row -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <h5 style="margin: 0; font-weight: 600; font-size: 15px;">Task Notifications</h5>
-                            <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
-                        </div>
-
-                        <!-- Notifications List -->
-                        <div style="max-height: 400px; overflow-y: auto;">
-                            @foreach($notifications as $notification)
-                                @php
-                                    // Parse data field (can be JSON string or array)
-                                    $data = [];
-                                    if (is_string($notification->data)) {
-                                        $decoded = json_decode($notification->data, true);
-                                        $data = is_array($decoded) ? $decoded : [];
-                                    } elseif (is_array($notification->data)) {
-                                        $data = $notification->data;
-                                    }
-                                    
-                                    // Extract information from data
-                                    $ticketCode = $data['ticket_code'] ?? '';
-                                    $ticketId = $data['ticket_id'] ?? '';
-                                    
-                                    // Extract project name from message or data
-                                    $projectName = 'Unknown Project';
-                                    if (isset($data['project'])) {
-                                        $projectName = $data['project'];
-                                    } elseif (isset($data['project_name'])) {
-                                        $projectName = $data['project_name'];
-                                    } else {
-                                        // Try to extract from message
-                                        if (preg_match('/project\s+([^by]+?)\s+by/i', $notification->message ?? '', $matches)) {
-                                            $projectName = trim($matches[1]);
-                                        }
-                                    }
-                                    
-                                    // Extract task title from message or use default
-                                    $taskTitle = $notification->title ?? 'Task Assigned';
-                                    if (preg_match('/ticket\s+([^:]+?):\s*([^in]+?)\s+in/i', $notification->message ?? '', $matches)) {
-                                        $taskTitle = trim($matches[2]);
-                                    }
-                                    
-                                    // Get status from data or default to assigned
-                                    $status = 'assigned';
-                                    $statusColor = '#3b82f6';
-                                    $statusIcon = asset('build/img/progress.svg');
-                                    
-                                    if (isset($data['status'])) {
-                                        $status = strtolower($data['status']);
-                                    }
-                                    
-                                    // Map status to icon and color
-                                    if (strpos($status, 'hold') !== false || strpos($status, 'on_hold') !== false) {
-                                        $statusIcon = asset('build/img/inhold.svg');
-                                        $statusColor = '#f97316';
-                                        $statusText = 'In Hold';
-                                    } elseif (strpos($status, 'check') !== false || strpos($status, 'checked') !== false) {
-                                        $statusIcon = asset('build/img/incheck.svg');
-                                        $statusColor = '#8b5cf6';
-                                        $statusText = 'In Check';
-                                    } elseif (strpos($status, 'delay') !== false || strpos($status, 'delayed') !== false) {
-                                        $statusIcon = asset('build/img/delayed.svg');
-                                        $statusColor = '#ef4444';
-                                        $statusText = 'In Delayed';
-                                    } elseif (strpos($status, 'progress') !== false || strpos($status, 'in_progress') !== false) {
-                                        $statusIcon = asset('build/img/progress.svg');
-                                        $statusColor = '#22c55e';
-                                        $statusText = 'In Progress';
-                                    } else {
-                                        $statusText = 'Assigned';
-                                    }
-                                    
-                                    // Get creator info
-                                    $creator = $notification->creator ?? null;
-                                    $creatorName = $creator->name ?? 'Admin';
-                                    $creatorAvatar = ($creator && isset($creator->image) && $creator->image) 
-                                        ? asset('storage/' . $creator->image) 
-                                        : asset('build/img/avatar.svg');
-                                    
-                                    // Calculate time ago
-                                    $timeAgo = '1h';
-                                    if ($notification->created_at) {
-                                        $diff = $notification->created_at->diffInMinutes(now());
-                                        if ($diff < 1) {
-                                            $timeAgo = 'Just now';
-                                        } elseif ($diff < 60) {
-                                            $timeAgo = round($diff) . 'm';
-                                        } elseif ($diff < 1440) {
-                                            $timeAgo = round($diff / 60) . 'h';
-                                        } else {
-                                            $timeAgo = round($diff / 1440) . 'd';
-                                        }
-                                    }
-                                    
-                                    // Extract task ID from ticket_id or message
-                                    $taskIdDisplay = '';
-                                    if ($ticketId) {
-                                        $taskIdDisplay = substr($ticketId, -4);
-                                    } elseif (preg_match('/#(\d+)/', $notification->message ?? '', $matches)) {
-                                        $taskIdDisplay = $matches[1];
-                                    }
-                                @endphp
-                                
-                                <div style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin-bottom: 10px; border-left: 3px solid {{ $statusColor }};">
-                                    <!-- Top Row: Icon + Title -->
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <!-- Task Icon -->
-                                        <img src="{{ $statusIcon }}" alt="Task Icon" style="width: 28px; height: 28px;">
-
-                                        <!-- Title and Time -->
-                                        <div style="flex-grow: 1;">
-                                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">
-                                                {{ $taskTitle }} - {{ $projectName }}
-                                            </div>
-                                            <div style="font-size: 12px; color: #7f8ea3;">
-                                                @if($taskIdDisplay)
-                                                    Set the Task ID #{{ $taskIdDisplay }} - to 
-                                                @else
-                                                    {{ $notification->message ?? 'Task assigned' }}
-                                                @endif
-                                                <span style="color: {{ $statusColor }}; font-weight: 600;">{{ $statusText }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- User and Reason -->
-                                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px; width: fit-content;">
-                                        <!-- Avatar -->
-                                        <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
-                                            <img src="{{ $creatorAvatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                                        </div>
-
-                                        <!-- Username and Reason -->
-                                        <div>
-                                            <span style="color: #2e3a59; font-weight: 600;">{{ $creatorName }}</span>
-                                            <span style="color: red; font-weight: 500;"> &nbsp; ! {{ $notification->message ?? 'Task assigned' }}</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Time Top Right -->
-                                    <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                                        {{ $timeAgo }}
-                                    </div>
-
-                                    <!-- Red Dot Bottom Right (if unread) -->
-                                    @if(!$notification->read)
-                                    <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
                     <!-- members online -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
 
@@ -729,53 +586,154 @@
 
                     <!-- Notification Cards Wrapper -->
                     <div id="notificationWrapper">
-                        <!-- Notification Card 1 -->
-                        <div class="notificationCard"
-                            style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
+                        @if(isset($notifications) && $notifications->count() > 0)
+                            @foreach($notifications as $notification)
+                                @php
+                                    // Parse data field (can be JSON string or array)
+                                    $data = [];
+                                    if (is_string($notification->data)) {
+                                        $decoded = json_decode($notification->data, true);
+                                        $data = is_array($decoded) ? $decoded : [];
+                                    } elseif (is_array($notification->data)) {
+                                        $data = $notification->data;
+                                    }
+                                    
+                                    // Extract information from data
+                                    $ticketCode = $data['ticket_code'] ?? '';
+                                    $ticketId = $data['ticket_id'] ?? '';
+                                    
+                                    // Extract project name from message or data
+                                    $projectName = 'Unknown Project';
+                                    if (isset($data['project'])) {
+                                        $projectName = $data['project'];
+                                    } elseif (isset($data['project_name'])) {
+                                        $projectName = $data['project_name'];
+                                    } else {
+                                        // Try to extract from message
+                                        if (preg_match('/project\s+([^by]+?)\s+by/i', $notification->message ?? '', $matches)) {
+                                            $projectName = trim($matches[1]);
+                                        }
+                                    }
+                                    
+                                    // Extract task title from message or use default
+                                    $taskTitle = $notification->title ?? 'Task Assigned';
+                                    if (preg_match('/ticket\s+([^:]+?):\s*([^in]+?)\s+in/i', $notification->message ?? '', $matches)) {
+                                        $taskTitle = trim($matches[2]);
+                                    }
+                                    
+                                    // Get status from data or default to assigned
+                                    $status = 'assigned';
+                                    $statusColor = '#3b82f6';
+                                    $statusIcon = asset('build/img/progress.svg');
+                                    
+                                    if (isset($data['status'])) {
+                                        $status = strtolower($data['status']);
+                                    }
+                                    
+                                    // Map status to icon and color
+                                    if (strpos($status, 'hold') !== false || strpos($status, 'on_hold') !== false) {
+                                        $statusIcon = asset('build/img/inhold.svg');
+                                        $statusColor = '#f97316';
+                                        $statusText = 'In Hold';
+                                    } elseif (strpos($status, 'check') !== false || strpos($status, 'checked') !== false) {
+                                        $statusIcon = asset('build/img/incheck.svg');
+                                        $statusColor = '#8b5cf6';
+                                        $statusText = 'In Check';
+                                    } elseif (strpos($status, 'delay') !== false || strpos($status, 'delayed') !== false) {
+                                        $statusIcon = asset('build/img/delayed.svg');
+                                        $statusColor = '#ef4444';
+                                        $statusText = 'In Delayed';
+                                    } elseif (strpos($status, 'progress') !== false || strpos($status, 'in_progress') !== false) {
+                                        $statusIcon = asset('build/img/progress.svg');
+                                        $statusColor = '#22c55e';
+                                        $statusText = 'In Progress';
+                                    } else {
+                                        $statusText = 'Assigned';
+                                    }
+                                    
+                                    // Get creator info
+                                    $creator = $notification->creator ?? null;
+                                    $creatorName = $creator->name ?? 'Admin';
+                                    $creatorAvatar = ($creator && isset($creator->image) && $creator->image) 
+                                        ? asset('storage/' . $creator->image) 
+                                        : asset('build/img/avatar.svg');
+                                    
+                                    // Calculate time ago
+                                    $timeAgo = '1h';
+                                    if ($notification->created_at) {
+                                        $diff = $notification->created_at->diffInMinutes(now());
+                                        if ($diff < 1) {
+                                            $timeAgo = 'Just now';
+                                        } elseif ($diff < 60) {
+                                            $timeAgo = round($diff) . 'm';
+                                        } elseif ($diff < 1440) {
+                                            $timeAgo = round($diff / 60) . 'h';
+                                        } else {
+                                            $timeAgo = round($diff / 1440) . 'd';
+                                        }
+                                    }
+                                    
+                                    // Extract task ID from ticket_id or message
+                                    $taskIdDisplay = '';
+                                    if ($ticketId) {
+                                        $taskIdDisplay = substr($ticketId, -4);
+                                    } elseif (preg_match('/#(\d+)/', $notification->message ?? '', $matches)) {
+                                        $taskIdDisplay = $matches[1];
+                                    }
+                                @endphp
+                                
+                                <div class="notificationCard" style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; border-left: 3px solid {{ $statusColor }};">
+                                    <!-- Top Row: Icon + Title -->
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <!-- Task Icon -->
+                                        <img src="{{ $statusIcon }}" alt="Task Icon" style="width: 28px; height: 28px;">
 
-                            <!-- Profile Image -->
-                            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                        <!-- Title and Time -->
+                                        <div style="flex-grow: 1;">
+                                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">
+                                                {{ $taskTitle }} - {{ $projectName }}
+                                            </div>
+                                            <div style="font-size: 12px; color: #7f8ea3;">
+                                                @if($taskIdDisplay)
+                                                    Set the Task ID #{{ $taskIdDisplay }} - to 
+                                                @else
+                                                    {{ $notification->message ?? 'Task assigned' }}
+                                                @endif
+                                                <span style="color: {{ $statusColor }}; font-weight: 600;">{{ $statusText }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- User and Reason -->
+                                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px; width: fit-content;">
+                                        <!-- Avatar -->
+                                        <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
+                                            <img src="{{ $creatorAvatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+
+                                        <!-- Username and Reason -->
+                                        <div>
+                                            <span style="color: #2e3a59; font-weight: 600;">{{ $creatorName }}</span>
+                                            <span style="color: red; font-weight: 500;"> &nbsp; ! {{ $notification->message ?? 'Task assigned' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Time Top Right -->
+                                    <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
+                                        {{ $timeAgo }}
+                                    </div>
+
+                                    <!-- Red Dot Bottom Right (if unread) -->
+                                    @if(!$notification->read)
+                                    <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @else
+                            <div style="text-align: center; padding: 40px 20px; color: #7f8ea3;">
+                                <p>No notifications found</p>
                             </div>
-
-                            <!-- Text Content -->
-                            <div style="flex-grow: 1;">
-                                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Developer name</div>
-                                <div style="font-size: 12px; color: #7f8ea3;">Developer is now Online</div>
-                            </div>
-
-                            <!-- Top Right Time -->
-                            <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                                1h
-                            </div>
-
-                            <!-- Bottom Right Red Dot -->
-                            <div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                        </div>
-
-                        <!-- Notification Card 2 -->
-                        <div class="notificationCard"
-                            style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
-
-                            <!-- Profile Image -->
-                            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid limegreen; overflow: hidden; margin-right: 10px;">
-                                <img src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-
-                            <!-- Text Content -->
-                            <div style="flex-grow: 1;">
-                                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Developer name</div>
-                                <div style="font-size: 12px; color: #7f8ea3;">Developer is now Online</div>
-                            </div>
-
-                            <!-- Top Right Time -->
-                            <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                                1h
-                            </div>
-
-                            <!-- Bottom Right Red Dot -->
-                            <div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                        </div>
+                        @endif
                     </div>
                     <!-- Inline JS (no <script>) -->
                     <img onerror="  function deleteNotificationCards() { var cards = document.querySelectorAll('.notificationCard'); cards.forEach(function(card) { card.remove(); });} " style="display: none;">

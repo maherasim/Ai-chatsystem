@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Todo;
+use App\Models\Notification;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,9 @@ class ViewServiceProvider extends ServiceProvider
 {
     View::composer('*', function ($view) {
         $user = Auth::user();
+        
+        // Initialize notifications as empty collection by default
+        $notifications = collect([]);
 
         if ($user) {
 
@@ -64,10 +68,60 @@ class ViewServiceProvider extends ServiceProvider
 
             $ratingAverages['Total'] = $totalCount > 0 ? round($totalSum / $totalCount, 2) : 0;
 
-            // Share todos and ratings with all views
+            // --- Get notifications for the current user ---
+            $authId = $user->_id;
+            $userId = (string) $authId;
+            
+            $allNotifications = Notification::orderByDesc('created_at')
+                ->limit(1000)
+                ->get();
+            
+            // Filter for all task-related notification types
+            $taskNotificationTypes = [
+                'task_assigned',
+                'task_started',
+                'task_on_hold',
+                'task_checked',
+                'task_delayed',
+                'task_rejected',
+                'task_completed',
+                'task_status_updated',
+            ];
+            
+            $allNotifications = $allNotifications->filter(function($notif) use ($taskNotificationTypes) {
+                $type = is_string($notif->type) ? trim(rtrim($notif->type, ', ')) : (string)$notif->type;
+                return in_array($type, $taskNotificationTypes);
+            });
+            
+            $notifications = $allNotifications->filter(function($notif) use ($userId, $authId) {
+                $notifUserId = $notif->user_id;
+                
+                if (is_object($notifUserId)) {
+                    $notifUserIdStr = (string)$notifUserId;
+                } else {
+                    $notifUserIdStr = (string)$notifUserId;
+                }
+                
+                $notifUserIdStr = rtrim($notifUserIdStr, '/ ');
+                
+                $authIdStr = (string)$authId;
+                $userIdStr = (string)$userId;
+                
+                return ($notifUserIdStr === $userIdStr || $notifUserIdStr === $authIdStr);
+            })->sortByDesc('created_at')->values();
+
+            // Share todos, ratings, and notifications with all views
             $view->with([
                 'userTodos' => $todos,
                 'userRatings' => $ratingAverages,
+                'notifications' => $notifications,
+            ]);
+        } else {
+            // Share empty collections when user is not authenticated
+            $view->with([
+                'userTodos' => collect([]),
+                'userRatings' => [],
+                'notifications' => $notifications,
             ]);
         }
     });

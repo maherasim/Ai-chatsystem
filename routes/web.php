@@ -8,6 +8,7 @@ use App\Http\Controllers\MeetingsController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\TicketController;
+use App\Models\Notification;
 
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
@@ -147,6 +148,94 @@ Route::get('/test-db-data', function () {
         return 'Error: ' . $e->getMessage();
     }
 });
+
+// Test route to generate notifications (for testing purposes)
+Route::get('/generate-test-notifications', function () {
+    try {
+        $count = request()->get('count', 5);
+        $read = filter_var(request()->get('read', false), FILTER_VALIDATE_BOOLEAN);
+        
+        // Find admin user
+        $admin = User::where('email', 'admin@gmail.com')->first();
+        if (!$admin) {
+            return response()->json(['error' => 'Admin user not found'], 404);
+        }
+        
+        // Find developer user
+        $developer = User::where('email', 'developer@gmail.com')
+            ->orWhere('type', 'developer')
+            ->first();
+        
+        if (!$developer) {
+            return response()->json(['error' => 'Developer user not found'], 404);
+        }
+        
+        $notificationTypes = [
+            'task_assigned',
+            'task_started',
+            'task_on_hold',
+            'task_checked',
+            'task_delayed',
+            'task_rejected',
+            'task_completed',
+            'task_status_updated',
+        ];
+        
+        $created = 0;
+        
+        // Generate for admin
+        for ($i = 0; $i < $count; $i++) {
+            $type = $notificationTypes[array_rand($notificationTypes)];
+            Notification::create([
+                'user_id' => (string) $admin->_id,
+                'type' => $type,
+                'title' => ucfirst(str_replace('_', ' ', $type)),
+                'message' => "Test notification #" . ($i + 1) . " for Admin",
+                'data' => [
+                    'project' => 'Test Project ' . ($i + 1),
+                    'project_name' => 'Test Project ' . ($i + 1),
+                    'ticket_code' => 'TKT-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
+                    'ticket_id' => 'ticket_' . ($i + 1),
+                ],
+                'read' => $read,
+                'created_by' => (string) $developer->_id,
+                'task_id' => 'task_' . ($i + 1),
+            ]);
+            $created++;
+        }
+        
+        // Generate for developer
+        for ($i = 0; $i < $count; $i++) {
+            $type = $notificationTypes[array_rand($notificationTypes)];
+            Notification::create([
+                'user_id' => (string) $developer->_id,
+                'type' => $type,
+                'title' => ucfirst(str_replace('_', ' ', $type)),
+                'message' => "Test notification #" . ($i + 1) . " for Developer",
+                'data' => [
+                    'project' => 'Test Project ' . ($i + 1),
+                    'project_name' => 'Test Project ' . ($i + 1),
+                    'ticket_code' => 'TKT-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
+                    'ticket_id' => 'ticket_' . ($i + 1),
+                ],
+                'read' => $read,
+                'created_by' => (string) $admin->_id,
+                'task_id' => 'task_' . ($i + 1),
+            ]);
+            $created++;
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Created {$created} test notifications",
+            'admin_notifications' => $count,
+            'developer_notifications' => $count,
+            'read_status' => $read ? 'read' : 'unread'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+})->middleware('auth');
 
 
 

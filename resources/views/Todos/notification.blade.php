@@ -145,7 +145,12 @@
                         <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
                         <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                         @php
-                            $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
                         @endphp
                         @if($unreadCount > 0)
                             <span class="notification-dot"></span>
@@ -156,6 +161,17 @@
                     <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
                         <img src="{{ asset('assets/img/icons/taskIconInactive.svg') }}" class="task-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/taskIconActive.svg') }}" class="task-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-dot"></span>
+                        @endif
                     </div>
 
                     <!-- Icon 4 -->
