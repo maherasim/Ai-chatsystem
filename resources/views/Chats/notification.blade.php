@@ -231,6 +231,17 @@
                     <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
                         <img src="{{ asset('assets/img/icons/messageIconInactive.svg') }}" class="message-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/messgeIconActive.svg') }}" class="message-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-dot"></span>
+                        @endif
                     </div>
                 </div>
 
