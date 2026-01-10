@@ -1,15 +1,113 @@
 <style>
     .icon-wrapper {
         position: relative;
-
         cursor: pointer;
-
         border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .icon-wrapper.selected {
-        background-color: #e0f7e9;
-        box-shadow: 0 0 0 2px #00c469;
+        /* No background or border for selected state */
+    }
+    
+    /* Message icon active/inactive states */
+    .icon-wrapper .message-icon-inactive,
+    .icon-wrapper .message-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .message-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .message-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .message-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .message-icon-active {
+        display: block !important;
+    }
+
+    /* Task icon (notification) active/inactive states */
+    .icon-wrapper .task-icon-inactive,
+    .icon-wrapper .task-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .task-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .task-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .task-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .task-icon-active {
+        display: block !important;
+    }
+
+    /* Menu icon (layers) active/inactive states */
+    .icon-wrapper .menu-icon-inactive,
+    .icon-wrapper .menu-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .menu-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .menu-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .menu-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .menu-icon-active {
+        display: block !important;
+    }
+
+    /* Notification icon (bell) active/inactive states */
+    .icon-wrapper .notification-icon-inactive,
+    .icon-wrapper .notification-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .notification-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .notification-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .notification-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .notification-icon-active {
+        display: block !important;
     }
 
     /* Ensure consistent sidebar width on notification page */
@@ -110,27 +208,31 @@
     <div class="tab-content" style=" box-sizing: border-box;">
         <div class="tab-pane fade active show " id="chat-menu">
             <!-- Fixed Icons Row at Top -->
-            <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
-                <!-- Icon 1 -->
-                <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
-                    <img src="{{ asset('/build/img/layers.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                </div>
+                <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
+                    <!-- Icon 1 -->
+                    <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
+                        <img src="{{ asset('assets/img/icons/menuIconInactive.svg') }}" class="menu-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/menuIconActive.svg') }}" class="menu-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                    </div>
 
-                <!-- Icon 2 -->
-                <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
-                    <img src="{{ asset('/build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                </div>
+                    <!-- Icon 2 -->
+                    <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
+                        <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                    </div>
 
-                <!-- Icon 3 -->
-                <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
-                    <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
-                </div>
+                    <!-- Icon 3 -->
+                    <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
+                        <img src="{{ asset('assets/img/icons/taskIconInactive.svg') }}" class="task-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/taskIconActive.svg') }}" class="task-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                    </div>
 
-                <!-- Icon 4 -->
-                <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
-                    <img src="{{ asset('/build/img/mesgnoti.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                    <!-- Icon 4 -->
+                    <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
+                        <img src="{{ asset('assets/img/icons/messageIconInactive.svg') }}" class="message-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/messgeIconActive.svg') }}" class="message-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                    </div>
                 </div>
-            </div>
 
             <!-- Scrollable Content Section -->
             <div class="slimscroll">
@@ -165,27 +267,27 @@
                                     'type' => gettype($groups),
                                     'is_collection' => $groups instanceof \Illuminate\Support\Collection
                                 ]);
-                            @endphp
+                                @endphp
 
                             @forelse($groups as $group)
                                 <!-- Dynamic Group Card -->
                                 <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}', '{{ $group['team_photo'] }}')" 
-                                    style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
-                                    onmouseover="this.style.transform='scale(1.05)'" 
-                                    onmouseout="this.style.transform='scale(1)'">
-                                    <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
+                                     onmouseover="this.style.transform='scale(1.05)'"
+                                     onmouseout="this.style.transform='scale(1)'">
+                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
                                         <img src="{{ $group['team_banner'] }}" alt="Background"
                                             style="width: 100%; height: 100%; object-fit: cover;">
-                                    </div>
-                                    <div style="position: relative; margin-top: -20px;">
+                                </div>
+                                <div style="position: relative; margin-top: -20px;">
                                         <img src="{{ $group['team_photo'] }}" alt="Profile"
                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
-                                    </div>
-                                    <div style="padding: 8px;">
+                                 </div>
+                                <div style="padding: 8px;">
                                         <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $group['name'] }}</h6>
                                         <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ $group['member_count'] }} {{ $group['member_count'] == 1 ? 'User' : 'Users' }}</p>
-                                    </div>
                                 </div>
+                            </div>
                             @empty
                                 <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #f8f9fa; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; display: flex; align-items: center; justify-content: center;">
                                     <p style="margin: 0; color: #7f8ea3; font-size: 11px;">No groups yet</p>
@@ -219,8 +321,8 @@
                         <!-- Loader -->
                         <div style="text-align: center; padding: 10px;">
                             <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
-                        </div>
-                    </div>
+                            </div>
+                            </div>
 
                     <!-- members online -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
@@ -232,8 +334,8 @@
                         <!-- Loader -->
                         <div style="text-align: center; padding: 10px;">
                             <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
-                        </div>
-                    </div>
+                            </div>
+                            </div>
 
                     <!-- archive chat -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
@@ -246,9 +348,9 @@
                         <!-- Loader -->
                         <div style="text-align: center; padding: 10px;">
                             <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
-                        </div>
-                    </div>
-                </div>
+                            </div>
+                            </div>
+                            </div>
 
                 <!-- notifiactions -->
                 <div id="tab-bell" class="tab-content" style="display: none;">
@@ -258,15 +360,15 @@
                             style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f9fafc; border-radius: 8px; cursor: pointer; font-family: sans-serif;">
                             <img src="{{ asset('build/img/del.svg') }}" alt="Delete" style="width: 18px; height: 18px;">
                             <span style="font-size: 14px; color: #2e3a59;">Delete all</span>
-                        </div>
-                    </div>
+                            </div>
+                            </div>
 
                     <!-- Notification Cards Wrapper -->
                     <div id="notificationWrapper">
                         <!-- Notifications will be loaded dynamically via JavaScript -->
                         <div style="text-align: center; padding: 40px; color: #7f8ea3; font-size: 14px;">Loading notifications...</div>
+                        </div>
                     </div>
-                </div>
                 <!-- tasks -->
                 <!-- Delete All Button -->
 
@@ -276,8 +378,8 @@
                             style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f9fafc; border-radius: 8px; cursor: pointer; font-family: sans-serif;">
                             <img src="{{ asset('build/img/del.svg') }}" alt="Delete" style="width: 18px; height: 18px;">
                             <span style="font-size: 14px; color: #2e3a59;">Delete all</span>
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
                     <!-- Notification Card -->
                     <!-- inhold -->
                     <div style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
@@ -292,30 +394,30 @@
                                 <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title - Project Name</div>
                                 <div style="font-size: 12px; color: #7f8ea3;">Set the Task ID #2 - to <span style="color: orange; font-weight: 600;">In Hold</span></div>
                             </div>
-                        </div>
+                            </div>
 
                         <!-- User and Reason -->
                         <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px;width: fit-content;">
                             <!-- Avatar -->
                             <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
                                 <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
+                                </div>
 
                             <!-- Username and Reason -->
                             <div>
                                 <span style="color: #2e3a59; font-weight: 600;">Username</span>
                                 <span style="color: red; font-weight: 500;"> &nbsp; ! We will get the Reason here</span>
+                                </div>
                             </div>
-                        </div>
 
                         <!-- Time Top Right -->
                         <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
                             1h
-                        </div>
+                            </div>
 
                         <!-- Red Dot Bottom Right -->
                         <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                    </div>
+                        </div>
                     <!-- incheck -->
                     <div style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
 
@@ -328,31 +430,31 @@
                             <div style="flex-grow: 1;">
                                 <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title - Project Name</div>
                                 <div style="font-size: 12px; color: #7f8ea3;">Set the Task ID #2 - to <span style="color: orange; font-weight: 600;">In Check</span></div>
+                                </div>
                             </div>
-                        </div>
 
                         <!-- User and Reason -->
                         <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px;width: fit-content;">
                             <!-- Avatar -->
                             <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
                                 <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
+                        </div>
 
                             <!-- Username and Reason -->
                             <div>
                                 <span style="color: #2e3a59; font-weight: 600;">Username</span>
                                 <span style="color: red; font-weight: 500;"> &nbsp; ! We will get the Reason here</span>
-                            </div>
-                        </div>
+                    </div>
+                </div>
 
                         <!-- Time Top Right -->
                         <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
                             1h
-                        </div>
+                    </div>
 
                         <!-- Red Dot Bottom Right -->
                         <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                    </div>
+                            </div>
                     <!-- Indelayed -->
                     <div style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
 
@@ -366,30 +468,30 @@
                                 <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">Task Title - Project Name</div>
                                 <div style="font-size: 12px; color: #7f8ea3;">Set the Task ID #2 - to <span style="color: red; font-weight: 600;">In Delayed</span></div>
                             </div>
-                        </div>
+                            </div>
 
                         <!-- User and Reason -->
                         <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px;width: fit-content;">
                             <!-- Avatar -->
                             <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
                                 <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
+                        </div>
 
                             <!-- Username and Reason -->
                             <div>
                                 <span style="color: #2e3a59; font-weight: 600;">Username</span>
                                 <span style="color: red; font-weight: 500;"> &nbsp; ! We will get the Reason here</span>
                             </div>
-                        </div>
+                            </div>
 
                         <!-- Time Top Right -->
-                        <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
-                            1h
-                        </div>
+                            <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
+                                1h
+                            </div>
 
                         <!-- Red Dot Bottom Right -->
                         <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
-                    </div>
+                        </div>
                     <!-- progress -->
                     <div style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px;">
 
