@@ -1,18 +1,113 @@
 <style>
     .icon-wrapper {
         position: relative;
-
         cursor: pointer;
-
         border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .icon-wrapper.selected {
-        background-color: #e0f7e9;
-        /* Light green highlight */
-        box-shadow: 0 0 0 2px #00c469;
-        /* Green border */
-       
+        /* No background or border for selected state */
+    }
+
+    /* Message icon active/inactive states */
+    .icon-wrapper .message-icon-inactive,
+    .icon-wrapper .message-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .message-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .message-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .message-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .message-icon-active {
+        display: block !important;
+    }
+
+    /* Task icon (notification) active/inactive states */
+    .icon-wrapper .task-icon-inactive,
+    .icon-wrapper .task-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .task-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .task-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .task-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .task-icon-active {
+        display: block !important;
+    }
+
+    /* Menu icon (layers) active/inactive states */
+    .icon-wrapper .menu-icon-inactive,
+    .icon-wrapper .menu-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .menu-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .menu-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .menu-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .menu-icon-active {
+        display: block !important;
+    }
+
+    /* Notification icon (bell) active/inactive states */
+    .icon-wrapper .notification-icon-inactive,
+    .icon-wrapper .notification-icon-active {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain;
+    }
+
+    /* Default state: Show inactive, hide active */
+    .icon-wrapper .notification-icon-inactive {
+        display: block !important;
+    }
+    .icon-wrapper .notification-icon-active {
+        display: none !important;
+    }
+
+    /* Active state: Show active icon, hide inactive */
+    .icon-wrapper.selected .notification-icon-inactive {
+        display: none !important;
+    }
+    .icon-wrapper.selected .notification-icon-active {
+        display: block !important;
     }
     
     .notification-badge {
@@ -36,13 +131,15 @@
 
     .notification-dot {
         position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 12px;
-        height: 12px;
+        right: -2px;
+        bottom: -2px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
+        background-color: rgb(241, 65, 68) !important;
         border: 2px solid rgb(255, 255, 255);
-        z-index: 2;
+        z-index: 10;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 </style>
 
@@ -58,12 +155,14 @@
                 <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
                     <!-- Icon 1 -->
                     <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
-                        <img src="{{ asset('/build/img/layers.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/menuIconInactive.svg') }}" class="menu-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/menuIconActive.svg') }}" class="menu-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                     </div>
 
                     <!-- Icon 2 -->
                     <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
-                        <img src="{{ asset('build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
+                        <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
+                        <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                         @php
                             $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
                         @endphp
@@ -74,12 +173,14 @@
 
                     <!-- Icon 3 -->
                     <div class="icon-wrapper" onclick="showTab('notifi')" id="icon-notifi">
-                        <img src="{{ asset('/build/img/Notifi.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/taskIconInactive.svg') }}" class="task-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/taskIconActive.svg') }}" class="task-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                     </div>
 
                     <!-- Icon 4 -->
                     <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
-                        <img src="{{ asset('/build/img/mesgnoti.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/messageIconInactive.svg') }}" class="message-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('assets/img/icons/messgeIconActive.svg') }}" class="message-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                     </div>
                 </div>
 
