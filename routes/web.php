@@ -260,6 +260,10 @@ Route::post('/tasks/update/{id}', [TaskController::class, 'update'])->middleware
 Route::get('/tasks/tickets', [TaskController::class, 'tickets'])->name('tasks.tickets');
 Route::get('/webtasks/tickets', [TaskController::class, 'tickets'])->name('webtasks.tickets'); // Reusing same logic
 
+// Notification Routes
+Route::post('/notifications/mark-all-read', [TaskController::class, 'markNotificationsAsRead'])->middleware('auth')->name('notifications.mark-all-read');
+Route::post('/notifications/{id}/mark-read', [TaskController::class, 'markNotificationAsRead'])->middleware('auth')->name('notifications.mark-read');
+
 // Dummy routes for actions to prevent RouteNotFoundException in view (Read-only)
 Route::post('/tasks/store', function() { abort(403); })->name('tasks.store');
 Route::delete('/tasks/{id}', function() { abort(403); })->name('tasks.destroy');

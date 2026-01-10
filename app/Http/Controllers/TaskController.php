@@ -833,5 +833,74 @@ class TaskController extends Controller
             'tasks' => $items,
         ]);
     }
+
+    /**
+     * Mark notifications as read
+     */
+    public function markNotificationsAsRead(Request $request)
+    {
+        try {
+            $userId = (string) Auth::id();
+            
+            // Mark all unread notifications for this user as read
+            $updated = Notification::where('user_id', $userId)
+                ->where(function($query) {
+                    $query->where('read', false)
+                          ->orWhere('read', null)
+                          ->orWhere('read', 0);
+                })
+                ->update([
+                    'read' => true,
+                    'updated_at' => now()
+                ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notifications marked as read',
+                'updated_count' => $updated
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error marking notifications as read: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to mark notifications as read'
+            ], 500);
+        }
+    }
+
+    /**
+     * Mark a specific notification as read
+     */
+    public function markNotificationAsRead(Request $request, $id)
+    {
+        try {
+            $userId = (string) Auth::id();
+            
+            $notification = Notification::where('_id', $id)
+                ->where('user_id', $userId)
+                ->first();
+
+            if (!$notification) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Notification not found'
+                ], 404);
+            }
+
+            $notification->read = true;
+            $notification->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification marked as read'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error marking notification as read: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to mark notification as read'
+            ], 500);
+        }
+    }
 }
 

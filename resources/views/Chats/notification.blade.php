@@ -671,7 +671,10 @@
                                     }
                                 @endphp
                                 
-                                <div class="notificationCard" style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; border-left: 3px solid {{ $statusColor }};">
+                                <div class="notificationCard {{ $notification->read ? 'read' : 'unread' }}" 
+                                     data-notification-id="{{ $notification->_id ?? $notification->id }}"
+                                     data-read="{{ $notification->read ? 'true' : 'false' }}"
+                                     style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; border-left: 3px solid {{ $statusColor }}; {{ $notification->read ? 'opacity: 0.8;' : '' }}">
                                     <!-- Top Row: Icon + Title -->
                                     <div style="display: flex; align-items: center; gap: 10px;">
                                         <!-- Task Icon -->
@@ -714,7 +717,7 @@
 
                                     <!-- Red Dot Bottom Right (if unread) -->
                                     @if(!$notification->read)
-                                    <div style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
+                                    <div class="notification-unread-dot" style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
                                     @endif
                                 </div>
                             @endforeach
@@ -3195,5 +3198,155 @@
                 icon.classList.toggle('selected', name === tabName);
             }
         });
+
+        // If bell tab is opened, mark all notifications as read
+        if (tabName === 'bell') {
+            markAllNotificationsAsRead();
+        }
     }
+
+    /**
+     * Mark all notifications as read when bell tab is opened
+     */
+    function markAllNotificationsAsRead() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            return;
+        }
+
+        fetch('/notifications/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove notification dot from bell icon
+                const bellIcon = document.getElementById('icon-bell');
+                if (bellIcon) {
+                    const notificationDot = bellIcon.querySelector('.notification-dot');
+                    if (notificationDot) {
+                        notificationDot.remove();
+                    }
+                }
+
+                // Remove red dots from all notification cards and mark as read
+                const notificationCards = document.querySelectorAll('.notificationCard');
+                notificationCards.forEach(card => {
+                    const redDot = card.querySelector('.notification-unread-dot');
+                    if (redDot) {
+                        redDot.remove();
+                    }
+                    // Mark card as read
+                    card.classList.remove('unread');
+                    card.classList.add('read');
+                    card.setAttribute('data-read', 'true');
+                    card.style.opacity = '0.8'; // Slight fade for read notifications
+                });
+
+                console.log('Notifications marked as read:', data.updated_count);
+            } else {
+                console.error('Failed to mark notifications as read:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error marking notifications as read:', error);
+        });
+    }
+
+    /**
+     * Mark a specific notification as read when clicked
+     */
+    function markNotificationAsRead(notificationId, cardElement) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            return;
+        }
+
+        fetch(`/notifications/${notificationId}/mark-read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && cardElement) {
+                // Remove red dot from this notification card
+                const redDot = cardElement.querySelector('.notification-unread-dot');
+                if (redDot) {
+                    redDot.remove();
+                }
+
+                // Mark card as read
+                cardElement.classList.remove('unread');
+                cardElement.classList.add('read');
+                cardElement.setAttribute('data-read', 'true');
+                cardElement.style.opacity = '0.8'; // Slight fade for read notifications
+
+                // Update notification dot count on bell icon
+                updateNotificationDotCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error marking notification as read:', error);
+        });
+    }
+
+    /**
+     * Update notification dot count on bell icon
+     */
+    function updateNotificationDotCount() {
+        // Count unread notifications (those with unread class or data-read="false")
+        const allCards = document.querySelectorAll('.notificationCard');
+        let unreadCount = 0;
+        allCards.forEach(card => {
+            const isRead = card.getAttribute('data-read') === 'true' || card.classList.contains('read');
+            const hasUnreadDot = card.querySelector('.notification-unread-dot');
+            if (!isRead || hasUnreadDot) {
+                unreadCount++;
+            }
+        });
+
+        const bellIcon = document.getElementById('icon-bell');
+        if (bellIcon) {
+            const notificationDot = bellIcon.querySelector('.notification-dot');
+            if (unreadCount <= 0) {
+                // Remove dot if no unread notifications
+                if (notificationDot) {
+                    notificationDot.remove();
+                }
+            } else if (unreadCount > 0 && !notificationDot) {
+                // Add dot if there are unread notifications but no dot exists
+                const dot = document.createElement('span');
+                dot.className = 'notification-dot';
+                bellIcon.appendChild(dot);
+            }
+        }
+    }
+
+    // Add click handlers to notification cards when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click handlers to all notification cards to mark as read when clicked
+        const notificationCards = document.querySelectorAll('.notificationCard');
+        notificationCards.forEach(card => {
+            // Extract notification ID from card (if available in data attribute)
+            const notificationId = card.getAttribute('data-notification-id');
+            if (notificationId) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    // Don't mark as read if clicking on links or buttons inside the card
+                    if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON' && !e.target.closest('a, button')) {
+                        markNotificationAsRead(notificationId, card);
+                    }
+                });
+            }
+        });
+    });
 </script>
