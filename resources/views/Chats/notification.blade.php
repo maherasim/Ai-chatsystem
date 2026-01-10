@@ -13,7 +13,7 @@
     .icon-wrapper.selected {
         /* No background or border for selected state */
     }
-
+    
     /* Message icon active/inactive states */
     .icon-wrapper .message-icon-inactive,
     .icon-wrapper .message-icon-active {
@@ -109,37 +109,97 @@
     .icon-wrapper.selected .notification-icon-active {
         display: block !important;
     }
-    
-    .notification-badge {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        background-color: #ef4444;
-        color: white;
-        border-radius: 10px;
-        min-width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 0 6px;
-        border: 2px solid white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    /* Ensure consistent sidebar width on notification page */
+    /* Prevent width changes when switching tabs */
+    .sidebar-group {
+        width: 400px !important;
+        min-width: 400px !important;
+        max-width: 400px !important;
+        margin-left: 72px !important;
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
-    .notification-dot {
-        position: absolute;
-        right: -2px;
-        bottom: -2px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: rgb(241, 65, 68) !important;
-        border: 2px solid rgb(255, 255, 255);
-        z-index: 10;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Ensure inner content doesn't affect sidebar width */
+    .sidebar-group > .tab-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: calc(100vh - 0px) !important;
+    }
+
+    .sidebar-group .tab-pane {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+
+    /* Fixed tabs bar at top */
+    #iconBar {
+        flex-shrink: 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        background-color: #fff !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Scrollable content area */
+    .sidebar-group .slimscroll {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        padding-bottom: 20px !important;
+    }
+
+    .sidebar-group .tab-content[id^="tab-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    @media (max-width: 1400px) {
+        .sidebar-group {
+            width: 330px !important;
+            min-width: 330px !important;
+            max-width: 330px !important;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .sidebar-group {
+            width: calc(100% - 72px) !important;
+            min-width: calc(100% - 72px) !important;
+            max-width: calc(100% - 72px) !important;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .sidebar-group {
+            width: calc(100% - 57px) !important;
+            min-width: calc(100% - 57px) !important;
+            max-width: calc(100% - 57px) !important;
+            margin-left: 57px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar-group {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+        }
     }
 </style>
 
@@ -147,11 +207,7 @@
 <div class="sidebar-group">
     <div class="tab-content" style=" box-sizing: border-box;">
         <div class="tab-pane fade active show " id="chat-menu">
-            <!-- Chats sidebar -->
-            <div class="slimscroll">
-
-                <!-- Parent Container -->
-                <!-- Icons Row -->
+            <!-- Fixed Icons Row at Top -->
                 <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
                     <!-- Icon 1 -->
                     <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
@@ -161,19 +217,8 @@
 
                     <!-- Icon 2 -->
                     <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
-                        <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
+                        <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
-                        @php
-                            $unreadCount = 0;
-                            if (isset($notifications) && $notifications->count() > 0) {
-                                $unreadCount = $notifications->filter(function($notification) {
-                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
-                                })->count();
-                            }
-                        @endphp
-                        @if($unreadCount > 0)
-                            <span class="notification-dot"></span>
-                        @endif
                     </div>
 
                     <!-- Icon 3 -->
@@ -186,9 +231,22 @@
                     <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
                         <img src="{{ asset('assets/img/icons/messageIconInactive.svg') }}" class="message-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/messgeIconActive.svg') }}" class="message-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
+                        @php
+                            $unreadCount = 0;
+                            if (isset($notifications) && $notifications->count() > 0) {
+                                $unreadCount = $notifications->filter(function($notification) {
+                                    return !$notification->read || $notification->read === false || $notification->read === 0 || $notification->read === null;
+                                })->count();
+                            }
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-dot"></span>
+                        @endif
                     </div>
                 </div>
 
+            <!-- Scrollable Content Section -->
+            <div class="slimscroll">
                 <!-- Content Section -->
                 <!-- team -->
                 <div id="tab-layers" class="tab-content" style="display: block;">
@@ -196,7 +254,7 @@
                         <!-- Header -->
                         <div style="margin-bottom: 20px;">
                             <h6 style="font-weight: 600; color: #2e3a59; font-size: 16px; margin-bottom: 4px;">Team Chat</h6>
-                            <small style="color: #7f8ea3;">Public Groups  </small>
+                            <small style="color: #7f8ea3;">Public Groups</small>
                         </div>
                         <!-- Scrollable Card Container -->
                         <div id="cardScroller"
@@ -210,65 +268,40 @@
                             </style>
 
                             @php
-                                $authId = (string)Auth::id();
-                                $displayGroups = isset($groups) ? $groups : \App\Models\Group::all()->filter(function($group) use ($authId) {
-                                    return $group->isMember($authId);
-                                });
-                            @endphp
-
-                            @forelse($displayGroups as $group)
-                                <!-- Dynamic Group CARD -->
-                                @php
-                                    $groupId = is_array($group) ? ($group['id'] ?? '') : (isset($group->id) ? $group->id : (string)($group->_id ?? ''));
-                                    $groupName = is_array($group) ? ($group['name'] ?? 'Group') : ($group->name ?? 'Group');
-                                    $memberCount = is_array($group) ? ($group['member_count'] ?? 0) : (is_array($group->member_ids ?? []) ? count($group->member_ids) : (json_decode($group->member_ids ?? '[]', true) ? count(json_decode($group->member_ids, true)) : 0));
-                                    
-                                    // Fetch images from Team model if available
-                                    $groupPhoto = '';
-                                    $groupBanner = '';
-                                    
-                                    if (is_array($group)) {
-                                        $groupPhoto = $group['team_photo'] ?? '';
-                                        $groupBanner = $group['team_banner'] ?? '';
-                                    } else {
-                                        // It is a Group Model
-                                        $teamId = $group->team_id ?? null;
-                                        if ($teamId) {
-                                            $team = \App\Models\Teams::find($teamId);
-                                            if ($team) {
-                                                $groupPhoto = $team->thumb_path ?? '';
-                                                $groupBanner = $team->banner_path ?? '';
-                                            }
-                                        }
-                                        // Fallback if no team or no image in team
-                                        if (empty($groupPhoto)) $groupPhoto = $group->avatar ?? '';
-                                        // Banner fallback not defined in Group model typically
-                                    }
-                                    // Calculate resolved URLs
-                                    $baseStorage = 'https://logiadmin.it-supportline.de/storage/';
-                                    $bannerUrl = $groupBanner ? (str_starts_with($groupBanner, 'http') ? $groupBanner : $baseStorage . ltrim($groupBanner, '/')) : $baseStorage;
-                                    $photoUrl = $groupPhoto ? (str_starts_with($groupPhoto, 'http') ? $groupPhoto : $baseStorage . ltrim($groupPhoto, '/')) : $baseStorage;
+                                // Get groups from parent view or set empty collection
+                                if (!isset($groups)) {
+                                    $groups = collect([]);
+                                }
+                                // Debug output
+                                \Log::info('Groups in notification view', [
+                                    'count' => is_countable($groups) ? count($groups) : 0,
+                                    'type' => gettype($groups),
+                                    'is_collection' => $groups instanceof \Illuminate\Support\Collection
+                                ]);
                                 @endphp
-                                <div onclick="openGroupChat('{{ $groupId }}', '{{ addslashes($groupName) }}', '{{ $photoUrl }}')" 
+
+                            @forelse($groups as $group)
+                                <!-- Dynamic Group Card -->
+                                <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}', '{{ $group['team_photo'] }}')" 
                                      style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
                                      onmouseover="this.style.transform='scale(1.05)'"
                                      onmouseout="this.style.transform='scale(1)'">
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                        <img src="{{ $bannerUrl }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;" title="{{ $bannerUrl }}">
+                                        <img src="{{ $group['team_banner'] }}" alt="Background"
+                                            style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                                 <div style="position: relative; margin-top: -20px;">
-                                         <img src="{{ $photoUrl }}" alt="Profile"
-                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;" title="{{ $photoUrl }}">
+                                        <img src="{{ $group['team_photo'] }}" alt="Profile"
+                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
                                  </div>
                                 <div style="padding: 8px;">
-                                        <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $groupName }}</h6>
-                                        <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ $memberCount }} {{ $memberCount == 1 ? 'User' : 'Users' }}</p>
+                                        <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $group['name'] }}</h6>
+                                        <p style="margin: 0; color: #7f8ea3; font-size: 10px;">{{ $group['member_count'] }} {{ $group['member_count'] == 1 ? 'User' : 'Users' }}</p>
                                 </div>
                             </div>
                             @empty
-                                <div style="flex: 0 0 auto; width: 100%; padding: 20px; text-align: center; color: #7f8ea3;">
-                                    <p style="font-size: 12px;">No groups joined yet.</p>
+                                <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #f8f9fa; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; display: flex; align-items: center; justify-content: center;">
+                                    <p style="margin: 0; color: #7f8ea3; font-size: 11px;">No groups yet</p>
                                 </div>
                             @endforelse
                         </div>
@@ -291,276 +324,44 @@
                     </div>
                     <!-- tasks -->
                     <div style="background:#fff; border-radius: 10px; padding: 10px; margin: 20px; font-family: sans-serif;">
-
                         <!-- Header Row -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <h5 style="margin: 0; font-weight: 600; font-size: 15px;">Task Status</h5>
                             <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
                         </div>
-
-                        <!-- Cards Row (No overflow) -->
-                        <div style="display: flex; gap: 6px; justify-content: space-between; flex-wrap: nowrap; overflow-x: hidden;">
-
-                            <!-- CARD -->
-                            <div style="flex: 1; max-width: 80px; background: #e2e8f0; border-radius: 10px; padding: 8px; text-align: center;">
-                                <img src="{{ asset('build/img/inhold.svg') }}" style="width: 24px;" alt="">
-                                <div style="font-size: 11px; color: #4b5c74; margin-top: 4px;">In Hold</div>
-                                <div style="font-weight: 600; font-size: 12px;">2</div>
+                        <!-- Loader -->
+                        <div style="text-align: center; padding: 10px;">
+                            <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
+                            </div>
                             </div>
 
-                            <div style="flex: 1; max-width: 80px; background: #e2e8f0; border-radius: 10px; padding: 8px; text-align: center;">
-                                <img src="{{ asset('build/img/incheck.svg') }}" style="width: 24px;" alt="">
-                                <div style="font-size: 11px; color: #4b5c74; margin-top: 4px;">In Check</div>
-                                <div style="font-weight: 600; font-size: 12px;">2</div>
-                            </div>
-
-                            <div style="flex: 1; max-width: 80px; background: #e2e8f0; border-radius: 10px; padding: 8px; text-align: center;">
-                                <img src="{{ asset('build/img/delayed.svg') }}" style="width: 24px;" alt="">
-                                <div style="font-size: 11px; color: #4b5c74; margin-top: 4px;">Delayed</div>
-                                <div style="font-weight: 600; font-size: 12px;">2</div>
-                            </div>
-
-                            <div style="flex: 1; max-width: 80px; background: #e2e8f0; border-radius: 10px; padding: 8px; text-align: center;">
-                                <img src="{{ asset('build/img/rejected.svg') }}" style="width: 24px;" alt="">
-                                <div style="font-size: 11px; color: #4b5c74; margin-top: 4px;">Rejected</div>
-                                <div style="font-weight: 600; font-size: 12px;">2</div>
-                            </div>
-
-                        </div>
-                    </div>
                     <!-- members online -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-
                         <!-- Header -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <span style="font-weight: 600; color: #2e3a59; font-size: 16px;">Member Online</span>
                             <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
                         </div>
-
-                        <!-- Avatars Row -->
-                        <div style="display: flex; gap: 12px;">
-
-                            <!-- Avatar 1 -->
-                            <div style="position: relative;">
-                                <img src="" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
-
+                        <!-- Loader -->
+                        <div style="text-align: center; padding: 10px;">
+                            <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
+                            </div>
                             </div>
 
-                            <!-- Avatar 2 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px; padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 3 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 4 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 5 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                        </div>
-                    </div>
                     <!-- archive chat -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-
                         <!-- Header -->
                         <div style="display: flex; justify-content: space-between; align-items: center; ">
                             <span style="font-weight: 600; color: #2e3a59; font-size: 16px;">Archive Chat</span>
-
                             <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
                         </div>
                         <p>single & team chat</p>
-
-                        <!-- Avatars Row -->
-                        <div style="display: flex; gap: 12px;">
-
-                            <!-- Avatar 1 -->
-                            <div style="position: relative;">
-                                <img src="" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
-
+                        <!-- Loader -->
+                        <div style="text-align: center; padding: 10px;">
+                            <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
                             </div>
-
-                            <!-- Avatar 2 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px; padding: 5px;">
-
                             </div>
-
-                            <!-- Avatar 3 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
                             </div>
-
-                            <!-- Avatar 4 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 5 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- project card -->
-                    <div>
-                        <!-- Start of Card 1 -->
-                        <div class="card" style=" height:fit-content;padding: 12px 16px; margin: 20px;  border-radius: 12px; font-family: 'Segoe UI', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden;">
-
-                            <!-- Header -->
-                            <div class="d-flex justify-content-between align-items-start p-2 pt-3">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                    <div>
-                                        <h6 class="m-0 fw-bold" style="font-size: 13px; color: #1e293b;">Title of Meeting</h6>
-                                        <small style="color: #6b7280; font-size: 11px;">Project Title</small>
-                                    </div>
-                                </div>
-                                <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg); display: inline-block;"></i>
-
-                            </div>
-
-                            <!-- Description -->
-                            <div class="px-3 pt-1 pb-0" style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                                Here we will add the description of the ToDo Only you is Superadmin ToDo
-                            </div>
-
-                            <!-- Avatars + user count -->
-                            <div class="text-center mt-2">
-                                <div style="position: relative; display: inline-block; height: 40px; width: 108px;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" alt="icon" style="position: absolute; left: 0; z-index: 3; width: 36px; height: 36px; border: 2px solid #22c55e;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 20px; z-index: 2; width: 36px; height: 36px; border: 2px solid #3b82f6;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 40px; z-index: 1; width: 36px; height: 36px; border: 2px solid #facc15;">
-                                    <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class="rounded-circle" style="position: absolute; left: 60px; z-index: 0; width: 36px; height: 36px; border: 2px solid #ef4444;">
-                                </div>
-                                <div style="font-size: 12px; color: #1e293b; font-weight: 500;">1 user online</div>
-                            </div>
-
-                            <!-- Status Row -->
-                            <div class="d-flex align-items-center justify-content-between px-3 py-2 mt-2" style="font-size: 12px; border-radius: 10px; background: #f8f8f8;">
-                                <!-- Green dot -->
-                                <div class="d-flex align-items-center gap-2">
-                                    <span style="width: 12px; height: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;"></span>
-                                </div>
-
-                                <!-- Divider -->
-                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                <!-- Bell Icon -->
-                                <img src="{{ asset('build/img/blackbell.svg') }}" alt="Image" style="width: 30px; height: 30px; object-fit: contain;" class="rounded-circle">
-
-                                <!-- Divider -->
-                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                <!-- "Now" Text -->
-                                <span style="color: red; font-weight: 500;">
-                                    <img src="{{URL::asset('/build/img/timeicon.svg')}}" alt="Image" style="width: 20px;height:20px;"> Now</span>
-
-                                <!-- Divider -->
-                                <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
-
-                                <!-- Clock Icon + Time -->
-                                <div class="d-flex align-items-center gap-1">
-
-                                    <img src="{{URL::asset('/build/img/Clock.svg')}}" alt="Image" style="width: 20px;height:20px;">
-                                    <span style="color: #ef4444;">17:30 - 18:00</span>
-                                </div>
-                            </div>
-
-                            <!-- Join Now Button -->
-                            <div class="text-center py-2">
-                                <button style=" background-color: #22c55e; color: white; padding: 6px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                                    Join now
-                                    <img src="{{ URL::asset('/build/img/Logout1.svg') }}" alt="arrow" style="width: 16px; height: 16px;" />
-                                </button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <!-- ToDo -->
-                    <div class="card" style=" border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;margin: 20px;">
-                        <!-- Card Header -->
-                        <div class="d-flex justify-content-between align-items-center" style="background-color: #ececec;">
-                            <div class="d-flex">
-                                <img src="{{URL::asset('/build/img/groups/group-01.jpg')}}" class=" me-2" alt="image" style="width: 40px; height: 40px;">
-                                <div>
-                                    <div style="font-weight: bold;">Admin jname</div>
-                                    <small style="color: gray;">Created Time & Date</small>
-                                </div>
-                            </div>
-                            <div style="font-size: 20px; cursor: pointer; margin-right:12px">&#8942;</div>
-                        </div>
-
-                        <!-- Card Body -->
-                        <div class="card-body ">
-                            <!-- Title & Avatars -->
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{URL::asset('/build/img/yekbon.svg')}}" class="me-2" style="width: 36px; height: 36px;" />
-                                    <div>
-                                        <h6 class="mb-0 fw-bold" style="font-size: 14px;">Title of ToDo</h6>
-                                        <small class="text-muted">
-                                            <img src="{{URL::asset('/build/img/share.svg')}}" style="width: 20px; height: 20px;" /> Shared
-                                        </small>
-                                    </div>
-                                </div>
-                                <!-- Avatars -->
-                                <div class="d-flex" style="margin-left: auto;">
-                                    <div style="position: relative; width: 60px; height: 30px;">
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 0; z-index: 3; border: 2px solid white;" />
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 15px; z-index: 2; border: 2px solid white;" />
-                                        <img src="https://via.placeholder.com/30" class="rounded-circle" style="position: absolute; left: 30px; z-index: 1; border: 2px solid white;" />
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- Description -->
-                            <p class="mb-3 mt-3" style="font-size: 13px; color: #333;">
-                                Here we will add the description of the ToDo. Only you is Superadmin ToDo.
-                            </p>
-
-                            <!-- Date & Priority Row -->
-                            <div class="d-flex justify-content-between align-items-center p-1 rounded" style="background-color: #f8f8f8; font-size: 11px;margin-top: 20px;border-radius:10px;">
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="text-success fw-semibold">Start:</span>
-                                    <span>22.10.2024</span>
-                                    <span class="text-muted">|</span>
-                                    <span class="text-success fw-semibold">Deliver:</span>
-                                    <span style="color: #f44336;">Today</span>
-                                </div>
-                                <div class="d-flex align-items-center gap-1" style="background: #fff; padding: 2px 8px; border-radius: 12px;">
-                                    <span style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></span>
-                                    <span style="color: #4caf50; font-weight: 500;">Low</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer Button -->
-                        <div class="d-flex justify-content-center py-2" style="margin-top: -10px;">
-                            <button style="background-color: #fbbc05; color: white; border: none; padding: 6px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;margin-bottom:3px;">
-                                Need Counte
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- notifiactions -->
                 <div id="tab-bell" class="tab-content" style="display: none;">
@@ -734,10 +535,171 @@
                 <!-- Delete All Button -->
 
                 <div id="tab-notifi" class="tab-content" style="display: none;">
-                    <!-- Task tab content - notifications only show in bell tab -->
-                    <div style="text-align: center; padding: 40px 20px; color: #7f8ea3;">
-                        <p>Task content goes here</p>
+                    <!-- Delete All Button -->
+                    <div style="display: flex; justify-content: flex-end; padding: 10px; margin-bottom: -10px;">
+                        <div onclick="deleteNotificationCards()"
+                            style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f9fafc; border-radius: 8px; cursor: pointer; font-family: sans-serif;">
+                            <img src="{{ asset('build/img/del.svg') }}" alt="Delete" style="width: 18px; height: 18px;">
+                            <span style="font-size: 14px; color: #2e3a59;">Delete all</span>
+                        </div>
                     </div>
+
+                    <!-- Notification Cards Wrapper -->
+                    <div id="notificationWrapperTask">
+                        @if(isset($notifications) && $notifications->count() > 0)
+                            @foreach($notifications as $notification)
+                                @php
+                                    // Parse data field (can be JSON string or array)
+                                    $data = [];
+                                    if (is_string($notification->data)) {
+                                        $decoded = json_decode($notification->data, true);
+                                        $data = is_array($decoded) ? $decoded : [];
+                                    } elseif (is_array($notification->data)) {
+                                        $data = $notification->data;
+                                    }
+                                    
+                                    // Extract information from data
+                                    $ticketCode = $data['ticket_code'] ?? '';
+                                    $ticketId = $data['ticket_id'] ?? '';
+                                    
+                                    // Extract project name from message or data
+                                    $projectName = 'Unknown Project';
+                                    if (isset($data['project'])) {
+                                        $projectName = $data['project'];
+                                    } elseif (isset($data['project_name'])) {
+                                        $projectName = $data['project_name'];
+                                    } else {
+                                        // Try to extract from message
+                                        if (preg_match('/project\s+([^by]+?)\s+by/i', $notification->message ?? '', $matches)) {
+                                            $projectName = trim($matches[1]);
+                                        }
+                                    }
+                                    
+                                    // Extract task title from message or use default
+                                    $taskTitle = $notification->title ?? 'Task Assigned';
+                                    if (preg_match('/ticket\s+([^:]+?):\s*([^in]+?)\s+in/i', $notification->message ?? '', $matches)) {
+                                        $taskTitle = trim($matches[2]);
+                                    }
+                                    
+                                    // Get status from data or default to assigned
+                                    $status = 'assigned';
+                                    $statusColor = '#3b82f6';
+                                    $statusIcon = asset('build/img/progress.svg');
+                                    
+                                    if (isset($data['status'])) {
+                                        $status = strtolower($data['status']);
+                                    }
+                                    
+                                    // Map status to icon and color
+                                    if (strpos($status, 'hold') !== false || strpos($status, 'on_hold') !== false) {
+                                        $statusIcon = asset('build/img/inhold.svg');
+                                        $statusColor = '#f97316';
+                                        $statusText = 'In Hold';
+                                    } elseif (strpos($status, 'check') !== false || strpos($status, 'checked') !== false) {
+                                        $statusIcon = asset('build/img/incheck.svg');
+                                        $statusColor = '#8b5cf6';
+                                        $statusText = 'In Check';
+                                    } elseif (strpos($status, 'delay') !== false || strpos($status, 'delayed') !== false) {
+                                        $statusIcon = asset('build/img/delayed.svg');
+                                        $statusColor = '#ef4444';
+                                        $statusText = 'In Delayed';
+                                    } elseif (strpos($status, 'progress') !== false || strpos($status, 'in_progress') !== false) {
+                                        $statusIcon = asset('build/img/progress.svg');
+                                        $statusColor = '#22c55e';
+                                        $statusText = 'In Progress';
+                                    } else {
+                                        $statusText = 'Assigned';
+                                    }
+                                    
+                                    // Get creator info
+                                    $creator = $notification->creator ?? null;
+                                    $creatorName = $creator->name ?? 'Admin';
+                                    $creatorAvatar = ($creator && isset($creator->image) && $creator->image) 
+                                        ? asset('storage/' . $creator->image) 
+                                        : asset('build/img/avatar.svg');
+                                    
+                                    // Calculate time ago
+                                    $timeAgo = '1h';
+                                    if ($notification->created_at) {
+                                        $diff = $notification->created_at->diffInMinutes(now());
+                                        if ($diff < 1) {
+                                            $timeAgo = 'Just now';
+                                        } elseif ($diff < 60) {
+                                            $timeAgo = round($diff) . 'm';
+                                        } elseif ($diff < 1440) {
+                                            $timeAgo = round($diff / 60) . 'h';
+                                        } else {
+                                            $timeAgo = round($diff / 1440) . 'd';
+                                        }
+                                    }
+                                    
+                                    // Extract task ID from ticket_id or message
+                                    $taskIdDisplay = '';
+                                    if ($ticketId) {
+                                        $taskIdDisplay = substr($ticketId, -4);
+                                    } elseif (preg_match('/#(\d+)/', $notification->message ?? '', $matches)) {
+                                        $taskIdDisplay = $matches[1];
+                                    }
+                                @endphp
+                                
+                                <div class="notificationCard {{ $notification->read ? 'read' : 'unread' }}" 
+                                     data-notification-id="{{ $notification->_id ?? $notification->id }}"
+                                     data-read="{{ $notification->read ? 'true' : 'false' }}"
+                                     style="position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; border-left: 3px solid {{ $statusColor }}; {{ $notification->read ? 'opacity: 0.8;' : '' }}">
+                                    <!-- Top Row: Icon + Title -->
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <!-- Task Icon -->
+                                        <img src="{{ $statusIcon }}" alt="Task Icon" style="width: 28px; height: 28px;">
+
+                                        <!-- Title and Time -->
+                                        <div style="flex-grow: 1;">
+                                            <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">
+                                                {{ $taskTitle }} - {{ $projectName }}
+                                            </div>
+                                            <div style="font-size: 12px; color: #7f8ea3;">
+                                                @if($taskIdDisplay)
+                                                    Set the Task ID #{{ $taskIdDisplay }} - to 
+                                                @else
+                                                    {{ $notification->message ?? 'Task assigned' }}
+                                                @endif
+                                                <span style="color: {{ $statusColor }}; font-weight: 600;">{{ $statusText }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- User and Reason -->
+                                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; background: #fff4f2; padding: 6px 10px; border-radius: 8px; font-size: 12px; width: fit-content;">
+                                        <!-- Avatar -->
+                                        <div style="min-width: 26px; height: 26px; border-radius: 50%; overflow: hidden;">
+                                            <img src="{{ $creatorAvatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+
+                                        <!-- Username and Reason -->
+                                        <div>
+                                            <span style="color: #2e3a59; font-weight: 600;">{{ $creatorName }}</span>
+                                            <span style="color: red; font-weight: 500;"> &nbsp; ! {{ $notification->message ?? 'Task assigned' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Time Top Right -->
+                                    <div style="position: absolute; top: 10px; right: 14px; font-size: 12px; color: #9ba3ae;">
+                                        {{ $timeAgo }}
+                                    </div>
+
+                                    <!-- Red Dot Bottom Right (if unread) -->
+                                    @if(!$notification->read)
+                                    <div class="notification-unread-dot" style="position: absolute; bottom: 26px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @else
+                            <div style="text-align: center; padding: 40px 20px; color: #7f8ea3;">
+                                <p>No notifications found</p>
+                            </div>
+                        @endif
+                    </div>
+                    <!-- Inline JS (no <script>) -->
+                    <img onerror="  function deleteNotificationCards() { var cards = document.querySelectorAll('.notificationCard'); cards.forEach(function(card) { card.remove(); });} " style="display: none;">
                 </div>
                 <div id="tab-message" class="tab-content" style="display: none;">
                     <!-- Team chat -->
@@ -745,7 +707,7 @@
                         <!-- Header -->
                         <div style="margin-bottom: 20px;">
                             <h6 style="font-weight: 600; color: #2e3a59; font-size: 16px; margin-bottom: 4px;">Team Chat</h6>
-                            <small style="color: #7f8ea3;">Public Groups asim</small>
+                            <small style="color: #7f8ea3;">Public Groups</small>
                         </div>
                         <!-- Scrollable Card Container -->
                         <div id="teamChat-cardScroller"
@@ -766,53 +728,7 @@
                                 }
                             </style>
 
-                            <!-- CARD 1 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team A</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">5 Users</p>
-                                </div>
-                            </div>
 
-                            <!-- CARD 2 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team B</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">7 Users</p>
-                                </div>
-                            </div>
-
-                            <!-- CARD 3 -->
-                            <div style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px;">
-                                <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
-                                    <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                        style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                <div style="position: relative; margin-top: -20px;">
-                                    <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid gold; background: white;">
-                                </div>
-                                <div style="padding: 8px;">
-                                    <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0;">Team C</h6>
-                                    <p style="margin: 0; color: #7f8ea3; font-size: 10px;">9 Users</p>
-                                </div>
-                            </div>
                             <!-- more cards if needed -->
                         </div>
 
@@ -3199,99 +3115,159 @@
             }
         });
 
-        // If bell tab is opened, mark all notifications as read
+        // Ensure sidebar-group maintains its width after tab switch
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (sidebarGroup) {
+            // Force maintain width
+            if (window.innerWidth > 1400) {
+                sidebarGroup.style.width = '400px';
+                sidebarGroup.style.minWidth = '400px';
+                sidebarGroup.style.maxWidth = '400px';
+            } else if (window.innerWidth > 1200) {
+                sidebarGroup.style.width = '330px';
+                sidebarGroup.style.minWidth = '330px';
+                sidebarGroup.style.maxWidth = '330px';
+            }
+        }
+
+        // When bell tab is opened, mark all notifications as read (if not already read)
         if (tabName === 'bell') {
             markAllNotificationsAsRead();
         }
     }
 
-    /**
-     * Mark all notifications as read when bell tab is opened
-     */
-    function markAllNotificationsAsRead() {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        if (!csrfToken) {
-            console.error('CSRF token not found');
+    // Load notifications from API (only if not already rendered via PHP)
+    function loadNotifications() {
+        const wrapper = document.getElementById('notificationWrapper');
+        if (!wrapper) return;
+        
+        // Check if notifications are already rendered via PHP (check for existing notification cards)
+        const existingCards = wrapper.querySelectorAll('.notificationCard');
+        if (existingCards.length > 0) {
+            // Notifications already rendered via PHP, just update the badge count
+            updateNotificationBadgeFromExisting();
+            return;
+        }
+        
+        // Only load via API if no PHP-rendered notifications exist
+        fetch('{{ route("notifications.index") ?? url("/notifications") }}', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If route doesn't exist, skip API loading
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.success) {
+                updateNotificationBadge(data.unread_count || 0);
+                renderNotifications(data.notifications);
+            }
+        })
+        .catch(error => {
+            // Silently fail if API doesn't exist - we're using PHP rendering
+            console.log('Notifications loaded via PHP rendering');
+        });
+    }
+
+    // Update notification badge from existing PHP-rendered cards
+    function updateNotificationBadgeFromExisting() {
+        const wrapper = document.getElementById('notificationWrapper');
+        if (!wrapper) return;
+        
+        const unreadCards = wrapper.querySelectorAll('.notificationCard.unread, .notificationCard[data-read="false"]');
+        const unreadCount = unreadCards.length;
+        
+        updateNotificationBadge(unreadCount);
+    }
+
+    // Render notifications in the UI (only used if API loading is needed)
+    function renderNotifications(notifications) {
+        const wrapper = document.getElementById('notificationWrapper');
+        if (!wrapper) return;
+
+        // Check if notifications are already rendered via PHP
+        const existingCards = wrapper.querySelectorAll('.notificationCard');
+        if (existingCards.length > 0) {
+            // Don't overwrite PHP-rendered notifications
             return;
         }
 
-        fetch('/notifications/mark-all-read', {
-            method: 'POST',
+        // Clear existing notifications only if empty
+        wrapper.innerHTML = '';
+
+        if (!notifications || notifications.length === 0) {
+            wrapper.innerHTML = '<div style="text-align: center; padding: 40px; color: #7f8ea3; font-size: 14px;">No notifications found</div>';
+            return;
+        }
+
+        notifications.forEach(notification => {
+            const card = createNotificationCard(notification);
+            wrapper.appendChild(card);
+        });
+    }
+
+    // Create notification card HTML
+    function createNotificationCard(notification) {
+        const card = document.createElement('div');
+        card.className = 'notificationCard';
+        card.style.cssText = 'position: relative; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: sans-serif; margin: 10px 20px; cursor: pointer;';
+        
+        // Add click handler to mark as read
+        if (!notification.read) {
+            card.style.borderLeft = '3px solid #00c469';
+            card.onclick = () => markAsRead(notification._id || notification.id);
+        }
+
+        const timeAgo = getTimeAgo(notification.created_at);
+        const iconSrc = notification.type === 'task_assigned' 
+            ? '{{ asset("build/img/inhold.svg") }}' 
+            : '{{ asset("build/img/avatar.svg") }}';
+        
+        card.innerHTML = `
+            <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid ${notification.read ? '#ddd' : 'limegreen'}; overflow: hidden; margin-right: 10px; flex-shrink: 0;">
+                <img src="${iconSrc}" alt="Icon" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex-grow: 1;">
+                <div style="font-weight: 600; font-size: 14px; color: #2e3a59;">${escapeHtml(notification.title || 'Notification')}</div>
+                <div style="font-size: 12px; color: #7f8ea3; margin-top: 2px;">${escapeHtml(notification.message || '')}</div>
+            </div>
+            <div style="position: absolute; top: 10px; right: 14px; font-size: 11px; color: #9ba3ae;">
+                ${timeAgo}
+            </div>
+            ${!notification.read ? '<div style="position: absolute; bottom: 10px; right: 14px; width: 10px; height: 10px; background: red; border-radius: 50%;"></div>' : ''}
+            <button onclick="event.stopPropagation(); deleteNotification('${notification._id || notification.id}')" 
+                style="position: absolute; top: 8px; right: 30px; background: transparent; border: none; color: #9ba3ae; cursor: pointer; font-size: 16px; padding: 0; width: 20px; height: 20px;">×</button>
+        `;
+
+        return card;
+    }
+
+    // Mark notification as read
+    function markAsRead(notificationId) {
+        fetch(`{{ url('/notifications') }}/${notificationId}/read`, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            }
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Remove notification dot from bell icon
-                const bellIcon = document.getElementById('icon-bell');
-                if (bellIcon) {
-                    const notificationDot = bellIcon.querySelector('.notification-dot');
-                    if (notificationDot) {
-                        notificationDot.remove();
-                    }
-                }
-
-                // Remove red dots from all notification cards and mark as read
-                const notificationCards = document.querySelectorAll('.notificationCard');
-                notificationCards.forEach(card => {
-                    const redDot = card.querySelector('.notification-unread-dot');
-                    if (redDot) {
-                        redDot.remove();
-                    }
-                    // Mark card as read
-                    card.classList.remove('unread');
-                    card.classList.add('read');
-                    card.setAttribute('data-read', 'true');
-                    card.style.opacity = '0.8'; // Slight fade for read notifications
-                });
-
-                console.log('Notifications marked as read:', data.updated_count);
-            } else {
-                console.error('Failed to mark notifications as read:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error marking notifications as read:', error);
-        });
-    }
-
-    /**
-     * Mark a specific notification as read when clicked
-     */
-    function markNotificationAsRead(notificationId, cardElement) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        if (!csrfToken) {
-            console.error('CSRF token not found');
-            return;
-        }
-
-        fetch(`/notifications/${notificationId}/mark-read`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success && cardElement) {
-                // Remove red dot from this notification card
-                const redDot = cardElement.querySelector('.notification-unread-dot');
-                if (redDot) {
-                    redDot.remove();
-                }
-
-                // Mark card as read
-                cardElement.classList.remove('unread');
-                cardElement.classList.add('read');
-                cardElement.setAttribute('data-read', 'true');
-                cardElement.style.opacity = '0.8'; // Slight fade for read notifications
-
-                // Update notification dot count on bell icon
-                updateNotificationDotCount();
+                // Reload page to refresh PHP-rendered notifications
+                window.location.reload();
             }
         })
         .catch(error => {
@@ -3299,54 +3275,186 @@
         });
     }
 
-    /**
-     * Update notification dot count on bell icon
-     */
-    function updateNotificationDotCount() {
-        // Count unread notifications (those with unread class or data-read="false")
-        const allCards = document.querySelectorAll('.notificationCard');
-        let unreadCount = 0;
-        allCards.forEach(card => {
-            const isRead = card.getAttribute('data-read') === 'true' || card.classList.contains('read');
-            const hasUnreadDot = card.querySelector('.notification-unread-dot');
-            if (!isRead || hasUnreadDot) {
-                unreadCount++;
-            }
-        });
+    // Delete notification
+    function deleteNotification(notificationId) {
+        if (!confirm('Are you sure you want to delete this notification?')) {
+            return;
+        }
 
-        const bellIcon = document.getElementById('icon-bell');
-        if (bellIcon) {
-            const notificationDot = bellIcon.querySelector('.notification-dot');
-            if (unreadCount <= 0) {
-                // Remove dot if no unread notifications
-                if (notificationDot) {
-                    notificationDot.remove();
-                }
-            } else if (unreadCount > 0 && !notificationDot) {
-                // Add dot if there are unread notifications but no dot exists
-                const dot = document.createElement('span');
-                dot.className = 'notification-dot';
-                bellIcon.appendChild(dot);
+        fetch(`{{ url('/notifications') }}/${notificationId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload page to refresh PHP-rendered notifications
+                window.location.reload();
             }
+        })
+        .catch(error => {
+            console.error('Error deleting notification:', error);
+        });
+    }
+
+    // Delete all notifications
+    function deleteNotificationCards() {
+        if (!confirm('Are you sure you want to delete all notifications?')) {
+            return;
+        }
+
+        fetch('{{ route("notifications.destroy_all") }}', {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload page to refresh PHP-rendered notifications
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting all notifications:', error);
+            // Even if API fails, try to reload page
+            window.location.reload();
+        });
+    }
+
+    function updateNotificationBadge(unreadCount) {
+        const bellIcon = document.getElementById('icon-bell');
+        if (!bellIcon) return;
+
+        const count = Number(unreadCount) || 0;
+        bellIcon.style.position = 'relative';
+
+        let dot = bellIcon.querySelector('.notification-dot');
+        if (count <= 0) {
+            if (dot) dot.remove();
+            return;
+        }
+
+        if (!dot) {
+            dot = document.createElement('span');
+            dot.className = 'notification-dot';
+            bellIcon.appendChild(dot);
+        }
+
+        dot.style.cssText =
+            'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
+            'background:rgb(241,65,68);z-index:2;';
+    }
+
+    // Helper function to get time ago
+    function getTimeAgo(dateString) {
+        if (!dateString) return 'Just now';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return diffMins + 'm ago';
+        if (diffHours < 24) return diffHours + 'h ago';
+        if (diffDays < 7) return diffDays + 'd ago';
+        
+        return date.toLocaleDateString();
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Load notifications on page load
+    // Function to maintain sidebar width
+    function maintainSidebarWidth() {
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (!sidebarGroup) return;
+
+        const width = window.innerWidth;
+        if (width > 1400) {
+            sidebarGroup.style.width = '400px';
+            sidebarGroup.style.minWidth = '400px';
+            sidebarGroup.style.maxWidth = '400px';
+        } else if (width > 1200) {
+            sidebarGroup.style.width = '330px';
+            sidebarGroup.style.minWidth = '330px';
+            sidebarGroup.style.maxWidth = '330px';
+        } else if (width > 992) {
+            sidebarGroup.style.width = 'calc(100% - 72px)';
+            sidebarGroup.style.minWidth = 'calc(100% - 72px)';
+            sidebarGroup.style.maxWidth = 'calc(100% - 72px)';
+        } else if (width > 768) {
+            sidebarGroup.style.width = 'calc(100% - 57px)';
+            sidebarGroup.style.minWidth = 'calc(100% - 57px)';
+            sidebarGroup.style.maxWidth = 'calc(100% - 57px)';
+        } else {
+            sidebarGroup.style.width = '100%';
+            sidebarGroup.style.minWidth = '100%';
+            sidebarGroup.style.maxWidth = '100%';
         }
     }
 
-    // Add click handlers to notification cards when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
-        // Add click handlers to all notification cards to mark as read when clicked
-        const notificationCards = document.querySelectorAll('.notificationCard');
-        notificationCards.forEach(card => {
-            // Extract notification ID from card (if available in data attribute)
-            const notificationId = card.getAttribute('data-notification-id');
-            if (notificationId) {
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', function(e) {
-                    // Don't mark as read if clicking on links or buttons inside the card
-                    if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON' && !e.target.closest('a, button')) {
-                        markNotificationAsRead(notificationId, card);
+        // Maintain sidebar width on load
+        maintainSidebarWidth();
+
+        // Maintain sidebar width on window resize
+        window.addEventListener('resize', maintainSidebarWidth);
+
+        // Use MutationObserver to watch for any width changes
+        const sidebarGroup = document.querySelector('.sidebar-group');
+        if (sidebarGroup) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        // If width is changed, restore it
+                        setTimeout(maintainSidebarWidth, 0);
                     }
                 });
-            }
-        });
+            });
+            observer.observe(sidebarGroup, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
+        
+        // Update notification badge from PHP-rendered notifications instead of loading via API
+        updateNotificationBadgeFromExisting();
+        
+        // Note: Notifications are rendered via PHP, so we don't need to load via API
+        // If you need to refresh notifications, reload the page instead
     });
+
+    function openGroupChat(groupId, groupName) {
+        // Open group chat - you can customize this based on your chat implementation
+        console.log('Opening group chat:', groupId, groupName);
+        
+        // Example: Redirect to chat with group ID or open chat modal
+        // window.location.href = '/chat?group=' + groupId;
+        
+        // Or trigger your chat system to open this group
+        if (typeof window.agoraChat !== 'undefined' && window.agoraChat.openGroupChat) {
+            window.agoraChat.openGroupChat(groupId);
+        } else {
+            // Fallback: show alert or redirect
+            alert('Opening chat for: ' + groupName);
+        }
+    }
 </script>
