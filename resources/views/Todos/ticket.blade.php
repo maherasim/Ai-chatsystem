@@ -1417,7 +1417,7 @@
                 <!-- reminder -->
                 <div class="mt-2 pt-2" style="background-color: #f7f7f7; padding: 16px; border-radius: 12px; font-family: 'Segoe UI', sans-serif;padding-bottom: 35px;">
                     <div class="d-flex align-items-center" style="gap: 8px; font-family: 'Segoe UI', sans-serif;">
-                        <img src="{{ asset('build/img/bell.svg') }}" style="width: 30px;" alt="Reminder Icon">
+                        <img src="{{ asset('build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;" alt="Reminder Icon">
                         <div>
                             <div style="font-weight: 600; font-size: 18px; color: #0f1b3d;">Reminder</div>
                             <div style="font-size: 13px; color: #4b5563;">15 Member</div>

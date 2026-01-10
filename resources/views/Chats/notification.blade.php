@@ -63,7 +63,7 @@
 
                     <!-- Icon 2 -->
                     <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
-                        <img src="{{ asset('/build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;">
+                        <img src="{{ asset('build/img/blackbell.svg') }}" style="width: 30px; height: 30px; object-fit: contain;" alt="Notifications">
                         @php
                             $unreadCount = isset($notifications) ? $notifications->where('read', false)->count() : 0;
                         @endphp
@@ -516,7 +516,7 @@
                                 <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
 
                                 <!-- Bell Icon -->
-                                <img src="{{URL::asset('/build/img/bell.svg')}}" alt="Image" style="width: 20px;height:20px;" class="rounded-circle">
+                                <img src="{{ asset('build/img/blackbell.svg') }}" alt="Image" style="width: 30px; height: 30px; object-fit: contain;" class="rounded-circle">
 
                                 <!-- Divider -->
                                 <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>

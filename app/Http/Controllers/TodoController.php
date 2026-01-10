@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Setting;
 use App\Models\Todo;
 use App\Models\TodoAttachment;
+use App\Models\Task;
+use App\Models\Project;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\CustomMail;
 use Illuminate\Support\Facades\Mail;
@@ -267,7 +270,200 @@ class TodoController extends Controller
 
             $ctime = strtotime(date("Y-m-d H:i:s"));
         
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime'));
+        // Fetch data for profile modal
+        $userId = $user->_id ?? $user->id;
+        
+        // Helper function to format tasks
+        $formatTask = function($task) {
+            $project = $task->project;
+            $ticket = $task->ticket;
+            
+            // Get task image URL
+            $markImageUrl = null;
+            if ($task->mark_image_path) {
+                $markImagePath = $task->mark_image_path;
+                // Ensure proper path handling
+                if (strpos($markImagePath, 'storage/') === 0) {
+                    $markImageUrl = asset($markImagePath);
+                } elseif (strpos($markImagePath, 'tasks/') === 0) {
+                    $markImageUrl = asset('storage/' . $markImagePath);
+                } else {
+                    $markImageUrl = asset('storage/' . $markImagePath);
+                }
+            }
+            
+            return [
+                'id' => $task->_id,
+                'title' => $task->title,
+                'section' => $task->section ?? 'N/A',
+                'priority' => $task->priority ?? 'low',
+                'status' => $task->status,
+                'start_date' => $task->start_date ? Carbon::parse($task->start_date)->format('d.m.Y') : null,
+                'end_date' => $task->end_date ? Carbon::parse($task->end_date)->format('d.m.Y') : null,
+                'project' => $project,
+                'ticket' => $ticket,
+                'ticket_code' => $ticket ? $ticket->code : 'N/A',
+                'project_logo' => $project && $project->logo_path ? asset('storage/' . $project->logo_path) : asset('build/img/yekbon.svg'),
+                'hold_reason' => $task->hold_reason ?? null,
+                'mark_image_url' => $markImageUrl,
+            ];
+        };
+        
+        // Fetch tasks by status (handle multiple possible status values)
+        $newTasks = Task::where(function($q) {
+                $q->where('status', 'new_task')
+                  ->orWhere('status', 'new');
+            })
+            ->where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })
+            ->with(['project', 'ticket'])
+            ->get()
+            ->map($formatTask);
+        
+        $inProgressTasks = Task::where(function($q) {
+                $q->where('status', 'in_progress')
+                  ->orWhere('status', 'progress');
+            })
+            ->where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })
+            ->with(['project', 'ticket'])
+            ->get()
+            ->map($formatTask);
+        
+        $inHoldTasks = Task::where(function($q) {
+                $q->where('status', 'in_hold')
+                  ->orWhere('status', 'on_hold')
+                  ->orWhere('status', 'hold');
+            })
+            ->where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })
+            ->with(['project', 'ticket'])
+            ->get()
+            ->map($formatTask);
+        
+        $inCheckTasks = Task::where(function($q) {
+                $q->where('status', 'in_check')
+                  ->orWhere('status', 'checked')
+                  ->orWhere('status', 'in_checked');
+            })
+            ->where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })
+            ->with(['project', 'ticket'])
+            ->get()
+            ->map($formatTask);
+        
+        $rejectedTasks = Task::where(function($q) {
+                $q->where('status', 'rejected')
+                  ->orWhere('status', 'in_rejected');
+            })
+            ->where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })
+            ->with(['project', 'ticket'])
+            ->get()
+            ->map($formatTask);
+        
+        // Fetch reminders (todos with reminder set)
+        $reminders = Todo::where('is_removed', '!=', true)
+            ->whereNotNull('reminder')
+            ->where(function($q) use ($userId) {
+                $q->where('user_id', $userId)
+                  ->orWhere('members', $userId)
+                  ->orWhere('is_private', false);
+            })
+            ->with('user')
+            ->get()
+            ->map(function($todo) {
+                return [
+                    'id' => $todo->_id,
+                    'title' => $todo->title,
+                    'description' => $todo->description ?? '',
+                    'priority' => $todo->priority ?? 'low',
+                    'reminder' => $todo->reminder,
+                    'start_date' => $todo->start_date ? Carbon::parse($todo->start_date)->format('d.m.Y') : null,
+                    'end_date' => $todo->end_date ? Carbon::parse($todo->end_date)->format('d.m.Y') : null,
+                    'user' => $todo->user
+                ];
+            });
+        
+        // Calculate task statistics
+        $totalTasks = Task::where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $newTasksCount = Task::where(function($q) {
+            $q->where('status', 'new')
+              ->orWhere('status', 'new_task');
+        })->where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $inProgressTasksCount = Task::where(function($q) {
+            $q->where('status', 'in_progress')
+              ->orWhere('status', 'progress');
+        })->where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $inHoldTasksCount = Task::where(function($q) {
+            $q->where('status', 'on_hold')
+              ->orWhere('status', 'hold')
+              ->orWhere('status', 'in_hold');
+        })->where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $inCheckTasksCount = Task::where(function($q) {
+            $q->where('status', 'checked')
+              ->orWhere('status', 'check')
+              ->orWhere('status', 'checking')
+              ->orWhere('status', 'in_checking')
+              ->orWhere('status', 'in_checked');
+        })->where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $rejectedTasksCount = Task::where(function($q) {
+            $q->where('status', 'rejected')
+              ->orWhere('status', 'in_rejected');
+        })->where(function($q) use ($userId) {
+            $q->where('assigned_to', $userId)
+              ->orWhere('created_by', $userId);
+        })->count();
+        
+        $taskStats = [
+            'new' => $newTasksCount,
+            'total' => $totalTasks,
+            'progress' => $inProgressTasksCount,
+            'in_hold' => $inHoldTasksCount,
+            'in_check' => $inCheckTasksCount,
+            'delayed' => Task::where(function($q) use ($userId) {
+                $q->where('assigned_to', $userId)
+                  ->orWhere('created_by', $userId);
+            })->where('end_date', '<', Carbon::now())->where('status', '!=', 'done')->count(),
+            'rejected' => $rejectedTasksCount
+        ];
+        
+        // Optional variables for profile modal (set to empty collections if not needed)
+        $userTodos = collect();
+        $projects = collect();
+        $assignedTickets = collect();
+        
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'reminders', 'taskStats', 'userTodos', 'projects', 'assignedTickets', 'newTasks', 'inProgressTasks', 'inHoldTasks', 'inCheckTasks', 'rejectedTasks'));
     }
 
     public function destroy($id)

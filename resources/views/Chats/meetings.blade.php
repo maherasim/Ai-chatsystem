@@ -543,7 +543,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
 
                                         <!-- Bell Icon -->
-                                        <img src="{{URL::asset('/build/img/bell.svg')}}" alt="Image" style="width: 20px;height:20px;" class="rounded-circle">
+                                        <img src="{{ asset('/build/img/blackbell.svg') }}" alt="Image" style="width: 30px; height: 30px; object-fit: contain;" class="rounded-circle">
 
                                         <!-- Divider -->
                                         <div style="width: 1px; height: 16px; background-color: #e0e0e0;"></div>
