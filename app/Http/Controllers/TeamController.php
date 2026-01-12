@@ -225,7 +225,48 @@ class TeamController extends Controller
             $tickets = [];
         }
      $teamtotalcount = Team::count();
-        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount'));
+        
+        // Load and format groups for notification sidebar
+        try {
+            $allGroups = Group::all();
+            $groups = $allGroups->map(function($group) {
+                // Load team separately
+                $team = null;
+                if ($group->team_id) {
+                    try {
+                        $team = Team::find($group->team_id);
+                    } catch (\Exception $e) {
+                        // Team not found
+                    }
+                }
+                
+                // Handle member_ids - could be array or JSON string
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberCount = count($memberIds) + 1; // +1 for admin
+                
+                return [
+                    'id' => (string) $group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                    'team_id' => $group->team_id,
+                    'team_photo' => $team && $team->thumb_path 
+                        ? asset('storage/' . ltrim($team->thumb_path, '/'))
+                        : asset('build/img/profile.svg'),
+                    'team_banner' => $team && $team->banner_path 
+                        ? asset('storage/' . ltrim($team->banner_path, '/'))
+                        : asset('build/img/bgractangle.svg'),
+                    'member_count' => $memberCount,
+                ];
+            })->values();
+        } catch (\Exception $e) {
+            \Log::error('Error loading groups in TeamController: ' . $e->getMessage());
+            $groups = collect([]);
+        }
+        
+        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount','groups'));
     }
 
     public function tickets(Request $request)

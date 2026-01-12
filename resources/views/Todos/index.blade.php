@@ -489,7 +489,7 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
     <!-- /Left Sidebar Menu -->
 
     <!-- sidebar group -->
-   @include('Todos.notification')
+   @include('Todos.notification', ['groups' => $groups ?? collect([])])
     <!-- /Sidebar group -->
 
     <!-- Chat -->

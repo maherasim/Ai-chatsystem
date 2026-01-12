@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Ticket;
+use App\Models\Group;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,7 +17,48 @@ class TicketController extends Controller
         $headers = \App\Models\Setting::all();
         $tickets = Ticket::with('project')->orderByDesc('created_at')->paginate(12);
         $projects = Project::orderBy('title')->get();
-        return view('Chats.ticket', compact('headers', 'tickets', 'projects'));
+        
+        // Load and format groups for notification sidebar
+        try {
+            $allGroups = Group::all();
+            $groups = $allGroups->map(function($group) {
+                // Load team separately
+                $team = null;
+                if ($group->team_id) {
+                    try {
+                        $team = Team::find($group->team_id);
+                    } catch (\Exception $e) {
+                        // Team not found
+                    }
+                }
+                
+                // Handle member_ids - could be array or JSON string
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberCount = count($memberIds) + 1; // +1 for admin
+                
+                return [
+                    'id' => (string) $group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                    'team_id' => $group->team_id,
+                    'team_photo' => $team && $team->thumb_path 
+                        ? asset('storage/' . ltrim($team->thumb_path, '/'))
+                        : asset('build/img/profile.svg'),
+                    'team_banner' => $team && $team->banner_path 
+                        ? asset('storage/' . ltrim($team->banner_path, '/'))
+                        : asset('build/img/bgractangle.svg'),
+                    'member_count' => $memberCount,
+                ];
+            })->values();
+        } catch (\Exception $e) {
+            \Log::error('Error loading groups in TicketController: ' . $e->getMessage());
+            $groups = collect([]);
+        }
+        
+        return view('Chats.ticket', compact('headers', 'tickets', 'projects', 'groups'));
     }
 
     public function projects()

@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +24,46 @@ class ProjectController extends Controller
         $inProgressCount = Project::where('status', 'in_progress')->count();
         $inHoldCount = Project::where('status', 'in_hold')->count();
         $delayedCount = Project::where('status', 'delayed')->count();
+        
+        // Load and format groups for notification sidebar
+        try {
+            $allGroups = Group::all();
+            $groups = $allGroups->map(function($group) {
+                // Load team separately
+                $team = null;
+                if ($group->team_id) {
+                    try {
+                        $team = Team::find($group->team_id);
+                    } catch (\Exception $e) {
+                        // Team not found
+                    }
+                }
+                
+                // Handle member_ids - could be array or JSON string
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberCount = count($memberIds) + 1; // +1 for admin
+                
+                return [
+                    'id' => (string) $group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                    'team_id' => $group->team_id,
+                    'team_photo' => $team && $team->thumb_path 
+                        ? asset('storage/' . ltrim($team->thumb_path, '/'))
+                        : asset('build/img/profile.svg'),
+                    'team_banner' => $team && $team->banner_path 
+                        ? asset('storage/' . ltrim($team->banner_path, '/'))
+                        : asset('build/img/bgractangle.svg'),
+                    'member_count' => $memberCount,
+                ];
+            })->values();
+        } catch (\Exception $e) {
+            \Log::error('Error loading groups in ProjectController: ' . $e->getMessage());
+            $groups = collect([]);
+        }
 
         return view('Chats.project', compact(
             'headers',
@@ -31,7 +72,8 @@ class ProjectController extends Controller
             'newProjectCount',
             'inProgressCount',
             'inHoldCount',
-            'delayedCount'
+            'delayedCount',
+            'groups'
         ));
     }
 
