@@ -585,15 +585,142 @@
                                                 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e60a1; font-size: 15px;">
                                                 Developers
                                             </strong>
-                                            <div class="d-flex justify-content-center mt-1"
+                                            @php
+                                                // Get project ID
+                                                $projectId = (string) ($project->_id ?? $project->id);
+                                                $projectIdRaw = $project->_id ?? $project->id;
+                                                
+                                                // Build array of possible project_id values to match
+                                                $projectIds = [$projectId];
+                                                if ($projectIdRaw && (string)$projectIdRaw !== $projectId) {
+                                                    $projectIds[] = $projectIdRaw;
+                                                }
+                                                try {
+                                                    $oid = new \MongoDB\BSON\ObjectId($projectId);
+                                                    $projectIds[] = $oid;
+                                                } catch (\Throwable $e) {}
+                                                $projectIds = array_unique($projectIds, SORT_REGULAR);
+                                                
+                                                // Find teams for this project
+                                                $teams = \App\Models\Team::whereIn('project_id', $projectIds)->get();
+                                                
+                                                // Extract all user IDs from task_developers
+                                                $developerIds = collect();
+                                                foreach ($teams as $team) {
+                                                    $taskDevelopers = $team->task_developers ?? [];
+                                                    
+                                                    // Handle string format (JSON)
+                                                    if (is_string($taskDevelopers)) {
+                                                        $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                                                    }
+                                                    
+                                                    // Extract keys (user IDs) from the object
+                                                    if (is_array($taskDevelopers)) {
+                                                        foreach ($taskDevelopers as $userId => $names) {
+                                                            if (!empty($userId)) {
+                                                                $developerIds->push((string)$userId);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // Get unique developer IDs
+                                                $developerIds = $developerIds->unique()->filter()->values();
+                                                
+                                                // Fetch users
+                                                $developers = collect();
+                                                if ($developerIds->isNotEmpty()) {
+                                                    // Build array with both string and ObjectId formats
+                                                    $userIds = [];
+                                                    foreach ($developerIds as $devId) {
+                                                        $userIds[] = $devId;
+                                                        try {
+                                                            $oid = new \MongoDB\BSON\ObjectId($devId);
+                                                            $userIds[] = $oid;
+                                                        } catch (\Throwable $e) {
+                                                            // If ObjectId creation fails, just use string
+                                                        }
+                                                    }
+                                                    
+                                                    // Query users - try both _id and id fields
+                                                    $developers = \App\Models\User::whereIn('_id', $userIds)->get();
+                                                    
+                                                    // If no results, try with string IDs only
+                                                    if ($developers->isEmpty()) {
+                                                        $developers = \App\Models\User::whereIn('_id', $developerIds->toArray())->get();
+                                                    }
+                                                }
+                                                
+                                                // Helper function to get image URL
+                                                $getImageUrl = function($user) {
+                                                    if (isset($user->image) && !empty(trim($user->image))) {
+                                                        $image = ltrim($user->image, '/');
+                                                        if (strpos($image, 'upload/') === 0) {
+                                                            return asset($image);
+                                                        }
+                                                        return asset('storage/' . $image);
+                                                    }
+                                                    return asset('build/img/profiles/avatar-16.jpg'); // Default avatar
+                                                };
+                                            @endphp
+                                            <div class="d-flex justify-content-center flex-wrap gap-2 mt-2"
                                                 style="margin-left: 10px;">
-                                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px; margin-left: 8px;" />
-
+                                                @if($developers->isEmpty())
+                                                    <span style="font-size: 12px; color: #6c757d;">No developers assigned</span>
+                                                @else
+                                                    @foreach($developers as $developer)
+                                                        <div class="d-flex flex-column align-items-center" style="margin: 0 4px;">
+                                                            <img src="{{ $getImageUrl($developer) }}" 
+                                                                 alt="{{ $developer->name ?? 'Developer' }}" 
+                                                                 style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #1e60a1;"
+                                                                 title="{{ $developer->name ?? 'Developer' }}" />
+                                                            <small style="font-size: 10px; color: #6c757d; margin-top: 2px; max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                                {{ $developer->name ?? 'Dev' }}
+                                                            </small>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="mt-2 mb-2" style="background-color:#f9f9f9;border-radius:10px;">
+                                        @php
+                                            $projectId = (string) ($project->_id ?? $project->id);
+                                            $projectIdRaw = $project->_id ?? $project->id;
+                                            
+                                            // Helper function to count with ObjectId fallback
+                                            $countByProjectId = function($model, $projectId, $projectIdRaw) {
+                                                // Build array of possible project_id values to match
+                                                $projectIds = [$projectId];
+                                                
+                                                // Add the raw _id if it's different from the string
+                                                if ($projectIdRaw && (string)$projectIdRaw !== $projectId) {
+                                                    $projectIds[] = $projectIdRaw;
+                                                }
+                                                
+                                                try {
+                                                    // Add ObjectId version
+                                                    $oid = new \MongoDB\BSON\ObjectId($projectId);
+                                                    $projectIds[] = $oid;
+                                                } catch (\Throwable $e) {
+                                                    // If ObjectId creation fails, just use string
+                                                }
+                                                
+                                                // Remove duplicates and query with whereIn to match all formats
+                                                $projectIds = array_unique($projectIds, SORT_REGULAR);
+                                                return $model::whereIn('project_id', $projectIds)->count();
+                                            };
+                                            
+                                            // Count tickets for this project
+                                            $ticketsCount = $countByProjectId(\App\Models\Ticket::class, $projectId, $projectIdRaw);
+                                            
+                                            // Count tasks from all three models
+                                            $taskCount = $countByProjectId(\App\Models\Task::class, $projectId, $projectIdRaw);
+                                            $webTaskCount = $countByProjectId(\App\Models\WebTask::class, $projectId, $projectIdRaw);
+                                            $employeeTaskCount = $countByProjectId(\App\Models\EmployeeTask::class, $projectId, $projectIdRaw);
+                                            $totalTasksCount = $taskCount + $webTaskCount + $employeeTaskCount;
+                                        @endphp
                                         <!-- Stats Row -->
                                         <div class="row text-center mb-2">
                                             <div class="col">
@@ -604,7 +731,7 @@
                                                         alt="Project Logo"> Tickets</strong>
                                                 <div class="mt-2"
                                                     style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">
-                                                    0 tickets</div>
+                                                    {{ $ticketsCount }} {{ \Illuminate\Support\Str::plural('ticket', $ticketsCount) }}</div>
                                             </div>
                                             <div class="col">
                                                 <strong
@@ -614,7 +741,7 @@
                                                         alt="Project Logo"> Tasks</strong>
                                                 <div class="mt-2"
                                                     style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background-color:#f1f1f1;color:red;border-radius:10px;margin-left: 13px; width: fit-content; padding: 3px;">
-                                                    {{ (int) ($project->tasks_count ?? 0) }} tasks
+                                                    {{ $totalTasksCount }} {{ \Illuminate\Support\Str::plural('task', $totalTasksCount) }}
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -897,11 +1024,146 @@
             <!-- project tickets -->
             <div style="font-family: 'Segoe UI', sans-serif;  background-color: #f8f9fa; border-radius: 12px; padding: 20px; padding-bottom:1px;  box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #2e3a59;" class="mt-2">
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tickets ·</h6>
+                @php
+                    // Get project ID
+                    $projectId = (string) ($project->_id ?? $project->id);
+                    $projectIdRaw = $project->_id ?? $project->id;
+                    
+                    // Build array of possible project_id values to match
+                    $projectIds = [$projectId];
+                    if ($projectIdRaw && (string)$projectIdRaw !== $projectId) {
+                        $projectIds[] = $projectIdRaw;
+                    }
+                    try {
+                        $oid = new \MongoDB\BSON\ObjectId($projectId);
+                        $projectIds[] = $oid;
+                    } catch (\Throwable $e) {}
+                    $projectIds = array_unique($projectIds, SORT_REGULAR);
+                    
+                    // Fetch tickets for this project
+                    $tickets = \App\Models\Ticket::whereIn('project_id', $projectIds)
+                        ->orderByDesc('created_at')
+                        ->limit(20)
+                        ->get();
+                    
+                    // Helper function to get status color
+                    $getStatusColor = function($status) {
+                        $colors = [
+                            'in_progress' => '#7ED957',
+                            'in_hold' => '#F5A623',
+                            'delayed' => '#EF4444',
+                            'completed' => '#1E60A1',
+                            'done' => '#1E60A1',
+                        ];
+                        return $colors[$status] ?? '#6c757d';
+                    };
+                    
+                    // Helper function to get status badge
+                    $getStatusBadge = function($status) {
+                        $badges = [
+                            'in_progress' => 'In Progress',
+                            'in_hold' => 'In Hold',
+                            'delayed' => 'Delayed',
+                            'completed' => 'Completed',
+                            'done' => 'Done',
+                        ];
+                        return $badges[$status] ?? ucfirst($status);
+                    };
+                    
+                    // Helper function to get priority color
+                    $getPriorityColor = function($priority) {
+                        $colors = [
+                            'low' => '#22c55e',
+                            'medium' => '#f59e0b',
+                            'high' => '#ef4444',
+                        ];
+                        return $colors[strtolower($priority ?? '')] ?? '#6c757d';
+                    };
+                @endphp
                 <div id="offcanvasProjectTickets" class="d-flex flex-column gap-2">
-                    <div class="d-flex justify-content-center align-items-center mb-2 p-3" style="background: #fff; border-radius: 10px; min-height: 100px;">
-                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
-                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
-                    </div>
+                    @if($tickets->isEmpty())
+                        <div class="d-flex justify-content-center align-items-center mb-2 p-4" style="background: #fff; border-radius: 10px; min-height: 100px;">
+                            <div class="text-center">
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="No tickets" style="width: 40px; height: 40px; opacity: 0.5; margin-bottom: 8px;" />
+                                <p style="font-size: 14px; color: #6c757d; margin: 0;">No tickets found for this project</p>
+                            </div>
+                        </div>
+                    @else
+                        @foreach($tickets as $ticket)
+                            @php
+                                $ticketId = (string) ($ticket->_id ?? $ticket->id);
+                                $statusColor = $getStatusColor($ticket->status ?? '');
+                                $priorityColor = $getPriorityColor($ticket->priority ?? '');
+                            @endphp
+                            <div class="card shadow-sm mb-2" style="border-radius: 12px; border-left: 4px solid {{ $statusColor }}; transition: all 0.3s ease; cursor: pointer;" 
+                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" 
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)';">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span style="font-weight: 600; font-size: 14px; color: #1E60A1;">{{ $ticket->code ?? 'N/A' }}</span>
+                                                @if($ticket->priority)
+                                                    <span style="font-size: 10px; padding: 2px 8px; border-radius: 12px; background-color: {{ $priorityColor }}; color: #fff; font-weight: 500;">
+                                                        {{ ucfirst($ticket->priority) }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <h6 style="font-weight: 600; font-size: 15px; color: #2e3a59; margin: 0; margin-bottom: 4px;">
+                                                {{ $ticket->title ?? 'Untitled Ticket' }}
+                                            </h6>
+                                            @if($ticket->section_name)
+                                                <span style="font-size: 12px; color: #6c757d;">
+                                                    <i class="fas fa-folder"></i> {{ $ticket->section_name }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="text-end">
+                                            <span style="font-size: 11px; padding: 4px 10px; border-radius: 8px; background-color: {{ $statusColor }}20; color: {{ $statusColor }}; font-weight: 500;">
+                                                {{ $getStatusBadge($ticket->status ?? '') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($ticket->description)
+                                        <p style="font-size: 13px; color: #6c757d; margin: 8px 0; line-height: 1.4;">
+                                            {{ \Illuminate\Support\Str::limit($ticket->description, 100) }}
+                                        </p>
+                                    @endif
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2" style="border-top: 1px solid #e9ecef;">
+                                        <div class="d-flex gap-3" style="font-size: 11px; color: #6c757d;">
+                                            @if($ticket->start_date)
+                                                <span>
+                                                    <i class="fas fa-calendar-alt"></i> 
+                                                    Start: {{ optional($ticket->start_date)->format('M d, Y') }}
+                                                </span>
+                                            @endif
+                                            @if($ticket->end_date)
+                                                <span>
+                                                    <i class="fas fa-calendar-check"></i> 
+                                                    End: {{ optional($ticket->end_date)->format('M d, Y') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        @if($ticket->assignees && is_array($ticket->assignees) && count($ticket->assignees) > 0)
+                                            <div style="font-size: 11px; color: #6c757d;">
+                                                <i class="fas fa-users"></i> {{ count($ticket->assignees) }} assignee(s)
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        
+                        @if($tickets->count() >= 20)
+                            <div class="text-center mt-2">
+                                <small style="color: #6c757d; font-size: 12px;">
+                                    Showing first 20 tickets. <a href="{{ route('tickets.index') }}?project_id={{ $projectId }}" style="color: #1E60A1; text-decoration: none;">View all tickets →</a>
+                                </small>
+                            </div>
+                        @endif
+                    @endif
                 </div>
             </div>
 
@@ -937,15 +1199,230 @@
                 <!-- Section Title -->
                 <h6 style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">· Project Tasks ·</h6>
 
-                <!-- Ticket Title + Status and Metrics -->
-                <div class="d-flex justify-content-center align-items-center mb-2 p-3" style="background: #fff; border-radius: 10px; min-height: 100px;">
-                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
-                    <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
+                @php
+                    // Get project ID
+                    $projectId = (string) ($project->_id ?? $project->id);
+                    $projectIdRaw = $project->_id ?? $project->id;
+                    
+                    // Build array of possible project_id values to match
+                    $projectIds = [$projectId];
+                    if ($projectIdRaw && (string)$projectIdRaw !== $projectId) {
+                        $projectIds[] = $projectIdRaw;
+                    }
+                    try {
+                        $oid = new \MongoDB\BSON\ObjectId($projectId);
+                        $projectIds[] = $oid;
+                    } catch (\Throwable $e) {}
+                    $projectIds = array_unique($projectIds, SORT_REGULAR);
+                    
+                    // Helper function to count with ObjectId fallback
+                    $fetchTasksByProjectId = function($model, $projectIds) {
+                        return $model::whereIn('project_id', $projectIds)
+                            ->orderByDesc('created_at')
+                            ->limit(20)
+                            ->get();
+                    };
+                    
+                    // Fetch tasks from all three models
+                    $tasks = $fetchTasksByProjectId(\App\Models\Task::class, $projectIds);
+                    $webTasks = $fetchTasksByProjectId(\App\Models\WebTask::class, $projectIds);
+                    $employeeTasks = $fetchTasksByProjectId(\App\Models\EmployeeTask::class, $projectIds);
+                    
+                    // Combine all tasks and add type identifier
+                    $allTasks = collect();
+                    
+                    foreach ($tasks as $task) {
+                        $task->task_type = 'task';
+                        $allTasks->push($task);
+                    }
+                    
+                    foreach ($webTasks as $task) {
+                        $task->task_type = 'webtask';
+                        $allTasks->push($task);
+                    }
+                    
+                    foreach ($employeeTasks as $task) {
+                        $task->task_type = 'employeetask';
+                        $allTasks->push($task);
+                    }
+                    
+                    // Sort by created_at descending
+                    $allTasks = $allTasks->sortByDesc(function($task) {
+                        return $task->created_at ?? now();
+                    })->values()->take(20);
+                    
+                    // Helper function to get status color
+                    $getStatusColor = function($status) {
+                        $colors = [
+                            'new_task' => '#6c757d',
+                            'new' => '#6c757d',
+                            'in_progress' => '#7ED957',
+                            'in_hold' => '#F5A623',
+                            'in_hold_task' => '#F5A623',
+                            'delayed' => '#EF4444',
+                            'in_delayed' => '#EF4444',
+                            'completed' => '#1E60A1',
+                            'done' => '#1E60A1',
+                            'in_check' => '#a855f7',
+                            'rejected' => '#ef4444',
+                        ];
+                        return $colors[strtolower($status ?? '')] ?? '#6c757d';
+                    };
+                    
+                    // Helper function to get status badge
+                    $getStatusBadge = function($status) {
+                        $badges = [
+                            'new_task' => 'New',
+                            'new' => 'New',
+                            'in_progress' => 'In Progress',
+                            'in_hold' => 'In Hold',
+                            'in_hold_task' => 'In Hold',
+                            'delayed' => 'Delayed',
+                            'in_delayed' => 'Delayed',
+                            'completed' => 'Completed',
+                            'done' => 'Done',
+                            'in_check' => 'In Check',
+                            'rejected' => 'Rejected',
+                        ];
+                        return $badges[strtolower($status ?? '')] ?? ucfirst(str_replace('_', ' ', $status ?? 'Unknown'));
+                    };
+                    
+                    // Helper function to get priority color
+                    $getPriorityColor = function($priority) {
+                        $colors = [
+                            'low' => '#22c55e',
+                            'medium' => '#f59e0b',
+                            'high' => '#ef4444',
+                        ];
+                        return $colors[strtolower($priority ?? '')] ?? '#6c757d';
+                    };
+                    
+                    // Helper function to get task type badge
+                    $getTaskTypeBadge = function($type) {
+                        $badges = [
+                            'task' => ['label' => 'Task', 'color' => '#1E60A1'],
+                            'webtask' => ['label' => 'Web Task', 'color' => '#7ED957'],
+                            'employeetask' => ['label' => 'Employee Task', 'color' => '#F5A623'],
+                        ];
+                        return $badges[$type] ?? ['label' => 'Task', 'color' => '#6c757d'];
+                    };
+                @endphp
+
+                <div id="offcanvasProjectTasks" class="d-flex flex-column gap-2">
+                    @if($allTasks->isEmpty())
+                        <div class="d-flex justify-content-center align-items-center mb-2 p-4" style="background: #fff; border-radius: 10px; min-height: 100px;">
+                            <div class="text-center">
+                                <img src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="No tasks" style="width: 40px; height: 40px; opacity: 0.5; margin-bottom: 8px;" />
+                                <p style="font-size: 14px; color: #6c757d; margin: 0;">No tasks found for this project</p>
+                            </div>
+                        </div>
+                    @else
+                        @foreach($allTasks as $task)
+                            @php
+                                $taskId = (string) ($task->_id ?? $task->id);
+                                $statusColor = $getStatusColor($task->status ?? '');
+                                $taskType = $getTaskTypeBadge($task->task_type ?? 'task');
+                                $priority = $task->priority ?? null;
+                                $priorityColor = $priority ? $getPriorityColor($priority) : null;
+                            @endphp
+                            <div class="card shadow-sm mb-2" style="border-radius: 12px; border-left: 4px solid {{ $statusColor }}; transition: all 0.3s ease; cursor: pointer;" 
+                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" 
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)';">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                                <span style="font-size: 10px; padding: 2px 8px; border-radius: 12px; background-color: {{ $taskType['color'] }}20; color: {{ $taskType['color'] }}; font-weight: 500;">
+                                                    {{ $taskType['label'] }}
+                                                </span>
+                                                @if($priority && $priorityColor)
+                                                    <span style="font-size: 10px; padding: 2px 8px; border-radius: 12px; background-color: {{ $priorityColor }}; color: #fff; font-weight: 500;">
+                                                        {{ ucfirst($priority) }}
+                                                    </span>
+                                                @endif
+                                                @if($task->number)
+                                                    <span style="font-size: 11px; color: #6c757d; font-weight: 500;">
+                                                        #{{ $task->number }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <h6 style="font-weight: 600; font-size: 15px; color: #2e3a59; margin: 0; margin-bottom: 4px;">
+                                                {{ $task->title ?? 'Untitled Task' }}
+                                            </h6>
+                                            @if($task->ticket_id)
+                                                @php
+                                                    $ticketId = (string) $task->ticket_id;
+                                                    try {
+                                                        $ticket = \App\Models\Ticket::find($ticketId);
+                                                        if (!$ticket) {
+                                                            $ticket = \App\Models\Ticket::where('_id', new \MongoDB\BSON\ObjectId($ticketId))->first();
+                                                        }
+                                                    } catch (\Throwable $e) {
+                                                        $ticket = null;
+                                                    }
+                                                @endphp
+                                                @if($ticket)
+                                                    <span style="font-size: 12px; color: #1E60A1;">
+                                                        <i class="fas fa-ticket-alt"></i> {{ $ticket->code ?? 'Ticket' }}
+                                                    </span>
+                                                @endif
+                                            @endif
+                                        </div>
+                                        <div class="text-end">
+                                            <span style="font-size: 11px; padding: 4px 10px; border-radius: 8px; background-color: {{ $statusColor }}20; color: {{ $statusColor }}; font-weight: 500;">
+                                                {{ $getStatusBadge($task->status ?? '') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($task->description)
+                                        <p style="font-size: 13px; color: #6c757d; margin: 8px 0; line-height: 1.4;">
+                                            {{ \Illuminate\Support\Str::limit($task->description, 100) }}
+                                        </p>
+                                    @endif
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2" style="border-top: 1px solid #e9ecef;">
+                                        <div class="d-flex gap-3" style="font-size: 11px; color: #6c757d;">
+                                            @if($task->start_date)
+                                                <span>
+                                                    <i class="fas fa-calendar-alt"></i> 
+                                                    Start: {{ optional($task->start_date)->format('M d, Y') }}
+                                                </span>
+                                            @endif
+                                            @if($task->end_date)
+                                                <span>
+                                                    <i class="fas fa-calendar-check"></i> 
+                                                    End: {{ optional($task->end_date)->format('M d, Y') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            @if(isset($task->checkpoints) && is_array($task->checkpoints) && count($task->checkpoints) > 0)
+                                                <span style="font-size: 11px; color: #6c757d;">
+                                                    <i class="fas fa-list-check"></i> {{ count($task->checkpoints) }} checkpoint(s)
+                                                </span>
+                                            @endif
+                                            @if($task->assigned_to ?? null)
+                                                <span style="font-size: 11px; color: #6c757d;">
+                                                    <i class="fas fa-user"></i> Assigned
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
-
-                
-
-                    </div>
+                            </div>
+                        @endforeach
+                        
+                        @if($allTasks->count() >= 20)
+                            <div class="text-center mt-2">
+                                <small style="color: #6c757d; font-size: 12px;">
+                                    Showing first 20 tasks. <a href="{{ route('chat-task') }}?project_id={{ $projectId }}" style="color: #1E60A1; text-decoration: none;">View all tasks →</a>
+                                </small>
+                            </div>
+                        @endif
+                    @endif
+                </div>
+            </div>
 
 
             {{-- kam ayega --}}
