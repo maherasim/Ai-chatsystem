@@ -663,21 +663,16 @@
                                                     return asset('build/img/profiles/avatar-16.jpg'); // Default avatar
                                                 };
                                             @endphp
-                                            <div class="d-flex justify-content-center flex-wrap gap-2 mt-2"
-                                                style="margin-left: 10px;">
+                                            <div class="d-flex justify-content-center align-items-center mt-2"
+                                                style="margin-left: 10px; flex-wrap: wrap;">
                                                 @if($developers->isEmpty())
                                                     <span style="font-size: 12px; color: #6c757d;">No developers assigned</span>
                                                 @else
-                                                    @foreach($developers as $developer)
-                                                        <div class="d-flex flex-column align-items-center" style="margin: 0 4px;">
-                                                            <img src="{{ $getImageUrl($developer) }}" 
-                                                                 alt="{{ $developer->name ?? 'Developer' }}" 
-                                                                 style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #1e60a1;"
-                                                                 title="{{ $developer->name ?? 'Developer' }}" />
-                                                            <small style="font-size: 10px; color: #6c757d; margin-top: 2px; max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                                {{ $developer->name ?? 'Dev' }}
-                                                            </small>
-                                                        </div>
+                                                    @foreach($developers as $index => $developer)
+                                                        <img src="{{ $getImageUrl($developer) }}" 
+                                                             alt="{{ $developer->name ?? 'Developer' }}" 
+                                                             style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #1e60a1; margin-left: {{ $index > 0 ? '-8px' : '0' }}; z-index: {{ count($developers) - $index }}; position: relative;"
+                                                             title="{{ $developer->name ?? 'Developer' }}" />
                                                     @endforeach
                                                 @endif
                                             </div>
