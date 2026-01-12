@@ -587,29 +587,13 @@
                                             <i class="ti ti-mail-heart"></i>
                                         </div>
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="info">
-                                            <h6>Phone</h6>
-                                            <p id="contactInfoPhone">-</p>
-                                        </div>
-                                        <div class="icon">
-                                            <i class="ti ti-phone-check"></i>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="info">
-                                            <h6>Bio</h6>
-                                            <p id="contactInfoBio">-</p>
-                                        </div>
-                                        <div class="icon">
-                                            <i class="ti ti-user-check"></i>
-                                        </div>
-                                    </li>
+                                     
+                                    
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="content-wrapper">
+                    <!-- <div class="content-wrapper">
                         <h5 class="sub-title">Social Profiles</h5>
                         <div class="card">
                             <div class="card-body">
@@ -621,7 +605,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="content-wrapper">
                         <h5 class="sub-title">Media Details</h5>
                         <div class="chat-file">
