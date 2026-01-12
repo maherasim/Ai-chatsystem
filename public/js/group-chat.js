@@ -793,9 +793,9 @@ class GroupChatManager {
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {
             messageContent = `
-                <div class="chat-img">
-                    <div class="img-wrap">
-                        <img src="${message.file_url}" alt="Image">
+                <div class="chat-img" style="max-width: 100%; width: 100%;">
+                    <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
+                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
                         <div class="img-overlay">
                             <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
                                 <i class="ti ti-eye"></i>
@@ -806,18 +806,31 @@ class GroupChatManager {
                 </div>
             `;
         } else if (message.message_type === 'file' && message.file_url) {
+            const fileInfo = this.getFileTypeInfo(message.file_name || 'file');
             messageContent = `
-                <div class="file-attach">
-                    <span class="file-icon">
-                        <i class="ti ti-files"></i>
-                    </span>
-                    <div class="ms-2 overflow-hidden">
-                        <h6 class="mb-1">${message.file_name || 'File'}</h6>
-                        <p>${this.formatFileSize(message.file_size)}</p>
+                <div class="file-attach-professional" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; max-width: 400px; transition: all 0.3s ease;">
+                    <div class="file-icon-wrapper" style="width: 56px; height: 56px; border-radius: 12px; background: ${fileInfo.bgColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <i class="${fileInfo.icon}" style="font-size: 28px; color: ${fileInfo.color};"></i>
                     </div>
-                    <a href="${message.file_url}" download class="download-icon">
-                        <i class="ti ti-download"></i>
-                    </a>
+                    <div class="file-info" style="flex: 1; min-width: 0;">
+                        <div class="file-name" style="font-weight: 600; font-size: 14px; color: #212529; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">
+                            ${this.escapeHtml(message.file_name || 'File')}
+                        </div>
+                        <div class="file-meta" style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: #6c757d;">
+                            <span class="file-size">${this.formatFileSize(message.file_size || 0)}</span>
+                            <span class="file-type-badge" style="background: ${fileInfo.badgeColor}; color: ${fileInfo.badgeTextColor}; padding: 2px 8px; border-radius: 4px; font-weight: 500; font-size: 11px;">
+                                ${fileInfo.extension.toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="file-actions" style="display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;">
+                        <a href="${message.file_url}" download class="download-btn" style="width: 36px; height: 36px; border-radius: 8px; background: #6338F6; color: #fff; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(99, 56, 246, 0.2);" title="Download">
+                            <i class="ti ti-download" style="font-size: 16px;"></i>
+                        </a>
+                        <a href="${message.file_url}" target="_blank" class="view-btn" style="width: 36px; height: 36px; border-radius: 8px; background: #e9ecef; color: #495057; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease;" title="Open in new tab">
+                            <i class="ti ti-external-link" style="font-size: 16px;"></i>
+                        </a>
+                    </div>
                 </div>
             `;
         } else if (message.message_type === 'audio' && message.file_url) {
@@ -1201,7 +1214,12 @@ class GroupChatManager {
             if (file) {
                 const formData = new FormData();
                 formData.append('file', file);
-                formData.append('type', messageType);
+                // Map messageType to backend expected type
+                let backendType = messageType;
+                if (messageType === 'img') {
+                    backendType = 'image';
+                }
+                formData.append('type', backendType);
                 formData.append('group_id', this.currentGroupId);
 
                 const uploadResponse = await fetch('/api/chat/upload-file', {
@@ -1212,11 +1230,21 @@ class GroupChatManager {
                     body: formData,
                 });
 
+                // Check if response is JSON
+                const contentType = uploadResponse.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await uploadResponse.text();
+                    console.error('Upload response is not JSON:', text.substring(0, 200));
+                    throw new Error('Server returned an error. Please check file size and format.');
+                }
+
                 const uploadData = await uploadResponse.json();
                 if (uploadData.success) {
                     messageData.file_url = uploadData.file_url;
                     messageData.file_name = uploadData.file_name;
                     messageData.file_size = uploadData.file_size;
+                } else {
+                    throw new Error(uploadData.message || 'File upload failed');
                 }
             }
 
@@ -1225,19 +1253,39 @@ class GroupChatManager {
             // Send via Agora if connected
             if (this.agoraClient && this.isConnected) {
                 try {
-                    const msg = AgoraChat.message.create({
+                    let msgOptions = {
                         type: messageType,
                         to: this.currentGroupId,
-                        msg: content,
                         chatType: 'groupChat',
-                    });
+                    };
+                    
+                    // Handle file messages differently
+                    if (messageType === 'img' && messageData.file_url) {
+                        msgOptions.url = messageData.file_url;
+                        msgOptions.filename = messageData.file_name;
+                    } else if (messageType === 'file' && messageData.file_url) {
+                        msgOptions.url = messageData.file_url;
+                        msgOptions.filename = messageData.file_name;
+                        msgOptions.file_length = messageData.file_size;
+                    } else if (messageType === 'audio' && messageData.file_url) {
+                        msgOptions.url = messageData.file_url;
+                        msgOptions.length = 0; // Duration if available
+                    } else if (messageType === 'video' && messageData.file_url) {
+                        msgOptions.url = messageData.file_url;
+                        msgOptions.filename = messageData.file_name;
+                        msgOptions.length = 0; // Duration if available
+                    } else {
+                        // Text message
+                        msgOptions.msg = content;
+                    }
 
+                    const msg = AgoraChat.message.create(msgOptions);
                     agoraMessageId = msg.id; // Capture Agora Message ID
 
                     console.log('📤 Sending message via Agora:', {
                         to: this.currentGroupId,
                         type: messageType,
-                        content: content.substring(0, 50) + '...',
+                        content: messageType === 'txt' ? content.substring(0, 50) + '...' : messageData.file_name,
                         id: agoraMessageId
                     });
 
@@ -1482,6 +1530,63 @@ class GroupChatManager {
     /**
      * Format file size
      */
+    /**
+     * Get file type information (icon, color, etc.) based on file extension
+     */
+    getFileTypeInfo(fileName) {
+        const extension = fileName.split('.').pop()?.toLowerCase() || 'file';
+        
+        const fileTypes = {
+            // Code files
+            'php': { icon: 'ti ti-brand-php', color: '#777BB4', bgColor: '#E8E9F0', badgeColor: '#777BB4', badgeTextColor: '#fff' },
+            'js': { icon: 'ti ti-brand-javascript', color: '#F7DF1E', bgColor: '#FEF9E7', badgeColor: '#F7DF1E', badgeTextColor: '#000' },
+            'jsx': { icon: 'ti ti-brand-react', color: '#61DAFB', bgColor: '#E6F7FF', badgeColor: '#61DAFB', badgeTextColor: '#000' },
+            'ts': { icon: 'ti ti-brand-typescript', color: '#3178C6', bgColor: '#E3F2FD', badgeColor: '#3178C6', badgeTextColor: '#fff' },
+            'tsx': { icon: 'ti ti-brand-react', color: '#61DAFB', bgColor: '#E6F7FF', badgeColor: '#61DAFB', badgeTextColor: '#000' },
+            'py': { icon: 'ti ti-brand-python', color: '#3776AB', bgColor: '#E3F2FD', badgeColor: '#3776AB', badgeTextColor: '#fff' },
+            'java': { icon: 'ti ti-brand-java', color: '#ED8B00', bgColor: '#FFF3E0', badgeColor: '#ED8B00', badgeTextColor: '#fff' },
+            'cpp': { icon: 'ti ti-brand-cpp', color: '#00599C', bgColor: '#E3F2FD', badgeColor: '#00599C', badgeTextColor: '#fff' },
+            'c': { icon: 'ti ti-brand-cpp', color: '#A8B9CC', bgColor: '#F5F5F5', badgeColor: '#A8B9CC', badgeTextColor: '#000' },
+            'cs': { icon: 'ti ti-brand-csharp', color: '#239120', bgColor: '#E8F5E9', badgeColor: '#239120', badgeTextColor: '#fff' },
+            'go': { icon: 'ti ti-brand-golang', color: '#00ADD8', bgColor: '#E0F7FA', badgeColor: '#00ADD8', badgeTextColor: '#fff' },
+            'rb': { icon: 'ti ti-brand-ruby', color: '#CC342D', bgColor: '#FFEBEE', badgeColor: '#CC342D', badgeTextColor: '#fff' },
+            'swift': { icon: 'ti ti-brand-swift', color: '#FA7343', bgColor: '#FFF3E0', badgeColor: '#FA7343', badgeTextColor: '#fff' },
+            'kt': { icon: 'ti ti-brand-kotlin', color: '#7F52FF', bgColor: '#F3E5F5', badgeColor: '#7F52FF', badgeTextColor: '#fff' },
+            'html': { icon: 'ti ti-brand-html5', color: '#E34F26', bgColor: '#FFEBEE', badgeColor: '#E34F26', badgeTextColor: '#fff' },
+            'css': { icon: 'ti ti-brand-css3', color: '#1572B6', bgColor: '#E3F2FD', badgeColor: '#1572B6', badgeTextColor: '#fff' },
+            'scss': { icon: 'ti ti-brand-sass', color: '#CC6699', bgColor: '#FCE4EC', badgeColor: '#CC6699', badgeTextColor: '#fff' },
+            'vue': { icon: 'ti ti-brand-vue', color: '#4FC08D', bgColor: '#E8F5E9', badgeColor: '#4FC08D', badgeTextColor: '#fff' },
+            'json': { icon: 'ti ti-code', color: '#000000', bgColor: '#F5F5F5', badgeColor: '#000000', badgeTextColor: '#fff' },
+            'xml': { icon: 'ti ti-code', color: '#FF6600', bgColor: '#FFF3E0', badgeColor: '#FF6600', badgeTextColor: '#fff' },
+            
+            // Documents
+            'pdf': { icon: 'ti ti-file-type-pdf', color: '#DC143C', bgColor: '#FFEBEE', badgeColor: '#DC143C', badgeTextColor: '#fff' },
+            'doc': { icon: 'ti ti-file-type-doc', color: '#2B579A', bgColor: '#E3F2FD', badgeColor: '#2B579A', badgeTextColor: '#fff' },
+            'docx': { icon: 'ti ti-file-type-doc', color: '#2B579A', bgColor: '#E3F2FD', badgeColor: '#2B579A', badgeTextColor: '#fff' },
+            'xls': { icon: 'ti ti-file-type-xls', color: '#1D6F42', bgColor: '#E8F5E9', badgeColor: '#1D6F42', badgeTextColor: '#fff' },
+            'xlsx': { icon: 'ti ti-file-type-xls', color: '#1D6F42', bgColor: '#E8F5E9', badgeColor: '#1D6F42', badgeTextColor: '#fff' },
+            'ppt': { icon: 'ti ti-file-type-ppt', color: '#D04423', bgColor: '#FFEBEE', badgeColor: '#D04423', badgeTextColor: '#fff' },
+            'pptx': { icon: 'ti ti-file-type-ppt', color: '#D04423', bgColor: '#FFEBEE', badgeColor: '#D04423', badgeTextColor: '#fff' },
+            'txt': { icon: 'ti ti-file-type-txt', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' },
+            'rtf': { icon: 'ti ti-file-text', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' },
+            
+            // Archives
+            'zip': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
+            'rar': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
+            '7z': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
+            'tar': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
+            'gz': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
+            
+            // Default
+            'file': { icon: 'ti ti-file', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' }
+        };
+        
+        return {
+            ...fileTypes[extension] || fileTypes['file'],
+            extension: extension
+        };
+    }
+
     formatFileSize(bytes) {
         if (!bytes) return '0 B';
         const k = 1024;
@@ -1835,7 +1940,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sendButton = document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');
 
     if (messageInput) {
-        messageInput.addEventListener('keypress', (e) => {
+        messageInput.addEventListener('keypress', async (e) => {
             // Don't send if mention dropdown is open and user presses Enter
             if (e.key === 'Enter' && !e.shiftKey) {
                 const mentionDropdown = document.querySelector('.mention-dropdown');
@@ -1846,8 +1951,39 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 e.preventDefault();
                 const content = messageInput.value.trim();
-                if (content) {
-                    window.groupChatManager.sendMessage(content);
+                const selectedFile = window.selectedFile || null;
+                const selectedFileType = window.selectedFileType || null;
+                
+                // Send message if there's content or a file
+                if (content || selectedFile) {
+                    // If file is selected, send it
+                    if (selectedFile) {
+                        try {
+                            await window.groupChatManager.sendMessage(
+                                content || (selectedFileType === 'img' ? 'Image' : selectedFile.name),
+                                selectedFileType,
+                                selectedFile
+                            );
+                            
+                            // Clear file selection
+                            window.selectedFile = null;
+                            window.selectedFileType = null;
+                            const fileInput = document.getElementById('files');
+                            if (fileInput) fileInput.value = '';
+                            if (window.removeFilePreview) {
+                                window.removeFilePreview();
+                            }
+                            
+                            // Clear message input
+                            if (messageInput) messageInput.value = '';
+                        } catch (error) {
+                            console.error('Error sending file:', error);
+                            alert('Failed to send file: ' + (error.message || 'Unknown error'));
+                        }
+                    } else {
+                        // Send text message only
+                        window.groupChatManager.sendMessage(content);
+                    }
                 }
             }
         });
@@ -1862,11 +1998,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (sendButton) {
-        sendButton.addEventListener('click', (e) => {
+        sendButton.addEventListener('click', async (e) => {
             e.preventDefault();
             const content = messageInput ? messageInput.value.trim() : '';
-            if (content) {
-                window.groupChatManager.sendMessage(content);
+            const selectedFile = window.selectedFile || null;
+            const selectedFileType = window.selectedFileType || null;
+            const fileInput = document.getElementById('files');
+            
+            // Send message if there's content or a file
+            if (content || selectedFile) {
+                // If file is selected, send it
+                if (selectedFile) {
+                    try {
+                        sendButton.disabled = true;
+                        const originalContent = sendButton.innerHTML;
+                        sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
+                        
+                        await window.groupChatManager.sendMessage(
+                            content || (selectedFileType === 'img' ? 'Image' : selectedFile.name),
+                            selectedFileType,
+                            selectedFile
+                        );
+                        
+                        // Clear file selection
+                        window.selectedFile = null;
+                        window.selectedFileType = null;
+                        if (fileInput) fileInput.value = '';
+                        if (window.removeFilePreview) {
+                            window.removeFilePreview();
+                        }
+                        
+                        // Clear message input
+                        if (messageInput) messageInput.value = '';
+                        
+                        sendButton.disabled = false;
+                        sendButton.innerHTML = originalContent;
+                    } catch (error) {
+                        console.error('Error sending file:', error);
+                        alert('Failed to send file: ' + (error.message || 'Unknown error'));
+                        sendButton.disabled = false;
+                        sendButton.innerHTML = '<i class="ti ti-send"></i>';
+                    }
+                } else {
+                    // Send text message only
+                    window.groupChatManager.sendMessage(content);
+                }
             }
         });
     }

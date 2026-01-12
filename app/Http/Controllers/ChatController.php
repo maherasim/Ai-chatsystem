@@ -291,15 +291,36 @@ class ChatController extends Controller
     public function uploadFile(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:10240', // 10MB max
+            'file' => 'required|file|max:51200', // 50MB max for documents
             'type' => 'required|in:image,file,audio,video',
+            'group_id' => 'nullable|string', // Optional group_id for group chats
         ]);
 
         $file = $request->file('file');
         $type = $request->type;
         
+        // Determine storage type based on file MIME type
+        $mimeType = $file->getMimeType();
+        $storageType = $type;
+        
+        // If type is 'file', determine subdirectory based on file extension
+        if ($type === 'file') {
+            $extension = strtolower($file->getClientOriginalExtension());
+            if (in_array($extension, ['pdf'])) {
+                $storageType = 'file/pdf';
+            } elseif (in_array($extension, ['doc', 'docx'])) {
+                $storageType = 'file/word';
+            } elseif (in_array($extension, ['xls', 'xlsx'])) {
+                $storageType = 'file/excel';
+            } elseif (in_array($extension, ['ppt', 'pptx'])) {
+                $storageType = 'file/powerpoint';
+            } else {
+                $storageType = 'file/documents';
+            }
+        }
+        
         $fileName = Str::random(20) . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('chat/' . $type, $fileName, 'public');
+        $path = $file->storeAs('chat/' . $storageType, $fileName, 'public');
 
         return response()->json([
             'success' => true,

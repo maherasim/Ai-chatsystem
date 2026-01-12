@@ -45,6 +45,76 @@
         overflow-x: hidden;
     }
 
+    /* Fix image display in chat messages - make images fully visible */
+    .chat-img .img-wrap {
+        height: auto !important;
+        min-height: 120px;
+        max-height: 500px;
+        max-width: 100%;
+        flex: none !important;
+    }
+
+    .chat-img .img-wrap img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100%;
+        max-height: 500px;
+        object-fit: contain !important;
+        object-position: center;
+    }
+
+    .chat-img {
+        max-width: 100% !important;
+        width: 100%;
+    }
+
+    .chats .chat-content .message-content .chat-img {
+        max-width: 100% !important;
+    }
+
+    /* Allow images to use more width in message bubbles */
+    .chats .chat-content .message-content:has(.chat-img),
+    .chats-right .chat-content .message-content:has(.chat-img) {
+        max-width: 85% !important;
+    }
+
+    /* Fallback for browsers that don't support :has() */
+    .chats .chat-content .message-content .chat-img,
+    .chats-right .chat-content .message-content .chat-img {
+        max-width: 100% !important;
+        width: 100%;
+    }
+
+    /* Professional file attachment styling */
+    .file-attach-professional {
+        transition: all 0.3s ease;
+    }
+
+    .file-attach-professional:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        border-color: #6338F6 !important;
+    }
+
+    .file-attach-professional .download-btn:hover {
+        background: #5229d4 !important;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(99, 56, 246, 0.3) !important;
+    }
+
+    .file-attach-professional .view-btn:hover {
+        background: #dee2e6 !important;
+        color: #212529 !important;
+        transform: scale(1.05);
+    }
+
+    /* Ensure file attachments don't overflow */
+    .chats .chat-content .message-content .file-attach-professional,
+    .chats-right .chat-content .message-content .file-attach-professional {
+        max-width: 100%;
+        width: 100%;
+    }
+
     /* Prevent parent containers from overflowing */
     .main_content,
     .sidebar-group {
@@ -427,7 +497,7 @@
                         <a href="#" class="action-circle file-action position-absolute">
                             <i class="ti ti-folder"></i>
                         </a>
-                        <input type="file" class="open-file position-relative" name="files" id="files">
+                        <input type="file" class="open-file position-relative" name="files" id="files" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar">
                     </div>
                     <div class="form-item">
                         <a href="#" data-bs-toggle="dropdown">
@@ -1246,6 +1316,116 @@
                         window.groupChatManager.openGroupChat('{{ $firstGroup['id'] }}', '{{ addslashes($firstGroup['name']) }}', '{{ $firstGroup['team_photo'] }}');
                     @endif
                 }
+            });
+        }
+        
+        // Store selected file for sending
+        window.selectedFile = null;
+        window.selectedFileType = null;
+        
+        // Handle file input for file sharing
+        const fileInput = document.getElementById('files');
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) {
+                    window.selectedFile = null;
+                    window.selectedFileType = null;
+                    removeFilePreview();
+                    return;
+                }
+                
+                if (!window.groupChatManager || !window.groupChatManager.currentGroupId) {
+                    alert('Please select a group first');
+                    fileInput.value = '';
+                    window.selectedFile = null;
+                    window.selectedFileType = null;
+                    return;
+                }
+                
+                // Determine message type based on file type
+                let messageType = 'file';
+                const fileType = file.type.toLowerCase();
+                
+                if (fileType.startsWith('image/')) {
+                    messageType = 'img';
+                } else if (fileType.startsWith('audio/')) {
+                    messageType = 'audio';
+                } else if (fileType.startsWith('video/')) {
+                    messageType = 'video';
+                } else {
+                    messageType = 'file';
+                }
+                
+                // Store file for later sending
+                window.selectedFile = file;
+                window.selectedFileType = messageType;
+                
+                // Show file preview
+                showFilePreview(file, messageType);
+            });
+        }
+        
+        // Function to show file preview
+        function showFilePreview(file, messageType) {
+            // Remove existing preview if any
+            removeFilePreview();
+            
+            const formWrap = document.querySelector('.chat-footer-wrap .form-wrap');
+            if (!formWrap) return;
+            
+            const preview = document.createElement('div');
+            preview.id = 'filePreview';
+            preview.className = 'file-preview mb-2 p-2 bg-light rounded d-flex align-items-center justify-content-between';
+            preview.style.cssText = 'border: 1px solid #ddd; margin-bottom: 8px;';
+            
+            let icon = '<i class="ti ti-file"></i>';
+            if (messageType === 'img') icon = '<i class="ti ti-photo"></i>';
+            else if (messageType === 'audio') icon = '<i class="ti ti-music"></i>';
+            else if (messageType === 'video') icon = '<i class="ti ti-video"></i>';
+            
+            preview.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <span class="me-2" style="font-size: 20px;">${icon}</span>
+                    <div>
+                        <div style="font-weight: 500; font-size: 14px;">${file.name}</div>
+                        <div style="font-size: 12px; color: #666;">${formatFileSize(file.size)}</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 18px;">
+                    <i class="ti ti-x"></i>
+                </button>
+            `;
+            
+            formWrap.parentNode.insertBefore(preview, formWrap);
+        }
+        
+        // Function to remove file preview
+        function removeFilePreview() {
+            const preview = document.getElementById('filePreview');
+            if (preview) {
+                preview.remove();
+            }
+        }
+        
+        // Make removeFilePreview available globally
+        window.removeFilePreview = removeFilePreview;
+        
+        // Function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+        
+        // Make file input clickable via the folder icon
+        const fileAction = document.querySelector('.file-action');
+        if (fileAction && fileInput) {
+            fileAction.addEventListener('click', function(e) {
+                e.preventDefault();
+                fileInput.click();
             });
         }
     });
