@@ -135,6 +135,8 @@ public function store(Request $request)
         
         $setting->image = $publicPath;
         $user->image = $publicPath;
+        // Clear old profile_image to ensure consistency
+        $user->profile_image = null;
     }
 
     $setting->first_name = $request->first_name;

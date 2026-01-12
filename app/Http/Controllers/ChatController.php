@@ -649,18 +649,7 @@ class ChatController extends Controller
             return null;
         }
         
-        // Check profile_image first (stored in storage/app/public/profiles/)
-        if (isset($user->profile_image) && !empty(trim($user->profile_image))) {
-            $image = ltrim($user->profile_image, '/');
-            // Check storage/app/public/...
-            if (file_exists(storage_path('app/public/' . $image))) {
-                return asset('storage/' . $image);
-            }
-            // Default to storage path
-            return asset('storage/' . $image);
-        }
-        
-        // Fallback to image field (stored in public/upload/users/ or storage/upload/users/)
+        // Check image field first (stored in public/upload/users/) for consistency
         if (isset($user->image) && !empty(trim($user->image))) {
             $image = ltrim($user->image, '/');
             
@@ -674,8 +663,8 @@ class ChatController extends Controller
                 if (file_exists(storage_path('app/public/' . $image))) {
                     return asset('storage/' . $image);
                 }
-                // Default to storage path
-                return asset('storage/' . $image);
+                // Default to public path
+                return asset($image);
             } else {
                 // Already has storage path or other format
                 // Check storage/app/public/...
@@ -685,6 +674,17 @@ class ChatController extends Controller
                 // Default to storage path
                 return asset('storage/' . $image);
             }
+        }
+        
+        // Fallback to profile_image (stored in storage/app/public/profiles/)
+        if (isset($user->profile_image) && !empty(trim($user->profile_image))) {
+            $image = ltrim($user->profile_image, '/');
+            // Check storage/app/public/...
+            if (file_exists(storage_path('app/public/' . $image))) {
+                return asset('storage/' . $image);
+            }
+            // Default to storage path
+            return asset('storage/' . $image);
         }
         
         return null;
