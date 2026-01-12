@@ -39,9 +39,10 @@
 				}
 			@endphp
 
-			<img src="{{ $imageUrl }}"
+			<img id="headerUserAvatar" src="{{ $imageUrl }}"
 				 class="rounded-circle"
-				 alt="image">
+				 alt="image"
+				 onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-16.jpg') }}';">
 
 
          </div>
