@@ -2157,6 +2157,118 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Helper function to add task card to list (visual feedback only, not saved to DB)
+        function addTaskCardToList(taskData, listId, projectSelect, ticketSelect, previewImg, issuesArray) {
+                try {
+                    var taskList = document.getElementById(listId);
+                    if (!taskList) return;
+                    
+                    var projectOpt = projectSelect?.selectedOptions?.[0];
+                    var ticketOpt = ticketSelect?.selectedOptions?.[0];
+                    var projectTitle = projectOpt ? projectOpt.textContent.trim() : 'Project';
+                    var ticketTitle = ticketOpt ? ticketOpt.textContent.trim() : 'Ticket';
+                    var ticketCode = ticketOpt ? (ticketOpt.textContent.match(/^[^-]+/) || [ticketTitle])[0].trim() : '';
+                    
+                    // Format dates
+                    var formatDate = function(dateStr) {
+                        if (!dateStr) return '--';
+                        var parts = ('' + dateStr).substring(0, 10).split('-');
+                        return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : '--';
+                    };
+                    var startStr = formatDate(taskData.start_date);
+                    var endStr = formatDate(taskData.end_date);
+                    
+                    // Get image source
+                    var imgSrc = (previewImg && previewImg.src) ? previewImg.src : '{{ asset('build/img/dooted img.svg') }}';
+                    if (!imgSrc || (imgSrc.indexOf('data:image') !== 0 && !imgSrc.match(/^(https?:\/\/|\/)/))) {
+                        imgSrc = '{{ asset('build/img/dooted img.svg') }}';
+                    }
+                    
+                    // Create card element
+                    var card = document.createElement('div');
+                    var isWebTask = listId === 'wtTaskList';
+                    card.className = isWebTask ? 'd-flex p-2 rounded mt-2 task-card mb-1' : 'd-flex p-2 rounded mt-2 task-card';
+                    card.style.cssText = isWebTask ? 
+                        'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;' :
+                        'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px; border-radius: 10px;';
+                    
+                    // Set data attributes
+                    card.setAttribute('data-board', imgSrc);
+                    card.setAttribute('data-issues', JSON.stringify([taskData]));
+                    card.setAttribute('data-title', taskData.title || ticketTitle || 'Task');
+                    card.setAttribute('data-project-id', taskData.project_id || '');
+                    card.setAttribute('data-ticket-id', taskData.ticket_id || '');
+                    card.setAttribute('data-project-title', projectTitle);
+                    card.setAttribute('data-ticket-code', ticketCode);
+                    card.setAttribute('data-ticket-title', ticketTitle);
+                    card.setAttribute('data-start', taskData.start_date || '');
+                    card.setAttribute('data-deliver', taskData.end_date || '');
+                    card.onclick = function() { try { openTaskViewer(card); } catch(_) {} };
+                    
+                    var projectLogo = '{{ asset('build/img/yekbon.svg') }}';
+                    var numberBadge = String(taskData.number || (issuesArray ? issuesArray.length : 1)).padStart(2, '0');
+                    
+                    // Build HTML based on task type
+                    if (isWebTask) {
+                        card.innerHTML = 
+                            '<div class="me-2"><img src="' + imgSrc + '" alt="Task Image" style="width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;"></div>' +
+                            '<div class="flex-grow-1">' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                    '<div style="font-weight:600;font-size:14px;display:flex;align-items:center;">' + (taskData.title || ticketTitle || 'Task') + '</div>' +
+                                '</div>' +
+                                '<div style="font-size:12px;color:#6c757d;">' + (ticketOpt?.text || '') + '</div>' +
+                                '<div class="d-flex justify-content-between mt-2 flex-nowrap" style="background-color:#fff;border-radius:10px;padding:4px;">' +
+                                    '<div style="font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;"><small>Start: ' + startStr + '</small></div>' +
+                                    '<div style="font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;"><small>Deliver: ' + endStr + '</small></div>' +
+                                    '<div class="d-flex align-items-center" style="font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;">' +
+                                        '<img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png" style="margin-right:4px;">' + numberBadge +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                    } else {
+                        card.innerHTML = 
+                            '<div style="padding: 3.95px 0 3.95px 4.05px; flex-shrink: 0;">' +
+                                '<img src="' + imgSrc + '" alt="Task Image" style="width: 110px; height: 140px; border-radius: 8px; background: transparent; border: none; padding: 0; display:block; object-fit: cover;">' +
+                            '</div>' +
+                            '<div class="flex-grow-1">' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                    '<div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">' +
+                                        '<img src="' + projectLogo + '" alt="" style="width: 30px; height: 30px; margin-right: 6px;">' +
+                                        (taskData.title || ticketTitle || 'Task') +
+                                    '</div>' +
+                                '</div>' +
+                                '<div style="font-size: 12px; color: #6c757d;">' + (ticketCode ? ticketCode + ' - ' : '') + ticketTitle + '</div>' +
+                                '<div style="font-size: 13px; margin-top: 2px;">' + (taskData.description || '-') + '</div>' +
+                                '<div class="d-flex align-items-center justify-content-between mt-2 flex-nowrap gap-2" style="background-color: #fff; border-radius: 10px; padding: 4px;">' +
+                                    '<div class="d-flex align-items-center gap-1" style="font-size: 14px;">' +
+                                        '<span style="color: #1BC469; font-weight: 500;">Start:</span>' +
+                                        '<span style="color: #1C274C;">' + startStr + '</span>' +
+                                        '<span style="color: #1C274C; margin: 0 4px;">|</span>' +
+                                        '<span style="color: #1BC469; font-weight: 500;">Deliver:</span>' +
+                                        '<span style="color: #1C274C;">' + endStr + '</span>' +
+                                    '</div>' +
+                                    '<div class="d-flex align-items-center gap-2">' +
+                                        '<div class="d-flex align-items-center gap-1" style="background-color: #f3f4f6; border-radius: 6px; padding: 4px 8px;">' +
+                                            '<div style="width: 8px; height: 8px; background-color: #1BC469; border-radius: 50%;"></div>' +
+                                            '<span style="font-size: 12px; color: #374151; font-weight: 500; text-transform: capitalize;">low</span>' +
+                                        '</div>' +
+                                        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">' +
+                                            '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>' +
+                                        '</svg>' +
+                                        '<div class="d-flex align-items-center gap-1" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 600;">' +
+                                            '<span style="font-size: 8px;">•</span>' + numberBadge + '<span style="font-size: 8px;">•</span>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                    }
+                    
+                    taskList.prepend(card);
+                } catch (err) {
+                    console.error('Error adding task card to list:', err);
+                }
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             var createTaskModalEl = document.getElementById('createTaskModal');
             if (!createTaskModalEl) return;
@@ -2844,12 +2956,9 @@
                         };
                     })();
                     createdTasks.push(taskData);
-                // Auto-save the task after adding an issue, without closing the main modal
-                setTimeout(function() {
-                    try {
-                        if (typeof saveTaskSilently === 'function') saveTaskSilently();
-                    } catch (_) {}
-                }, 10);
+                // Issue is added to createdTasks array, will be saved when user clicks green "Save and Close" button
+                // Add task card to list (visual feedback only)
+                addTaskCardToList(taskData, 'taskList', projectSelect, ticketSelect, previewImg, createdTasks);
 
                     var badge = document.createElement('div');
                     badge.className = 'marker-badge';
@@ -3742,12 +3851,9 @@
                     taskData.layer = null;
                 }
                 createdTasks.push(taskData);
-                // Auto-save the task after adding an issue via modal, without closing the main modal
-                setTimeout(function() {
-                    try {
-                        if (typeof saveTaskSilently === 'function') saveTaskSilently();
-                    } catch (_) {}
-                }, 10);
+                // Issue is added to createdTasks array, will be saved when user clicks green "Save and Close" button
+                // Add task card to list (visual feedback only)
+                addTaskCardToList(taskData, 'taskList', projectSelect, ticketSelect, previewImg, createdTasks);
 
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
@@ -3809,7 +3915,15 @@
             try {
                 var createTaskSaveBtn = document.getElementById('create-task-save');
                 if (createTaskSaveBtn && !createTaskSaveBtn._bound) {
-                    createTaskSaveBtn.addEventListener('click', function() {
+                    createTaskSaveBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Prevent double-clicks
+                        if (this.disabled || this.dataset.saving === '1') return;
+                        this.disabled = true;
+                        this.dataset.saving = '1';
+                        var originalText = this.textContent;
+                        this.textContent = 'Saving...';
                         try {
                             // Editing mode: PUT update instead of creating a new task
                             var editingId = (document.getElementById('create-task-save') || {}).dataset
@@ -3896,9 +4010,17 @@
                                         }, 300);
                                     } else {
                                         alert('Failed to update task');
+                                        // Re-enable button on error
+                                        createTaskSaveBtn.disabled = false;
+                                        createTaskSaveBtn.dataset.saving = '0';
+                                        createTaskSaveBtn.textContent = originalText;
                                     }
                                 }).catch(function() {
                                     alert('Failed to update task');
+                                    // Re-enable button on error
+                                    createTaskSaveBtn.disabled = false;
+                                    createTaskSaveBtn.dataset.saving = '0';
+                                    createTaskSaveBtn.textContent = originalText;
                                 });
                                 return;
                             }
@@ -4006,16 +4128,29 @@
                                     }, 500);
                                 } else {
                                     alert('Failed to create task: ' + (resp.message || 'Unknown error'));
+                                    // Re-enable button on error
+                                    createTaskSaveBtn.disabled = false;
+                                    createTaskSaveBtn.dataset.saving = '0';
+                                    createTaskSaveBtn.textContent = originalText;
                                 }
                             }).catch(function(error) {
                                 alert('Failed to create task. Please try again.');
+                                // Re-enable button on error
+                                createTaskSaveBtn.disabled = false;
+                                createTaskSaveBtn.dataset.saving = '0';
+                                createTaskSaveBtn.textContent = originalText;
                             });
-                        } catch (_) {}
+                        } catch (err) {
+                            // Re-enable button on error
+                            createTaskSaveBtn.disabled = false;
+                            createTaskSaveBtn.dataset.saving = '0';
+                            createTaskSaveBtn.textContent = originalText;
+                        }
                     });
                     createTaskSaveBtn._bound = true;
                 }
 
-                // Silent save (no modal close) used by auto-save on issue creation
+                // Silent save function (kept for potential future use, but no longer auto-called on issue creation)
                 window.saveTaskSilently = function() {
                     try {
                         var editingId = (document.getElementById('create-task-save') || {}).dataset?.editingId;
@@ -5784,12 +5919,7 @@
                 if (saver && !saver.dataset.autolist) {
                     saver.dataset.autolist = '1';
                     saver.addEventListener('click', function() {
-                        // Allow the issue creation handler to push into wtIssues first, then save
-                        setTimeout(function() {
-                            try {
-                                if (typeof wtSaveTaskSilently === 'function') wtSaveTaskSilently();
-                            } catch (_) {}
-                        }, 0);
+                        // Issue is added to wtIssues array, will be saved when user clicks green "Save and Close" button
                     });
                 }
             } catch (_) {}
@@ -6504,12 +6634,10 @@
                     }
                 };
                 wtIssues.push(item);
-                // Auto-save the web task after adding an issue, without closing the modal
-                setTimeout(function() {
-                    try {
-                        if (typeof wtSaveTaskSilently === 'function') wtSaveTaskSilently();
-                    } catch (_) {}
-                }, 10);
+                // Issue is added to wtIssues array, will be saved when user clicks green "Save and Close" button
+                // Add task card to list (visual feedback only)
+                addTaskCardToList(item, 'wtTaskList', wtProjectSelect, wtTicketSelect, wtPreview, wtIssues);
+                
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
                 badge.textContent = String(item.number);
@@ -6542,7 +6670,7 @@
                 } catch (_) {}
             });
 
-            // Silent save for web flow (no modal close), used by auto-save
+            // Silent save function for web flow (kept for potential future use, but no longer auto-called on issue creation)
             window.wtSaveTaskSilently = function() {
                 try {
                     var editingId = (document.getElementById('wt-create-task-save') || {}).dataset?.editingId;
@@ -6629,8 +6757,18 @@
                 } catch(_){}
             };
             var wtCreateSave = document.getElementById('wt-create-task-save');
-            if (wtCreateSave) wtCreateSave.addEventListener('click', function() {
-                var editingId = (document.getElementById('wt-create-task-save') || {}).dataset?.editingId;
+            if (wtCreateSave && !wtCreateSave._bound) {
+                wtCreateSave._bound = true;
+                wtCreateSave.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Prevent double-clicks
+                    if (this.disabled || this.dataset.saving === '1') return;
+                    this.disabled = true;
+                    this.dataset.saving = '1';
+                    var originalText = this.textContent;
+                    this.textContent = 'Saving...';
+                    var editingId = (document.getElementById('wt-create-task-save') || {}).dataset?.editingId;
                 var ticketText = (function() {
                     try {
                         var opt = wtTicketSelect?.selectedOptions?.[0];
@@ -6699,9 +6837,17 @@
                             }, 300);
                         } else {
                             alert('Failed to update web task');
+                            // Re-enable button on error
+                            wtCreateSave.disabled = false;
+                            wtCreateSave.dataset.saving = '0';
+                            wtCreateSave.textContent = originalText;
                         }
                     }).catch(function() {
                         alert('Failed to update web task');
+                        // Re-enable button on error
+                        wtCreateSave.disabled = false;
+                        wtCreateSave.dataset.saving = '0';
+                        wtCreateSave.textContent = originalText;
                     });
                     return;
                 }
@@ -6800,9 +6946,28 @@
                         } catch (_) {}
                     } else {
                         alert('Failed to create web task');
+                        // Re-enable button on error
+                        wtCreateSave.disabled = false;
+                        wtCreateSave.dataset.saving = '0';
+                        wtCreateSave.textContent = originalText;
                     }
+                }).catch(function(error) {
+                    alert('Failed to create web task. Please try again.');
+                    // Re-enable button on error
+                    wtCreateSave.disabled = false;
+                    wtCreateSave.dataset.saving = '0';
+                    wtCreateSave.textContent = originalText;
                 });
+            } catch (err) {
+                // Re-enable button on error
+                if (wtCreateSave) {
+                    wtCreateSave.disabled = false;
+                    wtCreateSave.dataset.saving = '0';
+                    wtCreateSave.textContent = originalText;
+                }
+            }
             });
+        }
 
             // Save & add Task (web)
             var wtCreateSaveAdd = document.getElementById('wt-create-task-save-add');
