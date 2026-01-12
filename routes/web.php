@@ -41,7 +41,9 @@ Route::delete('/attachments/{id}', [UsersController::class, 'destroyattachement'
 
 
 Route::get('/', function () {
-    return view('signin');
+    $setting = Setting::first();
+    $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
+    return view('signin', compact('policyTerm'));
 });
 
 // routes/web.php
@@ -59,7 +61,9 @@ Route::get('/home', [DashboardController::class, 'index'])
     ->name('home');
 
 Route::get('/login', function () {
-    return view('signin');
+    $setting = Setting::first();
+    $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
+    return view('signin', compact('policyTerm'));
 })->name('login');
 
 
