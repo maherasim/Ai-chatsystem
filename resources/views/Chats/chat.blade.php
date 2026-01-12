@@ -293,19 +293,10 @@
                     </div>
                     <div class="avatar avatar-lg online flex-shrink-0">
                         @php
-    $header = $headers[0] ?? null;
-@endphp
-
-@php
     $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
-    if ($header && !empty($header->image)) {
-        // Check if path starts with upload/ (public directory) or use storage/
-        if (strpos($header->image, 'upload/') === 0) {
-            $headerAvatar = asset($header->image);
-        } else {
-            $headerAvatar = asset('storage/' . $header->image);
-        }
-    } elseif (auth()->check()) {
+    
+    // Always prioritize current user's image first
+    if (auth()->check()) {
         $userObj = auth()->user();
         // Check image field first (stored in public/upload/users/) for consistency
         if (!empty($userObj->image)) {
@@ -319,6 +310,17 @@
         // Fallback to profile_image (stored in storage/app/public/profiles/)
         elseif (!empty($userObj->profile_image)) {
             $headerAvatar = asset('storage/' . $userObj->profile_image);
+        }
+        // Fallback to Setting model for current user
+        else {
+            $userSetting = \App\Models\Setting::where('user_id', auth()->id())->first();
+            if ($userSetting && !empty($userSetting->image)) {
+                if (strpos($userSetting->image, 'upload/') === 0) {
+                    $headerAvatar = asset($userSetting->image);
+                } else {
+                    $headerAvatar = asset('storage/' . $userSetting->image);
+                }
+            }
         }
     }
 @endphp
