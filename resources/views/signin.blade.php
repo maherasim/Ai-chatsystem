@@ -247,7 +247,7 @@ border-color: #c0c0c0;
             <div class="row">
                 <div class="col-md-10">
                     <div class="modal-body px-4" style="max-height: 250px; overflow-y:auto;">
-                        {!! $policyTerm !!}
+                        {!! $policyTerm ?? 'No policy available.' !!}
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -265,7 +265,7 @@ border-color: #c0c0c0;
             <div class="row">
                 <div class="col-md-10">
                     <div class="modal-body px-4" style="max-height: 250px; overflow-y:auto;">
-                        {!! $agreement_text !!}
+                        {!! $agreement_text ?? 'No agreement available.' !!}
                     </div>
                 </div>
                 <div class="col-md-2">

@@ -22,6 +22,7 @@ use App\Http\Controllers\ChatController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
+Route::post('profile/complete', [CustomAuthController::class, 'completeprofile'])->name('profile.complete');
 Route::get('register', [CustomAuthController::class, 'register'])->name('register-user');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
@@ -43,7 +44,8 @@ Route::delete('/attachments/{id}', [UsersController::class, 'destroyattachement'
 Route::get('/', function () {
     $setting = Setting::first();
     $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
-    return view('signin', compact('policyTerm'));
+    $agreement_text = $setting && $setting->agreement_html ? $setting->agreement_html : 'No agreement available.';
+    return view('signin', compact('policyTerm', 'agreement_text'));
 });
 
 // routes/web.php
@@ -63,7 +65,8 @@ Route::get('/home', [DashboardController::class, 'index'])
 Route::get('/login', function () {
     $setting = Setting::first();
     $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
-    return view('signin', compact('policyTerm'));
+    $agreement_text = $setting && $setting->agreement_html ? $setting->agreement_html : 'No agreement available.';
+    return view('signin', compact('policyTerm', 'agreement_text'));
 })->name('login');
 
 

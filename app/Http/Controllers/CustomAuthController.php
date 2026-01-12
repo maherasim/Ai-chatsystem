@@ -11,8 +11,10 @@ class CustomAuthController extends Controller
 
     public function index()
     {
-        
-        return view('signin');
+        $setting = \App\Models\Setting::first();
+        $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
+        $agreement_text = $setting && $setting->agreement_html ? $setting->agreement_html : 'No agreement available.';
+        return view('signin', compact('policyTerm', 'agreement_text'));
     }  
       
 public function customLogin(Request $request)
