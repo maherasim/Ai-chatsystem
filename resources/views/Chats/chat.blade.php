@@ -296,13 +296,23 @@
 @php
     $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
     if ($header && !empty($header->image)) {
-        $headerAvatar = asset('storage/' . $header->image);
+        // Check if path starts with upload/ (public directory) or use storage/
+        if (strpos($header->image, 'upload/') === 0) {
+            $headerAvatar = asset($header->image);
+        } else {
+            $headerAvatar = asset('storage/' . $header->image);
+        }
     } elseif (auth()->check()) {
         $userObj = auth()->user();
         if (!empty($userObj->profile_image)) {
             $headerAvatar = asset('storage/' . $userObj->profile_image);
         } elseif (!empty($userObj->image)) {
-             $headerAvatar = asset('storage/' . $userObj->image);
+            // Check if path starts with upload/ (public directory) or use storage/
+            if (strpos($userObj->image, 'upload/') === 0) {
+                $headerAvatar = asset($userObj->image);
+            } else {
+                $headerAvatar = asset('storage/' . $userObj->image);
+            }
         }
     }
 @endphp
@@ -1165,7 +1175,12 @@
         }
         // Fallback to image field (stored in public/upload/users/)
         elseif (!empty($currentUser->image)) {
-            $avatarUrl = asset('storage/' . $currentUser->image);
+            // Check if path starts with upload/ (public directory) or use storage/
+            if (strpos($currentUser->image, 'upload/') === 0) {
+                $avatarUrl = asset($currentUser->image);
+            } else {
+                $avatarUrl = asset('storage/' . $currentUser->image);
+            }
         }
     }
 @endphp
