@@ -174,6 +174,45 @@ class UsersController extends Controller
             $q->where('is_admin', true)->orWhere('type', 'subadmin');
         })->count();
 
+        // Format groups for notification sidebar
+        try {
+            $groups = $allGroups->map(function($group) use ($allTeams) {
+                // Load team separately
+                $team = null;
+                if ($group->team_id) {
+                    try {
+                        $team = $allTeams->firstWhere('_id', $group->team_id);
+                    } catch (\Exception $e) {
+                        // Team not found
+                    }
+                }
+                
+                // Handle member_ids - could be array or JSON string
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+                $memberCount = count($memberIds) + 1; // +1 for admin
+                
+                return [
+                    'id' => (string) $group->_id,
+                    'name' => $group->name ?? 'Untitled Group',
+                    'team_id' => $group->team_id,
+                    'team_photo' => $team && $team->thumb_path 
+                        ? asset('storage/' . ltrim($team->thumb_path, '/'))
+                        : asset('build/img/profile.svg'),
+                    'team_banner' => $team && $team->banner_path 
+                        ? asset('storage/' . ltrim($team->banner_path, '/'))
+                        : asset('build/img/bgractangle.svg'),
+                    'member_count' => $memberCount,
+                ];
+            })->values();
+        } catch (\Exception $e) {
+            \Log::error('Error formatting groups in UsersController: ' . $e->getMessage());
+            $groups = collect([]);
+        }
+        
         return view('Chats.users', compact(
             'totalUsers',
             'activeUsers',
@@ -185,7 +224,8 @@ class UsersController extends Controller
             'employeesCount',
             'adminsCount',
             'headers',
-            'setting'
+            'setting',
+            'groups'
         ));
     }
 

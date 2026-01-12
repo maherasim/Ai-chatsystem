@@ -1206,10 +1206,46 @@
         // Initialize Agora Chat
         if (window.groupChatManager) {
             window.groupChatManager.initAgora().then(() => {
-                @if(isset($groups) && count($groups) > 0)
-                    @php $firstGroup = $groups[0]; @endphp
-                    window.groupChatManager.openGroupChat('{{ $firstGroup['id'] }}', '{{ addslashes($firstGroup['name']) }}', '{{ $firstGroup['team_photo'] }}');
-                @endif
+                // Check if group ID is in URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const groupIdParam = urlParams.get('group');
+                
+                if (groupIdParam) {
+                    // Find the group from the groups array
+                    @if(isset($groups) && count($groups) > 0)
+                        @php
+                            // Find group by ID in PHP
+                            $selectedGroup = null;
+                            if (isset($_GET['group'])) {
+                                $requestedGroupId = $_GET['group'];
+                                foreach ($groups as $group) {
+                                    if ((string)$group['id'] === (string)$requestedGroupId) {
+                                        $selectedGroup = $group;
+                                        break;
+                                    }
+                                }
+                            }
+                        @endphp
+                        
+                        @if($selectedGroup)
+                            // Open the selected group
+                            window.groupChatManager.openGroupChat('{{ $selectedGroup['id'] }}', '{{ addslashes($selectedGroup['name']) }}', '{{ $selectedGroup['team_photo'] }}');
+                        @else
+                            // Group not found, open first group as fallback
+                            @php $firstGroup = $groups[0]; @endphp
+                            window.groupChatManager.openGroupChat('{{ $firstGroup['id'] }}', '{{ addslashes($firstGroup['name']) }}', '{{ $firstGroup['team_photo'] }}');
+                        @endif
+                    @else
+                        // No groups available
+                        console.log('No groups available');
+                    @endif
+                } else {
+                    // No group parameter, open first group
+                    @if(isset($groups) && count($groups) > 0)
+                        @php $firstGroup = $groups[0]; @endphp
+                        window.groupChatManager.openGroupChat('{{ $firstGroup['id'] }}', '{{ addslashes($firstGroup['name']) }}', '{{ $firstGroup['team_photo'] }}');
+                    @endif
+                }
             });
         }
     });

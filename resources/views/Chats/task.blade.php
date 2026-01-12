@@ -145,7 +145,7 @@
         <!-- /Left Sidebar Menu -->
 
         <!-- sidebar group -->
-        @include('Chats.notification')
+        @include('Chats.notification', ['groups' => $groups ?? collect([])])
         <!-- /Sidebar group -->
 
         <!-- Chat -->

@@ -3240,19 +3240,8 @@
         setInterval(loadNotifications, 30000);
     });
 
-    function openGroupChat(groupId, groupName) {
-        // Open group chat - you can customize this based on your chat implementation
-        console.log('Opening group chat:', groupId, groupName);
-        
-        // Example: Redirect to chat with group ID or open chat modal
-        // window.location.href = '/chat?group=' + groupId;
-        
-        // Or trigger your chat system to open this group
-        if (typeof window.agoraChat !== 'undefined' && window.agoraChat.openGroupChat) {
-            window.agoraChat.openGroupChat(groupId);
-        } else {
-            // Fallback: show alert or redirect
-            alert('Opening chat for: ' + groupName);
-        }
+    function openGroupChat(groupId, groupName, photoUrl) {
+        // Navigate to chat page with group ID parameter
+        window.location.href = '{{ route("chat.index") }}?group=' + encodeURIComponent(groupId);
     }
 </script>
