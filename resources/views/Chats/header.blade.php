@@ -25,18 +25,18 @@
 					}
 				} elseif (auth()->check()) {
 					$userObj = auth()->user();
-					// Check profile_image first (stored in storage/app/public/profiles/)
-					if (!empty($userObj->profile_image)) {
-						$imageUrl = asset('storage/' . $userObj->profile_image);
-					}
-					// Fallback to image field (stored in public/upload/users/)
-					elseif (!empty($userObj->image)) {
+					// Check image field first (stored in public/upload/users/) for consistency
+					if (!empty($userObj->image)) {
 						// Check if path starts with upload/ (public directory) or use storage/
 						if (strpos($userObj->image, 'upload/') === 0) {
 							$imageUrl = asset($userObj->image);
 						} else {
 							$imageUrl = asset('storage/' . $userObj->image);
 						}
+					}
+					// Fallback to profile_image (stored in storage/app/public/profiles/)
+					elseif (!empty($userObj->profile_image)) {
+						$imageUrl = asset('storage/' . $userObj->profile_image);
 					}
 				}
 			@endphp

@@ -122,9 +122,8 @@
                                                                         @php
                                                                             $profileImg = URL::asset('/build/img/profiles/avatar-16.jpg');
                                                                             $user = auth()->user();
-                                                                            if ($user && !empty($user->profile_image)) {
-                                                                                $profileImg = asset('storage/' . $user->profile_image);
-                                                                            } elseif ($user && !empty($user->image)) {
+                                                                            // Check image field first (upload/users/) for consistency
+                                                                            if ($user && !empty($user->image)) {
                                                                                 if (strpos($user->image, 'upload/') === 0) {
                                                                                     $profileImg = asset($user->image);
                                                                                 } else {
@@ -136,6 +135,9 @@
                                                                                 } else {
                                                                                     $profileImg = asset('storage/' . $setting->image);
                                                                                 }
+                                                                            } elseif ($user && !empty($user->profile_image)) {
+                                                                                // Fallback to profile_image if image field is empty
+                                                                                $profileImg = asset('storage/' . $user->profile_image);
                                                                             }
                                                                         @endphp
                                                                         <img id="preview-image"

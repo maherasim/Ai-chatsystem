@@ -11,14 +11,17 @@
     @php
         $currentUserAvatar = '';
         if (isset($currentUser)) {
-            if (!empty($currentUser->profile_image)) {
-                $currentUserAvatar = asset('storage/' . $currentUser->profile_image);
-            } elseif (!empty($currentUser->image)) {
+            // Check image field first (stored in public/upload/users/) for consistency
+            if (!empty($currentUser->image)) {
                 if (strpos($currentUser->image, 'upload/') === 0) {
                     $currentUserAvatar = asset($currentUser->image);
                 } else {
                     $currentUserAvatar = asset('storage/' . $currentUser->image);
                 }
+            }
+            // Fallback to profile_image (stored in storage/app/public/profiles/)
+            elseif (!empty($currentUser->profile_image)) {
+                $currentUserAvatar = asset('storage/' . $currentUser->profile_image);
             }
         }
     @endphp
@@ -304,15 +307,18 @@
         }
     } elseif (auth()->check()) {
         $userObj = auth()->user();
-        if (!empty($userObj->profile_image)) {
-            $headerAvatar = asset('storage/' . $userObj->profile_image);
-        } elseif (!empty($userObj->image)) {
+        // Check image field first (stored in public/upload/users/) for consistency
+        if (!empty($userObj->image)) {
             // Check if path starts with upload/ (public directory) or use storage/
             if (strpos($userObj->image, 'upload/') === 0) {
                 $headerAvatar = asset($userObj->image);
             } else {
                 $headerAvatar = asset('storage/' . $userObj->image);
             }
+        }
+        // Fallback to profile_image (stored in storage/app/public/profiles/)
+        elseif (!empty($userObj->profile_image)) {
+            $headerAvatar = asset('storage/' . $userObj->profile_image);
         }
     }
 @endphp
@@ -1169,18 +1175,18 @@
     $avatarUrl = asset('build/img/profiles/avatar-17.jpg');
     
     if ($currentUser) {
-        // Check profile_image first (stored in storage/app/public/profiles/)
-        if (!empty($currentUser->profile_image)) {
-            $avatarUrl = asset('storage/' . $currentUser->profile_image);
-        }
-        // Fallback to image field (stored in public/upload/users/)
-        elseif (!empty($currentUser->image)) {
+        // Check image field first (stored in public/upload/users/) for consistency
+        if (!empty($currentUser->image)) {
             // Check if path starts with upload/ (public directory) or use storage/
             if (strpos($currentUser->image, 'upload/') === 0) {
                 $avatarUrl = asset($currentUser->image);
             } else {
                 $avatarUrl = asset('storage/' . $currentUser->image);
             }
+        }
+        // Fallback to profile_image (stored in storage/app/public/profiles/)
+        elseif (!empty($currentUser->profile_image)) {
+            $avatarUrl = asset('storage/' . $currentUser->profile_image);
         }
     }
 @endphp
