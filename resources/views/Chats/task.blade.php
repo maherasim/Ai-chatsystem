@@ -5699,16 +5699,16 @@
                             <div id="wt-uploadBox" onclick="var p=document.getElementById('wt-select-project'); var t=document.getElementById('wt-select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('wt-fileInput').click();"
                                 ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
                                 ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('wt-select-project'); var T=document.getElementById('wt-select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); var _src=e.target.result; previewImg.src=_src; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } if(bar){ bar.style.display='flex'; } var adj=function(){ try{ var top=84; var w=box.clientWidth; var natW=previewImg.naturalWidth||w; var natH=previewImg.naturalHeight||(w*0.5625); var h=Math.round(Math.max(360, Math.min(720, w*(natH/natW)))); previewImg.style.top=top+'px'; previewImg.style.height=h+'px'; layer.style.top=top+'px'; layer.style.height=h+'px'; box.style.height=(h+top)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; layer.style.height=''; layer.style.top='84px'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } if(bar){ bar.style.display='none'; } if(box){ box.style.height='640px'; } }"
-                                style="background-color: #f7f7f7; height: 640px; min-height: 640px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('wt-select-project'); var T=document.getElementById('wt-select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); var _src=e.target.result; previewImg.src=_src; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } if(bar){ bar.style.display='flex'; } var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); previewImg.style.top=topOffset+'px'; previewImg.style.height=h+'px'; previewImg.style.width='100%'; previewImg.style.objectFit='cover'; previewImg.style.left='0'; previewImg.style.right='0'; layer.style.top=topOffset+'px'; layer.style.height=h+'px'; layer.style.left='0'; layer.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; layer.style.height=''; layer.style.top='0'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } if(bar){ bar.style.display='none'; } if(box){ box.style.height='300px'; } }"
+                                style="background-color: #f7f7f7; height: 300px; min-height: 300px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
                                 <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG,
                                         PNG</small></p>
                                 <!-- Browser-like top bar for desktop screenshots -->
                                 
                                 <img id="wt-previewImage" src=""
-                                    style="display:none; position:absolute; top:84px; right:0; left:0; width:100%; height:auto; object-fit:contain;" />
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit:cover;" />
                                 <div id="wt-markerLayer"
-                                    style="display:none; position:absolute; top:84px; right:0; bottom:0; left:0; pointer-events:auto;"></div>
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto; height:100%;"></div>
                                 <div id="wt-markerToolbar"
                                     style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                                     <button id="wt-marker-shape-square" type="button" class="btn btn-sm"
@@ -5757,7 +5757,7 @@
                             </div>
                             <input type="file" id="wt-fileInput" accept=".jpg,.jpeg,.png,.pdf"
                                 style="display:none;"
-                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var selProj=document.getElementById('wt-select-project'); var selTick=document.getElementById('wt-select-ticket'); var box=document.getElementById('wt-uploadBox'); var bar=document.getElementById('wt-browserBar'); if(!(selProj&&selProj.value&&selTick&&selTick.value)){ try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; } if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ var _src=e.target.result; p.src=_src; p.style.display='block'; p.style.filter='brightness(0.65)'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; if(bar) bar.style.display='flex'; var adj=function(){ try{ var top=84; var w=box.clientWidth; var natW=p.naturalWidth||w; var natH=p.naturalHeight||(w*0.5625); var h=Math.round(Math.max(360, Math.min(720, w*(natH/natW)))); p.style.top=top+'px'; p.style.height=h+'px'; l.style.top=top+'px'; l.style.height=h+'px'; box.style.height=(h+top)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; r.readAsDataURL(f);} else { p.style.display='none'; p.style.filter=''; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; if(bar) bar.style.display='none'; box.style.height='640px'; }" />
+                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var selProj=document.getElementById('wt-select-project'); var selTick=document.getElementById('wt-select-ticket'); var box=document.getElementById('wt-uploadBox'); var bar=document.getElementById('wt-browserBar'); if(!(selProj&&selProj.value&&selTick&&selTick.value)){ try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; } if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ var _src=e.target.result; p.src=_src; p.style.display='block'; p.style.filter='brightness(0.65)'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; if(bar) bar.style.display='flex'; var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); p.style.top=topOffset+'px'; p.style.height=h+'px'; p.style.width='100%'; p.style.objectFit='cover'; p.style.left='0'; p.style.right='0'; l.style.top=topOffset+'px'; l.style.height=h+'px'; l.style.left='0'; l.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; r.readAsDataURL(f);} else { p.style.display='none'; p.style.filter=''; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; if(bar) bar.style.display='none'; box.style.height='640px'; }" />
                         </div>
                         <div class="col-md-5">
                              <div style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
@@ -7180,6 +7180,27 @@
                         if (src && wtPreview) {
                             var render = function() {
                                 try {
+                                    // Apply landscape adjustment for web task
+                                    var box = document.getElementById('wt-uploadBox');
+                                    if (box && wtPreview) {
+                                        var w = box.clientWidth;
+                                        var h = Math.round(w * 0.5);
+                                        var containerH = box.clientHeight || h;
+                                        var topOffset = Math.round((containerH - h) / 2);
+                                        wtPreview.style.top = topOffset + 'px';
+                                        wtPreview.style.height = h + 'px';
+                                        wtPreview.style.width = '100%';
+                                        wtPreview.style.objectFit = 'cover';
+                                        wtPreview.style.left = '0';
+                                        wtPreview.style.right = '0';
+                                        if (wtLayer) {
+                                            wtLayer.style.top = topOffset + 'px';
+                                            wtLayer.style.height = h + 'px';
+                                            wtLayer.style.left = '0';
+                                            wtLayer.style.right = '0';
+                                        }
+                                        box.style.height = Math.max(h, containerH) + 'px';
+                                    }
                                     if (wtLayer) {
                                         wtLayer.style.display = 'block';
                                         wtLayer.innerHTML = '';
@@ -7235,11 +7256,53 @@
                                     }
                                 } catch (_) {}
                             };
-                            if (wtPreview.complete) {
+                            var adjustAndRender = function() {
+                                // Apply landscape adjustment
+                                var box = document.getElementById('wt-uploadBox');
+                                var top = 84;
+                                if (box && wtPreview) {
+                                    var w = box.clientWidth;
+                                    var h = Math.round(w * 0.5);
+                                    wtPreview.style.top = top + 'px';
+                                    wtPreview.style.height = h + 'px';
+                                    wtPreview.style.width = '100%';
+                                    wtPreview.style.objectFit = 'cover';
+                                    if (wtLayer) {
+                                        wtLayer.style.top = top + 'px';
+                                        wtLayer.style.height = h + 'px';
+                                    }
+                                    box.style.height = (h + top) + 'px';
+                                }
                                 render();
+                            };
+                            var resizeHandler = function() {
+                                var box = document.getElementById('wt-uploadBox');
+                                if (box && wtPreview && wtPreview.src) {
+                                    var w = box.clientWidth;
+                                    var h = Math.round(w * 0.5);
+                                    var containerH = box.clientHeight || h;
+                                    var topOffset = Math.round((containerH - h) / 2);
+                                    wtPreview.style.top = topOffset + 'px';
+                                    wtPreview.style.height = h + 'px';
+                                    wtPreview.style.left = '0';
+                                    wtPreview.style.right = '0';
+                                    if (wtLayer) {
+                                        wtLayer.style.top = topOffset + 'px';
+                                        wtLayer.style.height = h + 'px';
+                                        wtLayer.style.left = '0';
+                                        wtLayer.style.right = '0';
+                                    }
+                                    box.style.height = Math.max(h, containerH) + 'px';
+                                    render();
+                                }
+                            };
+                            if (wtPreview.complete) {
+                                adjustAndRender();
+                                window.addEventListener('resize', resizeHandler);
                             } else {
                                 wtPreview.onload = function() {
-                                    render();
+                                    adjustAndRender();
+                                    window.addEventListener('resize', resizeHandler);
                                 };
                             }
                             wtPreview.src = src;
@@ -8049,6 +8112,22 @@
                     document.getElementById('tpvSection').textContent = card.getAttribute('data-section') || 'Section';
                     document.getElementById('tpvStart').textContent = card.getAttribute('data-start') || '-';
                     document.getElementById('tpvDeliver').textContent = card.getAttribute('data-deliver') || '-';
+                    // Set issue description - use first issue's description if available
+                    var issueDescEl = document.getElementById('tpvIssueDesc');
+                    if (issueDescEl) {
+                        var issueDesc = '-';
+                        if (issues && issues.length > 0) {
+                            // Try to get description from first issue
+                            var firstIssue = issues[0];
+                            if (firstIssue && firstIssue.description) {
+                                issueDesc = firstIssue.description;
+                            } else if (firstIssue && firstIssue.title) {
+                                // Fallback to title if description is missing
+                                issueDesc = firstIssue.title;
+                            }
+                        }
+                        issueDescEl.textContent = issueDesc || '-';
+                    }
                     var logoEl = document.getElementById('tpvLogo');
                     var logoAttr = card.getAttribute('data-project-logo');
                     if (logoEl && logoAttr) {
