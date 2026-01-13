@@ -222,7 +222,7 @@
                                     <!-- Developer Badge -->
                                     <div style="margin-top: 5px;">
                                         <span style=" background-color: #f1f1f1;  /* slightly darker than #f8f9fb */ color: #e53935;             /* deeper red tone */ font-size: 13px; padding: 4px 12px; border-radius: 12px; font-weight: 600; display: inline-block; ">
-                                            Project
+                                            {{ $team->project_title ?? 'Project' }}
                                         </span>
                                     </div>
 

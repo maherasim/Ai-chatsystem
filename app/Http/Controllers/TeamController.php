@@ -108,8 +108,14 @@ class TeamController extends Controller
                             $project = Project::find(new ObjectId($pid));
                         } catch (\Throwable $e) {}
                     }
-                    if ($project && isset($project->logo_path)) {
-                        $t->project_logo_path = $this->toPublicUrl((string) $project->logo_path);
+                    if ($project) {
+                        if (isset($project->logo_path)) {
+                            $t->project_logo_path = $this->toPublicUrl((string) $project->logo_path);
+                        }
+                        // Store project title for display
+                        $t->project_title = $project->title ?? 'Project';
+                    } else {
+                        $t->project_title = 'Project';
                     }
 
                     // Resolve project sections/addresses for card scroller
@@ -160,9 +166,13 @@ class TeamController extends Controller
                     } catch (\Throwable $e) {
                         $t->project_sections = [];
                     }
+                } else {
+                    // No project_id, set default
+                    $t->project_title = 'Project';
                 }
             } catch (\Throwable $e) {
                 // ignore
+                $t->project_title = 'Project';
             }
 
             // Resolve developer avatars from stored developers (ids or names)

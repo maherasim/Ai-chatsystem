@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         // Create Admin account
         \App\Models\User::create([
             'name' => 'Admin',
+            'user_id' => 'admin_1000',
+            'type' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456'), // Hash the password
         ]);
@@ -27,11 +29,11 @@ class DatabaseSeeder extends Seeder
         // Create Developer account
         $developerUserId = $this->generateRoleBasedUserId('developer');
         \App\Models\User::create([
-            'name' => 'Developer',
+            'name' => 'John Doe',
+            'user_id' => $developerUserId,
+            'type' => 'developer',
             'email' => 'developer@gmail.com',
             'password' => Hash::make('123456'), // Hash the password
-            'type' => 'developer',
-            'user_id' => $developerUserId,
             'active' => true,
             'permissions' => [],
         ]);
