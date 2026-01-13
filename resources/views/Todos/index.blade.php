@@ -515,7 +515,7 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 
                             <div>
                                 <h3 style="margin: 0;">Today ToDo's</h3>
-                                <strong>Total ToDo's: <span id="today_count" class="today_count">{{count($todayTodos)}}</span></strong>
+                                <strong>Total as ToDo's: <span id="today_count" class="today_count">{{count($todayTodos)}}</span></strong>
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-end" style="background: #f8fafc; border-radius: 8px; padding: 6px 10px; gap: 8px; max-width: 100%;">
@@ -2811,13 +2811,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                         <!-- Info Row -->
                         <div class="row text-center invited-users-list todo-members" style="font-size: 14px; margin:auto;">
-                            
-                            <div class="col-md-3 invit-box">
-                                <div class="invit-img">
-                                    <img src="http://127.0.0.1:8000/storage/profiles/VOXSJ0zTCVhJBEj1bOAFYiZbRnJPaCmJ1mXWvU07.png" class=" me-2" alt="image" style="width: 30px; height: 30px; margin:5px;">
-                                </div>
-                                <div class="invit-txt">User name</div>
-                            </div>
+                            <!-- Members will be dynamically populated here via JavaScript -->
                         </div>
 
                     </div>
@@ -4819,11 +4813,32 @@ function formatFileSize(bytes) {
                 members.forEach(m => {
                     let div = document.createElement("div");
                     div.classList.add("col-md-3", "invit-box");
+                    
+                    // Use base URL from window or construct from current location
+                    // Use the image URL from members_data (already includes full URL from asset() in backend)
+                    // The image is already a full URL from the backend, so use it directly
+                    let imageUrl = m.image || '';
+                    
+                    // If image is a relative path (shouldn't happen with asset(), but handle it just in case)
+                    if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
+                        const baseUrl = window.location.origin;
+                        if (imageUrl.startsWith('/')) {
+                            imageUrl = baseUrl + imageUrl;
+                        } else {
+                            imageUrl = baseUrl + '/' + imageUrl;
+                        }
+                    }
+                    
+                    // Fallback to default avatar if no image
+                    if (!imageUrl) {
+                        imageUrl = window.location.origin + '/build/img/profile.svg';
+                    }
+                    
                     div.innerHTML = `
                         <div class="invit-img">
-                            <img src="${m.image.replace('admin.', 'team.')}" alt="${m.name}" style="width:40px; height:40px; border-radius:50%;">
+                            <img src="${imageUrl}" alt="${m.name || 'User'}" style="width:40px; height:40px; border-radius:50%;">
                         </div>
-                        <div class="invit-txt">${m.name}</div>
+                        <div class="invit-txt">${m.name || 'User'}</div>
                     `;
                     membersContainer.appendChild(div);
                 });
