@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Group;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -329,8 +330,122 @@ class TicketController extends Controller
         $tickets = $query->with('project')->orderByDesc('created_at')->get();
 
         $data = $tickets->map(function ($ticket) {
+            $ticketId = (string) ($ticket->_id ?? $ticket->id);
+            $developerPhotos = [];
+            
+            // Find teams that have this ticket ID in their tickets field
+            try {
+                // Try to find teams with this ticket ID
+                // Tickets field can be JSON string like ["696282aa1c2154505a056143"] or array
+                $teams = Team::where('tickets', 'like', '%' . $ticketId . '%')->get();
+                
+                foreach ($teams as $team) {
+                    // Check if ticket ID is actually in the team's tickets array
+                    $teamTickets = $team->tickets ?? [];
+                    if (is_string($teamTickets)) {
+                        $teamTickets = json_decode($teamTickets, true) ?? [];
+                    }
+                    if (!is_array($teamTickets)) {
+                        $teamTickets = [];
+                    }
+                    
+                    // Check if this ticket ID is in the team's tickets
+                    $ticketInTeam = false;
+                    foreach ($teamTickets as $teamTicketId) {
+                        $teamTicketIdStr = (string) $teamTicketId;
+                        if ($teamTicketIdStr === $ticketId) {
+                            $ticketInTeam = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!$ticketInTeam) {
+                        continue; // Skip this team if ticket not found
+                    }
+                    
+                    // Get task_developers from team
+                    $taskDevelopers = $team->task_developers ?? [];
+                    
+                    // Handle JSON string format
+                    if (is_string($taskDevelopers)) {
+                        $taskDevelopers = json_decode($taskDevelopers, true) ?? [];
+                    }
+                    
+                    // Extract developer IDs from task_developers
+                    // Format: {"696280d3b8fe766165051593":["Asim"]}
+                    if (is_array($taskDevelopers)) {
+                        foreach ($taskDevelopers as $devId => $devNames) {
+                            if (is_string($devId) && preg_match('/^[a-f0-9]{24}$/i', $devId)) {
+                                // Try to find user by ID
+                                try {
+                                    $user = User::find($devId);
+                                    if (!$user) {
+                                        $user = User::where('_id', $devId)->orWhere('id', $devId)->first();
+                                    }
+                                    
+                                    if ($user) {
+                                        // Get user image
+                                        $imageUrl = null;
+                                        foreach (['image', 'avatar_path', 'photo_path', 'profile_photo_path', 'avatar', 'photo', 'profile_image'] as $field) {
+                                            if (!empty($user->{$field})) {
+                                                $imagePath = (string) $user->{$field};
+                                                $imagePath = ltrim($imagePath, '/');
+                                                
+                                                // Handle different path formats
+                                                if (preg_match('#^https?://#i', $imagePath)) {
+                                                    $imageUrl = $imagePath;
+                                                } elseif (str_starts_with($imagePath, 'upload/')) {
+                                                    $imageUrl = asset($imagePath);
+                                                } elseif (str_starts_with($imagePath, 'storage/')) {
+                                                    $imageUrl = asset($imagePath);
+                                                } elseif (file_exists(storage_path('app/public/' . $imagePath))) {
+                                                    $imageUrl = asset('storage/' . $imagePath);
+                                                } else {
+                                                    $imageUrl = asset($imagePath);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        
+                                        // Use default if no image found
+                                        if (!$imageUrl) {
+                                            $imageUrl = asset('build/img/profile.svg');
+                                        }
+                                        
+                                        // Add to developer photos array (avoid duplicates)
+                                        $devPhoto = [
+                                            'id' => (string) ($user->_id ?? $user->id),
+                                            'name' => $user->name ?? 'Unknown',
+                                            'image' => $imageUrl
+                                        ];
+                                        
+                                        // Check if already added
+                                        $exists = false;
+                                        foreach ($developerPhotos as $existing) {
+                                            if ($existing['id'] === $devPhoto['id']) {
+                                                $exists = true;
+                                                break;
+                                            }
+                                        }
+                                        
+                                        if (!$exists) {
+                                            $developerPhotos[] = $devPhoto;
+                                        }
+                                    }
+                                } catch (\Exception $e) {
+                                    // Skip if user not found
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                // If error, just continue without developer photos
+            }
+            
             return [
-                'id' => (string) ($ticket->_id ?? $ticket->id),
+                'id' => $ticketId,
                 'code' => $ticket->code,
                 'project_id' => $ticket->project_id,
                 'project_title' => $ticket->project_title,
@@ -344,6 +459,7 @@ class TicketController extends Controller
                 'end_date' => optional($ticket->end_date)?->format('d.m.Y'),
                 'reminder_hours' => $ticket->reminder_hours,
                 'assignees' => $ticket->assignees ?? [],
+                'developer_photos' => $developerPhotos, // Add developer photos
                 'created_at' => $ticket->created_at?->format('d.m.Y'),
                 'updated_at' => $ticket->updated_at?->format('d.m.Y'),
             ];

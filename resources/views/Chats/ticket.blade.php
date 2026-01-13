@@ -395,7 +395,7 @@
                                             <div style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
                                                 <img src="{{URL::asset('/build/img/newtask.svg')}}" style="width: 30px; height: 30px;" alt="New Ticket">
                                             </div>
-                                            <div style="font-size: 13px; color: #4A4A4A;">New Ticket</div>
+                                            <div style="font-size: 13px; color: #4A4A4A;">New Ticket </div>
                                             <div style="font-weight: bold; font-size: 14px; color: #000;" id="new-ticket-status-count">0</div>
                                         </div>
                                         <div class="vr d-none d-md-block align-self-center mx-3" style="opacity: 0.2; height: 45px;"></div>
@@ -3904,6 +3904,17 @@
         // Calculate progress percentage (you can modify this logic based on your needs)
         const progressPercentage = 0; // Very low percentage for new tickets
         
+        // Generate developer photos HTML
+        let developerPhotosHtml = '';
+        if (ticket.developer_photos && ticket.developer_photos.length > 0) {
+            developerPhotosHtml = ticket.developer_photos.slice(0, 3).map((dev, index) => {
+                const marginLeft = index > 0 ? '-5px' : '0';
+                return `<img src="${dev.image}" alt="${dev.name}" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: ${marginLeft}; object-fit: cover;" title="${dev.name}">`;
+            }).join('');
+        } else {
+            developerPhotosHtml = `<img src="{{ asset('build/img/profile.svg') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; object-fit: cover;">`;
+        }
+        
         return `
             <div class="mt-2" style="background-color: #f8f9fa; border-radius: 10px; padding: 2px; font-size: 11px;">
                 <!-- Header -->
@@ -3938,7 +3949,7 @@
 
                     <!-- Start Date -->
                     <span class="ticket-item-text" style="margin-right: 5px; color: #28a745;">
-                        Start:
+                        Start: 
                         <p style="color: black;">${startDate}</p>
                     </span>
 
@@ -3956,9 +3967,7 @@
 
                     <!-- Overlapping Profile Avatars -->
                     <div class="ticket-item-text" style="display: flex; align-items: center;">
-                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
-                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="User" style="width: 19px; height: 19px; border-radius: 50%; border: 2px solid #e8ecef; margin-left: -5px;">
+                        ${developerPhotosHtml}
                     </div>
                 </div>
 
