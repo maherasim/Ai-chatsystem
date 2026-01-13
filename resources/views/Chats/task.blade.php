@@ -8049,6 +8049,22 @@
                     document.getElementById('tpvSection').textContent = card.getAttribute('data-section') || 'Section';
                     document.getElementById('tpvStart').textContent = card.getAttribute('data-start') || '-';
                     document.getElementById('tpvDeliver').textContent = card.getAttribute('data-deliver') || '-';
+                    // Set issue description - use first issue's description if available
+                    var issueDescEl = document.getElementById('tpvIssueDesc');
+                    if (issueDescEl) {
+                        var issueDesc = '-';
+                        if (issues && issues.length > 0) {
+                            // Try to get description from first issue
+                            var firstIssue = issues[0];
+                            if (firstIssue && firstIssue.description) {
+                                issueDesc = firstIssue.description;
+                            } else if (firstIssue && firstIssue.title) {
+                                // Fallback to title if description is missing
+                                issueDesc = firstIssue.title;
+                            }
+                        }
+                        issueDescEl.textContent = issueDesc || '-';
+                    }
                     var logoEl = document.getElementById('tpvLogo');
                     var logoAttr = card.getAttribute('data-project-logo');
                     if (logoEl && logoAttr) {
