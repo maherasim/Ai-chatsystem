@@ -1890,7 +1890,7 @@
                                 <select class="custom-input custom-input-select" name="pm_id" style="color:#64748b;">
                                 <option value="" selected>Select PM</option>
                                 @foreach($developers ?? [] as $developer)
-                                    <option value="{{ $developer->_id }}">{{ $developer->name }}</option>
+                                    <option value="{{ $developer->_id }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -2297,7 +2297,7 @@
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option value="" selected>Select PM</option>
                                 @foreach($developers ?? [] as $developer)
-                                    <option value="{{ $developer->_id }}">{{ $developer->name }}</option>
+                                    <option value="{{ $developer->_id }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
                                 @endforeach
                             </select>
                         </div>

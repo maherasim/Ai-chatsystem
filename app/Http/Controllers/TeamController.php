@@ -333,10 +333,9 @@ class TeamController extends Controller
             $groups = collect([]);
         }
         
-        // Fetch all developers for PM dropdown
-        $developers = User::where('type', 'developer')
-            ->orderBy('name', 'asc')
-            ->get(['_id', 'name']);
+        // Fetch all users for PM dropdown (all types)
+        $developers = User::orderBy('name', 'asc')
+            ->get(['_id', 'name', 'type']);
         
         return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount','groups','developers'));
     }
