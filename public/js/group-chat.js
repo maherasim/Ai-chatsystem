@@ -245,9 +245,17 @@ class GroupChatManager {
         // Load existing messages
         await this.loadGroupMessages(groupId);
 
+        // Mark group as read
+        await this.markGroupAsRead(groupId);
+
         // Mark group as read in global notifications
         if (window.globalChatNotifications) {
             window.globalChatNotifications.markGroupAsRead(groupId);
+        }
+
+        // Immediately update unread counts to remove badge for this group
+        if (typeof updateUnreadCounts === 'function') {
+            updateUnreadCounts();
         }
 
         // Setup event listeners again when opening a group (in case they weren't set up)
@@ -432,6 +440,30 @@ class GroupChatManager {
             }
         } catch (error) {
             console.error('Failed to load group messages:', error);
+        }
+    }
+
+    async markGroupAsRead(groupId) {
+        try {
+            const response = await fetch(`/api/chat/group/${groupId}/read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const card = document.querySelector(`[data-group-id="${groupId}"]`);
+                if (card) {
+                    const badge = card.querySelector('.team-unread-badge');
+                    if (badge) {
+                        badge.remove();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Failed to mark group as read:', error);
         }
     }
 

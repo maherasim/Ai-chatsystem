@@ -138,7 +138,12 @@ class ChatController extends Controller
             $filteredGroups = collect([]);
         }
         
-        $groups = $filteredGroups->map(function($group) {
+        $groupReadTimestamps = $user->group_read_timestamps ?? [];
+        if (is_string($groupReadTimestamps)) {
+            $groupReadTimestamps = json_decode($groupReadTimestamps, true) ?? [];
+        }
+        
+        $groups = $filteredGroups->map(function($group) use ($userId, $groupReadTimestamps) {
             // Load team separately
             $team = null;
             if ($group->team_id) {
@@ -157,8 +162,30 @@ class ChatController extends Controller
             }
             $memberCount = count($memberIds) + 1; // +1 for admin
             
+            $groupId = (string) $group->_id;
+            $lastReadAt = $groupReadTimestamps[$groupId] ?? null;
+            
+            $unreadCount = 0;
+            $query = ChatMessage::where(function($q) use ($groupId) {
+                    $q->where('group_id', $groupId)
+                      ->orWhere('conversation_id', 'group_' . $groupId);
+                })
+                ->where('sender_id', '!=', $userId)
+                ->where('is_deleted', '!=', true);
+            
+            if ($lastReadAt) {
+                try {
+                    $readTime = is_string($lastReadAt) ? new \Carbon\Carbon($lastReadAt) : $lastReadAt;
+                    $query->where('created_at', '>', $readTime);
+                } catch (\Exception $e) {
+                    // If timestamp parsing fails, count all messages
+                }
+            }
+            
+            $unreadCount = $query->count();
+            
             return [
-                'id' => (string) $group->_id,
+                'id' => $groupId,
                 'name' => $group->name ?? 'Untitled Group',
                 'team_id' => $group->team_id,
                 'team_photo' => $team && isset($team->thumb_path) && $team->thumb_path
@@ -168,6 +195,7 @@ class ChatController extends Controller
                     ? $this->getImageUrl(ltrim($team->banner_path, '/'))
                     : $this->getImageUrl('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
+                'unread_count' => $unreadCount,
             ];
         })
         ->values();
@@ -677,6 +705,99 @@ class ChatController extends Controller
             'replied_to_message' => $repliedTo,
             'created_at' => $message->created_at->toIso8601String(),
         ];
+    }
+
+    public function markGroupAsRead($groupId)
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+            
+            $group = Group::find($groupId);
+            if (!$group) {
+                return response()->json(['success' => false, 'message' => 'Group not found'], 404);
+            }
+            
+            $memberIds = $group->member_ids ?? [];
+            if (is_string($memberIds)) {
+                $memberIds = json_decode($memberIds, true) ?? [];
+            }
+            $memberIds = array_map('strval', $memberIds);
+            $isMember = in_array($userId, $memberIds) || (string)$group->admin_id === $userId;
+            
+            if (!$isMember) {
+                return response()->json(['success' => false, 'message' => 'Not a member'], 403);
+            }
+            
+            $groupReadTimestamps = $user->group_read_timestamps ?? [];
+            if (is_string($groupReadTimestamps)) {
+                $groupReadTimestamps = json_decode($groupReadTimestamps, true) ?? [];
+            }
+            
+            $groupReadTimestamps[(string)$groupId] = now();
+            $user->group_read_timestamps = $groupReadTimestamps;
+            $user->save();
+            
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getGroupUnreadCounts()
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+            
+            $allGroups = Group::all();
+            $filteredGroups = $allGroups->filter(function($group) use ($userId) {
+                if ((string)$group->admin_id === $userId) {
+                    return true;
+                }
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $memberIds = json_decode($memberIds, true) ?? [];
+                }
+                $memberIds = array_map('strval', $memberIds);
+                return in_array($userId, $memberIds);
+            });
+            
+            $groupReadTimestamps = $user->group_read_timestamps ?? [];
+            if (is_string($groupReadTimestamps)) {
+                $groupReadTimestamps = json_decode($groupReadTimestamps, true) ?? [];
+            }
+            
+            $unreadCounts = [];
+            foreach ($filteredGroups as $group) {
+                $groupId = (string) $group->_id;
+                $lastReadAt = $groupReadTimestamps[$groupId] ?? null;
+                
+                $query = ChatMessage::where(function($q) use ($groupId) {
+                        $q->where('group_id', $groupId)
+                          ->orWhere('conversation_id', 'group_' . $groupId);
+                    })
+                    ->where('sender_id', '!=', $userId)
+                    ->where('is_deleted', '!=', true);
+                
+                if ($lastReadAt) {
+                    try {
+                        $readTime = is_string($lastReadAt) ? new \Carbon\Carbon($lastReadAt) : $lastReadAt;
+                        $query->where('created_at', '>', $readTime);
+                    } catch (\Exception $e) {
+                    }
+                }
+                
+                $count = $query->count();
+                if ($count > 0) {
+                    $unreadCounts[$groupId] = $count;
+                }
+            }
+            
+            return response()->json(['success' => true, 'unread_counts' => $unreadCounts]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }
 

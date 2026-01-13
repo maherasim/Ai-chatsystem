@@ -48,7 +48,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'agreement_accepted',
         'country',
         'card_image',
-        'description'
+        'description',
+        'group_read_timestamps',
     ];
 
  

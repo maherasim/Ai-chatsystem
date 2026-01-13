@@ -283,9 +283,15 @@
                             @forelse($groups as $group)
                                 <!-- Dynamic Group Card -->
                                 <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}', '{{ $group['team_photo'] }}')" 
-                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
+                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s; position: relative;"
                                      onmouseover="this.style.transform='scale(1.05)'"
-                                     onmouseout="this.style.transform='scale(1)'">
+                                     onmouseout="this.style.transform='scale(1)'"
+                                     data-group-id="{{ $group['id'] }}">
+                                @if(isset($group['unread_count']) && $group['unread_count'] > 0)
+                                <div class="team-unread-badge" style="position: absolute; top: 8px; right: 8px; background: #ff4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; z-index: 10; border: 2px solid white;">
+                                    {{ $group['unread_count'] > 99 ? '99+' : $group['unread_count'] }}
+                                </div>
+                                @endif
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
                                         <img src="{{ $group['team_banner'] }}" alt="Background"
                                             style="width: 100%; height: 100%; object-fit: cover;">
@@ -3438,23 +3444,85 @@
         // Update notification badge from PHP-rendered notifications instead of loading via API
         updateNotificationBadgeFromExisting();
         
-        // Note: Notifications are rendered via PHP, so we don't need to load via API
-        // If you need to refresh notifications, reload the page instead
+        // Start polling for unread message counts
+        startUnreadCountPolling();
     });
 
-    function openGroupChat(groupId, groupName) {
-        // Open group chat - you can customize this based on your chat implementation
-        console.log('Opening group chat:', groupId, groupName);
+    let unreadCountPollingInterval = null;
+
+    function startUnreadCountPolling() {
+        if (unreadCountPollingInterval) {
+            clearInterval(unreadCountPollingInterval);
+        }
         
-        // Example: Redirect to chat with group ID or open chat modal
-        // window.location.href = '/chat?group=' + groupId;
+        updateUnreadCounts();
         
-        // Or trigger your chat system to open this group
-        if (typeof window.agoraChat !== 'undefined' && window.agoraChat.openGroupChat) {
+        unreadCountPollingInterval = setInterval(updateUnreadCounts, 5000);
+    }
+
+    function stopUnreadCountPolling() {
+        if (unreadCountPollingInterval) {
+            clearInterval(unreadCountPollingInterval);
+            unreadCountPollingInterval = null;
+        }
+    }
+
+    async function updateUnreadCounts() {
+        try {
+            const response = await fetch('/api/chat/groups/unread-counts', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            if (!response.ok) return;
+
+            const data = await response.json();
+            if (data.success && data.unread_counts) {
+                const currentOpenGroupId = window.groupChatManager?.currentGroupId ? String(window.groupChatManager.currentGroupId) : null;
+                const allGroupCards = document.querySelectorAll('[data-group-id]');
+                
+                allGroupCards.forEach(card => {
+                    const groupId = String(card.getAttribute('data-group-id'));
+                    const count = data.unread_counts[groupId] || 0;
+                    let badge = card.querySelector('.team-unread-badge');
+                    const isCurrentlyOpen = currentOpenGroupId && groupId === currentOpenGroupId;
+                    
+                    if (count > 0 && !isCurrentlyOpen) {
+                        if (!badge) {
+                            badge = document.createElement('div');
+                            badge.className = 'team-unread-badge';
+                            badge.style.cssText = 'position: absolute; top: 8px; right: 8px; background: #ff4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; z-index: 10; border: 2px solid white;';
+                            card.appendChild(badge);
+                        }
+                        badge.textContent = count > 99 ? '99+' : count;
+                    } else if (badge || isCurrentlyOpen) {
+                        if (badge) {
+                            badge.remove();
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Failed to update unread counts:', error);
+        }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopUnreadCountPolling();
+        } else {
+            startUnreadCountPolling();
+        }
+    });
+
+    function openGroupChat(groupId, groupName, photoUrl) {
+        if (typeof window.groupChatManager !== 'undefined' && window.groupChatManager.openGroupChat) {
+            window.groupChatManager.openGroupChat(groupId, groupName, photoUrl);
+        } else if (typeof window.agoraChat !== 'undefined' && window.agoraChat.openGroupChat) {
             window.agoraChat.openGroupChat(groupId);
         } else {
-            // Fallback: show alert or redirect
-            alert('Opening chat for: ' + groupName);
+            window.location.href = `/chat?group_id=${groupId}&group_name=${encodeURIComponent(groupName)}&photo_url=${encodeURIComponent(photoUrl || '')}`;
         }
     }
 </script>

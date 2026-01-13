@@ -223,6 +223,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
     Route::get('/api/chat/group/{groupId}/members', [ChatController::class, 'getGroupMembers'])->name('chat.group.members');
+    Route::post('/api/chat/group/{groupId}/read', [ChatController::class, 'markGroupAsRead'])->name('chat.group.read');
+    Route::get('/api/chat/groups/unread-counts', [ChatController::class, 'getGroupUnreadCounts'])->name('chat.groups.unread.counts');
     // Groups API for notifications
     Route::get('/api/chat/groups', [ChatController::class, 'getUserGroups'])->name('chat.groups');
     // User profile API
