@@ -95,14 +95,102 @@ class UsersController extends Controller
                     }
                 }
                 
-                if ($found && !empty($team->title)) {
-                    $teamNames[] = $team->title;
+                if ($found) {
+                    if (!empty($team->title)) {
+                        $teamNames[] = $team->title;
+                    }
+                    
+                    // Count tickets from team
+                    $teamTickets = $team->tickets ?? [];
+                    if (is_string($teamTickets)) {
+                        $teamTickets = json_decode($teamTickets, true) ?? [];
+                    }
+                    if (is_array($teamTickets)) {
+                        if (!isset($user->total_tickets)) {
+                            $user->total_tickets = 0;
+                        }
+                        $user->total_tickets += count($teamTickets);
+                    }
+                    
+                    // Count tasks from team
+                    $teamTasks = $team->tasks ?? [];
+                    if (is_string($teamTasks)) {
+                        $teamTasks = json_decode($teamTasks, true) ?? [];
+                    }
+                    if (is_array($teamTasks)) {
+                        if (!isset($user->total_tasks)) {
+                            $user->total_tasks = 0;
+                        }
+                        $user->total_tasks += count($teamTasks);
+                    }
+                    
+                    // Get project_id from team and fetch project data (logo_path)
+                    if (!empty($team->project_id)) {
+                        try {
+                            $projectId = (string) $team->project_id;
+                            $project = Project::find($projectId);
+                            if (!$project) {
+                                // Try with ObjectId
+                                try {
+                                    $project = Project::find(new ObjectId($projectId));
+                                } catch (\Exception $e) {
+                                    // Project not found
+                                }
+                            }
+                            
+                            if ($project) {
+                                // Fix: Get existing array, modify it, then assign back
+                                // This avoids "Indirect modification of overloaded property" error
+                                $existingProjects = $user->project_images ?? [];
+                                if (!is_array($existingProjects)) {
+                                    $existingProjects = [];
+                                }
+                                
+                                // Store project logo_path and title
+                                $projectData = [
+                                    'logo_path' => $project->logo_path ?? null,
+                                    'title' => $project->title ?? null,
+                                    'status' => $project->status ?? null,
+                                ];
+                                
+                                // Only add if logo_path exists and not already added
+                                if (!empty($projectData['logo_path'])) {
+                                    $alreadyExists = false;
+                                    foreach ($existingProjects as $existing) {
+                                        if (isset($existing['logo_path']) && $existing['logo_path'] === $projectData['logo_path']) {
+                                            $alreadyExists = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!$alreadyExists) {
+                                        $existingProjects[] = $projectData;
+                                    }
+                                }
+                                $user->project_images = $existingProjects;
+                            }
+                        } catch (\Exception $e) {
+                            // Skip if error fetching project
+                        }
+                    }
                 }
             }
             
             // Attach team names to user object
             $user->team_names = array_unique($teamNames);
             $user->team = !empty($teamNames) ? implode(', ', array_unique($teamNames)) : '';
+            
+            // Ensure project_images is an array
+            if (!isset($user->project_images) || !is_array($user->project_images)) {
+                $user->project_images = [];
+            }
+            
+            // Ensure ticket and task counts are set
+            if (!isset($user->total_tickets)) {
+                $user->total_tickets = 0;
+            }
+            if (!isset($user->total_tasks)) {
+                $user->total_tasks = 0;
+            }
             
             // Fetch group names for each user (check if user ID is in group's member_ids)
             $groupNames = [];

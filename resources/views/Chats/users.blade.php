@@ -414,6 +414,7 @@ function confirmDelete(deleteUrl, userName) {
                                                         "group" => $user->group ?? "",
                                                         "phone" => $user->phone ?? "",
                                                         "card_image" => $user->card_image ?? "",
+                                                        "project_titles" => $user->project_titles ?? [],
                                                         "attachments" => ($user->attachments ?? collect())->map(function ($attachment) {
                                                                 return [
                                                                     "file_name" => $attachment->file_name ?? "",
@@ -458,9 +459,56 @@ function confirmDelete(deleteUrl, userName) {
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
                                     <div style="font-weight: 600; color: #1e293b;">Assigned Projects</div>
-                                    <div id="userProjectsDetailContainer" class="text-center mt-1" style="min-height: 40px;">
-                                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
-                                        <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
+                                    <div id="userProjectsDetailContainer_{{ $user->_id ?? $user->id }}" class="text-center mt-1" style="min-height: 40px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center;">
+                                        @php
+                                            $projectImages = $user->project_images ?? [];
+                                            
+                                            // Helper function to get project logo URL
+                                            $getProjectLogoUrl = function($logoPath) {
+                                                if (empty($logoPath)) {
+                                                    return URL::asset('/build/img/yekbon.svg');
+                                                }
+                                                if (strpos($logoPath, 'http') === 0) {
+                                                    return $logoPath;
+                                                }
+                                                if (strpos($logoPath, 'storage/') === 0 || strpos($logoPath, 'projects/') === 0) {
+                                                    return asset('storage/' . ltrim($logoPath, 'storage/'));
+                                                }
+                                                return asset($logoPath);
+                                            };
+                                        @endphp
+                                        @if(count($projectImages) > 0)
+                                            @foreach(array_slice($projectImages, 0, 4) as $project)
+                                                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                                    {{-- Project Logo --}}
+                                                    <div style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 2px solid #e5e7eb; background: #fff; display: flex; align-items: center; justify-content: center;">
+                                                        <img src="{{ $getProjectLogoUrl($project['logo_path'] ?? null) }}" 
+                                                             alt="{{ $project['title'] ?? 'Project' }}" 
+                                                             style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+                                                             onerror="this.src='{{ URL::asset('/build/img/yekbon.svg') }}'">
+                                                    </div>
+                                                    {{-- Flag Icon --}}
+                                                    <img src="{{ asset('assets/new_project.png') }}" alt="Project Flag" style="width: 16px; height: 12px; object-fit: contain;">
+                                                </div>
+                                            @endforeach
+                                            @if(count($projectImages) > 4)
+                                                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                                    <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e5e7eb; background: #fff; display: flex; align-items: center; justify-content: center;">
+                                                        <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 24px; height: 24px;" />
+                                                    </div>
+                                                    {{-- Flag Icon --}}
+                                                    <img src="{{ asset('assets/new_project.png') }}" alt="Project Flag" style="width: 16px; height: 12px; object-fit: contain;">
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                                <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #e5e7eb; background: #fff; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 24px; height: 24px;" />
+                                                </div>
+                                                {{-- Flag Icon --}}
+                                                <img src="{{ asset('assets/new_project.png') }}" alt="Project Flag" style="width: 16px; height: 12px; object-fit: contain;">
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -469,11 +517,11 @@ function confirmDelete(deleteUrl, userName) {
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
-                                        <div id="userTicketsCount" style="font-weight: 600; color: #1e293b;">0</div>
+                                        <div id="userTicketsCount_{{ $user->_id ?? $user->id }}" style="font-weight: 600; color: #1e293b;">{{ $user->total_tickets ?? 0 }}</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
-                                        <div id="userTasksCount" style="font-weight: 600; color: #1e293b;">0</div>
+                                        <div id="userTasksCount_{{ $user->_id ?? $user->id }}" style="font-weight: 600; color: #1e293b;">{{ $user->total_tasks ?? 0 }}</div>
                                     </div>
                                 </div>
 
@@ -717,12 +765,12 @@ function confirmDelete(deleteUrl, userName) {
             return;
         }
         
-        // Get both containers
-        const detailContainer = document.getElementById('userProjectsDetailContainer');
+        // Get both containers using unique IDs
+        const detailContainer = document.getElementById('userProjectsDetailContainer_' + userId);
         const mainContainer = document.getElementById('userProjectsContainer');
         
         if (!detailContainer) {
-            console.error('userProjectsDetailContainer not found');
+            console.error('userProjectsDetailContainer_' + userId + ' not found');
         }
         
         // Show loading in detail container
@@ -750,9 +798,9 @@ function confirmDelete(deleteUrl, userName) {
                 if (data.success) {
                     const projects = data.projects || [];
                     
-                    // Update ticket and task counts
-                    const ticketsCountEl = document.getElementById('userTicketsCount');
-                    const tasksCountEl = document.getElementById('userTasksCount');
+                    // Update ticket and task counts using unique IDs
+                    const ticketsCountEl = document.getElementById('userTicketsCount_' + userId);
+                    const tasksCountEl = document.getElementById('userTasksCount_' + userId);
                     if (ticketsCountEl) {
                         ticketsCountEl.textContent = data.tickets_count || 0;
                     }
