@@ -570,6 +570,8 @@ public function destroy($id){
             // Find teams where user is in task_developers
             $teams = Team::all();
             $projectIds = [];
+            $totalTickets = 0;
+            $totalTasks = 0;
             
             foreach ($teams as $team) {
                 $taskDevelopers = $team->task_developers ?? [];
@@ -609,20 +611,76 @@ public function destroy($id){
                     }
                 }
                 
-                // If user found in team, get project_id
-                if ($found && !empty($team->project_id)) {
-                    $projectIds[] = (string) $team->project_id;
+                // If user found in team, get project_id and count tickets/tasks
+                if ($found) {
+                    if (!empty($team->project_id)) {
+                        $projectIds[] = (string) $team->project_id;
+                    }
+                    
+                    // Count tickets from team
+                    $teamTickets = $team->tickets ?? [];
+                    if (is_string($teamTickets)) {
+                        $teamTickets = json_decode($teamTickets, true) ?? [];
+                    }
+                    if (is_array($teamTickets)) {
+                        $totalTickets += count($teamTickets);
+                    }
+                    
+                    // Count tasks from team
+                    $teamTasks = $team->tasks ?? [];
+                    if (is_string($teamTasks)) {
+                        $teamTasks = json_decode($teamTasks, true) ?? [];
+                    }
+                    if (is_array($teamTasks)) {
+                        $totalTasks += count($teamTasks);
+                    }
                 }
             }
             
             $projectIds = array_unique($projectIds);
             
             if (empty($projectIds)) {
-                return response()->json(['success' => true, 'projects' => []]);
+                return response()->json([
+                    'success' => true, 
+                    'projects' => [],
+                    'tickets_count' => $totalTickets,
+                    'tasks_count' => $totalTasks
+                ]);
             }
             
-            // Fetch projects
-            $projects = Project::whereIn('_id', $projectIds)->get();
+            // Fetch projects - handle both string and ObjectId formats
+            $projects = collect();
+            foreach ($projectIds as $pid) {
+                try {
+                    $project = Project::find($pid);
+                    if (!$project) {
+                        // Try with ObjectId
+                        try {
+                            $project = Project::find(new ObjectId($pid));
+                        } catch (\Exception $e) {
+                            // Skip if not found
+                            continue;
+                        }
+                    }
+                    if ($project) {
+                        $projects->push($project);
+                    }
+                } catch (\Exception $e) {
+                    // Skip if error
+                    continue;
+                }
+            }
+            
+            // Check if projects were found
+            if ($projects->isEmpty()) {
+                return response()->json([
+                    'success' => true,
+                    'projects' => [],
+                    'tickets_count' => $totalTickets,
+                    'tasks_count' => $totalTasks,
+                    'message' => 'No projects found for this user'
+                ]);
+            }
             
             // Format projects with tickets and tasks
             $formattedProjects = $projects->map(function ($project) use ($userIdStr, $userUserId, $user) {
@@ -842,10 +900,10 @@ public function destroy($id){
             
             return response()->json([
                 'success' => true,
-                'projects' => $formattedProjects,
+                'projects' => $formattedProjects->values()->all(),
                 'summary' => [
                     'total_projects' => $formattedProjects->count(),
-                    'project_summary' => $projectSummary,
+                    'project_summary' => $projectSummary->values()->all(),
                     'task_stats' => [
                         'new_tasks' => $newTasksCount,
                         'total_tasks' => $totalTasksCount,
@@ -856,6 +914,8 @@ public function destroy($id){
                         'rejected_tasks' => $rejectedTasksCount,
                     ],
                 ],
+                'tickets_count' => $totalTickets,
+                'tasks_count' => $totalTasks,
             ]);
         } catch (\Exception $e) {
             \Log::error('Failed to get user projects', [

@@ -457,8 +457,8 @@ function confirmDelete(deleteUrl, userName) {
 
                                 <!-- Assigned Projects -->
                                 <div class="text-center mt-2 " style="background-color: #f8f9fb;border-radius:10px ;padding:10px;margin:6px;">
-                                    <div style="font-weight: 600; color: #1e293b;">Asigend Projects</div>
-                                    <div class="text-center mt-1">
+                                    <div style="font-weight: 600; color: #1e293b;">Assigned Projects</div>
+                                    <div id="userProjectsDetailContainer" class="text-center mt-1" style="min-height: 40px;">
                                         <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 20px; height: 20px;" />
                                         <span style="font-size: 12px; color: #6c757d; margin-left: 6px;">Loading...</span>
                                     </div>
@@ -468,16 +468,12 @@ function confirmDelete(deleteUrl, userName) {
                                 <!-- Stats -->
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
-                                    </div>
-                                    <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
-                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
+                                        <div id="userTicketsCount" style="font-weight: 600; color: #1e293b;">0</div>
                                     </div>
                                     <div class="text-center">
                                         <div style="font-weight: bold;">Total Tasks</div>
-                                        <div><img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading" style="width: 16px; height: 16px;" /></div>
+                                        <div id="userTasksCount" style="font-weight: 600; color: #1e293b;">0</div>
                                     </div>
                                 </div>
 
@@ -716,31 +712,94 @@ function confirmDelete(deleteUrl, userName) {
     }
 
     function loadUserProjects(userId) {
-        const container = document.getElementById('userProjectsContainer');
-        if (!container) return;
+        if (!userId) {
+            console.error('loadUserProjects called without userId');
+            return;
+        }
         
-        container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;"><img src="{{ asset("assets/spin-loader.gif") }}" alt="Loading" style="width: 20px; height: 20px;" /> Loading projects...</div></div>';
+        // Get both containers
+        const detailContainer = document.getElementById('userProjectsDetailContainer');
+        const mainContainer = document.getElementById('userProjectsContainer');
+        
+        if (!detailContainer) {
+            console.error('userProjectsDetailContainer not found');
+        }
+        
+        // Show loading in detail container
+        if (detailContainer) {
+            detailContainer.innerHTML = '<div style="color: #6c757d;"><img src="{{ asset("assets/spin-loader.gif") }}" alt="Loading" style="width: 20px; height: 20px;" /> Loading...</div>';
+        }
+        
+        // Show loading in main container
+        if (mainContainer) {
+            mainContainer.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;"><img src="{{ asset("assets/spin-loader.gif") }}" alt="Loading" style="width: 20px; height: 20px;" /> Loading projects...</div></div>';
+        }
+        
+        console.log('Loading projects for user:', userId);
         
         fetch(`/users/${userId}/projects`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
+                console.log('Projects API Response:', data); // Debug log
+                
                 if (data.success) {
-                    renderProjects(data.projects || []);
-                    if (data.summary) {
-                        renderProjectSummary(data.summary);
+                    const projects = data.projects || [];
+                    
+                    // Update ticket and task counts
+                    const ticketsCountEl = document.getElementById('userTicketsCount');
+                    const tasksCountEl = document.getElementById('userTasksCount');
+                    if (ticketsCountEl) {
+                        ticketsCountEl.textContent = data.tickets_count || 0;
+                    }
+                    if (tasksCountEl) {
+                        tasksCountEl.textContent = data.tasks_count || 0;
+                    }
+                    
+                    // Update detail container (in user card) with simple list
+                    if (detailContainer) {
+                        if (projects.length === 0) {
+                            detailContainer.innerHTML = '<div style="color: #6c757d; font-size: 12px;">No projects assigned</div>';
+                        } else {
+                            const projectsHtml = projects.slice(0, 3).map(project => {
+                                return `<div style="font-size: 12px; color: #1e293b; margin-top: 4px; text-align: left; padding: 4px 8px; background: #fff; border-radius: 6px;">
+                                    <strong>${project.title || 'Project'}</strong>
+                                </div>`;
+                            }).join('');
+                            const moreText = projects.length > 3 ? `<div style="font-size: 11px; color: #6c757d; margin-top: 4px;">+${projects.length - 3} more</div>` : '';
+                            detailContainer.innerHTML = projectsHtml + moreText;
+                        }
+                    }
+                    
+                    // Update main container with full project cards
+                    if (mainContainer) {
+                        renderProjects(projects);
+                        if (data.summary) {
+                            renderProjectSummary(data.summary);
+                        }
                     }
                 } else {
-                    container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found.</div></div>';
+                    console.error('API returned success: false', data);
+                    if (detailContainer) {
+                        detailContainer.innerHTML = '<div style="color: #6c757d; font-size: 12px;">No projects found.</div>';
+                    }
+                    if (mainContainer) {
+                        mainContainer.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #6c757d;">No projects found.</div></div>';
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error loading projects:', error);
-                container.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #e74a3b;">Error loading projects. Check console for details.</div></div>';
+                if (detailContainer) {
+                    detailContainer.innerHTML = '<div style="color: #e74a3b; font-size: 12px;">Error loading projects. Check console.</div>';
+                }
+                if (mainContainer) {
+                    mainContainer.innerHTML = '<div class="col-12 text-center p-4"><div style="color: #e74a3b;">Error loading projects. Check console for details.</div></div>';
+                }
             });
     }
 
