@@ -3050,61 +3050,69 @@ function formatDate(dateStr) {
 // Global variable to track selected users for multi-select
 window.selectedUsers = [];
 
+// Global variable to track selected users for multi-select
+window.selectedUsers = [];
+
 // Use event delegation to handle clicks on user_div elements
-document.addEventListener("DOMContentLoaded", function () {
+// This works even if elements are added dynamically
+document.addEventListener('click', function(e) {
+    // Check if click is on or inside a user_div
+    const userDiv = e.target.closest('.user_div');
+    if (!userDiv) return;
+    
+    // Only handle if inside the meeting modal's userScroller
+    const userScroller = document.getElementById('userScroller');
+    if (!userScroller || !userScroller.contains(userDiv)) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    let userId = userDiv.getAttribute("data-user-id");
+    if (!userId) return;
+    
     const membersSelect = document.getElementById("members");
     
-    // Use event delegation on document to handle clicks (works even if elements are added later)
-    // Only handle clicks on user_div elements inside the meeting modal
-    document.addEventListener('click', function(e) {
-        const userDiv = e.target.closest('.user_div');
-        if (!userDiv) return;
-        
-        // Only handle if inside the meeting modal's userScroller
-        const userScroller = document.getElementById('userScroller');
-        if (!userScroller || !userScroller.contains(userDiv)) return;
-        
-        e.stopPropagation();
-        let userId = userDiv.getAttribute("data-user-id");
-        if (!userId) return;
-        
-        // Multi-select for meetings (always allow multiple)
-        if (userDiv.classList.contains("user_active")) {
-            // Deselect if already selected
-            userDiv.classList.remove("user_active");
+    // Multi-select for meetings (always allow multiple)
+    if (userDiv.classList.contains("user_active")) {
+        // Deselect if already selected
+        userDiv.classList.remove("user_active");
+        if (window.selectedUsers) {
             window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
-            if (membersSelect) {
-                const option = membersSelect.querySelector(`option[value="${userId}"]`);
-                if (option) {
-                    option.remove();
-                }
-            }
-        } else {
-            // Select if not selected
-            userDiv.classList.add("user_active");
-            if (!window.selectedUsers.includes(userId)) {
-                window.selectedUsers.push(userId);
-            }
-            if (membersSelect) {
-                // Check if option already exists
-                let existingOption = membersSelect.querySelector(`option[value="${userId}"]`);
-                if (!existingOption) {
-                    const option = document.createElement("option");
-                    option.value = userId;
-                    option.text = userDiv.querySelector('.invit-txt')?.textContent || 'User';
-                    option.selected = true;
-                    membersSelect.appendChild(option);
-                }
+        }
+        if (membersSelect) {
+            const option = membersSelect.querySelector(`option[value="${userId}"]`);
+            if (option) {
+                option.remove();
             }
         }
-        
-        // Update hidden input with selected users
-        const selectedUserInput = document.getElementById('selected_user');
-        if (selectedUserInput) {
-            selectedUserInput.value = window.selectedUsers.join(',');
+    } else {
+        // Select if not selected
+        userDiv.classList.add("user_active");
+        if (!window.selectedUsers) {
+            window.selectedUsers = [];
         }
-    });
-});
+        if (!window.selectedUsers.includes(userId)) {
+            window.selectedUsers.push(userId);
+        }
+        if (membersSelect) {
+            // Check if option already exists
+            let existingOption = membersSelect.querySelector(`option[value="${userId}"]`);
+            if (!existingOption) {
+                const option = document.createElement("option");
+                option.value = userId;
+                option.text = userDiv.querySelector('.invit-txt')?.textContent || 'User';
+                option.selected = true;
+                membersSelect.appendChild(option);
+            }
+        }
+    }
+    
+    // Update hidden input with selected users
+    const selectedUserInput = document.getElementById('selected_user');
+    if (selectedUserInput) {
+        selectedUserInput.value = (window.selectedUsers || []).join(',');
+    }
+}, true); // Use capture phase to ensure it fires early
 
 // Priority
 document.getElementById('priorityLow').addEventListener('click', function (e) {
@@ -3717,49 +3725,9 @@ document.querySelectorAll('.jonlinkcls').forEach(el => {
 });
 
 
-// User Selection Logic
-document.addEventListener('DOMContentLoaded', function() {
-    const userDivs = document.querySelectorAll('.user_div');
-    const membersSelect = document.getElementById('members');
 
-    userDivs.forEach(userDiv => {
-        userDiv.addEventListener('click', function() {
-            const userId = this.getAttribute('data-user-id');
-            
-            // Toggle visual state
-            this.classList.toggle('user_active');
-            
-            // Update selected users data
-            if (this.classList.contains('user_active')) {
-                // Add user
-                if (!window.selectedUsers) window.selectedUsers = [];
-                if (!window.selectedUsers.includes(userId)) {
-                    window.selectedUsers.push(userId);
-                }
-            } else {
-                // Remove user
-                if (window.selectedUsers) {
-                    window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
-                }
-            }
+// Removed duplicate single-select listener - using multi-select from above
 
-            // Update hidden select for form submission
-            if (membersSelect) {
-                // Clear current options
-                membersSelect.innerHTML = '';
-                // Add selected users as options
-                if (window.selectedUsers) {
-                    window.selectedUsers.forEach(id => {
-                        const option = document.createElement('option');
-                        option.value = id;
-                        option.selected = true;
-                        membersSelect.appendChild(option);
-                    });
-                }
-            }
-        });
-    });
-});
 
         </script>
         @endsection
