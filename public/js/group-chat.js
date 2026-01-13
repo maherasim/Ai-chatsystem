@@ -349,7 +349,10 @@ class GroupChatManager {
                             }
 
                             container.appendChild(messageElement);
-                            this.scrollToBottom();
+                            // Wait a bit for DOM to update, then scroll
+                            setTimeout(() => {
+                                this.scrollToBottom();
+                            }, 10);
                         }
                     }
                 }
@@ -709,7 +712,10 @@ class GroupChatManager {
             }
 
             container.appendChild(messageElement);
-            this.scrollToBottom();
+            // Wait a bit for DOM to update, then scroll
+            setTimeout(() => {
+                this.scrollToBottom();
+            }, 10);
         }
     }
 
@@ -812,7 +818,10 @@ class GroupChatManager {
                     const messageElement = this.createMessageElement(sentMessageData);
                     messageElement.setAttribute('data-date', this.formatDate(messageDate));
                     container.appendChild(messageElement);
-                    this.scrollToBottom();
+                    // Wait a bit for DOM to update, then scroll
+                    setTimeout(() => {
+                        this.scrollToBottom();
+                    }, 10);
                 }
             } else if (data.success) {
                 // Fallback: reload all messages if message data not returned
@@ -854,13 +863,89 @@ class GroupChatManager {
     }
 
     /**
-     * Scroll to bottom
+     * Scroll to bottom - auto-scrolls to latest message
      */
     scrollToBottom() {
-        const container = document.querySelector('.chat-body');
-        if (container) {
-            container.scrollTop = container.scrollHeight;
+        // Find the scrollable container - try multiple selectors
+        let container = document.querySelector('.chat-body.chat-page-group.slimscroll');
+        if (!container) {
+            container = document.querySelector('.chat-body.chat-page-group');
         }
+        if (!container) {
+            container = document.querySelector('.chat-body');
+        }
+        
+        const messagesContainer = document.getElementById('chatMessagesContainer');
+        
+        if (!container && !messagesContainer) {
+            console.warn('Scroll container not found');
+            return;
+        }
+
+        // Function to perform the scroll
+        const doScroll = () => {
+            // Method 1: Scroll the chat-body container (primary method)
+            if (container) {
+                // Check if slimscroll is initialized and use its API if available
+                if (typeof jQuery !== 'undefined' && jQuery(container).data('slimscroll')) {
+                    try {
+                        jQuery(container).slimScroll({ scrollTo: container.scrollHeight });
+                    } catch (e) {
+                        // Fallback to direct scroll
+                        container.scrollTop = container.scrollHeight;
+                    }
+                } else {
+                    // Standard scroll
+                    const scrollHeight = container.scrollHeight;
+                    container.scrollTop = scrollHeight;
+                    
+                    // Force scroll multiple times to ensure it works
+                    setTimeout(() => {
+                        container.scrollTop = container.scrollHeight;
+                    }, 0);
+                }
+            }
+
+            // Method 2: Scroll the last message into view (backup method)
+            if (messagesContainer) {
+                const lastMessage = messagesContainer.lastElementChild;
+                if (lastMessage) {
+                    // Find the scrollable parent (chat-body)
+                    const scrollableParent = lastMessage.closest('.chat-body') || container;
+                    
+                    if (scrollableParent) {
+                        // Use scrollIntoView with the scrollable parent
+                        try {
+                            lastMessage.scrollIntoView({
+                                behavior: 'auto',
+                                block: 'end',
+                                inline: 'nearest'
+                            });
+                        } catch (e) {
+                            lastMessage.scrollIntoView(false);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Execute immediately
+        doScroll();
+        
+        // Wait for DOM to update and try again
+        requestAnimationFrame(() => {
+            doScroll();
+        });
+        
+        // Also try after a short delay to handle async content loading
+        setTimeout(() => {
+            doScroll();
+        }, 50);
+        
+        // Final check after images/content load
+        setTimeout(() => {
+            doScroll();
+        }, 200);
     }
 
     /**
