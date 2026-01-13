@@ -146,6 +146,14 @@ use Carbon\Carbon;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   text-align: center;
   height: 155px;
+  transition: all 0.3s ease;
+}
+
+.user_div.user_active {
+    border: 2px solid #22c55e !important;
+    background: #f0fdf4 !important;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3) !important;
+    transform: scale(1.02) !important;
 }
 
 .user_div img{
@@ -153,9 +161,7 @@ use Carbon\Carbon;
 }
 
 
-    .user_active{
-        border:solid 1px #62c728ff;
-    }
+    /* Removed conflicting .user_active rule - using .user_div.user_active instead */
 
     /* Prevent parent containers from overflowing */
     .main_content,
@@ -1585,15 +1591,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <div class="col-md-6">
                             <select id="select_project" name="project" class="form-control selection">
                                 <option value="">Select Project</option>
-                                <option value="1">Project1</option>
-                                <option value="2">Project2</option>
+                                @foreach($projects ?? [] as $project)
+                                    <option value="{{ $project->_id }}">{{ $project->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <select id="select_team" name="team" class="form-control selection">
                                 <option value="">Select Team</option>
-                                <option value="1">Team 1</option>
-                                <option value="2">Team 2</option>
+                                @foreach($teams ?? [] as $team)
+                                    <option value="{{ $team->_id }}">{{ $team->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         
@@ -3039,43 +3047,62 @@ function formatDate(dateStr) {
     return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const userDivs = document.querySelectorAll('.user_div');
-    const selectMembers = document.getElementById('members');
+// Global variable to track selected users for multi-select
+window.selectedUsers = [];
 
-    userDivs.forEach(div => {
-        div.addEventListener('click', function () {
-            const userId = this.dataset.userId;
-
-            // Toggle user_active class
-            this.classList.toggle('user_active');
-
-            // Update select options
-            let selected = Array.from(selectMembers.options).map(o => o.value);
-
-            if (this.classList.contains('user_active')) {
-                // Add to select if not present
-                if (!selected.includes(userId)) {
-                    let option = new Option(userId, userId, true, true);
-                    selectMembers.add(option);
-                }
-            } else {
-                // Remove from select
-                Array.from(selectMembers.options).forEach(opt => {
-                    if (opt.value === userId) opt.remove();
-                });
-            }
-
-            // Trigger change event (if needed for plugins like Select2)
-            selectMembers.dispatchEvent(new Event('change'));
-        });
-    });
-});
-
-document.querySelectorAll('.user_div').forEach(div => {
-    div.addEventListener('click', () => {
+// Use event delegation to handle clicks on user_div elements
+document.addEventListener("DOMContentLoaded", function () {
+    const membersSelect = document.getElementById("members");
+    
+    // Use event delegation on document to handle clicks (works even if elements are added later)
+    // Only handle clicks on user_div elements inside the meeting modal
+    document.addEventListener('click', function(e) {
+        const userDiv = e.target.closest('.user_div');
+        if (!userDiv) return;
         
-        document.getElementById('selected_user').value = div.dataset.userId;
+        // Only handle if inside the meeting modal's userScroller
+        const userScroller = document.getElementById('userScroller');
+        if (!userScroller || !userScroller.contains(userDiv)) return;
+        
+        e.stopPropagation();
+        let userId = userDiv.getAttribute("data-user-id");
+        if (!userId) return;
+        
+        // Multi-select for meetings (always allow multiple)
+        if (userDiv.classList.contains("user_active")) {
+            // Deselect if already selected
+            userDiv.classList.remove("user_active");
+            window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
+            if (membersSelect) {
+                const option = membersSelect.querySelector(`option[value="${userId}"]`);
+                if (option) {
+                    option.remove();
+                }
+            }
+        } else {
+            // Select if not selected
+            userDiv.classList.add("user_active");
+            if (!window.selectedUsers.includes(userId)) {
+                window.selectedUsers.push(userId);
+            }
+            if (membersSelect) {
+                // Check if option already exists
+                let existingOption = membersSelect.querySelector(`option[value="${userId}"]`);
+                if (!existingOption) {
+                    const option = document.createElement("option");
+                    option.value = userId;
+                    option.text = userDiv.querySelector('.invit-txt')?.textContent || 'User';
+                    option.selected = true;
+                    membersSelect.appendChild(option);
+                }
+            }
+        }
+        
+        // Update hidden input with selected users
+        const selectedUserInput = document.getElementById('selected_user');
+        if (selectedUserInput) {
+            selectedUserInput.value = window.selectedUsers.join(',');
+        }
     });
 });
 
@@ -3221,14 +3248,29 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
 
     
 
-   // if (todoVisibility === 'shared') {
-        const activeUser = document.querySelector('.user_div.user_active');
-        if (!activeUser) {
+   // Check for selected users
+        const activeUsers = document.querySelectorAll('.user_div.user_active');
+        if (activeUsers.length === 0) {
             alert('Please select at least one user for Meeting.');
             return;
         }
+        // Ensure all selected users are in the members select
+        const membersSelect = document.getElementById('members');
+        if (membersSelect) {
+            // Clear previous selections
+            membersSelect.innerHTML = '';
+            // Select all active users
+            activeUsers.forEach(userDiv => {
+                const userId = userDiv.getAttribute('data-user-id');
+                const userName = userDiv.querySelector('.invit-txt')?.textContent || 'User';
+                const option = document.createElement("option");
+                option.value = userId;
+                option.text = userName;
+                option.selected = true;
+                membersSelect.appendChild(option);
+            });
+        }
         //checkprojteam = 1;
-   // }
 
     if (todoType === 'scheduled') {
         //if (!startDate) {
@@ -3393,18 +3435,38 @@ async function editformapi(id) {
 
         // 👥 Members
         const membersSelect = document.getElementById("members");
-        membersSelect.innerHTML = ''; // clear old
+        if (membersSelect) {
+            membersSelect.innerHTML = ''; // clear old
+        }
+        
+        // Clear previous selections
+        document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+        window.selectedUsers = [];
+        
         members.forEach(m => {
-            const option = document.createElement("option");
-            option.value = m.user.id;
-            option.text = m.user.name;
-            option.selected = true;
-            membersSelect.appendChild(option);
+            if (membersSelect) {
+                const option = document.createElement("option");
+                option.value = m.user.id;
+                option.text = m.user.name;
+                option.selected = true;
+                membersSelect.appendChild(option);
+            }
 
             let usrdiv = "user_" + m.user.id; 
             const el = document.getElementById(usrdiv);
-            if (el) el.click();
+            if (el) {
+                el.classList.add("user_active");
+                if (!window.selectedUsers.includes(m.user.id)) {
+                    window.selectedUsers.push(m.user.id);
+                }
+            }
         });
+        
+        // Update hidden input
+        const selectedUserInput = document.getElementById('selected_user');
+        if (selectedUserInput) {
+            selectedUserInput.value = window.selectedUsers.join(',');
+        }
 
         // 🟢 Link type buttons UI
         if (meeting.link_type === 'Zoom') {
@@ -3438,6 +3500,7 @@ function resetMeetingForm() {
     document.getElementById("meeting_name").value = '';
     document.querySelector('input[name="sections"]').value = '';
 
+
     // Clear selects
     document.getElementById("select_project").value = '';
     document.getElementById("select_team").value = '';
@@ -3447,6 +3510,18 @@ function resetMeetingForm() {
     // Clear hidden fields
     document.getElementById("startDateHidden").value = '';
     document.getElementById("endDateHidden").value = '';
+    
+    // Clear selected users
+    document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+    window.selectedUsers = [];
+    const selectedUserInput = document.getElementById('selected_user');
+    if (selectedUserInput) {
+        selectedUserInput.value = '';
+    }
+    const membersSelect = document.getElementById('members');
+    if (membersSelect) {
+        membersSelect.innerHTML = '';
+    }
     document.getElementById("startTimeHidden").value = '';
     document.getElementById("endTimeHidden").value = '';
     document.getElementById("priorityHidden").value = '';
@@ -3457,15 +3532,17 @@ function resetMeetingForm() {
     document.getElementById("meetinglink").value = '';
 
     // Reset date display
-    document.getElementById("dateDisplay").innerText = '';
+    const dateDisplay = document.getElementById("dateDisplay");
+    if (dateDisplay) {
+        dateDisplay.innerText = '';
+    }
 
-    // Reset members select
-    const membersSelect = document.getElementById("members");
-    membersSelect.innerHTML = '';
-
+    // Reset members select (Already done above, removing duplicate)
+    
     // Remove active classes from priority buttons
     ["Low", "Middle", "High"].forEach(p => {
-        document.getElementById("priority" + p).classList.remove("active1");
+        const btn = document.getElementById("priority" + p);
+        if (btn) btn.classList.remove("active1");
     });
 
     // Remove active reminder buttons
@@ -3474,29 +3551,36 @@ function resetMeetingForm() {
     });
 
     // Reset link type buttons color
-    document.getElementById('btnMeet').style.backgroundColor = 'white';
-    document.getElementById('btnMeet').style.color = '#64748b';
-    document.getElementById('btnZoom').style.backgroundColor = 'white';
-    document.getElementById('btnZoom').style.color = '#64748b';
+    const btnMeet = document.getElementById('btnMeet');
+    if (btnMeet) {
+        btnMeet.style.backgroundColor = 'white';
+        btnMeet.style.color = '#64748b';
+    }
+    const btnZoom = document.getElementById('btnZoom');
+    if (btnZoom) {
+        btnZoom.style.backgroundColor = 'white';
+        btnZoom.style.color = '#64748b';
+    }
 
-    document.getElementById('btnToday').style.backgroundColor = 'transparent';
-    document.getElementById('btnToday').style.color = '#64748b';
+    const btnToday = document.getElementById('btnToday');
+    if (btnToday) {
+        btnToday.style.backgroundColor = 'transparent';
+        btnToday.style.color = '#64748b';
+         btnToday.classList.remove("active");
+    }
 
-    document.getElementById('btnScheduled').style.backgroundColor = 'transparent';
-    document.getElementById('btnScheduled').style.color = '#64748b';
-
-    // Reset todo type buttons
-    document.getElementById("btnToday").classList.remove("active");
-    document.getElementById("btnScheduled").classList.remove("active");
+    const btnScheduled = document.getElementById('btnScheduled');
+    if (btnScheduled) {
+        btnScheduled.style.backgroundColor = 'transparent';
+        btnScheduled.style.color = '#64748b';
+        btnScheduled.classList.remove("active");
+    }
 
     // Optionally reset priority UI to default
-    document.querySelector('.priority').classList.remove('active');
+    const activePriority = document.querySelector('.priority.active');
+    if (activePriority) activePriority.classList.remove('active');
 
-    document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
     document.querySelectorAll(".time-btn").forEach(d => d.classList.remove("active"));
-
-    
-
 }
 
 
@@ -3630,6 +3714,51 @@ document.querySelectorAll('.jonlinkcls').forEach(el => {
       window.open(link, '_blank'); // open in new tab
     }
   });
+});
+
+
+// User Selection Logic
+document.addEventListener('DOMContentLoaded', function() {
+    const userDivs = document.querySelectorAll('.user_div');
+    const membersSelect = document.getElementById('members');
+
+    userDivs.forEach(userDiv => {
+        userDiv.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            
+            // Toggle visual state
+            this.classList.toggle('user_active');
+            
+            // Update selected users data
+            if (this.classList.contains('user_active')) {
+                // Add user
+                if (!window.selectedUsers) window.selectedUsers = [];
+                if (!window.selectedUsers.includes(userId)) {
+                    window.selectedUsers.push(userId);
+                }
+            } else {
+                // Remove user
+                if (window.selectedUsers) {
+                    window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
+                }
+            }
+
+            // Update hidden select for form submission
+            if (membersSelect) {
+                // Clear current options
+                membersSelect.innerHTML = '';
+                // Add selected users as options
+                if (window.selectedUsers) {
+                    window.selectedUsers.forEach(id => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.selected = true;
+                        membersSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+    });
 });
 
         </script>

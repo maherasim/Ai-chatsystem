@@ -10,6 +10,8 @@ use App\Models\Setting;
 use App\Models\Todo;
 use App\Models\Meetings;
 use App\Models\MeetingMembers;
+use App\Models\Project;
+use App\Models\Team;
 use Illuminate\Support\Facades\Storage;
 use MongoDB\BSON\ObjectId;
 use Carbon\Carbon;
@@ -157,7 +159,13 @@ $upcomingMeetings = Meetings::where(function($q) use ($userId, $memberMeetingIds
 
             $ctime = strtotime(date("Y-m-d H:i:s"));
         
-        return view('Chats.meetings', compact('user', 'users', 'todayMeetings', 'upcomingMeetings',  'setting', 'ctime', 'headers'));
+        // Fetch all projects for the dropdown
+        $projects = Project::orderBy('title', 'asc')->get(['_id', 'title']);
+        
+        // Fetch all teams for the dropdown
+        $teams = Team::orderBy('title', 'asc')->get(['_id', 'title']);
+        
+        return view('Chats.meetings', compact('user', 'users', 'todayMeetings', 'upcomingMeetings',  'setting', 'ctime', 'headers', 'projects', 'teams'));
     }
 
     public function delmeetings(){

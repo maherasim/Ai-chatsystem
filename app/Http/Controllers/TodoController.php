@@ -11,6 +11,7 @@ use App\Models\Todo;
 use App\Models\TodoAttachment;
 use App\Models\Group;
 use App\Models\Team;
+use App\Models\Project;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -234,7 +235,13 @@ class TodoController extends Controller
             $groups = collect([]);
         }
         
-        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers', 'groups'));
+        // Fetch all projects for the dropdown
+        $projects = Project::orderBy('title', 'asc')->get(['_id', 'title']);
+        
+        // Fetch all teams for the dropdown
+        $teams = Team::orderBy('title', 'asc')->get(['_id', 'title']);
+        
+        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers', 'groups', 'projects', 'teams'));
     }
 
     public function destroy($id)

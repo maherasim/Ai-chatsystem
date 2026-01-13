@@ -42,6 +42,14 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
     background: #fff;
     padding: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user_div.user_active {
+    border: 2px solid #22c55e;
+    background: #f0fdf4;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+    transform: scale(1.02);
 }
 
 .scroll-btn {
@@ -2124,6 +2132,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 document.getElementById('btnPrivate').style.backgroundColor='transparent';
                 document.getElementById('btnPrivate').style.color='#64748b';
                 document.getElementById('todo_visibility').value='shared';
+                document.getElementById('isPrivateHidden').value='0';
+                // Clear single selections when switching to shared
+                if (window.selectedUsers) {
+                    window.selectedUsers = [];
+                }
             "
             style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
             Shared ToDo's
@@ -2136,6 +2149,20 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 document.getElementById('btnShared').style.backgroundColor='transparent';
                 document.getElementById('btnShared').style.color='#64748b';
                 document.getElementById('todo_visibility').value='private';
+                document.getElementById('isPrivateHidden').value='1';
+                // Clear multi-selections when switching to private (keep only first selected)
+                document.querySelectorAll('.user_div.user_active').forEach((el, index) => {
+                    if (index > 0) {
+                        el.classList.remove('user_active');
+                        let userId = el.getAttribute('data-user-id');
+                        let option = document.getElementById('members').querySelector(`option[value='${userId}']`);
+                        if (option) option.selected = false;
+                    }
+                });
+                if (window.selectedUsers && window.selectedUsers.length > 1) {
+                    window.selectedUsers = window.selectedUsers.slice(0, 1);
+                    document.getElementById('selected_user').value = window.selectedUsers.join(',');
+                }
             "
             style="border: none; background-color: transparent; color: #64748b; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500;">
             Private ToDo's
@@ -2151,15 +2178,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <div class="col-md-6">
                             <select id="select_project" class="form-control selection">
                                 <option value="">Select Project</option>
-                                <option value="1">Project1</option>
-                                <option value="2">Project2</option>
+                                @foreach($projects ?? [] as $project)
+                                    <option value="{{ $project->_id }}">{{ $project->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <select id="select_team" class="form-control selection">
                                 <option value="">Select Team</option>
-                                <option value="1">Team 1</option>
-                                <option value="2">Team 2</option>
+                                @foreach($teams ?? [] as $team)
+                                    <option value="{{ $team->_id }}">{{ $team->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         
@@ -2400,9 +2429,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                     <!-- Project & Members Inputs -->
                     <div class="row g-2 mb-0 justify-content-center">
                         <div class="col-md-4">
-                            <input type="text" name="project"  class="form-control"
-                                placeholder="Select Project"
-                                style="font-size: 13px; background-color: white; border-radius: 8px;">
+                            <select name="project" class="form-control" style="font-size: 13px; background-color: white; border-radius: 8px;">
+                                <option value="">Select Project</option>
+                                @foreach($projects ?? [] as $project)
+                                    <option value="{{ $project->_id }}">{{ $project->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-4">
                             
@@ -2955,7 +2987,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                     <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Select Project" style="font-size: 13px;">
+                            <select class="form-control" style="font-size: 13px;">
+                                <option value="">Select Project</option>
+                                @foreach($projects ?? [] as $project)
+                                    <option value="{{ $project->_id }}">{{ $project->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <input type="text" class="form-control" placeholder="Meeting Title" style="font-size: 13px;">
@@ -3997,21 +4034,53 @@ document.querySelectorAll('.time-btn').forEach(btn => {
 
 
 
+// Global variable to track selected users
+window.selectedUsers = [];
+
 document.addEventListener("DOMContentLoaded", function () {
     const membersSelect = document.getElementById("members");
-
+    
     document.querySelectorAll(".user_div").forEach(div => {
         div.addEventListener("click", function () {
             let userId = this.getAttribute("data-user-id");
-
-            // Unselect all others first
-            document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
-            membersSelect.querySelectorAll("option").forEach(opt => opt.selected = false);
-
-            // Select the clicked one
-            this.classList.add("user_active");
-            let option = membersSelect.querySelector(`option[value="${userId}"]`);
-            if (option) option.selected = true;
+            let isPrivate = document.getElementById('todo_visibility').value === 'private' || 
+                           document.getElementById('isPrivateHidden').value === '1';
+            
+            if (isPrivate) {
+                // Single select for private todos
+                document.querySelectorAll(".user_div").forEach(d => d.classList.remove("user_active"));
+                if (membersSelect) {
+                    membersSelect.querySelectorAll("option").forEach(opt => opt.selected = false);
+                }
+                window.selectedUsers = [userId];
+            } else {
+                // Multi-select for shared todos
+                if (this.classList.contains("user_active")) {
+                    // Deselect if already selected
+                    this.classList.remove("user_active");
+                    window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
+                    if (membersSelect) {
+                        let option = membersSelect.querySelector(`option[value="${userId}"]`);
+                        if (option) option.selected = false;
+                    }
+                } else {
+                    // Select if not selected
+                    this.classList.add("user_active");
+                    if (!window.selectedUsers.includes(userId)) {
+                        window.selectedUsers.push(userId);
+                    }
+                    if (membersSelect) {
+                        let option = membersSelect.querySelector(`option[value="${userId}"]`);
+                        if (option) option.selected = true;
+                    }
+                }
+            }
+            
+            // Update hidden input with selected users
+            const selectedUserInput = document.getElementById('selected_user');
+            if (selectedUserInput) {
+                selectedUserInput.value = window.selectedUsers.join(',');
+            }
         });
     });
 });
@@ -4022,16 +4091,40 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnPrivate = document.getElementById("btnPrivate");
     const selectUsersBox = document.getElementById("selectUsersBox");
 
-    btnShared.addEventListener("click", function () {
-        btnShared.classList.add("active");
-        btnPrivate.classList.remove("active");
-        selectUsersBox.style.display = "block"; // show
-    });
 
     btnPrivate.addEventListener("click", function () {
         btnPrivate.classList.add("active");
         btnShared.classList.remove("active");
         selectUsersBox.style.display = "none"; // hide
+        // Clear multi-selections when switching to private
+        document.querySelectorAll('.user_div.user_active').forEach((el, index) => {
+            if (index > 0) {
+                el.classList.remove('user_active');
+                let userId = el.getAttribute('data-user-id');
+                let membersSelect = document.getElementById('members');
+                if (membersSelect) {
+                    let option = membersSelect.querySelector(`option[value='${userId}']`);
+                    if (option) option.selected = false;
+                }
+            }
+        });
+        if (window.selectedUsers && window.selectedUsers.length > 1) {
+            window.selectedUsers = window.selectedUsers.slice(0, 1);
+            const selectedUserInput = document.getElementById('selected_user');
+            if (selectedUserInput) {
+                selectedUserInput.value = window.selectedUsers.join(',');
+            }
+        }
+    });
+    
+    btnShared.addEventListener("click", function () {
+        btnShared.classList.add("active");
+        btnPrivate.classList.remove("active");
+        selectUsersBox.style.display = "block"; // show
+        // Clear single selection when switching to shared (allow fresh multi-select)
+        if (window.selectedUsers) {
+            window.selectedUsers = [];
+        }
     });
 });
 
@@ -4767,6 +4860,13 @@ document.querySelectorAll(".addtodo").forEach(btn => {
     document.querySelectorAll('.user_div.user_active').forEach(el => {
             el.classList.remove('user_active');
         });
+    
+    // Clear selected users array
+    window.selectedUsers = [];
+    const selectedUserInput = document.getElementById('selected_user');
+    if (selectedUserInput) {
+        selectedUserInput.value = '';
+    }
 
 
     
@@ -5234,10 +5334,24 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     }
 
     if (todoVisibility === 'shared') {
-        const activeUser = document.querySelector('.user_div.user_active');
-        if (!activeUser) {
+        const activeUsers = document.querySelectorAll('.user_div.user_active');
+        if (activeUsers.length === 0) {
             alert('Please select at least one user for Shared ToDo.');
             return;
+        }
+        // Ensure all selected users are in the members select
+        const membersSelect = document.getElementById('members');
+        if (membersSelect) {
+            // Clear previous selections
+            membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
+            // Select all active users
+            activeUsers.forEach(userDiv => {
+                const userId = userDiv.getAttribute('data-user-id');
+                const option = membersSelect.querySelector(`option[value="${userId}"]`);
+                if (option) {
+                    option.selected = true;
+                }
+            });
         }
         checkprojteam = 1;
     }
