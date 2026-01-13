@@ -8134,6 +8134,13 @@
                             badge.style.top = (ly + dy) + 'px';
                             badge.style.zIndex = 10 + idx;
                             badge.style.pointerEvents = 'auto';
+                            // Apply the saved color to the badge
+                            var badgeColor = (it && it.color) ? it.color : '#28c76f';
+                            badge.style.color = badgeColor;
+                            badge.style.borderColor = badgeColor;
+                            badge.style.fontWeight = '800';
+                            badge.style.fontSize = '18px';
+                            badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
                             badge.addEventListener('click', function(ev) {
                                 ev.stopPropagation();
                                 // Show issue details popup if SweetAlert is available
@@ -10493,11 +10500,10 @@
                                         badge.style.zIndex = 10 + idx;
                                         badge.style.pointerEvents = 'auto';
                                         
-                                        // Apply color if available
-                                        if (it.color) {
-                                            badge.style.borderColor = it.color;
-                                            badge.style.color = it.color;
-                                        }
+                                        // Apply the saved color to the badge
+                                        const badgeColor = it.color || '#28c76f';
+                                        badge.style.borderColor = badgeColor;
+                                        badge.style.color = badgeColor;
                                         
                                         // Add click handler to show issue details
                                         badge.addEventListener('click', function(ev) {
