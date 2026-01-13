@@ -4888,9 +4888,9 @@
                                     <small style="font-size: 12px; color: #9ca3af;">PDF, JPG, PNG</small>
                                 </p>
                                 <img id="previewImage" src=""
-                                    style="display:none; position:absolute; top:56px; right:0; bottom:0; left:0; width:100%; height:calc(100% - 56px); object-fit: contain;" />
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit: cover;" />
                                 <div id="markerLayer"
-                                    style="display:none; position:absolute; top:56px; right:0; bottom:0; left:0; pointer-events:auto;"
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto;"
                                     ondragover="event.preventDefault();"
                                     ondrop="event.preventDefault(); var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; previewImg.style.filter=''; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
                                 </div>
@@ -8134,6 +8134,13 @@
                             badge.style.top = (ly + dy) + 'px';
                             badge.style.zIndex = 10 + idx;
                             badge.style.pointerEvents = 'auto';
+                            // Apply the saved color to the badge
+                            var badgeColor = (it && it.color) ? it.color : '#28c76f';
+                            badge.style.color = badgeColor;
+                            badge.style.borderColor = badgeColor;
+                            badge.style.fontWeight = '800';
+                            badge.style.fontSize = '18px';
+                            badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
                             badge.addEventListener('click', function(ev) {
                                 ev.stopPropagation();
                                 // Show issue details popup if SweetAlert is available
@@ -10493,11 +10500,10 @@
                                         badge.style.zIndex = 10 + idx;
                                         badge.style.pointerEvents = 'auto';
                                         
-                                        // Apply color if available
-                                        if (it.color) {
-                                            badge.style.borderColor = it.color;
-                                            badge.style.color = it.color;
-                                        }
+                                        // Apply the saved color to the badge
+                                        const badgeColor = it.color || '#28c76f';
+                                        badge.style.borderColor = badgeColor;
+                                        badge.style.color = badgeColor;
                                         
                                         // Add click handler to show issue details
                                         badge.addEventListener('click', function(ev) {
