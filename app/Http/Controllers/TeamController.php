@@ -212,6 +212,73 @@ class TeamController extends Controller
                 $t->developer_avatar_paths = [];
             }
 
+            // Resolve PM image from pm_id
+            try {
+                $pmId = $t->pm_id ?? null;
+                if ($pmId) {
+                    $pmIdStr = (string) $pmId;
+                    $pmUser = null;
+                    try {
+                        $pmUser = User::find($pmIdStr);
+                        if (!$pmUser) {
+                            $pmUser = User::query()->where('_id', $pmIdStr)->orWhere('id', $pmIdStr)->first();
+                        }
+                    } catch (\Throwable $e) {
+                        // Try with ObjectId if string lookup fails
+                        try {
+                            $pmUser = User::find(new ObjectId($pmIdStr));
+                        } catch (\Throwable $e2) {
+                            // Ignore
+                        }
+                    }
+                    
+                    if ($pmUser) {
+                        // Get image from various possible fields
+                        $pmImage = null;
+                        foreach (['image', 'avatar_path', 'photo_path', 'profile_photo_path', 'avatar', 'photo', 'profile_image'] as $field) {
+                            if (!empty($pmUser->{$field})) {
+                                $pmImage = (string) $pmUser->{$field};
+                                break;
+                            }
+                        }
+                        
+                        if ($pmImage) {
+                            // Handle different path formats
+                            $pmImage = ltrim($pmImage, '/');
+                            
+                            // If it's already a full URL, use it as-is
+                            if (preg_match('#^https?://#i', $pmImage)) {
+                                $t->pm_image = $pmImage;
+                            }
+                            // If it's in upload/ folder (public directory), use asset() directly
+                            elseif (str_starts_with($pmImage, 'upload/')) {
+                                $t->pm_image = asset($pmImage);
+                            }
+                            // If it's in storage, use storage path
+                            elseif (str_starts_with($pmImage, 'storage/')) {
+                                $t->pm_image = asset($pmImage);
+                            }
+                            // Check if file exists in storage
+                            elseif (file_exists(storage_path('app/public/' . $pmImage))) {
+                                $t->pm_image = asset('storage/' . $pmImage);
+                            }
+                            // Default: assume it's a public path (like build/img/...)
+                            else {
+                                $t->pm_image = asset($pmImage);
+                            }
+                        } else {
+                            $t->pm_image = asset('build/img/profile.svg');
+                        }
+                    } else {
+                        $t->pm_image = asset('build/img/profile.svg');
+                    }
+                } else {
+                    $t->pm_image = asset('build/img/profile.svg');
+                }
+            } catch (\Throwable $e) {
+                $t->pm_image = asset('build/img/profile.svg');
+            }
+
             return $t;
         });
         $selectedProjectId = $request->get('project_id');
@@ -266,7 +333,12 @@ class TeamController extends Controller
             $groups = collect([]);
         }
         
-        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount','groups'));
+        // Fetch all developers for PM dropdown
+        $developers = User::where('type', 'developer')
+            ->orderBy('name', 'asc')
+            ->get(['_id', 'name']);
+        
+        return view('Chats.teams', compact('headers','projects','tickets','selectedProjectId','project','teams','teamtotalcount','groups','developers'));
     }
 
     public function tickets(Request $request)

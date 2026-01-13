@@ -253,7 +253,7 @@
 
                                         <!-- Center: PM -->
                                         <div class="text-center">
-                                            <img src="{{URL::asset('/build/img/profileuser.svg')}}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
+                                            <img src="{{ $team->pm_image ?? asset('build/img/profile.svg') }}" alt="PM" class="rounded-circle" style="height: 36px; width: 36px; object-fit: cover;" />
                                             <div style="font-size: 12px; font-weight: 500; color: red;margin-top:3px;background:white;border-radius:5px;cursor:pointer">PM</div>
 
                                         </div>
@@ -1888,9 +1888,10 @@
                         </div>
                             <div class="col-md-6 custom-select-wrap">
                                 <select class="custom-input custom-input-select" name="pm_id" style="color:#64748b;">
-                                <option selected>Select PM</option>
-                                <option>PM A</option>
-                                <option>PM B</option>
+                                <option value="" selected>Select PM</option>
+                                @foreach($developers ?? [] as $developer)
+                                    <option value="{{ $developer->_id }}">{{ $developer->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                             <div class="col-md-6 custom-select-wrap">
@@ -2294,9 +2295,10 @@
                         <div class="col-12 col-md-6 col-lg-3">
                             <select class="form-select" name="pm_id" id="editPm"
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
-                                <option selected>Select PM</option>
-                                <option>PM A</option>
-                                <option>PM B</option>
+                                <option value="" selected>Select PM</option>
+                                @foreach($developers ?? [] as $developer)
+                                    <option value="{{ $developer->_id }}">{{ $developer->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -3235,7 +3237,7 @@
             var projSelect = document.getElementById('addProjectSelect');
             if (projSelect) projSelect.value = '';
             var pmSelect = form.querySelector('select[name="pm_id"]');
-            if (pmSelect) pmSelect.value = 'Select PM';
+            if (pmSelect) pmSelect.value = '';
             var tlSelect = form.querySelector('select[name="timeline_color"]');
             if (tlSelect) tlSelect.value = 'Timeline Color';
 
@@ -3286,7 +3288,7 @@
             var projSelect = document.getElementById('addProjectSelect');
             if (projSelect) projSelect.value = data && data.project_id ? data.project_id : '';
             var pmSelect = form.querySelector('select[name="pm_id"]');
-            if (pmSelect) pmSelect.value = data && data.pm_id ? data.pm_id : 'Select PM';
+            if (pmSelect) pmSelect.value = data && data.pm_id ? data.pm_id : '';
             var tlSelect = form.querySelector('select[name="timeline_color"]');
             if (tlSelect) tlSelect.value = data && data.timeline_color ? data.timeline_color : 'Timeline Color';
 
