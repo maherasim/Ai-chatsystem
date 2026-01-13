@@ -284,10 +284,6 @@
                                 @endphp
                                 <div class="d-flex justify-content-around mt-1" style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
                                     <div class="text-center">
-                                        <div style="font-weight: bold;">Tickets</div>
-                                        <div>{{ $ticketsCount }}</div>
-                                    </div>
-                                    <div class="text-center">
                                         <div style="font-weight: bold;">Total Tickets</div>
                                         <div>{{ $ticketsCount }}</div>
                                     </div>
@@ -297,41 +293,33 @@
                                     </div>
                                 </div>
                                 <div style="background-color: #f8f9fb;border-radius:10px;padding:10px;margin:6px;font-size: 14px;">
-                                    <div class="d-flex justify-content-between px-1"
-                                        style="font-size: 11px; color: #2e3a59; font-weight: 600; font-family: 'Segoe UI', sans-serif;">
-                                        <div class="sections-scroll d-flex align-items-center gap-2" style="overflow-x: auto; white-space: nowrap; width: 100%; -ms-overflow-style: none; scrollbar-width: none;">
+                                    <div class="sections-slider-container" style="position: relative; width: 100%;">
+                                        <div class="sections-scroll d-flex align-items-center gap-2" 
+                                            style="overflow-x: auto; 
+                                                   overflow-y: hidden; 
+                                                   white-space: nowrap; 
+                                                   width: 100%; 
+                                                   scroll-behavior: smooth;
+                                                   -ms-overflow-style: none; 
+                                                   scrollbar-width: none;
+                                                   padding: 4px 0;">
                                             @php
                                                 $sections = $team->project_sections ?? [];
                                             @endphp
-                                            @forelse($sections as $sec)
-                                                <span style="background:#eef2f7; color:#2e3a59; padding:4px 8px; border-radius:10px; display:inline-block; white-space:nowrap;">{{ $sec }}</span>
-                                            @empty
-                                                <span style="background:#eef2f7; color:#2e3a59; padding:4px 8px; border-radius:10px; display:inline-block; white-space:nowrap;">Section</span>
-                                            @endforelse
-                                    </div>
-                                    </div>
-
-                                    <!-- Progress Bars -->
-                                    <div class="d-flex justify-content-between align-items-center mt-2 gap-2 px-1">
-                                        <!-- Green Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #d3f4dc; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #28c76f; border-radius: 10px;"></div>
+                                            @if(count($sections) > 0)
+                                                @foreach($sections as $sec)
+                                                    <span style="background:#eef2f7; color:#2e3a59; padding:4px 12px; border-radius:10px; display:inline-block; white-space:nowrap; flex: 0 0 auto; font-size: 11px; font-weight: 600; font-family: 'Segoe UI', sans-serif;">{{ $sec }}</span>
+                                                @endforeach
+                                            @else
+                                                <span style="background:#eef2f7; color:#2e3a59; padding:4px 12px; border-radius:10px; display:inline-block; white-space:nowrap; flex: 0 0 auto; font-size: 11px; font-weight: 600; font-family: 'Segoe UI', sans-serif;">No Sections</span>
+                                            @endif
                                         </div>
+                                    </div>
 
-                                        <!-- Yellow Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fef3d3; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ffc107; border-radius: 10px;"></div>
-                                        </div>
-
-                                        <!-- Red Progress -->
-                                        <div class="progress"
-                                            style="width: 32%; height: 8px; background-color: #fdd7d7; border-radius: 10px;">
-                                            <div class="progress-bar"
-                                                style="width: 75%; background-color: #ea5455; border-radius: 10px;"></div>
+                                    <!-- Progress Bar -->
+                                    <div class="mt-2 px-1">
+                                        <div class="progress" style="width: 100%; height: 8px; background-color: #e9ecef; border-radius: 10px;">
+                                            <div class="progress-bar" style="width: 0%; background-color: #28c76f; border-radius: 10px; transition: width 0.3s ease;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3150,13 +3138,20 @@
         color: #1b1b3a;
     }
 
-    /* Hide scrollbar but keep horizontal scrolling for sections list */
+    /* Dynamic horizontal slider for sections */
     .sections-scroll {
         -ms-overflow-style: none; /* IE/Edge */
         scrollbar-width: none;    /* Firefox */
+        scroll-behavior: smooth;
+        scroll-snap-type: x proximity;
+        will-change: scroll-position;
     }
     .sections-scroll::-webkit-scrollbar {
         display: none;            /* Chrome/Safari */
+    }
+    .sections-scroll > span {
+        scroll-snap-align: start;
+        user-select: none;
     }
 
     /* Developer multi-select action buttons */
