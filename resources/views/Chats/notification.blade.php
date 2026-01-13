@@ -210,7 +210,7 @@
             <!-- Fixed Icons Row at Top -->
                 <div id="iconBar" style="background-color: #fff; border-radius: 12px; padding: 10px 20px; display: flex; justify-content:space-between;margin:20px;">
                     <!-- Icon 1 -->
-                    <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers">
+                    <div class="icon-wrapper selected" onclick="showTab('layers')" id="icon-layers" style="position: relative;">
                         <img src="{{ asset('assets/img/icons/menuIconInactive.svg') }}" class="menu-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/menuIconActive.svg') }}" class="menu-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                     </div>
@@ -3446,6 +3446,9 @@
         
         // Start polling for unread message counts
         startUnreadCountPolling();
+        
+        // Initial check for unread team messages
+        updateUnreadCounts();
     });
 
     let unreadCountPollingInterval = null;
@@ -3481,6 +3484,7 @@
             if (data.success && data.unread_counts) {
                 const currentOpenGroupId = window.groupChatManager?.currentGroupId ? String(window.groupChatManager.currentGroupId) : null;
                 const allGroupCards = document.querySelectorAll('[data-group-id]');
+                let hasAnyUnread = false;
                 
                 allGroupCards.forEach(card => {
                     const groupId = String(card.getAttribute('data-group-id'));
@@ -3489,6 +3493,7 @@
                     const isCurrentlyOpen = currentOpenGroupId && groupId === currentOpenGroupId;
                     
                     if (count > 0 && !isCurrentlyOpen) {
+                        hasAnyUnread = true;
                         if (!badge) {
                             badge = document.createElement('div');
                             badge.className = 'team-unread-badge';
@@ -3502,9 +3507,32 @@
                         }
                     }
                 });
+                
+                updateTeamChatIconDot(hasAnyUnread);
+            } else {
+                updateTeamChatIconDot(false);
             }
         } catch (error) {
             console.error('Failed to update unread counts:', error);
+        }
+    }
+
+    function updateTeamChatIconDot(hasUnread) {
+        const teamChatIcon = document.getElementById('icon-layers');
+        if (!teamChatIcon) return;
+
+        let dot = teamChatIcon.querySelector('.team-chat-dot');
+        if (hasUnread) {
+            if (!dot) {
+                dot = document.createElement('span');
+                dot.className = 'team-chat-dot';
+                teamChatIcon.appendChild(dot);
+            }
+            dot.style.cssText = 'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);background:rgb(241,65,68);z-index:2;';
+        } else {
+            if (dot) {
+                dot.remove();
+            }
         }
     }
 
