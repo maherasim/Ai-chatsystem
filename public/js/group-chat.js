@@ -371,7 +371,7 @@ class GroupChatManager {
                         const enrichedMessages = await this.enrichMessagesWithSenderInfo(newMessages);
 
                         // Add new messages to UI
-                        enrichedMessages.forEach(message => {
+                        enrichedMessages.forEach((message, index) => {
                             const messageId = String(message._id || message.id);
                             const senderId = String(message.sender_id || message.from_user_id || '');
                             const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
@@ -392,12 +392,16 @@ class GroupChatManager {
                                     emptyState.style.display = 'none';
                                 }
                                 container.appendChild(messageElement);
-                                this.scrollToBottom();
                             }
 
                             // Update last message ID
                             this.lastMessageId = messageId;
                         });
+                        
+                        // Scroll to bottom after all new messages are added
+                        if (enrichedMessages.length > 0) {
+                            this.forceScrollToBottom();
+                        }
 
                         // Update global notification manager's last checked message for this group
                         if (this.currentGroupId && enrichedMessages.length > 0) {
@@ -1185,7 +1189,8 @@ class GroupChatManager {
 
             messageElement.setAttribute('data-date', dateStr);
             container.appendChild(messageElement);
-            this.scrollToBottom();
+            // Force scroll when adding new messages
+            this.forceScrollToBottom();
 
             console.log('✅ Message added to UI successfully');
         } else {
@@ -1394,7 +1399,8 @@ class GroupChatManager {
                     const messageElement = this.createMessageElement(sentMessageData);
                     messageElement.setAttribute('data-date', dateStr);
                     container.appendChild(messageElement);
-                    this.scrollToBottom();
+                    // Force scroll when sending messages
+                    this.forceScrollToBottom();
                 }
 
                 // Also reload messages to ensure consistency (but UI already updated)
@@ -1518,12 +1524,44 @@ class GroupChatManager {
     }
 
     /**
-     * Scroll to bottom
+     * Scroll to bottom with smooth animation
      */
-    scrollToBottom() {
+    scrollToBottom(smooth = true) {
+        const container = document.querySelector('.chat-body');
+        if (!container) return;
+        
+        // Use requestAnimationFrame to ensure DOM is updated
+        requestAnimationFrame(() => {
+            // Check if user is near bottom (within 100px) - if so, auto-scroll
+            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+            
+            // Always scroll if it's a new message from current user, or if user is already near bottom
+            if (isNearBottom || !smooth) {
+                if (smooth) {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    container.scrollTop = container.scrollHeight;
+                }
+            }
+        });
+    }
+    
+    /**
+     * Force scroll to bottom (used when sending messages)
+     */
+    forceScrollToBottom() {
         const container = document.querySelector('.chat-body');
         if (container) {
-            container.scrollTop = container.scrollHeight;
+            // Use setTimeout to ensure message is rendered
+            setTimeout(() => {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
         }
     }
 
@@ -1956,11 +1994,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 // Send message if there's content or a file
                 if (content || selectedFile) {
-                    // If file is selected, send it
+                    // If file is selected, send it with text content
                     if (selectedFile) {
                         try {
+                            // Send image with text content (if user typed something)
+                            // If no text, use default caption
+                            const messageContent = content.trim() || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
                             await window.groupChatManager.sendMessage(
-                                content || (selectedFileType === 'img' ? 'Image' : selectedFile.name),
+                                messageContent,
                                 selectedFileType,
                                 selectedFile
                             );
@@ -2007,15 +2048,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             // Send message if there's content or a file
             if (content || selectedFile) {
-                // If file is selected, send it
+                // If file is selected, send it with text content
                 if (selectedFile) {
                     try {
                         sendButton.disabled = true;
                         const originalContent = sendButton.innerHTML;
                         sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
                         
+                        // Send image with text content (if user typed something)
+                        // If no text, use default caption
+                        const messageContent = content.trim() || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
                         await window.groupChatManager.sendMessage(
-                            content || (selectedFileType === 'img' ? 'Image' : selectedFile.name),
+                            messageContent,
                             selectedFileType,
                             selectedFile
                         );

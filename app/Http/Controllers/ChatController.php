@@ -354,10 +354,17 @@ class ChatController extends Controller
 
         $message = ChatMessage::find($messageId);
         
-        if (!$message || $message->from_user_id !== $userId) {
+        if (!$message) {
+            return response()->json(['error' => 'Message not found'], 404);
+        }
+
+        // Check if user is the sender (handle both from_user_id and sender_id for group messages)
+        $senderId = (string)($message->sender_id ?? $message->from_user_id ?? '');
+        if ($senderId !== $userId) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        // Soft delete the message
         $message->update(['is_deleted' => true]);
 
         return response()->json(['success' => true]);
@@ -469,10 +476,14 @@ class ChatController extends Controller
             // Get last_id from request for polling
             $lastId = $request->input('last_id');
             
-            // Build query
+            // Build query - exclude deleted messages
             $query = ChatMessage::where(function($q) use ($groupId) {
                     $q->where('group_id', $groupId)
                       ->orWhere('conversation_id', 'group_' . $groupId);
+                })
+                ->where(function($q) {
+                    $q->where('is_deleted', false)
+                      ->orWhereNull('is_deleted');
                 });
 
             // If last_id is provided, only get messages after that ID

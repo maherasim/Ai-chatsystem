@@ -1363,23 +1363,41 @@
             preview.className = 'file-preview mb-2 p-2 bg-light rounded d-flex align-items-center justify-content-between';
             preview.style.cssText = 'border: 1px solid #ddd; margin-bottom: 8px;';
             
-            let icon = '<i class="ti ti-file"></i>';
-            if (messageType === 'img') icon = '<i class="ti ti-photo"></i>';
-            else if (messageType === 'audio') icon = '<i class="ti ti-music"></i>';
-            else if (messageType === 'video') icon = '<i class="ti ti-video"></i>';
-            
-            preview.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <span class="me-2" style="font-size: 20px;">${icon}</span>
-                    <div>
-                        <div style="font-weight: 500; font-size: 14px;">${file.name}</div>
-                        <div style="font-size: 12px; color: #666;">${formatFileSize(file.size)}</div>
+            // For images, show thumbnail preview (WhatsApp style - just image, no filename)
+            if (messageType === 'img') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div class="d-flex align-items-center justify-content-between" style="position: relative;">
+                            <img src="${e.target.result}" alt="Preview" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover;">
+                            <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 12px; position: absolute; top: -3px; right: -3px; background: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); padding: 0;">
+                                <i class="ti ti-x" style="font-size: 9px;"></i>
+                            </button>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // For other file types, show icon
+                let icon = '<i class="ti ti-file"></i>';
+                if (messageType === 'audio') icon = '<i class="ti ti-music"></i>';
+                else if (messageType === 'video') icon = '<i class="ti ti-video"></i>';
+                
+                preview.innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2" style="font-size: 20px;">${icon}</span>
+                            <div>
+                                <div style="font-weight: 500; font-size: 14px;">${file.name}</div>
+                                <div style="font-size: 12px; color: #666;">${formatFileSize(file.size)}</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 18px;">
+                            <i class="ti ti-x"></i>
+                        </button>
                     </div>
-                </div>
-                <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 18px;">
-                    <i class="ti ti-x"></i>
-                </button>
-            `;
+                `;
+            }
             
             formWrap.parentNode.insertBefore(preview, formWrap);
         }
@@ -1394,6 +1412,87 @@
         
         // Make removeFilePreview available globally
         window.removeFilePreview = removeFilePreview;
+        
+        // Handle paste event for images
+        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+        if (messageInput) {
+            messageInput.addEventListener('paste', async function(e) {
+                // Check if clipboard contains image
+                const items = e.clipboardData?.items;
+                if (!items) return;
+                
+                // Find image in clipboard items
+                let hasImage = false;
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    
+                    // Check if item is an image
+                    if (item.type.indexOf('image') !== -1) {
+                        hasImage = true;
+                        // Prevent default only for the image, but allow text to paste
+                        // We'll handle the image separately
+                        
+                        // Check if group is selected
+                        if (!window.groupChatManager || !window.groupChatManager.currentGroupId) {
+                            alert('Please select a group first');
+                            // Don't prevent default, let text paste if any
+                            return;
+                        }
+                        
+                        // Get image as blob
+                        const blob = item.getAsFile();
+                        if (!blob) continue;
+                        
+                        // Prevent default to stop image from being pasted as text
+                        e.preventDefault();
+                        
+                        // Create a File object from the blob
+                        const fileName = 'pasted-image-' + Date.now() + '.png';
+                        const file = new File([blob], fileName, { type: blob.type });
+                        
+                        // Determine message type
+                        let messageType = 'img';
+                        if (blob.type.startsWith('image/')) {
+                            messageType = 'img';
+                        } else if (blob.type.startsWith('audio/')) {
+                            messageType = 'audio';
+                        } else if (blob.type.startsWith('video/')) {
+                            messageType = 'video';
+                        } else {
+                            messageType = 'file';
+                        }
+                        
+                        // Store file for later sending
+                        window.selectedFile = file;
+                        window.selectedFileType = messageType;
+                        
+                        // Show file preview
+                        showFilePreview(file, messageType);
+                        
+                        // Get any text from clipboard and paste it manually
+                        const textData = e.clipboardData.getData('text/plain');
+                        if (textData && textData.trim()) {
+                            // Insert text at cursor position
+                            const start = messageInput.selectionStart || 0;
+                            const end = messageInput.selectionEnd || 0;
+                            const currentText = messageInput.value;
+                            const newText = currentText.substring(0, start) + textData + currentText.substring(end);
+                            messageInput.value = newText;
+                            
+                            // Set cursor position after pasted text
+                            const newCursorPos = start + textData.length;
+                            messageInput.setSelectionRange(newCursorPos, newCursorPos);
+                        }
+                        
+                        // Keep focus on input so user can continue typing
+                        messageInput.focus();
+                        
+                        break; // Only handle first image
+                    }
+                }
+                // If no image found, let default paste behavior happen (for text)
+            });
+        }
         
         // Function to format file size
         function formatFileSize(bytes) {
