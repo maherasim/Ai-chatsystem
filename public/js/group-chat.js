@@ -323,6 +323,11 @@ class GroupChatManager {
         } finally {
             // Hide loader after everything is loaded
             this.hideLoader();
+            
+            // Ensure scroll to bottom after loader is hidden and DOM is ready
+            setTimeout(() => {
+                this.forceScrollToBottom();
+            }, 100);
         }
 
         // Join group chat room (if needed)
@@ -773,8 +778,14 @@ class GroupChatManager {
             }
         }
 
-        // Scroll to bottom after rendering
-        this.scrollToBottom();
+        // Scroll to bottom after rendering (always scroll on initial load)
+        // Use forceScrollToBottom to ensure it always scrolls, not conditional
+        this.forceScrollToBottom();
+        
+        // Also scroll after a delay to ensure layout is complete
+        setTimeout(() => {
+            this.forceScrollToBottom();
+        }, 300);
     }
 
     /**
