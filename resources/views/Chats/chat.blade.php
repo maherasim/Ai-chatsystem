@@ -1564,6 +1564,18 @@
                 fileInput.click();
             });
         }
+
+        // Global safeguard for auto-scroll on initial load
+        window.addEventListener('load', () => {
+            if (window.groupChatManager) {
+                // Brute force scroll several times after page fully loads
+                [100, 500, 1000, 2000, 3000].forEach(delay => {
+                    setTimeout(() => {
+                        window.groupChatManager.forceScrollToBottom();
+                    }, delay);
+                });
+            }
+        });
     });
 </script>
 

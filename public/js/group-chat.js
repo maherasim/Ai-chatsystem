@@ -1908,98 +1908,84 @@ class GroupChatManager {
      * Force scroll to bottom (used when sending messages or receiving new messages)
      */
     forceScrollToBottom() {
-        // Slimscroll wraps elements in .slimScrollDiv, so we need to find that
-        // Try to find the slimScrollDiv wrapper first, then fallback to direct container
-        let container = null;
+        // Try to find the specific chat body for the messages
+        // Use more specific selectors to avoid conflict with sidebar (.chatsidebar)
+        let mainChatBody = document.querySelector('.chat-messages .chat-body') ||
+            document.querySelector('.chat-page-group') ||
+            document.getElementById('chatMessagesContainer')?.parentElement;
 
-        // First, try to find the slimScrollDiv that contains the chat-body
-        const chatBody = document.querySelector('.chat-body');
-        if (chatBody) {
-            // Check if it's wrapped in slimScrollDiv
-            const slimScrollDiv = chatBody.closest('.slimScrollDiv') || chatBody.parentElement?.closest('.slimScrollDiv');
-            if (slimScrollDiv) {
-                container = slimScrollDiv;
-            } else {
-                container = chatBody;
+        if (!mainChatBody) {
+            // Fallback: search all .chat-body elements but ignore the sidebar one
+            const allBodies = document.querySelectorAll('.chat-body');
+            for (const body of allBodies) {
+                if (body.id !== 'chatsidebar' && !body.closest('#chatsidebar')) {
+                    mainChatBody = body;
+                    break;
+                }
             }
         }
 
-        // Fallback selectors
-        if (!container) {
-            container = document.querySelector('.slimScrollDiv') ||
-                document.querySelector('.chat-page-group') ||
-                document.querySelector('.slimscroll') ||
-                document.getElementById('chatMessagesContainer')?.parentElement;
-        }
-
-        if (!container) {
-            console.warn('Scroll container not found');
+        if (!mainChatBody) {
+            console.warn('Chat body container not found');
             return;
         }
 
-        // Function to perform the actual scroll - ALWAYS scroll, no conditions
         const performScroll = () => {
             try {
-                const scrollHeight = container.scrollHeight;
+                // Find the scrollable container (might be the chatBody itself or a slimscroll wrapper)
+                const slimScrollDiv = mainChatBody.closest('.slimScrollDiv') || mainChatBody.parentElement?.closest('.slimScrollDiv');
+                const scrollTarget = slimScrollDiv || mainChatBody;
 
-                // Always scroll to bottom - no conditions
-                // Try smooth scroll first
-                if (container.scrollTo) {
-                    container.scrollTo({
-                        top: scrollHeight,
-                        behavior: 'auto' // Use auto for immediate jumps in forceScroll
+                // 1. Direct scrollTop assignment with a very large number to ensure absolute bottom
+                scrollTarget.scrollTop = 9999999;
+
+                // 2. scrollTo API
+                if (scrollTarget.scrollTo) {
+                    scrollTarget.scrollTo({
+                        top: 9999999,
+                        behavior: 'auto'
                     });
                 }
 
-                // Immediate hard scroll (always execute, no conditions)
-                container.scrollTop = scrollHeight;
-
-                // Also try jQuery slimscroll API if available
+                // 3. jQuery slimscroll API if available
                 if (typeof $ !== 'undefined') {
-                    const $container = $(container);
-                    const $chatBody = $('.chat-body');
+                    const $target = $(scrollTarget);
+                    const $mainBody = $(mainChatBody);
 
+                    if ($target.data('slimScroll')) {
+                        $target.slimScroll({ scrollTo: '9999999px' });
+                    }
+                    if ($mainBody.data('slimScroll')) {
+                        $mainBody.slimScroll({ scrollTo: '9999999px' });
+                    }
+                    // Also try targeting by ID if we have it
+                    const $container = $('#chatMessagesContainer').parent();
                     if ($container.data('slimScroll')) {
-                        $container.slimScroll({ scrollTo: scrollHeight + 'px' });
+                        $container.slimScroll({ scrollTo: '9999999px' });
                     }
-                    if ($chatBody.data('slimScroll')) {
-                        $chatBody.slimScroll({ scrollTo: $chatBody[0].scrollHeight + 'px' });
-                    }
+                }
+
+                // 4. Scroll the container's children if necessary
+                if (mainChatBody.lastElementChild) {
+                    mainChatBody.lastElementChild.scrollIntoView({ block: 'end', behavior: 'auto' });
                 }
             } catch (error) {
-                console.error('Error scrolling:', error);
-                // Last resort: try direct assignment
-                try {
-                    container.scrollTop = container.scrollHeight;
-                } catch (e) {
-                    console.error('Failed to scroll:', e);
-                }
+                console.error('Error in performScroll:', error);
             }
         };
 
-        // Immediate scroll first
+        // Execute scroll in a series of steps to handle rendering lags
         performScroll();
 
-        // Then use multiple requestAnimationFrame and timeouts to ensure DOM is updated and layout is settled
+        // Immediate next frames
         requestAnimationFrame(() => {
             performScroll();
+            requestAnimationFrame(performScroll);
+        });
 
-            // Double RAF to ensure layout is complete
-            requestAnimationFrame(() => {
-                performScroll();
-
-                // Sequence of timeouts to handle different loading stages
-                [50, 100, 200, 500].forEach(delay => {
-                    setTimeout(() => {
-                        performScroll();
-
-                        // Extra check for slimscroll
-                        if (typeof $ !== 'undefined' && $('.chat-body').data('slimScroll')) {
-                            $('.chat-body').slimScroll({ scrollTo: $('.chat-body')[0].scrollHeight + 'px' });
-                        }
-                    }, delay);
-                });
-            });
+        // Sequence of timeouts covering different possible load/render times
+        [10, 50, 100, 200, 500, 1000, 2000].forEach(delay => {
+            setTimeout(performScroll, delay);
         });
     }
 
