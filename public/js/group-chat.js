@@ -289,6 +289,13 @@ class GroupChatManager {
 
         // Load existing messages
         await this.loadGroupMessages(groupId);
+        
+        // Load media for this group (don't await to avoid blocking)
+        if (groupId) {
+            this.loadGroupMedia(groupId).catch(err => {
+                console.error('Failed to load group media:', err);
+            });
+        }
 
         // Join group chat room (if needed)
         if (this.agoraClient && this.isConnected && this.currentGroupId) {
@@ -1521,6 +1528,242 @@ class GroupChatManager {
         } catch (error) {
             console.error('Failed to delete message:', error);
         }
+    }
+
+    /**
+     * Load group media (photos, videos, documents, links)
+     */
+    async loadGroupMedia(groupId) {
+        if (!groupId) {
+            // Clear media containers if no group selected
+            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/chat/group/${groupId}/media`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.media) {
+                this.renderGroupMedia(data.media, data.counts);
+            } else {
+                console.warn('Failed to load group media:', data);
+                this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+            }
+        } catch (error) {
+            console.error('Failed to load group media:', error);
+            // Show empty state on error
+            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+        }
+    }
+
+    /**
+     * Render group media in Media Details section
+     */
+    renderGroupMedia(media, counts) {
+        // Render Photos
+        const photosContainer = document.getElementById('mediaPhotosContainer');
+        if (photosContainer) {
+            if (media.photos && media.photos.length > 0) {
+                let photosHtml = '<div class="chat-img contact-gallery">';
+                media.photos.slice(0, 12).forEach((photo) => {
+                    photosHtml += `
+                        <div class="img-wrap">
+                            <img src="${photo.file_url}" alt="${photo.file_name}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="img-overlay">
+                                <a class="gallery-img" data-fancybox="gallery-photos" href="${photo.file_url}" title="${photo.file_name}">
+                                    <i class="ti ti-eye"></i>
+                                </a>
+                                <a href="${photo.file_url}" download="${photo.file_name}">
+                                    <i class="ti ti-download"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+                photosHtml += '</div>';
+                if (media.photos.length > 12) {
+                    photosHtml += `<div class="text-center mt-3">
+                        <span class="text-muted">Showing 12 of ${media.photos.length} photos</span>
+                    </div>`;
+                }
+                photosContainer.innerHTML = photosHtml;
+            } else {
+                photosContainer.innerHTML = '<div class="text-center p-4 text-muted">No photos shared yet</div>';
+            }
+        }
+
+        // Render Videos
+        const videosContainer = document.getElementById('mediaVideosContainer');
+        if (videosContainer) {
+            if (media.videos && media.videos.length > 0) {
+                let videosHtml = '';
+                media.videos.slice(0, 6).forEach((video) => {
+                    videosHtml += `
+                        <a href="${video.file_url}" data-fancybox="gallery-videos" class="fancybox video-img mb-3" style="display: block;">
+                            <img src="${video.file_url}" alt="${video.file_name}" style="width: 100%; height: auto; border-radius: 8px;">
+                            <span><i class="ti ti-player-play-filled"></i></span>
+                        </a>
+                    `;
+                });
+                if (media.videos.length > 6) {
+                    videosHtml += `<div class="text-center mt-3">
+                        <span class="text-muted">Showing 6 of ${media.videos.length} videos</span>
+                    </div>`;
+                }
+                videosContainer.innerHTML = videosHtml;
+            } else {
+                videosContainer.innerHTML = '<div class="text-center p-4 text-muted">No videos shared yet</div>';
+            }
+        }
+
+        // Render Documents
+        const documentsContainer = document.getElementById('mediaDocumentsContainer');
+        if (documentsContainer) {
+            if (media.documents && media.documents.length > 0) {
+                let documentsHtml = '';
+                media.documents.forEach((doc) => {
+                    const fileSize = this.formatFileSize(doc.file_size || 0);
+                    const fileIcon = this.getFileIcon(doc.file_name || 'file');
+                    documentsHtml += `
+                        <div class="document-item mb-3">
+                            <div class="d-flex align-items-center">
+                                <span class="document-icon">
+                                    <i class="${fileIcon}"></i>
+                                </span>
+                                <div class="ms-2 flex-grow-1">
+                                    <h6 class="mb-0">${doc.file_name || 'Untitled'}</h6>
+                                    <p class="mb-0 text-muted small">${fileSize}</p>
+                                </div>
+                            </div>
+                            <a href="${doc.file_url}" download="${doc.file_name}" class="download-icon">
+                                <i class="ti ti-download"></i>
+                            </a>
+                        </div>
+                    `;
+                });
+                documentsContainer.innerHTML = documentsHtml;
+            } else {
+                documentsContainer.innerHTML = '<div class="text-center p-4 text-muted">No documents shared yet</div>';
+            }
+        }
+
+        // Render Links
+        const linksContainer = document.getElementById('mediaLinksContainer');
+        if (linksContainer) {
+            if (media.links && media.links.length > 0) {
+                let linksHtml = '';
+                media.links.forEach((link) => {
+                    try {
+                        const urlObj = new URL(link.url);
+                        const domain = urlObj.hostname.replace('www.', '');
+                        const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+                        linksHtml += `
+                            <div class="link-item">
+                                <span class="link-icon">
+                                    <img src="${faviconUrl}" alt="${domain}" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='${window.baseUrl || ''}/build/img/icons/info-icon.svg'">
+                                </span>
+                                <div class="ms-2" style="flex: 1; overflow: hidden;">
+                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
+                                        <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    } catch (e) {
+                        // If URL parsing fails, still show the link
+                        linksHtml += `
+                            <div class="link-item">
+                                <span class="link-icon">
+                                    <img src="${window.baseUrl || ''}/build/img/icons/info-icon.svg" alt="link" style="width: 20px; height: 20px;">
+                                </span>
+                                <div class="ms-2" style="flex: 1; overflow: hidden;">
+                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
+                                        <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                linksContainer.innerHTML = linksHtml;
+            } else {
+                linksContainer.innerHTML = '<div class="text-center p-4 text-muted">No links shared yet</div>';
+            }
+        }
+
+        // Update accordion headers with counts
+        const photosHeader = document.querySelector('[data-bs-target="#chatuser-collapse1"]');
+        if (photosHeader && counts.photos > 0) {
+            const currentText = photosHeader.textContent.trim();
+            if (!currentText.includes('(')) {
+                photosHeader.innerHTML = `<i class="ti ti-photo-shield me-2"></i>Photos (${counts.photos})`;
+            }
+        }
+
+        const videosHeader = document.querySelector('[data-bs-target="#media-video"]');
+        if (videosHeader && counts.videos > 0) {
+            const currentText = videosHeader.textContent.trim();
+            if (!currentText.includes('(')) {
+                videosHeader.innerHTML = `<i class="ti ti-video me-2"></i>Videos (${counts.videos})`;
+            }
+        }
+
+        const documentsHeader = document.querySelector('[data-bs-target="#media-document"]');
+        if (documentsHeader && counts.documents > 0) {
+            const currentText = documentsHeader.textContent.trim();
+            if (!currentText.includes('(')) {
+                documentsHeader.innerHTML = `<i class="ti ti-file me-2"></i>Documents (${counts.documents})`;
+            }
+        }
+
+        const linksHeader = document.querySelector('[data-bs-target="#media-links"]');
+        if (linksHeader && counts.links > 0) {
+            const currentText = linksHeader.textContent.trim();
+            if (!currentText.includes('(')) {
+                linksHeader.innerHTML = `<i class="ti ti-unlink me-2"></i>Links (${counts.links})`;
+            }
+        }
+    }
+
+    /**
+     * Get file icon based on file extension
+     */
+    getFileIcon(fileName) {
+        const ext = fileName.split('.').pop()?.toLowerCase() || '';
+        const iconMap = {
+            'pdf': 'ti ti-file-type-pdf',
+            'doc': 'ti ti-file-type-doc',
+            'docx': 'ti ti-file-type-doc',
+            'xls': 'ti ti-file-type-xls',
+            'xlsx': 'ti ti-file-type-xls',
+            'ppt': 'ti ti-file-type-ppt',
+            'pptx': 'ti ti-file-type-ppt',
+            'zip': 'ti ti-file-zip',
+            'rar': 'ti ti-file-zip',
+            'txt': 'ti ti-file-text',
+        };
+        return iconMap[ext] || 'ti ti-file';
+    }
+
+    /**
+     * Format file size
+     */
+    formatFileSize(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     }
 
     /**

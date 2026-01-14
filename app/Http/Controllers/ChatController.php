@@ -633,6 +633,142 @@ class ChatController extends Controller
     }
 
     /**
+     * Get group media (images, videos, documents, links)
+     */
+    public function getGroupMedia($groupId, Request $request)
+    {
+        try {
+            $user = Auth::user();
+            
+            // Verify user is member of group
+            $group = Group::find($groupId);
+            if (!$group) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Group not found',
+                ], 404);
+            }
+
+            // Get all messages with media for this group
+            $messages = ChatMessage::where(function($q) use ($groupId) {
+                    $q->where('group_id', $groupId)
+                      ->orWhere('conversation_id', 'group_' . $groupId);
+                })
+                ->where(function($q) {
+                    $q->where('is_deleted', false)
+                      ->orWhereNull('is_deleted');
+                })
+                ->whereIn('message_type', ['img', 'file', 'video', 'audio'])
+                ->whereNotNull('file_url')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            // Categorize media
+            $photos = [];
+            $videos = [];
+            $documents = [];
+            $links = [];
+
+            foreach ($messages as $message) {
+                $mediaItem = [
+                    'id' => (string)$message->_id,
+                    'file_url' => $message->file_url,
+                    'file_name' => $message->file_name ?? 'Untitled',
+                    'file_size' => $message->file_size ?? 0,
+                    'message_type' => $message->message_type,
+                    'created_at' => $message->created_at->toIso8601String(),
+                ];
+
+                // Get sender info
+                $senderId = $message->sender_id ?? $message->from_user_id;
+                if ($senderId) {
+                    $sender = User::find($senderId);
+                    if ($sender) {
+                        $mediaItem['sender_name'] = $sender->name ?? $sender->email;
+                        $mediaItem['sender_avatar'] = $this->getAvatarUrl($sender);
+                    }
+                }
+
+                // Categorize by message type
+                if ($message->message_type === 'img') {
+                    $photos[] = $mediaItem;
+                } elseif ($message->message_type === 'video') {
+                    $videos[] = $mediaItem;
+                } elseif ($message->message_type === 'file') {
+                    $documents[] = $mediaItem;
+                }
+            }
+
+            // Extract links from text messages
+            $textMessages = ChatMessage::where(function($q) use ($groupId) {
+                    $q->where('group_id', $groupId)
+                      ->orWhere('conversation_id', 'group_' . $groupId);
+                })
+                ->where(function($q) {
+                    $q->where('is_deleted', false)
+                      ->orWhereNull('is_deleted');
+                })
+                ->where('message_type', 'txt')
+                ->whereNotNull('content')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            // Simple URL regex pattern
+            $urlPattern = '/(https?:\/\/[^\s]+)/i';
+            foreach ($textMessages as $message) {
+                if (preg_match_all($urlPattern, $message->content, $matches)) {
+                    foreach ($matches[0] as $url) {
+                        $linkItem = [
+                            'id' => (string)$message->_id . '_' . md5($url),
+                            'url' => $url,
+                            'message_id' => (string)$message->_id,
+                            'created_at' => $message->created_at->toIso8601String(),
+                        ];
+
+                        // Get sender info
+                        $senderId = $message->sender_id ?? $message->from_user_id;
+                        if ($senderId) {
+                            $sender = User::find($senderId);
+                            if ($sender) {
+                                $linkItem['sender_name'] = $sender->name ?? $sender->email;
+                                $linkItem['sender_avatar'] = $this->getAvatarUrl($sender);
+                            }
+                        }
+
+                        $links[] = $linkItem;
+                    }
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'media' => [
+                    'photos' => $photos,
+                    'videos' => $videos,
+                    'documents' => $documents,
+                    'links' => $links,
+                ],
+                'counts' => [
+                    'photos' => count($photos),
+                    'videos' => count($videos),
+                    'documents' => count($documents),
+                    'links' => count($links),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get group media', [
+                'error' => $e->getMessage(),
+                'group_id' => $groupId,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load media',
+            ], 500);
+        }
+    }
+
+    /**
      * Format group message for API response
      */
     private function formatGroupMessage($message)

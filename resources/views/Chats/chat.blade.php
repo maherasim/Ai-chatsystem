@@ -619,48 +619,12 @@
                                         </h2>
                                         <div id="chatuser-collapse1" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
-                                                <div class="chat-user-photo">
-                                                    <div class="chat-img contact-gallery">
-                                                        <div class="img-wrap">
-                                                            <img src="{{URL::asset('/build/img/gallery/gallery-01.jpg')}}" alt="img">
-                                                            <div class="img-overlay">
-                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/imggallery/gallery-01.jpg')}}" title="Demo 01"><i class="ti ti-eye"></i></a>
-                                                                <a href="#"><i class="ti ti-download"></i></a>
-                                                            </div>
+                                                <div class="chat-user-photo" id="mediaPhotosContainer">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
                                                         </div>
-                                                        <div class="img-wrap">
-                                                            <img src="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" alt="img">
-                                                            <div class="img-overlay">
-                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-02.jpg')}}" title="Demo 02"><i class="ti ti-eye"></i></a>
-                                                                <a href="#"><i class="ti ti-download"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="img-wrap">
-                                                            <img src="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" alt="img">
-                                                            <div class="img-overlay">
-                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-03.jpg')}}" title="Demo 03"><i class="ti ti-eye"></i></a>
-                                                                <a href="#"><i class="ti ti-download"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="img-wrap">
-                                                            <img src="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" alt="img">
-                                                            <div class="img-overlay">
-                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-04.jpg')}}" title="Demo 04"><i class="ti ti-eye"></i></a>
-                                                                <a href="#"><i class="ti ti-download"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="img-wrap">
-                                                            <img src="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" alt="img">
-                                                            <div class="img-overlay">
-                                                                <a class="gallery-img" data-fancybox="gallery-img" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" title="Demo     04"><i class="ti ti-eye"></i></a>
-                                                                <a href="#"><i class="ti ti-download"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <a class="gallery-img view-all link-primary d-inline-flex align-items-center justify-content-center mt-3" href="{{URL::asset('/build/img/gallery/gallery-05.jpg')}}" data-fancybox="gallery-img">
-                                                            All Images<i class="ti ti-arrow-right ms-2"></i>
-                                                        </a>
+                                                        <p class="mt-2 text-muted">Loading photos...</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -674,11 +638,13 @@
                                         </h2>
                                         <div id="media-video" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
-                                                <div class="chat-video">
-                                                    <a href="https://www.youtube.com/embed/Mj9WJJNp5wA" data-fancybox="" class="fancybox video-img">
-                                                        <img src="{{URL::asset('/build/img/video/video.jpg')}}" alt="img">
-                                                        <span><i class="ti ti-player-play-filled"></i></span>
-                                                    </a>
+                                                <div class="chat-video" id="mediaVideosContainer">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <p class="mt-2 text-muted">Loading videos...</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -691,20 +657,12 @@
                                         </h2>
                                         <div id="media-links" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
-                                                <div class="link-item">
-                                                    <span class="link-icon">
-                                                        <img src="{{URL::asset('/build/img/icons/github-icon.svg')}}" alt="icon">
-                                                    </span>
-                                                    <div class="ms-2">
-                                                        <p>https://segmentfault.com/u/ans</p>
-                                                    </div>
-                                                </div>
-                                                <div class="link-item">
-                                                    <span class="link-icon">
-                                                        <img src="{{URL::asset('/build/img/icons/info-icon.svg')}}" alt="icon">
-                                                    </span>
-                                                    <div class="ms-2">
-                                                        <p>https://segmentfault.com/u/ans</p>
+                                                <div id="mediaLinksContainer">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <p class="mt-2 text-muted">Loading links...</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -718,47 +676,13 @@
                                         </h2>
                                         <div id="media-document" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
-                                                <div class="document-item">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="document-icon">
-                                                            <i class="ti ti-file-zip"></i>
-                                                        </span>
-                                                        <div class="ms-2">
-                                                            <h6>Ecommerce.zip</h6>
-                                                            <p>10.25 MB zip file</p>
+                                                <div id="mediaDocumentsContainer">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
                                                         </div>
+                                                        <p class="mt-2 text-muted">Loading documents...</p>
                                                     </div>
-                                                    <a href="javascript:void(0);" class="download-icon">
-                                                        <i class="ti ti-download"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="document-item">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="document-icon">
-                                                            <i class="ti ti-video"></i>
-                                                        </span>
-                                                        <div class="ms-2">
-                                                            <h6>video-1.mp4</h6>
-                                                            <p>20.50 MB video file</p>
-                                                        </div>
-                                                    </div>
-                                                    <a href="javascript:void(0);" class="download-icon">
-                                                        <i class="ti ti-download"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="document-item">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="document-icon">
-                                                            <i class="ti ti-music"></i>
-                                                        </span>
-                                                        <div class="ms-2">
-                                                            <h6>Ecommerce.zip</h6>
-                                                            <p>6.25 MB audio file</p>
-                                                        </div>
-                                                    </div>
-                                                    <a href="javascript:void(0);" class="download-icon">
-                                                        <i class="ti ti-download"></i>
-                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
