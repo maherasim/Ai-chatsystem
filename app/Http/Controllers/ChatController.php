@@ -414,23 +414,6 @@ class ChatController extends Controller
      */
     private function formatMessage($message)
     {
-        // Check if message has group_id and user is in group's member_ids
-        $groupName = null;
-        if ($message->group_id) {
-            $user = Auth::user();
-            if ($user) {
-                $messageGroup = Group::find($message->group_id);
-                if ($messageGroup) {
-                    $userId = (string)($user->_id ?? $user->id);
-                    $memberIds = array_map('strval', $messageGroup->member_ids ?? []);
-                    // Check if user is in member_ids or is admin
-                    if (in_array($userId, $memberIds) || (string)$messageGroup->admin_id === $userId) {
-                        $groupName = $messageGroup->name ?? null;
-                    }
-                }
-            }
-        }
-
         return [
             'id' => (string)$message->_id,
             'message_id' => $message->message_id,
@@ -446,7 +429,6 @@ class ChatController extends Controller
             'is_read' => $message->is_read,
             'read_at' => $message->read_at?->toIso8601String(),
             'reactions' => $message->reactions ?? [],
-            'group_name' => $groupName, // Add group name if user is member
             'created_at' => $message->created_at->toIso8601String(),
             'sender' => $message->sender ? [
                 'id' => (string)$message->sender->_id,
@@ -520,20 +502,6 @@ class ChatController extends Controller
                     }
                 }
 
-                // Check if message has group_id and user is in group's member_ids
-                $groupName = null;
-                if ($message->group_id) {
-                    $messageGroup = Group::find($message->group_id);
-                    if ($messageGroup && $user) {
-                        $userId = (string)($user->_id ?? $user->id);
-                        $memberIds = array_map('strval', $messageGroup->member_ids ?? []);
-                        // Check if user is in member_ids or is admin
-                        if (in_array($userId, $memberIds) || (string)$messageGroup->admin_id === $userId) {
-                            $groupName = $messageGroup->name ?? null;
-                        }
-                    }
-                }
-
                 return [
                     '_id' => (string)$message->_id,
                     'id' => (string)$message->_id,
@@ -549,7 +517,6 @@ class ChatController extends Controller
                     'file_size' => $message->file_size,
                     'reactions' => $message->reactions ?? [],
                     'replied_to_message' => $repliedTo,
-                    'group_name' => $groupName, // Add group name if user is member
                     'created_at' => $message->created_at->toIso8601String(),
                 ];
             });

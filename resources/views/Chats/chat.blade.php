@@ -303,6 +303,39 @@
         flex: 1;
     }
 
+    /* Professional Receiver Message UI - Cleaner Design */
+    .chats:not(.chats-right) .chat-profile-name {
+        margin-bottom: 6px;
+    }
+
+    .chats:not(.chats-right) .chat-profile-name h6 {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #495057 !important;
+        margin-bottom: 0 !important;
+        line-height: 1.4 !important;
+    }
+
+    .chats:not(.chats-right) .chat-profile-name .chat-time {
+        font-size: 11px !important;
+        color: #6c757d !important;
+        font-weight: 400 !important;
+        margin-left: 8px !important;
+    }
+
+    .chats:not(.chats-right) .chat-profile-name .msg-read {
+        margin-left: 4px !important;
+    }
+
+    .chats:not(.chats-right) .chat-profile-name .msg-read i {
+        font-size: 12px !important;
+    }
+
+    /* Remove the circle icon between name and time for cleaner look */
+    .chats:not(.chats-right) .chat-profile-name .ti-circle-filled {
+        display: none !important;
+    }
+
     /* Message Bubble Size Reduction */
     .chats .chat-content .message-content,
     .chats-right .chat-content .message-content,

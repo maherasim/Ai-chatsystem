@@ -935,7 +935,6 @@ class GroupChatManager {
                 <div class="chat-content">
                     <div class="chat-profile-name text-end">
                         <h6>You
-                            ${message.group_name ? `<span style="color: #6c757d; font-size: 0.85em; font-weight: normal; margin-left: 8px;">(${this.escapeHtml(message.group_name)})</span>` : ''}
                             <i class="ti ti-circle-filled fs-7 mx-2"></i>
                             <span class="chat-time">${time}</span>
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>
@@ -1016,12 +1015,11 @@ class GroupChatManager {
                         onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); try { const u = new URL(this.src); this.src = 'https://logiteam.it-supportline.de' + u.pathname; } catch(e) { this.src = '/build/img/profiles/avatar-06.jpg'; } } else { this.src = '/build/img/profiles/avatar-06.jpg'; }">
                 </div>
                 <div class="chat-content">
-                    <div class="chat-profile-name">
-                        <h6>${message.sender_name || 'User'}
-                            ${message.group_name ? `<span style="color: #6c757d; font-size: 0.85em; font-weight: normal; margin-left: 8px;">(${this.escapeHtml(message.group_name)})</span>` : ''}
-                            <i class="ti ti-circle-filled fs-7 mx-2"></i>
-                            <span class="chat-time">${time}</span>
-                            <span class="msg-read success"><i class="ti ti-checks"></i></span>
+                    <div class="chat-profile-name" style="margin-bottom: 4px;">
+                        <h6 style="font-size: 13px; font-weight: 500; color: #495057; margin-bottom: 0;">
+                            ${message.sender_name || 'User'}
+                            <span class="chat-time" style="font-size: 11px; color: #6c757d; font-weight: 400; margin-left: 8px;">${time}</span>
+                            <span class="msg-read success" style="margin-left: 4px;"><i class="ti ti-checks" style="font-size: 12px;"></i></span>
                         </h6>
                     </div>
                     <div class="chat-info">
