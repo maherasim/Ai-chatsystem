@@ -177,6 +177,94 @@
         opacity: 1;
     }
 
+    /* Chat Loader Styles */
+    .chat-loader-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        display: none;
+        width: 200px;
+        height: 200px;
+        filter: url('#goo');
+        animation: rotate-move 2s ease-in-out infinite;
+    }
+
+    .chat-loader-container.active {
+        display: block;
+    }
+
+    .chat-loader-wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .chat-loader-dot {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #000;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .chat-loader-dot.dot-3 {
+        background-color: #f74d75;
+        animation: dot-3-move 2s ease infinite, index 6s ease infinite;
+    }
+
+    .chat-loader-dot.dot-2 {
+        background-color: #10beae;
+        animation: dot-2-move 2s ease infinite, index 6s -4s ease infinite;
+    }
+
+    .chat-loader-dot.dot-1 {
+        background-color: #ffe386;
+        animation: dot-1-move 2s ease infinite, index 6s -2s ease infinite;
+    }
+
+    @keyframes dot-3-move {
+        20% {transform: scale(1)}
+        45% {transform: translateY(-18px) scale(.45)}
+        60% {transform: translateY(-90px) scale(.45)}
+        80% {transform: translateY(-90px) scale(.45)}
+        100% {transform: translateY(0px) scale(1)}
+    }
+
+    @keyframes dot-2-move {
+        20% {transform: scale(1)}
+        45% {transform: translate(-16px, 12px) scale(.45)}
+        60% {transform: translate(-80px, 60px) scale(.45)}
+        80% {transform: translate(-80px, 60px) scale(.45)}
+        100% {transform: translateY(0px) scale(1)}
+    }
+
+    @keyframes dot-1-move {
+        20% {transform: scale(1)}
+        45% {transform: translate(16px, 12px) scale(.45)}
+        60% {transform: translate(80px, 60px) scale(.45)}
+        80% {transform: translate(80px, 60px) scale(.45)}
+        100% {transform: translateY(0px) scale(1)}
+    }
+
+    @keyframes rotate-move {
+        55% {transform: translate(-50%, -50%) rotate(0deg)}
+        80% {transform: translate(-50%, -50%) rotate(360deg)}
+        100% {transform: translate(-50%, -50%) rotate(360deg)}
+    }
+
+    @keyframes index {
+        0%, 100% {z-index: 3}
+        33.3% {z-index: 2}
+        66.6% {z-index: 1}
+    }
+
     /* Active state (white icon always shown) */
     .task-icon-link.active .icon-black {
         opacity: 0;
@@ -441,7 +529,15 @@
 
             </div>
 
-            <div class="chat-body chat-page-group slimscroll">
+            <div class="chat-body chat-page-group slimscroll" style="position: relative;">
+                <!-- Chat Loader -->
+                <div class="chat-loader-container" id="chatLoader">
+                    <div class="chat-loader-wrapper">
+                        <div class="chat-loader-dot dot-1"></div>
+                        <div class="chat-loader-dot dot-2"></div>
+                        <div class="chat-loader-dot dot-3"></div>
+                    </div>
+                </div>
                 <div class="messages" id="chatMessagesContainer">
                     <!-- Dynamic messages will be rendered here -->
                     <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
@@ -1437,5 +1533,15 @@
         }
     });
 </script>
+
+<!-- SVG Filter for Chat Loader -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: absolute; width: 0; height: 0;">
+    <defs>
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7"/>
+        </filter>
+    </defs>
+</svg>
 
 @endsection

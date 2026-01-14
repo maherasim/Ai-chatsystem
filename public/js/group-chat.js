@@ -24,6 +24,26 @@ class GroupChatManager {
     }
 
     /**
+     * Show chat loader
+     */
+    showLoader() {
+        const loader = document.getElementById('chatLoader');
+        if (loader) {
+            loader.classList.add('active');
+        }
+    }
+
+    /**
+     * Hide chat loader
+     */
+    hideLoader() {
+        const loader = document.getElementById('chatLoader');
+        if (loader) {
+            loader.classList.remove('active');
+        }
+    }
+
+    /**
      * Initialize notification sound
      */
     initNotificationSound() {
@@ -253,13 +273,8 @@ class GroupChatManager {
         this.currentGroupName = groupName;
         this.currentGroupPhoto = photoUrl;
 
-        // Load group members for mentions
-        await this.loadGroupMembers();
-
-        // Setup mention handler after a small delay to ensure DOM is ready
-        setTimeout(() => {
-            this.setupMentionHandler();
-        }, 100);
+        // Show loader
+        this.showLoader();
 
         // Hide empty state
         const emptyState = document.getElementById('emptyChatState');
@@ -267,34 +282,47 @@ class GroupChatManager {
             emptyState.style.display = 'none';
         }
 
-        // Update chat header
-        this.updateChatHeader(groupName, photoUrl);
+        try {
+            // Load group members for mentions
+            await this.loadGroupMembers();
 
-        // Update contact info panel
-        await this.updateContactInfo(groupId);
+            // Setup mention handler after a small delay to ensure DOM is ready
+            setTimeout(() => {
+                this.setupMentionHandler();
+            }, 100);
 
-        // Initialize user ID and Agora if not already done
-        if (!this.currentUserId) {
-            await this.initAgora();
-        } else if (!this.isConnected) {
-            // User ID is set but Agora not connected, try to connect
-            await this.initAgora();
-        }
+            // Update chat header
+            this.updateChatHeader(groupName, photoUrl);
 
-        // Ensure we have user ID before loading messages
-        if (!this.currentUserId) {
-            console.error('Cannot load messages: User ID not set');
-            await this.initializeUserIdFallback();
-        }
+            // Update contact info panel
+            await this.updateContactInfo(groupId);
 
-        // Load existing messages
-        await this.loadGroupMessages(groupId);
-        
-        // Load media for this group (don't await to avoid blocking)
-        if (groupId) {
-            this.loadGroupMedia(groupId).catch(err => {
-                console.error('Failed to load group media:', err);
-            });
+            // Initialize user ID and Agora if not already done
+            if (!this.currentUserId) {
+                await this.initAgora();
+            } else if (!this.isConnected) {
+                // User ID is set but Agora not connected, try to connect
+                await this.initAgora();
+            }
+
+            // Ensure we have user ID before loading messages
+            if (!this.currentUserId) {
+                console.error('Cannot load messages: User ID not set');
+                await this.initializeUserIdFallback();
+            }
+
+            // Load existing messages
+            await this.loadGroupMessages(groupId);
+            
+            // Load media for this group (don't await to avoid blocking)
+            if (groupId) {
+                this.loadGroupMedia(groupId).catch(err => {
+                    console.error('Failed to load group media:', err);
+                });
+            }
+        } finally {
+            // Hide loader after everything is loaded
+            this.hideLoader();
         }
 
         // Join group chat room (if needed)
@@ -558,8 +586,13 @@ class GroupChatManager {
     /**
      * Load group messages from backend
      */
-    async loadGroupMessages(groupId) {
+    async loadGroupMessages(groupId, showLoader = false) {
         try {
+            // Show loader only if explicitly requested (for standalone calls)
+            if (showLoader) {
+                this.showLoader();
+            }
+            
             const response = await fetch(`/api/chat/group/${groupId}/messages`, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
@@ -578,6 +611,11 @@ class GroupChatManager {
             }
         } catch (error) {
             console.error('Failed to load group messages:', error);
+        } finally {
+            // Hide loader only if we showed it
+            if (showLoader) {
+                this.hideLoader();
+            }
         }
     }
 
