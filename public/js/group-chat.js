@@ -323,11 +323,6 @@ class GroupChatManager {
         } finally {
             // Hide loader after everything is loaded
             this.hideLoader();
-
-            // Ensure scroll to bottom after loader is hidden and DOM is ready
-            setTimeout(() => {
-                this.forceScrollToBottom();
-            }, 100);
         }
 
         // Join group chat room (if needed)
@@ -477,20 +472,9 @@ class GroupChatManager {
                             this.lastMessageId = messageId;
                         });
 
-                        // Scroll to bottom after all new messages are added (always scroll for new received messages)
+                        // Scroll to bottom after all new messages are added
                         if (enrichedMessages.length > 0) {
-                            // Immediate scroll
                             this.forceScrollToBottom();
-
-                            // Then scroll after DOM updates
-                            setTimeout(() => {
-                                this.forceScrollToBottom();
-                            }, 50);
-
-                            // Final scroll after layout is complete
-                            setTimeout(() => {
-                                this.forceScrollToBottom();
-                            }, 200);
                         }
 
                         // Update global notification manager's last checked message for this group
@@ -778,14 +762,8 @@ class GroupChatManager {
             }
         }
 
-        // Scroll to bottom after rendering (always scroll on initial load)
-        // Use forceScrollToBottom to ensure it always scrolls, not conditional
+        // Scroll to bottom after rendering
         this.forceScrollToBottom();
-
-        // Also scroll after a delay to ensure layout is complete
-        setTimeout(() => {
-            this.forceScrollToBottom();
-        }, 300);
     }
 
     /**
@@ -905,7 +883,7 @@ class GroupChatManager {
             messageContent = `
                 <div class="chat-img" style="max-width: 100%; width: 100%;">
                     <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
-                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;" onload="if(window.groupChatManager) window.groupChatManager.forceScrollToBottom()" onerror="if(window.groupChatManager) window.groupChatManager.forceScrollToBottom()">
+                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
                         <div class="img-overlay">
                             <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
                                 <i class="ti ti-eye"></i>
@@ -976,16 +954,33 @@ class GroupChatManager {
             `;
         }
 
-        // Reactions
+        // Reactions - handle both array and object formats
         let reactionsHtml = '';
-        if (message.reactions && Object.keys(message.reactions).length > 0) {
-            reactionsHtml = '<div class="emonji-wrap">';
-            Object.entries(message.reactions).forEach(([emoji, count]) => {
-                reactionsHtml += `<a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '${emoji}')">
-                    <img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" class="me-2" alt="icon">${count}
-                </a>`;
-            });
-            reactionsHtml += '</div>';
+        if (message.reactions) {
+            let reactionCounts = {};
+
+            // Handle array format: [{user_id, emoji, created_at}, ...]
+            if (Array.isArray(message.reactions) && message.reactions.length > 0) {
+                message.reactions.forEach(reaction => {
+                    const emoji = reaction.emoji || reaction;
+                    reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1;
+                });
+            }
+            // Handle object format: {emoji: count, ...}
+            else if (typeof message.reactions === 'object' && Object.keys(message.reactions).length > 0) {
+                reactionCounts = message.reactions;
+            }
+
+            // Build reactions HTML if we have any
+            if (Object.keys(reactionCounts).length > 0) {
+                reactionsHtml = '<div class="emonji-wrap">';
+                Object.entries(reactionCounts).forEach(([emoji, count]) => {
+                    reactionsHtml += `<a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '${this.escapeHtml(emoji)}')">
+                        <span class="me-2">${emoji}</span>${count}
+                    </a>`;
+                });
+                reactionsHtml += '</div>';
+            }
         }
 
         // Structure for LEFT side (received messages): Avatar first, then content
@@ -1031,19 +1026,19 @@ class GroupChatManager {
                                         <div class="emoj-group-list">
                                             <ul>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -1095,19 +1090,19 @@ class GroupChatManager {
                                         <div class="emoj-group-list">
                                             <ul>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-05.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-06.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-07.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
                                                 </a></li>
                                                 <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                    <img src="{{URL::asset('/build/img/icons/emonji-08.svg')}}" alt="Icon">
+                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -1297,19 +1292,8 @@ class GroupChatManager {
             // Update last message ID
             this.lastMessageId = String(messageData._id || messageData.id || '');
 
-            // Force scroll immediately when adding new messages
-            // Multiple scroll attempts to ensure it works
+            // Force scroll when adding new messages
             this.forceScrollToBottom();
-
-            // Also scroll after DOM updates
-            setTimeout(() => {
-                this.forceScrollToBottom();
-            }, 10);
-
-            // Final scroll after layout is complete
-            setTimeout(() => {
-                this.forceScrollToBottom();
-            }, 200);
 
             console.log('✅ Message added to UI successfully');
         } else {
@@ -1535,10 +1519,42 @@ class GroupChatManager {
     }
 
     /**
+     * Show emoji picker dropdown for a message
+     */
+    showEmojiPicker(messageId) {
+        // Close any other open emoji pickers
+        document.querySelectorAll('.emoj-group-list').forEach(list => {
+            if (list.closest('[data-message-id]')?.getAttribute('data-message-id') !== messageId) {
+                list.style.display = 'none';
+            }
+        });
+
+        // Find the emoji picker for this message
+        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+        if (messageElement) {
+            const emojiList = messageElement.querySelector('.emoj-group-list');
+            if (emojiList) {
+                // Toggle the emoji picker
+                const isVisible = emojiList.style.display === 'block';
+                emojiList.style.display = isVisible ? 'none' : 'block';
+            }
+        }
+    }
+
+    /**
      * Add reaction to message
      */
     async addReaction(messageId, emoji) {
         try {
+            // Close emoji picker
+            const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+            if (messageElement) {
+                const emojiList = messageElement.querySelector('.emoj-group-list');
+                if (emojiList) {
+                    emojiList.style.display = 'none';
+                }
+            }
+
             const response = await fetch(`/api/chat/message/${messageId}/reaction`, {
                 method: 'POST',
                 headers: {
@@ -1549,12 +1565,65 @@ class GroupChatManager {
             });
 
             const data = await response.json();
-            if (data.success) {
-                // Reload messages to show updated reactions
-                await this.loadGroupMessages(this.currentGroupId);
+            if (data.success && data.reactions) {
+                // Update the message element's reactions without reloading all messages
+                this.updateMessageReactions(messageId, data.reactions);
             }
         } catch (error) {
             console.error('Failed to add reaction:', error);
+        }
+    }
+
+    /**
+     * Update reactions display for a specific message
+     */
+    updateMessageReactions(messageId, reactions) {
+        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+        if (!messageElement) return;
+
+        // Count reactions by emoji
+        const reactionCounts = {};
+        if (Array.isArray(reactions)) {
+            reactions.forEach(reaction => {
+                const emoji = reaction.emoji || reaction;
+                reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1;
+            });
+        } else if (typeof reactions === 'object' && reactions !== null) {
+            // Handle object format
+            Object.entries(reactions).forEach(([emoji, count]) => {
+                reactionCounts[emoji] = count;
+            });
+        }
+
+        // Find or create reactions container
+        let reactionsContainer = messageElement.querySelector('.emonji-wrap');
+
+        if (Object.keys(reactionCounts).length > 0) {
+            // Build reactions HTML
+            let reactionsHtml = '<div class="emonji-wrap">';
+            Object.entries(reactionCounts).forEach(([emoji, count]) => {
+                const escapedEmoji = this.escapeHtml(emoji);
+                reactionsHtml += `<a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${messageId}', '${escapedEmoji}')">
+                    <span class="me-2">${emoji}</span>${count}
+                </a>`;
+            });
+            reactionsHtml += '</div>';
+
+            // Insert or update reactions
+            if (reactionsContainer) {
+                reactionsContainer.outerHTML = reactionsHtml;
+            } else {
+                // Find the chat-content div and append reactions
+                const chatContent = messageElement.querySelector('.chat-content');
+                if (chatContent) {
+                    chatContent.insertAdjacentHTML('beforeend', reactionsHtml);
+                }
+            }
+        } else {
+            // Remove reactions if empty
+            if (reactionsContainer) {
+                reactionsContainer.remove();
+            }
         }
     }
 
@@ -1908,85 +1977,16 @@ class GroupChatManager {
      * Force scroll to bottom (used when sending messages or receiving new messages)
      */
     forceScrollToBottom() {
-        // Try to find the specific chat body for the messages
-        // Use more specific selectors to avoid conflict with sidebar (.chatsidebar)
-        let mainChatBody = document.querySelector('.chat-messages .chat-body') ||
-            document.querySelector('.chat-page-group') ||
-            document.getElementById('chatMessagesContainer')?.parentElement;
-
-        if (!mainChatBody) {
-            // Fallback: search all .chat-body elements but ignore the sidebar one
-            const allBodies = document.querySelectorAll('.chat-body');
-            for (const body of allBodies) {
-                if (body.id !== 'chatsidebar' && !body.closest('#chatsidebar')) {
-                    mainChatBody = body;
-                    break;
-                }
-            }
+        const container = document.querySelector('.chat-body');
+        if (container) {
+            // Use setTimeout to ensure message is rendered
+            setTimeout(() => {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
         }
-
-        if (!mainChatBody) {
-            console.warn('Chat body container not found');
-            return;
-        }
-
-        const performScroll = () => {
-            try {
-                // Find the scrollable container (might be the chatBody itself or a slimscroll wrapper)
-                const slimScrollDiv = mainChatBody.closest('.slimScrollDiv') || mainChatBody.parentElement?.closest('.slimScrollDiv');
-                const scrollTarget = slimScrollDiv || mainChatBody;
-
-                // 1. Direct scrollTop assignment with a very large number to ensure absolute bottom
-                scrollTarget.scrollTop = 9999999;
-
-                // 2. scrollTo API
-                if (scrollTarget.scrollTo) {
-                    scrollTarget.scrollTo({
-                        top: 9999999,
-                        behavior: 'auto'
-                    });
-                }
-
-                // 3. jQuery slimscroll API if available
-                if (typeof $ !== 'undefined') {
-                    const $target = $(scrollTarget);
-                    const $mainBody = $(mainChatBody);
-
-                    if ($target.data('slimScroll')) {
-                        $target.slimScroll({ scrollTo: '9999999px' });
-                    }
-                    if ($mainBody.data('slimScroll')) {
-                        $mainBody.slimScroll({ scrollTo: '9999999px' });
-                    }
-                    // Also try targeting by ID if we have it
-                    const $container = $('#chatMessagesContainer').parent();
-                    if ($container.data('slimScroll')) {
-                        $container.slimScroll({ scrollTo: '9999999px' });
-                    }
-                }
-
-                // 4. Scroll the container's children if necessary
-                if (mainChatBody.lastElementChild) {
-                    mainChatBody.lastElementChild.scrollIntoView({ block: 'end', behavior: 'auto' });
-                }
-            } catch (error) {
-                console.error('Error in performScroll:', error);
-            }
-        };
-
-        // Execute scroll in a series of steps to handle rendering lags
-        performScroll();
-
-        // Immediate next frames
-        requestAnimationFrame(() => {
-            performScroll();
-            requestAnimationFrame(performScroll);
-        });
-
-        // Sequence of timeouts covering different possible load/render times
-        [10, 50, 100, 200, 500, 1000, 2000].forEach(delay => {
-            setTimeout(performScroll, delay);
-        });
     }
 
     /**

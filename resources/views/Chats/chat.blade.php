@@ -303,6 +303,36 @@
         flex: 1;
     }
 
+    /* Drag and Drop Styles */
+    .chat-footer.drag-over,
+    .chat-body.drag-over,
+    .main-chat-blk.drag-over,
+    .chat.drag-over {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .chat-footer.drag-over::before,
+    .chat-body.drag-over::before,
+    .main-chat-blk.drag-over::before,
+    .chat.drag-over::before {
+        content: 'Drop files here to send';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(99, 56, 246, 0.95);
+        color: white;
+        padding: 20px 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        z-index: 1000;
+        pointer-events: none;
+        box-shadow: 0 4px 20px rgba(99, 56, 246, 0.3);
+        white-space: nowrap;
+    }
+
     /* Professional Receiver Message UI - Cleaner Design */
     .chats:not(.chats-right) .chat-profile-name {
         margin-bottom: 6px;
@@ -1462,6 +1492,164 @@
                 preview.remove();
             }
         }
+
+        // Drag and Drop functionality for chat area
+        // Prevent default browser behavior for file drops (opening in new tab)
+        document.addEventListener('dragover', function(e) {
+            // Only prevent if dragging files
+            if (e.dataTransfer && e.dataTransfer.types) {
+                const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                if (hasFiles) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }
+        }, false);
+
+        document.addEventListener('drop', function(e) {
+            // Only prevent if dropping files
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, false);
+
+        const chatFooter = document.querySelector('.chat-footer');
+        const chatBody = document.querySelector('.chat-body');
+        const chatContainer = document.querySelector('.main-chat-blk') || document.querySelector('.chat');
+        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+        
+        // Use the entire chat container as drop zone, or fallback to chat body/footer
+        const dropZone = chatContainer || chatBody || chatFooter;
+        
+        if (dropZone) {
+            let dragCounter = 0;
+            
+            // CRITICAL: Prevent default on dragover - this is required for drop to work
+            dropZone.addEventListener('dragover', function(e) {
+                // Only handle file drags
+                if (e.dataTransfer && e.dataTransfer.types) {
+                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    if (hasFiles) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dragCounter++;
+                        dropZone.classList.add('drag-over');
+                    }
+                }
+            }, false);
+            
+            dropZone.addEventListener('dragenter', function(e) {
+                if (e.dataTransfer && e.dataTransfer.types) {
+                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    if (hasFiles) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dragCounter++;
+                        dropZone.classList.add('drag-over');
+                    }
+                }
+            }, false);
+            
+            dropZone.addEventListener('dragleave', function(e) {
+                if (e.dataTransfer && e.dataTransfer.types) {
+                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    if (hasFiles) {
+                        dragCounter--;
+                        if (dragCounter === 0) {
+                            dropZone.classList.remove('drag-over');
+                        }
+                    }
+                }
+            }, false);
+            
+            // Handle dropped files
+            dropZone.addEventListener('drop', function(e) {
+                dragCounter = 0;
+                dropZone.classList.remove('drag-over');
+                
+                // CRITICAL: Prevent default to stop browser from opening file
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (!files || files.length === 0) {
+                    return;
+                }
+                
+                // Check if group is selected
+                if (!window.groupChatManager || !window.groupChatManager.currentGroupId) {
+                    alert('Please select a group first');
+                    return;
+                }
+                
+                // Handle the first file (or all files if you want to support multiple)
+                const file = files[0];
+                
+                // Determine message type based on file type
+                let messageType = 'file';
+                const fileType = file.type.toLowerCase();
+                
+                if (fileType.startsWith('image/')) {
+                    messageType = 'img';
+                } else if (fileType.startsWith('audio/')) {
+                    messageType = 'audio';
+                } else if (fileType.startsWith('video/')) {
+                    messageType = 'video';
+                } else {
+                    messageType = 'file';
+                }
+                
+                // Store file for later sending
+                window.selectedFile = file;
+                window.selectedFileType = messageType;
+                
+                // Show file preview
+                showFilePreview(file, messageType);
+                
+                // Focus on message input so user can type a message with the file
+                if (messageInput) {
+                    messageInput.focus();
+                }
+            }, false);
+        }
+        
+        // Also prevent default drag behavior on the message input to allow text selection
+        if (messageInput) {
+            messageInput.addEventListener('dragover', function(e) {
+                // Allow file drops on input too
+                if (e.dataTransfer && e.dataTransfer.types) {
+                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    if (hasFiles) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }
+            }, false);
+            
+            messageInput.addEventListener('drop', function(e) {
+                // If files are dropped, prevent default and let parent handle it
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // The parent drop handler will handle the file
+                    return;
+                }
+                
+                // Allow text drag and drop within the input
+                const text = e.dataTransfer.getData('text/plain');
+                if (text) {
+                    e.preventDefault();
+                    const start = this.selectionStart || 0;
+                    const end = this.selectionEnd || 0;
+                    const currentText = this.value;
+                    this.value = currentText.substring(0, start) + text + currentText.substring(end);
+                    this.setSelectionRange(start + text.length, start + text.length);
+                }
+            }, false);
+        }
         
         // Make removeFilePreview available globally
         window.removeFilePreview = removeFilePreview;
@@ -1573,6 +1761,16 @@
                     setTimeout(() => {
                         window.groupChatManager.forceScrollToBottom();
                     }, delay);
+                });
+            }
+        });
+
+        // Close emoji pickers when clicking outside
+        document.addEventListener('click', (e) => {
+            // Check if click is outside emoji picker
+            if (!e.target.closest('.emoj-action') && !e.target.closest('.emoj-group-list')) {
+                document.querySelectorAll('.emoj-group-list').forEach(list => {
+                    list.style.display = 'none';
                 });
             }
         });
