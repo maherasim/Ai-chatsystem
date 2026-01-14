@@ -426,6 +426,45 @@ class GroupChatManager {
                                 if (emptyState) {
                                     emptyState.style.display = 'none';
                                 }
+                                
+                                // Check if we need to add a date separator
+                                const lastMessage = container.lastElementChild;
+                                let messageDate;
+                                try {
+                                    messageDate = message.created_at ? new Date(message.created_at) : new Date();
+                                    if (isNaN(messageDate.getTime())) {
+                                        messageDate = new Date();
+                                    }
+                                } catch (error) {
+                                    messageDate = new Date();
+                                }
+                                
+                                const dateStr = this.formatDate(messageDate);
+                                
+                                if (lastMessage && lastMessage.classList.contains('chats')) {
+                                    const lastMessageDate = lastMessage.getAttribute('data-date');
+                                    if (lastMessageDate !== dateStr) {
+                                        const dateSeparator = document.createElement('div');
+                                        dateSeparator.className = 'chat-line';
+                                        dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                                        container.appendChild(dateSeparator);
+                                    }
+                                } else if (lastMessage && lastMessage.classList.contains('chat-line')) {
+                                    const lastDateText = lastMessage.querySelector('.chat-date')?.textContent;
+                                    if (lastDateText !== dateStr) {
+                                        const dateSeparator = document.createElement('div');
+                                        dateSeparator.className = 'chat-line';
+                                        dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                                        container.appendChild(dateSeparator);
+                                    }
+                                } else {
+                                    const dateSeparator = document.createElement('div');
+                                    dateSeparator.className = 'chat-line';
+                                    dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
+                                    container.appendChild(dateSeparator);
+                                }
+                                
+                                messageElement.setAttribute('data-date', dateStr);
                                 container.appendChild(messageElement);
                             }
 
@@ -433,9 +472,20 @@ class GroupChatManager {
                             this.lastMessageId = messageId;
                         });
                         
-                        // Scroll to bottom after all new messages are added
+                        // Scroll to bottom after all new messages are added (always scroll for new received messages)
                         if (enrichedMessages.length > 0) {
+                            // Immediate scroll
                             this.forceScrollToBottom();
+                            
+                            // Then scroll after DOM updates
+                            setTimeout(() => {
+                                this.forceScrollToBottom();
+                            }, 50);
+                            
+                            // Final scroll after layout is complete
+                            setTimeout(() => {
+                                this.forceScrollToBottom();
+                            }, 200);
                         }
 
                         // Update global notification manager's last checked message for this group
@@ -1232,8 +1282,23 @@ class GroupChatManager {
 
             messageElement.setAttribute('data-date', dateStr);
             container.appendChild(messageElement);
-            // Force scroll when adding new messages
+            
+            // Update last message ID
+            this.lastMessageId = String(messageData._id || messageData.id || '');
+            
+            // Force scroll immediately when adding new messages
+            // Multiple scroll attempts to ensure it works
             this.forceScrollToBottom();
+            
+            // Also scroll after DOM updates
+            setTimeout(() => {
+                this.forceScrollToBottom();
+            }, 10);
+            
+            // Final scroll after layout is complete
+            setTimeout(() => {
+                this.forceScrollToBottom();
+            }, 200);
 
             console.log('✅ Message added to UI successfully');
         } else {
@@ -1829,19 +1894,100 @@ class GroupChatManager {
     }
     
     /**
-     * Force scroll to bottom (used when sending messages)
+     * Force scroll to bottom (used when sending messages or receiving new messages)
      */
     forceScrollToBottom() {
-        const container = document.querySelector('.chat-body');
-        if (container) {
-            // Use setTimeout to ensure message is rendered
-            setTimeout(() => {
-                container.scrollTo({
-                    top: container.scrollHeight,
-                    behavior: 'smooth'
-                });
-            }, 100);
+        // Slimscroll wraps elements in .slimScrollDiv, so we need to find that
+        // Try to find the slimScrollDiv wrapper first, then fallback to direct container
+        let container = null;
+        
+        // First, try to find the slimScrollDiv that contains the chat-body
+        const chatBody = document.querySelector('.chat-body');
+        if (chatBody) {
+            // Check if it's wrapped in slimScrollDiv
+            const slimScrollDiv = chatBody.closest('.slimScrollDiv') || chatBody.parentElement?.closest('.slimScrollDiv');
+            if (slimScrollDiv) {
+                container = slimScrollDiv;
+            } else {
+                container = chatBody;
+            }
         }
+        
+        // Fallback selectors
+        if (!container) {
+            container = document.querySelector('.slimScrollDiv') ||
+                       document.querySelector('.chat-page-group') ||
+                       document.querySelector('.slimscroll') ||
+                       document.getElementById('chatMessagesContainer')?.parentElement;
+        }
+        
+        if (!container) {
+            console.warn('Scroll container not found');
+            return;
+        }
+        
+        // Function to perform the actual scroll - ALWAYS scroll, no conditions
+        const performScroll = () => {
+            try {
+                const scrollHeight = container.scrollHeight;
+                
+                // Always scroll to bottom - no conditions
+                // Try smooth scroll first
+                if (container.scrollTo) {
+                    container.scrollTo({
+                        top: scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Immediate hard scroll (always execute, no conditions)
+                container.scrollTop = scrollHeight;
+                
+                // Also try jQuery slimscroll API if available
+                if (typeof $ !== 'undefined' && $(container).data('slimScroll')) {
+                    $(container).slimScroll({ scrollTo: scrollHeight });
+                }
+            } catch (error) {
+                console.error('Error scrolling:', error);
+                // Last resort: try direct assignment
+                try {
+                    container.scrollTop = container.scrollHeight;
+                } catch (e) {
+                    console.error('Failed to scroll:', e);
+                }
+            }
+        };
+        
+        // Immediate scroll first
+        performScroll();
+        
+        // Then use requestAnimationFrame to ensure DOM is updated
+        requestAnimationFrame(() => {
+            performScroll();
+            
+            // Double RAF to ensure layout is complete
+            requestAnimationFrame(() => {
+                performScroll();
+                
+                // Final check after a delay to ensure we're at bottom
+                setTimeout(() => {
+                    const scrollHeight = container.scrollHeight;
+                    const currentScrollTop = container.scrollTop;
+                    const clientHeight = container.clientHeight;
+                    const maxScroll = scrollHeight - clientHeight;
+                    
+                    // Force scroll if not at bottom (with small tolerance)
+                    if (Math.abs(maxScroll - currentScrollTop) > 5) {
+                        container.scrollTop = scrollHeight;
+                        
+                        // Try jQuery slimscroll API one more time
+                        if (typeof $ !== 'undefined' && $(container).data('slimScroll')) {
+                            $(container).slimScroll({ scrollTo: scrollHeight });
+                        }
+                    }
+                }, 150);
+            });
+        });
     }
 
     /**
